@@ -36,7 +36,11 @@ const AuthorityList = () => {
         />
         <SearchButton
           onClick={() => {
-            viewModel?.fetch();
+            try {
+              viewModel?.fetch();
+            } catch (e) {
+              console.log(e);
+            }
           }}
         >
           Search
