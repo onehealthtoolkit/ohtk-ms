@@ -1,7 +1,8 @@
+import Dashboard from "components/dashboard";
 import type { NextPage } from "next";
 
 const Home: NextPage = () => {
-  return <div>hello</div>;
+  return <Dashboard></Dashboard>;
 };
 
 export default Home;
