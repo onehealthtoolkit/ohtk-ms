@@ -1,0 +1,13 @@
+query authorities($limit: Int!, $offset: Int!, $nameStartWith: String) {
+  authorities(
+    limit: $limit
+    offset: $offset
+    name_Istartswith: $nameStartWith
+  ) {
+    totalCount
+    results {
+      id
+      name
+    }
+  }
+}
