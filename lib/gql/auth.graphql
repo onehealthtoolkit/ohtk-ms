@@ -1,0 +1,22 @@
+mutation DeleteTokenCookie {
+  deleteTokenCookie {
+    deleted
+  }
+  deleteRefreshTokenCookie {
+    deleted
+  }
+}
+
+mutation RefreshToken {
+  refreshToken {
+    token
+    payload
+  }
+}
+
+mutation TokenAuth($username: String!, $password: String!) {
+  tokenAuth(username: $username, password: $password) {
+    refreshExpiresIn
+    token
+  }
+}

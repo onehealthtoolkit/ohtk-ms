@@ -1,5 +1,23 @@
 {
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  }
+  },
+
+  "prettier.eslintIntegration": true,
+
+  // intellisense for tailwind-styled-components
+  "editor.quickSuggestions": {
+    "other": "on",
+    "comments": "off",
+    "strings": true
+  },
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript", // if you are using typescript
+    "typescriptreact": "javascript" // if you are using typescript with react
+  },
+  "tailwindCSS.experimental.classRegex": [
+    "tw`([^`]*)", // tw`...`
+    "tw\\.[^`]+`([^`]*)`", // tw.xxx<xxx>`...`
+    "tw\\(.*?\\).*?`([^`]*)" // tw(Component)<xxx>`...`
+  ]
 }

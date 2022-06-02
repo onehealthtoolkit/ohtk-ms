@@ -1,5 +1,4 @@
-import { gql } from "@apollo/client";
-import * as Apollo from "@apollo/client";
+import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -11,7 +10,6 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>;
 };
-const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -492,6 +490,43 @@ export type Verify = {
   payload: Scalars["GenericScalar"];
 };
 
+export type DeleteTokenCookieMutationVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type DeleteTokenCookieMutation = {
+  __typename?: "Mutation";
+  deleteTokenCookie?: {
+    __typename?: "DeleteJSONWebTokenCookie";
+    deleted: boolean;
+  } | null;
+  deleteRefreshTokenCookie?: {
+    __typename?: "DeleteRefreshTokenCookie";
+    deleted: boolean;
+  } | null;
+};
+
+export type RefreshTokenMutationVariables = Exact<{ [key: string]: never }>;
+
+export type RefreshTokenMutation = {
+  __typename?: "Mutation";
+  refreshToken?: { __typename?: "Refresh"; token: string; payload: any } | null;
+};
+
+export type TokenAuthMutationVariables = Exact<{
+  username: Scalars["String"];
+  password: Scalars["String"];
+}>;
+
+export type TokenAuthMutation = {
+  __typename?: "Mutation";
+  tokenAuth?: {
+    __typename?: "ObtainJSONWebToken";
+    refreshExpiresIn: number;
+    token: string;
+  } | null;
+};
+
 export type AuthoritiesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
@@ -511,69 +546,287 @@ export type AuthoritiesQuery = {
   } | null;
 };
 
-export const AuthoritiesDocument = gql`
-  query authorities($limit: Int!, $offset: Int!, $nameStartWith: String) {
-    authorities(
-      limit: $limit
-      offset: $offset
-      name_Istartswith: $nameStartWith
-    ) {
-      totalCount
-      results {
-        id
-        name
-      }
-    }
-  }
-`;
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
-/**
- * __useAuthoritiesQuery__
- *
- * To run a query within a React component, call `useAuthoritiesQuery` and pass it any options that fit your needs.
- * When your component renders, `useAuthoritiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAuthoritiesQuery({
- *   variables: {
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
- *      nameStartWith: // value for 'nameStartWith'
- *   },
- * });
- */
-export function useAuthoritiesQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    AuthoritiesQuery,
-    AuthoritiesQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<AuthoritiesQuery, AuthoritiesQueryVariables>(
-    AuthoritiesDocument,
-    options
-  );
-}
-export function useAuthoritiesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    AuthoritiesQuery,
-    AuthoritiesQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<AuthoritiesQuery, AuthoritiesQueryVariables>(
-    AuthoritiesDocument,
-    options
-  );
-}
-export type AuthoritiesQueryHookResult = ReturnType<typeof useAuthoritiesQuery>;
-export type AuthoritiesLazyQueryHookResult = ReturnType<
-  typeof useAuthoritiesLazyQuery
+export type MeQuery = {
+  __typename?: "Query";
+  me?: {
+    __typename?: "UserProfileType";
+    id: number;
+    username: string;
+    firstName: string;
+    lastName: string;
+    authorityName?: string | null;
+  } | null;
+};
+
+export const DeleteTokenCookieDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteTokenCookie" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteTokenCookie" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "deleted" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteRefreshTokenCookie" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "deleted" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteTokenCookieMutation,
+  DeleteTokenCookieMutationVariables
 >;
-export type AuthoritiesQueryResult = Apollo.QueryResult<
-  AuthoritiesQuery,
-  AuthoritiesQueryVariables
+export const RefreshTokenDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "RefreshToken" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "refreshToken" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "token" } },
+                { kind: "Field", name: { kind: "Name", value: "payload" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  RefreshTokenMutation,
+  RefreshTokenMutationVariables
 >;
+export const TokenAuthDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "TokenAuth" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "username" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "password" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "tokenAuth" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "username" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "username" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "password" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "password" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "refreshExpiresIn" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "token" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<TokenAuthMutation, TokenAuthMutationVariables>;
+export const AuthoritiesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "authorities" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "nameStartWith" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "authorities" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name_Istartswith" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "nameStartWith" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<AuthoritiesQuery, AuthoritiesQueryVariables>;
+export const MeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "me" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "me" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "authorityName" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<MeQuery, MeQueryVariables>;

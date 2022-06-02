@@ -1,12 +1,11 @@
 /* eslint-disable require-jsdoc */
-import {
-  ApolloClient,
-  ApolloLink,
-  from,
-  gql,
-  InMemoryCache,
-} from "@apollo/client";
+import { ApolloClient, ApolloLink, from, InMemoryCache } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
+import {
+  DeleteTokenCookieDocument,
+  RefreshTokenDocument,
+  TokenAuthDocument,
+} from "./generated/graphql";
 
 const customFetch = (uri: string, options: Record<string, string>) => {
   const now = Math.round(new Date().getTime() / 1000);
@@ -34,19 +33,15 @@ export class CustomApolloClient<T> extends ApolloClient<T> {
   async refreshToken() {
     try {
       const result = await this.mutate({
-        mutation: gql(`mutation RefreshToken {
-          refreshToken {
-            token
-            payload
-          }
-        }`),
+        mutation: RefreshTokenDocument,
       });
 
       if (result.errors) {
         return false;
       }
 
-      this.refreshExpiresIn = result.data.refreshToken.payload.exp;
+      this.refreshExpiresIn =
+        result.data?.refreshToken?.payload?.refreshExpiresIn;
     } catch (e) {
       return false;
     }
@@ -63,14 +58,7 @@ export class CustomApolloClient<T> extends ApolloClient<T> {
     };
   }> {
     const fetchResult = await this.mutate({
-      mutation: gql(`
-        mutation TokenAuth($username: String!, $password: String!) {
-          tokenAuth(username: $username, password: $password) {
-            refreshExpiresIn
-            token
-          }
-        }
-        `),
+      mutation: TokenAuthDocument,
       variables: {
         username,
         password,
@@ -79,21 +67,17 @@ export class CustomApolloClient<T> extends ApolloClient<T> {
     if (fetchResult.errors) {
       throw new Error(fetchResult.errors.map(o => o.message).join(","));
     }
-    return fetchResult.data;
+    return {
+      tokenAuth: {
+        token: fetchResult.data?.tokenAuth?.token!,
+        refreshExpiresIn: fetchResult.data?.tokenAuth?.refreshExpiresIn!,
+      },
+    };
   }
 
   async signOut(): Promise<any> {
     const deleteTokenResult = await this.mutate({
-      mutation: gql(`
-        mutation DeleteTokenCookie {
-          deleteTokenCookie {
-            deleted
-          }
-          deleteRefreshTokenCookie {
-            deleted
-          }
-        }
-      `),
+      mutation: DeleteTokenCookieDocument,
     });
     if (deleteTokenResult.errors) {
       throw new Error(deleteTokenResult.errors.map(o => o.message).join(","));

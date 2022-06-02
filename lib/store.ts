@@ -1,7 +1,7 @@
-import { gql } from "@apollo/client";
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { createContext, useContext } from "react";
 import { CustomApolloClient } from "./client";
+import { MeDocument } from "./generated/graphql";
 
 type Me = {
   username: string;
@@ -57,21 +57,18 @@ export class Store {
   }
 
   async fetchMe(): Promise<void> {
-    const result = await this.client.query({
-      query: gql(`query me {
-        me {
-          id
-          username
-          firstName
-          lastName
-          authorityName
-        }
-      }`),
+    var result = await this.client.query({
+      query: MeDocument,
       fetchPolicy: "network-only",
     });
 
     if (!result.errors) {
-      this.me = result.data.me;
+      this.me = {
+        username: result.data.me!.username,
+        firstName: result.data.me!.firstName,
+        lastName: result.data.me!.lastName,
+        id: result.data.me!.id,
+      };
     }
   }
 
