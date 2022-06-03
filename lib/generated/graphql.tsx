@@ -490,6 +490,25 @@ export type Verify = {
   payload: Scalars["GenericScalar"];
 };
 
+export type AuthoritiesQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+  nameStartWith?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type AuthoritiesQuery = {
+  __typename?: "Query";
+  authorities?: {
+    __typename?: "AuthorityTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AuthorityType";
+      id: string;
+      name: string;
+    } | null>;
+  } | null;
+};
+
 export type DeleteTokenCookieMutationVariables = Exact<{
   [key: string]: never;
 }>;
@@ -527,25 +546,6 @@ export type TokenAuthMutation = {
   } | null;
 };
 
-export type AuthoritiesQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  nameStartWith?: InputMaybe<Scalars["String"]>;
-}>;
-
-export type AuthoritiesQuery = {
-  __typename?: "Query";
-  authorities?: {
-    __typename?: "AuthorityTypeNodeConnection";
-    totalCount?: number | null;
-    results: Array<{
-      __typename?: "AuthorityType";
-      id: string;
-      name: string;
-    } | null>;
-  } | null;
-};
-
 export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MeQuery = {
@@ -560,6 +560,100 @@ export type MeQuery = {
   } | null;
 };
 
+export const AuthoritiesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "authorities" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "nameStartWith" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "authorities" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name_Istartswith" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "nameStartWith" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<AuthoritiesQuery, AuthoritiesQueryVariables>;
 export const DeleteTokenCookieDocument = {
   kind: "Document",
   definitions: [
@@ -704,100 +798,6 @@ export const TokenAuthDocument = {
     },
   ],
 } as unknown as DocumentNode<TokenAuthMutation, TokenAuthMutationVariables>;
-export const AuthoritiesDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "authorities" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "limit" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "offset" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "nameStartWith" },
-          },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "authorities" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "limit" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "limit" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "offset" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "offset" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "name_Istartswith" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "nameStartWith" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "results" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      { kind: "Field", name: { kind: "Name", value: "name" } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<AuthoritiesQuery, AuthoritiesQueryVariables>;
 export const MeDocument = {
   kind: "Document",
   definitions: [
