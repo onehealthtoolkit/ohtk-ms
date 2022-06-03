@@ -1,7 +1,7 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { createContext, useContext } from "react";
 import { Me } from "./model/me";
-import { IAuthService } from "./services/auth";
+import { IAuthService, SignInResult } from "./services/auth";
 import { IProfileService } from "./services/profile";
 import { IServiceProvider } from "./services/provider";
 
@@ -31,8 +31,9 @@ export class Store {
       return;
     }
     const success = await this.authService.refreshToken();
+    console.log("bootstrap", success);
     if (success) {
-      this.fetchMe();
+      await this.fetchMe();
       runInAction(() => {
         this.initTokenPending = false;
         this.isLogin = true;
@@ -45,11 +46,14 @@ export class Store {
     }
   }
 
-  async signIn(username: string, password: string): Promise<void> {
-    await this.authService.signIn(username, password);
-    // this.authService.setRefreshExpiresIn(tokenAuth.refreshExpiresIn);
-    this.isLogin = true;
-    this.fetchMe();
+  async signIn(username: string, password: string): Promise<SignInResult> {
+    const result = await this.authService.signIn(username, password);
+    if (result.success) {
+      // this.authService.setRefreshExpiresIn(tokenAuth.refreshExpiresIn);
+      this.isLogin = true;
+      await this.fetchMe();
+    }
+    return result;
   }
 
   async fetchMe(): Promise<void> {

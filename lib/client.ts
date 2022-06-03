@@ -30,7 +30,8 @@ const refreshToken = async (): Promise<void> => {
 const customFetch = (uri: string, options: Record<string, string>) => {
   const now = Math.round(new Date().getTime() / 1000);
   const refreshExpiresIn = getRefreshExpiresIn();
-  if (refreshExpiresIn !== 0 && refreshExpiresIn - now < 30) {
+  const diff = refreshExpiresIn - now;
+  if (refreshExpiresIn !== 0 && diff < 30 && diff > 5) {
     return refreshToken().then(() => {
       return fetch(uri, options);
     });
@@ -49,4 +50,12 @@ export const client = new ApolloClient({
   credentials: "include",
   cache: new InMemoryCache(),
   link: from([httpLink]),
+  defaultOptions: {
+    query: {
+      errorPolicy: "all",
+    },
+    mutate: {
+      errorPolicy: "all",
+    },
+  },
 });

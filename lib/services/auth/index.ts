@@ -10,17 +10,21 @@ export function setRefreshExpiresIn(value: number) {
   localStorage.setItem("refreshExpiresIn", value.toString());
 }
 
+export type SignInResult = SignInSuccess | SingInFailure;
+export type SignInSuccess = {
+  success: true;
+  tokenAuth: {
+    token: string;
+    refreshExpiresIn: number;
+  };
+};
+export type SingInFailure = {
+  success: false;
+  message: string;
+};
 export interface IAuthService extends IService {
   refreshToken(): Promise<boolean>;
-  signIn(
-    username: string,
-    password: string
-  ): Promise<{
-    tokenAuth: {
-      token: string;
-      refreshExpiresIn: number;
-    };
-  }>;
+  signIn(username: string, password: string): Promise<SignInResult>;
   signOut(): Promise<void>;
 }
 
@@ -32,31 +36,20 @@ export class AuthService implements IAuthService {
   }
 
   async refreshToken(): Promise<boolean> {
-    try {
-      const result = await this.client.mutate({
-        mutation: RefreshTokenDocument,
-      });
+    const result = await this.client.mutate({
+      mutation: RefreshTokenDocument,
+    });
+    console.log("refreshtoken", result);
 
-      if (result.errors) {
-        return false;
-      } else {
-        setRefreshExpiresIn(result.data?.refreshToken?.payload.exp || 0);
-      }
-    } catch (e) {
+    if (result.errors) {
       return false;
+    } else {
+      setRefreshExpiresIn(result.data?.refreshToken?.payload.exp || 0);
     }
     return true;
   }
 
-  async signIn(
-    username: string,
-    password: string
-  ): Promise<{
-    tokenAuth: {
-      token: string;
-      refreshExpiresIn: number;
-    };
-  }> {
+  async signIn(username: string, password: string): Promise<SignInResult> {
     const fetchResult = await this.client.mutate({
       mutation: TokenAuthDocument,
       variables: {
@@ -65,12 +58,16 @@ export class AuthService implements IAuthService {
       },
     });
     if (fetchResult.errors) {
-      throw new Error(fetchResult.errors.map(o => o.message).join(","));
+      return {
+        success: false,
+        message: fetchResult.errors.map(o => o.message).join(","),
+      };
     }
 
     setRefreshExpiresIn(fetchResult.data?.tokenAuth?.refreshExpiresIn!);
 
     return {
+      success: true,
       tokenAuth: {
         token: fetchResult.data?.tokenAuth?.token!,
         refreshExpiresIn: fetchResult.data?.tokenAuth?.refreshExpiresIn!,

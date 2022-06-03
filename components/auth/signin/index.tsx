@@ -1,52 +1,22 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import useStore from "lib/store";
-
-type FormValue = {
-  username: string;
-  password: string;
-};
-
-const validation = {
-  username: {
-    required: "กรุณากรอกอีเมล",
-  },
-  password: {
-    required: "กรุณากรอกรหัสผ่าน",
-  },
-};
+import { observer } from "mobx-react";
+import { SignInViewModel } from "./viewModel";
 
 const SignIn = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const store = useStore();
-  const {
-    register,
-    handleSubmit,
-    setError,
-    clearErrors,
-    formState: { errors },
-  } = useForm<FormValue>();
+  const [viewModel] = useState(new SignInViewModel(store));
 
-  const onSubmit = (data: FormValue) => {
-    console.log("submit");
-    clearErrors();
-    setIsSubmitting(true);
-    store
-      .signIn(data.username, data.password)
-      .catch(e => {
-        console.error(e);
-        setError("username", {
-          message: e.message,
-        });
-      })
-      .finally(() => {
-        setIsSubmitting(true);
-      });
-  };
+  const isSubmitting = viewModel.isSubmitting;
+  const errors = viewModel.fieldErrors;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={evt => {
+        viewModel.signIn();
+        evt.preventDefault();
+      }}
+    >
       <div className="bg-white flex h-screen">
         <div className="bg-white m-auto">
           <div className="mb-4">
@@ -59,15 +29,13 @@ const SignIn = () => {
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
               id="username"
-              {...register("username", validation.username)}
               type="text"
               placeholder="Username"
+              onChange={evt => (viewModel.username = evt.target.value)}
               disabled={isSubmitting}
             />
             {errors.password && (
-              <p className="text-red-700 text-xs italic">
-                {errors.username?.message}
-              </p>
+              <p className="text-red-700 text-xs italic">{errors.username}</p>
             )}
           </div>
           <div className="mb-6">
@@ -80,17 +48,18 @@ const SignIn = () => {
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
               id="password"
-              {...register("password", validation.password)}
               type="password"
               placeholder="*********"
+              onChange={evt => (viewModel.password = evt.target.value)}
               disabled={isSubmitting}
             />
             {errors.password && (
-              <p className="text-red-700 text-xs italic">
-                {errors.password.message}
-              </p>
+              <p className="text-red-700 text-xs italic">{errors.password}</p>
             )}
           </div>
+          {viewModel.submitError.length > 0 && (
+            <div>{viewModel.submitError}</div>
+          )}
           <div className="flex items-center justify-between">
             <button
               className="bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
@@ -106,4 +75,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default observer(SignIn);
