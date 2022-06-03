@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Observer } from "mobx-react";
 import useStore from "lib/store";
-import SignIn from "components/auth/signIn";
+import SignIn from "components/auth/signin";
 import Spinner from "components/widgets/spinner";
 
 type Props = {
