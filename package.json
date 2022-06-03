@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "graphql:generate": "graphql-codegen --config codegen.yml"
+    "graphql:generate": "graphql-codegen --config codegen.yml && npx prettier --write ./graphql.schema.json && npx prettier --write ./lib/generated/graphql.tsx"
   },
   "dependencies": {
     "@apollo/client": "^3.6.6",
