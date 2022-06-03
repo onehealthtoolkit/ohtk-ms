@@ -1,6 +1,6 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { createContext, useContext } from "react";
-import { Me } from "./model/me";
+import { Me } from "./services/profile/me";
 import { IAuthService, SignInResult } from "./services/auth";
 import { IProfileService } from "./services/profile";
 import { IServiceProvider } from "./services/provider";
