@@ -1,3 +1,4 @@
+import Protect from "components/auth/protect";
 import Spinner from "components/widgets/spinner";
 import Table from "components/widgets/table";
 import { observer } from "mobx-react";
@@ -18,7 +19,7 @@ const AuthorityList = () => {
     return <Spinner />;
   }
   return (
-    <div>
+    <Protect>
       <div className="mb-4">&gt;&gt; Authorities</div>
 
       <div className="flex items-center flex-wrap mb-4">
@@ -41,7 +42,7 @@ const AuthorityList = () => {
           router.push(`/settings/authorities/edit/${record.id}`)
         }
       />
-    </div>
+    </Protect>
   );
 };
 

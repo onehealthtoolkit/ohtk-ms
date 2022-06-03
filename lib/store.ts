@@ -1,23 +1,20 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { createContext, useContext } from "react";
-import { CustomApolloClient } from "./client";
-import { MeDocument } from "./generated/graphql";
-
-type Me = {
-  username: string;
-  firstName: string;
-  lastName: string;
-  id: number;
-};
+import { Me } from "./model/me";
+import { IAuthService } from "./services/auth";
+import { IProfileService } from "./services/profile";
+import { IServiceProvider } from "./services/provider";
 
 export class Store {
   initTokenPending = true;
   isLogin = false;
   me?: Me = undefined;
-  client: CustomApolloClient<Record<string, unknown>>;
+  authService: IAuthService;
+  profileService: IProfileService;
 
-  constructor(client: CustomApolloClient<Record<string, unknown>>) {
-    this.client = client;
+  constructor(serviceProvider: IServiceProvider) {
+    this.authService = serviceProvider.authService;
+    this.profileService = serviceProvider.profileService;
     makeObservable(this, {
       initTokenPending: observable,
       isLogin: observable,
@@ -33,8 +30,7 @@ export class Store {
     if (typeof window === "undefined") {
       return;
     }
-
-    const success = await this.client.refreshToken();
+    const success = await this.authService.refreshToken();
     if (success) {
       this.fetchMe();
       runInAction(() => {
@@ -50,30 +46,18 @@ export class Store {
   }
 
   async signIn(username: string, password: string): Promise<void> {
-    const { tokenAuth } = await this.client.signIn(username, password);
-    this.client.setRefreshExpiresIn(tokenAuth.refreshExpiresIn);
+    await this.authService.signIn(username, password);
+    // this.authService.setRefreshExpiresIn(tokenAuth.refreshExpiresIn);
     this.isLogin = true;
     this.fetchMe();
   }
 
   async fetchMe(): Promise<void> {
-    var result = await this.client.query({
-      query: MeDocument,
-      fetchPolicy: "network-only",
-    });
-
-    if (!result.errors) {
-      this.me = {
-        username: result.data.me!.username,
-        firstName: result.data.me!.firstName,
-        lastName: result.data.me!.lastName,
-        id: result.data.me!.id,
-      };
-    }
+    this.me = await this.profileService.fetchMe();
   }
 
   async signOut() {
-    await this.client.signOut();
+    await this.authService.signOut();
     this.me = undefined;
     this.isLogin = false;
   }
