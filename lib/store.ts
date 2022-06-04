@@ -14,7 +14,7 @@ type Menu = {
   open: boolean;
   collapsed: boolean;
   toggle?: MouseEventHandler;
-}
+};
 
 export class Store {
   initTokenPending = true;
