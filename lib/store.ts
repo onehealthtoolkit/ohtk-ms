@@ -1,5 +1,5 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
-import { createContext, useContext } from "react";
+import { createContext, MouseEventHandler, useContext } from "react";
 import { CustomApolloClient } from "./client";
 import { MeDocument } from "./generated/graphql";
 
@@ -10,10 +10,20 @@ type Me = {
   id: number;
 };
 
+type Menu = {
+  open: boolean;
+  collapsed: boolean;
+  toggle?: MouseEventHandler;
+}
+
 export class Store {
   initTokenPending = true;
   isLogin = false;
   me?: Me = undefined;
+  menu: Menu = {
+    open: false,
+    collapsed: false,
+  };
   client: CustomApolloClient<Record<string, unknown>>;
 
   constructor(client: CustomApolloClient<Record<string, unknown>>) {
