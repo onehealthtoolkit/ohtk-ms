@@ -9,6 +9,7 @@ import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { AdminAuthoorityListViewModel } from "./listViewModel";
+import ErrorDisplay from "components/widgets/errorDisplay";
 
 const AuthorityList = () => {
   const router = useRouter();
@@ -36,11 +37,7 @@ const AuthorityList = () => {
         />
         <SearchButton
           onClick={() => {
-            try {
-              viewModel?.fetch();
-            } catch (e) {
-              console.log(e);
-            }
+            viewModel?.fetch();
           }}
         >
           Search
@@ -71,6 +68,7 @@ const AuthorityList = () => {
           router.push(`/settings/authorities/edit/${record.id}`)
         }
       />
+      <ErrorDisplay message={viewModel?.errorMessage} />
     </div>
   );
 };
