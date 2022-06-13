@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Filter from "./filter";
 import { AdminAuthoorityListViewModel } from "./listViewModel";
+import ErrorDisplay from "components/widgets/errorDisplay";
 
 const AuthorityList = () => {
   const router = useRouter();
@@ -41,6 +42,7 @@ const AuthorityList = () => {
           router.push(`/settings/authorities/edit/${record.id}`)
         }
       />
+      <ErrorDisplay message={viewModel?.errorMessage} />
     </div>
   );
 };
