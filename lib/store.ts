@@ -5,10 +5,18 @@ import { IAuthService, SignInResult } from "./services/auth";
 import { IProfileService } from "./services/profile";
 import { IServiceProvider } from "./services/provider";
 
+type Menu = {
+  open: boolean;
+  collapsed: boolean;
+};
 export class Store {
   initTokenPending = true;
   isLogin = false;
   me?: Me = undefined;
+  menu: Menu = {
+    open: false,
+    collapsed: false,
+  };
   authService: IAuthService;
   profileService: IProfileService;
 
@@ -20,7 +28,11 @@ export class Store {
       isLogin: observable,
       signIn: action,
       fetchMe: action,
+      toggleOpenMenu: action,
+      toggleCollapseMenu: action,
+      closeMenu: action,
       me: observable,
+      menu: observable,
     });
 
     void this.bootstrap();
@@ -64,6 +76,18 @@ export class Store {
     await this.authService.signOut();
     this.me = undefined;
     this.isLogin = false;
+  }
+
+  toggleOpenMenu() {
+    this.menu.open = !this.menu.open;
+  }
+
+  toggleCollapseMenu() {
+    this.menu.collapsed = !this.menu.collapsed;
+  }
+
+  closeMenu() {
+    if (this.menu.open) this.menu.open = false;
   }
 }
 

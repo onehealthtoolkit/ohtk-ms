@@ -74,7 +74,7 @@ export type AdminAuthorityCreateSuccess = {
   name: Scalars["String"];
   reportTypes: Array<ReportTypeType>;
   updatedAt: Scalars["DateTime"];
-  users: Array<AdminAuthorityUserCreateSuccess>;
+  users: Array<AdminAuthorityUserUpdateSuccess>;
 };
 
 export type AdminAuthorityQueryType = {
@@ -120,7 +120,7 @@ export type AdminAuthorityUpdateSuccess = {
   name: Scalars["String"];
   reportTypes: Array<ReportTypeType>;
   updatedAt: Scalars["DateTime"];
-  users: Array<AdminAuthorityUserCreateSuccess>;
+  users: Array<AdminAuthorityUserUpdateSuccess>;
 };
 
 export type AdminAuthorityUserCreateMutation = {
@@ -179,6 +179,116 @@ export type AdminAuthorityUserQueryTypeNodeConnection = {
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminAuthorityUserQueryType>>;
   totalCount?: Maybe<Scalars["Int"]>;
+};
+
+export type AdminAuthorityUserUpdateMutation = {
+  __typename?: "AdminAuthorityUserUpdateMutation";
+  result?: Maybe<AdminAuthorityUserUpdateResult>;
+};
+
+export type AdminAuthorityUserUpdateProblem = {
+  __typename?: "AdminAuthorityUserUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminAuthorityUserUpdateResult =
+  | AdminAuthorityUserUpdateProblem
+  | AdminAuthorityUserUpdateSuccess;
+
+export type AdminAuthorityUserUpdateSuccess = {
+  __typename?: "AdminAuthorityUserUpdateSuccess";
+  authority: AdminAuthorityUpdateSuccess;
+  avatarUrl?: Maybe<Scalars["String"]>;
+  dateJoined: Scalars["DateTime"];
+  email: Scalars["String"];
+  firstName: Scalars["String"];
+  id: Scalars["ID"];
+  /** Designates whether this user should be treated as active. Unselect this instead of deleting accounts. */
+  isActive: Scalars["Boolean"];
+  /** Designates whether the user can log into this admin site. */
+  isStaff: Scalars["Boolean"];
+  /** Designates that this user has all permissions without explicitly assigning them. */
+  isSuperuser: Scalars["Boolean"];
+  lastLogin?: Maybe<Scalars["DateTime"]>;
+  lastName: Scalars["String"];
+  password: Scalars["String"];
+  telephone?: Maybe<Scalars["String"]>;
+  thumbnailAvatarUrl?: Maybe<Scalars["String"]>;
+  userPtr: UserType;
+  /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
+  username: Scalars["String"];
+};
+
+export type AdminCategoryCreateMutation = {
+  __typename?: "AdminCategoryCreateMutation";
+  result?: Maybe<AdminCategoryCreateResult>;
+};
+
+export type AdminCategoryCreateProblem = {
+  __typename?: "AdminCategoryCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminCategoryCreateResult =
+  | AdminCategoryCreateProblem
+  | AdminCategoryCreateSuccess;
+
+export type AdminCategoryCreateSuccess = {
+  __typename?: "AdminCategoryCreateSuccess";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  icon?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  ordering: Scalars["Int"];
+  reporttypeSet: Array<ReportTypeType>;
+  updatedAt: Scalars["DateTime"];
+};
+
+export type AdminCategoryQueryType = {
+  __typename?: "AdminCategoryQueryType";
+  icon?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  ordering: Scalars["Int"];
+};
+
+export type AdminCategoryQueryTypeNodeConnection = {
+  __typename?: "AdminCategoryQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminCategoryQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
+export type AdminCategoryUpdateMutation = {
+  __typename?: "AdminCategoryUpdateMutation";
+  result?: Maybe<AdminCategoryUpdateResult>;
+};
+
+export type AdminCategoryUpdateProblem = {
+  __typename?: "AdminCategoryUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminCategoryUpdateResult =
+  | AdminCategoryUpdateProblem
+  | AdminCategoryUpdateSuccess;
+
+export type AdminCategoryUpdateSuccess = {
+  __typename?: "AdminCategoryUpdateSuccess";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  icon?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  ordering: Scalars["Int"];
+  reporttypeSet: Array<ReportTypeType>;
+  updatedAt: Scalars["DateTime"];
 };
 
 export type AdminFieldValidationProblem = {
@@ -252,6 +362,9 @@ export type Mutation = {
   adminAuthorityCreate?: Maybe<AdminAuthorityCreateMutation>;
   adminAuthorityUpdate?: Maybe<AdminAuthorityUpdateMutation>;
   adminAuthorityUserCreate?: Maybe<AdminAuthorityUserCreateMutation>;
+  adminAuthorityUserUpdate?: Maybe<AdminAuthorityUserUpdateMutation>;
+  adminCategoryCreate?: Maybe<AdminCategoryCreateMutation>;
+  adminCategoryUpdate?: Maybe<AdminCategoryUpdateMutation>;
   authorityUserRegister?: Maybe<AuthorityUserRegisterMutation>;
   deleteRefreshTokenCookie?: Maybe<DeleteRefreshTokenCookie>;
   deleteTokenCookie?: Maybe<DeleteJsonWebTokenCookie>;
@@ -281,8 +394,30 @@ export type MutationAdminAuthorityUserCreateArgs = {
   email: Scalars["String"];
   firstName: Scalars["String"];
   lastName: Scalars["String"];
+  password: Scalars["String"];
   telephone?: InputMaybe<Scalars["String"]>;
   username: Scalars["String"];
+};
+
+export type MutationAdminAuthorityUserUpdateArgs = {
+  authorityId: Scalars["Int"];
+  email: Scalars["String"];
+  firstName: Scalars["String"];
+  id: Scalars["ID"];
+  lastName: Scalars["String"];
+  telephone?: InputMaybe<Scalars["String"]>;
+  username: Scalars["String"];
+};
+
+export type MutationAdminCategoryCreateArgs = {
+  name: Scalars["String"];
+  ordering: Scalars["Int"];
+};
+
+export type MutationAdminCategoryUpdateArgs = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  ordering: Scalars["Int"];
 };
 
 export type MutationAuthorityUserRegisterArgs = {
@@ -346,6 +481,7 @@ export type Query = {
   __typename?: "Query";
   adminAuthorityQuery?: Maybe<AdminAuthorityQueryTypeNodeConnection>;
   adminAuthorityUserQuery?: Maybe<AdminAuthorityUserQueryTypeNodeConnection>;
+  adminCategoryQuery?: Maybe<AdminCategoryQueryTypeNodeConnection>;
   authorities?: Maybe<AuthorityTypeNodeConnection>;
   authority?: Maybe<AuthorityType>;
   checkInvitationCode?: Maybe<CheckInvitationCodeType>;
@@ -384,6 +520,18 @@ export type QueryAdminAuthorityUserQueryArgs = {
   ordering?: InputMaybe<Scalars["String"]>;
   username?: InputMaybe<Scalars["String"]>;
   username_Istartswith?: InputMaybe<Scalars["String"]>;
+};
+
+export type QueryAdminCategoryQueryArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_Istartswith?: InputMaybe<Scalars["String"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryAuthoritiesArgs = {
@@ -433,7 +581,7 @@ export type ReportTypeSyncOutputType = {
 export type ReportTypeType = {
   __typename?: "ReportTypeType";
   authorities: Array<AdminAuthorityUpdateSuccess>;
-  category: CategoryType;
+  category: AdminCategoryUpdateSuccess;
   createdAt: Scalars["DateTime"];
   definition?: Maybe<Scalars["GenericScalar"]>;
   deletedAt?: Maybe<Scalars["DateTime"]>;
