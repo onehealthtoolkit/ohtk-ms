@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import React from "react";
 
 const Header = () => {
-  const { menu } = useStore();
+  const store = useStore();
 
   return (
     <header className="sticky top-0 bg-white border-b border-slate-200 z-30">
@@ -16,7 +16,7 @@ const Header = () => {
               type="button"
               aria-expanded="false"
               aria-label="Toggle sidenav"
-              onClick={menu.toggle}
+              onClick={() => store.toggleOpenMenu()}
               className="text-4xl text-black focus:outline-none"
             >
               &#8801;

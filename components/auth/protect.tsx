@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Observer } from "mobx-react";
 import useStore from "lib/store";
-import SignIn from "components/auth/signIn";
+import SignIn from "components/auth/signin";
 import Spinner from "components/widgets/spinner";
 
 type Props = {
@@ -9,15 +9,18 @@ type Props = {
 };
 const Protect = ({ children }: Props) => {
   const store = useStore();
+  const [isSSR, setIsSSR] = useState(true);
 
-  return (
+  useEffect(() => {
+    setIsSSR(false);
+  }, []);
+
+  return !isSSR ? (
     <Observer>
       {() => {
-        console.log("rerender protect");
         if (store.initTokenPending) {
           return <Spinner />;
         }
-        console.log("isLogin", store.isLogin);
         if (!store.isLogin) {
           return <SignIn />;
         }
@@ -25,6 +28,8 @@ const Protect = ({ children }: Props) => {
         return <>{children}</>;
       }}
     </Observer>
+  ) : (
+    <div></div>
   );
 };
 

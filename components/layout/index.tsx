@@ -1,6 +1,6 @@
 import useStore from "lib/store";
 import { useRouter } from "next/router";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Header from "./header";
 import Sidebar from "./sidebar";
 
@@ -8,7 +8,7 @@ type Props = {
   children: React.ReactNode;
 };
 const Layout = ({ children }: Props) => {
-  const { menu } = useStore();
+  const store = useStore();
   const router = useRouter();
   const ref = useRef(null);
 
@@ -17,26 +17,18 @@ const Layout = ({ children }: Props) => {
     document.documentElement.style.overflow = "hidden";
   });
 
-  menu.toggle = useCallback(() => {
-    menu.open = !menu.open;
-  }, [menu]);
-
   // close side navigation when route changes
   useEffect(() => {
-    if (menu.open) {
-      router.events.on("routeChangeStart", () => {
-        menu.open = false;
-      });
-    }
+    router.events.on("routeChangeStart", () => {
+      store.closeMenu();
+    });
 
     return () => {
-      if (menu.open) {
-        router.events.off("routeChangeStart", () => {
-          menu.open = false;
-        });
-      }
+      router.events.off("routeChangeStart", () => {
+        store.closeMenu();
+      });
     };
-  }, [router, menu]);
+  }, [router, store]);
 
   // close side navigation on click outside
   useEffect(() => {
@@ -46,13 +38,13 @@ const Layout = ({ children }: Props) => {
       if (ref && ref.current) {
         const refComponent: any = ref.current;
         if (!refComponent.contains(e.target)) {
-          menu.open = false;
+          store.closeMenu();
         }
       }
     };
     window.addEventListener("click", handleOutsideClick, true);
     return () => window.removeEventListener("click", handleOutsideClick, true);
-  }, [ref, menu]);
+  }, [ref, store]);
 
   return (
     <div className="flex h-screen overflow-hidden">

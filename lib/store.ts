@@ -1,21 +1,14 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
-import { createContext, MouseEventHandler, useContext } from "react";
-import { CustomApolloClient } from "./client";
-import { MeDocument } from "./generated/graphql";
-
-type Me = {
-  username: string;
-  firstName: string;
-  lastName: string;
-  id: number;
-};
+import { createContext, useContext } from "react";
+import { Me } from "./services/profile/me";
+import { IAuthService, SignInResult } from "./services/auth";
+import { IProfileService } from "./services/profile";
+import { IServiceProvider } from "./services/provider";
 
 type Menu = {
   open: boolean;
   collapsed: boolean;
-  toggle?: MouseEventHandler;
 };
-
 export class Store {
   initTokenPending = true;
   isLogin = false;
@@ -24,16 +17,22 @@ export class Store {
     open: false,
     collapsed: false,
   };
-  client: CustomApolloClient<Record<string, unknown>>;
+  authService: IAuthService;
+  profileService: IProfileService;
 
-  constructor(client: CustomApolloClient<Record<string, unknown>>) {
-    this.client = client;
+  constructor(serviceProvider: IServiceProvider) {
+    this.authService = serviceProvider.authService;
+    this.profileService = serviceProvider.profileService;
     makeObservable(this, {
       initTokenPending: observable,
       isLogin: observable,
       signIn: action,
       fetchMe: action,
+      toggleOpenMenu: action,
+      toggleCollapseMenu: action,
+      closeMenu: action,
       me: observable,
+      menu: observable,
     });
 
     void this.bootstrap();
@@ -43,10 +42,10 @@ export class Store {
     if (typeof window === "undefined") {
       return;
     }
-
-    const success = await this.client.refreshToken();
+    const success = await this.authService.refreshToken();
+    console.log("bootstrap", success);
     if (success) {
-      this.fetchMe();
+      await this.fetchMe();
       runInAction(() => {
         this.initTokenPending = false;
         this.isLogin = true;
@@ -59,33 +58,36 @@ export class Store {
     }
   }
 
-  async signIn(username: string, password: string): Promise<void> {
-    const { tokenAuth } = await this.client.signIn(username, password);
-    this.client.setRefreshExpiresIn(tokenAuth.refreshExpiresIn);
-    this.isLogin = true;
-    this.fetchMe();
+  async signIn(username: string, password: string): Promise<SignInResult> {
+    const result = await this.authService.signIn(username, password);
+    if (result.success) {
+      // this.authService.setRefreshExpiresIn(tokenAuth.refreshExpiresIn);
+      this.isLogin = true;
+      await this.fetchMe();
+    }
+    return result;
   }
 
   async fetchMe(): Promise<void> {
-    var result = await this.client.query({
-      query: MeDocument,
-      fetchPolicy: "network-only",
-    });
-
-    if (!result.errors) {
-      this.me = {
-        username: result.data.me!.username,
-        firstName: result.data.me!.firstName,
-        lastName: result.data.me!.lastName,
-        id: result.data.me!.id,
-      };
-    }
+    this.me = await this.profileService.fetchMe();
   }
 
   async signOut() {
-    await this.client.signOut();
+    await this.authService.signOut();
     this.me = undefined;
     this.isLogin = false;
+  }
+
+  toggleOpenMenu() {
+    this.menu.open = !this.menu.open;
+  }
+
+  toggleCollapseMenu() {
+    this.menu.collapsed = !this.menu.collapsed;
+  }
+
+  closeMenu() {
+    if (this.menu.open) this.menu.open = false;
   }
 }
 
