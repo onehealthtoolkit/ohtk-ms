@@ -21,6 +21,7 @@ import {
 } from "@heroicons/react/solid";
 import useStore from "lib/store";
 import CollapsIcon from "components/icons/CollapsIcon";
+import { observer } from "mobx-react";
 
 type MenuProps = {
   pathname: string;
@@ -291,4 +292,4 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
   );
 };
 
-export default Sidebar;
+export default observer(Sidebar);

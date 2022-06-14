@@ -1,5 +1,6 @@
 import UserMenu from "components/header/UserMenu";
 import useStore from "lib/store";
+import { observer } from "mobx-react";
 import React from "react";
 
 const Header = () => {
@@ -34,4 +35,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default observer(Header);
