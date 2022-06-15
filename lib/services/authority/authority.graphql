@@ -8,6 +8,7 @@ query authorities($limit: Int!, $offset: Int!, $nameStartWith: String) {
     results {
       id
       name
+      code
     }
   }
 }

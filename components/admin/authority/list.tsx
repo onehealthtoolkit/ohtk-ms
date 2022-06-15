@@ -4,14 +4,18 @@ import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Filter from "./filter";
-import { AdminAuthoorityListViewModel } from "./listViewModel";
+import { AdminAuthorityListViewModel } from "./listViewModel";
 import ErrorDisplay from "components/widgets/errorDisplay";
+import useServices from "lib/services/provider";
 
 const AuthorityList = () => {
   const router = useRouter();
-  const [viewModel, setViewModel] = useState<AdminAuthoorityListViewModel>();
+  const services = useServices();
+  const [viewModel, setViewModel] = useState<AdminAuthorityListViewModel>();
   useEffect(() => {
-    const viewModel = new AdminAuthoorityListViewModel();
+    const viewModel = new AdminAuthorityListViewModel(
+      services.authorityService
+    );
     setViewModel(viewModel);
   }, []);
 
