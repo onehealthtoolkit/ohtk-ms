@@ -7,6 +7,8 @@ import Filter from "./filter";
 import { AdminAuthorityListViewModel } from "./listViewModel";
 import ErrorDisplay from "components/widgets/errorDisplay";
 import useServices from "lib/services/provider";
+import Link from "next/link";
+import { AddButton } from "components/widgets/forms";
 
 const AuthorityList = () => {
   const router = useRouter();
@@ -17,7 +19,7 @@ const AuthorityList = () => {
       services.authorityService
     );
     setViewModel(viewModel);
-  }, []);
+  }, [services.authorityService]);
 
   if (viewModel === null) {
     return <Spinner />;
@@ -28,6 +30,10 @@ const AuthorityList = () => {
 
       <div className="flex items-center flex-wrap mb-4">
         <Filter viewModel={viewModel} />
+        <div className="flex-grow"></div>
+        <Link href={"/admin/authorities/create"} passHref>
+          <AddButton />
+        </Link>
       </div>
 
       <Table
@@ -42,9 +48,7 @@ const AuthorityList = () => {
           },
         ]}
         data={viewModel?.data || []}
-        onEdit={record =>
-          router.push(`/settings/authorities/edit/${record.id}`)
-        }
+        onEdit={record => router.push(`/admin/authorities/${record.id}/update`)}
       />
       <ErrorDisplay message={viewModel?.errorMessage} />
     </div>

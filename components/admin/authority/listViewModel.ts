@@ -1,7 +1,6 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
-import { Authority } from "lib/services/authority/authority";
-import { IAuthorityService } from "lib/services/authority";
+import { Authority, IAuthorityService } from "lib/services/authority";
 
 export class AdminAuthorityListViewModel extends BaseViewModel {
   data: Authority[] = [];
