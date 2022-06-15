@@ -1,16 +1,16 @@
 import { action, makeObservable, observable } from "mobx";
 import { client } from "lib/client";
 import { ApolloError } from "@apollo/client";
-import { AuthoritiesDocument } from "lib/generated/graphql";
+import { ReportCategoriesDocument } from "lib/generated/graphql";
 import { BaseViewModel } from "lib/baseViewModel";
 
-type Authority = {
+type ReportCategory = {
   id: string;
   name: string;
 };
 
-export class AdminAuthorityListViewModel extends BaseViewModel {
-  data: Authority[] = [];
+export class AdminReportCategoryListViewModel extends BaseViewModel {
+  data: ReportCategory[] = [];
 
   searchText: string = "";
 
@@ -36,7 +36,7 @@ export class AdminAuthorityListViewModel extends BaseViewModel {
   async fetch(): Promise<void> {
     try {
       const fetchResult = await client.query({
-        query: AuthoritiesDocument,
+        query: ReportCategoriesDocument,
         variables: {
           limit: 20,
           offset: 0,
@@ -45,7 +45,7 @@ export class AdminAuthorityListViewModel extends BaseViewModel {
         errorPolicy: "all",
       });
 
-      const items = Array<Authority>();
+      const items = Array<ReportCategory>();
       fetchResult.data.authorities?.results.forEach(item => {
         if (item) {
           items.push({

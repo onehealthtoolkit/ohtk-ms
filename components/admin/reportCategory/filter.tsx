@@ -6,10 +6,10 @@ import {
 import Spinner from "components/widgets/spinner";
 import { observer } from "mobx-react";
 import React from "react";
-import { AdminAuthorityListViewModel } from "./listViewModel";
+import { AdminReportCategoryListViewModel } from "./listViewModel";
 
 type Props = {
-  viewModel?: AdminAuthorityListViewModel;
+  viewModel?: AdminReportCategoryListViewModel;
 };
 const Filter = ({ viewModel }: Props) => {
   if (!viewModel) {

@@ -4,14 +4,14 @@ import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Filter from "./filter";
-import { AdminAuthorityListViewModel } from "./listViewModel";
 import ErrorDisplay from "components/widgets/errorDisplay";
+import { InvitaionCodeViewModel } from "./listViewModel";
 
-const AuthorityList = () => {
+const InvitaionCodeList = () => {
   const router = useRouter();
-  const [viewModel, setViewModel] = useState<AdminAuthorityListViewModel>();
+  const [viewModel, setViewModel] = useState<InvitaionCodeViewModel>();
   useEffect(() => {
-    const viewModel = new AdminAuthorityListViewModel();
+    const viewModel = new InvitaionCodeViewModel();
     setViewModel(viewModel);
   }, []);
 
@@ -20,7 +20,7 @@ const AuthorityList = () => {
   }
   return (
     <div>
-      <div className="mb-4">&gt;&gt; Authorities</div>
+      <div className="mb-4">&gt;&gt; Invitation code</div>
 
       <div className="flex items-center flex-wrap mb-4">
         <Filter viewModel={viewModel} />
@@ -33,13 +33,13 @@ const AuthorityList = () => {
             get: record => record.id,
           },
           {
-            label: "Name",
-            get: record => record.name,
+            label: "Code",
+            get: record => record.code,
           },
         ]}
         data={viewModel?.data || []}
         onEdit={record =>
-          router.push(`/settings/authorities/edit/${record.id}`)
+          router.push(`/admin/invitationCodes/edit/${record.id}`)
         }
       />
       <ErrorDisplay message={viewModel?.errorMessage} />
@@ -47,4 +47,4 @@ const AuthorityList = () => {
   );
 };
 
-export default observer(AuthorityList);
+export default observer(InvitaionCodeList);

@@ -11,6 +11,8 @@ import {
   BellIcon,
   CogIcon,
   LogoutIcon,
+  DocumentReportIcon,
+  AnnotationIcon,
 } from "@heroicons/react/solid";
 import useStore from "lib/store";
 import CollapsIcon from "components/icons/CollapsIcon";
@@ -142,25 +144,32 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 icon={<CubeIcon className={iconClassName} />}
               />
               <Menu
-                href="/settings/users"
+                href="/admin/users"
                 pathname={pathname}
                 label="Users"
                 collapsed={store.menu.collapsed}
                 icon={<UserIcon className={iconClassName} />}
               />
               <Menu
-                href="/reports/category"
+                href="/admin/reportCategories"
                 pathname={pathname}
                 label="Category"
                 collapsed={store.menu.collapsed}
                 icon={<TemplateIcon className={iconClassName} />}
               />
               <Menu
-                href="/reports/report_types"
+                href="/admin/reportTypes"
                 pathname={pathname}
                 label="Report types"
                 collapsed={store.menu.collapsed}
-                icon={<TemplateIcon className={iconClassName} />}
+                icon={<DocumentReportIcon className={iconClassName} />}
+              />
+              <Menu
+                href="/admin/invitationCodes"
+                pathname={pathname}
+                label="Invitation codes"
+                collapsed={store.menu.collapsed}
+                icon={<AnnotationIcon className={iconClassName} />}
               />
 
               <Menu
