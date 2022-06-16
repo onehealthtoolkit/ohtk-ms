@@ -1,5 +1,7 @@
 /* eslint-disable require-jsdoc */
 import { ApolloClient, ApolloLink, from, InMemoryCache } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
+import Router from "next/router";
 import { createUploadLink } from "apollo-upload-client";
 import { RefreshTokenDocument } from "./generated/graphql";
 
@@ -45,11 +47,17 @@ const httpLink = createUploadLink({
   fetch: customFetch,
 }) as unknown as ApolloLink;
 
+const errorLink = onError(({ networkError }) => {
+  if (networkError) {
+    Router.push("/error");
+  }
+});
+
 export const client = new ApolloClient({
   uri: "http://localhost:3000/graphql/",
   credentials: "include",
   cache: new InMemoryCache(),
-  link: from([httpLink]),
+  link: from([errorLink, httpLink]),
   defaultOptions: {
     query: {
       errorPolicy: "all",

@@ -1,34 +1,21 @@
-import {
-  action,
-  computed,
-  makeObservable,
-  observable,
-  runInAction,
-} from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 import { Authority, IAuthorityService } from "lib/services/authority";
 import { SaveResult } from "lib/services/interface";
+import { BaseFormViewModel } from "lib/baseFormViewModel";
 
-export class AdminAuthorityFormViewModel {
+export class AdminAuthorityFormViewModel extends BaseFormViewModel {
   _code: string = "";
   _name: string = "";
 
-  fieldErrors: { [key: string]: string } = {};
-
-  submitError: string = "";
-
-  isSubmitting: boolean = false;
-
   constructor(readonly authorityService: IAuthorityService) {
+    super();
     makeObservable(this, {
       _code: observable,
       _name: observable,
       code: computed,
       name: computed,
-      fieldErrors: observable,
-      submitError: observable,
       save: action,
       validate: action,
-      isValid: computed,
     });
   }
 
@@ -54,10 +41,6 @@ export class AdminAuthorityFormViewModel {
     }
   }
 
-  public get isValid(): boolean {
-    return Object.keys(this.fieldErrors).length === 0;
-  }
-
   public async save(id?: string): Promise<boolean> {
     this.isSubmitting = true;
 
@@ -77,16 +60,14 @@ export class AdminAuthorityFormViewModel {
       }
       this.isSubmitting = false;
 
-      runInAction(() => {
-        if (!result.success) {
-          if (result.message) {
-            this.submitError = result.message;
-          }
-          if (result.fields) {
-            this.fieldErrors = result.fields;
-          }
+      if (!result.success) {
+        if (result.message) {
+          this.submitError = result.message;
         }
-      });
+        if (result.fields) {
+          this.fieldErrors = result.fields;
+        }
+      }
       return result.success;
     }
     this.isSubmitting = false;
