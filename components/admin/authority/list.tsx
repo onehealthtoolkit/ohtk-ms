@@ -19,6 +19,7 @@ const AuthorityList = () => {
       services.authorityService
     );
     setViewModel(viewModel);
+    viewModel.fetch();
   }, [services.authorityService]);
 
   if (viewModel === null) {

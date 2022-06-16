@@ -41,13 +41,6 @@ export class AuthorityService implements IAuthorityService {
       },
     });
 
-    if (fetchResult.errors) {
-      return {
-        items: undefined,
-        error: fetchResult.errors.map(err => err.message).join(","),
-      };
-    }
-
     const items = Array<Authority>();
     fetchResult.data.authorities?.results.forEach(item => {
       if (item) {
@@ -71,13 +64,6 @@ export class AuthorityService implements IAuthorityService {
       },
     });
 
-    if (getResult.errors) {
-      return {
-        data: undefined,
-        error: getResult.errors.map(err => err.message).join(","),
-      };
-    }
-
     let data;
     const authority = getResult.data.authority;
     if (authority) {
@@ -92,43 +78,44 @@ export class AuthorityService implements IAuthorityService {
     code: string,
     name: string
   ): Promise<SaveResult<Authority>> {
-    try {
-      const createResult = await this.client.mutate({
-        mutation: AuthorityCreateDocument,
-        variables: {
-          code,
-          name,
+    const createResult = await this.client.mutate({
+      mutation: AuthorityCreateDocument,
+      variables: {
+        code,
+        name,
+      },
+      refetchQueries: [
+        {
+          query: AuthoritiesDocument,
+          variables: {
+            limit: 20,
+            offset: 0,
+            nameStartWith: "",
+          },
         },
-      });
-      if (createResult.errors) {
+      ],
+      awaitRefetchQueries: true,
+    });
+
+    const result = createResult.data?.adminAuthorityCreate?.result;
+    switch (result?.__typename) {
+      case "AdminAuthorityCreateSuccess": {
+        console.log("success", result);
+        break;
+      }
+      case "AdminAuthorityCreateProblem": {
+        console.log("problem", result);
+        const fields: any = {};
+        // field validation errors, show specifiic error for each fields
+        result.fields?.forEach(f => {
+          fields[f.name] = f.message;
+        });
         return {
           success: false,
-          message: createResult.errors.map(e => e.message).join(","),
+          fields,
+          message: result.message,
         };
       }
-
-      const result = createResult.data?.adminAuthorityCreate?.result;
-      switch (result?.__typename) {
-        case "AdminAuthorityCreateSuccess": {
-          console.log("success", result);
-          break;
-        }
-        case "AdminAuthorityCreateProblem": {
-          console.log("problem", result);
-          const fields: any = {};
-          // field validation errors, show specifiic error for each fields
-          result.fields?.forEach(f => {
-            fields[f.name] = f.message;
-          });
-          return {
-            success: false,
-            fields,
-            message: result.message,
-          };
-        }
-      }
-    } catch (e) {
-      console.error(e);
     }
     return {
       success: true,
@@ -140,43 +127,45 @@ export class AuthorityService implements IAuthorityService {
     code: string,
     name: string
   ): Promise<SaveResult<Authority>> {
-    try {
-      const updateResult = await this.client.mutate({
-        mutation: AuthorityUpdateDocument,
-        variables: {
-          id,
-          code,
-          name,
+    const updateResult = await this.client.mutate({
+      mutation: AuthorityUpdateDocument,
+      variables: {
+        id,
+        code,
+        name,
+      },
+      refetchQueries: [
+        {
+          query: AuthoritiesDocument,
+          variables: {
+            limit: 20,
+            offset: 0,
+            nameStartWith: "",
+          },
         },
-      });
-      if (updateResult.errors) {
+      ],
+      awaitRefetchQueries: true,
+    });
+
+    const result = updateResult.data?.adminAuthorityUpdate?.result;
+    switch (result?.__typename) {
+      case "AdminAuthorityUpdateSuccess": {
+        console.log("success", result);
+        break;
+      }
+      case "AdminAuthorityUpdateProblem": {
+        console.log("problem", result);
+        const fields: any = {};
+        result.fields?.forEach(f => {
+          fields[f.name] = f.message;
+        });
+
         return {
           success: false,
-          message: updateResult.errors.map(e => e.message).join(","),
+          fields,
+          message: result.message,
         };
       }
-
-      const result = updateResult.data?.adminAuthorityUpdate?.result;
-      switch (result?.__typename) {
-        case "AdminAuthorityUpdateSuccess": {
-          console.log("success", result);
-          break;
-        }
-        case "AdminAuthorityUpdateProblem": {
-          console.log("problem", result);
-          const fields: any = {};
-          result.fields?.forEach(f => {
-            fields[f.name] = f.message;
-          });
-          return {
-            success: false,
-            fields,
-            message: result.message,
-          };
-        }
-      }
-    } catch (e) {
-      console.error(e);
     }
     return {
       success: true,
