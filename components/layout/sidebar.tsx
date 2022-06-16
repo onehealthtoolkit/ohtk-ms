@@ -11,6 +11,8 @@ import {
   BellIcon,
   CogIcon,
   LogoutIcon,
+  DocumentReportIcon,
+  AnnotationIcon,
 } from "@heroicons/react/solid";
 import useStore from "lib/store";
 import CollapsIcon from "components/icons/CollapsIcon";
@@ -135,32 +137,39 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
             </h3>
             <ul className="mt-3">
               <Menu
-                href="/admin/authorities"
+                href="/admin/authorities/"
                 pathname={pathname}
                 label="Authorities"
                 collapsed={store.menu.collapsed}
                 icon={<CubeIcon className={iconClassName} />}
               />
               <Menu
-                href="/settings/users"
+                href="/admin/users/"
                 pathname={pathname}
                 label="Users"
                 collapsed={store.menu.collapsed}
                 icon={<UserIcon className={iconClassName} />}
               />
               <Menu
-                href="/reports/category"
+                href="/admin/report_categories/"
                 pathname={pathname}
                 label="Category"
                 collapsed={store.menu.collapsed}
                 icon={<TemplateIcon className={iconClassName} />}
               />
               <Menu
-                href="/reports/report_types"
+                href="/admin/report_types/"
                 pathname={pathname}
                 label="Report types"
                 collapsed={store.menu.collapsed}
-                icon={<TemplateIcon className={iconClassName} />}
+                icon={<DocumentReportIcon className={iconClassName} />}
+              />
+              <Menu
+                href="/admin/invitation_codes/"
+                pathname={pathname}
+                label="Invitation codes"
+                collapsed={store.menu.collapsed}
+                icon={<AnnotationIcon className={iconClassName} />}
               />
 
               <Menu

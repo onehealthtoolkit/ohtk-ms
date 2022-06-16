@@ -4,14 +4,15 @@ import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Filter from "./filter";
-import { AdminAuthorityListViewModel } from "./listViewModel";
+import { AdminReportCategoryListViewModel } from "./listViewModel";
 import ErrorDisplay from "components/widgets/errorDisplay";
 
-const AuthorityList = () => {
+const ReportCategoryList = () => {
   const router = useRouter();
-  const [viewModel, setViewModel] = useState<AdminAuthorityListViewModel>();
+  const [viewModel, setViewModel] =
+    useState<AdminReportCategoryListViewModel>();
   useEffect(() => {
-    const viewModel = new AdminAuthorityListViewModel();
+    const viewModel = new AdminReportCategoryListViewModel();
     setViewModel(viewModel);
   }, []);
 
@@ -20,7 +21,7 @@ const AuthorityList = () => {
   }
   return (
     <div>
-      <div className="mb-4">&gt;&gt; Authorities</div>
+      <div className="mb-4">&gt;&gt; Report Category</div>
 
       <div className="flex items-center flex-wrap mb-4">
         <Filter viewModel={viewModel} />
@@ -39,7 +40,7 @@ const AuthorityList = () => {
         ]}
         data={viewModel?.data || []}
         onEdit={record =>
-          router.push(`/settings/authorities/edit/${record.id}`)
+          router.push(`/settings/report_categories/edit/${record.id}`)
         }
       />
       <ErrorDisplay message={viewModel?.errorMessage} />
@@ -47,4 +48,4 @@ const AuthorityList = () => {
   );
 };
 
-export default observer(AuthorityList);
+export default observer(ReportCategoryList);
