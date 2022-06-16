@@ -638,6 +638,43 @@ export type Verify = {
   payload: Scalars["GenericScalar"];
 };
 
+export type DeleteTokenCookieMutationVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type DeleteTokenCookieMutation = {
+  __typename?: "Mutation";
+  deleteTokenCookie?: {
+    __typename?: "DeleteJSONWebTokenCookie";
+    deleted: boolean;
+  } | null;
+  deleteRefreshTokenCookie?: {
+    __typename?: "DeleteRefreshTokenCookie";
+    deleted: boolean;
+  } | null;
+};
+
+export type RefreshTokenMutationVariables = Exact<{ [key: string]: never }>;
+
+export type RefreshTokenMutation = {
+  __typename?: "Mutation";
+  refreshToken?: { __typename?: "Refresh"; token: string; payload: any } | null;
+};
+
+export type TokenAuthMutationVariables = Exact<{
+  username: Scalars["String"];
+  password: Scalars["String"];
+}>;
+
+export type TokenAuthMutation = {
+  __typename?: "Mutation";
+  tokenAuth?: {
+    __typename?: "ObtainJSONWebToken";
+    refreshExpiresIn: number;
+    token: string;
+  } | null;
+};
+
 export type AuthoritiesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
@@ -653,6 +690,7 @@ export type AuthoritiesQuery = {
       __typename?: "AuthorityType";
       id: string;
       name: string;
+      code: string;
     } | null>;
   } | null;
 };
@@ -676,6 +714,20 @@ export type InvitationCodesQuery = {
   } | null;
 };
 
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MeQuery = {
+  __typename?: "Query";
+  me?: {
+    __typename?: "UserProfileType";
+    id: number;
+    username: string;
+    firstName: string;
+    lastName: string;
+    authorityName?: string | null;
+  } | null;
+};
+
 export type ReportCategoriesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
@@ -684,13 +736,15 @@ export type ReportCategoriesQueryVariables = Exact<{
 
 export type ReportCategoriesQuery = {
   __typename?: "Query";
-  authorities?: {
-    __typename?: "AuthorityTypeNodeConnection";
+  adminCategoryQuery?: {
+    __typename?: "AdminCategoryQueryTypeNodeConnection";
     totalCount?: number | null;
     results: Array<{
-      __typename?: "AuthorityType";
+      __typename?: "AdminCategoryQueryType";
       id: string;
       name: string;
+      icon?: string | null;
+      ordering: number;
     } | null>;
   } | null;
 };
@@ -733,57 +787,150 @@ export type UsersQuery = {
   } | null;
 };
 
-export type DeleteTokenCookieMutationVariables = Exact<{
-  [key: string]: never;
-}>;
-
-export type DeleteTokenCookieMutation = {
-  __typename?: "Mutation";
-  deleteTokenCookie?: {
-    __typename?: "DeleteJSONWebTokenCookie";
-    deleted: boolean;
-  } | null;
-  deleteRefreshTokenCookie?: {
-    __typename?: "DeleteRefreshTokenCookie";
-    deleted: boolean;
-  } | null;
-};
-
-export type RefreshTokenMutationVariables = Exact<{ [key: string]: never }>;
-
-export type RefreshTokenMutation = {
-  __typename?: "Mutation";
-  refreshToken?: { __typename?: "Refresh"; token: string; payload: any } | null;
-};
-
-export type TokenAuthMutationVariables = Exact<{
-  username: Scalars["String"];
-  password: Scalars["String"];
-}>;
-
-export type TokenAuthMutation = {
-  __typename?: "Mutation";
-  tokenAuth?: {
-    __typename?: "ObtainJSONWebToken";
-    refreshExpiresIn: number;
-    token: string;
-  } | null;
-};
-
-export type MeQueryVariables = Exact<{ [key: string]: never }>;
-
-export type MeQuery = {
-  __typename?: "Query";
-  me?: {
-    __typename?: "UserProfileType";
-    id: number;
-    username: string;
-    firstName: string;
-    lastName: string;
-    authorityName?: string | null;
-  } | null;
-};
-
+export const DeleteTokenCookieDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteTokenCookie" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteTokenCookie" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "deleted" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteRefreshTokenCookie" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "deleted" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteTokenCookieMutation,
+  DeleteTokenCookieMutationVariables
+>;
+export const RefreshTokenDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "RefreshToken" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "refreshToken" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "token" } },
+                { kind: "Field", name: { kind: "Name", value: "payload" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  RefreshTokenMutation,
+  RefreshTokenMutationVariables
+>;
+export const TokenAuthDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "TokenAuth" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "username" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "password" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "tokenAuth" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "username" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "username" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "password" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "password" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "refreshExpiresIn" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "token" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<TokenAuthMutation, TokenAuthMutationVariables>;
 export const AuthoritiesDocument = {
   kind: "Document",
   definitions: [
@@ -867,6 +1014,7 @@ export const AuthoritiesDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
                     ],
                   },
                 },
@@ -975,6 +1123,38 @@ export const InvitationCodesDocument = {
   InvitationCodesQuery,
   InvitationCodesQueryVariables
 >;
+export const MeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "me" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "me" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "authorityName" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<MeQuery, MeQueryVariables>;
 export const ReportCategoriesDocument = {
   kind: "Document",
   definitions: [
@@ -1019,7 +1199,7 @@ export const ReportCategoriesDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "authorities" },
+            name: { kind: "Name", value: "adminCategoryQuery" },
             arguments: [
               {
                 kind: "Argument",
@@ -1058,6 +1238,11 @@ export const ReportCategoriesDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "icon" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "ordering" },
+                      },
                     ],
                   },
                 },
@@ -1260,179 +1445,3 @@ export const UsersDocument = {
     },
   ],
 } as unknown as DocumentNode<UsersQuery, UsersQueryVariables>;
-export const DeleteTokenCookieDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "DeleteTokenCookie" },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "deleteTokenCookie" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "deleted" } },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "deleteRefreshTokenCookie" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "deleted" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  DeleteTokenCookieMutation,
-  DeleteTokenCookieMutationVariables
->;
-export const RefreshTokenDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "RefreshToken" },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "refreshToken" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "token" } },
-                { kind: "Field", name: { kind: "Name", value: "payload" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  RefreshTokenMutation,
-  RefreshTokenMutationVariables
->;
-export const TokenAuthDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "TokenAuth" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "username" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "password" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "tokenAuth" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "username" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "username" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "password" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "password" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "refreshExpiresIn" },
-                },
-                { kind: "Field", name: { kind: "Name", value: "token" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<TokenAuthMutation, TokenAuthMutationVariables>;
-export const MeDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "me" },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "me" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "username" } },
-                { kind: "Field", name: { kind: "Name", value: "firstName" } },
-                { kind: "Field", name: { kind: "Name", value: "lastName" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "authorityName" },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<MeQuery, MeQueryVariables>;

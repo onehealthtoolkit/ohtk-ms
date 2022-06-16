@@ -7,6 +7,8 @@ import { BaseViewModel } from "lib/baseViewModel";
 type ReportCategory = {
   id: string;
   name: string;
+  icon: string;
+  ordering: number;
 };
 
 export class AdminReportCategoryListViewModel extends BaseViewModel {
@@ -46,11 +48,13 @@ export class AdminReportCategoryListViewModel extends BaseViewModel {
       });
 
       const items = Array<ReportCategory>();
-      fetchResult.data.authorities?.results.forEach(item => {
+      fetchResult.data.adminCategoryQuery?.results.forEach(item => {
         if (item) {
           items.push({
             id: item.id,
             name: item.name,
+            icon: item.icon || "",
+            ordering: item.ordering,
           });
         }
       });

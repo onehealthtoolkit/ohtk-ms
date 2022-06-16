@@ -39,7 +39,7 @@ const InvitaionCodeList = () => {
         ]}
         data={viewModel?.data || []}
         onEdit={record =>
-          router.push(`/admin/invitationCodes/edit/${record.id}`)
+          router.push(`/admin/invitation_codes/edit/${record.id}`)
         }
       />
       <ErrorDisplay message={viewModel?.errorMessage} />

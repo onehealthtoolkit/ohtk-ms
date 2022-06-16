@@ -40,7 +40,7 @@ const ReportCategoryList = () => {
         ]}
         data={viewModel?.data || []}
         onEdit={record =>
-          router.push(`/settings/reportCategories/edit/${record.id}`)
+          router.push(`/settings/report_categories/edit/${record.id}`)
         }
       />
       <ErrorDisplay message={viewModel?.errorMessage} />

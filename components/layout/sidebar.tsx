@@ -137,35 +137,35 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
             </h3>
             <ul className="mt-3">
               <Menu
-                href="/admin/authorities"
+                href="/admin/authorities/"
                 pathname={pathname}
                 label="Authorities"
                 collapsed={store.menu.collapsed}
                 icon={<CubeIcon className={iconClassName} />}
               />
               <Menu
-                href="/admin/users"
+                href="/admin/users/"
                 pathname={pathname}
                 label="Users"
                 collapsed={store.menu.collapsed}
                 icon={<UserIcon className={iconClassName} />}
               />
               <Menu
-                href="/admin/reportCategories"
+                href="/admin/report_categories/"
                 pathname={pathname}
                 label="Category"
                 collapsed={store.menu.collapsed}
                 icon={<TemplateIcon className={iconClassName} />}
               />
               <Menu
-                href="/admin/reportTypes"
+                href="/admin/report_types/"
                 pathname={pathname}
                 label="Report types"
                 collapsed={store.menu.collapsed}
                 icon={<DocumentReportIcon className={iconClassName} />}
               />
               <Menu
-                href="/admin/invitationCodes"
+                href="/admin/invitation_codes/"
                 pathname={pathname}
                 label="Invitation codes"
                 collapsed={store.menu.collapsed}

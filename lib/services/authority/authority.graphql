@@ -1,4 +1,4 @@
-query reportCategories($limit: Int!, $offset: Int!, $nameStartWith: String) {
+query authorities($limit: Int!, $offset: Int!, $nameStartWith: String) {
   authorities(
     limit: $limit
     offset: $offset
@@ -8,6 +8,7 @@ query reportCategories($limit: Int!, $offset: Int!, $nameStartWith: String) {
     results {
       id
       name
+      code
     }
   }
 }

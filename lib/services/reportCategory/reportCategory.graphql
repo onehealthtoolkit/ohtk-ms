@@ -1,5 +1,5 @@
-query authorities($limit: Int!, $offset: Int!, $nameStartWith: String) {
-  authorities(
+query reportCategories($limit: Int!, $offset: Int!, $nameStartWith: String) {
+  adminCategoryQuery(
     limit: $limit
     offset: $offset
     name_Istartswith: $nameStartWith
@@ -8,6 +8,8 @@ query authorities($limit: Int!, $offset: Int!, $nameStartWith: String) {
     results {
       id
       name
+      icon
+      ordering
     }
   }
 }

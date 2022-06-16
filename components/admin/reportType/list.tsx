@@ -39,7 +39,7 @@ const ReportTypeList = () => {
         ]}
         data={viewModel?.data || []}
         onEdit={record =>
-          router.push(`/settings/reportTypes/edit/${record.id}`)
+          router.push(`/settings/report_types/edit/${record.id}`)
         }
       />
       <ErrorDisplay message={viewModel?.errorMessage} />
