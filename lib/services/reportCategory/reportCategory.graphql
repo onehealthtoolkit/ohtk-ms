@@ -1,0 +1,15 @@
+query reportCategories($limit: Int!, $offset: Int!, $nameStartWith: String) {
+  adminCategoryQuery(
+    limit: $limit
+    offset: $offset
+    name_Istartswith: $nameStartWith
+  ) {
+    totalCount
+    results {
+      id
+      name
+      icon
+      ordering
+    }
+  }
+}

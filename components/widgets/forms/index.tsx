@@ -150,10 +150,11 @@ export const Form: FC<
 );
 
 interface FieldGroupProps {
+  children: ReactElement[];
   $size?: "full" | "half";
 }
 
-export const FieldGroup = tw.div`
+export const FieldGroup: FC<FieldGroupProps> = tw.div`
   p-4 
   md:p-8
   rounded-md
@@ -170,7 +171,7 @@ export const FieldGroup = tw.div`
 
 type FieldProps = FieldGroupProps;
 
-export const Field = tw.div`
+export const Field: FC<FieldProps> = tw.div`
   mb-4
   ${(p: FieldProps) => {
     switch (p.$size) {

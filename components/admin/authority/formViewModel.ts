@@ -8,7 +8,7 @@ import {
 import { Authority, IAuthorityService } from "lib/services/authority";
 import { SaveResult } from "lib/services/interface";
 
-export class AuthorityFormViewModel {
+export class AdminAuthorityFormViewModel {
   _code: string = "";
   _name: string = "";
 
@@ -58,7 +58,7 @@ export class AuthorityFormViewModel {
     return Object.keys(this.fieldErrors).length === 0;
   }
 
-  public async save(id?: string) {
+  public async save(id?: string): Promise<boolean> {
     this.isSubmitting = true;
 
     if (this.validate()) {
@@ -75,10 +75,10 @@ export class AuthorityFormViewModel {
           this.name
         );
       }
+      this.isSubmitting = false;
+
       runInAction(() => {
-        if (result.success) {
-          //
-        } else {
+        if (!result.success) {
           if (result.message) {
             this.submitError = result.message;
           }
@@ -87,8 +87,10 @@ export class AuthorityFormViewModel {
           }
         }
       });
+      return result.success;
     }
     this.isSubmitting = false;
+    return false;
   }
 
   validate(): boolean {
