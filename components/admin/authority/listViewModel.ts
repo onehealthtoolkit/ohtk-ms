@@ -1,20 +1,13 @@
-import { action, makeObservable, observable } from "mobx";
-import { client } from "lib/client";
-import { ApolloError } from "@apollo/client";
-import { AuthoritiesDocument } from "lib/generated/graphql";
+import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
-
-type Authority = {
-  id: string;
-  name: string;
-};
+import { Authority, IAuthorityService } from "lib/services/authority";
 
 export class AdminAuthorityListViewModel extends BaseViewModel {
   data: Authority[] = [];
 
   searchText: string = "";
 
-  constructor() {
+  constructor(readonly authorityService: IAuthorityService) {
     super();
     makeObservable(this, {
       data: observable,
@@ -34,46 +27,12 @@ export class AdminAuthorityListViewModel extends BaseViewModel {
   }
 
   async fetch(): Promise<void> {
-    try {
-      const fetchResult = await client.query({
-        query: AuthoritiesDocument,
-        variables: {
-          limit: 20,
-          offset: 0,
-          nameStartWith: this.searchText,
-        },
-        errorPolicy: "all",
-      });
-
-      const items = Array<Authority>();
-      fetchResult.data.authorities?.results.forEach(item => {
-        if (item) {
-          items.push({
-            id: item.id,
-            name: item.name,
-          });
-        }
-      });
-      this.data = items;
-      this.setErrorMessage(undefined);
-    } catch (e) {
-      let message: string | undefined;
-      const errorResult = e as ApolloError;
-
-      if (errorResult.networkError) {
-        message = errorResult.networkError.message;
-      } else if (
-        errorResult.graphQLErrors &&
-        errorResult.graphQLErrors.length > 0
-      ) {
-        message = errorResult.graphQLErrors.map(err => err.message).join(",");
-      } else if (
-        errorResult.clientErrors &&
-        errorResult.clientErrors.length > 0
-      ) {
-        message = errorResult.clientErrors.map(err => err.message).join(",");
-      }
-      this.setErrorMessage(message);
+    const result = await this.authorityService.fetchAuthorities(
+      this.searchText
+    );
+    runInAction(() => (this.data = result.items || []));
+    if (result.error) {
+      this.setErrorMessage(result.error);
     }
   }
 }

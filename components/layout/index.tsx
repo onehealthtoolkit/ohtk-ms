@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 import Header from "./header";
 import Sidebar from "./sidebar";
+import { ErrorBoundary } from "components/widgets/errorBoundary";
 
 type Props = {
   children: React.ReactNode;
@@ -56,9 +57,11 @@ const Layout = ({ children }: Props) => {
         {/*  Site header */}
         <Header />
         <main>
-          <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto relative">
-            {children}
-          </div>
+          <ErrorBoundary>
+            <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto relative">
+              {children}
+            </div>
+          </ErrorBoundary>
         </main>
       </div>
     </div>
