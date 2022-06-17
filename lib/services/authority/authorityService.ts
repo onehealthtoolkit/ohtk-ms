@@ -14,7 +14,11 @@ import {
 } from "lib/services/interface";
 
 export interface IAuthorityService extends IService {
-  fetchAuthorities(searchText: string): Promise<QueryResult<Authority[]>>;
+  fetchAuthorities(
+    limit: number,
+    offset: number,
+    searchText: string
+  ): Promise<QueryResult<Authority[]>>;
   getAuthority(id: string): Promise<GetResult<Authority>>;
   createAuthority(code: string, name: string): Promise<SaveResult<Authority>>;
   updateAuthority(
@@ -26,19 +30,26 @@ export interface IAuthorityService extends IService {
 
 export class AuthorityService implements IAuthorityService {
   client: ApolloClient<NormalizedCacheObject>;
+  fetchAuthoritiesQuery = {
+    limit: 20,
+    offset: 0,
+    nameStartWith: "",
+  };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
   }
 
-  async fetchAuthorities(searchText: string) {
+  async fetchAuthorities(limit: number, offset: number, searchText: string) {
+    this.fetchAuthoritiesQuery = {
+      ...this.fetchAuthoritiesQuery,
+      limit,
+      offset,
+      nameStartWith: searchText,
+    };
     const fetchResult = await this.client.query({
       query: AuthoritiesDocument,
-      variables: {
-        limit: 20,
-        offset: 0,
-        nameStartWith: searchText,
-      },
+      variables: this.fetchAuthoritiesQuery,
     });
 
     const items = Array<Authority>();
@@ -53,6 +64,7 @@ export class AuthorityService implements IAuthorityService {
     });
     return {
       items,
+      totalCount: fetchResult.data.authorities?.totalCount,
     };
   }
 
@@ -87,11 +99,7 @@ export class AuthorityService implements IAuthorityService {
       refetchQueries: [
         {
           query: AuthoritiesDocument,
-          variables: {
-            limit: 20,
-            offset: 0,
-            nameStartWith: "",
-          },
+          variables: this.fetchAuthoritiesQuery,
         },
       ],
       awaitRefetchQueries: true,
@@ -137,11 +145,7 @@ export class AuthorityService implements IAuthorityService {
       refetchQueries: [
         {
           query: AuthoritiesDocument,
-          variables: {
-            limit: 20,
-            offset: 0,
-            nameStartWith: "",
-          },
+          variables: this.fetchAuthoritiesQuery,
         },
       ],
       awaitRefetchQueries: true,

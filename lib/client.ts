@@ -48,10 +48,14 @@ const httpLink = createUploadLink({
 }) as unknown as ApolloLink;
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  Router.push({
-    pathname: "/error/[e]",
-    query: { e: (graphQLErrors ? 400 : networkError ? 500 : 0).toString() },
-  });
+  if (process.env.NODE_ENV === "development") {
+    console.error(graphQLErrors || networkError);
+  } else {
+    Router.push({
+      pathname: "/error/[e]",
+      query: { e: (graphQLErrors ? 400 : networkError ? 500 : 0).toString() },
+    });
+  }
 });
 
 export const client = new ApolloClient({

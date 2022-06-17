@@ -28,9 +28,14 @@ export class AdminAuthorityListViewModel extends BaseViewModel {
 
   async fetch(): Promise<void> {
     const result = await this.authorityService.fetchAuthorities(
+      this.limit,
+      this.offset,
       this.searchText
     );
-    runInAction(() => (this.data = result.items || []));
+    runInAction(() => {
+      this.data = result.items || [];
+      this.totalCount = result.totalCount || 0;
+    });
     if (result.error) {
       this.setErrorMessage(result.error);
     }

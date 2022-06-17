@@ -1,3 +1,4 @@
+import useSearchParam, { StringParam } from "components/hooks/searchParam";
 import {
   FilterTextInput,
   ResetButton,
@@ -10,8 +11,16 @@ import { AdminAuthorityListViewModel } from "./listViewModel";
 
 type Props = {
   viewModel?: AdminAuthorityListViewModel;
+  queryName?: string;
+  onQueryChange?: (name: string, value: string | null | undefined) => void;
 };
-const Filter = ({ viewModel }: Props) => {
+
+const Filter = ({ viewModel, queryName = "q", onQueryChange }: Props) => {
+  const [, setSearchText, searchTextQuery] = useSearchParam(
+    queryName,
+    StringParam
+  );
+
   if (!viewModel) {
     return <Spinner />;
   }
@@ -19,15 +28,18 @@ const Filter = ({ viewModel }: Props) => {
     <div>
       <FilterTextInput
         type="text"
-        value={viewModel?.searchText}
+        value={viewModel.searchText}
         placeholder="search"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          viewModel?.setSearchText(e.target.value)
-        }
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          viewModel.setSearchText(e.target.value);
+          setSearchText(e.target.value);
+        }}
       />
       <SearchButton
         onClick={() => {
-          viewModel?.fetch();
+          viewModel.offset = 0;
+          viewModel.fetch();
+          onQueryChange && onQueryChange(queryName, searchTextQuery);
         }}
       >
         Search
@@ -35,7 +47,9 @@ const Filter = ({ viewModel }: Props) => {
 
       <ResetButton
         onClick={() => {
-          viewModel?.clearSearchText();
+          viewModel.clearSearchText();
+          viewModel.fetch();
+          onQueryChange && onQueryChange(queryName, undefined);
         }}
       >
         Reset
