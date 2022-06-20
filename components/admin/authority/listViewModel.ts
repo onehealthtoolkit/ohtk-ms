@@ -22,12 +22,15 @@ export class AdminAuthorityListViewModel extends BaseViewModel {
     });
     this.nameSearch = nameSearch;
     this.offset = offset;
+    this.fetch();
   }
 
   setSearchValue(nameSearch: string = "", offset: number = 0) {
-    this.nameSearch = nameSearch;
-    this.offset = offset;
-    this.fetch();
+    if (nameSearch != this.nameSearch || this.offset != offset) {
+      this.nameSearch = nameSearch;
+      this.offset = offset;
+      this.fetch();
+    }
   }
 
   clearNameSearch() {

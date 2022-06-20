@@ -1,7 +1,10 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-type UseSearchParams = [DecodedValues];
+type UseSearchParams = [
+  DecodedValues,
+  (name: string, value: string | number) => void
+];
 type DecodedValues = { [k: string]: ReturnValue };
 type ReturnValue =
   | string
@@ -29,5 +32,23 @@ export function useSearchParams(config: any): UseSearchParams {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query]);
 
-  return [values];
+  const onSearchChange = (name: string, value: string | number) => {
+    const query = {
+      ...router.query,
+      [name]: value,
+    };
+    if (name === "q") {
+      query.offset = 0;
+    }
+    router.push(
+      {
+        pathname: router.pathname,
+        query,
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
+
+  return [values, onSearchChange];
 }

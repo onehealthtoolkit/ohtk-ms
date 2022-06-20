@@ -20,48 +20,25 @@ const AuthorityList = () => {
   const router = useRouter();
   const { authorityService } = useServices();
 
-  const [viewModel, setViewModel] = useState<AdminAuthorityListViewModel>();
-  const [searchValue] = useSearchParams({
+  const [searchValue, onSearchChange] = useSearchParams({
     q: StringParam,
     limit: NumberParam,
     offset: NumberParam,
   });
+  const [viewModel] = useState<AdminAuthorityListViewModel>(
+    new AdminAuthorityListViewModel(
+      authorityService,
+      searchValue.q as string,
+      searchValue.offset as number
+    )
+  );
 
   useEffect(() => {
-    if (!viewModel) {
-      const viewModel = new AdminAuthorityListViewModel(
-        authorityService,
-        searchValue.q as string,
-        searchValue.offset as number
-      );
-      setViewModel(viewModel);
-    } else {
-      viewModel.setSearchValue(
-        searchValue.q as string,
-        searchValue.offset as number
-      );
-    }
-  }, [authorityService, searchValue, viewModel]);
-
-  const onSearchChange = (name: string, value: string | number) => {
-    if (!viewModel) return;
-
-    const query = {
-      ...router.query,
-      [name]: value,
-    };
-    if (name === "q") {
-      query.offset = 0;
-    }
-    router.push(
-      {
-        pathname: router.pathname,
-        query,
-      },
-      undefined,
-      { shallow: true }
+    viewModel.setSearchValue(
+      searchValue.q as string,
+      searchValue.offset as number
     );
-  };
+  }, [searchValue, viewModel]);
 
   if (!viewModel) {
     return <Spinner />;
