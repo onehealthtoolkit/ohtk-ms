@@ -1,45 +1,36 @@
-import useSearchParam, { StringParam } from "components/hooks/searchParam";
 import {
   FilterTextInput,
   ResetButton,
   SearchButton,
 } from "components/widgets/filter";
-import Spinner from "components/widgets/spinner";
 import { observer } from "mobx-react";
-import React from "react";
-import { AdminAuthorityListViewModel } from "./listViewModel";
+import React, { useEffect, useState } from "react";
 
 type Props = {
-  viewModel?: AdminAuthorityListViewModel;
-  queryName?: string;
-  onQueryChange?: (name: string, value: string | null | undefined) => void;
+  nameSearch: string;
+  onChange?: (value: string) => void;
 };
 
-const Filter = ({ viewModel, queryName = "q", onQueryChange }: Props) => {
-  const [, setSearchText, searchTextQuery] = useSearchParam(
-    queryName,
-    StringParam
-  );
+const Filter = ({ nameSearch, onChange }: Props) => {
+  const [searchText, setSearchText] = useState(nameSearch);
 
-  if (!viewModel) {
-    return <Spinner />;
-  }
+  useEffect(() => {
+    setSearchText(nameSearch);
+  }, [nameSearch]);
+
   return (
     <div>
       <FilterTextInput
         type="text"
-        value={viewModel.searchText}
+        value={searchText}
         placeholder="search"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          viewModel.setSearchText(e.target.value);
           setSearchText(e.target.value);
         }}
       />
       <SearchButton
         onClick={() => {
-          viewModel.offset = 0;
-          viewModel.fetch();
-          onQueryChange && onQueryChange(queryName, searchTextQuery);
+          onChange && onChange(searchText);
         }}
       >
         Search
@@ -47,9 +38,7 @@ const Filter = ({ viewModel, queryName = "q", onQueryChange }: Props) => {
 
       <ResetButton
         onClick={() => {
-          viewModel.clearSearchText();
-          viewModel.fetch();
-          onQueryChange && onQueryChange(queryName, undefined);
+          onChange && onChange("");
         }}
       >
         Reset

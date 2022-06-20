@@ -9,42 +9,41 @@ import ErrorDisplay from "components/widgets/errorDisplay";
 import useServices from "lib/services/provider";
 import Link from "next/link";
 import { AddButton } from "components/widgets/forms";
-import Paginate from "components/paginate";
 import {
   NumberParam,
   StringParam,
   useSearchParams,
 } from "components/hooks/searchParam";
+import Paginate from "components/widgets/table/paginate";
 
 const AuthorityList = () => {
   const router = useRouter();
   const { authorityService } = useServices();
 
   const [viewModel, setViewModel] = useState<AdminAuthorityListViewModel>();
-  const [searchValues] = useSearchParams({
+  const [searchValue] = useSearchParams({
     q: StringParam,
     limit: NumberParam,
     offset: NumberParam,
   });
 
   useEffect(() => {
-    const viewModel = new AdminAuthorityListViewModel(authorityService);
-    setViewModel(viewModel);
-  }, [authorityService]);
-
-  useEffect(() => {
-    console.log("searchValues", searchValues);
-    if (viewModel) {
-      if (searchValues?.limit) viewModel.limit = searchValues?.limit as number;
-      if (searchValues?.offset)
-        viewModel.offset = searchValues?.offset as number;
-      viewModel.setSearchText((searchValues?.q as string) || "");
-      viewModel.fetch();
+    if (!viewModel) {
+      const viewModel = new AdminAuthorityListViewModel(
+        authorityService,
+        searchValue.q as string,
+        searchValue.offset as number
+      );
+      setViewModel(viewModel);
+    } else {
+      viewModel.setSearchValue(
+        searchValue.q as string,
+        searchValue.offset as number
+      );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchValues]);
+  }, [authorityService, searchValue, viewModel]);
 
-  const updateQuery = (name: string, value: string | null | undefined) => {
+  const onSearchChange = (name: string, value: string | number) => {
     if (!viewModel) return;
 
     const query = {
@@ -52,8 +51,7 @@ const AuthorityList = () => {
       [name]: value,
     };
     if (name === "q") {
-      query.offset = undefined;
-      viewModel.offset = 0;
+      query.offset = 0;
     }
     router.push(
       {
@@ -74,9 +72,8 @@ const AuthorityList = () => {
 
       <div className="flex items-center flex-wrap mb-4">
         <Filter
-          viewModel={viewModel}
-          queryName="q"
-          onQueryChange={updateQuery}
+          nameSearch={viewModel.nameSearch}
+          onChange={value => onSearchChange("q", value)}
         />
         <div className="flex-grow"></div>
         <Link href={"/admin/authorities/create"} passHref>
@@ -100,7 +97,12 @@ const AuthorityList = () => {
       />
       <ErrorDisplay message={viewModel.errorMessage} />
 
-      <Paginate viewModel={viewModel} onQueryChange={updateQuery} />
+      <Paginate
+        offset={viewModel.offset}
+        limit={viewModel.limit}
+        totalCount={viewModel.totalCount}
+        onChange={value => onSearchChange("offset", value)}
+      />
     </div>
   );
 };

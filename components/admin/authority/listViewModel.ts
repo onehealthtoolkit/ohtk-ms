@@ -5,32 +5,40 @@ import { Authority, IAuthorityService } from "lib/services/authority";
 export class AdminAuthorityListViewModel extends BaseViewModel {
   data: Authority[] = [];
 
-  searchText: string = "";
+  nameSearch: string = "";
 
-  constructor(readonly authorityService: IAuthorityService) {
+  constructor(
+    readonly authorityService: IAuthorityService,
+    nameSearch: string = "",
+    offset: number = 0
+  ) {
     super();
     makeObservable(this, {
       data: observable,
-      searchText: observable,
-      setSearchText: action,
-      clearSearchText: action,
+      nameSearch: observable,
+      setSearchValue: action,
+      clearNameSearch: action,
       fetch: action,
     });
+    this.nameSearch = nameSearch;
+    this.offset = offset;
   }
 
-  setSearchText(value: string) {
-    this.searchText = value;
+  setSearchValue(nameSearch: string = "", offset: number = 0) {
+    this.nameSearch = nameSearch;
+    this.offset = offset;
+    this.fetch();
   }
 
-  clearSearchText() {
-    this.searchText = "";
+  clearNameSearch() {
+    this.nameSearch = "";
   }
 
   async fetch(): Promise<void> {
     const result = await this.authorityService.fetchAuthorities(
       this.limit,
       this.offset,
-      this.searchText
+      this.nameSearch
     );
     runInAction(() => {
       this.data = result.items || [];

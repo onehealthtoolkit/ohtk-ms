@@ -1,6 +1,4 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
-import Spinner from "components/widgets/spinner";
-import { BaseViewModel } from "lib/baseViewModel";
 import { observer } from "mobx-react";
 import React from "react";
 import tw from "tailwind-styled-components";
@@ -12,22 +10,23 @@ const Btn = tw.button`
 `;
 
 type PaginateProps = {
-  viewModel?: BaseViewModel;
-  onQueryChange?: (name: string, value: string | null | undefined) => void;
+  limit: number;
+  offset: number;
+  totalCount: number;
+  onChange?: (value: number) => void;
 };
 
-const Paginate: React.FC<PaginateProps> = ({ viewModel, onQueryChange }) => {
-  // const [_, setOffset, offsetQuery] = useSearchParam("offset", NumberParam);
-
-  if (!viewModel) {
-    return <Spinner />;
-  }
-
-  let numberOfPages = Math.floor(viewModel.totalCount / viewModel.limit);
-  if (viewModel.totalCount % viewModel.limit > 0) {
+const Paginate: React.FC<PaginateProps> = ({
+  limit,
+  offset,
+  totalCount,
+  onChange,
+}) => {
+  let numberOfPages = Math.floor(totalCount / limit);
+  if (totalCount % limit > 0) {
     numberOfPages = numberOfPages + 1;
   }
-  const currentPages = Math.floor(viewModel.offset / viewModel.limit) + 1;
+  const currentPages = Math.floor(offset / limit) + 1;
   const hasPrevious = currentPages > 1;
   const hasNext = currentPages < numberOfPages;
 
@@ -35,8 +34,8 @@ const Paginate: React.FC<PaginateProps> = ({ viewModel, onQueryChange }) => {
     <div className="flex items-center">
       <Btn
         onClick={() => {
-          viewModel.offset = viewModel.offset - viewModel.limit;
-          onQueryChange && onQueryChange("offset", viewModel.offset + "");
+          const startIndex = offset - limit;
+          onChange && onChange(startIndex);
         }}
         disabled={!hasPrevious}
       >
@@ -44,12 +43,12 @@ const Paginate: React.FC<PaginateProps> = ({ viewModel, onQueryChange }) => {
       </Btn>
       <div className="mx-4">
         page {currentPages} of {numberOfPages}{" "}
-        <span className="text-sm">[{viewModel.totalCount} records]</span>
+        <span className="text-sm">[{totalCount} records]</span>
       </div>
       <Btn
         onClick={() => {
-          viewModel.offset = viewModel.offset + viewModel.limit;
-          onQueryChange && onQueryChange("offset", viewModel.offset + "");
+          const startIndex = offset + limit;
+          onChange && onChange(startIndex);
         }}
         disabled={!hasNext}
       >
