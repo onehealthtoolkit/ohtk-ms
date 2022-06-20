@@ -36,6 +36,13 @@ export type Scalars = {
    */
   GenericScalar: any;
   /**
+   * Allows use of a JSON String for input / output from the GraphQL schema.
+   *
+   * Use of this type is *not recommended* as you lose the benefits of having a defined, static
+   * schema (one of the key benefits of GraphQL).
+   */
+  JSONString: any;
+  /**
    * Leverages the internal Python implementation of UUID (uuid.UUID) to provide native UUID objects
    * in fields, resolvers and input.
    */
@@ -70,9 +77,9 @@ export type AdminAuthorityCreateSuccess = {
   deletedAt?: Maybe<Scalars["DateTime"]>;
   id: Scalars["ID"];
   inherits: Array<AdminAuthorityUpdateSuccess>;
-  inviations: Array<CheckInvitationCodeType>;
+  inviations: Array<AdminInvitationCodeUpdateSuccess>;
   name: Scalars["String"];
-  reportTypes: Array<ReportTypeType>;
+  reportTypes: Array<AdminReportTypeUpdateSuccess>;
   updatedAt: Scalars["DateTime"];
   users: Array<AdminAuthorityUserUpdateSuccess>;
 };
@@ -116,9 +123,9 @@ export type AdminAuthorityUpdateSuccess = {
   deletedAt?: Maybe<Scalars["DateTime"]>;
   id: Scalars["ID"];
   inherits: Array<AdminAuthorityUpdateSuccess>;
-  inviations: Array<CheckInvitationCodeType>;
+  inviations: Array<AdminInvitationCodeUpdateSuccess>;
   name: Scalars["String"];
-  reportTypes: Array<ReportTypeType>;
+  reportTypes: Array<AdminReportTypeUpdateSuccess>;
   updatedAt: Scalars["DateTime"];
   users: Array<AdminAuthorityUserUpdateSuccess>;
 };
@@ -243,7 +250,7 @@ export type AdminCategoryCreateSuccess = {
   id: Scalars["ID"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
-  reporttypeSet: Array<ReportTypeType>;
+  reporttypeSet: Array<AdminReportTypeUpdateSuccess>;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -287,7 +294,7 @@ export type AdminCategoryUpdateSuccess = {
   id: Scalars["ID"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
-  reporttypeSet: Array<ReportTypeType>;
+  reporttypeSet: Array<AdminReportTypeUpdateSuccess>;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -295,6 +302,156 @@ export type AdminFieldValidationProblem = {
   __typename?: "AdminFieldValidationProblem";
   message: Scalars["String"];
   name: Scalars["String"];
+};
+
+export type AdminInvitationCodeCreateMutation = {
+  __typename?: "AdminInvitationCodeCreateMutation";
+  result?: Maybe<AdminInvitationCodeCreateResult>;
+};
+
+export type AdminInvitationCodeCreateProblem = {
+  __typename?: "AdminInvitationCodeCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminInvitationCodeCreateResult =
+  | AdminInvitationCodeCreateProblem
+  | AdminInvitationCodeCreateSuccess;
+
+export type AdminInvitationCodeCreateSuccess = {
+  __typename?: "AdminInvitationCodeCreateSuccess";
+  authority: AdminAuthorityUpdateSuccess;
+  code: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  fromDate: Scalars["DateTime"];
+  id: Scalars["ID"];
+  throughDate: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type AdminInvitationCodeQueryType = {
+  __typename?: "AdminInvitationCodeQueryType";
+  authority: AdminAuthorityUpdateSuccess;
+  code: Scalars["String"];
+  fromDate: Scalars["DateTime"];
+  id: Scalars["ID"];
+  throughDate: Scalars["DateTime"];
+};
+
+export type AdminInvitationCodeQueryTypeNodeConnection = {
+  __typename?: "AdminInvitationCodeQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminInvitationCodeQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
+export type AdminInvitationCodeUpdateMutation = {
+  __typename?: "AdminInvitationCodeUpdateMutation";
+  result?: Maybe<AdminInvitationCodeUpdateResult>;
+};
+
+export type AdminInvitationCodeUpdateProblem = {
+  __typename?: "AdminInvitationCodeUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminInvitationCodeUpdateResult =
+  | AdminInvitationCodeUpdateProblem
+  | AdminInvitationCodeUpdateSuccess;
+
+export type AdminInvitationCodeUpdateSuccess = {
+  __typename?: "AdminInvitationCodeUpdateSuccess";
+  authority: AdminAuthorityUpdateSuccess;
+  code: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  fromDate: Scalars["DateTime"];
+  id: Scalars["ID"];
+  throughDate: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type AdminReportTypeCreateMutation = {
+  __typename?: "AdminReportTypeCreateMutation";
+  result?: Maybe<AdminReportTypeCreateResult>;
+};
+
+export type AdminReportTypeCreateProblem = {
+  __typename?: "AdminReportTypeCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminReportTypeCreateResult =
+  | AdminReportTypeCreateProblem
+  | AdminReportTypeCreateSuccess;
+
+export type AdminReportTypeCreateSuccess = {
+  __typename?: "AdminReportTypeCreateSuccess";
+  authorities: Array<AdminAuthorityUpdateSuccess>;
+  category: AdminCategoryUpdateSuccess;
+  createdAt: Scalars["DateTime"];
+  definition: Scalars["JSONString"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  id: Scalars["UUID"];
+  name: Scalars["String"];
+  ordering: Scalars["Int"];
+  rendererDataTemplate?: Maybe<Scalars["String"]>;
+  updatedAt: Scalars["DateTime"];
+};
+
+export type AdminReportTypeQueryType = {
+  __typename?: "AdminReportTypeQueryType";
+  authorities: Array<AdminAuthorityUpdateSuccess>;
+  category: AdminCategoryUpdateSuccess;
+  definition: Scalars["JSONString"];
+  id: Scalars["UUID"];
+  name: Scalars["String"];
+  ordering: Scalars["Int"];
+  rendererDataTemplate?: Maybe<Scalars["String"]>;
+};
+
+export type AdminReportTypeQueryTypeNodeConnection = {
+  __typename?: "AdminReportTypeQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminReportTypeQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
+export type AdminReportTypeUpdateMutation = {
+  __typename?: "AdminReportTypeUpdateMutation";
+  result?: Maybe<AdminReportTypeUpdateResult>;
+};
+
+export type AdminReportTypeUpdateProblem = {
+  __typename?: "AdminReportTypeUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminReportTypeUpdateResult =
+  | AdminReportTypeUpdateProblem
+  | AdminReportTypeUpdateSuccess;
+
+export type AdminReportTypeUpdateSuccess = {
+  __typename?: "AdminReportTypeUpdateSuccess";
+  authorities: Array<AdminAuthorityUpdateSuccess>;
+  category: AdminCategoryUpdateSuccess;
+  createdAt: Scalars["DateTime"];
+  definition: Scalars["JSONString"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  id: Scalars["UUID"];
+  name: Scalars["String"];
+  ordering: Scalars["Int"];
+  rendererDataTemplate?: Maybe<Scalars["String"]>;
+  updatedAt: Scalars["DateTime"];
 };
 
 export type AuthorityType = {
@@ -320,6 +477,16 @@ export type AuthorityUserRegisterMutation = {
   token?: Maybe<Scalars["String"]>;
 };
 
+export type AuthorityUserType = {
+  __typename?: "AuthorityUserType";
+  authority: AdminAuthorityUpdateSuccess;
+  firstName: Scalars["String"];
+  id: Scalars["ID"];
+  lastName: Scalars["String"];
+  /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
+  username: Scalars["String"];
+};
+
 export type CategoryType = {
   __typename?: "CategoryType";
   createdAt: Scalars["DateTime"];
@@ -328,7 +495,7 @@ export type CategoryType = {
   id: Scalars["ID"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
-  reporttypeSet: Array<ReportTypeType>;
+  reporttypeSet: Array<AdminReportTypeUpdateSuccess>;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -357,6 +524,15 @@ export type FeatureType = {
   value: Scalars["String"];
 };
 
+export type InvitationCodeType = {
+  __typename?: "InvitationCodeType";
+  authority: AdminAuthorityUpdateSuccess;
+  code: Scalars["String"];
+  fromDate: Scalars["DateTime"];
+  id: Scalars["ID"];
+  throughDate: Scalars["DateTime"];
+};
+
 export type Mutation = {
   __typename?: "Mutation";
   adminAuthorityCreate?: Maybe<AdminAuthorityCreateMutation>;
@@ -365,6 +541,10 @@ export type Mutation = {
   adminAuthorityUserUpdate?: Maybe<AdminAuthorityUserUpdateMutation>;
   adminCategoryCreate?: Maybe<AdminCategoryCreateMutation>;
   adminCategoryUpdate?: Maybe<AdminCategoryUpdateMutation>;
+  adminInvitationCodeCreate?: Maybe<AdminInvitationCodeCreateMutation>;
+  adminInvitationCodeUpdate?: Maybe<AdminInvitationCodeUpdateMutation>;
+  adminReportTypeCreate?: Maybe<AdminReportTypeCreateMutation>;
+  adminReportTypeUpdate?: Maybe<AdminReportTypeUpdateMutation>;
   authorityUserRegister?: Maybe<AuthorityUserRegisterMutation>;
   deleteRefreshTokenCookie?: Maybe<DeleteRefreshTokenCookie>;
   deleteTokenCookie?: Maybe<DeleteJsonWebTokenCookie>;
@@ -380,6 +560,7 @@ export type Mutation = {
 
 export type MutationAdminAuthorityCreateArgs = {
   code: Scalars["String"];
+  inherits?: InputMaybe<Array<InputMaybe<Scalars["Int"]>>>;
   name: Scalars["String"];
 };
 
@@ -415,6 +596,32 @@ export type MutationAdminCategoryCreateArgs = {
 };
 
 export type MutationAdminCategoryUpdateArgs = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  ordering: Scalars["Int"];
+};
+
+export type MutationAdminInvitationCodeCreateArgs = {
+  authorityId: Scalars["Int"];
+  code: Scalars["String"];
+  inherits?: InputMaybe<Array<InputMaybe<Scalars["Int"]>>>;
+};
+
+export type MutationAdminInvitationCodeUpdateArgs = {
+  code: Scalars["String"];
+  id: Scalars["ID"];
+};
+
+export type MutationAdminReportTypeCreateArgs = {
+  categoryId: Scalars["Int"];
+  definition: Scalars["String"];
+  name: Scalars["String"];
+  ordering: Scalars["Int"];
+};
+
+export type MutationAdminReportTypeUpdateArgs = {
+  categoryId: Scalars["Int"];
+  definition: Scalars["String"];
   id: Scalars["ID"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
@@ -482,13 +689,19 @@ export type Query = {
   adminAuthorityQuery?: Maybe<AdminAuthorityQueryTypeNodeConnection>;
   adminAuthorityUserQuery?: Maybe<AdminAuthorityUserQueryTypeNodeConnection>;
   adminCategoryQuery?: Maybe<AdminCategoryQueryTypeNodeConnection>;
+  adminInvitationCodeQuery?: Maybe<AdminInvitationCodeQueryTypeNodeConnection>;
+  adminReportTypeQuery?: Maybe<AdminReportTypeQueryTypeNodeConnection>;
   authorities?: Maybe<AuthorityTypeNodeConnection>;
   authority?: Maybe<AuthorityType>;
+  authorityUser?: Maybe<AuthorityUserType>;
+  category?: Maybe<CategoryType>;
   checkInvitationCode?: Maybe<CheckInvitationCodeType>;
   features?: Maybe<Array<Maybe<FeatureType>>>;
   hello?: Maybe<Scalars["String"]>;
+  invitationCode?: Maybe<InvitationCodeType>;
   me?: Maybe<UserProfileType>;
   myReportTypes?: Maybe<Array<Maybe<ReportTypeType>>>;
+  reportType?: Maybe<ReportTypeType>;
   syncReportTypes?: Maybe<ReportTypeSyncOutputType>;
 };
 
@@ -534,6 +747,30 @@ export type QueryAdminCategoryQueryArgs = {
   ordering?: InputMaybe<Scalars["String"]>;
 };
 
+export type QueryAdminInvitationCodeQueryArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  code?: InputMaybe<Scalars["String"]>;
+  code_Istartswith?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+};
+
+export type QueryAdminReportTypeQueryArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_Istartswith?: InputMaybe<Scalars["String"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+};
+
 export type QueryAuthoritiesArgs = {
   after?: InputMaybe<Scalars["String"]>;
   before?: InputMaybe<Scalars["String"]>;
@@ -550,8 +787,24 @@ export type QueryAuthorityArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryAuthorityUserArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryCategoryArgs = {
+  id: Scalars["ID"];
+};
+
 export type QueryCheckInvitationCodeArgs = {
   code: Scalars["String"];
+};
+
+export type QueryInvitationCodeArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryReportTypeArgs = {
+  id: Scalars["ID"];
 };
 
 export type QuerySyncReportTypesArgs = {
@@ -761,19 +1014,91 @@ export type GetAuthorityQuery = {
 export type InvitationCodesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
-  nameStartWith?: InputMaybe<Scalars["String"]>;
+  codeStartWith?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type InvitationCodesQuery = {
   __typename?: "Query";
-  adminCategoryQuery?: {
-    __typename?: "AdminCategoryQueryTypeNodeConnection";
+  adminInvitationCodeQuery?: {
+    __typename?: "AdminInvitationCodeQueryTypeNodeConnection";
     totalCount?: number | null;
     results: Array<{
-      __typename?: "AdminCategoryQueryType";
+      __typename?: "AdminInvitationCodeQueryType";
       id: string;
-      name: string;
+      code: string;
     } | null>;
+  } | null;
+};
+
+export type InvitationCodeCreateMutationVariables = Exact<{
+  code: Scalars["String"];
+  authorityId: Scalars["Int"];
+}>;
+
+export type InvitationCodeCreateMutation = {
+  __typename?: "Mutation";
+  adminInvitationCodeCreate?: {
+    __typename?: "AdminInvitationCodeCreateMutation";
+    result?:
+      | {
+          __typename: "AdminInvitationCodeCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminInvitationCodeCreateSuccess";
+          id: string;
+          code: string;
+        }
+      | null;
+  } | null;
+};
+
+export type InvitationCodeUpdateMutationVariables = Exact<{
+  id: Scalars["ID"];
+  code: Scalars["String"];
+}>;
+
+export type InvitationCodeUpdateMutation = {
+  __typename?: "Mutation";
+  adminInvitationCodeUpdate?: {
+    __typename?: "AdminInvitationCodeUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminInvitationCodeUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminInvitationCodeUpdateSuccess";
+          id: string;
+          code: string;
+        }
+      | null;
+  } | null;
+};
+
+export type GetInvitationCodeQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type GetInvitationCodeQuery = {
+  __typename?: "Query";
+  invitationCode?: {
+    __typename?: "InvitationCodeType";
+    id: string;
+    code: string;
+    fromDate: any;
+    throughDate: any;
+    authority: { __typename?: "AdminAuthorityUpdateSuccess"; id: string };
   } | null;
 };
 
@@ -812,6 +1137,70 @@ export type ReportCategoriesQuery = {
   } | null;
 };
 
+export type ReportCategoryCreateMutationVariables = Exact<{
+  name: Scalars["String"];
+  ordering: Scalars["Int"];
+}>;
+
+export type ReportCategoryCreateMutation = {
+  __typename?: "Mutation";
+  adminCategoryCreate?: {
+    __typename?: "AdminCategoryCreateMutation";
+    result?:
+      | {
+          __typename: "AdminCategoryCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | { __typename: "AdminCategoryCreateSuccess"; id: string; name: string }
+      | null;
+  } | null;
+};
+
+export type ReportCategoryUpdateMutationVariables = Exact<{
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  ordering: Scalars["Int"];
+}>;
+
+export type ReportCategoryUpdateMutation = {
+  __typename?: "Mutation";
+  adminCategoryUpdate?: {
+    __typename?: "AdminCategoryUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminCategoryUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | { __typename: "AdminCategoryUpdateSuccess"; id: string; name: string }
+      | null;
+  } | null;
+};
+
+export type GetReportCategoryQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type GetReportCategoryQuery = {
+  __typename?: "Query";
+  category?: {
+    __typename?: "CategoryType";
+    id: string;
+    name: string;
+    ordering: number;
+    icon?: string | null;
+  } | null;
+};
+
 export type ReportTypesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
@@ -820,14 +1209,89 @@ export type ReportTypesQueryVariables = Exact<{
 
 export type ReportTypesQuery = {
   __typename?: "Query";
-  authorities?: {
-    __typename?: "AuthorityTypeNodeConnection";
+  adminReportTypeQuery?: {
+    __typename?: "AdminReportTypeQueryTypeNodeConnection";
     totalCount?: number | null;
     results: Array<{
-      __typename?: "AuthorityType";
-      id: string;
+      __typename?: "AdminReportTypeQueryType";
+      id: any;
       name: string;
+      definition: any;
+      ordering: number;
+      category: {
+        __typename?: "AdminCategoryUpdateSuccess";
+        id: string;
+        name: string;
+      };
     } | null>;
+  } | null;
+};
+
+export type ReportTypeCreateMutationVariables = Exact<{
+  categoryId: Scalars["Int"];
+  definition: Scalars["String"];
+  name: Scalars["String"];
+  ordering: Scalars["Int"];
+}>;
+
+export type ReportTypeCreateMutation = {
+  __typename?: "Mutation";
+  adminReportTypeCreate?: {
+    __typename?: "AdminReportTypeCreateMutation";
+    result?:
+      | {
+          __typename: "AdminReportTypeCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | { __typename: "AdminReportTypeCreateSuccess"; id: any; name: string }
+      | null;
+  } | null;
+};
+
+export type ReportTypeUpdateMutationVariables = Exact<{
+  id: Scalars["ID"];
+  categoryId: Scalars["Int"];
+  definition: Scalars["String"];
+  name: Scalars["String"];
+  ordering: Scalars["Int"];
+}>;
+
+export type ReportTypeUpdateMutation = {
+  __typename?: "Mutation";
+  adminReportTypeUpdate?: {
+    __typename?: "AdminReportTypeUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminReportTypeUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | { __typename: "AdminReportTypeUpdateSuccess"; id: any; name: string }
+      | null;
+  } | null;
+};
+
+export type GetReportTypeQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type GetReportTypeQuery = {
+  __typename?: "Query";
+  reportType?: {
+    __typename?: "ReportTypeType";
+    id: any;
+    name: string;
+    definition?: any | null;
+    ordering: number;
   } | null;
 };
 
@@ -839,14 +1303,104 @@ export type UsersQueryVariables = Exact<{
 
 export type UsersQuery = {
   __typename?: "Query";
-  authorities?: {
-    __typename?: "AuthorityTypeNodeConnection";
+  adminAuthorityUserQuery?: {
+    __typename?: "AdminAuthorityUserQueryTypeNodeConnection";
     totalCount?: number | null;
     results: Array<{
-      __typename?: "AuthorityType";
+      __typename?: "AdminAuthorityUserQueryType";
       id: string;
-      name: string;
+      username: string;
+      email: string;
+      firstName: string;
+      lastName: string;
     } | null>;
+  } | null;
+};
+
+export type UserCreateMutationVariables = Exact<{
+  authorityId: Scalars["Int"];
+  email: Scalars["String"];
+  firstName: Scalars["String"];
+  lastName: Scalars["String"];
+  password: Scalars["String"];
+  telephone?: InputMaybe<Scalars["String"]>;
+  username: Scalars["String"];
+}>;
+
+export type UserCreateMutation = {
+  __typename?: "Mutation";
+  adminAuthorityUserCreate?: {
+    __typename?: "AdminAuthorityUserCreateMutation";
+    result?:
+      | {
+          __typename: "AdminAuthorityUserCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminAuthorityUserCreateSuccess";
+          id: string;
+          username: string;
+        }
+      | null;
+  } | null;
+};
+
+export type UserUpdateMutationVariables = Exact<{
+  id: Scalars["ID"];
+  authorityId: Scalars["Int"];
+  email: Scalars["String"];
+  firstName: Scalars["String"];
+  lastName: Scalars["String"];
+  telephone?: InputMaybe<Scalars["String"]>;
+  username: Scalars["String"];
+}>;
+
+export type UserUpdateMutation = {
+  __typename?: "Mutation";
+  adminAuthorityUserUpdate?: {
+    __typename?: "AdminAuthorityUserUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminAuthorityUserUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminAuthorityUserUpdateSuccess";
+          id: string;
+          username: string;
+        }
+      | null;
+  } | null;
+};
+
+export type GetUserQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type GetUserQuery = {
+  __typename?: "Query";
+  authorityUser?: {
+    __typename?: "AuthorityUserType";
+    id: string;
+    username: string;
+    firstName: string;
+    lastName: string;
+    authority: {
+      __typename?: "AdminAuthorityUpdateSuccess";
+      id: string;
+      code: string;
+      name: string;
+    };
   } | null;
 };
 
@@ -1468,7 +2022,7 @@ export const InvitationCodesDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "nameStartWith" },
+            name: { kind: "Name", value: "codeStartWith" },
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
@@ -1478,7 +2032,7 @@ export const InvitationCodesDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "adminCategoryQuery" },
+            name: { kind: "Name", value: "adminInvitationCodeQuery" },
             arguments: [
               {
                 kind: "Argument",
@@ -1498,10 +2052,10 @@ export const InvitationCodesDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "name_Istartswith" },
+                name: { kind: "Name", value: "code_Istartswith" },
                 value: {
                   kind: "Variable",
-                  name: { kind: "Name", value: "nameStartWith" },
+                  name: { kind: "Name", value: "codeStartWith" },
                 },
               },
             ],
@@ -1516,7 +2070,7 @@ export const InvitationCodesDocument = {
                     kind: "SelectionSet",
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
-                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
                     ],
                   },
                 },
@@ -1530,6 +2084,346 @@ export const InvitationCodesDocument = {
 } as unknown as DocumentNode<
   InvitationCodesQuery,
   InvitationCodesQueryVariables
+>;
+export const InvitationCodeCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "InvitationCodeCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "code" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorityId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminInvitationCodeCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "code" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "code" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "authorityId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorityId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminInvitationCodeCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "code" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminInvitationCodeCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  InvitationCodeCreateMutation,
+  InvitationCodeCreateMutationVariables
+>;
+export const InvitationCodeUpdateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "InvitationCodeUpdate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "code" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminInvitationCodeUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "code" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "code" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminInvitationCodeUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "code" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminInvitationCodeUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  InvitationCodeUpdateMutation,
+  InvitationCodeUpdateMutationVariables
+>;
+export const GetInvitationCodeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetInvitationCode" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "invitationCode" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "authority" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "fromDate" } },
+                { kind: "Field", name: { kind: "Name", value: "throughDate" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetInvitationCodeQuery,
+  GetInvitationCodeQueryVariables
 >;
 export const MeDocument = {
   kind: "Document",
@@ -1569,7 +2463,7 @@ export const ReportCategoriesDocument = {
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "reportCategories" },
+      name: { kind: "Name", value: "ReportCategories" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -1665,13 +2559,362 @@ export const ReportCategoriesDocument = {
   ReportCategoriesQuery,
   ReportCategoriesQueryVariables
 >;
+export const ReportCategoryCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ReportCategoryCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminCategoryCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminCategoryCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminCategoryCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ReportCategoryCreateMutation,
+  ReportCategoryCreateMutationVariables
+>;
+export const ReportCategoryUpdateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ReportCategoryUpdate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminCategoryUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminCategoryUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminCategoryUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ReportCategoryUpdateMutation,
+  ReportCategoryUpdateMutationVariables
+>;
+export const GetReportCategoryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetReportCategory" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "category" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "ordering" } },
+                { kind: "Field", name: { kind: "Name", value: "icon" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetReportCategoryQuery,
+  GetReportCategoryQueryVariables
+>;
 export const ReportTypesDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "reportTypes" },
+      name: { kind: "Name", value: "ReportTypes" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -1709,7 +2952,7 @@ export const ReportTypesDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "authorities" },
+            name: { kind: "Name", value: "adminReportTypeQuery" },
             arguments: [
               {
                 kind: "Argument",
@@ -1748,6 +2991,31 @@ export const ReportTypesDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "category" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "definition" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "ordering" },
+                      },
                     ],
                   },
                 },
@@ -1759,13 +3027,441 @@ export const ReportTypesDocument = {
     },
   ],
 } as unknown as DocumentNode<ReportTypesQuery, ReportTypesQueryVariables>;
+export const ReportTypeCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ReportTypeCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "categoryId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "definition" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminReportTypeCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "categoryId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "categoryId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "definition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "definition" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminReportTypeCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminReportTypeCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ReportTypeCreateMutation,
+  ReportTypeCreateMutationVariables
+>;
+export const ReportTypeUpdateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ReportTypeUpdate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "categoryId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "definition" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminReportTypeUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "categoryId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "categoryId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "definition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "definition" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminReportTypeUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminReportTypeUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ReportTypeUpdateMutation,
+  ReportTypeUpdateMutationVariables
+>;
+export const GetReportTypeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetReportType" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "reportType" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "definition" } },
+                { kind: "Field", name: { kind: "Name", value: "ordering" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetReportTypeQuery, GetReportTypeQueryVariables>;
 export const UsersDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "users" },
+      name: { kind: "Name", value: "Users" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -1803,7 +3499,7 @@ export const UsersDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "authorities" },
+            name: { kind: "Name", value: "adminAuthorityUserQuery" },
             arguments: [
               {
                 kind: "Argument",
@@ -1823,7 +3519,7 @@ export const UsersDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "name_Istartswith" },
+                name: { kind: "Name", value: "username_Istartswith" },
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "nameStartWith" },
@@ -1841,7 +3537,23 @@ export const UsersDocument = {
                     kind: "SelectionSet",
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
-                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "email" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "firstName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "lastName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
+                      },
                     ],
                   },
                 },
@@ -1853,3 +3565,549 @@ export const UsersDocument = {
     },
   ],
 } as unknown as DocumentNode<UsersQuery, UsersQueryVariables>;
+export const UserCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UserCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorityId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "email" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "firstName" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "lastName" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "password" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "telephone" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "NullValue" },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "username" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAuthorityUserCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "authorityId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorityId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "email" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "email" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "firstName" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "firstName" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "lastName" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "lastName" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "password" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "password" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "telephone" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "telephone" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "username" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "username" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminAuthorityUserCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "username" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminAuthorityUserCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UserCreateMutation, UserCreateMutationVariables>;
+export const UserUpdateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UserUpdate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorityId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "email" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "firstName" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "lastName" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "telephone" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "NullValue" },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "username" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAuthorityUserUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "authorityId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorityId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "email" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "email" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "firstName" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "firstName" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "lastName" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "lastName" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "telephone" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "telephone" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "username" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "username" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminAuthorityUserUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "username" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminAuthorityUserUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UserUpdateMutation, UserUpdateMutationVariables>;
+export const GetUserDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetUser" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "authorityUser" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "authority" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetUserQuery, GetUserQueryVariables>;

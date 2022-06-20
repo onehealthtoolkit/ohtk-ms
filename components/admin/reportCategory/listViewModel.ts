@@ -1,22 +1,16 @@
-import { action, makeObservable, observable } from "mobx";
-import { client } from "lib/client";
-import { ApolloError } from "@apollo/client";
-import { ReportCategoriesDocument } from "lib/generated/graphql";
+import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
-
-type ReportCategory = {
-  id: string;
-  name: string;
-  icon: string;
-  ordering: number;
-};
+import {
+  IReportCategoryService,
+  ReportCategory,
+} from "lib/services/reportCategory";
 
 export class AdminReportCategoryListViewModel extends BaseViewModel {
   data: ReportCategory[] = [];
 
   searchText: string = "";
 
-  constructor() {
+  constructor(readonly reportCategorService: IReportCategoryService) {
     super();
     makeObservable(this, {
       data: observable,
@@ -36,48 +30,12 @@ export class AdminReportCategoryListViewModel extends BaseViewModel {
   }
 
   async fetch(): Promise<void> {
-    try {
-      const fetchResult = await client.query({
-        query: ReportCategoriesDocument,
-        variables: {
-          limit: 20,
-          offset: 0,
-          nameStartWith: this.searchText,
-        },
-        errorPolicy: "all",
-      });
-
-      const items = Array<ReportCategory>();
-      fetchResult.data.adminCategoryQuery?.results.forEach(item => {
-        if (item) {
-          items.push({
-            id: item.id,
-            name: item.name,
-            icon: item.icon || "",
-            ordering: item.ordering,
-          });
-        }
-      });
-      this.data = items;
-      this.setErrorMessage(undefined);
-    } catch (e) {
-      let message: string | undefined;
-      const errorResult = e as ApolloError;
-
-      if (errorResult.networkError) {
-        message = errorResult.networkError.message;
-      } else if (
-        errorResult.graphQLErrors &&
-        errorResult.graphQLErrors.length > 0
-      ) {
-        message = errorResult.graphQLErrors.map(err => err.message).join(",");
-      } else if (
-        errorResult.clientErrors &&
-        errorResult.clientErrors.length > 0
-      ) {
-        message = errorResult.clientErrors.map(err => err.message).join(",");
-      }
-      this.setErrorMessage(message);
+    const result = await this.reportCategorService.fetchReportCategories(
+      this.searchText
+    );
+    runInAction(() => (this.data = result.items || []));
+    if (result.error) {
+      this.setErrorMessage(result.error);
     }
   }
 }

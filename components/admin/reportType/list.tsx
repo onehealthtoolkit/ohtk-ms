@@ -6,14 +6,19 @@ import React, { useEffect, useState } from "react";
 import Filter from "./filter";
 import { AdminReportTypeListViewModel } from "./listViewModel";
 import ErrorDisplay from "components/widgets/errorDisplay";
+import useServices from "lib/services/provider";
 
 const ReportTypeList = () => {
+  const services = useServices();
   const router = useRouter();
   const [viewModel, setViewModel] = useState<AdminReportTypeListViewModel>();
   useEffect(() => {
-    const viewModel = new AdminReportTypeListViewModel();
+    const viewModel = new AdminReportTypeListViewModel(
+      services.reportTypeService
+    );
     setViewModel(viewModel);
-  }, []);
+    viewModel.fetch();
+  }, [services.reportTypeService]);
 
   if (viewModel === null) {
     return <Spinner />;
@@ -39,7 +44,7 @@ const ReportTypeList = () => {
         ]}
         data={viewModel?.data || []}
         onEdit={record =>
-          router.push(`/settings/report_types/edit/${record.id}`)
+          router.push(`/admin/report_types//${record.id}/update`)
         }
       />
       <ErrorDisplay message={viewModel?.errorMessage} />

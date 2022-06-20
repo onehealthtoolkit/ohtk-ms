@@ -6,14 +6,19 @@ import React, { useEffect, useState } from "react";
 import Filter from "./filter";
 import { AdminUserListViewModel } from "./listViewModel";
 import ErrorDisplay from "components/widgets/errorDisplay";
+import Link from "next/link";
+import { AddButton } from "components/widgets/forms";
+import useServices from "lib/services/provider";
 
-const AuthorityList = () => {
+const UserList = () => {
   const router = useRouter();
+  const services = useServices();
   const [viewModel, setViewModel] = useState<AdminUserListViewModel>();
   useEffect(() => {
-    const viewModel = new AdminUserListViewModel();
+    const viewModel = new AdminUserListViewModel(services.userService);
     setViewModel(viewModel);
-  }, []);
+    viewModel.fetch();
+  }, [services.userService]);
 
   if (viewModel === null) {
     return <Spinner />;
@@ -24,6 +29,10 @@ const AuthorityList = () => {
 
       <div className="flex items-center flex-wrap mb-4">
         <Filter viewModel={viewModel} />
+        <div className="flex-grow"></div>
+        <Link href={"/admin/users/create"} passHref>
+          <AddButton />
+        </Link>
       </div>
 
       <Table
@@ -33,24 +42,24 @@ const AuthorityList = () => {
             get: record => record.id,
           },
           {
-            label: "Name",
-            get: record => record.name,
-          },
-          {
             label: "First Name",
-            get: record => record.name,
+            get: record => record.firstName,
           },
           {
             label: "Last Name",
-            get: record => record.name,
+            get: record => record.lastName,
+          },
+          {
+            label: "Email",
+            get: record => record.email,
           },
         ]}
         data={viewModel?.data || []}
-        onEdit={record => router.push(`/settings/users/edit/${record.id}`)}
+        onEdit={record => router.push(`/admin/users/${record.id}/update`)}
       />
       <ErrorDisplay message={viewModel?.errorMessage} />
     </div>
   );
 };
 
-export default observer(AuthorityList);
+export default observer(UserList);

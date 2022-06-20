@@ -1,8 +1,6 @@
-import { action, makeObservable, observable } from "mobx";
-import { client } from "lib/client";
-import { ApolloError } from "@apollo/client";
-import { InvitationCodesDocument } from "lib/generated/graphql";
+import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
+import { IInvitationCodeService } from "lib/services/invitationCode";
 
 type InvitationCode = {
   id: string;
@@ -14,7 +12,7 @@ export class InvitaionCodeViewModel extends BaseViewModel {
 
   searchText: string = "";
 
-  constructor() {
+  constructor(readonly invitationCodeService: IInvitationCodeService) {
     super();
     makeObservable(this, {
       data: observable,
@@ -34,46 +32,12 @@ export class InvitaionCodeViewModel extends BaseViewModel {
   }
 
   async fetch(): Promise<void> {
-    try {
-      const fetchResult = await client.query({
-        query: InvitationCodesDocument,
-        variables: {
-          limit: 20,
-          offset: 0,
-          nameStartWith: this.searchText,
-        },
-        errorPolicy: "all",
-      });
-
-      const items = Array<InvitationCode>();
-      fetchResult.data.adminCategoryQuery?.results.forEach(item => {
-        if (item) {
-          items.push({
-            id: item.id,
-            code: item.name,
-          });
-        }
-      });
-      this.data = items;
-      this.setErrorMessage(undefined);
-    } catch (e) {
-      let message: string | undefined;
-      const errorResult = e as ApolloError;
-
-      if (errorResult.networkError) {
-        message = errorResult.networkError.message;
-      } else if (
-        errorResult.graphQLErrors &&
-        errorResult.graphQLErrors.length > 0
-      ) {
-        message = errorResult.graphQLErrors.map(err => err.message).join(",");
-      } else if (
-        errorResult.clientErrors &&
-        errorResult.clientErrors.length > 0
-      ) {
-        message = errorResult.clientErrors.map(err => err.message).join(",");
-      }
-      this.setErrorMessage(message);
+    const result = await this.invitationCodeService.fetchInvitationCodes(
+      this.searchText
+    );
+    runInAction(() => (this.data = result.items || []));
+    if (result.error) {
+      this.setErrorMessage(result.error);
     }
   }
 }

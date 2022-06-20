@@ -1,4 +1,4 @@
-query reportCategories($limit: Int!, $offset: Int!, $nameStartWith: String) {
+query ReportCategories($limit: Int!, $offset: Int!, $nameStartWith: String) {
   adminCategoryQuery(
     limit: $limit
     offset: $offset
@@ -11,5 +11,52 @@ query reportCategories($limit: Int!, $offset: Int!, $nameStartWith: String) {
       icon
       ordering
     }
+  }
+}
+
+mutation ReportCategoryCreate($name: String!, $ordering: Int!) {
+  adminCategoryCreate(name: $name, ordering: $ordering) {
+    result {
+      __typename
+      ... on AdminCategoryCreateSuccess {
+        id
+        name
+      }
+      ... on AdminCategoryCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation ReportCategoryUpdate($id: ID!, $name: String!, $ordering: Int!) {
+  adminCategoryUpdate(id: $id, name: $name, ordering: $ordering) {
+    result {
+      __typename
+      ... on AdminCategoryUpdateSuccess {
+        id
+        name
+      }
+      ... on AdminCategoryUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+query GetReportCategory($id: ID!) {
+  category(id: $id) {
+    id
+    name
+    ordering
+    icon
   }
 }
