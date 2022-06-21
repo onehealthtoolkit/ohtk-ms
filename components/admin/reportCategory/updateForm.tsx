@@ -34,6 +34,7 @@ const ReportCategoryUpdateForm = ({
   useEffect(() => {
     if (data) {
       viewModel.name = data.name;
+      viewModel.ordering = data.ordering;
     }
   }, [data, viewModel]);
 
@@ -59,7 +60,18 @@ const ReportCategoryUpdateForm = ({
           />
           <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
         </Field>
-        <></>
+        <Field $size="half">
+          <Label htmlFor="ordering">Ordering</Label>
+          <TextInput
+            id="ordering"
+            type="number"
+            placeholder="Ordering"
+            onChange={evt => (viewModel.ordering = +evt.target.value)}
+            disabled={viewModel.isSubmitting}
+            value={viewModel.ordering}
+          />
+          <ErrorText>{viewModel.fieldErrors.ordering}</ErrorText>
+        </Field>
       </FieldGroup>
       {viewModel.submitError.length > 0 && (
         <FormMessage>{viewModel.submitError}</FormMessage>

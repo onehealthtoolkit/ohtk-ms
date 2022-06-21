@@ -18,12 +18,14 @@ export interface IReportTypeService extends IService {
   getReportType(id: string): Promise<GetResult<ReportType>>;
   createReportType(
     name: string,
+    categoryId: number,
     definition: string,
     ordering: number
   ): Promise<SaveResult<ReportType>>;
   updateReportType(
     id: string,
     name: string,
+    categoryId: number,
     definition: string,
     ordering: number
   ): Promise<SaveResult<ReportType>>;
@@ -53,6 +55,7 @@ export class ReportTypeService implements IReportTypeService {
           id: item.id,
           name: item.name,
           definition: item.definition,
+          categoryId: +item.category.id,
           ordering: item.ordering,
         });
       }
@@ -76,7 +79,8 @@ export class ReportTypeService implements IReportTypeService {
       data = {
         id: reportType.id,
         name: reportType.name,
-        definition: reportType.definition,
+        categoryId: +reportType.category.id,
+        definition: JSON.stringify(reportType.definition),
         ordering: reportType.ordering,
       };
     }
@@ -87,6 +91,7 @@ export class ReportTypeService implements IReportTypeService {
 
   async createReportType(
     name: string,
+    categoryId: number,
     definition: string,
     ordering: number
   ): Promise<SaveResult<ReportType>> {
@@ -94,7 +99,7 @@ export class ReportTypeService implements IReportTypeService {
       mutation: ReportTypeCreateDocument,
       variables: {
         name,
-        categoryId: 0,
+        categoryId: categoryId,
         definition: definition,
         ordering: ordering,
       },
@@ -139,6 +144,7 @@ export class ReportTypeService implements IReportTypeService {
   async updateReportType(
     id: string,
     name: string,
+    categoryId: number,
     definition: string,
     ordering: number
   ): Promise<SaveResult<ReportType>> {
@@ -147,7 +153,7 @@ export class ReportTypeService implements IReportTypeService {
       variables: {
         id,
         name,
-        categoryId: 0,
+        categoryId: categoryId,
         definition: definition,
         ordering: ordering,
       },

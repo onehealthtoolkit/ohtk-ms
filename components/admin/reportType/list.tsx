@@ -7,6 +7,8 @@ import Filter from "./filter";
 import { AdminReportTypeListViewModel } from "./listViewModel";
 import ErrorDisplay from "components/widgets/errorDisplay";
 import useServices from "lib/services/provider";
+import Link from "next/link";
+import { AddButton } from "components/widgets/forms";
 
 const ReportTypeList = () => {
   const services = useServices();
@@ -29,6 +31,10 @@ const ReportTypeList = () => {
 
       <div className="flex items-center flex-wrap mb-4">
         <Filter viewModel={viewModel} />
+        <div className="flex-grow"></div>
+        <Link href={"/admin/report_types/create"} passHref>
+          <AddButton />
+        </Link>
       </div>
 
       <Table
@@ -44,7 +50,7 @@ const ReportTypeList = () => {
         ]}
         data={viewModel?.data || []}
         onEdit={record =>
-          router.push(`/admin/report_types//${record.id}/update`)
+          router.push(`/admin/report_types/${record.id}/update`)
         }
       />
       <ErrorDisplay message={viewModel?.errorMessage} />

@@ -16,14 +16,15 @@ import {
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
+import useStore from "lib/store";
 
 const UserCreateForm = () => {
+  const { me } = useStore();
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new AdminUserFormViewModel(services.userService)
+    new AdminUserFormViewModel(services.userService, me!.authorityId)
   );
-
   const isSubmitting = viewModel.isSubmitting;
   const errors = viewModel.fieldErrors;
 
@@ -45,6 +46,7 @@ const UserCreateForm = () => {
             placeholder="Authority"
             onChange={evt => (viewModel.authorityId = +evt.target.value)}
             disabled={isSubmitting}
+            value={viewModel.authorityId}
           />
           <ErrorText>{errors.authorityId}</ErrorText>
         </Field>

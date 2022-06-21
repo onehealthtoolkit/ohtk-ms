@@ -29,10 +29,13 @@ const UserUpdateForm = ({ data }: { data: FormValues | undefined }) => {
   const errors = viewModel.fieldErrors;
 
   useEffect(() => {
-    console.log("wat", data);
     if (data) {
+      viewModel.authorityId = data.authorityId!;
+      viewModel.username = data.username;
       viewModel.firstName = data.firstName;
       viewModel.lastName = data.lastName;
+      viewModel.email = data.email;
+      console.log("data", data, viewModel.authorityId);
     }
   }, [data, viewModel]);
 
@@ -46,6 +49,18 @@ const UserUpdateForm = ({ data }: { data: FormValues | undefined }) => {
       }}
     >
       <FieldGroup>
+        <Field $size="half">
+          <Label htmlFor="username">User Name</Label>
+          <TextInput
+            id="username"
+            type="text"
+            placeholder="User Name"
+            onChange={evt => (viewModel.username = evt.target.value)}
+            disabled={viewModel.isSubmitting}
+            value={viewModel.username}
+          />
+          <ErrorText>{errors.firstName}</ErrorText>
+        </Field>
         <Field $size="half">
           <Label htmlFor="firstName">First Name</Label>
           <TextInput
@@ -78,6 +93,7 @@ const UserUpdateForm = ({ data }: { data: FormValues | undefined }) => {
             placeholder="Email"
             onChange={evt => (viewModel.email = evt.target.value)}
             disabled={viewModel.isSubmitting}
+            value={viewModel.email}
           />
           <ErrorText>{errors.userName}</ErrorText>
         </Field>

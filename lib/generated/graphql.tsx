@@ -480,9 +480,11 @@ export type AuthorityUserRegisterMutation = {
 export type AuthorityUserType = {
   __typename?: "AuthorityUserType";
   authority: AdminAuthorityUpdateSuccess;
+  email: Scalars["String"];
   firstName: Scalars["String"];
   id: Scalars["ID"];
   lastName: Scalars["String"];
+  telephone?: Maybe<Scalars["String"]>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
   username: Scalars["String"];
 };
@@ -604,12 +606,16 @@ export type MutationAdminCategoryUpdateArgs = {
 export type MutationAdminInvitationCodeCreateArgs = {
   authorityId: Scalars["Int"];
   code: Scalars["String"];
+  fromDate: Scalars["DateTime"];
   inherits?: InputMaybe<Array<InputMaybe<Scalars["Int"]>>>;
+  throughDate: Scalars["DateTime"];
 };
 
 export type MutationAdminInvitationCodeUpdateArgs = {
   code: Scalars["String"];
+  fromDate?: InputMaybe<Scalars["DateTime"]>;
   id: Scalars["ID"];
+  throughDate?: InputMaybe<Scalars["DateTime"]>;
 };
 
 export type MutationAdminReportTypeCreateArgs = {
@@ -1033,6 +1039,8 @@ export type InvitationCodesQuery = {
 export type InvitationCodeCreateMutationVariables = Exact<{
   code: Scalars["String"];
   authorityId: Scalars["Int"];
+  fromDate: Scalars["DateTime"];
+  throughDate: Scalars["DateTime"];
 }>;
 
 export type InvitationCodeCreateMutation = {
@@ -1061,6 +1069,8 @@ export type InvitationCodeCreateMutation = {
 export type InvitationCodeUpdateMutationVariables = Exact<{
   id: Scalars["ID"];
   code: Scalars["String"];
+  fromDate?: InputMaybe<Scalars["DateTime"]>;
+  throughDate?: InputMaybe<Scalars["DateTime"]>;
 }>;
 
 export type InvitationCodeUpdateMutation = {
@@ -1112,6 +1122,7 @@ export type MeQuery = {
     username: string;
     firstName: string;
     lastName: string;
+    authorityId?: number | null;
     authorityName?: string | null;
   } | null;
 };
@@ -1292,6 +1303,11 @@ export type GetReportTypeQuery = {
     name: string;
     definition?: any | null;
     ordering: number;
+    category: {
+      __typename?: "AdminCategoryUpdateSuccess";
+      id: string;
+      name: string;
+    };
   } | null;
 };
 
@@ -1395,6 +1411,7 @@ export type GetUserQuery = {
     username: string;
     firstName: string;
     lastName: string;
+    email: string;
     authority: {
       __typename?: "AdminAuthorityUpdateSuccess";
       id: string;
@@ -2115,6 +2132,34 @@ export const InvitationCodeCreateDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "fromDate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "DateTime" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "throughDate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "DateTime" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -2137,6 +2182,22 @@ export const InvitationCodeCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "authorityId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "fromDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "fromDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "throughDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "throughDate" },
                 },
               },
             ],
@@ -2253,6 +2314,28 @@ export const InvitationCodeUpdateDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "fromDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "throughDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -2275,6 +2358,22 @@ export const InvitationCodeUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "code" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "fromDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "fromDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "throughDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "throughDate" },
                 },
               },
             ],
@@ -2445,6 +2544,7 @@ export const MeDocument = {
                 { kind: "Field", name: { kind: "Name", value: "username" } },
                 { kind: "Field", name: { kind: "Name", value: "firstName" } },
                 { kind: "Field", name: { kind: "Name", value: "lastName" } },
+                { kind: "Field", name: { kind: "Name", value: "authorityId" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "authorityName" },
@@ -3446,6 +3546,17 @@ export const GetReportTypeDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "name" } },
                 { kind: "Field", name: { kind: "Name", value: "definition" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
                 { kind: "Field", name: { kind: "Name", value: "ordering" } },
               ],
             },
@@ -4091,6 +4202,7 @@ export const GetUserDocument = {
                 { kind: "Field", name: { kind: "Name", value: "username" } },
                 { kind: "Field", name: { kind: "Name", value: "firstName" } },
                 { kind: "Field", name: { kind: "Name", value: "lastName" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "authority" },

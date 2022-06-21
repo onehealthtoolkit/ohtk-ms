@@ -8,12 +8,15 @@ import { BaseFormViewModel } from "lib/baseFormViewModel";
 
 export class AdminReportCategoryFormViewModel extends BaseFormViewModel {
   _name: string = "";
+  _ordering: number = 0;
 
   constructor(readonly reportCategoryService: IReportCategoryService) {
     super();
     makeObservable(this, {
       _name: observable,
       name: computed,
+      _ordering: observable,
+      ordering: computed,
       save: action,
       validate: action,
     });
@@ -30,6 +33,17 @@ export class AdminReportCategoryFormViewModel extends BaseFormViewModel {
     }
   }
 
+  public get ordering(): number {
+    return this._ordering;
+  }
+  public set ordering(value: number) {
+    this._ordering = value;
+    delete this.fieldErrors["ordering"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
   public async save(id?: string): Promise<boolean> {
     this.isSubmitting = true;
 
@@ -38,13 +52,13 @@ export class AdminReportCategoryFormViewModel extends BaseFormViewModel {
       if (!id) {
         result = await this.reportCategoryService.createReportCategory(
           this.name,
-          ""
+          this.ordering
         );
       } else {
         result = await this.reportCategoryService.updateReportCategory(
           id,
           this.name,
-          ""
+          this.ordering
         );
       }
       this.isSubmitting = false;

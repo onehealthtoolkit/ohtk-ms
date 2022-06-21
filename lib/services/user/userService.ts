@@ -58,9 +58,11 @@ export class UserService implements IUserService {
       if (item) {
         items.push({
           id: item.id,
-          firstName: item.username,
-          lastName: item.username,
+          username: item.username,
+          firstName: item.firstName,
+          lastName: item.lastName,
           email: item.email,
+          authorityId: 0,
         });
       }
     });
@@ -75,6 +77,7 @@ export class UserService implements IUserService {
       variables: {
         id,
       },
+      fetchPolicy: "network-only",
     });
 
     let data;
@@ -82,9 +85,11 @@ export class UserService implements IUserService {
     if (user) {
       data = {
         id: user.id,
+        username: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
-        email: "",
+        email: user.email,
+        authorityId: +user.authority.id,
       };
     }
     return {

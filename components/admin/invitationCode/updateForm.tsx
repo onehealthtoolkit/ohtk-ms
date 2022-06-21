@@ -34,6 +34,14 @@ const InvitationCodeUpdateForm = ({
   useEffect(() => {
     if (data) {
       viewModel.code = data.code;
+      if (data.fromDate)
+        viewModel.fromDate = new Date(data.fromDate)
+          .toISOString()
+          .split("T")[0];
+      if (data.throughDate)
+        viewModel.throughDate = new Date(data.throughDate)
+          .toISOString()
+          .split("T")[0];
     }
   }, [data, viewModel]);
 
@@ -59,7 +67,32 @@ const InvitationCodeUpdateForm = ({
           />
           <ErrorText>{viewModel.fieldErrors.code}</ErrorText>
         </Field>
-        <></>
+        <Field $size="half">
+          <Label htmlFor="fromDate">From Date</Label>
+          <TextInput
+            id="fromDate"
+            type="date"
+            placeholder="From Date"
+            pattern="\d{4}-\d{2}-\d{2}"
+            onChange={evt => (viewModel.fromDate = evt.target.value)}
+            disabled={viewModel.isSubmitting}
+            value={viewModel.fromDate}
+          />
+          <ErrorText>{viewModel.fieldErrors.code}</ErrorText>
+        </Field>
+        <Field $size="half">
+          <Label htmlFor="throughDate">Through Date</Label>
+          <TextInput
+            id="throughDate"
+            type="date"
+            placeholder="Through Date"
+            pattern="\d{4}-\d{2}-\d{2}"
+            onChange={evt => (viewModel.throughDate = evt.target.value)}
+            disabled={viewModel.isSubmitting}
+            value={viewModel.throughDate}
+          />
+          <ErrorText>{viewModel.fieldErrors.code}</ErrorText>
+        </Field>
       </FieldGroup>
       {viewModel.submitError.length > 0 && (
         <FormMessage>{viewModel.submitError}</FormMessage>

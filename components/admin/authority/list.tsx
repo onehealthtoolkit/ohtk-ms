@@ -9,20 +9,38 @@ import ErrorDisplay from "components/widgets/errorDisplay";
 import useServices from "lib/services/provider";
 import Link from "next/link";
 import { AddButton } from "components/widgets/forms";
+import {
+  NumberParam,
+  StringParam,
+  useSearchParams,
+} from "components/hooks/searchParam";
+import Paginate from "components/widgets/table/paginate";
 
 const AuthorityList = () => {
   const router = useRouter();
-  const services = useServices();
-  const [viewModel, setViewModel] = useState<AdminAuthorityListViewModel>();
-  useEffect(() => {
-    const viewModel = new AdminAuthorityListViewModel(
-      services.authorityService
-    );
-    setViewModel(viewModel);
-    viewModel.fetch();
-  }, [services.authorityService]);
+  const { authorityService } = useServices();
 
-  if (viewModel === null) {
+  const [searchValue, onSearchChange] = useSearchParams({
+    q: StringParam,
+    limit: NumberParam,
+    offset: NumberParam,
+  });
+  const [viewModel] = useState<AdminAuthorityListViewModel>(
+    new AdminAuthorityListViewModel(
+      authorityService,
+      searchValue.q as string,
+      searchValue.offset as number
+    )
+  );
+
+  useEffect(() => {
+    viewModel.setSearchValue(
+      searchValue.q as string,
+      searchValue.offset as number
+    );
+  }, [searchValue, viewModel]);
+
+  if (!viewModel) {
     return <Spinner />;
   }
   return (
@@ -30,7 +48,10 @@ const AuthorityList = () => {
       <div className="mb-4">&gt;&gt; Authorities</div>
 
       <div className="flex items-center flex-wrap mb-4">
-        <Filter viewModel={viewModel} />
+        <Filter
+          nameSearch={viewModel.nameSearch}
+          onChange={value => onSearchChange("q", value)}
+        />
         <div className="flex-grow"></div>
         <Link href={"/admin/authorities/create"} passHref>
           <AddButton />
@@ -48,10 +69,17 @@ const AuthorityList = () => {
             get: record => record.name,
           },
         ]}
-        data={viewModel?.data || []}
+        data={viewModel.data || []}
         onEdit={record => router.push(`/admin/authorities/${record.id}/update`)}
       />
-      <ErrorDisplay message={viewModel?.errorMessage} />
+      <ErrorDisplay message={viewModel.errorMessage} />
+
+      <Paginate
+        offset={viewModel.offset}
+        limit={viewModel.limit}
+        totalCount={viewModel.totalCount}
+        onChange={value => onSearchChange("offset", value)}
+      />
     </div>
   );
 };

@@ -12,8 +12,18 @@ query invitationCodes($limit: Int!, $offset: Int!, $codeStartWith: String) {
   }
 }
 
-mutation InvitationCodeCreate($code: String!, $authorityId: Int!) {
-  adminInvitationCodeCreate(code: $code, authorityId: $authorityId) {
+mutation InvitationCodeCreate(
+  $code: String!
+  $authorityId: Int!
+  $fromDate: DateTime!
+  $throughDate: DateTime!
+) {
+  adminInvitationCodeCreate(
+    code: $code
+    authorityId: $authorityId
+    fromDate: $fromDate
+    throughDate: $throughDate
+  ) {
     result {
       __typename
       ... on AdminInvitationCodeCreateSuccess {
@@ -31,8 +41,18 @@ mutation InvitationCodeCreate($code: String!, $authorityId: Int!) {
   }
 }
 
-mutation InvitationCodeUpdate($id: ID!, $code: String!) {
-  adminInvitationCodeUpdate(id: $id, code: $code) {
+mutation InvitationCodeUpdate(
+  $id: ID!
+  $code: String!
+  $fromDate: DateTime
+  $throughDate: DateTime
+) {
+  adminInvitationCodeUpdate(
+    id: $id
+    code: $code
+    fromDate: $fromDate
+    throughDate: $throughDate
+  ) {
     result {
       __typename
       ... on AdminInvitationCodeUpdateSuccess {

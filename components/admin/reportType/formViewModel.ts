@@ -5,12 +5,21 @@ import { BaseFormViewModel } from "lib/baseFormViewModel";
 
 export class AdminReportTypeFormViewModel extends BaseFormViewModel {
   _name: string = "";
+  _categoryId: number = 0;
+  _definition: string = "";
+  _ordering: number = 0;
 
   constructor(readonly reportTypeService: IReportTypeService) {
     super();
     makeObservable(this, {
       _name: observable,
       name: computed,
+      _categoryId: observable,
+      categoryId: computed,
+      _definition: observable,
+      definition: computed,
+      _ordering: observable,
+      ordering: computed,
       save: action,
       validate: action,
     });
@@ -27,6 +36,39 @@ export class AdminReportTypeFormViewModel extends BaseFormViewModel {
     }
   }
 
+  public get categoryId(): number {
+    return this._categoryId;
+  }
+  public set categoryId(value: number) {
+    this._categoryId = value;
+    delete this.fieldErrors["categoryId"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public get definition(): string {
+    return this._definition;
+  }
+  public set definition(value: string) {
+    this._definition = value;
+    delete this.fieldErrors["definition"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public get ordering(): number {
+    return this._ordering;
+  }
+  public set ordering(value: number) {
+    this._ordering = value;
+    delete this.fieldErrors["_rdering"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
   public async save(id?: string): Promise<boolean> {
     this.isSubmitting = true;
 
@@ -35,15 +77,17 @@ export class AdminReportTypeFormViewModel extends BaseFormViewModel {
       if (!id) {
         result = await this.reportTypeService.createReportType(
           this.name,
-          "",
-          0
+          this.categoryId,
+          this.definition,
+          this.ordering
         );
       } else {
         result = await this.reportTypeService.updateReportType(
           id,
           this.name,
-          "",
-          0
+          this.categoryId,
+          this.definition,
+          this.ordering
         );
       }
       this.isSubmitting = false;

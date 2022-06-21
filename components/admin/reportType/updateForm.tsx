@@ -12,11 +12,13 @@ import {
   FormMessage,
   Label,
   SaveButton,
+  Select,
   TextInput,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import { ReportType } from "lib/services/reportType";
 import useServices from "lib/services/provider";
+import { ReportCategory } from "lib/services/reportCategory";
 
 type FormValues = ReportType;
 
@@ -30,8 +32,23 @@ const ReportTypeUpdateForm = ({ data }: { data: FormValues | undefined }) => {
   useEffect(() => {
     if (data) {
       viewModel.name = data.name;
+      viewModel.definition = data.definition;
+      viewModel.categoryId = data.categoryId;
+      viewModel.ordering = data.ordering;
     }
   }, [data, viewModel]);
+
+  const [categories, setCategories] = useState<ReportCategory[]>();
+
+  useEffect(() => {
+    async function loadData() {
+      const result = await services.reportCategoryService.fetchReportCategories(
+        ""
+      );
+      setCategories(result.items);
+    }
+    loadData();
+  }, [router.query, services.reportTypeService]);
 
   return (
     <Form
@@ -55,7 +72,51 @@ const ReportTypeUpdateForm = ({ data }: { data: FormValues | undefined }) => {
           />
           <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
         </Field>
-        <></>
+        <Field $size="half">
+          <Label htmlFor="name">Definition</Label>
+          <TextInput
+            id="definition"
+            type="text"
+            placeholder="Definition"
+            onChange={evt => (viewModel.definition = evt.target.value)}
+            disabled={viewModel.isSubmitting}
+            value={viewModel.definition}
+          />
+          <ErrorText>{viewModel.fieldErrors.definition}</ErrorText>
+        </Field>
+
+        <Field $size="half">
+          <Label htmlFor="category">Category</Label>
+          <Select
+            id="category"
+            placeholder="Category"
+            onChange={evt => (viewModel.categoryId = +evt.target.value)}
+            disabled={viewModel.isSubmitting}
+            value={viewModel.categoryId}
+          >
+            <option value={""} disabled>
+              Select item ...
+            </option>
+            {categories?.map(item => (
+              <option key={`option-${item.id}`} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </Select>
+          <ErrorText>{viewModel.fieldErrors.categoryId}</ErrorText>
+        </Field>
+        <Field $size="half">
+          <Label htmlFor="ordering">Ordering</Label>
+          <TextInput
+            id="ordering"
+            type="number"
+            placeholder="Ordering"
+            onChange={evt => (viewModel.ordering = +evt.target.value)}
+            disabled={viewModel.isSubmitting}
+            value={viewModel.ordering}
+          />
+          <ErrorText>{viewModel.fieldErrors.ordering}</ErrorText>
+        </Field>
       </FieldGroup>
       {viewModel.submitError.length > 0 && (
         <FormMessage>{viewModel.submitError}</FormMessage>

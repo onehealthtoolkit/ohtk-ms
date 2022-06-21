@@ -12,8 +12,9 @@ export class AdminUserFormViewModel extends BaseFormViewModel {
   _email: string = "";
   _telephone: string = "";
 
-  constructor(readonly userService: IUserService) {
+  constructor(readonly userService: IUserService, authorityId?: number) {
     super();
+    if (authorityId) this.authorityId = authorityId;
     makeObservable(this, {
       _authorityId: observable,
       authorityId: computed,
@@ -111,6 +112,8 @@ export class AdminUserFormViewModel extends BaseFormViewModel {
           this.telephone
         );
       } else {
+        console.log("save", this.authorityId);
+
         result = await this.userService.updateUser(
           id,
           this.authorityId,

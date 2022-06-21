@@ -92,6 +92,7 @@ query GetUser($id: ID!) {
     username
     firstName
     lastName
+    email
     authority {
       id
       code

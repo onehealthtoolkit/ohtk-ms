@@ -19,13 +19,13 @@ export interface IReportCategoryService extends IService {
   ): Promise<QueryResult<ReportCategory[]>>;
   getReportCategory(id: string): Promise<GetResult<ReportCategory>>;
   createReportCategory(
-    code: string,
-    name: string
+    name: string,
+    ordering: number
   ): Promise<SaveResult<ReportCategory>>;
   updateReportCategory(
     id: string,
-    code: string,
-    name: string
+    name: string,
+    ordering: number
   ): Promise<SaveResult<ReportCategory>>;
 }
 
@@ -52,6 +52,7 @@ export class ReportCategoryService implements IReportCategoryService {
         items.push({
           id: item.id,
           name: item.name,
+          ordering: item.ordering,
         });
       }
     });
@@ -74,6 +75,7 @@ export class ReportCategoryService implements IReportCategoryService {
       data = {
         id: reportCategory.id,
         name: reportCategory.name,
+        ordering: reportCategory.ordering,
       };
     }
     return {
@@ -82,15 +84,14 @@ export class ReportCategoryService implements IReportCategoryService {
   }
 
   async createReportCategory(
-    code: string,
-    name: string
+    name: string,
+    ordering: number
   ): Promise<SaveResult<ReportCategory>> {
     const createResult = await this.client.mutate({
       mutation: ReportCategoryCreateDocument,
       variables: {
-        code,
         name,
-        ordering: 0,
+        ordering: ordering,
       },
       refetchQueries: [
         {
@@ -132,15 +133,15 @@ export class ReportCategoryService implements IReportCategoryService {
 
   async updateReportCategory(
     id: string,
-    code: string,
-    name: string
+    name: string,
+    ordering: number
   ): Promise<SaveResult<ReportCategory>> {
     const updateResult = await this.client.mutate({
       mutation: ReportCategoryUpdateDocument,
       variables: {
         id,
         name,
-        ordering: 0,
+        ordering: ordering,
       },
       refetchQueries: [
         {

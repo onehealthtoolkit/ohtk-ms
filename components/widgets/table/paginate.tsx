@@ -1,40 +1,32 @@
-import React from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
+import { observer } from "mobx-react";
+import React from "react";
 import tw from "tailwind-styled-components";
 
 const iconClassName = "h-5 w-5 text-gray-300";
-
-export type PaginateQueryVariableState = {
-  limit: number;
-  offset: number;
-};
-
-export const initPaginateQueryVariableState: PaginateQueryVariableState = {
-  limit: 20,
-  offset: 0,
-};
 
 const Btn = tw.button`
   btn text-white bg-blue-400 disabled:bg-slate-50 px-4 py-2
 `;
 
 type PaginateProps = {
-  queryState: PaginateQueryVariableState;
+  limit: number;
+  offset: number;
   totalCount: number;
-  setQueryState: (state: PaginateQueryVariableState) => void;
+  onChange?: (value: number) => void;
 };
 
 const Paginate: React.FC<PaginateProps> = ({
-  queryState,
+  limit,
+  offset,
   totalCount,
-  setQueryState,
+  onChange,
 }) => {
-  const { limit, offset } = queryState;
   let numberOfPages = Math.floor(totalCount / limit);
   if (totalCount % limit > 0) {
     numberOfPages = numberOfPages + 1;
   }
-  const currentPages = offset / limit + 1;
+  const currentPages = Math.floor(offset / limit) + 1;
   const hasPrevious = currentPages > 1;
   const hasNext = currentPages < numberOfPages;
 
@@ -42,10 +34,8 @@ const Paginate: React.FC<PaginateProps> = ({
     <div className="flex items-center">
       <Btn
         onClick={() => {
-          setQueryState({
-            limit,
-            offset: offset - limit,
-          });
+          const startIndex = offset - limit;
+          onChange && onChange(startIndex);
         }}
         disabled={!hasPrevious}
       >
@@ -57,10 +47,8 @@ const Paginate: React.FC<PaginateProps> = ({
       </div>
       <Btn
         onClick={() => {
-          setQueryState({
-            limit,
-            offset: offset + limit,
-          });
+          const startIndex = offset + limit;
+          onChange && onChange(startIndex);
         }}
         disabled={!hasNext}
       >
@@ -70,4 +58,4 @@ const Paginate: React.FC<PaginateProps> = ({
   );
 };
 
-export default Paginate;
+export default observer(Paginate);

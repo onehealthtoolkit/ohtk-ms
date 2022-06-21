@@ -42,6 +42,10 @@ const UserList = () => {
             get: record => record.id,
           },
           {
+            label: "User Name",
+            get: record => record.username,
+          },
+          {
             label: "First Name",
             get: record => record.firstName,
           },

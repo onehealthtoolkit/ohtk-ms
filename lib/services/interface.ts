@@ -2,6 +2,7 @@ export interface IService {}
 
 export type QueryResult<T> = {
   items: T | undefined;
+  totalCount?: number | null | undefined;
   error?: string;
 };
 

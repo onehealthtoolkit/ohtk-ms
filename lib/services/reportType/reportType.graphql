@@ -83,6 +83,10 @@ query GetReportType($id: ID!) {
     id
     name
     definition
+    category {
+      id
+      name
+    }
     ordering
   }
 }

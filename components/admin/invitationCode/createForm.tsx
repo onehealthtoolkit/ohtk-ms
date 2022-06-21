@@ -16,12 +16,17 @@ import {
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
+import useStore from "lib/store";
 
 const InvitationCodeCreateForm = () => {
   const router = useRouter();
   const services = useServices();
+  const { me } = useStore();
   const [viewModel] = useState(
-    new AdminInvitationCodeFormViewModel(services.invitationCodeService)
+    new AdminInvitationCodeFormViewModel(
+      services.invitationCodeService,
+      me!.authorityId
+    )
   );
 
   const isSubmitting = viewModel.isSubmitting;
@@ -48,7 +53,30 @@ const InvitationCodeCreateForm = () => {
           />
           <ErrorText>{errors.code}</ErrorText>
         </Field>
-        <></>
+        <Field $size="half">
+          <Label htmlFor="fromDate">From Date</Label>
+          <TextInput
+            id="fromDate"
+            type="date"
+            placeholder="From Date"
+            pattern="\d{4}-\d{2}-\d{2}"
+            onChange={evt => (viewModel.fromDate = evt.target.value)}
+            disabled={isSubmitting}
+          />
+          <ErrorText>{viewModel.fieldErrors.fromDate}</ErrorText>
+        </Field>
+        <Field $size="half">
+          <Label htmlFor="throughDate">Through Date</Label>
+          <TextInput
+            id="throughDate"
+            type="date"
+            placeholder="Through Date"
+            pattern="\d{4}-\d{2}-\d{2}"
+            onChange={evt => (viewModel.throughDate = evt.target.value)}
+            disabled={isSubmitting}
+          />
+          <ErrorText>{viewModel.fieldErrors.fromDate}</ErrorText>
+        </Field>
       </FieldGroup>
       {viewModel.submitError.length > 0 && (
         <FormMessage>{viewModel.submitError}</FormMessage>

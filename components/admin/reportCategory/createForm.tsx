@@ -48,7 +48,17 @@ const ReportCategoryCreateForm = () => {
           />
           <ErrorText>{errors.name}</ErrorText>
         </Field>
-        <></>
+        <Field $size="half">
+          <Label htmlFor="ordering">Ordering</Label>
+          <TextInput
+            id="ordering"
+            type="number"
+            placeholder="Ordering"
+            onChange={evt => (viewModel.ordering = +evt.target.value)}
+            disabled={isSubmitting}
+          />
+          <ErrorText>{errors.ordering}</ErrorText>
+        </Field>
       </FieldGroup>
       {viewModel.submitError.length > 0 && (
         <FormMessage>{viewModel.submitError}</FormMessage>

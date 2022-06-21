@@ -18,10 +18,17 @@ export interface IInvitationCodeService extends IService {
     searchText: string
   ): Promise<QueryResult<InvitationCode[]>>;
   getInvitationCode(id: string): Promise<GetResult<InvitationCode>>;
-  createInvitationCode(code: string): Promise<SaveResult<InvitationCode>>;
+  createInvitationCode(
+    code: string,
+    authorityId: number,
+    fromDate: string,
+    throughDate: string
+  ): Promise<SaveResult<InvitationCode>>;
   updateInvitationCode(
     id: string,
-    code: string
+    code: string,
+    fromDate: string,
+    throughDate: string
   ): Promise<SaveResult<InvitationCode>>;
 }
 
@@ -62,6 +69,7 @@ export class InvitationCodeService implements IInvitationCodeService {
       variables: {
         id,
       },
+      fetchPolicy: "network-only",
     });
 
     let data;
@@ -70,6 +78,8 @@ export class InvitationCodeService implements IInvitationCodeService {
       data = {
         id: invitationCode.id,
         code: invitationCode.code,
+        fromDate: invitationCode.fromDate,
+        throughDate: invitationCode.throughDate,
       };
     }
     return {
@@ -78,13 +88,18 @@ export class InvitationCodeService implements IInvitationCodeService {
   }
 
   async createInvitationCode(
-    code: string
+    code: string,
+    authorityId: number,
+    fromDate: string,
+    throughDate: string
   ): Promise<SaveResult<InvitationCode>> {
     const createResult = await this.client.mutate({
       mutation: InvitationCodeCreateDocument,
       variables: {
         code,
-        authorityId: 0,
+        authorityId: authorityId,
+        fromDate: fromDate,
+        throughDate: throughDate,
       },
       refetchQueries: [
         {
@@ -126,13 +141,17 @@ export class InvitationCodeService implements IInvitationCodeService {
 
   async updateInvitationCode(
     id: string,
-    code: string
+    code: string,
+    fromDate: string,
+    throughDate: string
   ): Promise<SaveResult<InvitationCode>> {
     const updateResult = await this.client.mutate({
       mutation: InvitationCodeUpdateDocument,
       variables: {
         id,
         code,
+        fromDate,
+        throughDate,
       },
       refetchQueries: [
         {
