@@ -8,15 +8,18 @@ export class BaseFormViewModel {
   _fieldErrors: FieldErrors = {};
   _submitError: string = "";
   _isSubmitting: boolean = false;
+  _isLoading: boolean = false;
 
   constructor() {
     makeObservable(this, {
       _fieldErrors: observable,
       _submitError: observable,
       _isSubmitting: observable,
+      _isLoading: observable,
       fieldErrors: computed,
       submitError: computed,
       isSubmitting: computed,
+      isLoading: computed,
       isValid: computed,
     });
   }
@@ -43,6 +46,14 @@ export class BaseFormViewModel {
 
   public set isSubmitting(value: boolean) {
     this._isSubmitting = value;
+  }
+
+  public get isLoading(): boolean {
+    return this._isLoading;
+  }
+
+  public set isLoading(value: boolean) {
+    this._isLoading = value;
   }
 
   public get isValid(): boolean {
