@@ -26,8 +26,11 @@ const ClickAction = () => (
   <EyeIcon className="mx-1 w-5 h-5 text-gray-600 hover:text-gray-900" />
 );
 
-const DeleteAction = () => (
-  <TrashIcon className="mx-1 w-5 h-5 text-red-600 hover:text-red-800" />
+const DeleteAction = (props: ActionHandlerProps) => (
+  <TrashIcon
+    className="mx-1 w-5 h-5 text-red-600 hover:text-red-800 cursor-pointer"
+    {...props}
+  />
 );
 
 type ItemWithId = {
@@ -41,12 +44,14 @@ interface TableProps<T> {
   }[];
   data: T[];
   onEdit?: (record: T) => void;
+  onDelete?: (record: T) => void;
 }
 
 const Table = <T extends ItemWithId | null>({
   columns,
   data,
   onEdit,
+  onDelete,
 }: TableProps<T>) => {
   return (
     <div className="mb-4 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
@@ -74,7 +79,11 @@ const Table = <T extends ItemWithId | null>({
                       }}
                     />
                     <ClickAction />
-                    <DeleteAction />
+                    <DeleteAction
+                      onClick={() => {
+                        onDelete && onDelete(record);
+                      }}
+                    />
                   </div>
                 </TableCell>
               </tr>

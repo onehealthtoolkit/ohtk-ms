@@ -15,6 +15,8 @@ import {
   useSearchParams,
 } from "components/hooks/searchParam";
 import Paginate from "components/widgets/table/paginate";
+import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
+import { Authority } from "lib/services/authority";
 
 const AuthorityList = () => {
   const router = useRouter();
@@ -30,7 +32,7 @@ const AuthorityList = () => {
       authorityService,
       searchValue.q as string,
       searchValue.offset as number
-    )
+    ).registerDialog("confirmDelete")
   );
 
   useEffect(() => {
@@ -71,6 +73,7 @@ const AuthorityList = () => {
         ]}
         data={viewModel.data || []}
         onEdit={record => router.push(`/admin/authorities/${record.id}/update`)}
+        onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
       />
       <ErrorDisplay message={viewModel.errorMessage} />
 
@@ -79,6 +82,14 @@ const AuthorityList = () => {
         limit={viewModel.limit}
         totalCount={viewModel.totalCount}
         onChange={value => onSearchChange("offset", value)}
+      />
+
+      <ConfirmDialog
+        store={viewModel.dialog("confirmDelete")}
+        title="Confirm delete"
+        content="Are you sure?"
+        onYes={(record: Authority) => viewModel.delete(record.id)}
+        onNo={() => viewModel.dialog("confirmDelete")?.close()}
       />
     </div>
   );
