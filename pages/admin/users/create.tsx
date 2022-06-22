@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import Layout from "components/layout";
-import UserCreateForm from "components/admin/user/createForm";
+import UserCreate from "components/admin/user/create";
 import Protect from "components/auth/protect";
 
 const AdminUserCreatePage: NextPage = () => {
@@ -8,7 +8,7 @@ const AdminUserCreatePage: NextPage = () => {
     <Protect>
       <Layout>
         <div className="mb-4">&raquo; Users &raquo; create</div>
-        <UserCreateForm />
+        <UserCreate />
       </Layout>
     </Protect>
   );

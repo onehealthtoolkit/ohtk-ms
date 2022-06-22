@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
-import { AdminReportCategoryFormViewModel } from "./formViewModel";
+import { InvitationCodeCreateViewModel } from "./createViewModel";
 import {
   CancelButton,
   ErrorText,
@@ -17,11 +17,11 @@ import {
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 
-const ReportCategoryCreateForm = () => {
+const InvitationCodeCreate = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new AdminReportCategoryFormViewModel(services.reportCategoryService)
+    new InvitationCodeCreateViewModel(services.invitationCodeService)
   );
 
   const isSubmitting = viewModel.isSubmitting;
@@ -38,26 +38,39 @@ const ReportCategoryCreateForm = () => {
     >
       <FieldGroup>
         <Field $size="half">
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="code">Code</Label>
           <TextInput
-            id="name"
+            id="code"
             type="text"
-            placeholder="Name"
-            onChange={evt => (viewModel.name = evt.target.value)}
+            placeholder="Code"
+            onChange={evt => (viewModel.code = evt.target.value)}
             disabled={isSubmitting}
           />
-          <ErrorText>{errors.name}</ErrorText>
+          <ErrorText>{errors.code}</ErrorText>
         </Field>
         <Field $size="half">
-          <Label htmlFor="ordering">Ordering</Label>
+          <Label htmlFor="fromDate">From Date</Label>
           <TextInput
-            id="ordering"
-            type="number"
-            placeholder="Ordering"
-            onChange={evt => (viewModel.ordering = +evt.target.value)}
+            id="fromDate"
+            type="date"
+            placeholder="From Date"
+            pattern="\d{4}-\d{2}-\d{2}"
+            onChange={evt => (viewModel.fromDate = evt.target.value)}
             disabled={isSubmitting}
           />
-          <ErrorText>{errors.ordering}</ErrorText>
+          <ErrorText>{viewModel.fieldErrors.fromDate}</ErrorText>
+        </Field>
+        <Field $size="half">
+          <Label htmlFor="throughDate">Through Date</Label>
+          <TextInput
+            id="throughDate"
+            type="date"
+            placeholder="Through Date"
+            pattern="\d{4}-\d{2}-\d{2}"
+            onChange={evt => (viewModel.throughDate = evt.target.value)}
+            disabled={isSubmitting}
+          />
+          <ErrorText>{viewModel.fieldErrors.fromDate}</ErrorText>
         </Field>
       </FieldGroup>
       {viewModel.submitError.length > 0 && (
@@ -75,4 +88,4 @@ const ReportCategoryCreateForm = () => {
   );
 };
 
-export default observer(ReportCategoryCreateForm);
+export default observer(InvitationCodeCreate);

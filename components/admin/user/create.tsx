@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
-import { AdminUserFormViewModel } from "./formViewModel";
 import {
   CancelButton,
   ErrorText,
@@ -15,51 +14,48 @@ import {
   TextInput,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
-import { User } from "lib/services/user";
 import useServices from "lib/services/provider";
+import { UserCreateViewModel } from "./createViewModel";
 
-type FormValues = User;
-
-const UserUpdateForm = ({ data }: { data: FormValues | undefined }) => {
+const UserCreate = () => {
   const router = useRouter();
   const services = useServices();
-  const [viewModel] = useState(
-    new AdminUserFormViewModel(services.userService)
-  );
+  const [viewModel] = useState(new UserCreateViewModel(services.userService));
+  const isSubmitting = viewModel.isSubmitting;
   const errors = viewModel.fieldErrors;
-
-  useEffect(() => {
-    if (data) {
-      viewModel.authorityId = data.authorityId!;
-      viewModel.username = data.username;
-      viewModel.firstName = data.firstName;
-      viewModel.lastName = data.lastName;
-      viewModel.email = data.email;
-      console.log("data", data, viewModel.authorityId);
-    }
-  }, [data, viewModel]);
 
   return (
     <Form
       onSubmit={async evt => {
         evt.preventDefault();
-        if (await viewModel.save(data?.id)) {
+        if (await viewModel.save()) {
           router.back();
         }
       }}
     >
       <FieldGroup>
         <Field $size="half">
-          <Label htmlFor="username">User Name</Label>
+          <Label htmlFor="authorityId">Authority</Label>
           <TextInput
-            id="username"
+            id="authorityId"
+            type="number"
+            placeholder="Authority"
+            onChange={evt => (viewModel.authorityId = +evt.target.value)}
+            disabled={isSubmitting}
+            value={viewModel.authorityId}
+          />
+          <ErrorText>{errors.authorityId}</ErrorText>
+        </Field>
+        <Field $size="half">
+          <Label htmlFor="userName">User Name</Label>
+          <TextInput
+            id="userName"
             type="text"
             placeholder="User Name"
             onChange={evt => (viewModel.username = evt.target.value)}
-            disabled={viewModel.isSubmitting}
-            value={viewModel.username}
+            disabled={isSubmitting}
           />
-          <ErrorText>{errors.firstName}</ErrorText>
+          <ErrorText>{errors.userName}</ErrorText>
         </Field>
         <Field $size="half">
           <Label htmlFor="firstName">First Name</Label>
@@ -68,10 +64,9 @@ const UserUpdateForm = ({ data }: { data: FormValues | undefined }) => {
             type="text"
             placeholder="First Name"
             onChange={evt => (viewModel.firstName = evt.target.value)}
-            disabled={viewModel.isSubmitting}
-            value={viewModel.firstName}
+            disabled={isSubmitting}
           />
-          <ErrorText>{errors.firstName}</ErrorText>
+          <ErrorText>{errors.userName}</ErrorText>
         </Field>
         <Field $size="half">
           <Label htmlFor="lastName">lastName</Label>
@@ -80,10 +75,9 @@ const UserUpdateForm = ({ data }: { data: FormValues | undefined }) => {
             type="text"
             placeholder="Last Name"
             onChange={evt => (viewModel.lastName = evt.target.value)}
-            disabled={viewModel.isSubmitting}
-            value={viewModel.lastName}
+            disabled={isSubmitting}
           />
-          <ErrorText>{errors.lastName}</ErrorText>
+          <ErrorText>{errors.userName}</ErrorText>
         </Field>
         <Field $size="half">
           <Label htmlFor="email">Email</Label>
@@ -92,8 +86,18 @@ const UserUpdateForm = ({ data }: { data: FormValues | undefined }) => {
             type="text"
             placeholder="Email"
             onChange={evt => (viewModel.email = evt.target.value)}
-            disabled={viewModel.isSubmitting}
-            value={viewModel.email}
+            disabled={isSubmitting}
+          />
+          <ErrorText>{errors.userName}</ErrorText>
+        </Field>
+        <Field $size="half">
+          <Label htmlFor="telephone">Telephone</Label>
+          <TextInput
+            id="telephone"
+            type="text"
+            placeholder="Telephone"
+            onChange={evt => (viewModel.telephone = evt.target.value)}
+            disabled={isSubmitting}
           />
           <ErrorText>{errors.userName}</ErrorText>
         </Field>
@@ -102,8 +106,8 @@ const UserUpdateForm = ({ data }: { data: FormValues | undefined }) => {
         <FormMessage>{viewModel.submitError}</FormMessage>
       )}
       <FormAction>
-        <SaveButton type="submit" disabled={viewModel.isSubmitting}>
-          {viewModel.isSubmitting ? <Spinner /> : "Save"}
+        <SaveButton type="submit" disabled={isSubmitting}>
+          {isSubmitting ? <Spinner /> : "บันทึก"}
         </SaveButton>
         <CancelButton type="button" onClick={() => router.back()}>
           Cancel
@@ -113,4 +117,4 @@ const UserUpdateForm = ({ data }: { data: FormValues | undefined }) => {
   );
 };
 
-export default observer(UserUpdateForm);
+export default observer(UserCreate);

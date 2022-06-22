@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
-import { AdminReportCategoryFormViewModel } from "./formViewModel";
+import { ReportCategoryCreateViewModel } from "./createViewModel";
 import {
   CancelButton,
   ErrorText,
@@ -15,34 +15,23 @@ import {
   TextInput,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
-import { ReportCategory } from "lib/services/reportCategory";
 import useServices from "lib/services/provider";
 
-type FormValues = ReportCategory;
-
-const ReportCategoryUpdateForm = ({
-  data,
-}: {
-  data: FormValues | undefined;
-}) => {
+const ReportCategoryCreate = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new AdminReportCategoryFormViewModel(services.reportCategoryService)
+    new ReportCategoryCreateViewModel(services.reportCategoryService)
   );
 
-  useEffect(() => {
-    if (data) {
-      viewModel.name = data.name;
-      viewModel.ordering = data.ordering;
-    }
-  }, [data, viewModel]);
+  const isSubmitting = viewModel.isSubmitting;
+  const errors = viewModel.fieldErrors;
 
   return (
     <Form
       onSubmit={async evt => {
         evt.preventDefault();
-        if (await viewModel.save(data?.id)) {
+        if (await viewModel.save()) {
           router.back();
         }
       }}
@@ -55,10 +44,9 @@ const ReportCategoryUpdateForm = ({
             type="text"
             placeholder="Name"
             onChange={evt => (viewModel.name = evt.target.value)}
-            disabled={viewModel.isSubmitting}
-            value={viewModel.name}
+            disabled={isSubmitting}
           />
-          <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
+          <ErrorText>{errors.name}</ErrorText>
         </Field>
         <Field $size="half">
           <Label htmlFor="ordering">Ordering</Label>
@@ -67,18 +55,17 @@ const ReportCategoryUpdateForm = ({
             type="number"
             placeholder="Ordering"
             onChange={evt => (viewModel.ordering = +evt.target.value)}
-            disabled={viewModel.isSubmitting}
-            value={viewModel.ordering}
+            disabled={isSubmitting}
           />
-          <ErrorText>{viewModel.fieldErrors.ordering}</ErrorText>
+          <ErrorText>{errors.ordering}</ErrorText>
         </Field>
       </FieldGroup>
       {viewModel.submitError.length > 0 && (
         <FormMessage>{viewModel.submitError}</FormMessage>
       )}
       <FormAction>
-        <SaveButton type="submit" disabled={viewModel.isSubmitting}>
-          {viewModel.isSubmitting ? <Spinner /> : "Save"}
+        <SaveButton type="submit" disabled={isSubmitting}>
+          {isSubmitting ? <Spinner /> : "บันทึก"}
         </SaveButton>
         <CancelButton type="button" onClick={() => router.back()}>
           Cancel
@@ -88,4 +75,4 @@ const ReportCategoryUpdateForm = ({
   );
 };
 
-export default observer(ReportCategoryUpdateForm);
+export default observer(ReportCategoryCreate);

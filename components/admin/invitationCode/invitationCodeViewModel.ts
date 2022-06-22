@@ -1,23 +1,20 @@
-import { action, computed, makeObservable, observable } from "mobx";
+import { BaseFormViewModel } from "lib/baseFormViewModel";
 import {
   InvitationCode,
   IInvitationCodeService,
 } from "lib/services/invitationCode";
 import { SaveResult } from "lib/services/interface";
-import { BaseFormViewModel } from "lib/baseFormViewModel";
+import { action, computed, makeObservable, observable } from "mobx";
 
-export class AdminInvitationCodeFormViewModel extends BaseFormViewModel {
+export abstract class InvitationCodeViewModel extends BaseFormViewModel {
+  invitationCodeService: IInvitationCodeService;
+
   _code: string = "";
   _authorityId: number = 0;
   _fromDate: string = "";
   _throughDate: string = "";
-
-  constructor(
-    readonly invitationCodeService: IInvitationCodeService,
-    authorityId?: number
-  ) {
+  constructor(invitationCodeService: IInvitationCodeService) {
     super();
-    if (authorityId) this.authorityId = authorityId;
     makeObservable(this, {
       _code: observable,
       code: computed,
@@ -30,6 +27,7 @@ export class AdminInvitationCodeFormViewModel extends BaseFormViewModel {
       save: action,
       validate: action,
     });
+    this.invitationCodeService = invitationCodeService;
   }
 
   public get code(): string {
@@ -76,26 +74,14 @@ export class AdminInvitationCodeFormViewModel extends BaseFormViewModel {
     }
   }
 
-  public async save(id?: string): Promise<boolean> {
+  public abstract _save(): Promise<SaveResult<InvitationCode>>;
+
+  public async save(): Promise<boolean> {
     this.isSubmitting = true;
 
     if (this.validate()) {
-      let result: SaveResult<InvitationCode>;
-      if (!id) {
-        result = await this.invitationCodeService.createInvitationCode(
-          this.code,
-          this.authorityId,
-          new Date(this.fromDate).toISOString(),
-          new Date(this.throughDate).toISOString()
-        );
-      } else {
-        result = await this.invitationCodeService.updateInvitationCode(
-          id,
-          this.code,
-          new Date(this.fromDate).toISOString(),
-          new Date(this.throughDate).toISOString()
-        );
-      }
+      var result = await this._save();
+
       this.isSubmitting = false;
 
       if (!result.success) {

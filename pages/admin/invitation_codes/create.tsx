@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import Layout from "components/layout";
-import InvitationCodeCreateForm from "components/admin/invitationCode/createForm";
+import InvitationCodeCreate from "components/admin/invitationCode/create";
 import Protect from "components/auth/protect";
 
 const AdminInvitationCodeCreatePage: NextPage = () => {
@@ -8,7 +8,7 @@ const AdminInvitationCodeCreatePage: NextPage = () => {
     <Protect>
       <Layout>
         <div className="mb-4">&raquo; Invitation Codes &raquo; create</div>
-        <InvitationCodeCreateForm />
+        <InvitationCodeCreate />
       </Layout>
     </Protect>
   );

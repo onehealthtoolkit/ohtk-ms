@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import Layout from "components/layout";
-import ReportCategoryCreateForm from "components/admin/reportCategory/createForm";
+import ReportCategoryCreate from "components/admin/reportCategory/create";
 import Protect from "components/auth/protect";
 
 const AdminReportCategoryCreatePage: NextPage = () => {
@@ -8,7 +8,7 @@ const AdminReportCategoryCreatePage: NextPage = () => {
     <Protect>
       <Layout>
         <div className="mb-4">&raquo; Report Category &raquo; create</div>
-        <ReportCategoryCreateForm />
+        <ReportCategoryCreate />
       </Layout>
     </Protect>
   );

@@ -1,9 +1,11 @@
-import { action, computed, makeObservable, observable } from "mobx";
+import { BaseFormViewModel } from "lib/baseFormViewModel";
 import { User, IUserService } from "lib/services/user";
 import { SaveResult } from "lib/services/interface";
-import { BaseFormViewModel } from "lib/baseFormViewModel";
+import { action, computed, makeObservable, observable } from "mobx";
 
-export class AdminUserFormViewModel extends BaseFormViewModel {
+export abstract class UserViewModel extends BaseFormViewModel {
+  userService: IUserService;
+
   _authorityId: number = 0;
   _username: string = "";
   _password: string = "";
@@ -11,10 +13,8 @@ export class AdminUserFormViewModel extends BaseFormViewModel {
   _lastName: string = "";
   _email: string = "";
   _telephone: string = "";
-
-  constructor(readonly userService: IUserService, authorityId?: number) {
+  constructor(userService: IUserService) {
     super();
-    if (authorityId) this.authorityId = authorityId;
     makeObservable(this, {
       _authorityId: observable,
       authorityId: computed,
@@ -29,6 +29,7 @@ export class AdminUserFormViewModel extends BaseFormViewModel {
       save: action,
       validate: action,
     });
+    this.userService = userService;
   }
 
   public get authorityId(): number {
@@ -96,34 +97,15 @@ export class AdminUserFormViewModel extends BaseFormViewModel {
       this.submitError = "";
     }
   }
-  public async save(id?: string): Promise<boolean> {
+
+  public abstract _save(): Promise<SaveResult<User>>;
+
+  public async save(): Promise<boolean> {
     this.isSubmitting = true;
 
     if (this.validate()) {
-      let result: SaveResult<User>;
-      if (!id) {
-        result = await this.userService.createUser(
-          this.authorityId,
-          this.username,
-          "",
-          this.firstName,
-          this.lastName,
-          this.email,
-          this.telephone
-        );
-      } else {
-        console.log("save", this.authorityId);
+      var result = await this._save();
 
-        result = await this.userService.updateUser(
-          id,
-          this.authorityId,
-          this.username,
-          this.firstName,
-          this.lastName,
-          this.email,
-          this.telephone
-        );
-      }
       this.isSubmitting = false;
 
       if (!result.success) {
