@@ -1,9 +1,9 @@
 import BaseModalDialog from "components/widgets/dialogs/baseModalDialog";
-import { ModalDialogStore } from "lib/dialogViewModel";
+import { ModalDialogViewModel } from "lib/dialogViewModel";
 import React from "react";
 
 type Props<D> = {
-  store: ModalDialogStore | undefined;
+  store: ModalDialogViewModel | undefined;
   title?: string;
   content: string;
   onYes: (data: D) => void;
@@ -40,7 +40,7 @@ const ConfirmDialog = <D extends Object>({
           <div className="p-4 text-lg">{content}</div>
         </>
       )}
-      renderAction={(dialog: ModalDialogStore, data: D) => (
+      renderAction={(dialog: ModalDialogViewModel, data: D) => (
         <div
           className="grid 
         grid-cols-2 

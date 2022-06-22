@@ -1,8 +1,8 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { Authority, IAuthorityService } from "lib/services/authority";
-import { DialogViewModel } from "lib/dialogViewModel";
+import { BaseViewModel } from "lib/baseViewModel";
 
-export class AdminAuthorityListViewModel extends DialogViewModel {
+export class AdminAuthorityListViewModel extends BaseViewModel {
   data: Authority[] = [];
 
   nameSearch: string = "";

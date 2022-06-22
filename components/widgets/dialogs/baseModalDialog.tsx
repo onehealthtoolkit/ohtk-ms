@@ -1,13 +1,13 @@
-import { ModalDialogStore } from "lib/dialogViewModel";
+import { ModalDialogViewModel } from "lib/dialogViewModel";
 import { Observer } from "mobx-react";
 import React, { Fragment, ReactElement } from "react";
 import ReactDOM from "react-dom";
 
 type Props = {
-  store: ModalDialogStore | undefined;
+  store: ModalDialogViewModel | undefined;
   title?: string;
   renderContent: (data: any) => ReactElement;
-  renderAction?: (store: ModalDialogStore, data: any) => ReactElement;
+  renderAction?: (store: ModalDialogViewModel, data: any) => ReactElement;
 };
 
 const BaseModalDialog: React.FC<Props> = ({

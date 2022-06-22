@@ -1,3 +1,4 @@
+import { ModalDialogViewModel } from "lib/dialogViewModel";
 import {
   action,
   computed,
@@ -7,6 +8,7 @@ import {
 } from "mobx";
 
 type Errors = ObservableMap<string, string>;
+type DialogMap = ObservableMap<string, ModalDialogViewModel>;
 
 export class BaseViewModel {
   _totalCount = 0;
@@ -14,6 +16,7 @@ export class BaseViewModel {
   _offset = 0;
 
   errors: Errors = observable.map({});
+  dialogs: DialogMap = observable.map({});
 
   constructor() {
     makeObservable(this, {
@@ -74,5 +77,30 @@ export class BaseViewModel {
     } else {
       this.errors.set(name, value);
     }
+  }
+
+  /**
+   * Manage all modal dialogs references and handle their viewModel states.
+   * Each dialog's viewModel is referenced through key in dialog map
+   */
+
+  registerDialog(name: string): this {
+    this.dialogs.set(name, new ModalDialogViewModel());
+    return this;
+  }
+
+  unregisterDialog(name: string) {
+    this.dialogs.delete(name);
+  }
+
+  get dialog() {
+    return (name: string) => {
+      this.closeAllDialogs();
+      return this.dialogs.get(name);
+    };
+  }
+
+  closeAllDialogs() {
+    this.dialogs.forEach(store => store.close());
   }
 }
