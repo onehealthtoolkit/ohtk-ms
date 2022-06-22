@@ -1,5 +1,5 @@
 overwrite: true
-schema: "http://localhost:8000/graphql/"
+schema: "http://opensur.test/graphql/"
 documents: "./lib/**/*.graphql"
 generates:
   lib/generated/graphql.tsx:

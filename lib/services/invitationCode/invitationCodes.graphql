@@ -1,13 +1,83 @@
-query invitationCodes($limit: Int!, $offset: Int!, $nameStartWith: String) {
-  adminCategoryQuery(
+query invitationCodes($limit: Int!, $offset: Int!, $codeStartWith: String) {
+  adminInvitationCodeQuery(
     limit: $limit
     offset: $offset
-    name_Istartswith: $nameStartWith
+    code_Istartswith: $codeStartWith
   ) {
     totalCount
     results {
       id
-      name
+      code
     }
+  }
+}
+
+mutation InvitationCodeCreate(
+  $code: String!
+  $authorityId: Int!
+  $fromDate: DateTime!
+  $throughDate: DateTime!
+) {
+  adminInvitationCodeCreate(
+    code: $code
+    authorityId: $authorityId
+    fromDate: $fromDate
+    throughDate: $throughDate
+  ) {
+    result {
+      __typename
+      ... on AdminInvitationCodeCreateSuccess {
+        id
+        code
+      }
+      ... on AdminInvitationCodeCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation InvitationCodeUpdate(
+  $id: ID!
+  $code: String!
+  $fromDate: DateTime
+  $throughDate: DateTime
+) {
+  adminInvitationCodeUpdate(
+    id: $id
+    code: $code
+    fromDate: $fromDate
+    throughDate: $throughDate
+  ) {
+    result {
+      __typename
+      ... on AdminInvitationCodeUpdateSuccess {
+        id
+        code
+      }
+      ... on AdminInvitationCodeUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+query GetInvitationCode($id: ID!) {
+  invitationCode(id: $id) {
+    id
+    code
+    authority {
+      id
+    }
+    fromDate
+    throughDate
   }
 }

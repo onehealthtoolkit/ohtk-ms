@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
-import { AdminAuthorityFormViewModel } from "./formViewModel";
+import { InvitationCodeCreateViewModel } from "./createViewModel";
 import {
   CancelButton,
   ErrorText,
@@ -17,11 +17,11 @@ import {
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 
-const AuthorityCreateForm = () => {
+const InvitationCodeCreate = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new AdminAuthorityFormViewModel(services.authorityService)
+    new InvitationCodeCreateViewModel(services.invitationCodeService)
   );
 
   const isSubmitting = viewModel.isSubmitting;
@@ -49,15 +49,28 @@ const AuthorityCreateForm = () => {
           <ErrorText>{errors.code}</ErrorText>
         </Field>
         <Field $size="half">
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="fromDate">From Date</Label>
           <TextInput
-            id="name"
-            type="text"
-            placeholder="Name"
-            onChange={evt => (viewModel.name = evt.target.value)}
+            id="fromDate"
+            type="date"
+            placeholder="From Date"
+            pattern="\d{4}-\d{2}-\d{2}"
+            onChange={evt => (viewModel.fromDate = evt.target.value)}
             disabled={isSubmitting}
           />
-          <ErrorText>{errors.name}</ErrorText>
+          <ErrorText>{viewModel.fieldErrors.fromDate}</ErrorText>
+        </Field>
+        <Field $size="half">
+          <Label htmlFor="throughDate">Through Date</Label>
+          <TextInput
+            id="throughDate"
+            type="date"
+            placeholder="Through Date"
+            pattern="\d{4}-\d{2}-\d{2}"
+            onChange={evt => (viewModel.throughDate = evt.target.value)}
+            disabled={isSubmitting}
+          />
+          <ErrorText>{viewModel.fieldErrors.fromDate}</ErrorText>
         </Field>
       </FieldGroup>
       {viewModel.submitError.length > 0 && (
@@ -75,4 +88,4 @@ const AuthorityCreateForm = () => {
   );
 };
 
-export default observer(AuthorityCreateForm);
+export default observer(InvitationCodeCreate);

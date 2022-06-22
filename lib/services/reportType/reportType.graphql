@@ -1,5 +1,5 @@
-query reportTypes($limit: Int!, $offset: Int!, $nameStartWith: String) {
-  authorities(
+query ReportTypes($limit: Int!, $offset: Int!, $nameStartWith: String) {
+  adminReportTypeQuery(
     limit: $limit
     offset: $offset
     name_Istartswith: $nameStartWith
@@ -8,6 +8,85 @@ query reportTypes($limit: Int!, $offset: Int!, $nameStartWith: String) {
     results {
       id
       name
+      category {
+        id
+        name
+      }
+      definition
+      ordering
     }
+  }
+}
+
+mutation ReportTypeCreate(
+  $categoryId: Int!
+  $definition: String!
+  $name: String!
+  $ordering: Int!
+) {
+  adminReportTypeCreate(
+    categoryId: $categoryId
+    definition: $definition
+    name: $name
+    ordering: $ordering
+  ) {
+    result {
+      __typename
+      ... on AdminReportTypeCreateSuccess {
+        id
+        name
+      }
+      ... on AdminReportTypeCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation ReportTypeUpdate(
+  $id: ID!
+  $categoryId: Int!
+  $definition: String!
+  $name: String!
+  $ordering: Int!
+) {
+  adminReportTypeUpdate(
+    id: $id
+    categoryId: $categoryId
+    name: $name
+    definition: $definition
+    ordering: $ordering
+  ) {
+    result {
+      __typename
+      ... on AdminReportTypeUpdateSuccess {
+        id
+        name
+      }
+      ... on AdminReportTypeUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+query GetReportType($id: ID!) {
+  reportType(id: $id) {
+    id
+    name
+    definition
+    category {
+      id
+      name
+    }
+    ordering
   }
 }

@@ -4,6 +4,7 @@ query me {
     username
     firstName
     lastName
+    authorityId
     authorityName
   }
 }

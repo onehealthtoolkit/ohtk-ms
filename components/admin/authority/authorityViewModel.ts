@@ -1,13 +1,15 @@
-import { action, computed, makeObservable, observable } from "mobx";
+import { BaseFormViewModel } from "lib/baseFormViewModel";
 import { Authority, IAuthorityService } from "lib/services/authority";
 import { SaveResult } from "lib/services/interface";
-import { BaseFormViewModel } from "lib/baseFormViewModel";
+import { action, computed, makeObservable, observable } from "mobx";
 
-export class AdminAuthorityFormViewModel extends BaseFormViewModel {
+export abstract class AuthorityViewModel extends BaseFormViewModel {
+  authorityService: IAuthorityService;
+
   _code: string = "";
   _name: string = "";
 
-  constructor(readonly authorityService: IAuthorityService) {
+  constructor(authorityService: IAuthorityService) {
     super();
     makeObservable(this, {
       _code: observable,
@@ -17,11 +19,13 @@ export class AdminAuthorityFormViewModel extends BaseFormViewModel {
       save: action,
       validate: action,
     });
+    this.authorityService = authorityService;
   }
 
-  public get code(): string {
+  public get code() {
     return this._code;
   }
+
   public set code(value: string) {
     this._code = value;
     delete this.fieldErrors["code"];
@@ -30,9 +34,10 @@ export class AdminAuthorityFormViewModel extends BaseFormViewModel {
     }
   }
 
-  public get name(): string {
+  public get name() {
     return this._name;
   }
+
   public set name(value: string) {
     this._name = value;
     delete this.fieldErrors["name"];
@@ -41,23 +46,14 @@ export class AdminAuthorityFormViewModel extends BaseFormViewModel {
     }
   }
 
-  public async save(id?: string): Promise<boolean> {
+  public abstract _save(): Promise<SaveResult<Authority>>;
+
+  public async save(): Promise<boolean> {
     this.isSubmitting = true;
 
     if (this.validate()) {
-      let result: SaveResult<Authority>;
-      if (!id) {
-        result = await this.authorityService.createAuthority(
-          this.code,
-          this.name
-        );
-      } else {
-        result = await this.authorityService.updateAuthority(
-          id,
-          this.code,
-          this.name
-        );
-      }
+      var result = await this._save();
+
       this.isSubmitting = false;
 
       if (!result.success) {

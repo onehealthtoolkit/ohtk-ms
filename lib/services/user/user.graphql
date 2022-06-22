@@ -1,12 +1,101 @@
-query users($limit: Int!, $offset: Int!, $nameStartWith: String) {
-  authorities(
+query Users($limit: Int!, $offset: Int!, $nameStartWith: String) {
+  adminAuthorityUserQuery(
     limit: $limit
     offset: $offset
-    name_Istartswith: $nameStartWith
+    username_Istartswith: $nameStartWith
   ) {
     totalCount
     results {
       id
+      username
+      email
+      firstName
+      lastName
+      username
+    }
+  }
+}
+
+mutation UserCreate(
+  $authorityId: Int!
+  $email: String!
+  $firstName: String!
+  $lastName: String!
+  $password: String!
+  $telephone: String = null
+  $username: String!
+) {
+  adminAuthorityUserCreate(
+    authorityId: $authorityId
+    email: $email
+    firstName: $firstName
+    lastName: $lastName
+    password: $password
+    telephone: $telephone
+    username: $username
+  ) {
+    result {
+      __typename
+      ... on AdminAuthorityUserCreateSuccess {
+        id
+        username
+      }
+      ... on AdminAuthorityUserCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation UserUpdate(
+  $id: ID!
+  $authorityId: Int!
+  $email: String!
+  $firstName: String!
+  $lastName: String!
+  $telephone: String = null
+  $username: String!
+) {
+  adminAuthorityUserUpdate(
+    id: $id
+    authorityId: $authorityId
+    email: $email
+    firstName: $firstName
+    lastName: $lastName
+    telephone: $telephone
+    username: $username
+  ) {
+    result {
+      __typename
+      ... on AdminAuthorityUserUpdateSuccess {
+        id
+        username
+      }
+      ... on AdminAuthorityUserUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+query GetUser($id: ID!) {
+  authorityUser(id: $id) {
+    id
+    username
+    firstName
+    lastName
+    email
+    authority {
+      id
+      code
       name
     }
   }

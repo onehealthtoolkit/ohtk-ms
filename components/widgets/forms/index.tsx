@@ -58,6 +58,32 @@ const Input = (
 
 export const TextInput = forwardRef(Input);
 
+const SelectInput = (
+  props: React.DetailedHTMLProps<
+    React.SelectHTMLAttributes<HTMLSelectElement>,
+    HTMLSelectElement
+  >,
+  ref: React.Ref<HTMLSelectElement>
+) => {
+  return (
+    <select
+      ref={ref}
+      {...props}
+      className="
+        shadow
+        border
+        rounded
+        w-full
+        py-2
+        px-3
+        text-grey-darker
+      "
+    />
+  );
+};
+
+export const Select = forwardRef(SelectInput);
+
 export const Label = tw.label`
   block 
   text-grey-darker 

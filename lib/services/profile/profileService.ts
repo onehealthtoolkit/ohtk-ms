@@ -26,6 +26,8 @@ export class ProfileService implements IProfileService {
         firstName: result.data.me!.firstName,
         lastName: result.data.me!.lastName,
         id: result.data.me!.id,
+        authorityId: result.data.me!.authorityId || 0,
+        authorityName: result.data.me!.authorityName || "",
       };
     } else {
       throw new Error("Method not implemented.");

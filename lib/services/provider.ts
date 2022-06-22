@@ -3,11 +3,19 @@ import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import { AuthService, IAuthService } from "./auth";
 import { AuthorityService, IAuthorityService } from "./authority";
 import ProfileService, { IProfileService } from "./profile";
+import { InvitationCodeService } from "./invitationCode";
+import { IUserService, UserService } from "./user";
+import { ReportCategoryService } from "./reportCategory";
+import { ReportTypeService } from "./reportType/reportTypeService";
 
 export interface IServiceProvider {
   get authService(): IAuthService;
   get profileService(): IProfileService;
   get authorityService(): IAuthorityService;
+  get userService(): IUserService;
+  get invitationCodeService(): InvitationCodeService;
+  get reportCategoryService(): ReportCategoryService;
+  get reportTypeService(): ReportTypeService;
 }
 
 export class ServicesProvider implements IServiceProvider {
@@ -16,12 +24,20 @@ export class ServicesProvider implements IServiceProvider {
   authService: AuthService;
   profileService: ProfileService;
   authorityService: AuthorityService;
+  userService: UserService;
+  invitationCodeService: InvitationCodeService;
+  reportCategoryService: ReportCategoryService;
+  reportTypeService: ReportTypeService;
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
     this.authService = new AuthService(client);
     this.profileService = new ProfileService(client);
     this.authorityService = new AuthorityService(client);
+    this.userService = new UserService(client);
+    this.invitationCodeService = new InvitationCodeService(client);
+    this.reportCategoryService = new ReportCategoryService(client);
+    this.reportTypeService = new ReportTypeService(client);
   }
 }
 

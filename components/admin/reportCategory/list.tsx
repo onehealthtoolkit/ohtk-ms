@@ -6,15 +6,22 @@ import React, { useEffect, useState } from "react";
 import Filter from "./filter";
 import { AdminReportCategoryListViewModel } from "./listViewModel";
 import ErrorDisplay from "components/widgets/errorDisplay";
+import useServices from "lib/services/provider";
+import Link from "next/link";
+import { AddButton } from "components/widgets/forms";
 
 const ReportCategoryList = () => {
   const router = useRouter();
+  const services = useServices();
   const [viewModel, setViewModel] =
     useState<AdminReportCategoryListViewModel>();
   useEffect(() => {
-    const viewModel = new AdminReportCategoryListViewModel();
+    const viewModel = new AdminReportCategoryListViewModel(
+      services.reportCategoryService
+    );
     setViewModel(viewModel);
-  }, []);
+    viewModel.fetch();
+  }, [services.reportCategoryService]);
 
   if (viewModel === null) {
     return <Spinner />;
@@ -25,6 +32,10 @@ const ReportCategoryList = () => {
 
       <div className="flex items-center flex-wrap mb-4">
         <Filter viewModel={viewModel} />
+        <div className="flex-grow"></div>
+        <Link href={"/admin/report_categories/create"} passHref>
+          <AddButton />
+        </Link>
       </div>
 
       <Table
@@ -40,7 +51,7 @@ const ReportCategoryList = () => {
         ]}
         data={viewModel?.data || []}
         onEdit={record =>
-          router.push(`/settings/report_categories/edit/${record.id}`)
+          router.push(`/admin/report_categories/${record.id}/update`)
         }
       />
       <ErrorDisplay message={viewModel?.errorMessage} />

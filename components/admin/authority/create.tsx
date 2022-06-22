@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
-import { AdminAuthorityFormViewModel } from "./formViewModel";
+import { AuthorityCreateViewModel } from "./createViewModel";
 import {
   CancelButton,
   ErrorText,
@@ -15,30 +15,23 @@ import {
   TextInput,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
-import { Authority } from "lib/services/authority";
 import useServices from "lib/services/provider";
 
-type FormValues = Authority;
-
-const AuthorityUpdateForm = ({ data }: { data: FormValues | undefined }) => {
+const AuthorityCreate = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new AdminAuthorityFormViewModel(services.authorityService)
+    new AuthorityCreateViewModel(services.authorityService)
   );
 
-  useEffect(() => {
-    if (data) {
-      viewModel.code = data.code;
-      viewModel.name = data.name;
-    }
-  }, [data, viewModel]);
+  const isSubmitting = viewModel.isSubmitting;
+  const errors = viewModel.fieldErrors;
 
   return (
     <Form
       onSubmit={async evt => {
         evt.preventDefault();
-        if (await viewModel.save(data?.id)) {
+        if (await viewModel.save()) {
           router.back();
         }
       }}
@@ -51,10 +44,9 @@ const AuthorityUpdateForm = ({ data }: { data: FormValues | undefined }) => {
             type="text"
             placeholder="Code"
             onChange={evt => (viewModel.code = evt.target.value)}
-            disabled={viewModel.isSubmitting}
-            value={viewModel.code}
+            disabled={isSubmitting}
           />
-          <ErrorText>{viewModel.fieldErrors.code}</ErrorText>
+          <ErrorText>{errors.code}</ErrorText>
         </Field>
         <Field $size="half">
           <Label htmlFor="name">Name</Label>
@@ -63,18 +55,17 @@ const AuthorityUpdateForm = ({ data }: { data: FormValues | undefined }) => {
             type="text"
             placeholder="Name"
             onChange={evt => (viewModel.name = evt.target.value)}
-            disabled={viewModel.isSubmitting}
-            value={viewModel.name}
+            disabled={isSubmitting}
           />
-          <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
+          <ErrorText>{errors.name}</ErrorText>
         </Field>
       </FieldGroup>
       {viewModel.submitError.length > 0 && (
         <FormMessage>{viewModel.submitError}</FormMessage>
       )}
       <FormAction>
-        <SaveButton type="submit" disabled={viewModel.isSubmitting}>
-          {viewModel.isSubmitting ? <Spinner /> : "Save"}
+        <SaveButton type="submit" disabled={isSubmitting}>
+          {isSubmitting ? <Spinner /> : "บันทึก"}
         </SaveButton>
         <CancelButton type="button" onClick={() => router.back()}>
           Cancel
@@ -84,4 +75,4 @@ const AuthorityUpdateForm = ({ data }: { data: FormValues | undefined }) => {
   );
 };
 
-export default observer(AuthorityUpdateForm);
+export default observer(AuthorityCreate);

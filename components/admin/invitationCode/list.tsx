@@ -6,14 +6,21 @@ import React, { useEffect, useState } from "react";
 import Filter from "./filter";
 import ErrorDisplay from "components/widgets/errorDisplay";
 import { InvitaionCodeViewModel } from "./listViewModel";
+import useServices from "lib/services/provider";
+import Link from "next/link";
+import { AddButton } from "components/widgets/forms";
 
 const InvitaionCodeList = () => {
   const router = useRouter();
+  const services = useServices();
   const [viewModel, setViewModel] = useState<InvitaionCodeViewModel>();
   useEffect(() => {
-    const viewModel = new InvitaionCodeViewModel();
+    const viewModel = new InvitaionCodeViewModel(
+      services.invitationCodeService
+    );
     setViewModel(viewModel);
-  }, []);
+    viewModel.fetch();
+  }, [services.invitationCodeService]);
 
   if (viewModel === null) {
     return <Spinner />;
@@ -24,6 +31,10 @@ const InvitaionCodeList = () => {
 
       <div className="flex items-center flex-wrap mb-4">
         <Filter viewModel={viewModel} />
+        <div className="flex-grow"></div>
+        <Link href={"/admin/invitation_codes/create"} passHref>
+          <AddButton />
+        </Link>
       </div>
 
       <Table
@@ -39,7 +50,7 @@ const InvitaionCodeList = () => {
         ]}
         data={viewModel?.data || []}
         onEdit={record =>
-          router.push(`/admin/invitation_codes/edit/${record.id}`)
+          router.push(`/admin/invitation_codes/${record.id}/update`)
         }
       />
       <ErrorDisplay message={viewModel?.errorMessage} />

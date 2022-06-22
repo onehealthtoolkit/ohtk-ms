@@ -3,4 +3,6 @@ export type Me = {
   firstName: string;
   lastName: string;
   id: number;
+  authorityId: number;
+  authorityName: string;
 };
