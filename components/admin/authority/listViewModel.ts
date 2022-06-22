@@ -1,6 +1,6 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
-import { BaseViewModel } from "lib/baseViewModel";
 import { Authority, IAuthorityService } from "lib/services/authority";
+import { BaseViewModel } from "lib/baseViewModel";
 
 export class AdminAuthorityListViewModel extends BaseViewModel {
   data: Authority[] = [];
@@ -47,6 +47,13 @@ export class AdminAuthorityListViewModel extends BaseViewModel {
       this.data = result.items || [];
       this.totalCount = result.totalCount || 0;
     });
+    if (result.error) {
+      this.setErrorMessage(result.error);
+    }
+  }
+
+  async delete(id: string): Promise<void> {
+    const result = await this.authorityService.deleteAuthority(id);
     if (result.error) {
       this.setErrorMessage(result.error);
     }

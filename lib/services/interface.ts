@@ -20,3 +20,7 @@ export type SaveResult<T> =
       fields?: { [key in keyof T]: string };
       message?: string | null;
     };
+
+export type DeleteResult = {
+  error?: string;
+};

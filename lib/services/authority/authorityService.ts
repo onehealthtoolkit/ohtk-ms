@@ -7,6 +7,7 @@ import {
 } from "lib/generated/graphql";
 import { Authority } from "lib/services/authority/authority";
 import {
+  DeleteResult,
   GetResult,
   IService,
   QueryResult,
@@ -26,6 +27,7 @@ export interface IAuthorityService extends IService {
     code: string,
     name: string
   ): Promise<SaveResult<Authority>>;
+  deleteAuthority(id: string): Promise<DeleteResult>;
 }
 
 export class AuthorityService implements IAuthorityService {
@@ -174,5 +176,10 @@ export class AuthorityService implements IAuthorityService {
     return {
       success: true,
     };
+  }
+
+  async deleteAuthority(id: string) {
+    console.log("delete authority", id);
+    return { error: "" };
   }
 }
