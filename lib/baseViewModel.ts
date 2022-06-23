@@ -12,7 +12,7 @@ type DialogMap = ObservableMap<string, ModalDialogViewModel>;
 
 export class BaseViewModel {
   _totalCount = 0;
-  _limit = 20;
+  _limit = 2;
   _offset = 0;
 
   errors: Errors = observable.map({});

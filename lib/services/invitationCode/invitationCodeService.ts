@@ -7,6 +7,7 @@ import {
 } from "lib/generated/graphql";
 import { InvitationCode } from "lib/services/invitationCode/invitationCode";
 import {
+  DeleteResult,
   GetResult,
   IService,
   QueryResult,
@@ -15,6 +16,8 @@ import {
 
 export interface IInvitationCodeService extends IService {
   fetchInvitationCodes(
+    limit: number,
+    offset: number,
     searchText: string
   ): Promise<QueryResult<InvitationCode[]>>;
   getInvitationCode(id: string): Promise<GetResult<InvitationCode>>;
@@ -30,23 +33,35 @@ export interface IInvitationCodeService extends IService {
     fromDate: string,
     throughDate: string
   ): Promise<SaveResult<InvitationCode>>;
+  deleteInvitationCode(id: string): Promise<DeleteResult>;
 }
 
 export class InvitationCodeService implements IInvitationCodeService {
   client: ApolloClient<NormalizedCacheObject>;
+  fetchInvitationCodesQuery = {
+    limit: 20,
+    offset: 0,
+    codeStartWith: "",
+  };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
   }
 
-  async fetchInvitationCodes(searchText: string) {
+  async fetchInvitationCodes(
+    limit: number,
+    offset: number,
+    searchText: string
+  ) {
+    this.fetchInvitationCodesQuery = {
+      ...this.fetchInvitationCodesQuery,
+      limit,
+      offset,
+      codeStartWith: searchText,
+    };
     const fetchResult = await this.client.query({
       query: InvitationCodesDocument,
-      variables: {
-        limit: 20,
-        offset: 0,
-        codeStartWith: searchText,
-      },
+      variables: this.fetchInvitationCodesQuery,
     });
 
     const items = Array<InvitationCode>();
@@ -60,6 +75,7 @@ export class InvitationCodeService implements IInvitationCodeService {
     });
     return {
       items,
+      totalCount: fetchResult.data.adminInvitationCodeQuery?.totalCount,
     };
   }
 
@@ -189,5 +205,10 @@ export class InvitationCodeService implements IInvitationCodeService {
     return {
       success: true,
     };
+  }
+
+  async deleteInvitationCode(id: string) {
+    console.log("delete invitation code", id);
+    return { error: "" };
   }
 }

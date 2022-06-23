@@ -3,31 +3,33 @@ import {
   ResetButton,
   SearchButton,
 } from "components/widgets/filter";
-import Spinner from "components/widgets/spinner";
 import { observer } from "mobx-react";
-import React from "react";
-import { InvitaionCodeViewModel } from "./listViewModel";
+import React, { useEffect, useState } from "react";
 
 type Props = {
-  viewModel?: InvitaionCodeViewModel;
+  codeSearch: string;
+  onChange?: (value: string) => void;
 };
-const Filter = ({ viewModel }: Props) => {
-  if (!viewModel) {
-    return <Spinner />;
-  }
+const Filter = ({ codeSearch, onChange }: Props) => {
+  const [searchText, setSearchText] = useState(codeSearch);
+
+  useEffect(() => {
+    setSearchText(codeSearch);
+  }, [codeSearch]);
+
   return (
     <div>
       <FilterTextInput
         type="text"
-        value={viewModel?.searchText}
+        value={searchText}
         placeholder="search"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          viewModel?.setSearchText(e.target.value)
-        }
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setSearchText(e.target.value);
+        }}
       />
       <SearchButton
         onClick={() => {
-          viewModel?.fetch();
+          onChange && onChange(searchText);
         }}
       >
         Search
@@ -35,7 +37,7 @@ const Filter = ({ viewModel }: Props) => {
 
       <ResetButton
         onClick={() => {
-          viewModel?.clearSearchText();
+          onChange && onChange("");
         }}
       >
         Reset

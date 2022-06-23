@@ -7,6 +7,7 @@ import {
 } from "lib/generated/graphql";
 import { ReportType } from "lib/services/reportType/reportType";
 import {
+  DeleteResult,
   GetResult,
   IService,
   QueryResult,
@@ -14,7 +15,11 @@ import {
 } from "lib/services/interface";
 
 export interface IReportTypeService extends IService {
-  fetchReportTypes(searchText: string): Promise<QueryResult<ReportType[]>>;
+  fetchReportTypes(
+    limit: number,
+    offset: number,
+    searchText: string
+  ): Promise<QueryResult<ReportType[]>>;
   getReportType(id: string): Promise<GetResult<ReportType>>;
   createReportType(
     name: string,
@@ -29,23 +34,31 @@ export interface IReportTypeService extends IService {
     definition: string,
     ordering: number
   ): Promise<SaveResult<ReportType>>;
+  deleteReportType(id: string): Promise<DeleteResult>;
 }
 
 export class ReportTypeService implements IReportTypeService {
   client: ApolloClient<NormalizedCacheObject>;
+  fetchReportTypesQuery = {
+    limit: 20,
+    offset: 0,
+    nameStartWith: "",
+  };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
   }
 
-  async fetchReportTypes(searchText: string) {
+  async fetchReportTypes(limit: number, offset: number, searchText: string) {
+    this.fetchReportTypesQuery = {
+      ...this.fetchReportTypesQuery,
+      limit,
+      offset,
+      nameStartWith: searchText,
+    };
     const fetchResult = await this.client.query({
       query: ReportTypesDocument,
-      variables: {
-        limit: 20,
-        offset: 0,
-        nameStartWith: searchText,
-      },
+      variables: this.fetchReportTypesQuery,
     });
 
     const items = Array<ReportType>();
@@ -62,6 +75,7 @@ export class ReportTypeService implements IReportTypeService {
     });
     return {
       items,
+      totalCount: fetchResult.data.adminReportTypeQuery?.totalCount,
     };
   }
 
@@ -193,5 +207,9 @@ export class ReportTypeService implements IReportTypeService {
     return {
       success: true,
     };
+  }
+  async deleteReportType(id: string) {
+    console.log("delete report type", id);
+    return { error: "" };
   }
 }

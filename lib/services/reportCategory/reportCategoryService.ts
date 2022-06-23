@@ -7,6 +7,7 @@ import {
 } from "lib/generated/graphql";
 import { ReportCategory } from "lib/services/reportCategory/reportCategory";
 import {
+  DeleteResult,
   GetResult,
   IService,
   QueryResult,
@@ -15,6 +16,8 @@ import {
 
 export interface IReportCategoryService extends IService {
   fetchReportCategories(
+    limit: number,
+    offset: number,
     searchText: string
   ): Promise<QueryResult<ReportCategory[]>>;
   getReportCategory(id: string): Promise<GetResult<ReportCategory>>;
@@ -27,23 +30,35 @@ export interface IReportCategoryService extends IService {
     name: string,
     ordering: number
   ): Promise<SaveResult<ReportCategory>>;
+  deleteReportCategory(id: string): Promise<DeleteResult>;
 }
 
 export class ReportCategoryService implements IReportCategoryService {
   client: ApolloClient<NormalizedCacheObject>;
+  fetchReportCategoriesQuery = {
+    limit: 20,
+    offset: 0,
+    nameStartWith: "",
+  };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
   }
 
-  async fetchReportCategories(searchText: string) {
+  async fetchReportCategories(
+    limit: number,
+    offset: number,
+    searchText: string
+  ) {
+    this.fetchReportCategoriesQuery = {
+      ...this.fetchReportCategoriesQuery,
+      limit,
+      offset,
+      nameStartWith: searchText,
+    };
     const fetchResult = await this.client.query({
       query: ReportCategoriesDocument,
-      variables: {
-        limit: 20,
-        offset: 0,
-        nameStartWith: searchText,
-      },
+      variables: this.fetchReportCategoriesQuery,
     });
 
     const items = Array<ReportCategory>();
@@ -58,6 +73,7 @@ export class ReportCategoryService implements IReportCategoryService {
     });
     return {
       items,
+      totalCount: fetchResult.data.adminCategoryQuery?.totalCount,
     };
   }
 
@@ -179,5 +195,10 @@ export class ReportCategoryService implements IReportCategoryService {
     return {
       success: true,
     };
+  }
+
+  async deleteReportCategory(id: string) {
+    console.log("delete report category", id);
+    return { error: "" };
   }
 }

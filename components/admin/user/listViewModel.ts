@@ -5,30 +5,55 @@ import { IUserService, User } from "lib/services/user";
 export class AdminUserListViewModel extends BaseViewModel {
   data: User[] = [];
 
-  searchText: string = "";
+  nameSearch: string = "";
 
-  constructor(readonly userService: IUserService) {
+  constructor(
+    readonly userService: IUserService,
+    nameSearch: string = "",
+    offset: number = 0
+  ) {
     super();
     makeObservable(this, {
       data: observable,
-      searchText: observable,
-      setSearchText: action,
-      clearSearchText: action,
+      nameSearch: observable,
+      setSearchValue: action,
+      clearNameSearch: action,
       fetch: action,
     });
+    this.nameSearch = nameSearch;
+    this.offset = offset;
+    this.fetch();
   }
 
-  setSearchText(value: string) {
-    this.searchText = value;
+  setSearchValue(nameSearch: string = "", offset: number = 0) {
+    if (nameSearch != this.nameSearch || this.offset != offset) {
+      this.nameSearch = nameSearch;
+      this.offset = offset;
+      this.fetch();
+    }
   }
 
-  clearSearchText() {
-    this.searchText = "";
+  clearNameSearch() {
+    this.nameSearch = "";
   }
 
   async fetch(): Promise<void> {
-    const result = await this.userService.fetchUsers(this.searchText);
-    runInAction(() => (this.data = result.items || []));
+    const result = await this.userService.fetchUsers(
+      this.limit,
+      this.offset,
+      this.nameSearch
+    );
+    runInAction(() => {
+      this.data = result.items || [];
+      this.totalCount = result.totalCount || 0;
+    });
+    if (result.error) {
+      this.setErrorMessage(result.error);
+    }
+  }
+
+  async delete(id: string): Promise<void> {
+    const result = await this.userService.deleteUser(id);
     if (result.error) {
       this.setErrorMessage(result.error);
     }

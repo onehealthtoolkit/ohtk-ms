@@ -7,6 +7,7 @@ import {
 } from "lib/generated/graphql";
 import { User } from "lib/services/user/user";
 import {
+  DeleteResult,
   GetResult,
   IService,
   QueryResult,
@@ -14,7 +15,11 @@ import {
 } from "lib/services/interface";
 
 export interface IUserService extends IService {
-  fetchUsers(searchText: string): Promise<QueryResult<User[]>>;
+  fetchUsers(
+    limit: number,
+    offset: number,
+    searchText: string
+  ): Promise<QueryResult<User[]>>;
   getUser(id: string): Promise<GetResult<User>>;
   createUser(
     authorityId: number,
@@ -34,23 +39,32 @@ export interface IUserService extends IService {
     email: string,
     telephone: string
   ): Promise<SaveResult<User>>;
+  deleteUser(id: string): Promise<DeleteResult>;
 }
 
 export class UserService implements IUserService {
   client: ApolloClient<NormalizedCacheObject>;
+  fetchUsersQuery = {
+    limit: 20,
+    offset: 0,
+    nameStartWith: "",
+  };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
   }
 
-  async fetchUsers(searchText: string) {
+  async fetchUsers(limit: number, offset: number, searchText: string) {
+    this.fetchUsersQuery = {
+      ...this.fetchUsersQuery,
+      limit,
+      offset,
+      nameStartWith: searchText,
+    };
+
     const fetchResult = await this.client.query({
       query: UsersDocument,
-      variables: {
-        limit: 20,
-        offset: 0,
-        nameStartWith: searchText,
-      },
+      variables: this.fetchUsersQuery,
     });
 
     const items = Array<User>();
@@ -68,6 +82,7 @@ export class UserService implements IUserService {
     });
     return {
       items,
+      totalCount: fetchResult.data.adminAuthorityUserQuery?.totalCount,
     };
   }
 
@@ -211,5 +226,10 @@ export class UserService implements IUserService {
     return {
       success: true,
     };
+  }
+
+  async deleteUser(id: string) {
+    console.log("delete user", id);
+    return { error: "" };
   }
 }
