@@ -6,32 +6,56 @@ import { IReportTypeService } from "lib/services/reportType/reportTypeService";
 export class AdminReportTypeListViewModel extends BaseViewModel {
   data: ReportType[] = [];
 
-  searchText: string = "";
+  nameSearch: string = "";
 
-  constructor(readonly reportTypeService: IReportTypeService) {
+  constructor(
+    readonly reportTypeService: IReportTypeService,
+    nameSearch: string = "",
+    offset: number = 0
+  ) {
     super();
     makeObservable(this, {
       data: observable,
-      searchText: observable,
-      setSearchText: action,
-      clearSearchText: action,
+      nameSearch: observable,
+      setSearchValue: action,
+      clearNameSearch: action,
       fetch: action,
     });
+
+    this.nameSearch = nameSearch;
+    this.offset = offset;
+    this.fetch();
   }
 
-  setSearchText(value: string) {
-    this.searchText = value;
+  setSearchValue(nameSearch: string = "", offset: number = 0) {
+    if (nameSearch != this.nameSearch || this.offset != offset) {
+      this.nameSearch = nameSearch;
+      this.offset = offset;
+      this.fetch();
+    }
   }
 
-  clearSearchText() {
-    this.searchText = "";
+  clearNameSearch() {
+    this.nameSearch = "";
   }
 
   async fetch(): Promise<void> {
     const result = await this.reportTypeService.fetchReportTypes(
-      this.searchText
+      this.limit,
+      this.offset,
+      this.nameSearch
     );
-    runInAction(() => (this.data = result.items || []));
+    runInAction(() => {
+      this.data = result.items || [];
+      this.totalCount = result.totalCount || 0;
+    });
+    if (result.error) {
+      this.setErrorMessage(result.error);
+    }
+  }
+
+  async delete(id: string): Promise<void> {
+    const result = await this.reportTypeService.deleteReportType(id);
     if (result.error) {
       this.setErrorMessage(result.error);
     }

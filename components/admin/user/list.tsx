@@ -9,18 +9,40 @@ import ErrorDisplay from "components/widgets/errorDisplay";
 import Link from "next/link";
 import { AddButton } from "components/widgets/forms";
 import useServices from "lib/services/provider";
+import {
+  NumberParam,
+  StringParam,
+  useSearchParams,
+} from "components/hooks/searchParam";
+import Paginate from "components/widgets/table/paginate";
+import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
+import { User } from "lib/services/user";
 
 const UserList = () => {
   const router = useRouter();
-  const services = useServices();
-  const [viewModel, setViewModel] = useState<AdminUserListViewModel>();
-  useEffect(() => {
-    const viewModel = new AdminUserListViewModel(services.userService);
-    setViewModel(viewModel);
-    viewModel.fetch();
-  }, [services.userService]);
+  const { userService } = useServices();
+  const [searchValue, onSearchChange] = useSearchParams({
+    q: StringParam,
+    limit: NumberParam,
+    offset: NumberParam,
+  });
 
-  if (viewModel === null) {
+  const [viewModel] = useState<AdminUserListViewModel>(
+    new AdminUserListViewModel(
+      userService,
+      searchValue.q as string,
+      searchValue.offset as number
+    ).registerDialog("confirmDelete")
+  );
+
+  useEffect(() => {
+    viewModel.setSearchValue(
+      searchValue.q as string,
+      searchValue.offset as number
+    );
+  }, [searchValue, viewModel]);
+
+  if (!viewModel) {
     return <Spinner />;
   }
   return (
@@ -28,7 +50,10 @@ const UserList = () => {
       <div className="mb-4">&gt;&gt; Users</div>
 
       <div className="flex items-center flex-wrap mb-4">
-        <Filter viewModel={viewModel} />
+        <Filter
+          nameSearch={viewModel.nameSearch}
+          onChange={value => onSearchChange("q", value)}
+        />
         <div className="flex-grow"></div>
         <Link href={"/admin/users/create"} passHref>
           <AddButton />
@@ -60,8 +85,24 @@ const UserList = () => {
         ]}
         data={viewModel?.data || []}
         onEdit={record => router.push(`/admin/users/${record.id}/update`)}
+        onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
       />
       <ErrorDisplay message={viewModel?.errorMessage} />
+
+      <Paginate
+        offset={viewModel.offset}
+        limit={viewModel.limit}
+        totalCount={viewModel.totalCount}
+        onChange={value => onSearchChange("offset", value)}
+      />
+
+      <ConfirmDialog
+        store={viewModel.dialog("confirmDelete")}
+        title="Confirm delete"
+        content="Are you sure?"
+        onYes={(record: User) => viewModel.delete(record.id)}
+        onNo={() => viewModel.dialog("confirmDelete")?.close()}
+      />
     </div>
   );
 };

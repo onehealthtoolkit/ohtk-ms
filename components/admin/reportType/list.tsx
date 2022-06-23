@@ -9,18 +9,39 @@ import ErrorDisplay from "components/widgets/errorDisplay";
 import useServices from "lib/services/provider";
 import Link from "next/link";
 import { AddButton } from "components/widgets/forms";
+import {
+  NumberParam,
+  StringParam,
+  useSearchParams,
+} from "components/hooks/searchParam";
+import Paginate from "components/widgets/table/paginate";
+import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
+import { ReportType } from "lib/services/reportType";
 
 const ReportTypeList = () => {
-  const services = useServices();
   const router = useRouter();
-  const [viewModel, setViewModel] = useState<AdminReportTypeListViewModel>();
+  const { reportTypeService } = useServices();
+
+  const [searchValue, onSearchChange] = useSearchParams({
+    q: StringParam,
+    limit: NumberParam,
+    offset: NumberParam,
+  });
+
+  const [viewModel] = useState<AdminReportTypeListViewModel>(
+    new AdminReportTypeListViewModel(
+      reportTypeService,
+      searchValue.q as string,
+      searchValue.offset as number
+    ).registerDialog("confirmDelete")
+  );
+
   useEffect(() => {
-    const viewModel = new AdminReportTypeListViewModel(
-      services.reportTypeService
+    viewModel.setSearchValue(
+      searchValue.q as string,
+      searchValue.offset as number
     );
-    setViewModel(viewModel);
-    viewModel.fetch();
-  }, [services.reportTypeService]);
+  }, [searchValue, viewModel]);
 
   if (viewModel === null) {
     return <Spinner />;
@@ -30,7 +51,10 @@ const ReportTypeList = () => {
       <div className="mb-4">&gt;&gt; Report Type</div>
 
       <div className="flex items-center flex-wrap mb-4">
-        <Filter viewModel={viewModel} />
+        <Filter
+          nameSearch={viewModel.nameSearch}
+          onChange={value => onSearchChange("q", value)}
+        />
         <div className="flex-grow"></div>
         <Link href={"/admin/report_types/create"} passHref>
           <AddButton />
@@ -52,8 +76,23 @@ const ReportTypeList = () => {
         onEdit={record =>
           router.push(`/admin/report_types/${record.id}/update`)
         }
+        onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
       />
       <ErrorDisplay message={viewModel?.errorMessage} />
+      <Paginate
+        offset={viewModel.offset}
+        limit={viewModel.limit}
+        totalCount={viewModel.totalCount}
+        onChange={value => onSearchChange("offset", value)}
+      />
+
+      <ConfirmDialog
+        store={viewModel.dialog("confirmDelete")}
+        title="Confirm delete"
+        content="Are you sure?"
+        onYes={(record: ReportType) => viewModel.delete(record.id)}
+        onNo={() => viewModel.dialog("confirmDelete")?.close()}
+      />
     </div>
   );
 };

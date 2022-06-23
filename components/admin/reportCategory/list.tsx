@@ -9,21 +9,41 @@ import ErrorDisplay from "components/widgets/errorDisplay";
 import useServices from "lib/services/provider";
 import Link from "next/link";
 import { AddButton } from "components/widgets/forms";
+import Paginate from "components/widgets/table/paginate";
+import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
+import { ReportCategory } from "lib/services/reportCategory";
+import {
+  NumberParam,
+  StringParam,
+  useSearchParams,
+} from "components/hooks/searchParam";
 
 const ReportCategoryList = () => {
   const router = useRouter();
-  const services = useServices();
-  const [viewModel, setViewModel] =
-    useState<AdminReportCategoryListViewModel>();
-  useEffect(() => {
-    const viewModel = new AdminReportCategoryListViewModel(
-      services.reportCategoryService
-    );
-    setViewModel(viewModel);
-    viewModel.fetch();
-  }, [services.reportCategoryService]);
+  const { reportCategoryService } = useServices();
 
-  if (viewModel === null) {
+  const [searchValue, onSearchChange] = useSearchParams({
+    q: StringParam,
+    limit: NumberParam,
+    offset: NumberParam,
+  });
+
+  const [viewModel] = useState<AdminReportCategoryListViewModel>(
+    new AdminReportCategoryListViewModel(
+      reportCategoryService,
+      searchValue.q as string,
+      searchValue.offset as number
+    ).registerDialog("confirmDelete")
+  );
+
+  useEffect(() => {
+    viewModel.setSearchValue(
+      searchValue.q as string,
+      searchValue.offset as number
+    );
+  }, [searchValue, viewModel]);
+
+  if (!viewModel) {
     return <Spinner />;
   }
   return (
@@ -31,7 +51,10 @@ const ReportCategoryList = () => {
       <div className="mb-4">&gt;&gt; Report Category</div>
 
       <div className="flex items-center flex-wrap mb-4">
-        <Filter viewModel={viewModel} />
+        <Filter
+          nameSearch={viewModel.nameSearch}
+          onChange={value => onSearchChange("q", value)}
+        />
         <div className="flex-grow"></div>
         <Link href={"/admin/report_categories/create"} passHref>
           <AddButton />
@@ -53,8 +76,23 @@ const ReportCategoryList = () => {
         onEdit={record =>
           router.push(`/admin/report_categories/${record.id}/update`)
         }
+        onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
       />
       <ErrorDisplay message={viewModel?.errorMessage} />
+      <Paginate
+        offset={viewModel.offset}
+        limit={viewModel.limit}
+        totalCount={viewModel.totalCount}
+        onChange={value => onSearchChange("offset", value)}
+      />
+
+      <ConfirmDialog
+        store={viewModel.dialog("confirmDelete")}
+        title="Confirm delete"
+        content="Are you sure?"
+        onYes={(record: ReportCategory) => viewModel.delete(record.id)}
+        onNo={() => viewModel.dialog("confirmDelete")?.close()}
+      />
     </div>
   );
 };

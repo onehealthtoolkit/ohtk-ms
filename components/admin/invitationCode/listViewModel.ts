@@ -1,41 +1,62 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
-import { IInvitationCodeService } from "lib/services/invitationCode";
+import {
+  IInvitationCodeService,
+  InvitationCode,
+} from "lib/services/invitationCode";
 
-type InvitationCode = {
-  id: string;
-  code: string;
-};
-
-export class InvitaionCodeViewModel extends BaseViewModel {
+export class InvitaionCodeListViewModel extends BaseViewModel {
   data: InvitationCode[] = [];
 
-  searchText: string = "";
+  codeSearch: string = "";
 
-  constructor(readonly invitationCodeService: IInvitationCodeService) {
+  constructor(
+    readonly invitationCodeService: IInvitationCodeService,
+    codeSearch: string = "",
+    offset: number = 0
+  ) {
     super();
     makeObservable(this, {
       data: observable,
-      searchText: observable,
-      setSearchText: action,
-      clearSearchText: action,
+      codeSearch: observable,
+      setSearchValue: action,
+      clearCodeSearch: action,
       fetch: action,
     });
+    this.codeSearch = codeSearch;
+    this.offset = offset;
+    this.fetch();
   }
 
-  setSearchText(value: string) {
-    this.searchText = value;
+  setSearchValue(codeSearch: string = "", offset: number = 0) {
+    if (codeSearch != this.codeSearch || this.offset != offset) {
+      this.codeSearch = codeSearch;
+      this.offset = offset;
+      this.fetch();
+    }
   }
 
-  clearSearchText() {
-    this.searchText = "";
+  clearCodeSearch() {
+    this.codeSearch = "";
   }
 
   async fetch(): Promise<void> {
     const result = await this.invitationCodeService.fetchInvitationCodes(
-      this.searchText
+      this.limit,
+      this.offset,
+      this.codeSearch
     );
-    runInAction(() => (this.data = result.items || []));
+    runInAction(() => {
+      this.data = result.items || [];
+      this.totalCount = result.totalCount || 0;
+    });
+    if (result.error) {
+      this.setErrorMessage(result.error);
+    }
+  }
+
+  async delete(id: string): Promise<void> {
+    const result = await this.invitationCodeService.deleteInvitationCode(id);
     if (result.error) {
       this.setErrorMessage(result.error);
     }

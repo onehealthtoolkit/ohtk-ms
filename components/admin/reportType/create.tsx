@@ -34,6 +34,8 @@ const ReportTypeCreate = () => {
   useEffect(() => {
     async function loadData() {
       const result = await services.reportCategoryService.fetchReportCategories(
+        30,
+        0,
         ""
       );
       setCategories(result.items);
