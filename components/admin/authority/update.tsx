@@ -17,6 +17,7 @@ import {
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import { AuthorityUpdateViewModel } from "./updateViewModel";
+import AuthorityInherits from "components/admin/authority/authorityInherits";
 
 const AuthorityUpdate = () => {
   const router = useRouter();
@@ -62,6 +63,17 @@ const AuthorityUpdate = () => {
               value={viewModel.name}
             />
             <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
+          </Field>
+          <Field $size="half">
+            <Label htmlFor="inherits">Inherits</Label>
+            <AuthorityInherits
+              values={viewModel.authorityInherits}
+              onAdd={authorityId => viewModel.addAuthorityInherits(authorityId)}
+              onDelete={authorityId =>
+                viewModel.removeAuthorityInherits(authorityId)
+              }
+            />
+            <ErrorText>{viewModel.fieldErrors.inherits}</ErrorText>
           </Field>
         </FieldGroup>
         {viewModel.submitError.length > 0 && (
