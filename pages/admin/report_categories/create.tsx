@@ -7,7 +7,6 @@ const AdminReportCategoryCreatePage: NextPage = () => {
   return (
     <Protect>
       <Layout>
-        <div className="mb-4">&raquo; Report Category &raquo; create</div>
         <ReportCategoryCreate />
       </Layout>
     </Protect>

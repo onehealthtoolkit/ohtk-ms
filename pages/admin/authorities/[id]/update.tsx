@@ -7,7 +7,6 @@ const AdminAuthorityUpdatePage: NextPage = () => {
   return (
     <Protect>
       <Layout>
-        <div className="mb-4">&raquo; Authorities &raquo; update</div>
         <AuthorityUpdate />
       </Layout>
     </Protect>

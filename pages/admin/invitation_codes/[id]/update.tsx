@@ -7,7 +7,6 @@ const AdminInvitationCodeUpdatePage: NextPage = () => {
   return (
     <Protect>
       <Layout>
-        <div className="mb-4">&raquo; Invitation Codes &raquo; update</div>
         <InvitationCodeUpdate />
       </Layout>
     </Protect>

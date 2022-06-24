@@ -7,7 +7,6 @@ const AdminUserCreatePage: NextPage = () => {
   return (
     <Protect>
       <Layout>
-        <div className="mb-4">&raquo; Users &raquo; create</div>
         <UserCreate />
       </Layout>
     </Protect>
