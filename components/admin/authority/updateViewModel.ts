@@ -17,6 +17,7 @@ export class AuthorityUpdateViewModel extends AuthorityViewModel {
     if (data) {
       this.code = data.code;
       this.name = data.name;
+      this.authorityInherits = data.inherits || [];
     }
     this.isLoading = false;
   }

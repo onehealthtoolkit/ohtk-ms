@@ -16,6 +16,7 @@ import {
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
+import AuthorityInherits from "components/admin/authority/authorityInherits";
 
 const AuthorityCreate = () => {
   const router = useRouter();
@@ -58,6 +59,17 @@ const AuthorityCreate = () => {
             disabled={isSubmitting}
           />
           <ErrorText>{errors.name}</ErrorText>
+        </Field>
+        <Field $size="half">
+          <Label htmlFor="inherits">Inherits</Label>
+          <AuthorityInherits
+            values={viewModel.authorityInherits}
+            onAdd={authorityId => viewModel.addAuthorityInherits(authorityId)}
+            onDelete={authorityId =>
+              viewModel.removeAuthorityInherits(authorityId)
+            }
+          />
+          <ErrorText>{viewModel.fieldErrors.inherits}</ErrorText>
         </Field>
       </FieldGroup>
       {viewModel.submitError.length > 0 && (
