@@ -195,6 +195,13 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 icon={<CogIcon className={iconClassName} />}
               />
               <Menu
+                href="/admin/formBuilder/"
+                pathname={pathname}
+                label="Form Builder"
+                collapsed={store.menu.collapsed}
+                icon={<CogIcon className={iconClassName} />}
+              />
+              <Menu
                 href="/settings/logout/"
                 pathname={pathname}
                 label="Logout"
