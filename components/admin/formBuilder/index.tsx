@@ -2,11 +2,13 @@ import { FormViewModel } from "components/admin/formBuilder/formViewModel";
 import Section from "components/admin/formBuilder/section";
 import SectionList from "components/admin/formBuilder/sectionList";
 import { observer } from "mobx-react";
-import { FC, useState } from "react";
+import { FC } from "react";
 
-const FormBuilder: FC = () => {
-  const [form] = useState(new FormViewModel());
+export type FormBuilderProps = {
+  viewModel: FormViewModel;
+};
 
+const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
   return (
     <div className="flex relative w-full flex-wrap">
       <SectionList
