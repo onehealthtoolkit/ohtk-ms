@@ -3,19 +3,12 @@ import { Authority, IAuthorityService } from "lib/services/authority";
 import { SaveResult } from "lib/services/interface";
 import { action, computed, makeObservable, observable } from "mobx";
 
-// mock data for 'authority inherits' autocomplete
-export const authorities: Authority[] = [...Array(1000)].map((_, index) => ({
-  id: "id." + index,
-  code: "code." + index,
-  name: "authority " + index,
-}));
-
 export abstract class AuthorityViewModel extends BaseFormViewModel {
   authorityService: IAuthorityService;
 
   _code: string = "";
   _name: string = "";
-  _authorityInherits: Authority[] = [];
+  _authorityInherits: string[] = [];
 
   constructor(authorityService: IAuthorityService) {
     super();
@@ -58,10 +51,10 @@ export abstract class AuthorityViewModel extends BaseFormViewModel {
     }
   }
 
-  public get authorityInherits(): Authority[] {
+  public get authorityInherits(): string[] {
     return this._authorityInherits;
   }
-  public set authorityInherits(value: Authority[]) {
+  public set authorityInherits(value: string[]) {
     this._authorityInherits = value;
     delete this.fieldErrors["authorityInherits"];
     if (this.submitError.length > 0) {
@@ -108,14 +101,14 @@ export abstract class AuthorityViewModel extends BaseFormViewModel {
   }
 
   async addAuthorityInherits(authorityId: string) {
-    const authority = authorities.find(it => it.id === authorityId);
-    if (authority) {
-      this.authorityInherits.push(authority);
+    const idx = this.authorityInherits.findIndex(it => it === authorityId);
+    if (idx === -1) {
+      this.authorityInherits.push(authorityId);
     }
   }
 
   removeAuthorityInherits(authorityId: string) {
-    const idx = this.authorityInherits.findIndex(it => it.id === authorityId);
+    const idx = this.authorityInherits.findIndex(it => it === authorityId);
     if (idx > -1) {
       this.authorityInherits.splice(idx, 1);
     }
