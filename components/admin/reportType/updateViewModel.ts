@@ -21,6 +21,11 @@ export class ReportTypeUpdateViewModel extends ReportTypeViewModel {
       this.definition = data.definition;
       this.categoryId = data.categoryId;
       this.ordering = data.ordering;
+      try {
+        this.formViewModel.parse(JSON.parse(data.definition));
+      } catch (e) {
+        this.submitError = "Error! Bad definition format";
+      }
     }
     this.isLoading = false;
   }

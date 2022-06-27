@@ -20,7 +20,7 @@ const SectionList: FC<Props> = ({
 }) => {
   return (
     <div className="text-gray-900 bg-white border p-4 border-gray-200 w-full md:w-1/4">
-      <div className={"flex flex-col min-h-[400px] "}>
+      <div className={"flex flex-col md:min-h-[400px]"}>
         {sections.map(section => {
           return (
             <div

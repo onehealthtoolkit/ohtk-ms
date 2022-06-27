@@ -1,3 +1,4 @@
+import { Definition } from "components/admin/formBuilder/interfaces";
 import { SectionViewModel } from "components/admin/formBuilder/sectionViewModel";
 import { action, makeObservable, observable } from "mobx";
 
@@ -61,5 +62,23 @@ export class FormViewModel {
         this.sections.splice(newIndex, 0, tempSection);
       }
     }
+  }
+
+  parse(definition: Definition): boolean {
+    if (Array.isArray(definition.sections)) {
+      const sections = Array<SectionViewModel>();
+
+      definition.sections.forEach(sectionDefinition => {
+        const id = crypto.randomUUID();
+        const sectionViewModel = new SectionViewModel(id, "Section...");
+        const success = sectionViewModel.parse(sectionDefinition);
+        if (success) {
+          sections.push(sectionViewModel);
+        }
+      });
+      this.sections.splice(0, this.sections.length, ...sections);
+      return true;
+    }
+    return false;
   }
 }
