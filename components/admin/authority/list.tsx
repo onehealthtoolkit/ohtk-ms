@@ -47,8 +47,6 @@ const AuthorityList = () => {
   }
   return (
     <div>
-      <div className="mb-4">&gt;&gt; Authorities</div>
-
       <div className="flex items-center flex-wrap mb-4">
         <Filter
           nameSearch={viewModel.nameSearch}

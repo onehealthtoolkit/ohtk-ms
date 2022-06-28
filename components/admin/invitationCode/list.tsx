@@ -48,8 +48,6 @@ const InvitaionCodeList = () => {
   }
   return (
     <div>
-      <div className="mb-4">&gt;&gt; Invitation code</div>
-
       <div className="flex items-center flex-wrap mb-4">
         <Filter
           codeSearch={viewModel.codeSearch}
