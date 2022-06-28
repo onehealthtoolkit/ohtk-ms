@@ -1,9 +1,10 @@
 import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import {
-  AuthoritiesDocument,
   AuthorityCreateDocument,
   AuthorityUpdateDocument,
+  AuthorityQueryDocument,
   GetAuthorityDocument,
+  AuthorityInheritLookupDocument,
 } from "lib/generated/graphql";
 import { Authority } from "lib/services/authority/authority";
 import {
@@ -15,18 +16,33 @@ import {
 } from "lib/services/interface";
 
 export interface IAuthorityService extends IService {
+  lookupAuthorities(
+    limit: number,
+    offset: number,
+    searchText: string
+  ): Promise<QueryResult<Authority[]>>;
+
   fetchAuthorities(
     limit: number,
     offset: number,
     searchText: string
   ): Promise<QueryResult<Authority[]>>;
+
   getAuthority(id: string): Promise<GetResult<Authority>>;
-  createAuthority(code: string, name: string): Promise<SaveResult<Authority>>;
+
+  createAuthority(
+    code: string,
+    name: string,
+    inherits: string[]
+  ): Promise<SaveResult<Authority>>;
+
   updateAuthority(
     id: string,
     code: string,
-    name: string
+    name: string,
+    inherits: string[]
   ): Promise<SaveResult<Authority>>;
+
   deleteAuthority(id: string): Promise<DeleteResult>;
 }
 
@@ -42,20 +58,19 @@ export class AuthorityService implements IAuthorityService {
     this.client = client;
   }
 
-  async fetchAuthorities(limit: number, offset: number, searchText: string) {
-    this.fetchAuthoritiesQuery = {
-      ...this.fetchAuthoritiesQuery,
+  async lookupAuthorities(limit: number, offset: number, searchText: string) {
+    const variables = {
       limit,
       offset,
       nameStartWith: searchText,
     };
     const fetchResult = await this.client.query({
-      query: AuthoritiesDocument,
-      variables: this.fetchAuthoritiesQuery,
+      query: AuthorityInheritLookupDocument,
+      variables,
     });
 
     const items = Array<Authority>();
-    fetchResult.data.authorities?.results.forEach(item => {
+    fetchResult.data.adminAuthorityInheritLookup?.results.forEach(item => {
       if (item) {
         items.push({
           id: item.id,
@@ -66,11 +81,39 @@ export class AuthorityService implements IAuthorityService {
     });
     return {
       items,
-      totalCount: fetchResult.data.authorities?.totalCount,
+      totalCount: fetchResult.data.adminAuthorityInheritLookup?.totalCount,
     };
   }
 
-  async getAuthority(id: string) {
+  async fetchAuthorities(limit: number, offset: number, searchText: string) {
+    this.fetchAuthoritiesQuery = {
+      ...this.fetchAuthoritiesQuery,
+      limit,
+      offset,
+      nameStartWith: searchText,
+    };
+    const fetchResult = await this.client.query({
+      query: AuthorityQueryDocument,
+      variables: this.fetchAuthoritiesQuery,
+    });
+
+    const items = Array<Authority>();
+    fetchResult.data.adminAuthorityQuery?.results.forEach(item => {
+      if (item) {
+        items.push({
+          id: item.id,
+          name: item.name,
+          code: item.code,
+        });
+      }
+    });
+    return {
+      items,
+      totalCount: fetchResult.data.adminAuthorityQuery?.totalCount,
+    };
+  }
+
+  async getAuthority(id: string): Promise<GetResult<Authority>> {
     const getResult = await this.client.query({
       query: GetAuthorityDocument,
       variables: {
@@ -81,7 +124,19 @@ export class AuthorityService implements IAuthorityService {
     let data;
     const authority = getResult.data.authority;
     if (authority) {
-      data = { id: authority.id, code: authority.code, name: authority.name };
+      const inherits = authority.inherits?.map(obj => {
+        return {
+          id: obj!.id,
+          code: obj!.code,
+          name: obj!.name,
+        };
+      });
+      data = {
+        id: authority.id,
+        code: authority.code,
+        name: authority.name,
+        inherits,
+      };
     }
     return {
       data,
@@ -90,18 +145,21 @@ export class AuthorityService implements IAuthorityService {
 
   async createAuthority(
     code: string,
-    name: string
+    name: string,
+    inherits: string[]
   ): Promise<SaveResult<Authority>> {
     const createResult = await this.client.mutate({
       mutation: AuthorityCreateDocument,
       variables: {
         code,
         name,
+        inherits,
       },
       refetchQueries: [
         {
-          query: AuthoritiesDocument,
+          query: AuthorityQueryDocument,
           variables: this.fetchAuthoritiesQuery,
+          fetchPolicy: "network-only",
         },
       ],
       awaitRefetchQueries: true,
@@ -135,7 +193,8 @@ export class AuthorityService implements IAuthorityService {
   async updateAuthority(
     id: string,
     code: string,
-    name: string
+    name: string,
+    inherits: string[]
   ): Promise<SaveResult<Authority>> {
     const updateResult = await this.client.mutate({
       mutation: AuthorityUpdateDocument,
@@ -143,14 +202,37 @@ export class AuthorityService implements IAuthorityService {
         id,
         code,
         name,
+        inherits,
       },
       refetchQueries: [
         {
-          query: AuthoritiesDocument,
+          query: AuthorityQueryDocument,
           variables: this.fetchAuthoritiesQuery,
+          fetchPolicy: "network-only",
         },
       ],
       awaitRefetchQueries: true,
+      update: (cache, result) => {
+        const cacheItem = cache.readQuery({
+          query: GetAuthorityDocument,
+          variables: { id },
+        });
+        const authoirtyCache = cacheItem?.authority;
+        if (authoirtyCache) {
+          const serverReturnValue = result.data?.adminAuthorityUpdate?.result;
+          if (serverReturnValue?.__typename === "AdminAuthorityUpdateSuccess") {
+            const newAuthorityValue = serverReturnValue.authority;
+            cache.writeQuery({
+              query: GetAuthorityDocument,
+              variables: { id },
+              data: {
+                __typename: "Query",
+                authority: newAuthorityValue,
+              },
+            });
+          }
+        }
+      },
     });
 
     const result = updateResult.data?.adminAuthorityUpdate?.result;

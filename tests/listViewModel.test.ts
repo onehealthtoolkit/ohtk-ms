@@ -22,6 +22,17 @@ export const data: Array<Authority> = [
 
 describe("Calculator", () => {
   class AuthorityService implements IAuthorityService {
+    async lookupAuthorities(
+      limit: number,
+      offset: number,
+      searchText: string
+    ): Promise<QueryResult<Authority[]>> {
+      return {
+        items: data.filter(it => it.name.includes(searchText)),
+        totalCount: data.length,
+      };
+    }
+
     async fetchAuthorities(
       limit: number,
       offset: number,
@@ -34,11 +45,13 @@ describe("Calculator", () => {
         totalCount: data.length,
       };
     }
+
     getAuthority(id: string): Promise<GetResult<Authority>> {
       console.log(id);
 
       throw new Error("Method not implemented.");
     }
+
     createAuthority(
       code: string,
       name: string
@@ -46,6 +59,7 @@ describe("Calculator", () => {
       console.log(code, name);
       throw new Error("Method not implemented.");
     }
+
     updateAuthority(
       id: string,
       code: string,
@@ -55,12 +69,14 @@ describe("Calculator", () => {
 
       throw new Error("Method not implemented.");
     }
+
     deleteAuthority(id: string): Promise<DeleteResult> {
       console.log(id);
 
       throw new Error("Method not implemented.");
     }
   }
+
   it("fetch success", async () => {
     const viewModel = new AdminAuthorityListViewModel(
       new AuthorityService(),

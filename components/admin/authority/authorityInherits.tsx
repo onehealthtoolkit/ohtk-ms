@@ -213,7 +213,7 @@ const AuthoritiesQuery: FC<AuthoritiesQueryProps> = ({
       setState({ data: [], error: "", loading: true });
       debounce(() => {
         authorityService
-          .fetchAuthorities(100, 0, q)
+          .lookupAuthorities(10, 0, q)
           .then(result => {
             if (result.error) {
               setState({

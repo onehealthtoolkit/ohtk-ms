@@ -13,8 +13,38 @@ query Authorities($limit: Int!, $offset: Int!, $nameStartWith: String) {
   }
 }
 
-mutation AuthorityCreate($code: String!, $name: String!) {
-  adminAuthorityCreate(code: $code, name: $name) {
+query AuthorityQuery($limit: Int!, $offset: Int!, $nameStartWith: String) {
+  adminAuthorityQuery(
+    limit: $limit
+    offset: $offset
+    name_Istartswith: $nameStartWith
+  ) {
+    totalCount
+    results {
+      id
+      name
+      code
+    }
+  }
+}
+
+query AuthorityInheritLookup($limit: Int!, $nameStartWith: String) {
+  adminAuthorityInheritLookup(
+    limit: $limit
+    offset: 0
+    name_Istartswith: $nameStartWith
+  ) {
+    totalCount
+    results {
+      id
+      name
+      code
+    }
+  }
+}
+
+mutation AuthorityCreate($code: String!, $name: String!, $inherits: [String]) {
+  adminAuthorityCreate(code: $code, name: $name, inherits: $inherits) {
     result {
       __typename
       ... on AdminAuthorityCreateSuccess {
@@ -32,13 +62,26 @@ mutation AuthorityCreate($code: String!, $name: String!) {
   }
 }
 
-mutation AuthorityUpdate($id: ID!, $code: String!, $name: String!) {
-  adminAuthorityUpdate(id: $id, code: $code, name: $name) {
+mutation AuthorityUpdate(
+  $id: ID!
+  $code: String!
+  $name: String!
+  $inherits: [String]
+) {
+  adminAuthorityUpdate(id: $id, code: $code, name: $name, inherits: $inherits) {
     result {
       __typename
       ... on AdminAuthorityUpdateSuccess {
-        id
-        code
+        authority {
+          id
+          code
+          name
+          inherits {
+            id
+            code
+            name
+          }
+        }
       }
       ... on AdminAuthorityUpdateProblem {
         fields {
@@ -56,5 +99,10 @@ query GetAuthority($id: ID!) {
     id
     code
     name
+    inherits {
+      id
+      code
+      name
+    }
   }
 }

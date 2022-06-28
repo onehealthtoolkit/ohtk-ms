@@ -63,7 +63,7 @@ const AuthorityCreate = () => {
         <Field $size="half">
           <Label htmlFor="inherits">Inherits</Label>
           <AuthorityInherits
-            values={viewModel.authorityInherits}
+            values={viewModel.authorityInherits.slice()}
             onAdd={authorityId => viewModel.addAuthorityInherits(authorityId)}
             onDelete={authorityId =>
               viewModel.removeAuthorityInherits(authorityId)

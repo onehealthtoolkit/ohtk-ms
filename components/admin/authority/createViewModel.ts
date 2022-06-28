@@ -4,6 +4,10 @@ import { AuthorityViewModel } from "./authorityViewModel";
 
 export class AuthorityCreateViewModel extends AuthorityViewModel {
   public _save(): Promise<SaveResult<Authority>> {
-    return this.authorityService.createAuthority(this.code, this.name);
+    return this.authorityService.createAuthority(
+      this.code,
+      this.name,
+      this.authorityInherits
+    );
   }
 }

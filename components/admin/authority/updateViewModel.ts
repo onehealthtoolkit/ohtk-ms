@@ -23,6 +23,11 @@ export class AuthorityUpdateViewModel extends AuthorityViewModel {
   }
 
   public _save(): Promise<SaveResult<Authority>> {
-    return this.authorityService.updateAuthority(this.id, this.code, this.name);
+    return this.authorityService.updateAuthority(
+      this.id,
+      this.code,
+      this.name,
+      this.authorityInherits
+    );
   }
 }
