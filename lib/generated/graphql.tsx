@@ -399,6 +399,7 @@ export type AdminReportTypeCreateSuccess = {
   definition: Scalars["JSONString"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
   id: Scalars["UUID"];
+  incidentreports: Array<IncidentReportType>;
   name: Scalars["String"];
   ordering: Scalars["Int"];
   rendererDataTemplate?: Maybe<Scalars["String"]>;
@@ -448,6 +449,7 @@ export type AdminReportTypeUpdateSuccess = {
   definition: Scalars["JSONString"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
   id: Scalars["UUID"];
+  incidentreports: Array<IncidentReportType>;
   name: Scalars["String"];
   ordering: Scalars["Int"];
   rendererDataTemplate?: Maybe<Scalars["String"]>;
@@ -526,6 +528,47 @@ export type FeatureType = {
   value: Scalars["String"];
 };
 
+export type ImageType = {
+  __typename?: "ImageType";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  file: Scalars["String"];
+  id: Scalars["UUID"];
+  incidentreportSet: Array<IncidentReportType>;
+  reportId: Scalars["UUID"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type IncidentReportType = {
+  __typename?: "IncidentReportType";
+  coverImage?: Maybe<ImageType>;
+  createdAt: Scalars["DateTime"];
+  data?: Maybe<Scalars["GenericScalar"]>;
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  gpsLocation?: Maybe<Scalars["String"]>;
+  id: Scalars["UUID"];
+  images?: Maybe<Array<Maybe<ImageType>>>;
+  incidentDate: Scalars["Date"];
+  originData: Scalars["JSONString"];
+  originRendererData: Scalars["String"];
+  originalData?: Maybe<Scalars["GenericScalar"]>;
+  platform?: Maybe<Scalars["String"]>;
+  rendererData: Scalars["String"];
+  reportType: AdminReportTypeUpdateSuccess;
+  reportedBy?: Maybe<UserType>;
+  testFlag: Scalars["Boolean"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type IncidentReportTypeNodeConnection = {
+  __typename?: "IncidentReportTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<IncidentReportType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
 export type InvitationCodeType = {
   __typename?: "InvitationCodeType";
   authority: AdminAuthorityUpdateSuccess;
@@ -593,11 +636,14 @@ export type MutationAdminAuthorityUserUpdateArgs = {
 };
 
 export type MutationAdminCategoryCreateArgs = {
+  icon?: InputMaybe<Scalars["Upload"]>;
   name: Scalars["String"];
   ordering: Scalars["Int"];
 };
 
 export type MutationAdminCategoryUpdateArgs = {
+  clearIcon?: InputMaybe<Scalars["Boolean"]>;
+  icon?: InputMaybe<Scalars["Upload"]>;
   id: Scalars["ID"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
@@ -659,6 +705,7 @@ export type MutationSubmitImageArgs = {
 
 export type MutationSubmitIncidentReportArgs = {
   data: Scalars["GenericScalar"];
+  gpsLocation?: InputMaybe<Scalars["String"]>;
   incidentDate: Scalars["Date"];
   reportId?: InputMaybe<Scalars["UUID"]>;
   reportTypeId: Scalars["UUID"];
@@ -704,6 +751,7 @@ export type Query = {
   checkInvitationCode?: Maybe<CheckInvitationCodeType>;
   features?: Maybe<Array<Maybe<FeatureType>>>;
   hello?: Maybe<Scalars["String"]>;
+  incidentReports?: Maybe<IncidentReportTypeNodeConnection>;
   invitationCode?: Maybe<InvitationCodeType>;
   me?: Maybe<UserProfileType>;
   myReportTypes?: Maybe<Array<Maybe<ReportTypeType>>>;
@@ -805,6 +853,16 @@ export type QueryCheckInvitationCodeArgs = {
   code: Scalars["String"];
 };
 
+export type QueryIncidentReportsArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+};
+
 export type QueryInvitationCodeArgs = {
   id: Scalars["ID"];
 };
@@ -845,6 +903,7 @@ export type ReportTypeType = {
   definition?: Maybe<Scalars["GenericScalar"]>;
   deletedAt?: Maybe<Scalars["DateTime"]>;
   id: Scalars["UUID"];
+  incidentreports: Array<IncidentReportType>;
   name: Scalars["String"];
   ordering: Scalars["Int"];
   rendererDataTemplate?: Maybe<Scalars["String"]>;
@@ -1151,6 +1210,7 @@ export type ReportCategoriesQuery = {
 export type ReportCategoryCreateMutationVariables = Exact<{
   name: Scalars["String"];
   ordering: Scalars["Int"];
+  icon?: InputMaybe<Scalars["Upload"]>;
 }>;
 
 export type ReportCategoryCreateMutation = {
@@ -1176,6 +1236,8 @@ export type ReportCategoryUpdateMutationVariables = Exact<{
   id: Scalars["ID"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
+  icon?: InputMaybe<Scalars["Upload"]>;
+  clearIcon?: InputMaybe<Scalars["Boolean"]>;
 }>;
 
 export type ReportCategoryUpdateMutation = {
@@ -1192,7 +1254,12 @@ export type ReportCategoryUpdateMutation = {
             message: string;
           }> | null;
         }
-      | { __typename: "AdminCategoryUpdateSuccess"; id: string; name: string }
+      | {
+          __typename: "AdminCategoryUpdateSuccess";
+          id: string;
+          name: string;
+          icon?: string | null;
+        }
       | null;
   } | null;
 };
@@ -2689,6 +2756,11 @@ export const ReportCategoryCreateDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "icon" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Upload" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -2711,6 +2783,14 @@ export const ReportCategoryCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "ordering" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "icon" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "icon" },
                 },
               },
             ],
@@ -2838,6 +2918,19 @@ export const ReportCategoryUpdateDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "icon" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Upload" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "clearIcon" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -2868,6 +2961,22 @@ export const ReportCategoryUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "ordering" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "icon" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "icon" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "clearIcon" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "clearIcon" },
                 },
               },
             ],
@@ -2903,6 +3012,10 @@ export const ReportCategoryUpdateDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "icon" },
                             },
                           ],
                         },

@@ -59,6 +59,20 @@ const ReportCategoryCreate = () => {
           />
           <ErrorText>{errors.ordering}</ErrorText>
         </Field>
+        <Field $size="half">
+          <Label htmlFor="icon">Icon</Label>
+          <TextInput
+            id="icon"
+            type="file"
+            placeholder="Icon"
+            onChange={evt => {
+              if (evt.target.files?.length)
+                viewModel.icon = evt.target.files[0];
+            }}
+            disabled={isSubmitting}
+          />
+          <ErrorText>{errors.ordering}</ErrorText>
+        </Field>
       </FieldGroup>
       {viewModel.submitError.length > 0 && (
         <FormMessage>{viewModel.submitError}</FormMessage>

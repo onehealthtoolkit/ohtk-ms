@@ -14,8 +14,8 @@ query ReportCategories($limit: Int!, $offset: Int!, $nameStartWith: String) {
   }
 }
 
-mutation ReportCategoryCreate($name: String!, $ordering: Int!) {
-  adminCategoryCreate(name: $name, ordering: $ordering) {
+mutation ReportCategoryCreate($name: String!, $ordering: Int!, $icon: Upload) {
+  adminCategoryCreate(name: $name, ordering: $ordering, icon: $icon) {
     result {
       __typename
       ... on AdminCategoryCreateSuccess {
@@ -33,13 +33,26 @@ mutation ReportCategoryCreate($name: String!, $ordering: Int!) {
   }
 }
 
-mutation ReportCategoryUpdate($id: ID!, $name: String!, $ordering: Int!) {
-  adminCategoryUpdate(id: $id, name: $name, ordering: $ordering) {
+mutation ReportCategoryUpdate(
+  $id: ID!
+  $name: String!
+  $ordering: Int!
+  $icon: Upload
+  $clearIcon: Boolean
+) {
+  adminCategoryUpdate(
+    id: $id
+    name: $name
+    ordering: $ordering
+    icon: $icon
+    clearIcon: $clearIcon
+  ) {
     result {
       __typename
       ... on AdminCategoryUpdateSuccess {
         id
         name
+        icon
       }
       ... on AdminCategoryUpdateProblem {
         fields {

@@ -11,6 +11,9 @@ export abstract class ReportCategoryViewModel extends BaseFormViewModel {
 
   _name: string = "";
   _ordering: number = 0;
+  _icon: any = null;
+  _iconUrl: string = "";
+  _clearIcon: boolean = false;
   constructor(reportCategoryService: IReportCategoryService) {
     super();
     makeObservable(this, {
@@ -18,6 +21,12 @@ export abstract class ReportCategoryViewModel extends BaseFormViewModel {
       name: computed,
       _ordering: observable,
       ordering: computed,
+      _icon: observable,
+      icon: computed,
+      _iconUrl: observable,
+      iconUrl: computed,
+      _clearIcon: observable,
+      clearIcon: computed,
       save: action,
       validate: action,
     });
@@ -30,6 +39,39 @@ export abstract class ReportCategoryViewModel extends BaseFormViewModel {
   public set name(value: string) {
     this._name = value;
     delete this.fieldErrors["name"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public get icon(): File {
+    return this._icon;
+  }
+  public set icon(value: File) {
+    this._icon = value;
+    delete this.fieldErrors["icon"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public get iconUrl(): string {
+    return this._iconUrl;
+  }
+  public set iconUrl(value: string) {
+    this._iconUrl = value;
+    delete this.fieldErrors["icon"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public get clearIcon(): boolean {
+    return this._clearIcon;
+  }
+  public set clearIcon(value: boolean) {
+    this._clearIcon = value;
+    delete this.fieldErrors["clearIcon"];
     if (this.submitError.length > 0) {
       this.submitError = "";
     }

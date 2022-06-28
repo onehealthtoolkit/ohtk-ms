@@ -23,12 +23,15 @@ export interface IReportCategoryService extends IService {
   getReportCategory(id: string): Promise<GetResult<ReportCategory>>;
   createReportCategory(
     name: string,
-    ordering: number
+    ordering: number,
+    icon?: File
   ): Promise<SaveResult<ReportCategory>>;
   updateReportCategory(
     id: string,
     name: string,
-    ordering: number
+    ordering: number,
+    icon?: File,
+    clearIcon?: boolean
   ): Promise<SaveResult<ReportCategory>>;
   deleteReportCategory(id: string): Promise<DeleteResult>;
 }
@@ -92,6 +95,7 @@ export class ReportCategoryService implements IReportCategoryService {
         id: reportCategory.id,
         name: reportCategory.name,
         ordering: reportCategory.ordering,
+        icon: reportCategory.icon || "",
       };
     }
     return {
@@ -101,13 +105,18 @@ export class ReportCategoryService implements IReportCategoryService {
 
   async createReportCategory(
     name: string,
-    ordering: number
+    ordering: number,
+    icon: File
   ): Promise<SaveResult<ReportCategory>> {
     const createResult = await this.client.mutate({
       mutation: ReportCategoryCreateDocument,
       variables: {
         name,
         ordering: ordering,
+        icon: icon,
+      },
+      context: {
+        useMultipart: true,
       },
       refetchQueries: [
         {
@@ -150,14 +159,21 @@ export class ReportCategoryService implements IReportCategoryService {
   async updateReportCategory(
     id: string,
     name: string,
-    ordering: number
+    ordering: number,
+    icon: File,
+    clearIcon: boolean
   ): Promise<SaveResult<ReportCategory>> {
     const updateResult = await this.client.mutate({
       mutation: ReportCategoryUpdateDocument,
       variables: {
         id,
         name,
-        ordering: ordering,
+        ordering,
+        icon,
+        clearIcon,
+      },
+      context: {
+        useMultipart: true,
       },
       refetchQueries: [
         {
