@@ -3,6 +3,8 @@ import { PlusIcon } from "@heroicons/react/solid";
 import Spinner from "components/widgets/spinner";
 import tw from "tailwind-styled-components";
 
+export * from "./tabs";
+
 export const AddButton = forwardRef(function addButton(
   props: React.PropsWithoutRef<{}>,
   ref: React.Ref<HTMLAnchorElement>
@@ -176,7 +178,7 @@ export const Form: FC<
 );
 
 interface FieldGroupProps {
-  children: ReactElement[];
+  children: ReactElement | ReactElement[];
   $size?: "full" | "half";
 }
 

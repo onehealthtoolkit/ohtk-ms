@@ -17,6 +17,9 @@ import {
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
 
 const ReportCategoryUpdate = () => {
   const router = useRouter();
@@ -68,7 +71,11 @@ const ReportCategoryUpdate = () => {
           >
             <Field $size="half">
               <Label>Current Icon</Label>
-              <img width={"32"} height={"32"} src={viewModel.iconUrl} />
+              <img
+                width={"32"}
+                height={"32"}
+                src={`${publicRuntimeConfig.serverUrl}/${viewModel.iconUrl}`}
+              />
             </Field>
             <input
               type="checkbox"

@@ -1,0 +1,159 @@
+{
+  "sections": [
+    {
+      "label": "page1",
+      "questions": [
+        {
+          "fields": [
+            {
+              "id": "disease",
+              "name": "disease",
+              "options": [
+                {
+                  "label": "dengue",
+                  "value": "dengue"
+                },
+                {
+                  "label": "mers",
+                  "value": "mers"
+                },
+                {
+                  "label": "flu",
+                  "textInput": true,
+                  "value": "flu"
+                },
+                {
+                  "label": "sars",
+                  "textInput": true,
+                  "value": "sars"
+                },
+                {
+                  "label": "other",
+                  "textInput": true,
+                  "value": "other"
+                }
+              ],
+              "required": true,
+              "type": "singlechoices"
+            }
+          ],
+          "label": "disease"
+        },
+        {
+          "enableCondition": {
+            "name": "disease",
+            "operator": "=",
+            "value": "other"
+          },
+          "fields": [
+            {
+              "id": "more",
+              "name": "more",
+              "required": true,
+              "type": "text"
+            }
+          ],
+          "label": "give me more detail"
+        },
+        {
+          "fields": [
+            {
+              "id": "symptom",
+              "name": "symptom",
+              "options": [
+                {
+                  "label": "fever",
+                  "value": "fever"
+                },
+                {
+                  "label": "cough",
+                  "textInput": true,
+                  "value": "cough"
+                },
+                {
+                  "label": "sore throat",
+                  "textInput": true,
+                  "value": "sore_throat"
+                },
+                {
+                  "label": "other",
+                  "textInput": true,
+                  "value": "other"
+                }
+              ],
+              "required": true,
+              "type": "multiplechoices"
+            }
+          ],
+          "label": "symptom"
+        }
+      ]
+    },
+    {
+      "label": "page4",
+      "questions": [
+        {
+          "fields": [
+            {
+              "id": "images",
+              "name": "images",
+              "required": true,
+              "type": "images"
+            }
+          ],
+          "label": "images"
+        }
+      ]
+    },
+    {
+      "label": "page2",
+      "questions": [
+        {
+          "fields": [
+            {
+              "id": "firstName",
+              "label": "first name",
+              "name": "firstName",
+              "required": true,
+              "type": "text"
+            },
+            {
+              "id": "lastName",
+              "label": "last name",
+              "name": "lastName",
+              "required": true,
+              "type": "text"
+            }
+          ],
+          "label": "name"
+        },
+        {
+          "fields": [
+            {
+              "id": "age",
+              "label": "age",
+              "max": 120,
+              "min": 0,
+              "name": "age",
+              "required": true,
+              "type": "integer"
+            }
+          ],
+          "label": "age"
+        },
+        {
+          "fields": [
+            {
+              "id": "date",
+              "label": "Date",
+              "name": "date",
+              "required": true,
+              "type": "date"
+            }
+          ],
+          "label": "date"
+        }
+      ]
+    }
+  ]
+}

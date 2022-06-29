@@ -50,9 +50,12 @@ mutation ReportCategoryUpdate(
     result {
       __typename
       ... on AdminCategoryUpdateSuccess {
-        id
-        name
-        icon
+        category {
+          id
+          name
+          ordering
+          icon
+        }
       }
       ... on AdminCategoryUpdateProblem {
         fields {

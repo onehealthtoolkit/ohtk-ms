@@ -2,6 +2,7 @@ import { BaseFormViewModel } from "lib/baseFormViewModel";
 import { ReportType, IReportTypeService } from "lib/services/reportType";
 import { SaveResult } from "lib/services/interface";
 import { action, computed, makeObservable, observable } from "mobx";
+import { FormViewModel } from "components/admin/formBuilder";
 
 export abstract class ReportTypeViewModel extends BaseFormViewModel {
   reportTypeService: IReportTypeService;
@@ -10,6 +11,9 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   _categoryId: number = 0;
   _definition: string = "";
   _ordering: number = 0;
+
+  _isFormBuilderMode = false;
+  formViewModel = new FormViewModel();
 
   constructor(reportTypeService: IReportTypeService) {
     super();
@@ -24,6 +28,9 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
       ordering: computed,
       save: action,
       validate: action,
+      _isFormBuilderMode: observable,
+      isFormBuilderMode: computed,
+      formViewModel: observable,
     });
     this.reportTypeService = reportTypeService;
   }
@@ -104,5 +111,12 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
     }
 
     return isValid;
+  }
+
+  public get isFormBuilderMode(): boolean {
+    return this._isFormBuilderMode;
+  }
+  public set isFormBuilderMode(value: boolean) {
+    this._isFormBuilderMode = value;
   }
 }

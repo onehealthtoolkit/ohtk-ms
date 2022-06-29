@@ -64,8 +64,16 @@ mutation ReportTypeUpdate(
     result {
       __typename
       ... on AdminReportTypeUpdateSuccess {
-        id
-        name
+        reportType {
+          id
+          name
+          definition
+          category {
+            id
+            name
+          }
+          ordering
+        }
       }
       ... on AdminReportTypeUpdateProblem {
         fields {

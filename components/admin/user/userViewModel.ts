@@ -26,6 +26,8 @@ export abstract class UserViewModel extends BaseFormViewModel {
       lastName: computed,
       _email: observable,
       email: computed,
+      _telephone: observable,
+      telephone: computed,
       save: action,
       validate: action,
     });

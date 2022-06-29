@@ -71,17 +71,17 @@ export type AdminAuthorityCreateResult =
 
 export type AdminAuthorityCreateSuccess = {
   __typename?: "AdminAuthorityCreateSuccess";
-  authorityInherits: Array<AdminAuthorityUpdateSuccess>;
+  authorityInherits: Array<AdminAuthorityCreateSuccess>;
   code: Scalars["String"];
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
   id: Scalars["ID"];
-  inherits: Array<AdminAuthorityUpdateSuccess>;
-  inviations: Array<AdminInvitationCodeUpdateSuccess>;
+  inherits: Array<AdminAuthorityCreateSuccess>;
+  inviations: Array<AdminInvitationCodeCreateSuccess>;
   name: Scalars["String"];
-  reportTypes: Array<AdminReportTypeUpdateSuccess>;
+  reportTypes: Array<AdminReportTypeCreateSuccess>;
   updatedAt: Scalars["DateTime"];
-  users: Array<AdminAuthorityUserUpdateSuccess>;
+  users: Array<AdminAuthorityUserCreateSuccess>;
 };
 
 export type AdminAuthorityQueryType = {
@@ -117,17 +117,7 @@ export type AdminAuthorityUpdateResult =
 
 export type AdminAuthorityUpdateSuccess = {
   __typename?: "AdminAuthorityUpdateSuccess";
-  authorityInherits: Array<AdminAuthorityUpdateSuccess>;
-  code: Scalars["String"];
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  id: Scalars["ID"];
-  inherits: Array<AdminAuthorityUpdateSuccess>;
-  inviations: Array<AdminInvitationCodeUpdateSuccess>;
-  name: Scalars["String"];
-  reportTypes: Array<AdminReportTypeUpdateSuccess>;
-  updatedAt: Scalars["DateTime"];
-  users: Array<AdminAuthorityUserUpdateSuccess>;
+  authority?: Maybe<AuthorityType>;
 };
 
 export type AdminAuthorityUserCreateMutation = {
@@ -147,7 +137,7 @@ export type AdminAuthorityUserCreateResult =
 
 export type AdminAuthorityUserCreateSuccess = {
   __typename?: "AdminAuthorityUserCreateSuccess";
-  authority: AdminAuthorityUpdateSuccess;
+  authority: AdminAuthorityCreateSuccess;
   avatarUrl?: Maybe<Scalars["String"]>;
   dateJoined: Scalars["DateTime"];
   email: Scalars["String"];
@@ -205,26 +195,7 @@ export type AdminAuthorityUserUpdateResult =
 
 export type AdminAuthorityUserUpdateSuccess = {
   __typename?: "AdminAuthorityUserUpdateSuccess";
-  authority: AdminAuthorityUpdateSuccess;
-  avatarUrl?: Maybe<Scalars["String"]>;
-  dateJoined: Scalars["DateTime"];
-  email: Scalars["String"];
-  firstName: Scalars["String"];
-  id: Scalars["ID"];
-  /** Designates whether this user should be treated as active. Unselect this instead of deleting accounts. */
-  isActive: Scalars["Boolean"];
-  /** Designates whether the user can log into this admin site. */
-  isStaff: Scalars["Boolean"];
-  /** Designates that this user has all permissions without explicitly assigning them. */
-  isSuperuser: Scalars["Boolean"];
-  lastLogin?: Maybe<Scalars["DateTime"]>;
-  lastName: Scalars["String"];
-  password: Scalars["String"];
-  telephone?: Maybe<Scalars["String"]>;
-  thumbnailAvatarUrl?: Maybe<Scalars["String"]>;
-  userPtr: UserType;
-  /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
-  username: Scalars["String"];
+  authorityUser?: Maybe<AuthorityUserType>;
 };
 
 export type AdminCategoryCreateMutation = {
@@ -250,7 +221,7 @@ export type AdminCategoryCreateSuccess = {
   id: Scalars["ID"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
-  reporttypeSet: Array<AdminReportTypeUpdateSuccess>;
+  reporttypeSet: Array<AdminReportTypeCreateSuccess>;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -288,14 +259,7 @@ export type AdminCategoryUpdateResult =
 
 export type AdminCategoryUpdateSuccess = {
   __typename?: "AdminCategoryUpdateSuccess";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  icon?: Maybe<Scalars["String"]>;
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  ordering: Scalars["Int"];
-  reporttypeSet: Array<AdminReportTypeUpdateSuccess>;
-  updatedAt: Scalars["DateTime"];
+  category?: Maybe<CategoryType>;
 };
 
 export type AdminFieldValidationProblem = {
@@ -321,7 +285,7 @@ export type AdminInvitationCodeCreateResult =
 
 export type AdminInvitationCodeCreateSuccess = {
   __typename?: "AdminInvitationCodeCreateSuccess";
-  authority: AdminAuthorityUpdateSuccess;
+  authority: AdminAuthorityCreateSuccess;
   code: Scalars["String"];
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
@@ -333,7 +297,7 @@ export type AdminInvitationCodeCreateSuccess = {
 
 export type AdminInvitationCodeQueryType = {
   __typename?: "AdminInvitationCodeQueryType";
-  authority: AdminAuthorityUpdateSuccess;
+  authority: AdminAuthorityCreateSuccess;
   code: Scalars["String"];
   fromDate: Scalars["DateTime"];
   id: Scalars["ID"];
@@ -366,14 +330,7 @@ export type AdminInvitationCodeUpdateResult =
 
 export type AdminInvitationCodeUpdateSuccess = {
   __typename?: "AdminInvitationCodeUpdateSuccess";
-  authority: AdminAuthorityUpdateSuccess;
-  code: Scalars["String"];
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  fromDate: Scalars["DateTime"];
-  id: Scalars["ID"];
-  throughDate: Scalars["DateTime"];
-  updatedAt: Scalars["DateTime"];
+  invitationCode?: Maybe<InvitationCodeType>;
 };
 
 export type AdminReportTypeCreateMutation = {
@@ -393,8 +350,8 @@ export type AdminReportTypeCreateResult =
 
 export type AdminReportTypeCreateSuccess = {
   __typename?: "AdminReportTypeCreateSuccess";
-  authorities: Array<AdminAuthorityUpdateSuccess>;
-  category: AdminCategoryUpdateSuccess;
+  authorities: Array<AdminAuthorityCreateSuccess>;
+  category: AdminCategoryCreateSuccess;
   createdAt: Scalars["DateTime"];
   definition: Scalars["JSONString"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
@@ -408,8 +365,8 @@ export type AdminReportTypeCreateSuccess = {
 
 export type AdminReportTypeQueryType = {
   __typename?: "AdminReportTypeQueryType";
-  authorities: Array<AdminAuthorityUpdateSuccess>;
-  category: AdminCategoryUpdateSuccess;
+  authorities: Array<AdminAuthorityCreateSuccess>;
+  category: AdminCategoryCreateSuccess;
   definition: Scalars["JSONString"];
   id: Scalars["UUID"];
   name: Scalars["String"];
@@ -443,23 +400,21 @@ export type AdminReportTypeUpdateResult =
 
 export type AdminReportTypeUpdateSuccess = {
   __typename?: "AdminReportTypeUpdateSuccess";
-  authorities: Array<AdminAuthorityUpdateSuccess>;
-  category: AdminCategoryUpdateSuccess;
-  createdAt: Scalars["DateTime"];
-  definition: Scalars["JSONString"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  id: Scalars["UUID"];
-  incidentreports: Array<IncidentReportType>;
+  reportType?: Maybe<ReportTypeType>;
+};
+
+export type AuthorityInheritType = {
+  __typename?: "AuthorityInheritType";
+  code: Scalars["String"];
+  id: Scalars["ID"];
   name: Scalars["String"];
-  ordering: Scalars["Int"];
-  rendererDataTemplate?: Maybe<Scalars["String"]>;
-  updatedAt: Scalars["DateTime"];
 };
 
 export type AuthorityType = {
   __typename?: "AuthorityType";
   code: Scalars["String"];
   id: Scalars["ID"];
+  inherits: Array<Maybe<AuthorityInheritType>>;
   name: Scalars["String"];
 };
 
@@ -481,7 +436,7 @@ export type AuthorityUserRegisterMutation = {
 
 export type AuthorityUserType = {
   __typename?: "AuthorityUserType";
-  authority: AdminAuthorityUpdateSuccess;
+  authority: AdminAuthorityCreateSuccess;
   email: Scalars["String"];
   firstName: Scalars["String"];
   id: Scalars["ID"];
@@ -499,13 +454,13 @@ export type CategoryType = {
   id: Scalars["ID"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
-  reporttypeSet: Array<AdminReportTypeUpdateSuccess>;
+  reporttypeSet: Array<AdminReportTypeCreateSuccess>;
   updatedAt: Scalars["DateTime"];
 };
 
 export type CheckInvitationCodeType = {
   __typename?: "CheckInvitationCodeType";
-  authority: AdminAuthorityUpdateSuccess;
+  authority: AdminAuthorityCreateSuccess;
   code: Scalars["String"];
 };
 
@@ -554,7 +509,7 @@ export type IncidentReportType = {
   originalData?: Maybe<Scalars["GenericScalar"]>;
   platform?: Maybe<Scalars["String"]>;
   rendererData: Scalars["String"];
-  reportType: AdminReportTypeUpdateSuccess;
+  reportType: AdminReportTypeCreateSuccess;
   reportedBy?: Maybe<UserType>;
   testFlag: Scalars["Boolean"];
   updatedAt: Scalars["DateTime"];
@@ -571,7 +526,7 @@ export type IncidentReportTypeNodeConnection = {
 
 export type InvitationCodeType = {
   __typename?: "InvitationCodeType";
-  authority: AdminAuthorityUpdateSuccess;
+  authority: AdminAuthorityCreateSuccess;
   code: Scalars["String"];
   fromDate: Scalars["DateTime"];
   id: Scalars["ID"];
@@ -605,18 +560,19 @@ export type Mutation = {
 
 export type MutationAdminAuthorityCreateArgs = {
   code: Scalars["String"];
-  inherits?: InputMaybe<Array<InputMaybe<Scalars["Int"]>>>;
+  inherits?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   name: Scalars["String"];
 };
 
 export type MutationAdminAuthorityUpdateArgs = {
   code: Scalars["String"];
   id: Scalars["ID"];
+  inherits?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   name: Scalars["String"];
 };
 
 export type MutationAdminAuthorityUserCreateArgs = {
-  authorityId: Scalars["Int"];
+  authorityId?: InputMaybe<Scalars["Int"]>;
   email: Scalars["String"];
   firstName: Scalars["String"];
   lastName: Scalars["String"];
@@ -626,7 +582,7 @@ export type MutationAdminAuthorityUserCreateArgs = {
 };
 
 export type MutationAdminAuthorityUserUpdateArgs = {
-  authorityId: Scalars["Int"];
+  authorityId?: InputMaybe<Scalars["Int"]>;
   email: Scalars["String"];
   firstName: Scalars["String"];
   id: Scalars["ID"];
@@ -739,6 +695,8 @@ export type PageInfoExtra = {
 
 export type Query = {
   __typename?: "Query";
+  adminAuthorityGet?: Maybe<AdminAuthorityQueryType>;
+  adminAuthorityInheritLookup?: Maybe<AuthorityTypeNodeConnection>;
   adminAuthorityQuery?: Maybe<AdminAuthorityQueryTypeNodeConnection>;
   adminAuthorityUserQuery?: Maybe<AdminAuthorityUserQueryTypeNodeConnection>;
   adminCategoryQuery?: Maybe<AdminCategoryQueryTypeNodeConnection>;
@@ -751,12 +709,29 @@ export type Query = {
   checkInvitationCode?: Maybe<CheckInvitationCodeType>;
   features?: Maybe<Array<Maybe<FeatureType>>>;
   hello?: Maybe<Scalars["String"]>;
+  incidentReport?: Maybe<IncidentReportType>;
   incidentReports?: Maybe<IncidentReportTypeNodeConnection>;
   invitationCode?: Maybe<InvitationCodeType>;
   me?: Maybe<UserProfileType>;
   myReportTypes?: Maybe<Array<Maybe<ReportTypeType>>>;
   reportType?: Maybe<ReportTypeType>;
   syncReportTypes?: Maybe<ReportTypeSyncOutputType>;
+};
+
+export type QueryAdminAuthorityGetArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryAdminAuthorityInheritLookupArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_Istartswith?: InputMaybe<Scalars["String"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryAdminAuthorityQueryArgs = {
@@ -853,6 +828,10 @@ export type QueryCheckInvitationCodeArgs = {
   code: Scalars["String"];
 };
 
+export type QueryIncidentReportArgs = {
+  id: Scalars["ID"];
+};
+
 export type QueryIncidentReportsArgs = {
   after?: InputMaybe<Scalars["String"]>;
   before?: InputMaybe<Scalars["String"]>;
@@ -897,8 +876,8 @@ export type ReportTypeSyncOutputType = {
 
 export type ReportTypeType = {
   __typename?: "ReportTypeType";
-  authorities: Array<AdminAuthorityUpdateSuccess>;
-  category: AdminCategoryUpdateSuccess;
+  authorities: Array<AdminAuthorityCreateSuccess>;
+  category: AdminCategoryCreateSuccess;
   createdAt: Scalars["DateTime"];
   definition?: Maybe<Scalars["GenericScalar"]>;
   deletedAt?: Maybe<Scalars["DateTime"]>;
@@ -917,14 +896,13 @@ export type Revoke = {
 
 export type SubmitImage = {
   __typename?: "SubmitImage";
+  file?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["UUID"]>;
-  url?: Maybe<Scalars["String"]>;
 };
 
 export type SubmitIncidentReport = {
   __typename?: "SubmitIncidentReport";
-  id?: Maybe<Scalars["UUID"]>;
-  rendererData?: Maybe<Scalars["String"]>;
+  result?: Maybe<IncidentReportType>;
 };
 
 export type SubmitZeroReportMutation = {
@@ -1013,9 +991,51 @@ export type AuthoritiesQuery = {
   } | null;
 };
 
+export type AuthorityQueryQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+  nameStartWith?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type AuthorityQueryQuery = {
+  __typename?: "Query";
+  adminAuthorityQuery?: {
+    __typename?: "AdminAuthorityQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminAuthorityQueryType";
+      id: string;
+      name: string;
+      code: string;
+    } | null>;
+  } | null;
+};
+
+export type AuthorityInheritLookupQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  nameStartWith?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type AuthorityInheritLookupQuery = {
+  __typename?: "Query";
+  adminAuthorityInheritLookup?: {
+    __typename?: "AuthorityTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AuthorityType";
+      id: string;
+      name: string;
+      code: string;
+    } | null>;
+  } | null;
+};
+
 export type AuthorityCreateMutationVariables = Exact<{
   code: Scalars["String"];
   name: Scalars["String"];
+  inherits?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
 }>;
 
 export type AuthorityCreateMutation = {
@@ -1041,6 +1061,9 @@ export type AuthorityUpdateMutationVariables = Exact<{
   id: Scalars["ID"];
   code: Scalars["String"];
   name: Scalars["String"];
+  inherits?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
 }>;
 
 export type AuthorityUpdateMutation = {
@@ -1057,7 +1080,21 @@ export type AuthorityUpdateMutation = {
             message: string;
           }> | null;
         }
-      | { __typename: "AdminAuthorityUpdateSuccess"; id: string; code: string }
+      | {
+          __typename: "AdminAuthorityUpdateSuccess";
+          authority?: {
+            __typename?: "AuthorityType";
+            id: string;
+            code: string;
+            name: string;
+            inherits: Array<{
+              __typename?: "AuthorityInheritType";
+              id: string;
+              code: string;
+              name: string;
+            } | null>;
+          } | null;
+        }
       | null;
   } | null;
 };
@@ -1073,6 +1110,12 @@ export type GetAuthorityQuery = {
     id: string;
     code: string;
     name: string;
+    inherits: Array<{
+      __typename?: "AuthorityInheritType";
+      id: string;
+      code: string;
+      name: string;
+    } | null>;
   } | null;
 };
 
@@ -1148,8 +1191,17 @@ export type InvitationCodeUpdateMutation = {
         }
       | {
           __typename: "AdminInvitationCodeUpdateSuccess";
-          id: string;
-          code: string;
+          invitationCode?: {
+            __typename?: "InvitationCodeType";
+            id: string;
+            code: string;
+            fromDate: any;
+            throughDate: any;
+            authority: {
+              __typename?: "AdminAuthorityCreateSuccess";
+              id: string;
+            };
+          } | null;
         }
       | null;
   } | null;
@@ -1167,7 +1219,7 @@ export type GetInvitationCodeQuery = {
     code: string;
     fromDate: any;
     throughDate: any;
-    authority: { __typename?: "AdminAuthorityUpdateSuccess"; id: string };
+    authority: { __typename?: "AdminAuthorityCreateSuccess"; id: string };
   } | null;
 };
 
@@ -1256,9 +1308,13 @@ export type ReportCategoryUpdateMutation = {
         }
       | {
           __typename: "AdminCategoryUpdateSuccess";
-          id: string;
-          name: string;
-          icon?: string | null;
+          category?: {
+            __typename?: "CategoryType";
+            id: string;
+            name: string;
+            ordering: number;
+            icon?: string | null;
+          } | null;
         }
       | null;
   } | null;
@@ -1297,7 +1353,7 @@ export type ReportTypesQuery = {
       definition: any;
       ordering: number;
       category: {
-        __typename?: "AdminCategoryUpdateSuccess";
+        __typename?: "AdminCategoryCreateSuccess";
         id: string;
         name: string;
       };
@@ -1353,7 +1409,21 @@ export type ReportTypeUpdateMutation = {
             message: string;
           }> | null;
         }
-      | { __typename: "AdminReportTypeUpdateSuccess"; id: any; name: string }
+      | {
+          __typename: "AdminReportTypeUpdateSuccess";
+          reportType?: {
+            __typename?: "ReportTypeType";
+            id: any;
+            name: string;
+            definition?: any | null;
+            ordering: number;
+            category: {
+              __typename?: "AdminCategoryCreateSuccess";
+              id: string;
+              name: string;
+            };
+          } | null;
+        }
       | null;
   } | null;
 };
@@ -1371,7 +1441,7 @@ export type GetReportTypeQuery = {
     definition?: any | null;
     ordering: number;
     category: {
-      __typename?: "AdminCategoryUpdateSuccess";
+      __typename?: "AdminCategoryCreateSuccess";
       id: string;
       name: string;
     };
@@ -1459,8 +1529,15 @@ export type UserUpdateMutation = {
         }
       | {
           __typename: "AdminAuthorityUserUpdateSuccess";
-          id: string;
-          username: string;
+          authorityUser?: {
+            __typename?: "AuthorityUserType";
+            id: string;
+            username: string;
+            firstName: string;
+            lastName: string;
+            email: string;
+            telephone?: string | null;
+          } | null;
         }
       | null;
   } | null;
@@ -1479,12 +1556,7 @@ export type GetUserQuery = {
     firstName: string;
     lastName: string;
     email: string;
-    authority: {
-      __typename?: "AdminAuthorityUpdateSuccess";
-      id: string;
-      code: string;
-      name: string;
-    };
+    telephone?: string | null;
   } | null;
 };
 
@@ -1727,6 +1799,185 @@ export const AuthoritiesDocument = {
     },
   ],
 } as unknown as DocumentNode<AuthoritiesQuery, AuthoritiesQueryVariables>;
+export const AuthorityQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AuthorityQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "nameStartWith" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAuthorityQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name_Istartswith" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "nameStartWith" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<AuthorityQueryQuery, AuthorityQueryQueryVariables>;
+export const AuthorityInheritLookupDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AuthorityInheritLookup" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "nameStartWith" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAuthorityInheritLookup" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: { kind: "IntValue", value: "0" },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name_Istartswith" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "nameStartWith" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AuthorityInheritLookupQuery,
+  AuthorityInheritLookupQueryVariables
+>;
 export const AuthorityCreateDocument = {
   kind: "Document",
   definitions: [
@@ -1757,6 +2008,20 @@ export const AuthorityCreateDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "inherits" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -1779,6 +2044,14 @@ export const AuthorityCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "inherits" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "inherits" },
                 },
               },
             ],
@@ -1906,6 +2179,20 @@ export const AuthorityUpdateDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "inherits" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -1938,6 +2225,14 @@ export const AuthorityUpdateDocument = {
                   name: { kind: "Name", value: "name" },
                 },
               },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "inherits" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "inherits" },
+                },
+              },
             ],
             selectionSet: {
               kind: "SelectionSet",
@@ -1966,11 +2261,45 @@ export const AuthorityUpdateDocument = {
                           selections: [
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "code" },
+                              name: { kind: "Name", value: "authority" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "code" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "inherits" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "code" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
                             },
                           ],
                         },
@@ -2064,6 +2393,18 @@ export const GetAuthorityDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "code" } },
                 { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "inherits" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -2471,11 +2812,44 @@ export const InvitationCodeUpdateDocument = {
                           selections: [
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "code" },
+                              name: { kind: "Name", value: "invitationCode" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "code" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "fromDate" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "throughDate",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "authority" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
                             },
                           ],
                         },
@@ -3007,15 +3381,28 @@ export const ReportCategoryUpdateDocument = {
                           selections: [
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "name" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "icon" },
+                              name: { kind: "Name", value: "category" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "ordering" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "icon" },
+                                  },
+                                ],
+                              },
                             },
                           ],
                         },
@@ -3561,11 +3948,45 @@ export const ReportTypeUpdateDocument = {
                           selections: [
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "name" },
+                              name: { kind: "Name", value: "reportType" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "definition" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "category" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "ordering" },
+                                  },
+                                ],
+                              },
                             },
                           ],
                         },
@@ -4219,11 +4640,36 @@ export const UserUpdateDocument = {
                           selections: [
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "username" },
+                              name: { kind: "Name", value: "authorityUser" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "username" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "firstName" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "lastName" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "email" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "telephone" },
+                                  },
+                                ],
+                              },
                             },
                           ],
                         },
@@ -4316,18 +4762,7 @@ export const GetUserDocument = {
                 { kind: "Field", name: { kind: "Name", value: "firstName" } },
                 { kind: "Field", name: { kind: "Name", value: "lastName" } },
                 { kind: "Field", name: { kind: "Name", value: "email" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "authority" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      { kind: "Field", name: { kind: "Name", value: "code" } },
-                      { kind: "Field", name: { kind: "Name", value: "name" } },
-                    ],
-                  },
-                },
+                { kind: "Field", name: { kind: "Name", value: "telephone" } },
               ],
             },
           },
