@@ -1,12 +1,16 @@
-import { Definition } from "components/admin/formBuilder/interfaces";
-import { SectionViewModel } from "components/admin/formBuilder/sectionViewModel";
+import { SectionViewModel } from "components/admin/formBuilder/section";
+import {
+  Definition,
+  MovableItemsViewModel,
+} from "components/admin/formBuilder/shared";
 import { action, makeObservable, observable } from "mobx";
 
-export class FormViewModel {
+export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   sections = Array<SectionViewModel>();
   currentSection: SectionViewModel | undefined = undefined;
 
   constructor() {
+    super("", "");
     makeObservable(this, {
       sections: observable,
       currentSection: observable,
@@ -14,9 +18,11 @@ export class FormViewModel {
       selectSection: action,
       setCurrentSection: action,
       unsetCurrentSection: action,
-      moveSectionUp: action,
-      moveSectionDown: action,
     });
+  }
+
+  get movableItems() {
+    return this.sections;
   }
 
   addSection() {
@@ -41,27 +47,6 @@ export class FormViewModel {
   unsetCurrentSection() {
     this.currentSection?.unsetCurrent();
     this.currentSection = undefined;
-  }
-
-  moveSectionUp(sectionId: string) {
-    this.moveSection(sectionId, -1);
-  }
-
-  moveSectionDown(sectionId: string) {
-    this.moveSection(sectionId, 1);
-  }
-
-  private moveSection(sectionId: string, step: number) {
-    const sectionIndex = this.sections.findIndex(
-      section => section.id === sectionId
-    );
-    if (sectionIndex > -1) {
-      const newIndex = sectionIndex + step;
-      if (newIndex >= 0 && newIndex < this.sections.length) {
-        const tempSection = this.sections.splice(sectionIndex, 1)[0];
-        this.sections.splice(newIndex, 0, tempSection);
-      }
-    }
   }
 
   parse(definition: Definition): boolean {

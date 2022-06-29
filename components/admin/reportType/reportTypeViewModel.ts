@@ -2,7 +2,7 @@ import { BaseFormViewModel } from "lib/baseFormViewModel";
 import { ReportType, IReportTypeService } from "lib/services/reportType";
 import { SaveResult } from "lib/services/interface";
 import { action, computed, makeObservable, observable } from "mobx";
-import { FormViewModel } from "components/admin/formBuilder/formViewModel";
+import { FormViewModel } from "components/admin/formBuilder";
 
 export abstract class ReportTypeViewModel extends BaseFormViewModel {
   reportTypeService: IReportTypeService;
