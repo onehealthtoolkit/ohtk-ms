@@ -1,31 +1,30 @@
-import { Definition } from "components/admin/formBuilder/interfaces";
-import { QuestionViewModel } from "components/admin/formBuilder/questionViewModel";
+import { QuestionViewModel } from "components/admin/formBuilder/question";
+import {
+  Definition,
+  MovableItemsViewModel,
+} from "components/admin/formBuilder/shared";
 import { action, makeObservable, observable } from "mobx";
 
-export class SectionViewModel {
-  id = "";
-  name = "";
+export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
   isCurrent = false;
-  isNameEditing = false;
-
   questions = Array<QuestionViewModel>();
+  currentQuestion: QuestionViewModel | undefined = undefined;
 
-  constructor(id: string, name: string) {
+  constructor(id: string, label: string) {
+    super(id, label);
     makeObservable(this, {
-      id: observable,
-      name: observable,
       isCurrent: observable,
-      isNameEditing: observable,
       questions: observable,
       setCurrent: action,
       unsetCurrent: action,
-      setIsNameEditing: action,
-      setName: action,
+      currentQuestion: observable,
+      selectQuestion: action,
       addQuestion: action,
     });
+  }
 
-    this.id = id;
-    this.name = name;
+  get movableItems() {
+    return this.questions;
   }
 
   setCurrent() {
@@ -36,15 +35,13 @@ export class SectionViewModel {
     this.isCurrent = false;
   }
 
-  setIsNameEditing(editing: boolean) {
-    if (!editing && !this.name) {
-      this.setName("...");
+  selectQuestion(id: string) {
+    const question = this.questions.find(question => question.id === id);
+    if (question) {
+      this.currentQuestion?.unsetCurrent();
+      this.currentQuestion = question;
+      question.setCurrent();
     }
-    this.isNameEditing = editing;
-  }
-
-  setName(name: string) {
-    this.name = name;
   }
 
   addQuestion() {
@@ -54,7 +51,7 @@ export class SectionViewModel {
 
   parse(definition: Definition): boolean {
     if (definition.label !== undefined) {
-      this.name = definition.label as string;
+      this.label = definition.label as string;
 
       if (Array.isArray(definition.questions)) {
         const questions = Array<QuestionViewModel>();

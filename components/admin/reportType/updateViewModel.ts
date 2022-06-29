@@ -24,6 +24,7 @@ export class ReportTypeUpdateViewModel extends ReportTypeViewModel {
       try {
         this.formViewModel.parse(JSON.parse(data.definition));
       } catch (e) {
+        console.log(e);
         this.submitError = "Error! Bad definition format";
       }
     }

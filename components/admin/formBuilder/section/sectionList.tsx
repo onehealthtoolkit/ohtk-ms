@@ -1,5 +1,5 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/solid";
-import { SectionViewModel } from "components/admin/formBuilder/sectionViewModel";
+import { SectionViewModel } from "components/admin/formBuilder/section";
 import { observer } from "mobx-react";
 import { FC } from "react";
 
@@ -11,7 +11,7 @@ type Props = {
   onAdd: () => void;
 };
 
-const SectionList: FC<Props> = ({
+const List: FC<Props> = ({
   values: sections,
   onMoveDown,
   onMoveUp,
@@ -19,7 +19,7 @@ const SectionList: FC<Props> = ({
   onAdd,
 }) => {
   return (
-    <div className="text-gray-900 bg-white border p-4 border-gray-200 w-full md:w-1/4">
+    <div className="bg-white border p-4 border-gray-200 w-full md:w-1/4">
       <div className={"flex flex-col md:min-h-[400px]"}>
         {sections.map(section => {
           return (
@@ -29,21 +29,21 @@ const SectionList: FC<Props> = ({
                  ${
                    section.isCurrent
                      ? "bg-blue-600 text-white"
-                     : "bg-gray-100 text-black"
-                 } hover:border-gray-200 `}
+                     : "bg-gray-100 text-gray-900"
+                 } group`}
             >
               <ChevronDownIcon
-                className="text-white w-5 h-5 bg-blue-600 hover:bg-blue-800  cursor-pointer"
+                className="text-white w-5 self-stretch bg-blue-300 invisible group-hover:visible hover:bg-blue-600 cursor-pointer"
                 onClick={() => onMoveDown(section.id)}
               />
               <span
-                className="px-2 w-full text-left cursor-pointer"
+                className="p-2 w-full text-left cursor-pointer"
                 onClick={() => onSelect(section.id)}
               >
-                {section.name}
+                {section.label}
               </span>
               <ChevronUpIcon
-                className="text-white w-5 h-5 bg-blue-600 hover:bg-blue-800  cursor-pointer"
+                className="text-white w-5 self-stretch bg-blue-300 invisible group-hover:visible hover:bg-blue-600 cursor-pointer"
                 onClick={() => onMoveUp(section.id)}
               />
             </div>
@@ -60,4 +60,4 @@ const SectionList: FC<Props> = ({
   );
 };
 
-export default observer(SectionList);
+export const SectionList = observer(List);
