@@ -85,6 +85,18 @@ const UserUpdate = () => {
             />
             <ErrorText>{errors.userName}</ErrorText>
           </Field>
+          <Field $size="half">
+            <Label htmlFor="telephone">Telephone</Label>
+            <TextInput
+              id="telephone"
+              type="text"
+              placeholder="Telephone"
+              onChange={evt => (viewModel.telephone = evt.target.value)}
+              disabled={viewModel.isSubmitting}
+              value={viewModel.telephone}
+            />
+            <ErrorText>{errors.userName}</ErrorText>
+          </Field>
         </FieldGroup>
         {viewModel.submitError.length > 0 && (
           <FormMessage>{viewModel.submitError}</FormMessage>

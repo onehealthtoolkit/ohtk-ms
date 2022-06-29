@@ -85,7 +85,6 @@ export class InvitationCodeService implements IInvitationCodeService {
       variables: {
         id,
       },
-      fetchPolicy: "network-only",
     });
 
     let data;
@@ -172,14 +171,35 @@ export class InvitationCodeService implements IInvitationCodeService {
       refetchQueries: [
         {
           query: InvitationCodesDocument,
-          variables: {
-            limit: 20,
-            offset: 0,
-            nameStartWith: "",
-          },
+          variables: this.fetchInvitationCodesQuery,
+          fetchPolicy: "network-only",
         },
       ],
       awaitRefetchQueries: true,
+      update: (cache, result) => {
+        const cacheItem = cache.readQuery({
+          query: GetInvitationCodeDocument,
+          variables: { id },
+        });
+        const invitationCodeCache = cacheItem?.invitationCode;
+        if (invitationCodeCache) {
+          const serverReturnValue =
+            result.data?.adminInvitationCodeUpdate?.result;
+          if (
+            serverReturnValue?.__typename === "AdminInvitationCodeUpdateSuccess"
+          ) {
+            const newInvitationCodeValue = serverReturnValue.invitationCode;
+            cache.writeQuery({
+              query: GetInvitationCodeDocument,
+              variables: { id },
+              data: {
+                __typename: "Query",
+                invitationCode: newInvitationCodeValue,
+              },
+            });
+          }
+        }
+      },
     });
 
     const result = updateResult.data?.adminInvitationCodeUpdate?.result;

@@ -38,8 +38,12 @@ mutation ReportCategoryUpdate($id: ID!, $name: String!, $ordering: Int!) {
     result {
       __typename
       ... on AdminCategoryUpdateSuccess {
-        id
-        name
+        category {
+          id
+          name
+          ordering
+          icon
+        }
       }
       ... on AdminCategoryUpdateProblem {
         fields {

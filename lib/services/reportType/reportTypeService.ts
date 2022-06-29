@@ -174,14 +174,34 @@ export class ReportTypeService implements IReportTypeService {
       refetchQueries: [
         {
           query: ReportTypesDocument,
-          variables: {
-            limit: 20,
-            offset: 0,
-            nameStartWith: "",
-          },
+          variables: this.fetchReportTypesQuery,
+          fetchPolicy: "network-only",
         },
       ],
       awaitRefetchQueries: true,
+      update: (cache, result) => {
+        const cacheItem = cache.readQuery({
+          query: GetReportTypeDocument,
+          variables: { id },
+        });
+        const reportTypeCache = cacheItem?.reportType;
+        if (reportTypeCache) {
+          const serverReturnValue = result.data?.adminReportTypeUpdate?.result;
+          if (
+            serverReturnValue?.__typename === "AdminReportTypeUpdateSuccess"
+          ) {
+            const newReportTypeValue = serverReturnValue.reportType;
+            cache.writeQuery({
+              query: GetReportTypeDocument,
+              variables: { id },
+              data: {
+                __typename: "Query",
+                reportType: newReportTypeValue,
+              },
+            });
+          }
+        }
+      },
     });
 
     const result = updateResult.data?.adminReportTypeUpdate?.result;

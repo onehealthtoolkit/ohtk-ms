@@ -162,14 +162,32 @@ export class ReportCategoryService implements IReportCategoryService {
       refetchQueries: [
         {
           query: ReportCategoriesDocument,
-          variables: {
-            limit: 20,
-            offset: 0,
-            nameStartWith: "",
-          },
+          variables: this.fetchReportCategoriesQuery,
+          fetchPolicy: "network-only",
         },
       ],
       awaitRefetchQueries: true,
+      update: (cache, result) => {
+        const cacheItem = cache.readQuery({
+          query: GetReportCategoryDocument,
+          variables: { id },
+        });
+        const categoryCache = cacheItem?.category;
+        if (categoryCache) {
+          const serverReturnValue = result.data?.adminCategoryUpdate?.result;
+          if (serverReturnValue?.__typename === "AdminCategoryUpdateSuccess") {
+            const newCategoryValue = serverReturnValue.category;
+            cache.writeQuery({
+              query: GetReportCategoryDocument,
+              variables: { id },
+              data: {
+                __typename: "Query",
+                category: newCategoryValue,
+              },
+            });
+          }
+        }
+      },
     });
 
     const result = updateResult.data?.adminCategoryUpdate?.result;

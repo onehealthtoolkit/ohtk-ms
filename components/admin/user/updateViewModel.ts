@@ -15,11 +15,11 @@ export class UserUpdateViewModel extends UserViewModel {
     this.isLoading = true;
     const data = await (await this.userService.getUser(this.id)).data;
     if (data) {
-      this.authorityId = data.authorityId!;
       this.username = data.username;
       this.firstName = data.firstName;
       this.lastName = data.lastName;
       this.email = data.email;
+      this.telephone = data.telephone || "";
     }
     this.isLoading = false;
   }
