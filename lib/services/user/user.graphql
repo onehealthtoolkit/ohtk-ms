@@ -72,8 +72,14 @@ mutation UserUpdate(
     result {
       __typename
       ... on AdminAuthorityUserUpdateSuccess {
-        id
-        username
+        authorityUser {
+          id
+          username
+          firstName
+          lastName
+          email
+          telephone
+        }
       }
       ... on AdminAuthorityUserUpdateProblem {
         fields {
@@ -93,10 +99,6 @@ query GetUser($id: ID!) {
     firstName
     lastName
     email
-    authority {
-      id
-      code
-      name
-    }
+    telephone
   }
 }

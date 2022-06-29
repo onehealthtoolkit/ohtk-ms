@@ -76,7 +76,6 @@ export class UserService implements IUserService {
           firstName: item.firstName,
           lastName: item.lastName,
           email: item.email,
-          authorityId: 0,
         });
       }
     });
@@ -92,7 +91,6 @@ export class UserService implements IUserService {
       variables: {
         id,
       },
-      fetchPolicy: "network-only",
     });
 
     let data;
@@ -104,7 +102,7 @@ export class UserService implements IUserService {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        authorityId: +user.authority.id,
+        telephone: user.telephone || "",
       };
     }
     return {
@@ -193,14 +191,35 @@ export class UserService implements IUserService {
       refetchQueries: [
         {
           query: UsersDocument,
-          variables: {
-            limit: 20,
-            offset: 0,
-            nameStartWith: "",
-          },
+          variables: this.fetchUsersQuery,
+          fetchPolicy: "network-only",
         },
       ],
       awaitRefetchQueries: true,
+      update: (cache, result) => {
+        const cacheItem = cache.readQuery({
+          query: GetUserDocument,
+          variables: { id },
+        });
+        const authorityUserCache = cacheItem?.authorityUser;
+        if (authorityUserCache) {
+          const serverReturnValue =
+            result.data?.adminAuthorityUserUpdate?.result;
+          if (
+            serverReturnValue?.__typename === "AdminAuthorityUserUpdateSuccess"
+          ) {
+            const newAuthorityUserValue = serverReturnValue.authorityUser;
+            cache.writeQuery({
+              query: GetUserDocument,
+              variables: { id },
+              data: {
+                __typename: "Query",
+                authorityUser: newAuthorityUserValue,
+              },
+            });
+          }
+        }
+      },
     });
 
     const result = updateResult.data?.adminAuthorityUserUpdate?.result;

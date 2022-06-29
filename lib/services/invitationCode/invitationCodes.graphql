@@ -56,8 +56,15 @@ mutation InvitationCodeUpdate(
     result {
       __typename
       ... on AdminInvitationCodeUpdateSuccess {
-        id
-        code
+        invitationCode {
+          id
+          code
+          fromDate
+          throughDate
+          authority {
+            id
+          }
+        }
       }
       ... on AdminInvitationCodeUpdateProblem {
         fields {
