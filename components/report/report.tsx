@@ -3,17 +3,17 @@ import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
-import { FormDataViewModel } from "./formDataViewModel";
+import { ReportViewModel } from "./reportViewModel";
 import getConfig from "next/config";
 import { formatThDate, formatThDateTime } from "lib/datetime";
 
 const { publicRuntimeConfig } = getConfig();
 
-const FormData = () => {
+const Report = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new FormDataViewModel(router.query.id as string, services.reportService)
+    new ReportViewModel(router.query.id as string, services.reportService)
   );
 
   const renderData = (data: Record<string, any>) => {
@@ -118,4 +118,4 @@ const FormData = () => {
   );
 };
 
-export default observer(FormData);
+export default observer(Report);

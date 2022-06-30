@@ -3,7 +3,7 @@ import { BaseViewModel } from "lib/baseViewModel";
 import { IReportService } from "lib/services/report";
 import { ReportDetail } from "lib/services/report/report";
 
-export class FormDataViewModel extends BaseViewModel {
+export class ReportViewModel extends BaseViewModel {
   data: ReportDetail = {} as ReportDetail;
   id: string;
 
