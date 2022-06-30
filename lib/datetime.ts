@@ -84,3 +84,15 @@ export function formatThDateTime(
     return `${d} ${m} ${y + 543} ⌽ ${getTimeStr(date)}`;
   }
 }
+
+export function formatDate(isoDateStr?: string): string {
+  return isoDateStr ? new Date(isoDateStr).toLocaleDateString() : "";
+}
+
+export function formatDateTime(isoDateStr?: string): string {
+  if (isoDateStr) {
+    const d = new Date(isoDateStr);
+    return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
+  }
+  return "";
+}

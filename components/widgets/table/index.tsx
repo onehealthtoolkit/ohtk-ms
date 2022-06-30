@@ -24,7 +24,7 @@ const EditAction = (props: ActionHandlerProps) => (
 
 const ClickAction = (props: ActionHandlerProps) => (
   <EyeIcon
-    className="mx-1 w-8 h-5 text-gray-600 hover:text-gray-900"
+    className="mx-1 w-8 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
     {...props}
   />
 );
@@ -48,7 +48,7 @@ interface TableProps<T> {
   data: T[];
   onEdit?: (record: T) => void;
   onDelete?: (record: T) => void;
-  onDetail?: (record: T) => void;
+  onView?: (record: T) => void;
 }
 
 const Table = <T extends ItemWithId | null>({
@@ -56,7 +56,7 @@ const Table = <T extends ItemWithId | null>({
   data,
   onEdit,
   onDelete,
-  onDetail,
+  onView,
 }: TableProps<T>) => {
   return (
     <div className="mb-4 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
@@ -87,7 +87,7 @@ const Table = <T extends ItemWithId | null>({
                     )}
                     <ClickAction
                       onClick={() => {
-                        onDetail && onDetail(record);
+                        onView && onView(record);
                       }}
                     />
                     {onEdit && (

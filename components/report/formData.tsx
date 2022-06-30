@@ -13,7 +13,7 @@ const FormData = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new FormDataViewModel(router.query.id!.toString(), services.reportService)
+    new FormDataViewModel(router.query.id as string, services.reportService)
   );
 
   const renderData = (data: Record<string, any>) => {
@@ -21,7 +21,7 @@ const FormData = () => {
       return "";
     }
     return (
-      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <table className="table-fixed w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <tbody>{renderItem(data)}</tbody>
       </table>
     );
@@ -38,7 +38,7 @@ const FormData = () => {
           >
             <th
               scope="row"
-              className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+              className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
             >
               {key}
             </th>
@@ -60,12 +60,12 @@ const FormData = () => {
           </p>
         </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <table className="table-fixed w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <tbody>
               <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th
                   scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                  className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
                   CREATED AT
                 </th>

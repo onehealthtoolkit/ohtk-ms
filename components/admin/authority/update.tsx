@@ -24,7 +24,7 @@ const AuthorityUpdate = () => {
   const services = useServices();
   const [viewModel] = useState(
     new AuthorityUpdateViewModel(
-      router.query.id!.toString(),
+      router.query.id as string,
       services.authorityService
     )
   );

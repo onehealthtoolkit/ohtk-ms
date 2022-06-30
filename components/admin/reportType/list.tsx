@@ -74,6 +74,7 @@ const ReportTypeList = () => {
         onEdit={record =>
           router.push(`/admin/report_types/${record.id}/update`)
         }
+        onView={record => router.push(`/admin/report_types/${record.id}/view`)}
         onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
       />
       <ErrorDisplay message={viewModel?.errorMessage} />

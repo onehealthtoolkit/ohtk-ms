@@ -70,6 +70,8 @@ export class InvitationCodeService implements IInvitationCodeService {
         items.push({
           id: item.id,
           code: item.code,
+          fromDate: item.fromDate,
+          throughDate: item.throughDate,
         });
       }
     });

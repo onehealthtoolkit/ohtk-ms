@@ -8,6 +8,8 @@ query invitationCodes($limit: Int!, $offset: Int!, $codeStartWith: String) {
     results {
       id
       code
+      fromDate
+      throughDate
     }
   }
 }

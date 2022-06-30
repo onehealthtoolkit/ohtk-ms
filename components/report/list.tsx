@@ -56,7 +56,7 @@ const ReportList = () => {
           },
         ]}
         data={viewModel.data || []}
-        onDetail={record => router.push(`/reports/${record.id}`)}
+        onView={record => router.push(`/reports/${record.id}`)}
       />
       <ErrorDisplay message={viewModel.errorMessage} />
 

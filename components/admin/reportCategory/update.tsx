@@ -26,7 +26,7 @@ const ReportCategoryUpdate = () => {
   const services = useServices();
   const [viewModel] = useState(
     new ReportCategoryUpdateViewModel(
-      router.query.id!.toString(),
+      router.query.id as string,
       services.reportCategoryService
     )
   );

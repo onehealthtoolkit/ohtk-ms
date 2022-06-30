@@ -65,12 +65,17 @@ const AuthorityList = () => {
             get: record => record.id,
           },
           {
+            label: "Code",
+            get: record => record.code,
+          },
+          {
             label: "Name",
             get: record => record.name,
           },
         ]}
         data={viewModel.data || []}
         onEdit={record => router.push(`/admin/authorities/${record.id}/update`)}
+        onView={record => router.push(`/admin/authorities/${record.id}/view`)}
         onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
       />
       <ErrorDisplay message={viewModel.errorMessage} />

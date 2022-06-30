@@ -1134,6 +1134,8 @@ export type InvitationCodesQuery = {
       __typename?: "AdminInvitationCodeQueryType";
       id: string;
       code: string;
+      fromDate: any;
+      throughDate: any;
     } | null>;
   } | null;
 };
@@ -2551,6 +2553,14 @@ export const InvitationCodesDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "code" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "fromDate" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "throughDate" },
+                      },
                     ],
                   },
                 },

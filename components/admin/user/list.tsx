@@ -83,6 +83,7 @@ const UserList = () => {
         ]}
         data={viewModel?.data || []}
         onEdit={record => router.push(`/admin/users/${record.id}/update`)}
+        onView={record => router.push(`/admin/users/${record.id}/view`)}
         onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
       />
       <ErrorDisplay message={viewModel?.errorMessage} />
