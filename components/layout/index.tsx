@@ -50,7 +50,7 @@ const Layout = ({ children }: Props) => {
   return (
     <div className="flex h-screen overflow-hidden">
       <aside ref={ref}>
-        <Sidebar mobilePosition="right" />
+        <Sidebar mobilePosition="left" />
       </aside>
       {/* Content area */}
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">

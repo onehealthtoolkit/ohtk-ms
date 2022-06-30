@@ -3,10 +3,10 @@ import { observer } from "mobx-react";
 import React from "react";
 import tw from "tailwind-styled-components";
 
-const iconClassName = "h-5 w-5 text-gray-300";
+const iconClassName = "h-5 w-5 ";
 
 const Btn = tw.button`
-  btn text-white bg-blue-400 disabled:bg-slate-50 px-4 py-2
+  btn text-gray-600 disabled:text-gray-300 px-4 py-2 rounded hover:bg-slate-50 disabled:hover:bg-white
 `;
 
 type PaginateProps = {
