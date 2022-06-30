@@ -7,6 +7,7 @@ import { InvitationCodeService } from "./invitationCode";
 import { IUserService, UserService } from "./user";
 import { ReportCategoryService } from "./reportCategory";
 import { ReportTypeService } from "./reportType/reportTypeService";
+import { ReportService } from "./report";
 
 export interface IServiceProvider {
   get authService(): IAuthService;
@@ -16,6 +17,7 @@ export interface IServiceProvider {
   get invitationCodeService(): InvitationCodeService;
   get reportCategoryService(): ReportCategoryService;
   get reportTypeService(): ReportTypeService;
+  get reportService(): ReportService;
 }
 
 export class ServicesProvider implements IServiceProvider {
@@ -28,6 +30,7 @@ export class ServicesProvider implements IServiceProvider {
   invitationCodeService: InvitationCodeService;
   reportCategoryService: ReportCategoryService;
   reportTypeService: ReportTypeService;
+  reportService: ReportService;
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
@@ -38,6 +41,7 @@ export class ServicesProvider implements IServiceProvider {
     this.invitationCodeService = new InvitationCodeService(client);
     this.reportCategoryService = new ReportCategoryService(client);
     this.reportTypeService = new ReportTypeService(client);
+    this.reportService = new ReportService(client);
   }
 }
 

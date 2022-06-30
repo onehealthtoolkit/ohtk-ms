@@ -1,0 +1,40 @@
+query Reports($limit: Int!, $offset: Int!) {
+  incidentReports(limit: $limit, offset: $offset) {
+    totalCount
+    results {
+      id
+      createdAt
+      incidentDate
+      rendererData
+      reportType {
+        id
+        name
+      }
+    }
+  }
+}
+
+query GetReport($id: ID!) {
+  incidentReport(id: $id) {
+    id
+    createdAt
+    incidentDate
+    gpsLocation
+    updatedAt
+    rendererData
+    data
+    reportType {
+      id
+      name
+    }
+    platform
+    coverImage {
+      id
+      file
+    }
+    images {
+      id
+      file
+    }
+  }
+}

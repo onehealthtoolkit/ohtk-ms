@@ -21,6 +21,7 @@ export const AddButton = forwardRef(function addButton(
       bg-blue-500 
       border-blue-300
       hover:border-blue-500
+        rounded
         flex 
         justify-center 
         items-center
