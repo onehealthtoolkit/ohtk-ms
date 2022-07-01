@@ -17,6 +17,7 @@ import {
 } from "components/hooks/searchParam";
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 import { InvitationCode } from "lib/services/invitationCode";
+import { formatDate } from "lib/datetime";
 
 const InvitaionCodeList = () => {
   const router = useRouter();
@@ -70,10 +71,21 @@ const InvitaionCodeList = () => {
             label: "Code",
             get: record => record.code,
           },
+          {
+            label: "From Date",
+            get: record => formatDate(record.fromDate),
+          },
+          {
+            label: "Through Date",
+            get: record => formatDate(record.throughDate),
+          },
         ]}
         data={viewModel?.data || []}
         onEdit={record =>
           router.push(`/admin/invitation_codes/${record.id}/update`)
+        }
+        onView={record =>
+          router.push(`/admin/invitation_codes/${record.id}/view`)
         }
         onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
       />

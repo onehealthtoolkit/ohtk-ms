@@ -23,7 +23,7 @@ const InvitationCodeUpdate = () => {
   const services = useServices();
   const [viewModel] = useState(
     new InvitationCodeUpdateViewModel(
-      router.query.id!.toString(),
+      router.query.id as string,
       services.invitationCodeService
     )
   );

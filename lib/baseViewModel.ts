@@ -14,6 +14,7 @@ export class BaseViewModel {
   _totalCount = 0;
   _limit = 20;
   _offset = 0;
+  _isLoading: boolean = false;
 
   errors: Errors = observable.map({});
   dialogs: DialogMap = observable.map({});
@@ -23,6 +24,8 @@ export class BaseViewModel {
       _totalCount: observable,
       _limit: observable,
       _offset: observable,
+      _isLoading: observable,
+      isLoading: computed,
       totalCount: computed,
       limit: computed,
       offset: computed,
@@ -31,6 +34,14 @@ export class BaseViewModel {
       error: computed,
       setError: action,
     });
+  }
+
+  public get isLoading(): boolean {
+    return this._isLoading;
+  }
+
+  public set isLoading(value: boolean) {
+    this._isLoading = value;
   }
 
   public get totalCount() {

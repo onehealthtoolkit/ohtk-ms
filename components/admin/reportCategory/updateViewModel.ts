@@ -19,6 +19,7 @@ export class ReportCategoryUpdateViewModel extends ReportCategoryViewModel {
     if (data) {
       this.name = data.name;
       this.ordering = data.ordering;
+      this.iconUrl = data.icon || "";
     }
     this.isLoading = false;
   }
@@ -27,7 +28,9 @@ export class ReportCategoryUpdateViewModel extends ReportCategoryViewModel {
     return this.reportCategoryService.updateReportCategory(
       this.id,
       this.name,
-      this.ordering
+      this.ordering,
+      this.icon,
+      this.clearIcon
     );
   }
 }

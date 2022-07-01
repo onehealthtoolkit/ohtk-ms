@@ -28,7 +28,7 @@ const ReportTypeUpdateForm = () => {
   const services = useServices();
   const [viewModel] = useState(
     new ReportTypeUpdateViewModel(
-      router.query.id!.toString(),
+      router.query.id as string,
       services.reportTypeService
     )
   );

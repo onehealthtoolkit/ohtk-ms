@@ -22,8 +22,11 @@ const EditAction = (props: ActionHandlerProps) => (
   />
 );
 
-const ClickAction = () => (
-  <EyeIcon className="mx-1 w-8 h-5 text-gray-600 hover:text-gray-900" />
+const ClickAction = (props: ActionHandlerProps) => (
+  <EyeIcon
+    className="mx-1 w-8 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+    {...props}
+  />
 );
 
 const DeleteAction = (props: ActionHandlerProps) => (
@@ -45,6 +48,7 @@ interface TableProps<T> {
   data: T[];
   onEdit?: (record: T) => void;
   onDelete?: (record: T) => void;
+  onView?: (record: T) => void;
 }
 
 const Table = <T extends ItemWithId | null>({
@@ -52,6 +56,7 @@ const Table = <T extends ItemWithId | null>({
   data,
   onEdit,
   onDelete,
+  onView,
 }: TableProps<T>) => {
   return (
     <div className="mb-4 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
@@ -73,17 +78,25 @@ const Table = <T extends ItemWithId | null>({
                 ))}
                 <TableCell>
                   <div className="flex">
-                    <EditAction
+                    {onEdit && (
+                      <EditAction
+                        onClick={() => {
+                          onEdit && onEdit(record);
+                        }}
+                      />
+                    )}
+                    <ClickAction
                       onClick={() => {
-                        onEdit && onEdit(record);
+                        onView && onView(record);
                       }}
                     />
-                    <ClickAction />
-                    <DeleteAction
-                      onClick={() => {
-                        onDelete && onDelete(record);
-                      }}
-                    />
+                    {onEdit && (
+                      <DeleteAction
+                        onClick={() => {
+                          onDelete && onDelete(record);
+                        }}
+                      />
+                    )}
                   </div>
                 </TableCell>
               </tr>

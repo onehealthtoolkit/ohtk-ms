@@ -22,7 +22,7 @@ const UserUpdate = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new UserUpdateViewModel(router.query.id!.toString(), services.userService)
+    new UserUpdateViewModel(router.query.id as string, services.userService)
   );
   const errors = viewModel.fieldErrors;
 
@@ -62,7 +62,7 @@ const UserUpdate = () => {
             <ErrorText>{errors.firstName}</ErrorText>
           </Field>
           <Field $size="half">
-            <Label htmlFor="lastName">lastName</Label>
+            <Label htmlFor="lastName">Last Name</Label>
             <TextInput
               id="lastName"
               type="text"

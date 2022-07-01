@@ -74,6 +74,9 @@ const ReportCategoryList = () => {
         onEdit={record =>
           router.push(`/admin/report_categories/${record.id}/update`)
         }
+        onView={record =>
+          router.push(`/admin/report_categories/${record.id}/view`)
+        }
         onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
       />
       <ErrorDisplay message={viewModel?.errorMessage} />

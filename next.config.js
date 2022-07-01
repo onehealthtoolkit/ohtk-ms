@@ -10,6 +10,9 @@ const nextConfig = {
       },
     ];
   },
+  publicRuntimeConfig: {
+    serverUrl: "http://opensur.test:8000",
+  },
 };
 
 module.exports = nextConfig;
