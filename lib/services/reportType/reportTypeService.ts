@@ -43,6 +43,7 @@ export class ReportTypeService implements IReportTypeService {
     limit: 20,
     offset: 0,
     nameStartWith: "",
+    ordering: "category__ordering,asc",
   };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
@@ -69,6 +70,7 @@ export class ReportTypeService implements IReportTypeService {
           name: item.name,
           definition: item.definition,
           categoryId: +item.category.id,
+          categoryName: item.category.name,
           ordering: item.ordering,
         });
       }
@@ -94,6 +96,7 @@ export class ReportTypeService implements IReportTypeService {
         id: reportType.id,
         name: reportType.name,
         categoryId: +reportType.category.id,
+        categoryName: reportType.category.name,
         definition: JSON.stringify(reportType.definition),
         ordering: reportType.ordering,
       };

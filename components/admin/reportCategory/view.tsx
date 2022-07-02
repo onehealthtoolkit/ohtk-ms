@@ -4,6 +4,9 @@ import { useRouter } from "next/router";
 import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ReportCategoryViewViewModel } from "./viewViewModel";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
 
 const ReportCategoryView = () => {
   const router = useRouter();
@@ -24,11 +27,11 @@ const ReportCategoryView = () => {
               <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                 <th
                   scope="row"
-                  className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                  className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Code
+                  Id
                 </th>
-                <td className="px-6 py-4">{viewModel.data.name}</td>
+                <td className="px-6 py-4">{viewModel.data.id}</td>
               </tr>
               <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                 <th
@@ -36,6 +39,32 @@ const ReportCategoryView = () => {
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
                   Name
+                </th>
+                <td className="px-6 py-4">{viewModel.data.ordering}</td>
+              </tr>
+              <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                >
+                  Icon
+                </th>
+                <td className="px-6 py-4">
+                  {viewModel.data.icon && (
+                    <img
+                      width={"32"}
+                      height={"32"}
+                      src={`${publicRuntimeConfig.serverUrl}/${viewModel.data.icon}`}
+                    />
+                  )}
+                </td>
+              </tr>
+              <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                >
+                  Ordering
                 </th>
                 <td className="px-6 py-4">{viewModel.data.ordering}</td>
               </tr>

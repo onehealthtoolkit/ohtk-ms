@@ -15,7 +15,7 @@ import {
   AnnotationIcon,
 } from "@heroicons/react/solid";
 import useStore from "lib/store";
-import CollapsIcon from "components/icons/CollapsIcon";
+import CollapsIcon from "components/layout/CollapsIcon";
 import { observer } from "mobx-react";
 import { Menu } from "./menu";
 

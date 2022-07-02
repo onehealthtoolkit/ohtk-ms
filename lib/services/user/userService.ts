@@ -48,6 +48,7 @@ export class UserService implements IUserService {
     limit: 20,
     offset: 0,
     nameStartWith: "",
+    ordering: "username,asc",
   };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {

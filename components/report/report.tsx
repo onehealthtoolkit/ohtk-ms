@@ -29,7 +29,7 @@ const Report = () => {
   const renderItem = (data: Record<string, any>) => {
     return Object.keys(data)
       .sort()
-      .filter(key => key != "images")
+      .filter(key => key != "images" && data[key] != null)
       .map((key: string) => {
         return (
           <tr
@@ -40,10 +40,12 @@ const Report = () => {
               scope="row"
               className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
             >
-              {key}
+              {key} {typeof data[key]}
             </th>
             <td className="px-6 py-4">
-              {typeof data[key] != "object" && data[key]}
+              {(typeof data[key] != "object" ||
+                typeof data[key] == "boolean") &&
+                data[key].toString()}
               {typeof data[key] == "object" && renderData(data[key])}
             </td>
           </tr>

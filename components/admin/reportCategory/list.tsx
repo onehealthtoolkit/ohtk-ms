@@ -69,6 +69,10 @@ const ReportCategoryList = () => {
             label: "Name",
             get: record => record.name,
           },
+          {
+            label: "Ordering",
+            get: record => record.ordering.toString(),
+          },
         ]}
         data={viewModel?.data || []}
         onEdit={record =>

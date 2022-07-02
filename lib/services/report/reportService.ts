@@ -3,8 +3,17 @@ import { GetReportDocument, ReportsDocument } from "lib/generated/graphql";
 import { Image, Report, ReportDetail } from "lib/services/report/report";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
 
+export type ReportFilterData = {
+  fromDate: Date;
+  throughDate: Date;
+  authorities: string[];
+};
 export interface IReportService extends IService {
-  fetchReports(limit: number, offset: number): Promise<QueryResult<Report[]>>;
+  fetchReports(
+    limit: number,
+    offset: number,
+    filter: ReportFilterData
+  ): Promise<QueryResult<Report[]>>;
   getReport(id: string): Promise<GetResult<ReportDetail>>;
 }
 
@@ -19,7 +28,12 @@ export class ReportService implements IReportService {
     this.client = client;
   }
 
-  async fetchReports(limit: number, offset: number) {
+  async fetchReports(limit: number, offset: number, filter: ReportFilterData) {
+    console.log(
+      filter.fromDate.toString(),
+      filter.throughDate.toString(),
+      filter.authorities.toString()
+    );
     this.fetchReportsQuery = {
       ...this.fetchReportsQuery,
       limit,
