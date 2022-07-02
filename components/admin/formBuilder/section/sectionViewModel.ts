@@ -2,6 +2,7 @@ import { QuestionViewModel } from "components/admin/formBuilder/question";
 import {
   Definition,
   MovableItemsViewModel,
+  ParseError,
 } from "components/admin/formBuilder/shared";
 import { action, makeObservable, observable } from "mobx";
 
@@ -49,9 +50,11 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
     this.questions.push(new QuestionViewModel(id, "Question..."));
   }
 
-  parse(definition: Definition): boolean {
-    if (definition.label !== undefined) {
-      this.label = definition.label as string;
+  parse(definition: Definition) {
+    try {
+      if (definition.label !== undefined) {
+        this.label = definition.label as string;
+      }
 
       if (Array.isArray(definition.questions)) {
         const questions = Array<QuestionViewModel>();
@@ -59,15 +62,20 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
         definition.questions.forEach(questionDefinition => {
           const id = crypto.randomUUID();
           const questionViewModel = new QuestionViewModel(id, "Question...");
-          const success = questionViewModel.parse(questionDefinition);
-          if (success) {
-            questions.push(questionViewModel);
-          }
+          questionViewModel.parse(questionDefinition);
+          questions.push(questionViewModel);
         });
         this.questions.splice(0, this.questions.length, ...questions);
         return true;
       }
+    } catch (e) {
+      if (e instanceof ParseError) {
+        throw new ParseError(e.message + " << section: " + definition.label);
+      } else {
+        throw new ParseError(
+          "Error while building a section with label: " + definition.label
+        );
+      }
     }
-    return false;
   }
 }

@@ -2,6 +2,7 @@ import { SectionViewModel } from "components/admin/formBuilder/section";
 import {
   Definition,
   MovableItemsViewModel,
+  ParseError,
 } from "components/admin/formBuilder/shared";
 import { action, makeObservable, observable } from "mobx";
 
@@ -49,21 +50,29 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
     this.currentSection = undefined;
   }
 
-  parse(definition: Definition): boolean {
-    if (Array.isArray(definition.sections)) {
-      const sections = Array<SectionViewModel>();
+  parse(definition: Definition) {
+    try {
+      if (Array.isArray(definition.sections)) {
+        const sections = Array<SectionViewModel>();
 
-      definition.sections.forEach(sectionDefinition => {
-        const id = crypto.randomUUID();
-        const sectionViewModel = new SectionViewModel(id, "Section...");
-        const success = sectionViewModel.parse(sectionDefinition);
-        if (success) {
-          sections.push(sectionViewModel);
-        }
-      });
-      this.sections.splice(0, this.sections.length, ...sections);
-      return true;
+        definition.sections.forEach(sectionDefinition => {
+          const id = crypto.randomUUID();
+          const sectionViewModel = new SectionViewModel(id, "Section...");
+          const success = sectionViewModel.parse(sectionDefinition);
+          if (success) {
+            sections.push(sectionViewModel);
+          }
+        });
+        this.sections.splice(0, this.sections.length, ...sections);
+      }
+    } catch (e) {
+      if (e instanceof ParseError) {
+        throw e;
+      } else {
+        throw new ParseError(
+          "Error while building a form from given definition"
+        );
+      }
     }
-    return false;
   }
 }

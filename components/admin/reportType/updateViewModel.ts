@@ -2,6 +2,7 @@ import { ReportType } from "lib/services/reportType";
 import { IReportTypeService } from "lib/services/reportType/reportTypeService";
 import { SaveResult } from "lib/services/interface";
 import { ReportTypeViewModel } from "./reportTypeViewModel";
+import { ParseError } from "components/admin/formBuilder/shared";
 
 export class ReportTypeUpdateViewModel extends ReportTypeViewModel {
   id: string;
@@ -24,8 +25,11 @@ export class ReportTypeUpdateViewModel extends ReportTypeViewModel {
       try {
         this.formViewModel.parse(JSON.parse(data.definition));
       } catch (e) {
-        console.log(e);
-        this.submitError = "Error! Bad definition format";
+        if (e instanceof ParseError) {
+          this.submitError = e.message;
+        } else {
+          this.submitError = "Error! Bad definition format";
+        }
       }
     }
     this.isLoading = false;

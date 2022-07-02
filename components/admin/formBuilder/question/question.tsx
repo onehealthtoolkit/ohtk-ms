@@ -63,6 +63,7 @@ const Question: FC<Props> = ({ value: question, onSelect }) => {
         onMoveDown={fieldId => question.moveItemDown(fieldId)}
         onMoveUp={fieldId => question.moveItemUp(fieldId)}
         onSelect={fieldId => question.selectField(fieldId)}
+        onDelete={fieldId => question.deleteField(fieldId)}
       />
       <FieldMenus value={question} />
     </div>

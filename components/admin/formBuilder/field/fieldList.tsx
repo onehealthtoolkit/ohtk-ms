@@ -8,6 +8,7 @@ type Props = {
   onMoveUp: (fieldId: string) => void;
   onMoveDown: (fieldId: string) => void;
   onSelect: (fieldId: string) => void;
+  onDelete: (id: string) => void;
 };
 
 const List: FC<Props> = ({
@@ -15,6 +16,7 @@ const List: FC<Props> = ({
   onMoveDown,
   onMoveUp,
   onSelect,
+  onDelete,
 }) => {
   return (
     <>
@@ -23,10 +25,10 @@ const List: FC<Props> = ({
           {fields.map(field => (
             <li
               key={field.id}
-              className={`flex items-stretch border-b-2 border-gray-200 
+              className={`relative flex items-stretch border-b-2 border-gray-200 
               ${
                 field.isCurrent
-                  ? "border-l-4 border-l-blue-400"
+                  ? "border-l-4 border-l-blue-400 bg-gray-50"
                   : "last:border-0"
               }`}
               onMouseOver={() => (field.isHovered = true)}
@@ -38,7 +40,7 @@ const List: FC<Props> = ({
                 onMoveDown={onMoveDown}
                 onMoveUp={onMoveUp}
               />
-              <Field value={field} onSelect={onSelect} />
+              <Field value={field} onSelect={onSelect} onDelete={onDelete} />
             </li>
           ))}
         </ul>
