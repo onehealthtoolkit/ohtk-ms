@@ -44,9 +44,11 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
   }
 
   selectField(id: string) {
+    this.currentField?.unsetCurrent();
+    this.currentField = undefined;
+
     const field = this.fields.find(field => field.id === id);
     if (field) {
-      this.currentField?.unsetCurrent();
       this.currentField = field;
       field.setCurrent();
     }

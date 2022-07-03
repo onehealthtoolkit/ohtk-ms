@@ -17,8 +17,6 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
       currentSection: observable,
       addSection: action,
       selectSection: action,
-      setCurrentSection: action,
-      unsetCurrentSection: action,
     });
   }
 
@@ -33,21 +31,16 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   }
 
   selectSection(id: string) {
-    const section = this.sections.find(section => section.id === id);
-    if (section) {
-      this.unsetCurrentSection();
-      this.setCurrentSection(section);
-    }
-  }
-
-  setCurrentSection(section: SectionViewModel) {
-    this.currentSection = section;
-    section.setCurrent();
-  }
-
-  unsetCurrentSection() {
     this.currentSection?.unsetCurrent();
     this.currentSection = undefined;
+
+    const section = this.sections.find(section => section.id === id);
+    if (section) {
+      this.currentSection = section;
+      section.setCurrent();
+      // Reset currently selected question
+      section.selectQuestion("");
+    }
   }
 
   parse(definition: Definition) {
@@ -58,10 +51,8 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
         definition.sections.forEach(sectionDefinition => {
           const id = crypto.randomUUID();
           const sectionViewModel = new SectionViewModel(id, "Section...");
-          const success = sectionViewModel.parse(sectionDefinition);
-          if (success) {
-            sections.push(sectionViewModel);
-          }
+          sectionViewModel.parse(sectionDefinition);
+          sections.push(sectionViewModel);
         });
         this.sections.splice(0, this.sections.length, ...sections);
       }

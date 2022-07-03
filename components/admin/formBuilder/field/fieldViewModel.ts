@@ -1,6 +1,11 @@
 import {
+  DateFieldViewModel,
   DecimalFieldViewModel,
+  ImagesFieldViewModel,
   IntegerFieldViewModel,
+  LocationFieldViewModel,
+  MultiplechoicesFieldViewModel,
+  SinglechoicesFieldViewModel,
   TextFieldViewModel,
 } from "components/admin/formBuilder/field/extensions";
 import {
@@ -8,7 +13,7 @@ import {
   Definition,
   ParseError,
 } from "components/admin/formBuilder/shared";
-import { action, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 
 export const FIELD_TYPES = [
   "text",
@@ -28,6 +33,16 @@ export type TFieldExtensionType<T> = T extends "text"
   ? IntegerFieldViewModel
   : T extends "decimal"
   ? DecimalFieldViewModel
+  : T extends "date"
+  ? DateFieldViewModel
+  : T extends "images"
+  ? ImagesFieldViewModel
+  : T extends "location"
+  ? LocationFieldViewModel
+  : T extends "singlechoices"
+  ? SinglechoicesFieldViewModel
+  : T extends "multiplechoices"
+  ? MultiplechoicesFieldViewModel
   : never;
 
 export class FieldViewModel extends BaseViewModel {
@@ -55,6 +70,7 @@ export class FieldViewModel extends BaseViewModel {
       isAdvanceOn: observable,
       toggleAdvanceOn: action,
       _extension: observable,
+      fieldTypeName: computed,
     });
     this.fieldType = type;
     this.name = "name";
@@ -69,8 +85,41 @@ export class FieldViewModel extends BaseViewModel {
         return new IntegerFieldViewModel();
       case "decimal":
         return new DecimalFieldViewModel();
+      case "date":
+        return new DateFieldViewModel();
+      case "images":
+        return new ImagesFieldViewModel();
+      case "location":
+        return new LocationFieldViewModel();
+      case "singlechoices":
+        return new SinglechoicesFieldViewModel();
+      case "multiplechoices":
+        return new MultiplechoicesFieldViewModel();
       default:
         return new TextFieldViewModel();
+    }
+  }
+
+  get fieldTypeName() {
+    switch (this.fieldType) {
+      case "text":
+        return "Text";
+      case "integer":
+        return "Integer";
+      case "decimal":
+        return "Decimal";
+      case "date":
+        return "Date";
+      case "images":
+        return "Images";
+      case "location":
+        return "Location";
+      case "singlechoices":
+        return "Single choice";
+      case "multiplechoices":
+        return "Multiple choices";
+      default:
+        return "Unknown";
     }
   }
 
@@ -115,6 +164,40 @@ export class FieldViewModel extends BaseViewModel {
       if (definition.name !== undefined && definition.type !== undefined) {
         this.name = definition.name as string;
         this.fieldType = definition.type as TFieldValueType;
+
+        if (definition.required !== undefined) {
+          this.isRequired = Boolean(definition.required);
+        }
+
+        const fieldType = String(definition.type);
+        switch (fieldType) {
+          case "text":
+            this.getExtension<"text">().parse(definition);
+            break;
+          case "integer":
+            this.getExtension<"integer">().parse(definition);
+            break;
+          case "decimal":
+            this.getExtension<"decimal">().parse(definition);
+            break;
+          case "date":
+            this.getExtension<"date">().parse(definition);
+            break;
+          case "images":
+            this.getExtension<"images">().parse(definition);
+            break;
+          case "location":
+            this.getExtension<"location">().parse(definition);
+            break;
+          case "singlechoices":
+            this.getExtension<"singlechoices">().parse(definition);
+            break;
+          case "multiplechoices":
+            this.getExtension<"multiplechoices">().parse(definition);
+            break;
+          default:
+            throw new ParseError("Invalid field type: " + fieldType);
+        }
       } else {
         throw new ParseError(
           "Error while building a field without name or type"
@@ -122,7 +205,7 @@ export class FieldViewModel extends BaseViewModel {
       }
     } catch (e) {
       if (e instanceof ParseError) {
-        throw e;
+        throw new ParseError(e.message + " << field: " + definition.label);
       } else {
         throw new ParseError(
           "Error while building a field with name: " + definition.name

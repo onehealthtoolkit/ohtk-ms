@@ -37,11 +37,15 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
   }
 
   selectQuestion(id: string) {
+    this.currentQuestion?.unsetCurrent();
+    this.currentQuestion = undefined;
+
     const question = this.questions.find(question => question.id === id);
     if (question) {
-      this.currentQuestion?.unsetCurrent();
       this.currentQuestion = question;
       question.setCurrent();
+      // Reset currently selected field
+      question.selectField("");
     }
   }
 
@@ -66,7 +70,6 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
           questions.push(questionViewModel);
         });
         this.questions.splice(0, this.questions.length, ...questions);
-        return true;
       }
     } catch (e) {
       if (e instanceof ParseError) {

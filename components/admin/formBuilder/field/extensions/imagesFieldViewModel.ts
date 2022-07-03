@@ -1,7 +1,7 @@
 import { Definition } from "components/admin/formBuilder/shared";
 import { action, makeObservable, observable } from "mobx";
 
-export class IntegerFieldViewModel {
+export class ImagesFieldViewModel {
   minValue?: string = "";
   maxValue?: string = "";
 
