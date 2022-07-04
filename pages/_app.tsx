@@ -1,5 +1,7 @@
 import "styles/globals.css";
 import type { AppProps } from "next/app";
+import { observer } from "mobx-react";
+
 import { ApolloProvider } from "@apollo/client";
 import { client } from "lib/client";
 import { Store, StoreContext } from "lib/store";
@@ -9,6 +11,9 @@ const servicesProvider = new ServicesProvider(client);
 const store = new Store(servicesProvider);
 
 function MyApp({ Component, pageProps }: AppProps) {
+  if (store.initTokenPending) {
+    return <div>Loading...</div>;
+  }
   return (
     <ApolloProvider client={client}>
       <ServicesContext.Provider value={servicesProvider}>
@@ -20,4 +25,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default observer(MyApp);

@@ -122,11 +122,8 @@ export class InvitationCodeService implements IInvitationCodeService {
       refetchQueries: [
         {
           query: InvitationCodesDocument,
-          variables: {
-            limit: 20,
-            offset: 0,
-            nameStartWith: "",
-          },
+          variables: this.fetchInvitationCodesQuery,
+          fetchPolicy: "network-only",
         },
       ],
       awaitRefetchQueries: true,

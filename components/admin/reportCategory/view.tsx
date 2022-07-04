@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
@@ -54,6 +55,7 @@ const ReportCategoryView = () => {
                     <img
                       width={"32"}
                       height={"32"}
+                      alt={`icon for ${viewModel.data.name}`}
                       src={`${publicRuntimeConfig.serverUrl}/${viewModel.data.icon}`}
                     />
                   )}

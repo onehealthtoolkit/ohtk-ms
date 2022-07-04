@@ -27,13 +27,15 @@ const AuthorityList = () => {
     limit: NumberParam,
     offset: NumberParam,
   });
-  const [viewModel] = useState<AdminAuthorityListViewModel>(
-    new AdminAuthorityListViewModel(
+  const [viewModel] = useState<AdminAuthorityListViewModel>(() => {
+    const model = new AdminAuthorityListViewModel(
       authorityService,
       searchValue.q as string,
       searchValue.offset as number
-    ).registerDialog("confirmDelete")
-  );
+    );
+    model.registerDialog("confirmDelete");
+    return model;
+  });
 
   useEffect(() => {
     viewModel.setSearchValue(

@@ -83,7 +83,6 @@ export class ReportService implements IReportService {
         images: incidentReport.images as Image[],
       };
     }
-    console.log(data);
     return {
       data,
     };

@@ -1,6 +1,6 @@
 import Spinner from "components/widgets/spinner";
 import Table from "components/widgets/table";
-import { observer } from "mobx-react";
+import { Observer } from "mobx-react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { ReportListViewModel } from "./listViewModel";
@@ -24,9 +24,9 @@ const ReportList = () => {
     limit: NumberParam,
     offset: NumberParam,
   });
-  const [viewModel] = useState<ReportListViewModel>(
-    new ReportListViewModel(reportService, searchValue.offset as number)
-  );
+  const [viewModel] = useState<ReportListViewModel>(() => {
+    return new ReportListViewModel(reportService, searchValue.offset as number);
+  });
 
   useEffect(() => {
     viewModel.setSearchValue(searchValue.offset as number);
@@ -36,42 +36,46 @@ const ReportList = () => {
     return <Spinner />;
   }
   return (
-    <div className="flex flex-wrap">
-      <ReportFilter viewModel={viewModel} />
-      <div>
-        <Table
-          columns={[
-            {
-              label: "Created At",
-              get: record => formatThDateTime(record.createdAt),
-            },
-            {
-              label: "Incident Date",
-              get: record => formatThDate(record.incidentDate),
-            },
-            {
-              label: "Report Type",
-              get: record => record.reportTypeName,
-            },
-            {
-              label: "Data",
-              get: record => record.rendererData,
-            },
-          ]}
-          data={viewModel.data || []}
-          onView={record => router.push(`/reports/${record.id}`)}
-        />
-        <ErrorDisplay message={viewModel.errorMessage} />
+    <Observer>
+      {() => (
+        <div className="flex flex-wrap">
+          <ReportFilter viewModel={viewModel} />
+          <div>
+            <Table
+              columns={[
+                {
+                  label: "Created At",
+                  get: record => formatThDateTime(record.createdAt),
+                },
+                {
+                  label: "Incident Date",
+                  get: record => formatThDate(record.incidentDate),
+                },
+                {
+                  label: "Report Type",
+                  get: record => record.reportTypeName,
+                },
+                {
+                  label: "Data",
+                  get: record => record.rendererData,
+                },
+              ]}
+              data={viewModel.data || []}
+              onView={record => router.push(`/reports/${record.id}`)}
+            />
+            <ErrorDisplay message={viewModel.errorMessage} />
 
-        <Paginate
-          offset={viewModel.offset}
-          limit={viewModel.limit}
-          totalCount={viewModel.totalCount}
-          onChange={value => onSearchChange("offset", value)}
-        />
-      </div>
-    </div>
+            <Paginate
+              limit={viewModel.limit}
+              offset={viewModel.offset}
+              totalCount={viewModel.totalCount}
+              onChange={value => onSearchChange("offset", value)}
+            />
+          </div>
+        </div>
+      )}
+    </Observer>
   );
 };
 
-export default observer(ReportList);
+export default ReportList;
