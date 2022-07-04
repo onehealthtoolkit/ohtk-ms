@@ -14,6 +14,7 @@ export interface IReportService extends IService {
     offset: number,
     filter: ReportFilterData
   ): Promise<QueryResult<Report[]>>;
+
   getReport(id: string): Promise<GetResult<ReportDetail>>;
 }
 
@@ -62,7 +63,7 @@ export class ReportService implements IReportService {
     };
   }
 
-  async getReport(id: string) {
+  async getReport(id: string): Promise<GetResult<ReportDetail>> {
     const getResult = await this.client.query({
       query: GetReportDocument,
       variables: {
@@ -81,6 +82,8 @@ export class ReportService implements IReportService {
         rendererData: incidentReport.rendererData,
         data: incidentReport.data,
         images: incidentReport.images as Image[],
+        reportByName: `${incidentReport.reportedBy?.firstName} ${incidentReport.reportedBy?.lastName}`,
+        reportByTelephone: incidentReport.reportedBy?.telephone || "",
       };
     }
     return {

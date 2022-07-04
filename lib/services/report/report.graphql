@@ -10,6 +10,12 @@ query Reports($limit: Int!, $offset: Int!) {
         id
         name
       }
+      reportedBy {
+        username
+        firstName
+        lastName
+        telephone
+      }
     }
   }
 }
@@ -35,6 +41,12 @@ query GetReport($id: ID!) {
     images {
       id
       file
+    }
+    reportedBy {
+      firstName
+      lastName
+      id
+      telephone
     }
   }
 }

@@ -76,6 +76,7 @@ export type AdminAuthorityCreateSuccess = {
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
   id: Scalars["ID"];
+  incidents: Array<IncidentReportType>;
   inherits: Array<AdminAuthorityCreateSuccess>;
   inviations: Array<AdminInvitationCodeCreateSuccess>;
   name: Scalars["String"];
@@ -508,6 +509,8 @@ export type IncidentReportType = {
   originRendererData: Scalars["String"];
   originalData?: Maybe<Scalars["GenericScalar"]>;
   platform?: Maybe<Scalars["String"]>;
+  relevantAuthorities: Array<AdminAuthorityCreateSuccess>;
+  relevantAuthorityResolved: Scalars["Boolean"];
   rendererData: Scalars["String"];
   reportType: AdminReportTypeCreateSuccess;
   reportedBy?: Maybe<UserType>;
@@ -663,6 +666,7 @@ export type MutationSubmitIncidentReportArgs = {
   data: Scalars["GenericScalar"];
   gpsLocation?: InputMaybe<Scalars["String"]>;
   incidentDate: Scalars["Date"];
+  incidentInAuthority?: InputMaybe<Scalars["Boolean"]>;
   reportId?: InputMaybe<Scalars["UUID"]>;
   reportTypeId: Scalars["UUID"];
 };
@@ -925,6 +929,7 @@ export type UserType = {
   firstName: Scalars["String"];
   id: Scalars["ID"];
   lastName: Scalars["String"];
+  telephone?: Maybe<Scalars["String"]>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
   username: Scalars["String"];
 };
@@ -1264,6 +1269,13 @@ export type ReportsQuery = {
         id: any;
         name: string;
       };
+      reportedBy?: {
+        __typename?: "UserType";
+        username: string;
+        firstName: string;
+        lastName: string;
+        telephone?: string | null;
+      } | null;
     } | null>;
   } | null;
 };
@@ -1295,6 +1307,13 @@ export type GetReportQuery = {
       id: any;
       file: string;
     } | null> | null;
+    reportedBy?: {
+      __typename?: "UserType";
+      firstName: string;
+      lastName: string;
+      id: string;
+      telephone?: string | null;
+    } | null;
   } | null;
 };
 
@@ -3212,6 +3231,31 @@ export const ReportsDocument = {
                           ],
                         },
                       },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "reportedBy" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "username" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "firstName" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "lastName" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "telephone" },
+                            },
+                          ],
+                        },
+                      },
                     ],
                   },
                 },
@@ -3303,6 +3347,28 @@ export const GetReportDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "file" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reportedBy" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "firstName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "lastName" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "telephone" },
+                      },
                     ],
                   },
                 },

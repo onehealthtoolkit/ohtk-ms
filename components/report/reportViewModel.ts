@@ -18,16 +18,13 @@ export class ReportViewModel extends BaseViewModel {
   }
 
   async fetch() {
-    console.log("fetch", this.id);
-    if (this.id) {
-      this.isLoading = true;
-      const data = await (await this.reportService.getReport(this.id)).data;
-      if (data) {
-        runInAction(() => {
-          this.data = data;
-        });
-      }
-      this.isLoading = false;
+    this.isLoading = true;
+    const data = (await this.reportService.getReport(this.id)).data;
+    if (data) {
+      runInAction(() => {
+        this.data = data;
+      });
     }
+    this.isLoading = false;
   }
 }

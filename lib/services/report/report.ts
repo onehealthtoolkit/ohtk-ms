@@ -4,6 +4,8 @@ export type Report = {
   incidentDate: string;
   reportTypeName: string;
   rendererData: string;
+  reportByName?: string;
+  reportByTelephone?: string;
 };
 
 export type Image = {
