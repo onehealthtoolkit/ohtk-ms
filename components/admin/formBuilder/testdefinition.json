@@ -4,88 +4,54 @@
       "label": "page1",
       "questions": [
         {
+          "label": "disease",
           "fields": [
             {
               "id": "disease",
               "name": "disease",
+              "type": "singlechoices",
               "options": [
-                {
-                  "label": "dengue",
-                  "value": "dengue"
-                },
-                {
-                  "label": "mers",
-                  "value": "mers"
-                },
-                {
-                  "label": "flu",
-                  "textInput": true,
-                  "value": "flu"
-                },
-                {
-                  "label": "sars",
-                  "textInput": true,
-                  "value": "sars"
-                },
-                {
-                  "label": "other",
-                  "textInput": true,
-                  "value": "other"
-                }
+                { "label": "dengue", "value": "dengue" },
+                { "label": "mers", "value": "mers" },
+                { "label": "flu", "value": "flu", "textInput": true },
+                { "label": "sars", "value": "sars", "textInput": true },
+                { "label": "other", "value": "other", "textInput": true }
               ],
-              "required": true,
-              "type": "singlechoices"
+              "required": true
             }
-          ],
-          "label": "disease"
+          ]
         },
         {
+          "label": "give me more detail",
+          "fields": [
+            { "id": "more", "name": "more", "type": "text", "required": true }
+          ],
           "enableCondition": {
             "name": "disease",
-            "operator": "=",
-            "value": "other"
-          },
-          "fields": [
-            {
-              "id": "more",
-              "name": "more",
-              "required": true,
-              "type": "text"
-            }
-          ],
-          "label": "give me more detail"
+            "value": "other",
+            "operator": "="
+          }
         },
         {
+          "label": "symptom",
           "fields": [
             {
               "id": "symptom",
               "name": "symptom",
+              "type": "multiplechoices",
               "options": [
-                {
-                  "label": "fever",
-                  "value": "fever"
-                },
-                {
-                  "label": "cough",
-                  "textInput": true,
-                  "value": "cough"
-                },
+                { "label": "fever", "value": "fever" },
+                { "label": "cough", "value": "cough", "textInput": true },
                 {
                   "label": "sore throat",
-                  "textInput": true,
-                  "value": "sore_throat"
+                  "value": "sore_throat",
+                  "textInput": true
                 },
-                {
-                  "label": "other",
-                  "textInput": true,
-                  "value": "other"
-                }
+                { "label": "other", "value": "other", "textInput": true }
               ],
-              "required": true,
-              "type": "multiplechoices"
+              "required": true
             }
-          ],
-          "label": "symptom"
+          ]
         }
       ]
     },
@@ -93,15 +59,15 @@
       "label": "page4",
       "questions": [
         {
+          "label": "images",
           "fields": [
             {
               "id": "images",
               "name": "images",
-              "required": true,
-              "type": "images"
+              "type": "images",
+              "required": true
             }
-          ],
-          "label": "images"
+          ]
         }
       ]
     },
@@ -109,49 +75,65 @@
       "label": "page2",
       "questions": [
         {
+          "label": "name",
           "fields": [
             {
               "id": "firstName",
-              "label": "first name",
               "name": "firstName",
-              "required": true,
-              "type": "text"
+              "type": "text",
+              "label": "first name",
+              "required": true
             },
             {
               "id": "lastName",
-              "label": "last name",
               "name": "lastName",
-              "required": true,
-              "type": "text"
+              "type": "text",
+              "label": "last name",
+              "required": true
             }
-          ],
-          "label": "name"
+          ]
         },
         {
+          "label": "age",
           "fields": [
             {
               "id": "age",
-              "label": "age",
               "max": 120,
               "min": 0,
               "name": "age",
-              "required": true,
-              "type": "integer"
+              "type": "integer",
+              "label": "age",
+              "required": true
+            },
+            {
+              "id": "height",
+              "max": 120.5,
+              "min": 10.9,
+              "name": "height",
+              "type": "decimal",
+              "label": "Height",
+              "required": true
             }
-          ],
-          "label": "age"
+          ]
         },
         {
+          "label": "date loc",
           "fields": [
             {
               "id": "date",
-              "label": "Date",
               "name": "date",
-              "required": true,
-              "type": "date"
+              "type": "date",
+              "label": "Date",
+              "required": true
+            },
+            {
+              "id": "location",
+              "name": "location",
+              "type": "location",
+              "label": "Location",
+              "required": true
             }
-          ],
-          "label": "date"
+          ]
         }
       ]
     }

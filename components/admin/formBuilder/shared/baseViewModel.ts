@@ -1,4 +1,13 @@
-import { action, computed, makeObservable, observable } from "mobx";
+import { FormBuilderDialogViewModel } from "components/admin/formBuilder/shared";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  ObservableMap,
+} from "mobx";
+
+type DialogMap = ObservableMap<string, FormBuilderDialogViewModel>;
 
 export class BaseViewModel {
   id = "";
@@ -7,6 +16,8 @@ export class BaseViewModel {
   isLabelEditing = false;
   isDescriptionEditing = false;
   _isHovered = false;
+
+  dialogs: DialogMap = observable.map({});
 
   constructor(id: string, label: string) {
     makeObservable(this, {
@@ -21,6 +32,9 @@ export class BaseViewModel {
       setDescription: action,
       _isHovered: observable,
       isHovered: computed,
+      registerDialog: action,
+      unregisterDialog: action,
+      dialog: computed,
     });
 
     this.id = id;
@@ -54,5 +68,29 @@ export class BaseViewModel {
   }
   set isHovered(isHovered: boolean) {
     this._isHovered = isHovered;
+  }
+
+  /**
+   * Manage all modal dialogs references and handle their viewModel states.
+   * Each dialog's viewModel is referenced through key in dialog map
+   */
+
+  registerDialog(name: string): FormBuilderDialogViewModel | undefined {
+    this.dialogs.set(name, new FormBuilderDialogViewModel());
+    return this.dialog(name);
+  }
+
+  unregisterDialog(name: string) {
+    this.dialogs.delete(name);
+  }
+
+  get dialog() {
+    return (name: string) => {
+      return this.dialogs.get(name);
+    };
+  }
+
+  closeAllDialogs() {
+    this.dialogs.forEach(dialog => dialog.close());
   }
 }

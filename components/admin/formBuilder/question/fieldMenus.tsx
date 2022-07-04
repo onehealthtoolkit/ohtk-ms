@@ -34,8 +34,8 @@ const Menus: FC<FieldMenusProps> = ({ value: question }) => {
         </svg>
       </button>
       {question.isFieldMenusOpen && (
-        <div className="z-10 top-14 absolute bg-white divide-y divide-gray-100 rounded shadow w-44">
-          <ul className="py-1 text-sm text-gray-700">
+        <div className="z-10 top-14 absolute bg-white divide-y divide-gray-100 rounded shadow-md w-44">
+          <ul className="py-1 text-sm text-gray-700 ">
             {FIELD_TYPES.map(fieldType => (
               <li key={fieldType}>
                 <a

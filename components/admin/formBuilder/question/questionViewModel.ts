@@ -1,7 +1,11 @@
-import { FieldViewModel } from "components/admin/formBuilder/field";
+import {
+  FieldViewModel,
+  TFieldValueType,
+} from "components/admin/formBuilder/field";
 import {
   Definition,
   MovableItemsViewModel,
+  ParseError,
 } from "components/admin/formBuilder/shared";
 import { action, makeObservable, observable } from "mobx";
 
@@ -23,6 +27,7 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
       toggleFieldMenus: action,
       fields: observable,
       addField: action,
+      deleteField: action,
     });
   }
 
@@ -39,9 +44,11 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
   }
 
   selectField(id: string) {
+    this.currentField?.unsetCurrent();
+    this.currentField = undefined;
+
     const field = this.fields.find(field => field.id === id);
     if (field) {
-      this.currentField?.unsetCurrent();
       this.currentField = field;
       field.setCurrent();
     }
@@ -51,14 +58,23 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
     this.isFieldMenusOpen = !this.isFieldMenusOpen;
   }
 
-  addField(type: string) {
+  addField(type: TFieldValueType) {
     const id = crypto.randomUUID();
     this.fields.push(new FieldViewModel(id, "field...", type));
   }
 
-  parse(definition: Definition): boolean {
-    if (definition.label !== undefined) {
-      this.label = definition.label as string;
+  deleteField(id: string) {
+    const fieldIndex = this.fields.findIndex(field => field.id === id);
+    if (fieldIndex > -1) {
+      this.fields.splice(fieldIndex, 1);
+    }
+  }
+
+  parse(definition: Definition) {
+    try {
+      if (definition.label !== undefined) {
+        this.label = definition.label as string;
+      }
 
       if (Array.isArray(definition.fields)) {
         const fields = Array<FieldViewModel>();
@@ -70,15 +86,19 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
             "Field...",
             fieldDefinition.type
           );
-          const success = fieldViewModel.parse(fieldDefinition);
-          if (success) {
-            fields.push(fieldViewModel);
-          }
+          fieldViewModel.parse(fieldDefinition);
+          fields.push(fieldViewModel);
         });
         this.fields.splice(0, this.fields.length, ...fields);
-        return true;
+      }
+    } catch (e) {
+      if (e instanceof ParseError) {
+        throw new ParseError(e.message + " << question: " + definition.label);
+      } else {
+        throw new ParseError(
+          "Error while building a question with label: " + definition.label
+        );
       }
     }
-    return false;
   }
 }

@@ -2,6 +2,7 @@ import { SectionViewModel } from "components/admin/formBuilder/section";
 import {
   Definition,
   MovableItemsViewModel,
+  ParseError,
 } from "components/admin/formBuilder/shared";
 import { action, makeObservable, observable } from "mobx";
 
@@ -16,8 +17,6 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
       currentSection: observable,
       addSection: action,
       selectSection: action,
-      setCurrentSection: action,
-      unsetCurrentSection: action,
     });
   }
 
@@ -32,38 +31,39 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   }
 
   selectSection(id: string) {
-    const section = this.sections.find(section => section.id === id);
-    if (section) {
-      this.unsetCurrentSection();
-      this.setCurrentSection(section);
-    }
-  }
-
-  setCurrentSection(section: SectionViewModel) {
-    this.currentSection = section;
-    section.setCurrent();
-  }
-
-  unsetCurrentSection() {
     this.currentSection?.unsetCurrent();
     this.currentSection = undefined;
+
+    const section = this.sections.find(section => section.id === id);
+    if (section) {
+      this.currentSection = section;
+      section.setCurrent();
+      // Reset currently selected question
+      section.selectQuestion("");
+    }
   }
 
-  parse(definition: Definition): boolean {
-    if (Array.isArray(definition.sections)) {
-      const sections = Array<SectionViewModel>();
+  parse(definition: Definition) {
+    try {
+      if (Array.isArray(definition.sections)) {
+        const sections = Array<SectionViewModel>();
 
-      definition.sections.forEach(sectionDefinition => {
-        const id = crypto.randomUUID();
-        const sectionViewModel = new SectionViewModel(id, "Section...");
-        const success = sectionViewModel.parse(sectionDefinition);
-        if (success) {
+        definition.sections.forEach(sectionDefinition => {
+          const id = crypto.randomUUID();
+          const sectionViewModel = new SectionViewModel(id, "Section...");
+          sectionViewModel.parse(sectionDefinition);
           sections.push(sectionViewModel);
-        }
-      });
-      this.sections.splice(0, this.sections.length, ...sections);
-      return true;
+        });
+        this.sections.splice(0, this.sections.length, ...sections);
+      }
+    } catch (e) {
+      if (e instanceof ParseError) {
+        throw e;
+      } else {
+        throw new ParseError(
+          "Error while building a form from given definition"
+        );
+      }
     }
-    return false;
   }
 }
