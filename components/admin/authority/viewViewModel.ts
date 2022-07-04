@@ -1,16 +1,13 @@
 import { BaseViewModel } from "lib/baseViewModel";
-import { ReportCategory } from "lib/services/reportCategory";
-import { IReportCategoryService } from "lib/services/reportCategory/reportCategoryService";
+import { Authority } from "lib/services/authority";
+import { IAuthorityService } from "lib/services/authority/authorityService";
 import { makeObservable, observable } from "mobx";
 
-export class ReportCategoryViewViewModel extends BaseViewModel {
+export class AuthorityViewViewModel extends BaseViewModel {
   id: string;
-  data: ReportCategory = {} as ReportCategory;
+  data: Authority = {} as Authority;
 
-  constructor(
-    id: string,
-    readonly reportCategoryService: IReportCategoryService
-  ) {
+  constructor(id: string, readonly authorityService: IAuthorityService) {
     super();
     makeObservable(this, {
       data: observable,
@@ -21,9 +18,7 @@ export class ReportCategoryViewViewModel extends BaseViewModel {
 
   async fetch() {
     this.isLoading = true;
-    const data = await (
-      await this.reportCategoryService.getReportCategory(this.id)
-    ).data;
+    const data = await (await this.authorityService.getAuthority(this.id)).data;
     if (data) {
       this.data = data;
     }

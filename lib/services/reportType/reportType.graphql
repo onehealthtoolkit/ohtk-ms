@@ -1,8 +1,14 @@
-query ReportTypes($limit: Int!, $offset: Int!, $nameStartWith: String) {
+query ReportTypes(
+  $limit: Int!
+  $offset: Int!
+  $nameStartWith: String
+  $ordering: String
+) {
   adminReportTypeQuery(
     limit: $limit
     offset: $offset
     name_Istartswith: $nameStartWith
+    ordering: $ordering
   ) {
     totalCount
     results {

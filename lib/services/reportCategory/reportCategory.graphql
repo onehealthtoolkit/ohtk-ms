@@ -1,8 +1,14 @@
-query ReportCategories($limit: Int!, $offset: Int!, $nameStartWith: String) {
+query ReportCategories(
+  $limit: Int!
+  $offset: Int!
+  $nameStartWith: String
+  $ordering: String
+) {
   adminCategoryQuery(
     limit: $limit
     offset: $offset
     name_Istartswith: $nameStartWith
+    ordering: $ordering
   ) {
     totalCount
     results {

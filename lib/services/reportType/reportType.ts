@@ -3,5 +3,6 @@ export type ReportType = {
   name: string;
   definition: string;
   categoryId: number;
+  categoryName: string;
   ordering: number;
 };

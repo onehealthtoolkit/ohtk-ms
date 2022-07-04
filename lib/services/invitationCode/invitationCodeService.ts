@@ -42,6 +42,7 @@ export class InvitationCodeService implements IInvitationCodeService {
     limit: 20,
     offset: 0,
     codeStartWith: "",
+    ordering: "code,asc",
   };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {

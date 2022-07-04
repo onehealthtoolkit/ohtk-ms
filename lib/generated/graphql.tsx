@@ -975,6 +975,7 @@ export type AuthoritiesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
   nameStartWith?: InputMaybe<Scalars["String"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type AuthoritiesQuery = {
@@ -995,6 +996,7 @@ export type AuthorityQueryQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
   nameStartWith?: InputMaybe<Scalars["String"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type AuthorityQueryQuery = {
@@ -1123,6 +1125,7 @@ export type InvitationCodesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
   codeStartWith?: InputMaybe<Scalars["String"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type InvitationCodesQuery = {
@@ -1299,6 +1302,7 @@ export type ReportCategoriesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
   nameStartWith?: InputMaybe<Scalars["String"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type ReportCategoriesQuery = {
@@ -1396,6 +1400,7 @@ export type ReportTypesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
   nameStartWith?: InputMaybe<Scalars["String"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type ReportTypesQuery = {
@@ -1509,6 +1514,7 @@ export type UsersQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
   nameStartWith?: InputMaybe<Scalars["String"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type UsersQuery = {
@@ -1799,6 +1805,14 @@ export const AuthoritiesDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -1829,6 +1843,14 @@ export const AuthoritiesDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "nameStartWith" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
                 },
               },
             ],
@@ -1894,6 +1916,14 @@ export const AuthorityQueryDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -1924,6 +1954,14 @@ export const AuthorityQueryDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "nameStartWith" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
                 },
               },
             ],
@@ -2508,6 +2546,14 @@ export const InvitationCodesDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -2538,6 +2584,14 @@ export const InvitationCodesDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "codeStartWith" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
                 },
               },
             ],
@@ -3298,6 +3352,14 @@ export const ReportCategoriesDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -3328,6 +3390,14 @@ export const ReportCategoriesDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "nameStartWith" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
                 },
               },
             ],
@@ -3808,6 +3878,14 @@ export const ReportTypesDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -3838,6 +3916,14 @@ export const ReportTypesDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "nameStartWith" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
                 },
               },
             ],
@@ -4400,6 +4486,14 @@ export const UsersDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -4430,6 +4524,14 @@ export const UsersDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "nameStartWith" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
                 },
               },
             ],

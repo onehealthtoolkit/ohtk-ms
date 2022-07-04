@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import ReportCategoryView from "components/admin/authority/view";
+import ReportCategoryView from "components/admin/reportCategory/view";
 import Layout from "components/layout";
 import Protect from "components/auth/protect";
 import Breadcrumb from "components/layout/breadcrumb";

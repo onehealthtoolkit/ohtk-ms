@@ -35,18 +35,6 @@ const UserCreate = () => {
     >
       <FieldGroup>
         <Field $size="half">
-          <Label htmlFor="authorityId">Authority</Label>
-          <TextInput
-            id="authorityId"
-            type="number"
-            placeholder="Authority"
-            onChange={evt => (viewModel.authorityId = +evt.target.value)}
-            disabled={isSubmitting}
-            value={viewModel.authorityId}
-          />
-          <ErrorText>{errors.authorityId}</ErrorText>
-        </Field>
-        <Field $size="half">
           <Label htmlFor="userName">User Name</Label>
           <TextInput
             id="userName"

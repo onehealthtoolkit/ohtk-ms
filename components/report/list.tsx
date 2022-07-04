@@ -13,6 +13,7 @@ import {
 } from "components/hooks/searchParam";
 import Paginate from "components/widgets/table/paginate";
 import { formatThDate, formatThDateTime } from "lib/datetime";
+import ReportFilter from "./filter";
 
 const ReportList = () => {
   const router = useRouter();
@@ -35,37 +36,40 @@ const ReportList = () => {
     return <Spinner />;
   }
   return (
-    <div>
-      <Table
-        columns={[
-          {
-            label: "Created At",
-            get: record => formatThDateTime(record.createdAt),
-          },
-          {
-            label: "Incident Date",
-            get: record => formatThDate(record.incidentDate),
-          },
-          {
-            label: "Report Type",
-            get: record => record.reportTypeName,
-          },
-          {
-            label: "Data",
-            get: record => record.rendererData,
-          },
-        ]}
-        data={viewModel.data || []}
-        onView={record => router.push(`/reports/${record.id}`)}
-      />
-      <ErrorDisplay message={viewModel.errorMessage} />
+    <div className="flex flex-wrap">
+      <ReportFilter viewModel={viewModel} />
+      <div>
+        <Table
+          columns={[
+            {
+              label: "Created At",
+              get: record => formatThDateTime(record.createdAt),
+            },
+            {
+              label: "Incident Date",
+              get: record => formatThDate(record.incidentDate),
+            },
+            {
+              label: "Report Type",
+              get: record => record.reportTypeName,
+            },
+            {
+              label: "Data",
+              get: record => record.rendererData,
+            },
+          ]}
+          data={viewModel.data || []}
+          onView={record => router.push(`/reports/${record.id}`)}
+        />
+        <ErrorDisplay message={viewModel.errorMessage} />
 
-      <Paginate
-        offset={viewModel.offset}
-        limit={viewModel.limit}
-        totalCount={viewModel.totalCount}
-        onChange={value => onSearchChange("offset", value)}
-      />
+        <Paginate
+          offset={viewModel.offset}
+          limit={viewModel.limit}
+          totalCount={viewModel.totalCount}
+          onChange={value => onSearchChange("offset", value)}
+        />
+      </div>
     </div>
   );
 };

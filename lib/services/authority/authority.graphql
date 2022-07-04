@@ -1,8 +1,14 @@
-query Authorities($limit: Int!, $offset: Int!, $nameStartWith: String) {
+query Authorities(
+  $limit: Int!
+  $offset: Int!
+  $nameStartWith: String
+  $ordering: String
+) {
   authorities(
     limit: $limit
     offset: $offset
     name_Istartswith: $nameStartWith
+    ordering: $ordering
   ) {
     totalCount
     results {
@@ -13,11 +19,17 @@ query Authorities($limit: Int!, $offset: Int!, $nameStartWith: String) {
   }
 }
 
-query AuthorityQuery($limit: Int!, $offset: Int!, $nameStartWith: String) {
+query AuthorityQuery(
+  $limit: Int!
+  $offset: Int!
+  $nameStartWith: String
+  $ordering: String
+) {
   adminAuthorityQuery(
     limit: $limit
     offset: $offset
     name_Istartswith: $nameStartWith
+    ordering: $ordering
   ) {
     totalCount
     results {

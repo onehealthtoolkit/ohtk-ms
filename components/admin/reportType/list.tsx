@@ -69,6 +69,14 @@ const ReportTypeList = () => {
             label: "Name",
             get: record => record.name,
           },
+          {
+            label: "Category",
+            get: record => record.categoryName,
+          },
+          {
+            label: "Ordering",
+            get: record => record.ordering.toString(),
+          },
         ]}
         data={viewModel?.data || []}
         onEdit={record =>

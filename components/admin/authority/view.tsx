@@ -3,15 +3,15 @@ import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
-import { ReportCategoryViewViewModel } from "./viewViewModel";
+import { AuthorityViewViewModel } from "./viewViewModel";
 
-const ReportCategoryView = () => {
+const AuthorityView = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new ReportCategoryViewViewModel(
+    new AuthorityViewViewModel(
       router.query.id as string,
-      services.reportCategoryService
+      services.authorityService
     )
   );
 
@@ -26,9 +26,18 @@ const ReportCategoryView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
+                  Id
+                </th>
+                <td className="px-6 py-4">{viewModel.data.id}</td>
+              </tr>
+              <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                <th
+                  scope="row"
+                  className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                >
                   Code
                 </th>
-                <td className="px-6 py-4">{viewModel.data.name}</td>
+                <td className="px-6 py-4">{viewModel.data.code}</td>
               </tr>
               <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                 <th
@@ -37,7 +46,7 @@ const ReportCategoryView = () => {
                 >
                   Name
                 </th>
-                <td className="px-6 py-4">{viewModel.data.ordering}</td>
+                <td className="px-6 py-4">{viewModel.data.name}</td>
               </tr>
             </tbody>
           </table>
@@ -47,4 +56,4 @@ const ReportCategoryView = () => {
   );
 };
 
-export default observer(ReportCategoryView);
+export default observer(AuthorityView);

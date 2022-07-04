@@ -64,6 +64,7 @@ const ReportCategoryCreate = () => {
           <TextInput
             id="icon"
             type="file"
+            accept="image/*"
             placeholder="Icon"
             onChange={evt => {
               if (evt.target.files?.length)

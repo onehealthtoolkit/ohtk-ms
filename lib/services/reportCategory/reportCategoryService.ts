@@ -42,6 +42,7 @@ export class ReportCategoryService implements IReportCategoryService {
     limit: 20,
     offset: 0,
     nameStartWith: "",
+    ordering: "ordering,asc",
   };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
