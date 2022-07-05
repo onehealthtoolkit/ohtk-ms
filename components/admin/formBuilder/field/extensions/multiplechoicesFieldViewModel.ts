@@ -1,13 +1,15 @@
 import {
+  AbstractDefinitionViewModel,
   ChoiceViewModel,
   Definition,
 } from "components/admin/formBuilder/shared";
 import { action, makeObservable, observable } from "mobx";
 
-export class MultiplechoicesFieldViewModel {
+export class MultiplechoicesFieldViewModel extends AbstractDefinitionViewModel {
   choices = Array<ChoiceViewModel>();
 
   constructor() {
+    super();
     makeObservable(this, {
       choices: observable,
       addChoice: action,
@@ -17,7 +19,7 @@ export class MultiplechoicesFieldViewModel {
 
   addChoice() {
     const id = crypto.randomUUID();
-    this.choices.push(new ChoiceViewModel(id, "choice..."));
+    this.choices.push(new ChoiceViewModel(id, "Choice"));
   }
 
   deleteChoice(id: string) {
@@ -33,11 +35,31 @@ export class MultiplechoicesFieldViewModel {
 
       definition.options.forEach(choiceDefinition => {
         const id = crypto.randomUUID();
-        const choiceViewModel = new ChoiceViewModel(id, "choice...");
+        const choiceViewModel = new ChoiceViewModel(id, "Choice");
         choiceViewModel.parse(choiceDefinition);
         choices.push(choiceViewModel);
       });
       this.choices.splice(0, this.choices.length, ...choices);
+    } else {
+      this.choices.splice(0, this.choices.length);
     }
+  }
+
+  toJson() {
+    const json: Definition = {};
+    const choices = Array<Definition>();
+    this.choices.forEach(choice => {
+      const item = {
+        label: choice.label,
+        value: choice.value,
+      } as { label: string; value: string; textInput?: boolean };
+
+      if (choice.hasTextInput) {
+        item.textInput = choice.hasTextInput;
+      }
+      choices.push(item);
+    });
+    json.options = choices;
+    return json;
   }
 }

@@ -7,3 +7,4 @@ export * from "./dialog/dialogViewModel";
 export * from "./dialog/baseDialog";
 export * from "./dialog/confirmDialog";
 export * from "./parseException";
+export * from "./definitionViewModel";

@@ -3,6 +3,7 @@ import { ReportType, IReportTypeService } from "lib/services/reportType";
 import { SaveResult } from "lib/services/interface";
 import { action, computed, makeObservable, observable } from "mobx";
 import { FormViewModel } from "components/admin/formBuilder";
+import { ParseError } from "components/admin/formBuilder/shared";
 
 export abstract class ReportTypeViewModel extends BaseFormViewModel {
   reportTypeService: IReportTypeService;
@@ -31,6 +32,7 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
       _isFormBuilderMode: observable,
       isFormBuilderMode: computed,
       formViewModel: observable,
+      parseDefinition: action,
     });
     this.reportTypeService = reportTypeService;
   }
@@ -65,6 +67,21 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
     delete this.fieldErrors["definition"];
     if (this.submitError.length > 0) {
       this.submitError = "";
+    }
+  }
+
+  public parseDefinition(value: string): boolean {
+    try {
+      this.formViewModel.parse(JSON.parse(value));
+      this.definition = this.formViewModel.jsonString;
+      return true;
+    } catch (e) {
+      if (e instanceof ParseError) {
+        this.fieldErrors["definition"] = e.message;
+      } else {
+        this.fieldErrors["definition"] = "Error! Bad definition format";
+      }
+      return false;
     }
   }
 
@@ -109,7 +126,9 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
       isValid = false;
       this.fieldErrors["name"] = "this field is required";
     }
-
+    isValid = this.parseDefinition(
+      this.isFormBuilderMode ? this.formViewModel.jsonString : this.definition
+    );
     return isValid;
   }
 

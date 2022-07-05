@@ -1,4 +1,5 @@
-import { FormBuilderDialogViewModel } from "components/admin/formBuilder/shared";
+import { AbstractDefinitionViewModel } from "components/admin/formBuilder/shared/definitionViewModel";
+import { FormBuilderDialogViewModel } from "components/admin/formBuilder/shared/dialog/dialogViewModel";
 import {
   action,
   computed,
@@ -9,10 +10,10 @@ import {
 
 type DialogMap = ObservableMap<string, FormBuilderDialogViewModel>;
 
-export class BaseViewModel {
+export abstract class BaseViewModel extends AbstractDefinitionViewModel {
   id = "";
   label = "";
-  description = "description...";
+  description = "";
   isLabelEditing = false;
   isDescriptionEditing = false;
   _isHovered = false;
@@ -20,6 +21,7 @@ export class BaseViewModel {
   dialogs: DialogMap = observable.map({});
 
   constructor(id: string, label: string) {
+    super();
     makeObservable(this, {
       id: observable,
       label: observable,
@@ -43,7 +45,7 @@ export class BaseViewModel {
 
   setIsLabelEditing(editing: boolean) {
     if (!editing && !this.label) {
-      this.setLabel("...");
+      this.setLabel("");
     }
     this.isLabelEditing = editing;
   }
@@ -54,7 +56,7 @@ export class BaseViewModel {
 
   setIsDescriptionEditing(editing: boolean) {
     if (!editing && !this.description) {
-      this.setDescription("...");
+      this.setDescription("");
     }
     this.isDescriptionEditing = editing;
   }

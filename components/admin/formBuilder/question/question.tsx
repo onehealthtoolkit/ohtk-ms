@@ -16,7 +16,7 @@ const Question: FC<Props> = ({ value: question, onSelect }) => {
     <div className="pt-4 pr-4 flex-grow">
       {question.isLabelEditing ? (
         <input
-          className="border-b bg-blue-200 py-2 px-4 w-full"
+          className="bg-blue-50 py-2 px-4 w-full"
           autoFocus
           value={question.label}
           onChange={e => question.setLabel(e.target.value)}
@@ -29,16 +29,18 @@ const Question: FC<Props> = ({ value: question, onSelect }) => {
           }}
         />
       ) : (
-        <button
-          className="hover:bg-blue-200 py-2 px-4 w-full text-left border-b border-gray-200"
+        <input
+          className="border-b border-gray-200 hover:border-blue-600 py-2 px-4 rounded w-full cursor-pointer"
+          type={"text"}
+          value={question.label}
+          placeholder="Question Label"
+          readOnly
           onClick={() => question.setIsLabelEditing(true)}
-        >
-          {question.label}
-        </button>
+        />
       )}
       {question.isDescriptionEditing ? (
         <input
-          className="border-b bg-blue-200 py-2 px-4 w-full text-sm"
+          className="bg-blue-50 py-2 px-4 w-full text-sm"
           autoFocus
           value={question.description}
           onChange={e => question.setDescription(e.target.value)}
@@ -51,12 +53,14 @@ const Question: FC<Props> = ({ value: question, onSelect }) => {
           }}
         />
       ) : (
-        <button
-          className="hover:bg-blue-200 py-2 px-4 w-full text-left border-b border-gray-200 text-sm"
+        <input
+          className="border-b border-gray-200 hover:border-blue-600 py-2 px-4 rounded w-full text-sm cursor-pointer"
+          type={"text"}
+          value={question.description}
+          placeholder="Description"
+          readOnly
           onClick={() => question.setIsDescriptionEditing(true)}
-        >
-          {question.description}
-        </button>
+        />
       )}
       <FieldList
         values={question.fields}
@@ -69,7 +73,7 @@ const Question: FC<Props> = ({ value: question, onSelect }) => {
     </div>
   ) : (
     <div className="p-4 flex-grow" onClick={() => onSelect(question.id)}>
-      {question.label}
+      {question.label || <span className="text-gray-400">Question</span>}
     </div>
   );
 };

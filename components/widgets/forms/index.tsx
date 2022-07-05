@@ -61,6 +61,34 @@ const Input = (
 
 export const TextInput = forwardRef(Input);
 
+export const TextAreaRef = (
+  props: React.DetailedHTMLProps<
+    React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+    HTMLTextAreaElement
+  >,
+  ref: React.Ref<HTMLTextAreaElement>
+) => {
+  return (
+    <textarea
+      ref={ref}
+      {...props}
+      className="
+        shadow
+        appearance-none
+        border
+        rounded
+        w-full
+        py-2
+        px-3
+        text-grey-darker
+        text-sm
+      "
+    />
+  );
+};
+
+export const TextArea = forwardRef(TextAreaRef);
+
 const SelectInput = (
   props: React.DetailedHTMLProps<
     React.SelectHTMLAttributes<HTMLSelectElement>,

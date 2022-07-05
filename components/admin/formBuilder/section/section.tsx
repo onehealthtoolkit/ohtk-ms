@@ -17,7 +17,7 @@ const Section: FC<Props> = ({ value: section }) => {
       <div className={"flex flex-col md:min-h-[400px] "}>
         {section.isLabelEditing ? (
           <input
-            className="bg-blue-100 py-2 px-4"
+            className="bg-blue-50 py-2 px-4"
             autoFocus
             value={section.label}
             onChange={e => section.setLabel(e.target.value)}
@@ -30,12 +30,14 @@ const Section: FC<Props> = ({ value: section }) => {
             }}
           />
         ) : (
-          <button
-            className="hover:bg-blue-100 py-2 px-4 w-full text-left border-b border-gray-200"
+          <input
+            className="border-b border-gray-200 hover:border-blue-600 py-2 px-4 rounded w-full cursor-pointer"
+            type={"text"}
+            value={section.label}
+            placeholder="Section Label"
+            readOnly
             onClick={() => section.setIsLabelEditing(true)}
-          >
-            {section.label}
-          </button>
+          />
         )}
         <QuestionList
           values={section.questions}

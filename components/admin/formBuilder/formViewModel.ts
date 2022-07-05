@@ -4,7 +4,7 @@ import {
   MovableItemsViewModel,
   ParseError,
 } from "components/admin/formBuilder/shared";
-import { action, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 
 export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   sections = Array<SectionViewModel>();
@@ -17,6 +17,8 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
       currentSection: observable,
       addSection: action,
       selectSection: action,
+      parse: action,
+      jsonString: computed,
     });
   }
 
@@ -44,17 +46,21 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   }
 
   parse(definition: Definition) {
+    this.currentSection?.unsetCurrent();
+    this.currentSection = undefined;
     try {
       if (Array.isArray(definition.sections)) {
         const sections = Array<SectionViewModel>();
 
         definition.sections.forEach(sectionDefinition => {
           const id = crypto.randomUUID();
-          const sectionViewModel = new SectionViewModel(id, "Section...");
+          const sectionViewModel = new SectionViewModel(id, "Section");
           sectionViewModel.parse(sectionDefinition);
           sections.push(sectionViewModel);
         });
         this.sections.splice(0, this.sections.length, ...sections);
+      } else {
+        this.sections.splice(0, this.sections.length);
       }
     } catch (e) {
       if (e instanceof ParseError) {
@@ -65,5 +71,19 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
         );
       }
     }
+  }
+
+  toJson() {
+    const json: Definition = {};
+    const sections = Array<Definition>();
+    this.sections.forEach(section => {
+      sections.push(section.toJson());
+    });
+    json.sections = sections;
+    return json;
+  }
+
+  get jsonString(): string {
+    return JSON.stringify(this.toJson(), null, 2);
   }
 }

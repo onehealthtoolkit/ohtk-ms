@@ -16,6 +16,7 @@ import {
   Select,
   TabBar,
   TabItem,
+  TextArea,
   TextInput,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
@@ -27,10 +28,11 @@ const ReportTypeUpdateForm = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new ReportTypeUpdateViewModel(
-      router.query.id as string,
-      services.reportTypeService
-    )
+    () =>
+      new ReportTypeUpdateViewModel(
+        router.query.id as string,
+        services.reportTypeService
+      )
   );
 
   const [categories, setCategories] = useState<ReportCategory[]>();
@@ -53,7 +55,10 @@ const ReportTypeUpdateForm = () => {
         <TabItem
           id="detail"
           active={!viewModel.isFormBuilderMode}
-          onTab={() => (viewModel.isFormBuilderMode = false)}
+          onTab={() => {
+            viewModel.definition = viewModel.formViewModel.jsonString;
+            viewModel.isFormBuilderMode = false;
+          }}
         >
           {({ activeCss }) => (
             <>
@@ -72,7 +77,12 @@ const ReportTypeUpdateForm = () => {
         <TabItem
           id="formBuilder"
           active={viewModel.isFormBuilderMode}
-          onTab={() => (viewModel.isFormBuilderMode = true)}
+          onTab={() => {
+            const valid = viewModel.parseDefinition(viewModel.definition);
+            if (valid) {
+              viewModel.isFormBuilderMode = true;
+            }
+          }}
         >
           {({ activeCss }) => (
             <>
@@ -122,10 +132,10 @@ const ReportTypeUpdateForm = () => {
                 </Field>
                 <Field $size="half">
                   <Label htmlFor="name">Definition</Label>
-                  <TextInput
+                  <TextArea
                     id="definition"
-                    type="text"
                     placeholder="Definition"
+                    rows={30}
                     onChange={evt => (viewModel.definition = evt.target.value)}
                     disabled={viewModel.isSubmitting}
                     value={viewModel.definition}
