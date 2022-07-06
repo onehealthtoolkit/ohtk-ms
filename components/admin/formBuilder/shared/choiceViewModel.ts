@@ -41,10 +41,10 @@ export class ChoiceViewModel {
 
   parse(definition: Definition) {
     if (definition.label !== undefined) {
-      this.label = definition.label as string;
+      this.label = String(definition.label);
     }
     if (definition.value !== undefined) {
-      this.value = definition.value as string;
+      this.value = String(definition.value);
     }
     if (definition.textInput !== undefined) {
       this.hasTextInput = Boolean(definition.textInput);

@@ -9,6 +9,7 @@ import {
   TextFieldViewModel,
 } from "components/admin/formBuilder/field/extensions";
 import {
+  AbstractDefinitionViewModel,
   BaseViewModel,
   Definition,
   ParseError,
@@ -129,7 +130,7 @@ export class FieldViewModel extends BaseViewModel {
 
   setIsNameEditing(editing: boolean) {
     if (!editing && !this.name) {
-      this.setName("...");
+      this.setName("");
     }
     this.isNameEditing = editing;
   }
@@ -159,6 +160,8 @@ export class FieldViewModel extends BaseViewModel {
     try {
       if (definition.label !== undefined) {
         this.label = definition.label as string;
+      } else {
+        this.label = "Field";
       }
 
       if (definition.name !== undefined && definition.type !== undefined) {
@@ -167,36 +170,17 @@ export class FieldViewModel extends BaseViewModel {
 
         if (definition.required !== undefined) {
           this.isRequired = Boolean(definition.required);
+        } else {
+          this.isRequired = false;
         }
 
         const fieldType = String(definition.type);
-        switch (fieldType) {
-          case "text":
-            this.getExtension<"text">().parse(definition);
-            break;
-          case "integer":
-            this.getExtension<"integer">().parse(definition);
-            break;
-          case "decimal":
-            this.getExtension<"decimal">().parse(definition);
-            break;
-          case "date":
-            this.getExtension<"date">().parse(definition);
-            break;
-          case "images":
-            this.getExtension<"images">().parse(definition);
-            break;
-          case "location":
-            this.getExtension<"location">().parse(definition);
-            break;
-          case "singlechoices":
-            this.getExtension<"singlechoices">().parse(definition);
-            break;
-          case "multiplechoices":
-            this.getExtension<"multiplechoices">().parse(definition);
-            break;
-          default:
-            throw new ParseError("Invalid field type: " + fieldType);
+        if (FIELD_TYPES.indexOf(this.fieldType) > -1) {
+          (this.getExtension() as AbstractDefinitionViewModel).parse(
+            definition
+          );
+        } else {
+          throw new ParseError("Invalid field type: " + fieldType);
         }
       } else {
         throw new ParseError(
@@ -212,5 +196,21 @@ export class FieldViewModel extends BaseViewModel {
         );
       }
     }
+  }
+
+  toJson() {
+    const json: Definition = {
+      id: this.name,
+      label: this.label,
+      name: this.name,
+      type: this.fieldType,
+      required: this.isRequired,
+    };
+
+    let ext = {};
+    if (FIELD_TYPES.indexOf(this.fieldType) > -1) {
+      ext = (this.getExtension() as AbstractDefinitionViewModel).toJson();
+    }
+    return { ...json, ...ext };
   }
 }

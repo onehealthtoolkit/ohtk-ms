@@ -60,7 +60,7 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
 
   addField(type: TFieldValueType) {
     const id = crypto.randomUUID();
-    this.fields.push(new FieldViewModel(id, "field...", type));
+    this.fields.push(new FieldViewModel(id, "Field", type));
   }
 
   deleteField(id: string) {
@@ -74,6 +74,13 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
     try {
       if (definition.label !== undefined) {
         this.label = definition.label as string;
+      } else {
+        this.label = "Question";
+      }
+      if (definition.description !== undefined) {
+        this.description = definition.description as string;
+      } else {
+        this.description = "";
       }
 
       if (Array.isArray(definition.fields)) {
@@ -83,13 +90,15 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
           const id = crypto.randomUUID();
           const fieldViewModel = new FieldViewModel(
             id,
-            "Field...",
-            fieldDefinition.type
+            "Field",
+            fieldDefinition.type as TFieldValueType
           );
           fieldViewModel.parse(fieldDefinition);
           fields.push(fieldViewModel);
         });
         this.fields.splice(0, this.fields.length, ...fields);
+      } else {
+        this.fields.splice(0, this.fields.length);
       }
     } catch (e) {
       if (e instanceof ParseError) {
@@ -100,5 +109,18 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
         );
       }
     }
+  }
+
+  toJson() {
+    const json: Definition = {
+      label: this.label,
+      description: this.description,
+    };
+    const fields = Array<Definition>();
+    this.fields.forEach(field => {
+      fields.push(field.toJson());
+    });
+    json.fields = fields;
+    return json;
   }
 }

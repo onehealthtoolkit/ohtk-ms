@@ -1,3 +1,9 @@
 export type Definition = {
-  [key: string]: string | number | boolean | Date | Definition;
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | Date
+    | Definition
+    | Array<Definition>;
 };

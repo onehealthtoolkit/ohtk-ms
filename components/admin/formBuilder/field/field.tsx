@@ -59,156 +59,140 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
     switch (type) {
       case "text":
         return (
-          <>
-            <label className="p-2">{field.label}</label>
-            <input
-              type="text"
-              className="mt-2 border border-gray-200 py-2 px-4 w-full rounded-sm bg-gray-50"
-              placeholder="Text answer"
-              readOnly
-            />
-          </>
+          <input
+            type="text"
+            className="mt-2 border border-gray-200 py-2 px-4 w-full rounded-sm bg-gray-50"
+            placeholder="Text answer"
+            value=""
+            readOnly
+          />
         );
       case "integer":
         return (
-          <>
-            <label className="p-2">{field.label}</label>
-            <input
-              type="number"
-              className="mt-2 border border-gray-200 py-2 px-4 w-full rounded-sm bg-gray-50"
-              placeholder="Integer answer"
-              readOnly
-            />
-          </>
+          <input
+            type="number"
+            className="mt-2 border border-gray-200 py-2 px-4 w-full rounded-sm bg-gray-50"
+            placeholder="Integer answer"
+            value=""
+            readOnly
+          />
         );
       case "decimal":
         return (
-          <>
-            <label className="p-2">{field.label}</label>
-            <input
-              type="number"
-              className="mt-2 border border-gray-200 py-2 px-4 w-full rounded-sm bg-gray-50"
-              placeholder="Decimal answer"
-              readOnly
-            />
-          </>
+          <input
+            type="number"
+            className="mt-2 border border-gray-200 py-2 px-4 w-full rounded-sm bg-gray-50"
+            placeholder="Decimal answer"
+            value=""
+            readOnly
+          />
         );
       case "date":
         return (
-          <>
-            <label className="p-2">{field.label}</label>
-            <div className="flex mt-2 ">
-              <input
-                type="number"
-                className="border border-gray-200 py-2 px-4 w-1/3 mr-2 rounded-sm bg-gray-50"
-                placeholder="Day"
-                readOnly
-              />
-              <input
-                type="number"
-                className="border border-gray-200 py-2 px-4 w-1/3 mr-2 rounded-sm bg-gray-50"
-                placeholder="Month"
-                readOnly
-              />
-              <input
-                type="number"
-                className="border border-gray-200 py-2 px-4 w-1/3 rounded-sm bg-gray-50"
-                placeholder="Year"
-                readOnly
-              />
-            </div>
-          </>
+          <div className="flex mt-2 ">
+            <input
+              type="number"
+              className="border border-gray-200 py-2 px-4 w-1/3 mr-2 rounded-sm bg-gray-50"
+              placeholder="Day"
+              value=""
+              readOnly
+            />
+            <input
+              type="number"
+              className="border border-gray-200 py-2 px-4 w-1/3 mr-2 rounded-sm bg-gray-50"
+              placeholder="Month"
+              value=""
+              readOnly
+            />
+            <input
+              type="number"
+              className="border border-gray-200 py-2 px-4 w-1/3 rounded-sm bg-gray-50"
+              placeholder="Year"
+              value=""
+              readOnly
+            />
+          </div>
         );
       case "images":
         return (
-          <>
-            <label className="p-2">{field.label}</label>
-            <div className="flex flex-wrap mt-2">
-              <div className="w-20 h-20 border rounded-sm border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
-                <PhotographIcon className="w-8 h-8 text-gray-300" />
-              </div>
-              <div className="w-20 h-20 border rounded-sm border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
-                <PhotographIcon className="w-8 h-8 text-gray-300" />
-              </div>
-              <div className="w-20 h-20 border rounded-sm border-gray-200 bg-gray-50 flex items-center justify-center">
-                <PlusIcon className="w-8 h-8 text-gray-300" />
-              </div>
+          <div className="flex flex-wrap mt-2">
+            <div className="w-20 h-20 border rounded-sm border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
+              <PhotographIcon className="w-8 h-8 text-gray-300" />
             </div>
-          </>
+            <div className="w-20 h-20 border rounded-sm border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
+              <PhotographIcon className="w-8 h-8 text-gray-300" />
+            </div>
+            <div className="w-20 h-20 border rounded-sm border-gray-200 bg-gray-50 flex items-center justify-center">
+              <PlusIcon className="w-8 h-8 text-gray-300" />
+            </div>
+          </div>
         );
       case "location":
         return (
-          <>
-            <label className="p-2">{field.label}</label>
-            <div className="flex flex-col items-stretch w-1/2 mt-2">
-              <Image
-                src="/gmap.jpeg"
-                alt="gmap"
-                width="100%"
-                height="100"
-                className="grayscale"
-              />
-            </div>
-          </>
+          <div className="flex flex-col items-stretch w-1/2 mt-2">
+            <Image
+              src="/gmap.jpeg"
+              alt="gmap"
+              width="100%"
+              height="100"
+              className="grayscale"
+            />
+          </div>
         );
       case "singlechoices": {
         const fieldExtension = field.getExtension<"singlechoices">();
         return (
-          <>
-            <label className="p-2">{field.label}</label>
-            <ul>
-              {fieldExtension.choices.length > 0 ? (
-                fieldExtension.choices.map(choice => {
-                  return (
-                    <li
-                      key={choice.id}
-                      className="flex text-sm items-center mt-2 ml-2 relative"
-                    >
-                      <div className="rounded-full w-5 h-5 border border-gray-400 bg-white"></div>
-                      <input
-                        className="block border-0 py-2 px-4 flex-grow rounded mr-2"
-                        type={"text"}
-                        defaultValue={choice.label}
-                        placeholder="Label"
-                      />
-                    </li>
-                  );
-                })
-              ) : (
-                <li className="text-gray-500 mt-4 ml-2">No choices</li>
-              )}
-            </ul>
-          </>
+          <ul>
+            {fieldExtension.choices.length > 0 ? (
+              fieldExtension.choices.map(choice => {
+                return (
+                  <li
+                    key={choice.id}
+                    className="flex text-sm items-center mt-2 ml-2 relative"
+                  >
+                    <div className="rounded-full w-5 h-5 border border-gray-400 bg-white"></div>
+                    <input
+                      className="block border-0 py-2 px-4 flex-grow rounded mr-2"
+                      type={"text"}
+                      value={choice.label}
+                      placeholder="Label"
+                      readOnly
+                    />
+                  </li>
+                );
+              })
+            ) : (
+              <li className="text-gray-500 mt-4 ml-2">No choices</li>
+            )}
+          </ul>
         );
       }
       case "multiplechoices": {
         const fieldExtension = field.getExtension<"multiplechoices">();
         return (
-          <>
-            <label className="p-2">{field.label}</label>
-            <ul>
-              {fieldExtension.choices.length > 0 ? (
-                fieldExtension.choices.map(choice => {
-                  return (
-                    <li
-                      key={choice.id}
-                      className="flex text-sm items-center mt-2 ml-2 relative"
-                    >
-                      <div className="rounded-sm w-5 h-5 border border-gray-400 bg-white"></div>
-                      <input
-                        className="block border-0 py-2 px-4 flex-grow rounded mr-2"
-                        type={"text"}
-                        defaultValue={choice.label}
-                        placeholder="Label"
-                      />
-                    </li>
-                  );
-                })
-              ) : (
-                <li className="text-gray-500 mt-4 ml-2">No choices</li>
-              )}
-            </ul>
-          </>
+          <ul>
+            {fieldExtension.choices.length > 0 ? (
+              fieldExtension.choices.map(choice => {
+                return (
+                  <li
+                    key={choice.id}
+                    className="flex text-sm items-center mt-2 ml-2 relative"
+                  >
+                    <div className="rounded-sm w-5 h-5 border border-gray-400 bg-white"></div>
+                    <input
+                      className="block border-0 py-2 px-4 flex-grow rounded mr-2"
+                      type={"text"}
+                      value={choice.label}
+                      placeholder="Label"
+                      readOnly
+                    />
+                  </li>
+                );
+              })
+            ) : (
+              <li className="text-gray-500 mt-4 ml-2">No choices</li>
+            )}
+          </ul>
         );
       }
       default:
@@ -222,7 +206,7 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
         <div className="flex-grow">
           {field.isLabelEditing ? (
             <input
-              className="border-b bg-blue-200 py-2 px-4 w-full"
+              className="bg-blue-50 py-2 px-4 w-full"
               autoFocus
               value={field.label}
               onChange={e => field.setLabel(e.target.value)}
@@ -235,12 +219,14 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
               }}
             />
           ) : (
-            <button
-              className="hover:bg-blue-200 py-2 px-4 w-full text-left border-b border-gray-200"
+            <input
+              className="border-b border-gray-200 hover:border-blue-600 py-2 px-4 rounded w-full cursor-pointer"
+              type={"text"}
+              value={field.label}
+              placeholder="Field Label"
+              readOnly
               onClick={() => field.setIsLabelEditing(true)}
-            >
-              {field.label}
-            </button>
+            />
           )}
         </div>
         <div className="border border-gray-200 rounded bg-white p-2 ml-4 text-blue-600 font-medium">
@@ -249,7 +235,7 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
       </div>
       {field.isNameEditing ? (
         <input
-          className="border-b bg-blue-200 py-2 px-4 w-full text-sm"
+          className="bg-blue-50 py-2 px-4 w-full text-sm"
           autoFocus
           value={field.name}
           onChange={e => field.setName(e.target.value)}
@@ -262,12 +248,14 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
           }}
         />
       ) : (
-        <button
-          className="hover:bg-blue-200 py-2 px-4 w-full text-left border-b border-gray-200 text-sm"
+        <input
+          className="border-b border-gray-200 hover:border-blue-600 py-2 px-4 rounded w-full text-sm cursor-pointer"
+          type={"text"}
+          value={field.name}
+          placeholder="Name"
+          readOnly
           onClick={() => field.setIsNameEditing(true)}
-        >
-          {field.name}
-        </button>
+        />
       )}
       {renderEditingFieldTypeComponent(field.fieldType)}
       <ConfirmDialog
@@ -281,6 +269,9 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
     </div>
   ) : (
     <div className="pt-4 pr-4 pb-4 w-full" onClick={() => onSelect(field.id)}>
+      <label className="p-2">
+        {field.label || <span className="text-gray-400">Field</span>}
+      </label>
       {renderDisplayFieldTypeComponent(field.fieldType)}
     </div>
   );

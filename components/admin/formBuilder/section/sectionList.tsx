@@ -40,7 +40,9 @@ const List: FC<Props> = ({
                 className="p-2 w-full text-left cursor-pointer"
                 onClick={() => onSelect(section.id)}
               >
-                {section.label}
+                {section.label || (
+                  <span className="text-gray-400">Section</span>
+                )}
               </span>
               <ChevronUpIcon
                 className="text-white w-5 self-stretch bg-blue-300 invisible group-hover:visible hover:bg-blue-600 cursor-pointer"
