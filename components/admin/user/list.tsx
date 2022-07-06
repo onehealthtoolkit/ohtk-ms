@@ -1,6 +1,6 @@
 import Spinner from "components/widgets/spinner";
 import Table from "components/widgets/table";
-import { observer } from "mobx-react";
+import { Observer } from "mobx-react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Filter from "./filter";
@@ -27,7 +27,7 @@ const UserList = () => {
     offset: NumberParam,
   });
 
-  const [viewModel] = useState<AdminUserListViewModel>(
+  const [viewModel] = useState<AdminUserListViewModel>(() =>
     new AdminUserListViewModel(
       userService,
       searchValue.q as string,
@@ -46,64 +46,68 @@ const UserList = () => {
     return <Spinner />;
   }
   return (
-    <div>
-      <div className="flex items-center flex-wrap mb-4">
-        <Filter
-          nameSearch={viewModel.nameSearch}
-          onChange={value => onSearchChange("q", value)}
-        />
-        <div className="flex-grow"></div>
-        <Link href={"/admin/users/create"} passHref>
-          <AddButton />
-        </Link>
-      </div>
+    <Observer>
+      {() => (
+        <div>
+          <div className="flex items-center flex-wrap mb-4">
+            <Filter
+              nameSearch={viewModel.nameSearch}
+              onChange={value => onSearchChange("q", value)}
+            />
+            <div className="flex-grow"></div>
+            <Link href={"/admin/users/create"} passHref>
+              <AddButton />
+            </Link>
+          </div>
 
-      <Table
-        columns={[
-          {
-            label: "Id",
-            get: record => record.id,
-          },
-          {
-            label: "User Name",
-            get: record => record.username,
-          },
-          {
-            label: "First Name",
-            get: record => record.firstName,
-          },
-          {
-            label: "Last Name",
-            get: record => record.lastName,
-          },
-          {
-            label: "Email",
-            get: record => record.email,
-          },
-        ]}
-        data={viewModel?.data || []}
-        onEdit={record => router.push(`/admin/users/${record.id}/update`)}
-        onView={record => router.push(`/admin/users/${record.id}/view`)}
-        onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
-      />
-      <ErrorDisplay message={viewModel?.errorMessage} />
+          <Table
+            columns={[
+              {
+                label: "Id",
+                get: record => record.id,
+              },
+              {
+                label: "User Name",
+                get: record => record.username,
+              },
+              {
+                label: "First Name",
+                get: record => record.firstName,
+              },
+              {
+                label: "Last Name",
+                get: record => record.lastName,
+              },
+              {
+                label: "Email",
+                get: record => record.email,
+              },
+            ]}
+            data={viewModel?.data || []}
+            onEdit={record => router.push(`/admin/users/${record.id}/update`)}
+            onView={record => router.push(`/admin/users/${record.id}/view`)}
+            onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
+          />
+          <ErrorDisplay message={viewModel?.errorMessage} />
 
-      <Paginate
-        offset={viewModel.offset}
-        limit={viewModel.limit}
-        totalCount={viewModel.totalCount}
-        onChange={value => onSearchChange("offset", value)}
-      />
+          <Paginate
+            offset={viewModel.offset}
+            limit={viewModel.limit}
+            totalCount={viewModel.totalCount}
+            onChange={value => onSearchChange("offset", value)}
+          />
 
-      <ConfirmDialog
-        store={viewModel.dialog("confirmDelete")}
-        title="Confirm delete"
-        content="Are you sure?"
-        onYes={(record: User) => viewModel.delete(record.id)}
-        onNo={() => viewModel.dialog("confirmDelete")?.close()}
-      />
-    </div>
+          <ConfirmDialog
+            store={viewModel.dialog("confirmDelete")}
+            title="Confirm delete"
+            content="Are you sure?"
+            onYes={(record: User) => viewModel.delete(record.id)}
+            onNo={() => viewModel.dialog("confirmDelete")?.close()}
+          />
+        </div>
+      )}
+    </Observer>
   );
 };
 
-export default observer(UserList);
+export default UserList;

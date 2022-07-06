@@ -23,10 +23,11 @@ const AuthorityUpdate = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new AuthorityUpdateViewModel(
-      router.query.id as string,
-      services.authorityService
-    )
+    () =>
+      new AuthorityUpdateViewModel(
+        router.query.id as string,
+        services.authorityService
+      )
   );
 
   return (

@@ -4,7 +4,7 @@ import Layout from "components/layout";
 import Breadcrumb from "components/layout/breadcrumb";
 import { NextPage } from "next";
 
-const AdminAuthoritiesPage: NextPage = () => {
+const ReportsPage: NextPage = () => {
   return (
     <Protect>
       <Layout>
@@ -14,4 +14,4 @@ const AdminAuthoritiesPage: NextPage = () => {
     </Protect>
   );
 };
-export default AdminAuthoritiesPage;
+export default ReportsPage;

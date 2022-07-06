@@ -13,10 +13,11 @@ const ReportCategoryView = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new ReportCategoryViewViewModel(
-      router.query.id as string,
-      services.reportCategoryService
-    )
+    () =>
+      new ReportCategoryViewViewModel(
+        router.query.id as string,
+        services.reportCategoryService
+      )
   );
 
   return (
@@ -41,7 +42,7 @@ const ReportCategoryView = () => {
                 >
                   Name
                 </th>
-                <td className="px-6 py-4">{viewModel.data.ordering}</td>
+                <td className="px-6 py-4">{viewModel.data.name}</td>
               </tr>
               <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                 <th

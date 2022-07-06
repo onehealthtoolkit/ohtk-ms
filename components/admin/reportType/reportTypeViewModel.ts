@@ -90,7 +90,7 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   }
   public set ordering(value: number) {
     this._ordering = value;
-    delete this.fieldErrors["_rdering"];
+    delete this.fieldErrors["ordering"];
     if (this.submitError.length > 0) {
       this.submitError = "";
     }

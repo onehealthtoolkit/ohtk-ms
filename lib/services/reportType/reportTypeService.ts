@@ -123,11 +123,8 @@ export class ReportTypeService implements IReportTypeService {
       refetchQueries: [
         {
           query: ReportTypesDocument,
-          variables: {
-            limit: 20,
-            offset: 0,
-            nameStartWith: "",
-          },
+          variables: this.fetchReportTypesQuery,
+          fetchPolicy: "network-only",
         },
       ],
       awaitRefetchQueries: true,

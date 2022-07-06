@@ -21,7 +21,7 @@ const ReportCategoryCreate = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new ReportCategoryCreateViewModel(services.reportCategoryService)
+    () => new ReportCategoryCreateViewModel(services.reportCategoryService)
   );
 
   const isSubmitting = viewModel.isSubmitting;

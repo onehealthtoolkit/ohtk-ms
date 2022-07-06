@@ -17,6 +17,7 @@ interface ActionHandlerProps {
 
 const EditAction = (props: ActionHandlerProps) => (
   <PencilAltIcon
+    type="edit"
     className="mx-1 w-8 h-5 text-indigo-600 hover:text-indigo-900 cursor-pointer"
     {...props}
   />
@@ -49,6 +50,7 @@ interface TableProps<T> {
   onEdit?: (record: T) => void;
   onDelete?: (record: T) => void;
   onView?: (record: T) => void;
+  viewOnRowClick?: boolean;
 }
 
 const Table = <T extends ItemWithId | null>({
@@ -57,6 +59,7 @@ const Table = <T extends ItemWithId | null>({
   onEdit,
   onDelete,
   onView,
+  viewOnRowClick = true,
 }: TableProps<T>) => {
   return (
     <div className="mb-4 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
@@ -72,7 +75,14 @@ const Table = <T extends ItemWithId | null>({
           </thead>
           <tbody className="bg-white">
             {data.map(record => (
-              <tr key={record?.id}>
+              <tr
+                className="hover:bg-gray-50 dark:hover:bg-gray-600"
+                key={record?.id}
+                onClick={evt => {
+                  if ((evt.target as HTMLElement).nodeName == "TD")
+                    viewOnRowClick && onView && onView(record);
+                }}
+              >
                 {columns.map(column => (
                   <TableCell key={column.label}>{column.get(record)}</TableCell>
                 ))}
@@ -85,11 +95,13 @@ const Table = <T extends ItemWithId | null>({
                         }}
                       />
                     )}
-                    <ClickAction
-                      onClick={() => {
-                        onView && onView(record);
-                      }}
-                    />
+                    {!viewOnRowClick && (
+                      <ClickAction
+                        onClick={() => {
+                          onView && onView(record);
+                        }}
+                      />
+                    )}
                     {onEdit && (
                       <DeleteAction
                         onClick={() => {

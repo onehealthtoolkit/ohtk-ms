@@ -85,14 +85,14 @@ export function formatThDateTime(
   }
 }
 
-export function formatDate(isoDateStr?: string): string {
-  return isoDateStr ? new Date(isoDateStr).toLocaleDateString() : "";
+export function formatDate(isoDateStr?: string, locale?: string): string {
+  return isoDateStr ? new Date(isoDateStr).toLocaleDateString(locale) : "";
 }
 
-export function formatDateTime(isoDateStr?: string): string {
+export function formatDateTime(isoDateStr?: string, locale?: string): string {
   if (isoDateStr) {
     const d = new Date(isoDateStr);
-    return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
+    return `${d.toLocaleDateString(locale)} ${d.toLocaleTimeString(locale)}`;
   }
   return "";
 }

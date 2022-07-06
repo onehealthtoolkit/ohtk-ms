@@ -22,7 +22,8 @@ const UserUpdate = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new UserUpdateViewModel(router.query.id as string, services.userService)
+    () =>
+      new UserUpdateViewModel(router.query.id as string, services.userService)
   );
   const errors = viewModel.fieldErrors;
 

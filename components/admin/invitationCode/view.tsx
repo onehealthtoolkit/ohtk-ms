@@ -10,10 +10,11 @@ const InvitationCodeView = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new InvitationCodeViewViewModel(
-      router.query.id as string,
-      services.invitationCodeService
-    )
+    () =>
+      new InvitationCodeViewViewModel(
+        router.query.id as string,
+        services.invitationCodeService
+      )
   );
 
   return (
@@ -49,7 +50,7 @@ const InvitationCodeView = () => {
                   From Date
                 </th>
                 <td className="px-6 py-4">
-                  {formatDate(viewModel.data.fromDate)}
+                  {formatDate(viewModel.data.fromDate, router.locale)}
                 </td>
               </tr>
               <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
@@ -60,7 +61,7 @@ const InvitationCodeView = () => {
                   Through Date
                 </th>
                 <td className="px-6 py-4">
-                  {formatDate(viewModel.data.throughDate)}
+                  {formatDate(viewModel.data.throughDate, router.locale)}
                 </td>
               </tr>
             </tbody>

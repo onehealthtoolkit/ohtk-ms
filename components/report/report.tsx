@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import { Observer } from "mobx-react";
 import { MaskingLoader } from "components/widgets/forms";

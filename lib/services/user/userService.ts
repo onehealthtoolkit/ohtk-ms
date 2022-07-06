@@ -134,11 +134,8 @@ export class UserService implements IUserService {
       refetchQueries: [
         {
           query: UsersDocument,
-          variables: {
-            limit: 20,
-            offset: 0,
-            nameStartWith: "",
-          },
+          variables: this.fetchUsersQuery,
+          fetchPolicy: "network-only",
         },
       ],
       awaitRefetchQueries: true,

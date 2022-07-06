@@ -26,10 +26,11 @@ const ReportCategoryUpdate = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new ReportCategoryUpdateViewModel(
-      router.query.id as string,
-      services.reportCategoryService
-    )
+    () =>
+      new ReportCategoryUpdateViewModel(
+        router.query.id as string,
+        services.reportCategoryService
+      )
   );
 
   return (
@@ -63,7 +64,7 @@ const ReportCategoryUpdate = () => {
               placeholder="Ordering"
               onChange={evt => (viewModel.ordering = +evt.target.value)}
               disabled={viewModel.isSubmitting}
-              value={viewModel.ordering}
+              defaultValue={viewModel.ordering}
             />
             <ErrorText>{viewModel.fieldErrors.ordering}</ErrorText>
           </Field>

@@ -1,5 +1,17 @@
-query Reports($limit: Int!, $offset: Int!) {
-  incidentReports(limit: $limit, offset: $offset) {
+query Reports(
+  $limit: Int!
+  $offset: Int!
+  $fromDate: DateTime
+  $throughDate: DateTime
+  $authorities: [String]
+) {
+  incidentReports(
+    createdAt_Gte: $fromDate
+    createdAt_Lte: $throughDate
+    relevantAuthorities_Id_In: $authorities
+    limit: $limit
+    offset: $offset
+  ) {
     totalCount
     results {
       id

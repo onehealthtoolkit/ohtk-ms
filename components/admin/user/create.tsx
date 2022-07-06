@@ -20,7 +20,9 @@ import { UserCreateViewModel } from "./createViewModel";
 const UserCreate = () => {
   const router = useRouter();
   const services = useServices();
-  const [viewModel] = useState(new UserCreateViewModel(services.userService));
+  const [viewModel] = useState(
+    () => new UserCreateViewModel(services.userService)
+  );
   const isSubmitting = viewModel.isSubmitting;
   const errors = viewModel.fieldErrors;
 

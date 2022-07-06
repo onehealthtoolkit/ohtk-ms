@@ -4,11 +4,12 @@ import { SearchButton } from "components/widgets/filter";
 import { Field, Label } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import AsyncSelect from "react-select/async";
-import DatePicker from "react-datepicker";
+import DatePicker from "components/widgets/datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ReportListViewModel } from "./listViewModel";
-const dateClass =
-  "shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker";
+import { Authority } from "lib/services/authority";
+
+export const defaultOptions: Authority[] = [];
 
 const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
   const { authorityService } = useServices();
@@ -24,7 +25,6 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
         <Label htmlFor="fromDate">From Date</Label>
         <DatePicker
           id="fromDate"
-          className={dateClass}
           selected={viewModel.filter.fromDate}
           onChange={(date: Date) => (viewModel.filter.fromDate = date)}
         />
@@ -33,7 +33,6 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
         <Label htmlFor="throughDate">Through Date</Label>
         <DatePicker
           id="throughDate"
-          className={dateClass}
           selected={viewModel.filter.throughDate}
           onChange={(date: Date) => (viewModel.filter.throughDate = date)}
         />
@@ -42,8 +41,8 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
         <Label htmlFor="throughDate">Authority</Label>
         <AsyncSelect
           cacheOptions
+          defaultOptions={defaultOptions}
           loadOptions={loadAuthorityOptions}
-          defaultOptions
           isMulti={true}
           getOptionValue={item => item.id}
           getOptionLabel={item => item.name}

@@ -1,6 +1,6 @@
 import Spinner from "components/widgets/spinner";
 import Table from "components/widgets/table";
-import { observer } from "mobx-react";
+import { Observer } from "mobx-react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Filter from "./filter";
@@ -48,56 +48,64 @@ const AuthorityList = () => {
     return <Spinner />;
   }
   return (
-    <div>
-      <div className="flex items-center flex-wrap mb-4">
-        <Filter
-          nameSearch={viewModel.nameSearch}
-          onChange={value => onSearchChange("q", value)}
-        />
-        <div className="flex-grow"></div>
-        <Link href={"/admin/authorities/create"} passHref>
-          <AddButton />
-        </Link>
-      </div>
+    <Observer>
+      {() => (
+        <div>
+          <div className="flex items-center flex-wrap mb-4">
+            <Filter
+              nameSearch={viewModel.nameSearch}
+              onChange={value => onSearchChange("q", value)}
+            />
+            <div className="flex-grow"></div>
+            <Link href={"/admin/authorities/create"} passHref>
+              <AddButton />
+            </Link>
+          </div>
 
-      <Table
-        columns={[
-          {
-            label: "Id",
-            get: record => record.id,
-          },
-          {
-            label: "Code",
-            get: record => record.code,
-          },
-          {
-            label: "Name",
-            get: record => record.name,
-          },
-        ]}
-        data={viewModel.data || []}
-        onEdit={record => router.push(`/admin/authorities/${record.id}/update`)}
-        onView={record => router.push(`/admin/authorities/${record.id}/view`)}
-        onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
-      />
-      <ErrorDisplay message={viewModel.errorMessage} />
+          <Table
+            columns={[
+              {
+                label: "Id",
+                get: record => record.id,
+              },
+              {
+                label: "Code",
+                get: record => record.code,
+              },
+              {
+                label: "Name",
+                get: record => record.name,
+              },
+            ]}
+            data={viewModel.data || []}
+            onEdit={record =>
+              router.push(`/admin/authorities/${record.id}/update`)
+            }
+            onView={record =>
+              router.push(`/admin/authorities/${record.id}/view`)
+            }
+            onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
+          />
+          <ErrorDisplay message={viewModel.errorMessage} />
 
-      <Paginate
-        offset={viewModel.offset}
-        limit={viewModel.limit}
-        totalCount={viewModel.totalCount}
-        onChange={value => onSearchChange("offset", value)}
-      />
+          <Paginate
+            offset={viewModel.offset}
+            limit={viewModel.limit}
+            totalCount={viewModel.totalCount}
+            onChange={value => onSearchChange("offset", value)}
+          />
 
-      <ConfirmDialog
-        store={viewModel.dialog("confirmDelete")}
-        title="Confirm delete"
-        content="Are you sure?"
-        onYes={(record: Authority) => viewModel.delete(record.id)}
-        onNo={() => viewModel.dialog("confirmDelete")?.close()}
-      />
-    </div>
+          <ConfirmDialog
+            store={viewModel.dialog("confirmDelete")}
+            title="Confirm delete"
+            content="Are you sure?"
+            onYes={(record: Authority) => viewModel.delete(record.id)}
+            onNo={() => viewModel.dialog("confirmDelete")?.close()}
+          />
+        </div>
+      )}
+    </Observer>
   );
 };
 
-export default observer(AuthorityList);
+export default AuthorityList;

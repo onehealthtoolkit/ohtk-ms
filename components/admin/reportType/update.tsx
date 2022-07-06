@@ -171,7 +171,7 @@ const ReportTypeUpdateForm = () => {
                     placeholder="Ordering"
                     onChange={evt => (viewModel.ordering = +evt.target.value)}
                     disabled={viewModel.isSubmitting}
-                    value={viewModel.ordering}
+                    defaultValue={viewModel.ordering}
                   />
                   <ErrorText>{viewModel.fieldErrors.ordering}</ErrorText>
                 </Field>
