@@ -26,7 +26,7 @@ const ReportTypeCreate = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new ReportTypeCreateViewModel(services.reportTypeService)
+    () => new ReportTypeCreateViewModel(services.reportTypeService)
   );
 
   const isSubmitting = viewModel.isSubmitting;

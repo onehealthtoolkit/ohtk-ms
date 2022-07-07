@@ -6,7 +6,7 @@ import { ReportFilterData } from "lib/services/report/reportService";
 export class ReportListViewModel extends BaseViewModel {
   data: Report[] = [];
   filter: ReportFilterData = {
-    fromDate: new Date(),
+    fromDate: null,
     throughDate: new Date(),
     authorities: [],
   };

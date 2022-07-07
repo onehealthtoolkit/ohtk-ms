@@ -72,6 +72,7 @@ export type AdminAuthorityCreateResult =
 export type AdminAuthorityCreateSuccess = {
   __typename?: "AdminAuthorityCreateSuccess";
   authorityInherits: Array<AdminAuthorityCreateSuccess>;
+  cases: Array<CaseType>;
   code: Scalars["String"];
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
@@ -447,6 +448,24 @@ export type AuthorityUserType = {
   username: Scalars["String"];
 };
 
+export type CaseType = {
+  __typename?: "CaseType";
+  authorities?: Maybe<Array<Maybe<AuthorityType>>>;
+  description: Scalars["String"];
+  id: Scalars["UUID"];
+  report?: Maybe<IncidentReportType>;
+  statusTemplate?: Maybe<StatusTemplateType>;
+};
+
+export type CaseTypeNodeConnection = {
+  __typename?: "CaseTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<CaseType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
 export type CategoryType = {
   __typename?: "CategoryType";
   createdAt: Scalars["DateTime"];
@@ -497,6 +516,8 @@ export type ImageType = {
 
 export type IncidentReportType = {
   __typename?: "IncidentReportType";
+  caseId?: Maybe<Scalars["UUID"]>;
+  cases: Array<CaseType>;
   coverImage?: Maybe<ImageType>;
   createdAt: Scalars["DateTime"];
   data?: Maybe<Scalars["GenericScalar"]>;
@@ -551,6 +572,7 @@ export type Mutation = {
   authorityUserRegister?: Maybe<AuthorityUserRegisterMutation>;
   deleteRefreshTokenCookie?: Maybe<DeleteRefreshTokenCookie>;
   deleteTokenCookie?: Maybe<DeleteJsonWebTokenCookie>;
+  promoteToCase?: Maybe<PromoteToCaseMutation>;
   refreshToken?: Maybe<Refresh>;
   revokeToken?: Maybe<Revoke>;
   submitImage?: Maybe<SubmitImage>;
@@ -647,6 +669,10 @@ export type MutationAuthorityUserRegisterArgs = {
   username: Scalars["String"];
 };
 
+export type MutationPromoteToCaseArgs = {
+  reportId: Scalars["UUID"];
+};
+
 export type MutationRefreshTokenArgs = {
   refreshToken?: InputMaybe<Scalars["String"]>;
 };
@@ -697,6 +723,12 @@ export type PageInfoExtra = {
   hasPreviousPage: Scalars["Boolean"];
 };
 
+export type PromoteToCaseMutation = {
+  __typename?: "PromoteToCaseMutation";
+  case?: Maybe<CaseType>;
+  report?: Maybe<IncidentReportType>;
+};
+
 export type Query = {
   __typename?: "Query";
   adminAuthorityGet?: Maybe<AdminAuthorityQueryType>;
@@ -709,10 +741,12 @@ export type Query = {
   authorities?: Maybe<AuthorityTypeNodeConnection>;
   authority?: Maybe<AuthorityType>;
   authorityUser?: Maybe<AuthorityUserType>;
+  caseGet?: Maybe<CaseType>;
+  casesQuery?: Maybe<CaseTypeNodeConnection>;
   category?: Maybe<CategoryType>;
   checkInvitationCode?: Maybe<CheckInvitationCodeType>;
   features?: Maybe<Array<Maybe<FeatureType>>>;
-  hello?: Maybe<Scalars["String"]>;
+  healthCheck?: Maybe<Scalars["String"]>;
   incidentReport?: Maybe<IncidentReportType>;
   incidentReports?: Maybe<IncidentReportTypeNodeConnection>;
   invitationCode?: Maybe<InvitationCodeType>;
@@ -824,6 +858,20 @@ export type QueryAuthorityUserArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryCaseGetArgs = {
+  id: Scalars["UUID"];
+};
+
+export type QueryCasesQueryArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+};
+
 export type QueryCategoryArgs = {
   id: Scalars["ID"];
 };
@@ -839,11 +887,18 @@ export type QueryIncidentReportArgs = {
 export type QueryIncidentReportsArgs = {
   after?: InputMaybe<Scalars["String"]>;
   before?: InputMaybe<Scalars["String"]>;
+  createdAt_Gte?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_Lte?: InputMaybe<Scalars["DateTime"]>;
   first?: InputMaybe<Scalars["Int"]>;
+  incidentDate_Gte?: InputMaybe<Scalars["Date"]>;
+  incidentDate_Lte?: InputMaybe<Scalars["Date"]>;
   last?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
+  relevantAuthorities_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  relevantAuthorities_Name?: InputMaybe<Scalars["String"]>;
+  relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryInvitationCodeArgs = {
@@ -896,6 +951,12 @@ export type ReportTypeType = {
 export type Revoke = {
   __typename?: "Revoke";
   revoked: Scalars["Int"];
+};
+
+export type StatusTemplateType = {
+  __typename?: "StatusTemplateType";
+  id: Scalars["UUID"];
+  name: Scalars["String"];
 };
 
 export type SubmitImage = {
@@ -1251,6 +1312,11 @@ export type MeQuery = {
 export type ReportsQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
+  fromDate?: InputMaybe<Scalars["DateTime"]>;
+  throughDate?: InputMaybe<Scalars["DateTime"]>;
+  authorities?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
 }>;
 
 export type ReportsQuery = {
@@ -3166,6 +3232,42 @@ export const ReportsDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "fromDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "throughDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorities" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -3174,6 +3276,30 @@ export const ReportsDocument = {
             kind: "Field",
             name: { kind: "Name", value: "incidentReports" },
             arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "createdAt_Gte" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "fromDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "createdAt_Lte" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "throughDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "relevantAuthorities_Id_In" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorities" },
+                },
+              },
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "limit" },

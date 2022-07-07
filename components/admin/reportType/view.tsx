@@ -9,10 +9,11 @@ const ReportTypeView = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new ReportTypeViewViewModel(
-      router.query.id as string,
-      services.reportTypeService
-    )
+    () =>
+      new ReportTypeViewViewModel(
+        router.query.id as string,
+        services.reportTypeService
+      )
   );
 
   return (

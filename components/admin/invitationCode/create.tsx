@@ -21,7 +21,7 @@ const InvitationCodeCreate = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new InvitationCodeCreateViewModel(services.invitationCodeService)
+    () => new InvitationCodeCreateViewModel(services.invitationCodeService)
   );
 
   const isSubmitting = viewModel.isSubmitting;

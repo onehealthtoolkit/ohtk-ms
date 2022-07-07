@@ -22,7 +22,7 @@ const AuthorityCreate = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new AuthorityCreateViewModel(services.authorityService)
+    () => new AuthorityCreateViewModel(services.authorityService)
   );
 
   const isSubmitting = viewModel.isSubmitting;

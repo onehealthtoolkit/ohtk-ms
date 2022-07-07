@@ -12,7 +12,7 @@ import {
   useSearchParams,
 } from "components/hooks/searchParam";
 import Paginate from "components/widgets/table/paginate";
-import { formatThDate, formatThDateTime } from "lib/datetime";
+import { formatDate, formatDateTime } from "lib/datetime";
 import ReportFilter from "./filter";
 
 const ReportList = () => {
@@ -45,11 +45,12 @@ const ReportList = () => {
               columns={[
                 {
                   label: "Created At",
-                  get: record => formatThDateTime(record.createdAt),
+                  get: record =>
+                    formatDateTime(record.createdAt, router.locale),
                 },
                 {
                   label: "Incident Date",
-                  get: record => formatThDate(record.incidentDate),
+                  get: record => formatDate(record.incidentDate, router.locale),
                 },
                 {
                   label: "Report Type",

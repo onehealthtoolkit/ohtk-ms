@@ -4,10 +4,16 @@ import { Image, Report, ReportDetail } from "lib/services/report/report";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
 
 export type ReportFilterData = {
-  fromDate: Date;
-  throughDate: Date;
+  fromDate: Date | null;
+  throughDate: Date | null;
   authorities: string[];
 };
+
+export type ReportFilter = ReportFilterData & {
+  limit: number;
+  offset: number;
+};
+
 export interface IReportService extends IService {
   fetchReports(
     limit: number,
@@ -20,9 +26,12 @@ export interface IReportService extends IService {
 
 export class ReportService implements IReportService {
   client: ApolloClient<NormalizedCacheObject>;
-  fetchReportsQuery = {
+  fetchReportsQuery: ReportFilter = {
+    fromDate: null,
+    throughDate: null,
     limit: 20,
     offset: 0,
+    authorities: [],
   };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
@@ -30,13 +39,11 @@ export class ReportService implements IReportService {
   }
 
   async fetchReports(limit: number, offset: number, filter: ReportFilterData) {
-    console.log(
-      filter.fromDate.toString(),
-      filter.throughDate.toString(),
-      filter.authorities.toString()
-    );
     this.fetchReportsQuery = {
       ...this.fetchReportsQuery,
+      authorities: filter.authorities,
+      fromDate: filter.fromDate,
+      throughDate: filter.throughDate,
       limit,
       offset,
     };

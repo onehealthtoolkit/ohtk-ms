@@ -122,11 +122,8 @@ export class ReportCategoryService implements IReportCategoryService {
       refetchQueries: [
         {
           query: ReportCategoriesDocument,
-          variables: {
-            limit: 20,
-            offset: 0,
-            nameStartWith: "",
-          },
+          variables: this.fetchReportCategoriesQuery,
+          fetchPolicy: "network-only",
         },
       ],
       awaitRefetchQueries: true,

@@ -9,7 +9,7 @@ const UserView = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new UserViewViewModel(router.query.id as string, services.userService)
+    () => new UserViewViewModel(router.query.id as string, services.userService)
   );
 
   return (
