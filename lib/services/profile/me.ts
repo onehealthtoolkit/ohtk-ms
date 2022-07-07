@@ -6,3 +6,11 @@ export type Me = {
   authorityId: number;
   authorityName: string;
 };
+
+export type ProfileUpdate = {
+  id: number;
+  image: File;
+  imageUrl: string;
+  password: string;
+  confirmPassword: string;
+};

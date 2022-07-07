@@ -209,6 +209,7 @@ export const Form: FC<
 interface FieldGroupProps {
   children: ReactElement | ReactElement[];
   $size?: "full" | "half";
+  className?: string;
 }
 
 export const FieldGroup: FC<FieldGroupProps> = tw.div`
@@ -217,11 +218,12 @@ export const FieldGroup: FC<FieldGroupProps> = tw.div`
   rounded-md
   bg-gray-50
   ${(p: FieldGroupProps) => {
+    const cls = p.className || "";
     switch (p.$size) {
       case "half":
-        return "col-span-full md:col-span-1";
+        return `col-span-full md:col-span-1 ${cls}`;
       default:
-        return "col-span-full";
+        return `col-span-full ${cls}`;
     }
   }}
 `;
@@ -231,11 +233,12 @@ type FieldProps = FieldGroupProps;
 export const Field: FC<FieldProps> = tw.div`
   mb-4
   ${(p: FieldProps) => {
+    const cls = p.className || "";
     switch (p.$size) {
       case "half":
-        return "w-full md:w-1/2";
+        return `w-full md:w-1/2  ${cls}`;
       default:
-        return "w-full";
+        return `w-full  ${cls}`;
     }
   }}
 `;

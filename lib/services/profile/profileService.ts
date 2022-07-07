@@ -1,10 +1,15 @@
 import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import { MeDocument } from "lib/generated/graphql";
-import { Me } from "lib/services/profile/me";
-import { IService } from "../interface";
+import { Me, ProfileUpdate } from "lib/services/profile/me";
+import { IService, SaveResult } from "../interface";
 
 export interface IProfileService extends IService {
   fetchMe(): Promise<Me>;
+  updateProfile(
+    image: File | undefined,
+    password: string,
+    confirmPassword: string
+  ): Promise<SaveResult<ProfileUpdate>>;
 }
 
 export class ProfileService implements IProfileService {
@@ -32,5 +37,14 @@ export class ProfileService implements IProfileService {
     } else {
       throw new Error("Method not implemented.");
     }
+  }
+
+  async updateProfile(
+    image: File | undefined,
+    password: string,
+    confirmPassword: string
+  ): Promise<SaveResult<ProfileUpdate>> {
+    console.log(image, password, confirmPassword);
+    return { success: true };
   }
 }
