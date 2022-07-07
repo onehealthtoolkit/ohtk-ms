@@ -25,7 +25,7 @@ const ConfirmDialog = <D extends Object>({
         <>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-24 w-24 text-[#dc4848] mx-auto rounded-full bg-[#fbf9ea] p-4"
+            className="h-20 w-20 text-[#dc4848] mx-auto rounded-full bg-[#fbf9ea] p-4"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

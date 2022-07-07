@@ -140,6 +140,7 @@ export type AdminAuthorityUserCreateResult =
 export type AdminAuthorityUserCreateSuccess = {
   __typename?: "AdminAuthorityUserCreateSuccess";
   authority: AdminAuthorityCreateSuccess;
+  avatar?: Maybe<Scalars["String"]>;
   avatarUrl?: Maybe<Scalars["String"]>;
   dateJoined: Scalars["DateTime"];
   email: Scalars["String"];
@@ -569,6 +570,8 @@ export type Mutation = {
   adminInvitationCodeUpdate?: Maybe<AdminInvitationCodeUpdateMutation>;
   adminReportTypeCreate?: Maybe<AdminReportTypeCreateMutation>;
   adminReportTypeUpdate?: Maybe<AdminReportTypeUpdateMutation>;
+  adminUserChangePassword?: Maybe<AdminUserChangePasswordMutation>;
+  adminUserUploadAvatar?: Maybe<AdminUserUploadAvatarMutation>;
   authorityUserRegister?: Maybe<AuthorityUserRegisterMutation>;
   deleteRefreshTokenCookie?: Maybe<DeleteRefreshTokenCookie>;
   deleteTokenCookie?: Maybe<DeleteJsonWebTokenCookie>;
@@ -658,6 +661,14 @@ export type MutationAdminReportTypeUpdateArgs = {
   id: Scalars["ID"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
+};
+
+export type MutationAdminUserChangePasswordArgs = {
+  newPassword: Scalars["String"];
+};
+
+export type MutationAdminUserUploadAvatarArgs = {
+  image?: InputMaybe<Scalars["Upload"]>;
 };
 
 export type MutationAuthorityUserRegisterArgs = {
@@ -979,6 +990,7 @@ export type UserProfileType = {
   __typename?: "UserProfileType";
   authorityId?: Maybe<Scalars["Int"]>;
   authorityName?: Maybe<Scalars["String"]>;
+  avatarUrl?: Maybe<Scalars["String"]>;
   firstName: Scalars["String"];
   id: Scalars["Int"];
   lastName: Scalars["String"];
@@ -1306,6 +1318,32 @@ export type MeQuery = {
     lastName: string;
     authorityId?: number | null;
     authorityName?: string | null;
+    avatarUrl?: string | null;
+  } | null;
+};
+
+export type AdminUserChangePasswordMutationVariables = Exact<{
+  newPassword: Scalars["String"];
+}>;
+
+export type AdminUserChangePasswordMutation = {
+  __typename?: "Mutation";
+  adminUserChangePassword?: {
+    __typename?: "AdminUserChangePasswordMutation";
+    success?: boolean | null;
+  } | null;
+};
+
+export type AdminUserUploadAvatarMutationVariables = Exact<{
+  image: Scalars["Upload"];
+}>;
+
+export type AdminUserUploadAvatarMutation = {
+  __typename?: "Mutation";
+  adminUserUploadAvatar?: {
+    __typename?: "AdminUserUploadAvatarMutation";
+    success?: boolean | null;
+    avatarUrl?: string | null;
   } | null;
 };
 
@@ -3194,6 +3232,7 @@ export const MeDocument = {
                   kind: "Field",
                   name: { kind: "Name", value: "authorityName" },
                 },
+                { kind: "Field", name: { kind: "Name", value: "avatarUrl" } },
               ],
             },
           },
@@ -3202,6 +3241,115 @@ export const MeDocument = {
     },
   ],
 } as unknown as DocumentNode<MeQuery, MeQueryVariables>;
+export const AdminUserChangePasswordDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminUserChangePassword" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "newPassword" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminUserChangePassword" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "newPassword" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "newPassword" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminUserChangePasswordMutation,
+  AdminUserChangePasswordMutationVariables
+>;
+export const AdminUserUploadAvatarDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminUserUploadAvatar" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "image" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Upload" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminUserUploadAvatar" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "image" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "image" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+                { kind: "Field", name: { kind: "Name", value: "avatarUrl" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminUserUploadAvatarMutation,
+  AdminUserUploadAvatarMutationVariables
+>;
 export const ReportsDocument = {
   kind: "Document",
   definitions: [

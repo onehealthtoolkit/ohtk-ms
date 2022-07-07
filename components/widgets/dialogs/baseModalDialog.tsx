@@ -31,13 +31,13 @@ const BaseModalDialog: React.FC<Props> = ({
               onClick={() => store.close()}
             ></div>
             <div
-              className={`z-30 sm:w-[385px] sm:min-w-[40vw] min-w-[80vw] min-h-[20vh]
-                  flex flex-col items-stretch justify-items-stretch gap-2 -translate-y-1/2 p-6 bg-[#FFFFEB] 
+              className={`z-30 sm:w-[385px] sm:min-w-[30vw] min-w-[80vw] min-h-[30vh]
+                  flex flex-col items-stretch justify-items-stretch gap-2 -translate-y-1/2 p-6 bg-white 
                   rounded-md top-1/2 left-1/2 -translate-x-1/2 absolute ${hidden}
                 `}
             >
               {title && (
-                <h1 className="text-center text-2xl font-medium">{title}</h1>
+                <h1 className="text-center text-xl font-medium">{title}</h1>
               )}
               <div className="text-center">{renderContent(store.data)}</div>
               <div>{renderAction && renderAction(store, store.data)}</div>

@@ -1,6 +1,6 @@
 import { BaseFormViewModel } from "lib/baseFormViewModel";
 import { IProfileService } from "lib/services/profile";
-import { makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 
 export class ProfileUpdateViewModel extends BaseFormViewModel {
   _image?: File = undefined;
@@ -8,14 +8,21 @@ export class ProfileUpdateViewModel extends BaseFormViewModel {
   _password: string = "";
   _confirmPassword: string = "";
 
-  constructor(readonly profileService: IProfileService) {
+  constructor(imageUrl: string, readonly profileService: IProfileService) {
     super();
     makeObservable(this, {
       _image: observable,
       _imageUrl: observable,
       _password: observable,
       _confirmPassword: observable,
+      image: computed,
+      imageUrl: computed,
+      password: computed,
+      confirmPassword: computed,
+      uploadAvatar: action,
+      changePassword: action,
     });
+    this.imageUrl = imageUrl;
   }
 
   public get password(): string {
@@ -34,7 +41,7 @@ export class ProfileUpdateViewModel extends BaseFormViewModel {
   }
   public set confirmPassword(value: string) {
     this._confirmPassword = value;
-    delete this.fieldErrors["confirmPassword"];
+    delete this.fieldErrors["password"];
     if (this.submitError.length > 0) {
       this.submitError = "";
     }
@@ -62,29 +69,34 @@ export class ProfileUpdateViewModel extends BaseFormViewModel {
     }
   }
 
-  public async save(): Promise<boolean> {
+  public async uploadAvatar() {
+    if (!this.image) return;
+
     this.isSubmitting = true;
+    var result = await this.profileService.uploadAvatar(this.image);
 
-    if (this.validate()) {
-      var result = await this.profileService.updateProfile(
-        this.image,
-        this.password,
-        this.confirmPassword
-      );
-
-      this.isSubmitting = false;
-
-      if (!result.success) {
-        if (result.message) {
-          this.submitError = result.message;
-        }
-        if (result.fields) {
-          this.fieldErrors = result.fields;
-        }
-      }
-      return result.success;
+    if (result.success) {
+      this.imageUrl = result.data?.avatarUrl || "";
+    } else {
+      this.fieldErrors["image"] = "Cannot upload image";
     }
     this.isSubmitting = false;
+  }
+
+  public async changePassword(): Promise<boolean> {
+    if (this.password && this.validate()) {
+      this.isSubmitting = true;
+
+      const result = await this.profileService.changePassword(this.password);
+      if (!result.success) {
+        this.submitError = "Failed to set new password";
+      }
+      this.isSubmitting = false;
+      this.password = "";
+      this.confirmPassword = "";
+
+      return result.success;
+    }
     return false;
   }
 

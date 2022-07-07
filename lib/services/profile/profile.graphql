@@ -6,5 +6,19 @@ query me {
     lastName
     authorityId
     authorityName
+    avatarUrl
+  }
+}
+
+mutation AdminUserChangePassword($newPassword: String!) {
+  adminUserChangePassword(newPassword: $newPassword) {
+    success
+  }
+}
+
+mutation AdminUserUploadAvatar($image: Upload!) {
+  adminUserUploadAvatar(image: $image) {
+    success
+    avatarUrl
   }
 }

@@ -1,15 +1,16 @@
 import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
-import { MeDocument } from "lib/generated/graphql";
+import {
+  AdminUserChangePasswordDocument,
+  AdminUserUploadAvatarDocument,
+  MeDocument,
+} from "lib/generated/graphql";
+import { IService, SaveResult } from "lib/services/interface";
 import { Me, ProfileUpdate } from "lib/services/profile/me";
-import { IService, SaveResult } from "../interface";
 
 export interface IProfileService extends IService {
   fetchMe(): Promise<Me>;
-  updateProfile(
-    image: File | undefined,
-    password: string,
-    confirmPassword: string
-  ): Promise<SaveResult<ProfileUpdate>>;
+  uploadAvatar(image: File): Promise<SaveResult<ProfileUpdate>>;
+  changePassword(newPassword: string): Promise<SaveResult<ProfileUpdate>>;
 }
 
 export class ProfileService implements IProfileService {
@@ -33,18 +34,47 @@ export class ProfileService implements IProfileService {
         id: result.data.me!.id,
         authorityId: result.data.me!.authorityId || 0,
         authorityName: result.data.me!.authorityName || "",
+        avatarUrl: result.data.me!.avatarUrl || "",
       };
     } else {
       throw new Error("Method not implemented.");
     }
   }
 
-  async updateProfile(
-    image: File | undefined,
-    password: string,
-    confirmPassword: string
-  ): Promise<SaveResult<ProfileUpdate>> {
-    console.log(image, password, confirmPassword);
-    return { success: true };
+  async uploadAvatar(image: File): Promise<SaveResult<ProfileUpdate>> {
+    const uploadResult = await this.client.mutate({
+      mutation: AdminUserUploadAvatarDocument,
+      variables: {
+        image,
+      },
+      context: {
+        useMultipart: true,
+      },
+    });
+
+    const success = uploadResult.data?.adminUserUploadAvatar
+      ?.success as boolean;
+    return {
+      success,
+      data: {
+        avatarUrl: uploadResult.data?.adminUserUploadAvatar
+          ?.avatarUrl as string,
+      },
+    };
+  }
+
+  async changePassword(newPassword: string): Promise<SaveResult<never>> {
+    const uploadResult = await this.client.mutate({
+      mutation: AdminUserChangePasswordDocument,
+      variables: {
+        newPassword,
+      },
+    });
+
+    const success = uploadResult.data?.adminUserChangePassword
+      ?.success as boolean;
+    return {
+      success,
+    };
   }
 }
