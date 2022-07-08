@@ -16,8 +16,17 @@ export class ModalDialogViewModel {
   }
 
   open(data: any | undefined) {
-    this.isOpen = true;
-    this.data = data;
+    // When used with a form submission,
+    // dialog must be delayed after form is re-rendered
+    setTimeout(
+      (open, data) => {
+        this.isOpen = open;
+        this.data = data;
+      },
+      200,
+      true,
+      data
+    );
   }
 
   close() {

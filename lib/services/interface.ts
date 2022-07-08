@@ -14,6 +14,7 @@ export type GetResult<T> = {
 export type SaveResult<T> =
   | {
       success: true;
+      data?: { [K in keyof T]?: T[K] };
     }
   | {
       success: false;

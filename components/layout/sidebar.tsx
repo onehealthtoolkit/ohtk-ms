@@ -188,7 +188,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 icon={<BellIcon className={iconClassName} />}
               />
               <Menu
-                href="/profile/"
+                href="/admin/profile/"
                 pathname={pathname}
                 label="Profile"
                 collapsed={store.menu.collapsed}

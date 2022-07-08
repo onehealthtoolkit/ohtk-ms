@@ -1,14 +1,17 @@
-import { computed, makeObservable, observable } from "mobx";
+import { ModalDialogViewModel } from "lib/dialogViewModel";
+import { computed, makeObservable, observable, ObservableMap } from "mobx";
 
 interface FieldErrors {
   [key: string]: string;
 }
+type DialogMap = ObservableMap<string, ModalDialogViewModel>;
 
 export class BaseFormViewModel {
   _fieldErrors: FieldErrors = {};
   _submitError: string = "";
   _isSubmitting: boolean = false;
   _isLoading: boolean = false;
+  dialogs: DialogMap = observable.map({});
 
   constructor() {
     makeObservable(this, {
@@ -58,5 +61,30 @@ export class BaseFormViewModel {
 
   public get isValid(): boolean {
     return Object.keys(this.fieldErrors).length === 0;
+  }
+
+  /**
+   * Manage all modal dialogs references and handle their viewModel states.
+   * Each dialog's viewModel is referenced through key in dialog map
+   */
+
+  registerDialog(name: string): this {
+    this.dialogs.set(name, new ModalDialogViewModel());
+    return this;
+  }
+
+  unregisterDialog(name: string) {
+    this.dialogs.delete(name);
+  }
+
+  get dialog() {
+    return (name: string) => {
+      this.closeAllDialogs();
+      return this.dialogs.get(name);
+    };
+  }
+
+  closeAllDialogs() {
+    this.dialogs.forEach(store => store.close());
   }
 }

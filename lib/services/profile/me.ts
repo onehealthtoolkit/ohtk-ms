@@ -5,12 +5,9 @@ export type Me = {
   id: number;
   authorityId: number;
   authorityName: string;
+  avatarUrl: string;
 };
 
 export type ProfileUpdate = {
-  id: number;
-  image: File;
-  imageUrl: string;
-  password: string;
-  confirmPassword: string;
+  avatarUrl: string;
 };
