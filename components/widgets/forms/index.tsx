@@ -2,8 +2,14 @@ import { FC, forwardRef, ReactElement } from "react";
 import { PlusIcon } from "@heroicons/react/solid";
 import Spinner from "components/widgets/spinner";
 import tw from "tailwind-styled-components";
+import dynamic from "next/dynamic";
 
 export * from "./tabs";
+
+export const AreaFieldNoSSR = dynamic(() => import("./areaField"), {
+  loading: () => <p>A map is loading</p>,
+  ssr: false,
+});
 
 export const AddButton = forwardRef(function addButton(
   props: React.PropsWithoutRef<{}>,
