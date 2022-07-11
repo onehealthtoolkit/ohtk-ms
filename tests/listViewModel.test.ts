@@ -1,5 +1,6 @@
 import { AdminAuthorityListViewModel } from "components/admin/authority/listViewModel";
 import { Authority, IAuthorityService } from "lib/services/authority";
+import { PolygonData } from "lib/services/authority/authority";
 import {
   QueryResult,
   GetResult,
@@ -66,6 +67,17 @@ describe("Calculator", () => {
       name: string
     ): Promise<SaveResult<Authority>> {
       console.log(id, code, name);
+
+      throw new Error("Method not implemented.");
+    }
+
+    updateAuthorityArea(
+      id: string,
+      code: string,
+      name: string,
+      area: PolygonData | undefined
+    ): Promise<SaveResult<Authority>> {
+      console.log(id, code, name, area);
 
       throw new Error("Method not implemented.");
     }

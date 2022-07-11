@@ -273,7 +273,7 @@ export class AuthorityService implements IAuthorityService {
     id: string,
     code: string,
     name: string,
-    area: PolygonData
+    area: PolygonData | undefined
   ): Promise<SaveResult<Authority>> {
     const updateResult = await this.client.mutate({
       mutation: AuthorityAreaUpdateDocument,
