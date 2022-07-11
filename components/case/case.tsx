@@ -2,12 +2,10 @@ import { forwardRef, useState } from "react";
 import { Observer } from "mobx-react";
 import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
-import { ReportViewModel } from "./reportViewModel";
+import { CaseViewModel } from "./caseViewModel";
 import getConfig from "next/config";
 import Breadcrumb from "components/layout/breadcrumb";
 import tw from "tailwind-styled-components";
-import Spinner from "components/widgets/spinner";
-import { useRouter } from "next/router";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -104,16 +102,11 @@ export const PromoteToCaseButton = tw.button`
   items-center
 `;
 
-const Report = (props: { id: string }) => {
+const Case = (props: { id: string }) => {
   const { id } = props;
-  const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    new ReportViewModel(
-      id as string,
-      services.reportService,
-      services.caseService
-    )
+    new CaseViewModel(id as string, services.caseService)
   );
 
   return (
@@ -125,23 +118,10 @@ const Report = (props: { id: string }) => {
               <div className="flex items-center flex-wrap mb-4">
                 <Breadcrumb
                   crumbs={[
-                    { text: "Reports", href: "/reports" },
+                    { text: "Cases", href: "/cases" },
                     { text: viewModel.id },
                   ]}
                 />
-                <div className="flex-grow"></div>
-                <PromoteToCaseButton
-                  disabled={viewModel.isLoading}
-                  type="button"
-                  onClick={async () => {
-                    const caseId = await viewModel.promoteToCase();
-                    console.log(caseId);
-                    if (caseId) router.push(`/cases/${caseId}`);
-                  }}
-                >
-                  {viewModel.isLoading && <Spinner />}
-                  &nbsp;Promote To Case
-                </PromoteToCaseButton>
               </div>
 
               <div>
@@ -175,7 +155,7 @@ const Report = (props: { id: string }) => {
                     />
 
                     <TR
-                      label="Report type"
+                      label="Case type"
                       value={
                         viewModel.data && viewModel.data.reportTypeName
                           ? viewModel.data.reportTypeName
@@ -184,7 +164,7 @@ const Report = (props: { id: string }) => {
                     />
 
                     <TR
-                      label="Report by"
+                      label="Case by"
                       value={
                         viewModel.data && viewModel.data.reportByName
                           ? viewModel.data.reportByName
@@ -234,4 +214,4 @@ const Report = (props: { id: string }) => {
   );
 };
 
-export default Report;
+export default Case;

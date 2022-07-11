@@ -8,6 +8,9 @@ import { IUserService, UserService } from "./user";
 import { ReportCategoryService } from "./reportCategory";
 import { ReportTypeService } from "./reportType/reportTypeService";
 import { ReportService } from "./report";
+import { CaseService } from "./case";
+import { CaseDefinitionService } from "./caseDefinition";
+import { ReporterNotificationService } from "./reporterNotification";
 
 export interface IServiceProvider {
   get authService(): IAuthService;
@@ -18,6 +21,9 @@ export interface IServiceProvider {
   get reportCategoryService(): ReportCategoryService;
   get reportTypeService(): ReportTypeService;
   get reportService(): ReportService;
+  get reporterNotificationService(): ReporterNotificationService;
+  get caseService(): CaseService;
+  get caseDefinitionService(): CaseDefinitionService;
 }
 
 export class ServicesProvider implements IServiceProvider {
@@ -30,7 +36,10 @@ export class ServicesProvider implements IServiceProvider {
   invitationCodeService: InvitationCodeService;
   reportCategoryService: ReportCategoryService;
   reportTypeService: ReportTypeService;
+  reporterNotificationService: ReporterNotificationService;
   reportService: ReportService;
+  caseService: CaseService;
+  caseDefinitionService: CaseDefinitionService;
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
@@ -42,6 +51,9 @@ export class ServicesProvider implements IServiceProvider {
     this.reportCategoryService = new ReportCategoryService(client);
     this.reportTypeService = new ReportTypeService(client);
     this.reportService = new ReportService(client);
+    this.reporterNotificationService = new ReporterNotificationService(client);
+    this.caseService = new CaseService(client);
+    this.caseDefinitionService = new CaseDefinitionService(client);
   }
 }
 

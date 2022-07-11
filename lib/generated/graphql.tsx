@@ -35,6 +35,7 @@ export type Scalars = {
    * String, Boolean, Int, Float, List or Object.
    */
   GenericScalar: any;
+  GeoJSON: any;
   /**
    * Allows use of a JSON String for input / output from the GraphQL schema.
    *
@@ -71,6 +72,7 @@ export type AdminAuthorityCreateResult =
 
 export type AdminAuthorityCreateSuccess = {
   __typename?: "AdminAuthorityCreateSuccess";
+  area?: Maybe<Scalars["GeoJSON"]>;
   authorityInherits: Array<AdminAuthorityCreateSuccess>;
   cases: Array<CaseType>;
   code: Scalars["String"];
@@ -199,6 +201,70 @@ export type AdminAuthorityUserUpdateResult =
 export type AdminAuthorityUserUpdateSuccess = {
   __typename?: "AdminAuthorityUserUpdateSuccess";
   authorityUser?: Maybe<AuthorityUserType>;
+};
+
+export type AdminCaseDefinitionCreateMutation = {
+  __typename?: "AdminCaseDefinitionCreateMutation";
+  result?: Maybe<AdminCaseDefinitionCreateResult>;
+};
+
+export type AdminCaseDefinitionCreateProblem = {
+  __typename?: "AdminCaseDefinitionCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminCaseDefinitionCreateResult =
+  | AdminCaseDefinitionCreateProblem
+  | AdminCaseDefinitionCreateSuccess;
+
+export type AdminCaseDefinitionCreateSuccess = {
+  __typename?: "AdminCaseDefinitionCreateSuccess";
+  condition: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  isActive: Scalars["Boolean"];
+  reportType: AdminReportTypeCreateSuccess;
+  updatedAt: Scalars["DateTime"];
+};
+
+export type AdminCaseDefinitionQueryType = {
+  __typename?: "AdminCaseDefinitionQueryType";
+  condition: Scalars["String"];
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  reportType: AdminReportTypeCreateSuccess;
+};
+
+export type AdminCaseDefinitionQueryTypeNodeConnection = {
+  __typename?: "AdminCaseDefinitionQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminCaseDefinitionQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
+export type AdminCaseDefinitionUpdateMutation = {
+  __typename?: "AdminCaseDefinitionUpdateMutation";
+  result?: Maybe<AdminCaseDefinitionUpdateResult>;
+};
+
+export type AdminCaseDefinitionUpdateProblem = {
+  __typename?: "AdminCaseDefinitionUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminCaseDefinitionUpdateResult =
+  | AdminCaseDefinitionUpdateProblem
+  | AdminCaseDefinitionUpdateSuccess;
+
+export type AdminCaseDefinitionUpdateSuccess = {
+  __typename?: "AdminCaseDefinitionUpdateSuccess";
+  caseDefinition?: Maybe<CaseDefinitionType>;
 };
 
 export type AdminCategoryCreateMutation = {
@@ -354,6 +420,7 @@ export type AdminReportTypeCreateResult =
 export type AdminReportTypeCreateSuccess = {
   __typename?: "AdminReportTypeCreateSuccess";
   authorities: Array<AdminAuthorityCreateSuccess>;
+  casedefinitionSet: Array<AdminCaseDefinitionCreateSuccess>;
   category: AdminCategoryCreateSuccess;
   createdAt: Scalars["DateTime"];
   definition: Scalars["JSONString"];
@@ -406,6 +473,81 @@ export type AdminReportTypeUpdateSuccess = {
   reportType?: Maybe<ReportTypeType>;
 };
 
+export type AdminReporterNotificationCreateMutation = {
+  __typename?: "AdminReporterNotificationCreateMutation";
+  result?: Maybe<AdminReporterNotificationCreateResult>;
+};
+
+export type AdminReporterNotificationCreateProblem = {
+  __typename?: "AdminReporterNotificationCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminReporterNotificationCreateResult =
+  | AdminReporterNotificationCreateProblem
+  | AdminReporterNotificationCreateSuccess;
+
+export type AdminReporterNotificationCreateSuccess = {
+  __typename?: "AdminReporterNotificationCreateSuccess";
+  condition: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  isActive: Scalars["Boolean"];
+  template: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type AdminReporterNotificationQueryType = {
+  __typename?: "AdminReporterNotificationQueryType";
+  condition: Scalars["String"];
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  template: Scalars["String"];
+};
+
+export type AdminReporterNotificationQueryTypeNodeConnection = {
+  __typename?: "AdminReporterNotificationQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminReporterNotificationQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
+export type AdminReporterNotificationUpdateMutation = {
+  __typename?: "AdminReporterNotificationUpdateMutation";
+  result?: Maybe<AdminReporterNotificationUpdateResult>;
+};
+
+export type AdminReporterNotificationUpdateProblem = {
+  __typename?: "AdminReporterNotificationUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminReporterNotificationUpdateResult =
+  | AdminReporterNotificationUpdateProblem
+  | AdminReporterNotificationUpdateSuccess;
+
+export type AdminReporterNotificationUpdateSuccess = {
+  __typename?: "AdminReporterNotificationUpdateSuccess";
+  reporterNotification?: Maybe<ReporterNotificationType>;
+};
+
+export type AdminUserChangePasswordMutation = {
+  __typename?: "AdminUserChangePasswordMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type AdminUserUploadAvatarMutation = {
+  __typename?: "AdminUserUploadAvatarMutation";
+  avatarUrl?: Maybe<Scalars["String"]>;
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
 export type AuthorityInheritType = {
   __typename?: "AuthorityInheritType";
   code: Scalars["String"];
@@ -415,6 +557,7 @@ export type AuthorityInheritType = {
 
 export type AuthorityType = {
   __typename?: "AuthorityType";
+  area?: Maybe<Scalars["GeoJSON"]>;
   code: Scalars["String"];
   id: Scalars["ID"];
   inherits: Array<Maybe<AuthorityInheritType>>;
@@ -447,6 +590,14 @@ export type AuthorityUserType = {
   telephone?: Maybe<Scalars["String"]>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
   username: Scalars["String"];
+};
+
+export type CaseDefinitionType = {
+  __typename?: "CaseDefinitionType";
+  condition: Scalars["String"];
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  reportType: AdminReportTypeCreateSuccess;
 };
 
 export type CaseType = {
@@ -564,12 +715,16 @@ export type Mutation = {
   adminAuthorityUpdate?: Maybe<AdminAuthorityUpdateMutation>;
   adminAuthorityUserCreate?: Maybe<AdminAuthorityUserCreateMutation>;
   adminAuthorityUserUpdate?: Maybe<AdminAuthorityUserUpdateMutation>;
+  adminCaseDefinitionCreate?: Maybe<AdminCaseDefinitionCreateMutation>;
+  adminCaseDefinitionUpdate?: Maybe<AdminCaseDefinitionUpdateMutation>;
   adminCategoryCreate?: Maybe<AdminCategoryCreateMutation>;
   adminCategoryUpdate?: Maybe<AdminCategoryUpdateMutation>;
   adminInvitationCodeCreate?: Maybe<AdminInvitationCodeCreateMutation>;
   adminInvitationCodeUpdate?: Maybe<AdminInvitationCodeUpdateMutation>;
   adminReportTypeCreate?: Maybe<AdminReportTypeCreateMutation>;
   adminReportTypeUpdate?: Maybe<AdminReportTypeUpdateMutation>;
+  adminReporterNotificationCreate?: Maybe<AdminReporterNotificationCreateMutation>;
+  adminReporterNotificationUpdate?: Maybe<AdminReporterNotificationUpdateMutation>;
   adminUserChangePassword?: Maybe<AdminUserChangePasswordMutation>;
   adminUserUploadAvatar?: Maybe<AdminUserUploadAvatarMutation>;
   authorityUserRegister?: Maybe<AuthorityUserRegisterMutation>;
@@ -587,12 +742,14 @@ export type Mutation = {
 };
 
 export type MutationAdminAuthorityCreateArgs = {
+  area?: InputMaybe<Scalars["String"]>;
   code: Scalars["String"];
   inherits?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   name: Scalars["String"];
 };
 
 export type MutationAdminAuthorityUpdateArgs = {
+  area?: InputMaybe<Scalars["String"]>;
   code: Scalars["String"];
   id: Scalars["ID"];
   inherits?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
@@ -617,6 +774,21 @@ export type MutationAdminAuthorityUserUpdateArgs = {
   lastName: Scalars["String"];
   telephone?: InputMaybe<Scalars["String"]>;
   username: Scalars["String"];
+};
+
+export type MutationAdminCaseDefinitionCreateArgs = {
+  condition: Scalars["String"];
+  description: Scalars["String"];
+  isActive?: InputMaybe<Scalars["Boolean"]>;
+  reportTypeId: Scalars["UUID"];
+};
+
+export type MutationAdminCaseDefinitionUpdateArgs = {
+  condition: Scalars["String"];
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  isActive?: InputMaybe<Scalars["Boolean"]>;
+  reportTypeId: Scalars["UUID"];
 };
 
 export type MutationAdminCategoryCreateArgs = {
@@ -661,6 +833,21 @@ export type MutationAdminReportTypeUpdateArgs = {
   id: Scalars["ID"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
+};
+
+export type MutationAdminReporterNotificationCreateArgs = {
+  condition: Scalars["String"];
+  description: Scalars["String"];
+  isActive?: InputMaybe<Scalars["Boolean"]>;
+  template: Scalars["String"];
+};
+
+export type MutationAdminReporterNotificationUpdateArgs = {
+  condition: Scalars["String"];
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  isActive?: InputMaybe<Scalars["Boolean"]>;
+  template: Scalars["String"];
 };
 
 export type MutationAdminUserChangePasswordArgs = {
@@ -746,12 +933,15 @@ export type Query = {
   adminAuthorityInheritLookup?: Maybe<AuthorityTypeNodeConnection>;
   adminAuthorityQuery?: Maybe<AdminAuthorityQueryTypeNodeConnection>;
   adminAuthorityUserQuery?: Maybe<AdminAuthorityUserQueryTypeNodeConnection>;
+  adminCaseDefinitionQuery?: Maybe<AdminCaseDefinitionQueryTypeNodeConnection>;
   adminCategoryQuery?: Maybe<AdminCategoryQueryTypeNodeConnection>;
   adminInvitationCodeQuery?: Maybe<AdminInvitationCodeQueryTypeNodeConnection>;
   adminReportTypeQuery?: Maybe<AdminReportTypeQueryTypeNodeConnection>;
+  adminReporterNotificationQuery?: Maybe<AdminReporterNotificationQueryTypeNodeConnection>;
   authorities?: Maybe<AuthorityTypeNodeConnection>;
   authority?: Maybe<AuthorityType>;
   authorityUser?: Maybe<AuthorityUserType>;
+  caseDefinitionGet?: Maybe<CaseDefinitionType>;
   caseGet?: Maybe<CaseType>;
   casesQuery?: Maybe<CaseTypeNodeConnection>;
   category?: Maybe<CategoryType>;
@@ -764,6 +954,7 @@ export type Query = {
   me?: Maybe<UserProfileType>;
   myReportTypes?: Maybe<Array<Maybe<ReportTypeType>>>;
   reportType?: Maybe<ReportTypeType>;
+  reporterNotification?: Maybe<ReporterNotificationType>;
   syncReportTypes?: Maybe<ReportTypeSyncOutputType>;
 };
 
@@ -813,6 +1004,18 @@ export type QueryAdminAuthorityUserQueryArgs = {
   username_Istartswith?: InputMaybe<Scalars["String"]>;
 };
 
+export type QueryAdminCaseDefinitionQueryArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  description?: InputMaybe<Scalars["String"]>;
+  description_Istartswith?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+};
+
 export type QueryAdminCategoryQueryArgs = {
   after?: InputMaybe<Scalars["String"]>;
   before?: InputMaybe<Scalars["String"]>;
@@ -849,6 +1052,18 @@ export type QueryAdminReportTypeQueryArgs = {
   ordering?: InputMaybe<Scalars["String"]>;
 };
 
+export type QueryAdminReporterNotificationQueryArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  description?: InputMaybe<Scalars["String"]>;
+  description_Istartswith?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+};
+
 export type QueryAuthoritiesArgs = {
   after?: InputMaybe<Scalars["String"]>;
   before?: InputMaybe<Scalars["String"]>;
@@ -869,6 +1084,10 @@ export type QueryAuthorityUserArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryCaseDefinitionGetArgs = {
+  id: Scalars["ID"];
+};
+
 export type QueryCaseGetArgs = {
   id: Scalars["UUID"];
 };
@@ -881,6 +1100,11 @@ export type QueryCasesQueryArgs = {
   limit?: InputMaybe<Scalars["Int"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
+  report_CreatedAt_Gte?: InputMaybe<Scalars["DateTime"]>;
+  report_CreatedAt_Lte?: InputMaybe<Scalars["DateTime"]>;
+  report_RelevantAuthorities_Id_In?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>>
+  >;
 };
 
 export type QueryCategoryArgs = {
@@ -920,6 +1144,10 @@ export type QueryReportTypeArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryReporterNotificationArgs = {
+  id: Scalars["ID"];
+};
+
 export type QuerySyncReportTypesArgs = {
   data: Array<ReportTypeSyncInputType>;
 };
@@ -947,6 +1175,7 @@ export type ReportTypeSyncOutputType = {
 export type ReportTypeType = {
   __typename?: "ReportTypeType";
   authorities: Array<AdminAuthorityCreateSuccess>;
+  casedefinitionSet: Array<AdminCaseDefinitionCreateSuccess>;
   category: AdminCategoryCreateSuccess;
   createdAt: Scalars["DateTime"];
   definition?: Maybe<Scalars["GenericScalar"]>;
@@ -959,6 +1188,18 @@ export type ReportTypeType = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type ReporterNotificationType = {
+  __typename?: "ReporterNotificationType";
+  condition: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  isActive: Scalars["Boolean"];
+  template: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
 export type Revoke = {
   __typename?: "Revoke";
   revoked: Scalars["Int"];
@@ -966,7 +1207,7 @@ export type Revoke = {
 
 export type StatusTemplateType = {
   __typename?: "StatusTemplateType";
-  id: Scalars["UUID"];
+  id: Scalars["ID"];
   name: Scalars["String"];
 };
 
@@ -1199,6 +1440,199 @@ export type GetAuthorityQuery = {
   } | null;
 };
 
+export type CasesQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+  fromDate?: InputMaybe<Scalars["DateTime"]>;
+  throughDate?: InputMaybe<Scalars["DateTime"]>;
+  authorities?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
+}>;
+
+export type CasesQuery = {
+  __typename?: "Query";
+  casesQuery?: {
+    __typename?: "CaseTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "CaseType";
+      id: any;
+      report?: {
+        __typename?: "IncidentReportType";
+        createdAt: any;
+        incidentDate: any;
+        rendererData: string;
+        reportType: {
+          __typename?: "AdminReportTypeCreateSuccess";
+          id: any;
+          name: string;
+        };
+        reportedBy?: {
+          __typename?: "UserType";
+          username: string;
+          firstName: string;
+          lastName: string;
+          telephone?: string | null;
+        } | null;
+      } | null;
+    } | null>;
+  } | null;
+};
+
+export type GetCaseQueryVariables = Exact<{
+  id: Scalars["UUID"];
+}>;
+
+export type GetCaseQuery = {
+  __typename?: "Query";
+  caseGet?: {
+    __typename?: "CaseType";
+    id: any;
+    report?: {
+      __typename?: "IncidentReportType";
+      createdAt: any;
+      incidentDate: any;
+      gpsLocation?: string | null;
+      updatedAt: any;
+      rendererData: string;
+      data?: any | null;
+      platform?: string | null;
+      reportType: {
+        __typename?: "AdminReportTypeCreateSuccess";
+        id: any;
+        name: string;
+      };
+      coverImage?: { __typename?: "ImageType"; id: any; file: string } | null;
+      images?: Array<{
+        __typename?: "ImageType";
+        id: any;
+        file: string;
+      } | null> | null;
+      reportedBy?: {
+        __typename?: "UserType";
+        firstName: string;
+        lastName: string;
+        id: string;
+        telephone?: string | null;
+      } | null;
+    } | null;
+  } | null;
+};
+
+export type CaseDefinitionsQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+  descriptionStartWith?: InputMaybe<Scalars["String"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type CaseDefinitionsQuery = {
+  __typename?: "Query";
+  adminCaseDefinitionQuery?: {
+    __typename?: "AdminCaseDefinitionQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminCaseDefinitionQueryType";
+      id: string;
+      description: string;
+      condition: string;
+      reportType: {
+        __typename?: "AdminReportTypeCreateSuccess";
+        id: any;
+        name: string;
+      };
+    } | null>;
+  } | null;
+};
+
+export type CaseDefinitionCreateMutationVariables = Exact<{
+  reportTypeId: Scalars["UUID"];
+  description: Scalars["String"];
+  condition: Scalars["String"];
+}>;
+
+export type CaseDefinitionCreateMutation = {
+  __typename?: "Mutation";
+  adminCaseDefinitionCreate?: {
+    __typename?: "AdminCaseDefinitionCreateMutation";
+    result?:
+      | {
+          __typename: "AdminCaseDefinitionCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminCaseDefinitionCreateSuccess";
+          id: string;
+          description: string;
+        }
+      | null;
+  } | null;
+};
+
+export type CaseDefinitionUpdateMutationVariables = Exact<{
+  id: Scalars["ID"];
+  reportTypeId: Scalars["UUID"];
+  description: Scalars["String"];
+  condition: Scalars["String"];
+}>;
+
+export type CaseDefinitionUpdateMutation = {
+  __typename?: "Mutation";
+  adminCaseDefinitionUpdate?: {
+    __typename?: "AdminCaseDefinitionUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminCaseDefinitionUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminCaseDefinitionUpdateSuccess";
+          caseDefinition?: {
+            __typename?: "CaseDefinitionType";
+            id: string;
+            description: string;
+            condition: string;
+            reportType: {
+              __typename?: "AdminReportTypeCreateSuccess";
+              id: any;
+              name: string;
+            };
+          } | null;
+        }
+      | null;
+  } | null;
+};
+
+export type GetCaseDefinitionQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type GetCaseDefinitionQuery = {
+  __typename?: "Query";
+  caseDefinitionGet?: {
+    __typename?: "CaseDefinitionType";
+    id: string;
+    description: string;
+    condition: string;
+    reportType: {
+      __typename?: "AdminReportTypeCreateSuccess";
+      id: any;
+      name: string;
+    };
+  } | null;
+};
+
 export type InvitationCodesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
@@ -1322,11 +1756,11 @@ export type MeQuery = {
   } | null;
 };
 
-export type AdminUserChangePasswordMutationVariables = Exact<{
+export type UserChangePasswordMutationVariables = Exact<{
   newPassword: Scalars["String"];
 }>;
 
-export type AdminUserChangePasswordMutation = {
+export type UserChangePasswordMutation = {
   __typename?: "Mutation";
   adminUserChangePassword?: {
     __typename?: "AdminUserChangePasswordMutation";
@@ -1334,11 +1768,11 @@ export type AdminUserChangePasswordMutation = {
   } | null;
 };
 
-export type AdminUserUploadAvatarMutationVariables = Exact<{
+export type UserUploadAvatarMutationVariables = Exact<{
   image: Scalars["Upload"];
 }>;
 
-export type AdminUserUploadAvatarMutation = {
+export type UserUploadAvatarMutation = {
   __typename?: "Mutation";
   adminUserUploadAvatar?: {
     __typename?: "AdminUserUploadAvatarMutation";
@@ -1418,6 +1852,18 @@ export type GetReportQuery = {
       id: string;
       telephone?: string | null;
     } | null;
+  } | null;
+};
+
+export type PromoteReportToCaseMutationVariables = Exact<{
+  reportId: Scalars["UUID"];
+}>;
+
+export type PromoteReportToCaseMutation = {
+  __typename?: "Mutation";
+  promoteToCase?: {
+    __typename?: "PromoteToCaseMutation";
+    case?: { __typename?: "CaseType"; id: any } | null;
   } | null;
 };
 
@@ -1630,6 +2076,107 @@ export type GetReportTypeQuery = {
       id: string;
       name: string;
     };
+  } | null;
+};
+
+export type ReporterNotificationsQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+  descriptionStartWith?: InputMaybe<Scalars["String"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type ReporterNotificationsQuery = {
+  __typename?: "Query";
+  adminReporterNotificationQuery?: {
+    __typename?: "AdminReporterNotificationQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminReporterNotificationQueryType";
+      id: string;
+      description: string;
+      condition: string;
+      template: string;
+    } | null>;
+  } | null;
+};
+
+export type ReporterNotificationCreateMutationVariables = Exact<{
+  description: Scalars["String"];
+  condition: Scalars["String"];
+  template: Scalars["String"];
+}>;
+
+export type ReporterNotificationCreateMutation = {
+  __typename?: "Mutation";
+  adminReporterNotificationCreate?: {
+    __typename?: "AdminReporterNotificationCreateMutation";
+    result?:
+      | {
+          __typename: "AdminReporterNotificationCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminReporterNotificationCreateSuccess";
+          id: string;
+          description: string;
+        }
+      | null;
+  } | null;
+};
+
+export type ReporterNotificationUpdateMutationVariables = Exact<{
+  id: Scalars["ID"];
+  description: Scalars["String"];
+  condition: Scalars["String"];
+  template: Scalars["String"];
+}>;
+
+export type ReporterNotificationUpdateMutation = {
+  __typename?: "Mutation";
+  adminReporterNotificationUpdate?: {
+    __typename?: "AdminReporterNotificationUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminReporterNotificationUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminReporterNotificationUpdateSuccess";
+          reporterNotification?: {
+            __typename?: "ReporterNotificationType";
+            id: string;
+            description: string;
+            condition: string;
+            template: string;
+          } | null;
+        }
+      | null;
+  } | null;
+};
+
+export type GetReporterNotificationQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type GetReporterNotificationQuery = {
+  __typename?: "Query";
+  reporterNotification?: {
+    __typename?: "ReporterNotificationType";
+    id: string;
+    description: string;
+    condition: string;
+    template: string;
   } | null;
 };
 
@@ -2631,6 +3178,943 @@ export const GetAuthorityDocument = {
     },
   ],
 } as unknown as DocumentNode<GetAuthorityQuery, GetAuthorityQueryVariables>;
+export const CasesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "Cases" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "fromDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "throughDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorities" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "casesQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "report_CreatedAt_Gte" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "fromDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "report_CreatedAt_Lte" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "throughDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: {
+                  kind: "Name",
+                  value: "report_RelevantAuthorities_Id_In",
+                },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorities" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "report" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "createdAt" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "incidentDate" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "rendererData" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "reportType" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "reportedBy" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "username" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "firstName" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "lastName" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "telephone" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CasesQuery, CasesQueryVariables>;
+export const GetCaseDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetCase" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "caseGet" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "report" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "incidentDate" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "gpsLocation" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "updatedAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "rendererData" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "data" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "reportType" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "platform" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "coverImage" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "file" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "images" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "file" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "reportedBy" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "firstName" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "lastName" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "telephone" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetCaseQuery, GetCaseQueryVariables>;
+export const CaseDefinitionsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "CaseDefinitions" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "descriptionStartWith" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminCaseDefinitionQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description_Istartswith" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "descriptionStartWith" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "condition" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "reportType" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CaseDefinitionsQuery,
+  CaseDefinitionsQueryVariables
+>;
+export const CaseDefinitionCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CaseDefinitionCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "description" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "condition" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminCaseDefinitionCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "description" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "condition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "condition" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminCaseDefinitionCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "description" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminCaseDefinitionCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CaseDefinitionCreateMutation,
+  CaseDefinitionCreateMutationVariables
+>;
+export const CaseDefinitionUpdateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CaseDefinitionUpdate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "description" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "condition" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminCaseDefinitionUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "description" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "condition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "condition" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminCaseDefinitionUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "caseDefinition" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "description",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "condition" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "reportType" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminCaseDefinitionUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CaseDefinitionUpdateMutation,
+  CaseDefinitionUpdateMutationVariables
+>;
+export const GetCaseDefinitionDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetCaseDefinition" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "caseDefinitionGet" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+                { kind: "Field", name: { kind: "Name", value: "condition" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reportType" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetCaseDefinitionQuery,
+  GetCaseDefinitionQueryVariables
+>;
 export const InvitationCodesDocument = {
   kind: "Document",
   definitions: [
@@ -3241,13 +4725,13 @@ export const MeDocument = {
     },
   ],
 } as unknown as DocumentNode<MeQuery, MeQueryVariables>;
-export const AdminUserChangePasswordDocument = {
+export const UserChangePasswordDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "mutation",
-      name: { kind: "Name", value: "AdminUserChangePassword" },
+      name: { kind: "Name", value: "userChangePassword" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -3292,16 +4776,16 @@ export const AdminUserChangePasswordDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  AdminUserChangePasswordMutation,
-  AdminUserChangePasswordMutationVariables
+  UserChangePasswordMutation,
+  UserChangePasswordMutationVariables
 >;
-export const AdminUserUploadAvatarDocument = {
+export const UserUploadAvatarDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "mutation",
-      name: { kind: "Name", value: "AdminUserUploadAvatar" },
+      name: { kind: "Name", value: "userUploadAvatar" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -3347,8 +4831,8 @@ export const AdminUserUploadAvatarDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  AdminUserUploadAvatarMutation,
-  AdminUserUploadAvatarMutationVariables
+  UserUploadAvatarMutation,
+  UserUploadAvatarMutationVariables
 >;
 export const ReportsDocument = {
   kind: "Document",
@@ -3654,6 +5138,66 @@ export const GetReportDocument = {
     },
   ],
 } as unknown as DocumentNode<GetReportQuery, GetReportQueryVariables>;
+export const PromoteReportToCaseDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "PromoteReportToCase" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "promoteToCase" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "case" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  PromoteReportToCaseMutation,
+  PromoteReportToCaseMutationVariables
+>;
 export const ReportCategoriesDocument = {
   kind: "Document",
   definitions: [
@@ -4788,6 +6332,558 @@ export const GetReportTypeDocument = {
     },
   ],
 } as unknown as DocumentNode<GetReportTypeQuery, GetReportTypeQueryVariables>;
+export const ReporterNotificationsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ReporterNotifications" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "descriptionStartWith" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminReporterNotificationQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description_Istartswith" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "descriptionStartWith" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "condition" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "template" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ReporterNotificationsQuery,
+  ReporterNotificationsQueryVariables
+>;
+export const ReporterNotificationCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ReporterNotificationCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "description" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "condition" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "template" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminReporterNotificationCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "description" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "condition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "condition" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "template" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "template" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminReporterNotificationCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "description" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminReporterNotificationCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ReporterNotificationCreateMutation,
+  ReporterNotificationCreateMutationVariables
+>;
+export const ReporterNotificationUpdateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ReporterNotificationUpdate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "description" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "condition" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "template" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminReporterNotificationUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "description" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "condition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "condition" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "template" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "template" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminReporterNotificationUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "reporterNotification",
+                              },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "description",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "condition" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "template" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminReporterNotificationUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ReporterNotificationUpdateMutation,
+  ReporterNotificationUpdateMutationVariables
+>;
+export const GetReporterNotificationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetReporterNotification" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "reporterNotification" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+                { kind: "Field", name: { kind: "Name", value: "condition" } },
+                { kind: "Field", name: { kind: "Name", value: "template" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetReporterNotificationQuery,
+  GetReporterNotificationQueryVariables
+>;
 export const UsersDocument = {
   kind: "Document",
   definitions: [

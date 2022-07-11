@@ -10,13 +10,13 @@ query me {
   }
 }
 
-mutation AdminUserChangePassword($newPassword: String!) {
+mutation userChangePassword($newPassword: String!) {
   adminUserChangePassword(newPassword: $newPassword) {
     success
   }
 }
 
-mutation AdminUserUploadAvatar($image: Upload!) {
+mutation userUploadAvatar($image: Upload!) {
   adminUserUploadAvatar(image: $image) {
     success
     avatarUrl

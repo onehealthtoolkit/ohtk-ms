@@ -1,0 +1,99 @@
+query CaseDefinitions(
+  $limit: Int!
+  $offset: Int!
+  $descriptionStartWith: String
+  $ordering: String
+) {
+  adminCaseDefinitionQuery(
+    limit: $limit
+    offset: $offset
+    description_Istartswith: $descriptionStartWith
+    ordering: $ordering
+  ) {
+    totalCount
+    results {
+      id
+      description
+      condition
+      reportType {
+        id
+        name
+      }
+    }
+  }
+}
+
+mutation CaseDefinitionCreate(
+  $reportTypeId: UUID!
+  $description: String!
+  $condition: String!
+) {
+  adminCaseDefinitionCreate(
+    reportTypeId: $reportTypeId
+    description: $description
+    condition: $condition
+  ) {
+    result {
+      __typename
+      ... on AdminCaseDefinitionCreateSuccess {
+        id
+        description
+      }
+      ... on AdminCaseDefinitionCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation CaseDefinitionUpdate(
+  $id: ID!
+  $reportTypeId: UUID!
+  $description: String!
+  $condition: String!
+) {
+  adminCaseDefinitionUpdate(
+    id: $id
+    reportTypeId: $reportTypeId
+    description: $description
+    condition: $condition
+  ) {
+    result {
+      __typename
+      ... on AdminCaseDefinitionUpdateSuccess {
+        caseDefinition {
+          id
+          description
+          condition
+          reportType {
+            id
+            name
+          }
+        }
+      }
+      ... on AdminCaseDefinitionUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+query GetCaseDefinition($id: ID!) {
+  caseDefinitionGet(id: $id) {
+    id
+    description
+    condition
+    reportType {
+      id
+      name
+    }
+  }
+}

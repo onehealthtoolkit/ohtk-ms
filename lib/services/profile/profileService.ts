@@ -1,7 +1,7 @@
 import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import {
-  AdminUserChangePasswordDocument,
-  AdminUserUploadAvatarDocument,
+  UserChangePasswordDocument,
+  UserUploadAvatarDocument,
   MeDocument,
 } from "lib/generated/graphql";
 import { IService, SaveResult } from "lib/services/interface";
@@ -43,7 +43,7 @@ export class ProfileService implements IProfileService {
 
   async uploadAvatar(image: File): Promise<SaveResult<ProfileUpdate>> {
     const uploadResult = await this.client.mutate({
-      mutation: AdminUserUploadAvatarDocument,
+      mutation: UserUploadAvatarDocument,
       variables: {
         image,
       },
@@ -65,7 +65,7 @@ export class ProfileService implements IProfileService {
 
   async changePassword(newPassword: string): Promise<SaveResult<never>> {
     const uploadResult = await this.client.mutate({
-      mutation: AdminUserChangePasswordDocument,
+      mutation: UserChangePasswordDocument,
       variables: {
         newPassword,
       },
