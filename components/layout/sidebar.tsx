@@ -173,7 +173,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
               />
 
               <Menu
-                href="/settings/case_definitions"
+                href="/admin/case_definitions"
                 pathname={pathname}
                 label="Case Definition"
                 collapsed={store.menu.collapsed}
@@ -181,7 +181,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
               />
 
               <Menu
-                href="/settings/reporter_notification"
+                href="/admin/reporter_notifications"
                 pathname={pathname}
                 label="Reporter notification"
                 collapsed={store.menu.collapsed}
@@ -195,7 +195,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 icon={<CogIcon className={iconClassName} />}
               />
               <Menu
-                href="/settings/logout/"
+                href="/admin/logout/"
                 pathname={pathname}
                 label="Logout"
                 collapsed={store.menu.collapsed}

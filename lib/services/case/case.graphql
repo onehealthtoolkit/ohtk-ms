@@ -1,0 +1,68 @@
+query Cases(
+  $limit: Int!
+  $offset: Int!
+  $fromDate: DateTime
+  $throughDate: DateTime
+  $authorities: [String]
+) {
+  casesQuery(
+    report_CreatedAt_Gte: $fromDate
+    report_CreatedAt_Lte: $throughDate
+    report_RelevantAuthorities_Id_In: $authorities
+    limit: $limit
+    offset: $offset
+  ) {
+    totalCount
+    results {
+      id
+      report {
+        createdAt
+        incidentDate
+        rendererData
+        reportType {
+          id
+          name
+        }
+        reportedBy {
+          username
+          firstName
+          lastName
+          telephone
+        }
+      }
+    }
+  }
+}
+
+query GetCase($id: UUID!) {
+  caseGet(id: $id) {
+    id
+    report {
+      createdAt
+      incidentDate
+      gpsLocation
+      updatedAt
+      rendererData
+      data
+      reportType {
+        id
+        name
+      }
+      platform
+      coverImage {
+        id
+        file
+      }
+      images {
+        id
+        file
+      }
+      reportedBy {
+        firstName
+        lastName
+        id
+        telephone
+      }
+    }
+  }
+}

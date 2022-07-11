@@ -1,0 +1,90 @@
+query ReporterNotifications(
+  $limit: Int!
+  $offset: Int!
+  $descriptionStartWith: String
+  $ordering: String
+) {
+  adminReporterNotificationQuery(
+    limit: $limit
+    offset: $offset
+    description_Istartswith: $descriptionStartWith
+    ordering: $ordering
+  ) {
+    totalCount
+    results {
+      id
+      description
+      condition
+      template
+    }
+  }
+}
+
+mutation ReporterNotificationCreate(
+  $description: String!
+  $condition: String!
+  $template: String!
+) {
+  adminReporterNotificationCreate(
+    description: $description
+    condition: $condition
+    template: $template
+  ) {
+    result {
+      __typename
+      ... on AdminReporterNotificationCreateSuccess {
+        id
+        description
+      }
+      ... on AdminReporterNotificationCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation ReporterNotificationUpdate(
+  $id: ID!
+  $description: String!
+  $condition: String!
+  $template: String!
+) {
+  adminReporterNotificationUpdate(
+    id: $id
+    description: $description
+    condition: $condition
+    template: $template
+  ) {
+    result {
+      __typename
+      ... on AdminReporterNotificationUpdateSuccess {
+        reporterNotification {
+          id
+          description
+          condition
+          template
+        }
+      }
+      ... on AdminReporterNotificationUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+query GetReporterNotification($id: ID!) {
+  reporterNotification(id: $id) {
+    id
+    description
+    condition
+    template
+  }
+}

@@ -62,3 +62,11 @@ query GetReport($id: ID!) {
     }
   }
 }
+
+mutation PromoteReportToCase($reportId: UUID!) {
+  promoteToCase(reportId: $reportId) {
+    case {
+      id
+    }
+  }
+}
