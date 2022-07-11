@@ -5,8 +5,9 @@ import {
   AuthorityQueryDocument,
   GetAuthorityDocument,
   AuthorityInheritLookupDocument,
+  AuthorityAreaUpdateDocument,
 } from "lib/generated/graphql";
-import { Authority } from "lib/services/authority/authority";
+import { Authority, PolygonData } from "lib/services/authority/authority";
 import {
   DeleteResult,
   GetResult,
@@ -41,6 +42,13 @@ export interface IAuthorityService extends IService {
     code: string,
     name: string,
     inherits: string[]
+  ): Promise<SaveResult<Authority>>;
+
+  updateAuthorityArea(
+    id: string,
+    code: string,
+    name: string,
+    area: PolygonData | undefined
   ): Promise<SaveResult<Authority>>;
 
   deleteAuthority(id: string): Promise<DeleteResult>;
@@ -135,6 +143,7 @@ export class AuthorityService implements IAuthorityService {
         id: authority.id,
         code: authority.code,
         name: authority.name,
+        area: authority.area,
         inherits,
       };
     }
@@ -212,6 +221,68 @@ export class AuthorityService implements IAuthorityService {
         },
       ],
       awaitRefetchQueries: true,
+      update: (cache, result) => {
+        const cacheItem = cache.readQuery({
+          query: GetAuthorityDocument,
+          variables: { id },
+        });
+        const authoirtyCache = cacheItem?.authority;
+        if (authoirtyCache) {
+          const serverReturnValue = result.data?.adminAuthorityUpdate?.result;
+          if (serverReturnValue?.__typename === "AdminAuthorityUpdateSuccess") {
+            const newAuthorityValue = serverReturnValue.authority;
+            cache.writeQuery({
+              query: GetAuthorityDocument,
+              variables: { id },
+              data: {
+                __typename: "Query",
+                authority: newAuthorityValue,
+              },
+            });
+          }
+        }
+      },
+    });
+
+    const result = updateResult.data?.adminAuthorityUpdate?.result;
+    switch (result?.__typename) {
+      case "AdminAuthorityUpdateSuccess": {
+        console.log("success", result);
+        break;
+      }
+      case "AdminAuthorityUpdateProblem": {
+        console.log("problem", result);
+        const fields: any = {};
+        result.fields?.forEach(f => {
+          fields[f.name] = f.message;
+        });
+
+        return {
+          success: false,
+          fields,
+          message: result.message,
+        };
+      }
+    }
+    return {
+      success: true,
+    };
+  }
+
+  async updateAuthorityArea(
+    id: string,
+    code: string,
+    name: string,
+    area: PolygonData
+  ): Promise<SaveResult<Authority>> {
+    const updateResult = await this.client.mutate({
+      mutation: AuthorityAreaUpdateDocument,
+      variables: {
+        id,
+        code,
+        name,
+        area: area && JSON.stringify(area),
+      },
       update: (cache, result) => {
         const cacheItem = cache.readQuery({
           query: GetAuthorityDocument,

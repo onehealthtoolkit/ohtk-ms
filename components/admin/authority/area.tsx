@@ -3,6 +3,7 @@ import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import {
   AreaFieldNoSSR,
+  CancelButton,
   Field,
   FieldGroup,
   Form,
@@ -32,14 +33,16 @@ const AuthorityArea = () => {
       <Form
         onSubmit={async evt => {
           evt.preventDefault();
-          await viewModel.save();
+          if (await viewModel.save()) {
+            router.back();
+          }
         }}
       >
         <FieldGroup>
           <Field $size="full">
             <AreaFieldNoSSR
-              value={toJS(viewModel.data)}
-              onChange={data => (viewModel.data = data)}
+              value={toJS(viewModel.area)}
+              onChange={data => (viewModel.area = data)}
             />
           </Field>
         </FieldGroup>
@@ -50,6 +53,9 @@ const AuthorityArea = () => {
           <SaveButton type="submit" disabled={viewModel.isSubmitting}>
             {viewModel.isSubmitting ? <Spinner /> : "Save"}
           </SaveButton>
+          <CancelButton type="button" onClick={() => router.back()}>
+            Cancel
+          </CancelButton>
         </FormAction>
       </Form>
     </MaskingLoader>

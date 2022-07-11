@@ -12,11 +12,17 @@ import {
 import "leaflet-draw/dist/leaflet.draw.css";
 import "leaflet/dist/leaflet.css";
 import { useRef } from "react";
-import { FeatureGroup, GeoJSON, MapContainer, TileLayer } from "react-leaflet";
+import {
+  FeatureGroup,
+  GeoJSON,
+  MapContainer,
+  SVGOverlay,
+  TileLayer,
+} from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
 
 export type AreaFieldProps = {
-  value: geoPolygon | geoMultiPolygon;
+  value: geoPolygon | geoMultiPolygon | undefined;
   onChange?: (value: geoPolygon | geoMultiPolygon) => void;
 };
 
@@ -34,12 +40,21 @@ export default function AreaField({ value, onChange }: AreaFieldProps) {
   const editableFG = useRef<EditableFeatureGroup>({} as any);
   console.log("area", value);
 
-  const bboxArray = bbox(value);
-  // normallay coordinate in leaflet in in [lat, lng] format
-  // but goejson is in [lng, lat]
-  // that come to 2 following lines
-  const corner1 = [bboxArray[1], bboxArray[0]] as LatLngTuple;
-  const corner2 = [bboxArray[3], bboxArray[2]] as LatLngTuple;
+  // Default bounds to Chiang Mai, Thailand
+  let bounds: LatLngTuple[] = [
+    [18.781395, 98.978405],
+    [18.796143, 98.992696],
+  ];
+
+  if (value) {
+    const bboxArray = bbox(value);
+    // normallay coordinate in leaflet in in [lat, lng] format
+    // but goejson is in [lng, lat]
+    // that come to 2 following lines
+    const corner1 = [bboxArray[1], bboxArray[0]] as LatLngTuple;
+    const corner2 = [bboxArray[3], bboxArray[2]] as LatLngTuple;
+    bounds = [corner1, corner2];
+  }
 
   const onCreateArea = (e: DrawCreatedEvent) => {
     const type = e.layerType;
@@ -49,10 +64,11 @@ export default function AreaField({ value, onChange }: AreaFieldProps) {
 
     const drawnItems = editableFG.current._layers;
     console.log(drawnItems);
+    const layerKeys = Object.keys(drawnItems);
 
-    if (Object.keys(drawnItems).length > 1) {
-      Object.keys(drawnItems).forEach((layerid, index) => {
-        if (index > 0) return;
+    if (layerKeys.length > 1) {
+      layerKeys.forEach((layerid, index) => {
+        if (index === layerKeys.length - 1) return;
         const layer = drawnItems[layerid];
         editableFG.current.removeLayer(layer);
       });
@@ -68,7 +84,7 @@ export default function AreaField({ value, onChange }: AreaFieldProps) {
       zoom={5}
       scrollWheelZoom={false}
       style={{ height: 500, width: "100%" }}
-      bounds={[corner1, corner2]}
+      bounds={bounds}
     >
       <TileLayer
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -89,7 +105,16 @@ export default function AreaField({ value, onChange }: AreaFieldProps) {
             polygon: true,
           }}
         />
-        <GeoJSON data={value} />
+        {value ? (
+          <GeoJSON data={value} />
+        ) : (
+          <SVGOverlay attributes={{ stroke: "red" }} bounds={bounds}>
+            <rect x="0" y="0" width="100%" height="100%" fill="transparent" />
+            <text x="20%" y="50%" stroke="blue" fontSize={16}>
+              ยังไม่มีการระบุพื้นที่รับผิดชอบ
+            </text>
+          </SVGOverlay>
+        )}
       </FeatureGroup>
     </MapContainer>
   );

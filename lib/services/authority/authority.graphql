@@ -74,6 +74,39 @@ mutation AuthorityCreate($code: String!, $name: String!, $inherits: [String]) {
   }
 }
 
+mutation AuthorityAreaUpdate(
+  $id: ID!
+  $code: String!
+  $name: String!
+  $area: String
+) {
+  adminAuthorityUpdate(id: $id, code: $code, name: $name, area: $area) {
+    result {
+      __typename
+      ... on AdminAuthorityUpdateSuccess {
+        authority {
+          id
+          code
+          name
+          area
+          inherits {
+            id
+            code
+            name
+          }
+        }
+      }
+      ... on AdminAuthorityUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
 mutation AuthorityUpdate(
   $id: ID!
   $code: String!
@@ -111,6 +144,7 @@ query GetAuthority($id: ID!) {
     id
     code
     name
+    area
     inherits {
       id
       code
