@@ -13,6 +13,10 @@ query ReporterNotifications(
     totalCount
     results {
       id
+      reportType {
+        id
+        name
+      }
       description
       condition
       template
@@ -21,11 +25,13 @@ query ReporterNotifications(
 }
 
 mutation ReporterNotificationCreate(
+  $reportTypeId: UUID!
   $description: String!
   $condition: String!
   $template: String!
 ) {
   adminReporterNotificationCreate(
+    reportTypeId: $reportTypeId
     description: $description
     condition: $condition
     template: $template
@@ -34,7 +40,6 @@ mutation ReporterNotificationCreate(
       __typename
       ... on AdminReporterNotificationCreateSuccess {
         id
-        description
       }
       ... on AdminReporterNotificationCreateProblem {
         fields {
@@ -49,12 +54,14 @@ mutation ReporterNotificationCreate(
 
 mutation ReporterNotificationUpdate(
   $id: ID!
+  $reportTypeId: UUID!
   $description: String!
   $condition: String!
   $template: String!
 ) {
   adminReporterNotificationUpdate(
     id: $id
+    reportTypeId: $reportTypeId
     description: $description
     condition: $condition
     template: $template
@@ -64,6 +71,10 @@ mutation ReporterNotificationUpdate(
       ... on AdminReporterNotificationUpdateSuccess {
         reporterNotification {
           id
+          reportType {
+            id
+            name
+          }
           description
           condition
           template
@@ -83,6 +94,10 @@ mutation ReporterNotificationUpdate(
 query GetReporterNotification($id: ID!) {
   reporterNotification(id: $id) {
     id
+    reportType {
+      id
+      name
+    }
     description
     condition
     template

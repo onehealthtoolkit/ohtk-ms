@@ -430,6 +430,7 @@ export type AdminReportTypeCreateSuccess = {
   name: Scalars["String"];
   ordering: Scalars["Int"];
   rendererDataTemplate?: Maybe<Scalars["String"]>;
+  reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -496,6 +497,7 @@ export type AdminReporterNotificationCreateSuccess = {
   description: Scalars["String"];
   id: Scalars["ID"];
   isActive: Scalars["Boolean"];
+  reportType?: Maybe<AdminReportTypeCreateSuccess>;
   template: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
@@ -505,6 +507,7 @@ export type AdminReporterNotificationQueryType = {
   condition: Scalars["String"];
   description: Scalars["String"];
   id: Scalars["ID"];
+  reportType?: Maybe<ReportTypeType>;
   template: Scalars["String"];
 };
 
@@ -597,6 +600,7 @@ export type CaseDefinitionType = {
   condition: Scalars["String"];
   description: Scalars["String"];
   id: Scalars["ID"];
+  isActive: Scalars["Boolean"];
   reportType: AdminReportTypeCreateSuccess;
 };
 
@@ -606,7 +610,7 @@ export type CaseType = {
   description: Scalars["String"];
   id: Scalars["UUID"];
   report?: Maybe<IncidentReportType>;
-  statusTemplate?: Maybe<StatusTemplateType>;
+  stateDefinition?: Maybe<StateDefinitionType>;
 };
 
 export type CaseTypeNodeConnection = {
@@ -839,6 +843,7 @@ export type MutationAdminReporterNotificationCreateArgs = {
   condition: Scalars["String"];
   description: Scalars["String"];
   isActive?: InputMaybe<Scalars["Boolean"]>;
+  reportTypeId: Scalars["UUID"];
   template: Scalars["String"];
 };
 
@@ -847,6 +852,7 @@ export type MutationAdminReporterNotificationUpdateArgs = {
   description: Scalars["String"];
   id: Scalars["ID"];
   isActive?: InputMaybe<Scalars["Boolean"]>;
+  reportTypeId: Scalars["UUID"];
   template: Scalars["String"];
 };
 
@@ -1185,6 +1191,7 @@ export type ReportTypeType = {
   name: Scalars["String"];
   ordering: Scalars["Int"];
   rendererDataTemplate?: Maybe<Scalars["String"]>;
+  reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -1196,6 +1203,7 @@ export type ReporterNotificationType = {
   description: Scalars["String"];
   id: Scalars["ID"];
   isActive: Scalars["Boolean"];
+  reportType?: Maybe<AdminReportTypeCreateSuccess>;
   template: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
@@ -1205,8 +1213,8 @@ export type Revoke = {
   revoked: Scalars["Int"];
 };
 
-export type StatusTemplateType = {
-  __typename?: "StatusTemplateType";
+export type StateDefinitionType = {
+  __typename?: "StateDefinitionType";
   id: Scalars["ID"];
   name: Scalars["String"];
 };
@@ -2097,11 +2105,17 @@ export type ReporterNotificationsQuery = {
       description: string;
       condition: string;
       template: string;
+      reportType?: {
+        __typename?: "ReportTypeType";
+        id: any;
+        name: string;
+      } | null;
     } | null>;
   } | null;
 };
 
 export type ReporterNotificationCreateMutationVariables = Exact<{
+  reportTypeId: Scalars["UUID"];
   description: Scalars["String"];
   condition: Scalars["String"];
   template: Scalars["String"];
@@ -2121,17 +2135,14 @@ export type ReporterNotificationCreateMutation = {
             message: string;
           }> | null;
         }
-      | {
-          __typename: "AdminReporterNotificationCreateSuccess";
-          id: string;
-          description: string;
-        }
+      | { __typename: "AdminReporterNotificationCreateSuccess"; id: string }
       | null;
   } | null;
 };
 
 export type ReporterNotificationUpdateMutationVariables = Exact<{
   id: Scalars["ID"];
+  reportTypeId: Scalars["UUID"];
   description: Scalars["String"];
   condition: Scalars["String"];
   template: Scalars["String"];
@@ -2159,6 +2170,11 @@ export type ReporterNotificationUpdateMutation = {
             description: string;
             condition: string;
             template: string;
+            reportType?: {
+              __typename?: "AdminReportTypeCreateSuccess";
+              id: any;
+              name: string;
+            } | null;
           } | null;
         }
       | null;
@@ -2177,6 +2193,11 @@ export type GetReporterNotificationQuery = {
     description: string;
     condition: string;
     template: string;
+    reportType?: {
+      __typename?: "AdminReportTypeCreateSuccess";
+      id: any;
+      name: string;
+    } | null;
   } | null;
 };
 
@@ -6432,6 +6453,23 @@ export const ReporterNotificationsDocument = {
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "reportType" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "description" },
                       },
                       {
@@ -6464,6 +6502,17 @@ export const ReporterNotificationCreateDocument = {
       operation: "mutation",
       name: { kind: "Name", value: "ReporterNotificationCreate" },
       variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
         {
           kind: "VariableDefinition",
           variable: {
@@ -6514,6 +6563,14 @@ export const ReporterNotificationCreateDocument = {
             kind: "Field",
             name: { kind: "Name", value: "adminReporterNotificationCreate" },
             arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "description" },
@@ -6567,10 +6624,6 @@ export const ReporterNotificationCreateDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "id" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "description" },
                             },
                           ],
                         },
@@ -6645,6 +6698,17 @@ export const ReporterNotificationUpdateDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
             name: { kind: "Name", value: "description" },
           },
           type: {
@@ -6697,6 +6761,14 @@ export const ReporterNotificationUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
                 },
               },
               {
@@ -6761,6 +6833,23 @@ export const ReporterNotificationUpdateDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "reportType" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
                                   },
                                   {
                                     kind: "Field",
@@ -6870,6 +6959,17 @@ export const GetReporterNotificationDocument = {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reportType" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
                 { kind: "Field", name: { kind: "Name", value: "description" } },
                 { kind: "Field", name: { kind: "Name", value: "condition" } },
                 { kind: "Field", name: { kind: "Name", value: "template" } },

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { CaseDefinitionCreateViewModel } from "./createViewModel";
@@ -18,7 +18,7 @@ import {
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
-import { ReportType } from "lib/services/reportType";
+import useReportTypes from "lib/hooks/reportTypes";
 
 const CaseDefinitionCreate = () => {
   const router = useRouter();
@@ -30,19 +30,7 @@ const CaseDefinitionCreate = () => {
   const isSubmitting = viewModel.isSubmitting;
   const errors = viewModel.fieldErrors;
 
-  const [reportTypes, setReportTypes] = useState<ReportType[]>();
-
-  useEffect(() => {
-    async function loadReportTypes() {
-      const result = await services.reportTypeService.fetchReportTypes(
-        100,
-        0,
-        ""
-      );
-      setReportTypes(result.items);
-    }
-    loadReportTypes();
-  }, [services.reportTypeService]);
+  const reportTypes = useReportTypes();
 
   return (
     <Form

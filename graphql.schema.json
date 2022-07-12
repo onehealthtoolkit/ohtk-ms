@@ -2958,6 +2958,30 @@
             "deprecationReason": null
           },
           {
+            "name": "reporternotificationSet",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AdminReporterNotificationCreateSuccess",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updatedAt",
             "description": null,
             "args": [],
@@ -3460,6 +3484,18 @@
             "deprecationReason": null
           },
           {
+            "name": "reportType",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "AdminReportTypeCreateSuccess",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "template",
             "description": null,
             "args": [],
@@ -3546,6 +3582,18 @@
                 "name": "ID",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "reportType",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ReportTypeType",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -4238,6 +4286,22 @@
             "deprecationReason": null
           },
           {
+            "name": "isActive",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "reportType",
             "description": null,
             "args": [],
@@ -4325,12 +4389,12 @@
             "deprecationReason": null
           },
           {
-            "name": "statusTemplate",
+            "name": "stateDefinition",
             "description": null,
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "StatusTemplateType",
+              "name": "StateDefinitionType",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6488,6 +6552,22 @@
                 "deprecationReason": null
               },
               {
+                "name": "reportTypeId",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "UUID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
                 "name": "template",
                 "description": null,
                 "type": {
@@ -6573,6 +6653,22 @@
                   "ofType": null
                 },
                 "defaultValue": "true",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "reportTypeId",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "UUID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -9555,6 +9651,30 @@
             "deprecationReason": null
           },
           {
+            "name": "reporternotificationSet",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AdminReporterNotificationCreateSuccess",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updatedAt",
             "description": null,
             "args": [],
@@ -9674,6 +9794,18 @@
             "deprecationReason": null
           },
           {
+            "name": "reportType",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "AdminReportTypeCreateSuccess",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "template",
             "description": null,
             "args": [],
@@ -9740,7 +9872,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "StatusTemplateType",
+        "name": "StateDefinitionType",
         "description": null,
         "fields": [
           {

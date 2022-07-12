@@ -5,6 +5,7 @@ import { ReporterNotificationViewModel } from "./reporterNotificationViewModel";
 export class ReporterNotificationCreateViewModel extends ReporterNotificationViewModel {
   public _save(): Promise<SaveResult<ReporterNotification>> {
     return this.reporterNotificationService.createReporterNotification(
+      this.reportTypeId,
       this.description,
       this.condition,
       this.template

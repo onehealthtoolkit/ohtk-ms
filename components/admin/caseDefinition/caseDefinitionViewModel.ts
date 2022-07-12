@@ -95,6 +95,10 @@ export abstract class CaseDefinitionViewModel extends BaseFormViewModel {
       isValid = false;
       this.fieldErrors["condition"] = "this field is required";
     }
+    if (this.reportTypeId.length === 0) {
+      isValid = false;
+      this.fieldErrors["reportTypeId"] = "this field is required";
+    }
     return isValid;
   }
 }
