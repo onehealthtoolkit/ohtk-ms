@@ -10,7 +10,7 @@ import {
   NumberParam,
   StringParam,
   useSearchParams,
-} from "components/hooks/searchParam";
+} from "lib/hooks/searchParam";
 import Paginate from "components/widgets/table/paginate";
 import { formatDate, formatDateTime } from "lib/datetime";
 import ReportFilter from "./filter";

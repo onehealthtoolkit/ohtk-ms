@@ -13,7 +13,7 @@ import {
   NumberParam,
   StringParam,
   useSearchParams,
-} from "components/hooks/searchParam";
+} from "lib/hooks/searchParam";
 import Paginate from "components/widgets/table/paginate";
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 import { ReportType } from "lib/services/reportType";
