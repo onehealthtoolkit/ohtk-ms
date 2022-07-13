@@ -16,7 +16,7 @@ import {
   NumberParam,
   StringParam,
   useSearchParams,
-} from "components/hooks/searchParam";
+} from "lib/hooks/searchParam";
 
 const ReportCategoryList = () => {
   const router = useRouter();

@@ -20,6 +20,7 @@ export class ReporterNotificationUpdateViewModel extends ReporterNotificationVie
       await this.reporterNotificationService.getReporterNotification(this.id)
     ).data;
     if (data) {
+      this.reportTypeId = data.reportType?.id || "";
       this.description = data.description;
       this.condition = data.condition;
       this.template = data.template;
@@ -30,6 +31,7 @@ export class ReporterNotificationUpdateViewModel extends ReporterNotificationVie
   public _save(): Promise<SaveResult<ReporterNotification>> {
     return this.reporterNotificationService.updateReporterNotification(
       this.id,
+      this.reportTypeId,
       this.description,
       this.condition,
       this.template

@@ -24,6 +24,7 @@ export interface IReporterNotificationService extends IService {
   getReporterNotification(id: string): Promise<GetResult<ReporterNotification>>;
 
   createReporterNotification(
+    reportTypeId: string,
     description: string,
     condition: string,
     template: string
@@ -31,6 +32,7 @@ export interface IReporterNotificationService extends IService {
 
   updateReporterNotification(
     id: string,
+    reportTypeId: string,
     description: string,
     condition: string,
     template: string
@@ -75,6 +77,12 @@ export class ReporterNotificationService
       if (item) {
         items.push({
           id: item.id,
+          reportType: item.reportType
+            ? {
+                id: item.reportType?.id,
+                name: item.reportType?.name || "",
+              }
+            : undefined,
           description: item.description,
           condition: item.condition,
           template: item.template,
@@ -100,6 +108,12 @@ export class ReporterNotificationService
     if (reporterNotification) {
       data = {
         id: reporterNotification.id,
+        reportType: reporterNotification.reportType
+          ? {
+              id: reporterNotification.reportType?.id,
+              name: reporterNotification.reportType?.name || "",
+            }
+          : undefined,
         description: reporterNotification.description,
         condition: reporterNotification.condition,
         template: reporterNotification.template,
@@ -111,6 +125,7 @@ export class ReporterNotificationService
   }
 
   async createReporterNotification(
+    reportTypeId: string,
     description: string,
     condition: string,
     template: string
@@ -118,6 +133,7 @@ export class ReporterNotificationService
     const createResult = await this.client.mutate({
       mutation: ReporterNotificationCreateDocument,
       variables: {
+        reportTypeId,
         description,
         condition,
         template,
@@ -159,6 +175,7 @@ export class ReporterNotificationService
 
   async updateReporterNotification(
     id: string,
+    reportTypeId: string,
     description: string,
     condition: string,
     template: string
@@ -167,6 +184,7 @@ export class ReporterNotificationService
       mutation: ReporterNotificationUpdateDocument,
       variables: {
         id,
+        reportTypeId,
         description,
         condition,
         template,

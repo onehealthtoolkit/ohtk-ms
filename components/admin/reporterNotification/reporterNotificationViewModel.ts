@@ -10,6 +10,7 @@ import { FormViewModel } from "components/admin/formBuilder";
 export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
   reporterNotificationService: IReporterNotificationService;
 
+  _reportTypeId: string = "";
   _description: string = "";
   _condition: string = "";
   _template: string = "";
@@ -20,6 +21,8 @@ export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
   constructor(reporterNotificationService: IReporterNotificationService) {
     super();
     makeObservable(this, {
+      _reportTypeId: observable,
+      reportTypeId: computed,
       _description: observable,
       description: computed,
       _condition: observable,
@@ -31,6 +34,17 @@ export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
       formViewModel: observable,
     });
     this.reporterNotificationService = reporterNotificationService;
+  }
+
+  public get reportTypeId(): string {
+    return this._reportTypeId;
+  }
+  public set reportTypeId(value: string) {
+    this._reportTypeId = value;
+    delete this.fieldErrors["reportTypeId"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
   }
 
   public get description(): string {
@@ -103,6 +117,10 @@ export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
     if (this.template.length === 0) {
       isValid = false;
       this.fieldErrors["template"] = "this field is required";
+    }
+    if (this.reportTypeId.length === 0) {
+      isValid = false;
+      this.fieldErrors["reportTypeId"] = "this field is required";
     }
     return isValid;
   }

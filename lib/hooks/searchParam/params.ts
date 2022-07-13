@@ -1,4 +1,4 @@
-import * as Serialize from "./serialize";
+import * as Serialize from "lib/hooks/searchParam/serialize";
 
 /**
  * Configuration for a query param specifying how to encode it

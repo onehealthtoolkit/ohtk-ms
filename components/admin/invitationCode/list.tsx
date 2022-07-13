@@ -14,7 +14,7 @@ import {
   NumberParam,
   StringParam,
   useSearchParams,
-} from "components/hooks/searchParam";
+} from "lib/hooks/searchParam";
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 import { InvitationCode } from "lib/services/invitationCode";
 import { formatDate } from "lib/datetime";

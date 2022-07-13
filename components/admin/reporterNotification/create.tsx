@@ -12,11 +12,13 @@ import {
   FormMessage,
   Label,
   SaveButton,
+  Select,
   TextArea,
   TextInput,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
+import useReportTypes from "lib/hooks/reportTypes";
 
 const ReporterNotificationCreate = () => {
   const router = useRouter();
@@ -27,6 +29,7 @@ const ReporterNotificationCreate = () => {
         services.reporterNotificationService
       )
   );
+  const reportTypes = useReportTypes();
 
   const isSubmitting = viewModel.isSubmitting;
   const errors = viewModel.fieldErrors;
@@ -41,6 +44,27 @@ const ReporterNotificationCreate = () => {
       }}
     >
       <FieldGroup>
+        <Field $size="half">
+          <Label htmlFor="reportType">Report Type</Label>
+          <Select
+            id="reportType"
+            onChange={evt => {
+              viewModel.reportTypeId = evt.target.value;
+            }}
+            disabled={isSubmitting}
+            value={viewModel.reportTypeId}
+          >
+            <option disabled value={""}>
+              Select item ...
+            </option>
+            {reportTypes?.map(item => (
+              <option key={`option-${item.id}`} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </Select>
+          <ErrorText>{errors.reportTypeId}</ErrorText>
+        </Field>
         <Field $size="half">
           <Label htmlFor="name">Description</Label>
           <TextInput

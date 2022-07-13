@@ -13,7 +13,7 @@ import {
   NumberParam,
   StringParam,
   useSearchParams,
-} from "components/hooks/searchParam";
+} from "lib/hooks/searchParam";
 import Paginate from "components/widgets/table/paginate";
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 import { ReporterNotification } from "lib/services/reporterNotification";
@@ -68,16 +68,12 @@ const ReporterNotificationList = () => {
                 get: record => record.id,
               },
               {
+                label: "Report Type",
+                get: record => record.reportType?.name,
+              },
+              {
                 label: "Description",
                 get: record => record.description,
-              },
-              {
-                label: "Condition",
-                get: record => record.condition,
-              },
-              {
-                label: "Template",
-                get: record => record.template.toString(),
               },
             ]}
             data={viewModel?.data || []}

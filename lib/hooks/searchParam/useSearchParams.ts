@@ -12,7 +12,7 @@ import {
   JsonParam,
   NumericArrayParam,
   NumericObjectParam,
-} from "./params";
+} from "lib/hooks/searchParam/params";
 
 type UseSearchParams = [
   DecodedValues,
