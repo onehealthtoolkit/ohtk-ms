@@ -7,6 +7,7 @@ export class AuthorityCreateViewModel extends AuthorityViewModel {
     return this.authorityService.createAuthority(
       this.code,
       this.name,
+      this.area,
       this.authorityInherits
     );
   }

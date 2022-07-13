@@ -112,7 +112,7 @@ const AuthorityInherits: FC<AuthorityInheritsProps> = ({
             </div>
             <ul
               {...getMenuProps()}
-              className={`absolute w-full mt-14 bg-white max-h-80 overflow-y-auto ${
+              className={`absolute w-full mt-14 bg-white max-h-80 overflow-y-auto z-[1001] ${
                 isOpen && "border"
               }`}
             >

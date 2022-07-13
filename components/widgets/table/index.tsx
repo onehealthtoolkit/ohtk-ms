@@ -1,11 +1,6 @@
 import React from "react";
 import tw from "tailwind-styled-components";
-import {
-  PencilAltIcon,
-  TrashIcon,
-  EyeIcon,
-  LocationMarkerIcon,
-} from "@heroicons/react/solid";
+import { PencilAltIcon, TrashIcon, EyeIcon } from "@heroicons/react/solid";
 import { observer } from "mobx-react";
 
 export const TableHeader = tw.th`
@@ -24,13 +19,6 @@ const EditAction = (props: ActionHandlerProps) => (
   <PencilAltIcon
     type="edit"
     className="mx-1 w-8 h-5 text-indigo-600 hover:text-indigo-900 cursor-pointer"
-    {...props}
-  />
-);
-
-const DefineAreaAction = (props: ActionHandlerProps) => (
-  <LocationMarkerIcon
-    className="mx-1 w-8 h-5 text-green-600 hover:text-green-900 cursor-pointer"
     {...props}
   />
 );
@@ -62,7 +50,6 @@ interface TableProps<T> {
   onEdit?: (record: T) => void;
   onDelete?: (record: T) => void;
   onView?: (record: T) => void;
-  onDefineArea?: (record: T) => void;
   viewOnRowClick?: boolean;
 }
 
@@ -72,7 +59,6 @@ const Table = <T extends ItemWithId | null>({
   onEdit,
   onDelete,
   onView,
-  onDefineArea,
   viewOnRowClick = true,
 }: TableProps<T>) => {
   return (
@@ -106,13 +92,6 @@ const Table = <T extends ItemWithId | null>({
                       <EditAction
                         onClick={() => {
                           onEdit && onEdit(record);
-                        }}
-                      />
-                    )}
-                    {onDefineArea && (
-                      <DefineAreaAction
-                        onClick={() => {
-                          onDefineArea && onDefineArea(record);
                         }}
                       />
                     )}

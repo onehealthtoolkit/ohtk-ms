@@ -1,5 +1,6 @@
 import { BaseFormViewModel } from "lib/baseFormViewModel";
 import { Authority, IAuthorityService } from "lib/services/authority";
+import { PolygonData } from "lib/services/authority/authority";
 import { SaveResult } from "lib/services/interface";
 import { action, computed, makeObservable, observable } from "mobx";
 
@@ -8,6 +9,7 @@ export abstract class AuthorityViewModel extends BaseFormViewModel {
 
   _code: string = "";
   _name: string = "";
+  _area?: PolygonData = undefined;
   _authorityInherits: string[] = [];
 
   constructor(authorityService: IAuthorityService) {
@@ -46,6 +48,18 @@ export abstract class AuthorityViewModel extends BaseFormViewModel {
   public set name(value: string) {
     this._name = value;
     delete this.fieldErrors["name"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public get area() {
+    return this._area;
+  }
+
+  public set area(value: PolygonData | undefined) {
+    this._area = value;
+    delete this.fieldErrors["area"];
     if (this.submitError.length > 0) {
       this.submitError = "";
     }
