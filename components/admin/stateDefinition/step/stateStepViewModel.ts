@@ -1,31 +1,33 @@
 import { BaseFormViewModel } from "lib/baseFormViewModel";
-import {
-  StateDefinition,
-  IStateDefinitionService,
-} from "lib/services/stateDefinition";
 import { SaveResult } from "lib/services/interface";
 import { action, computed, makeObservable, observable } from "mobx";
-import { StateStep } from "lib/services/stateStep";
+import { IStateStepService, StateStep } from "lib/services/stateStep";
 
-export abstract class StateDefinitionViewModel extends BaseFormViewModel {
-  stateDefinitionService: IStateDefinitionService;
+export abstract class StateStepViewModel extends BaseFormViewModel {
+  stateStepService: IStateStepService;
 
   stateSteps: StateStep[] = [];
   _name: string = "";
-  _isDefault: boolean = false;
+  _isStartState: boolean = false;
+  _isStopState: boolean = false;
 
-  constructor(stateDefinitionService: IStateDefinitionService) {
+  constructor(
+    readonly stateDefinitionId: string,
+    stateStepService: IStateStepService
+  ) {
     super();
     makeObservable(this, {
       stateSteps: observable,
       _name: observable,
       name: computed,
-      _isDefault: observable,
-      isDefault: computed,
+      _isStartState: observable,
+      isStartState: computed,
+      _isStopState: observable,
+      isStopState: computed,
       save: action,
       validate: action,
     });
-    this.stateDefinitionService = stateDefinitionService;
+    this.stateStepService = stateStepService;
   }
 
   public get name(): string {
@@ -39,18 +41,29 @@ export abstract class StateDefinitionViewModel extends BaseFormViewModel {
     }
   }
 
-  public get isDefault(): boolean {
-    return this._isDefault;
+  public get isStartState(): boolean {
+    return this._isStartState;
   }
-  public set isDefault(value: boolean) {
-    this._isDefault = value;
-    delete this.fieldErrors["isDefault"];
+  public set isStartState(value: boolean) {
+    this._isStartState = value;
+    delete this.fieldErrors["isStartState"];
     if (this.submitError.length > 0) {
       this.submitError = "";
     }
   }
 
-  public abstract _save(): Promise<SaveResult<StateDefinition>>;
+  public get isStopState(): boolean {
+    return this._isStopState;
+  }
+  public set isStopState(value: boolean) {
+    this._isStopState = value;
+    delete this.fieldErrors["isStopState"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public abstract _save(): Promise<SaveResult<StateStep>>;
 
   public async save(): Promise<boolean> {
     this.isSubmitting = true;

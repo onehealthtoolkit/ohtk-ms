@@ -1,7 +1,4 @@
-export type StateStep = {
-  id: string;
-  name: string;
-};
+import { StateStep } from "../stateStep";
 
 export type StateDefinition = {
   id: string;

@@ -23,6 +23,11 @@ import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import Table from "components/widgets/table";
 import Link from "next/link";
+import {
+  AdjustmentsIcon,
+  CheckIcon,
+  CollectionIcon,
+} from "@heroicons/react/solid";
 
 const StateDefinitionsUpdateForm = () => {
   const router = useRouter();
@@ -88,19 +93,13 @@ const StateDefinitionsUpdateForm = () => {
             </CancelButton>
           </FormAction>
         </Form>
+
         <hr className="mb-5 mt-5" />
         <TabBar>
           <TabItem id="step" active={true} onTab={() => {}}>
             {({ activeCss }) => (
               <>
-                <svg
-                  className={`mr-2 w-5 h-5 ${activeCss}`}
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-                </svg>
+                <CollectionIcon className={`mr-2 w-5 h-5 ${activeCss}`} />
                 <span>Step</span>
               </>
             )}
@@ -108,19 +107,7 @@ const StateDefinitionsUpdateForm = () => {
           <TabItem id="transition" active={false} onTab={() => {}}>
             {({ activeCss }) => (
               <>
-                <svg
-                  className={`mr-2 w-5 h-5 ${activeCss}`}
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
-                  <path
-                    fillRule="evenodd"
-                    d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
+                <AdjustmentsIcon className={`mr-2 w-5 h-5 ${activeCss}`} />
                 <span>Transition</span>
               </>
             )}
@@ -131,7 +118,12 @@ const StateDefinitionsUpdateForm = () => {
           <p></p>
           <div className="flex-grow"></div>
           <Link
-            href={`/admin/state_definitions/${viewModel.id}/steps/create`}
+            href={{
+              pathname: `/admin/state_definitions/${viewModel.id}/steps/create`,
+              query: {
+                definition_name: viewModel.name,
+              },
+            }}
             passHref
           >
             <AddButton />
@@ -148,13 +140,43 @@ const StateDefinitionsUpdateForm = () => {
               label: "Name",
               get: record => record.name,
             },
+            {
+              label: "Is StartState",
+              get: record => {
+                return record.isStartState ? (
+                  <CheckIcon className="h-5 w-5" />
+                ) : (
+                  ""
+                );
+              },
+            },
+            {
+              label: "Is StopState",
+              get: record => {
+                return record.isStopState ? (
+                  <CheckIcon className="h-5 w-5" />
+                ) : (
+                  ""
+                );
+              },
+            },
           ]}
           data={viewModel?.stateSteps || []}
           onEdit={record =>
-            router.push(`/admin/state_definitions/${record.id}/update`)
+            router.push({
+              pathname: `/admin/state_definitions/${viewModel.id}/steps/${record.id}/update`,
+              query: {
+                definition_name: viewModel.name,
+              },
+            })
           }
           onView={record =>
-            router.push(`/admin/state_definitions/${record.id}/view`)
+            router.push({
+              pathname: `/admin/state_definitions/${viewModel.id}/steps/${record.id}/view`,
+              query: {
+                definition_name: viewModel.name,
+              },
+            })
           }
           onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
         />

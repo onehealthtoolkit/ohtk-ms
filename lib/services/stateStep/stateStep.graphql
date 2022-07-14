@@ -1,0 +1,91 @@
+query StateSteps($definitionId: ID!) {
+  adminStateStepQuery(definitionId: $definitionId) {
+    id
+    name
+    isStartState
+    isStopState
+  }
+}
+
+mutation StateStepCreate(
+  $name: String!
+  $isStartState: Boolean!
+  $isStopState: Boolean!
+  $stateDefinitionId: ID!
+) {
+  adminStateStepCreate(
+    name: $name
+    isStartState: $isStartState
+    isStopState: $isStopState
+    stateDefinitionId: $stateDefinitionId
+  ) {
+    result {
+      __typename
+      ... on AdminStateStepCreateSuccess {
+        id
+        name
+        isStartState
+        isStopState
+      }
+      ... on AdminStateStepCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation StateStepUpdate(
+  $id: ID!
+  $name: String!
+  $isStartState: Boolean!
+  $isStopState: Boolean!
+  $stateDefinitionId: ID!
+) {
+  adminStateStepUpdate(
+    id: $id
+    name: $name
+    isStartState: $isStartState
+    isStopState: $isStopState
+    stateDefinitionId: $stateDefinitionId
+  ) {
+    result {
+      __typename
+      ... on AdminStateStepUpdateSuccess {
+        stateStep {
+          id
+          name
+          isStartState
+          isStopState
+          stateDefinition {
+            id
+            name
+          }
+        }
+      }
+      ... on AdminStateStepUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+query GetStateStep($id: ID!) {
+  stateStepGet(id: $id) {
+    id
+    name
+    isStartState
+    isStopState
+    stateDefinition {
+      id
+      name
+    }
+  }
+}

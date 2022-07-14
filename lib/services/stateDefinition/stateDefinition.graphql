@@ -67,4 +67,10 @@ query GetStateDefinition($id: ID!) {
     name
     isDefault
   }
+  adminStateStepQuery(definitionId: $id) {
+    id
+    name
+    isStartState
+    isStopState
+  }
 }

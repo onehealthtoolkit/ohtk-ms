@@ -13,6 +13,7 @@ import {
   QueryResult,
   SaveResult,
 } from "lib/services/interface";
+import { StateStep } from "../stateStep";
 
 export interface IStateDefinitionService extends IService {
   fetchStateDefinitions(
@@ -97,7 +98,19 @@ export class StateDefinitionService implements IStateDefinitionService {
         id: stateDefinition.id,
         name: stateDefinition.name,
         isDefault: stateDefinition.isDefault,
+        stateSteps: [] as Array<StateStep>,
       };
+      const stateSteps = getResult.data.adminStateStepQuery;
+      if (stateSteps) {
+        data.stateSteps = stateSteps.map(item => {
+          return {
+            id: item!.id,
+            name: item!.name,
+            isStartState: item!.isStartState,
+            isStopState: item!.isStopState,
+          };
+        });
+      }
     }
     return {
       data,

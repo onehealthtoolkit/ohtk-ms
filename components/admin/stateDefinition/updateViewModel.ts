@@ -19,6 +19,7 @@ export class StateDefinitionUpdateViewModel extends StateDefinitionViewModel {
     if (data) {
       this.name = data.name;
       this.isDefault = data.isDefault;
+      if (data.stateSteps) this.stateSteps = data.stateSteps;
     }
     this.isLoading = false;
   }
