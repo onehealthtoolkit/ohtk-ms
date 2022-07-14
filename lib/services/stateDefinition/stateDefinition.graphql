@@ -73,4 +73,20 @@ query GetStateDefinition($id: ID!) {
     isStartState
     isStopState
   }
+  adminStateTransitionQuery(definitionId: $id) {
+    id
+    fromStep {
+      id
+      name
+      isStartState
+      isStopState
+    }
+    toStep {
+      id
+      name
+      isStartState
+      isStopState
+    }
+    formDefinition
+  }
 }

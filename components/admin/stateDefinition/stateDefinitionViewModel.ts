@@ -6,22 +6,31 @@ import {
 import { SaveResult } from "lib/services/interface";
 import { action, computed, makeObservable, observable } from "mobx";
 import { StateStep } from "lib/services/stateStep";
+import { StateTransition } from "lib/services/stateTransition";
 
 export abstract class StateDefinitionViewModel extends BaseFormViewModel {
   stateDefinitionService: IStateDefinitionService;
 
-  stateSteps: StateStep[] = [];
   _name: string = "";
   _isDefault: boolean = false;
+  _activeTabIndex: number = 0;
+  _stateSteps: StateStep[] = [];
+  _stateTransitions: StateTransition[] = [];
+  resultId: string = "";
 
   constructor(stateDefinitionService: IStateDefinitionService) {
     super();
     makeObservable(this, {
-      stateSteps: observable,
       _name: observable,
       name: computed,
       _isDefault: observable,
       isDefault: computed,
+      _stateSteps: observable,
+      stateSteps: computed,
+      _stateTransitions: observable,
+      stateTransitions: computed,
+      _activeTabIndex: observable,
+      activeTabIndex: computed,
       save: action,
       validate: action,
     });
@@ -50,13 +59,34 @@ export abstract class StateDefinitionViewModel extends BaseFormViewModel {
     }
   }
 
+  public get stateSteps(): StateStep[] {
+    return this._stateSteps;
+  }
+  public set stateSteps(value: StateStep[]) {
+    this._stateSteps = value;
+  }
+
+  public get stateTransitions(): StateTransition[] {
+    return this._stateTransitions;
+  }
+  public set stateTransitions(value: StateTransition[]) {
+    this._stateTransitions = value;
+  }
+
+  public get activeTabIndex(): number {
+    return this._activeTabIndex;
+  }
+  public set activeTabIndex(value: number) {
+    this._activeTabIndex = value;
+  }
+
   public abstract _save(): Promise<SaveResult<StateDefinition>>;
 
   public async save(): Promise<boolean> {
     this.isSubmitting = true;
 
     if (this.validate()) {
-      var result = await this._save();
+      const result: SaveResult<StateDefinition> = await this._save();
 
       this.isSubmitting = false;
 
@@ -67,6 +97,9 @@ export abstract class StateDefinitionViewModel extends BaseFormViewModel {
         if (result.fields) {
           this.fieldErrors = result.fields;
         }
+      }
+      if (result.success) {
+        this.resultId = result.data!.id!;
       }
       return result.success;
     }

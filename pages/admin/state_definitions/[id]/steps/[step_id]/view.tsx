@@ -7,8 +7,8 @@ import Spinner from "components/widgets/spinner";
 
 const AdminStateStepViewPage: NextPage = () => {
   const router = useRouter();
-  const { id } = router.query;
-  if (!id) {
+  const { step_id } = router.query;
+  if (!step_id) {
     return <Spinner />;
   }
   return (

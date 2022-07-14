@@ -6,7 +6,7 @@ import {
   GetAuthorityDocument,
   AuthorityInheritLookupDocument,
 } from "lib/generated/graphql";
-import { Authority } from "lib/services/authority/authority";
+import { Authority, PolygonData } from "lib/services/authority/authority";
 import {
   DeleteResult,
   GetResult,
@@ -33,6 +33,7 @@ export interface IAuthorityService extends IService {
   createAuthority(
     code: string,
     name: string,
+    area: PolygonData | undefined,
     inherits: string[]
   ): Promise<SaveResult<Authority>>;
 
@@ -40,6 +41,7 @@ export interface IAuthorityService extends IService {
     id: string,
     code: string,
     name: string,
+    area: PolygonData | undefined,
     inherits: string[]
   ): Promise<SaveResult<Authority>>;
 
@@ -135,6 +137,7 @@ export class AuthorityService implements IAuthorityService {
         id: authority.id,
         code: authority.code,
         name: authority.name,
+        area: authority.area,
         inherits,
       };
     }
@@ -146,6 +149,7 @@ export class AuthorityService implements IAuthorityService {
   async createAuthority(
     code: string,
     name: string,
+    area: PolygonData | undefined,
     inherits: string[]
   ): Promise<SaveResult<Authority>> {
     const createResult = await this.client.mutate({
@@ -153,6 +157,7 @@ export class AuthorityService implements IAuthorityService {
       variables: {
         code,
         name,
+        area: area && JSON.stringify(area),
         inherits,
       },
       refetchQueries: [
@@ -194,6 +199,7 @@ export class AuthorityService implements IAuthorityService {
     id: string,
     code: string,
     name: string,
+    area: PolygonData | undefined,
     inherits: string[]
   ): Promise<SaveResult<Authority>> {
     const updateResult = await this.client.mutate({
@@ -202,6 +208,7 @@ export class AuthorityService implements IAuthorityService {
         id,
         code,
         name,
+        area: area && JSON.stringify(area),
         inherits,
       },
       refetchQueries: [

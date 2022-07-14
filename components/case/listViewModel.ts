@@ -31,7 +31,6 @@ export class CaseListViewModel extends BaseViewModel {
   }
 
   async fetch(): Promise<void> {
-    console.log(this.filter);
     const result = await this.caseService.fetchCases(
       this.limit,
       this.offset,

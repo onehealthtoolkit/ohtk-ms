@@ -135,7 +135,6 @@ const Report = (props: { id: string }) => {
                   type="button"
                   onClick={async () => {
                     const caseId = await viewModel.promoteToCase();
-                    console.log(caseId);
                     if (caseId) router.push(`/cases/${caseId}`);
                   }}
                 >

@@ -4,6 +4,7 @@ import {
   StateStepUpdateDocument,
   GetStateStepDocument,
   GetStateDefinitionDocument,
+  StateStepsDocument,
 } from "lib/generated/graphql";
 import { StateStep } from "lib/services/stateStep/stateStep";
 import {
@@ -14,6 +15,8 @@ import {
 } from "lib/services/interface";
 
 export interface IStateStepService extends IService {
+  fetchStateSteps(stateDefinitionId: string): Promise<StateStep[]>;
+
   getStateStep(id: string): Promise<GetResult<StateStep>>;
 
   createStateStep(
@@ -39,6 +42,28 @@ export class StateStepService implements IStateStepService {
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
+  }
+
+  async fetchStateSteps(stateDefinitionId: string) {
+    const fetchResult = await this.client.query({
+      query: StateStepsDocument,
+      variables: {
+        definitionId: stateDefinitionId,
+      },
+    });
+
+    const items = Array<StateStep>();
+    fetchResult.data.adminStateStepQuery?.forEach(item => {
+      if (item) {
+        items.push({
+          id: item.id,
+          name: item.name,
+          isStartState: item.isStartState,
+          isStopState: item.isStopState,
+        });
+      }
+    });
+    return items;
   }
 
   async getStateStep(id: string) {

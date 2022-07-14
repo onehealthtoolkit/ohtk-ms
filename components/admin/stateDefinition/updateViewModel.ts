@@ -20,6 +20,7 @@ export class StateDefinitionUpdateViewModel extends StateDefinitionViewModel {
       this.name = data.name;
       this.isDefault = data.isDefault;
       if (data.stateSteps) this.stateSteps = data.stateSteps;
+      if (data.stateTransitions) this.stateTransitions = data.stateTransitions;
     }
     this.isLoading = false;
   }

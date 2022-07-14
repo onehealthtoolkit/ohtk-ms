@@ -33,7 +33,7 @@ const StateDefinitionCreate = () => {
       onSubmit={async evt => {
         evt.preventDefault();
         if (await viewModel.save()) {
-          router.back();
+          router.push(`/admin/state_definitions/${viewModel.resultId}/update`);
         }
       }}
     >

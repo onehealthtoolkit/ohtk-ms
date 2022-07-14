@@ -3,7 +3,6 @@ import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { StateDefinitionUpdateViewModel } from "./updateViewModel";
 import {
-  AddButton,
   CancelButton,
   Checkbox,
   ErrorText,
@@ -21,13 +20,9 @@ import {
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
-import Table from "components/widgets/table";
-import Link from "next/link";
-import {
-  AdjustmentsIcon,
-  CheckIcon,
-  CollectionIcon,
-} from "@heroicons/react/solid";
+import { AdjustmentsIcon, CollectionIcon } from "@heroicons/react/solid";
+import { StateStepList } from "./step/list";
+import { StateTransitionList } from "./transition/list";
 
 const StateDefinitionsUpdateForm = () => {
   const router = useRouter();
@@ -42,7 +37,9 @@ const StateDefinitionsUpdateForm = () => {
 
   const isSubmitting = viewModel.isSubmitting;
   const errors = viewModel.fieldErrors;
-
+  if (router.query.activeTabIndex) {
+    viewModel.activeTabIndex = +router.query.activeTabIndex;
+  }
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <>
@@ -96,7 +93,21 @@ const StateDefinitionsUpdateForm = () => {
 
         <hr className="mb-5 mt-5" />
         <TabBar>
-          <TabItem id="step" active={true} onTab={() => {}}>
+          <TabItem
+            id="step"
+            active={viewModel.activeTabIndex == 0}
+            onTab={() => {
+              viewModel.activeTabIndex = 0;
+              router.push(
+                {
+                  pathname: router.pathname,
+                  query: { ...router.query, activeTabIndex: 0 },
+                },
+                undefined,
+                { shallow: true }
+              );
+            }}
+          >
             {({ activeCss }) => (
               <>
                 <CollectionIcon className={`mr-2 w-5 h-5 ${activeCss}`} />
@@ -104,7 +115,21 @@ const StateDefinitionsUpdateForm = () => {
               </>
             )}
           </TabItem>
-          <TabItem id="transition" active={false} onTab={() => {}}>
+          <TabItem
+            id="transition"
+            active={viewModel.activeTabIndex == 1}
+            onTab={() => {
+              viewModel.activeTabIndex = 1;
+              router.push(
+                {
+                  pathname: router.pathname,
+                  query: { ...router.query, activeTabIndex: 1 },
+                },
+                undefined,
+                { shallow: true }
+              );
+            }}
+          >
             {({ activeCss }) => (
               <>
                 <AdjustmentsIcon className={`mr-2 w-5 h-5 ${activeCss}`} />
@@ -113,73 +138,12 @@ const StateDefinitionsUpdateForm = () => {
             )}
           </TabItem>
         </TabBar>
-
-        <div className="flex items-center flex-wrap mb-4">
-          <p></p>
-          <div className="flex-grow"></div>
-          <Link
-            href={{
-              pathname: `/admin/state_definitions/${viewModel.id}/steps/create`,
-              query: {
-                definition_name: viewModel.name,
-              },
-            }}
-            passHref
-          >
-            <AddButton />
-          </Link>
-        </div>
-
-        <Table
-          columns={[
-            {
-              label: "Id",
-              get: record => record.id,
-            },
-            {
-              label: "Name",
-              get: record => record.name,
-            },
-            {
-              label: "Is StartState",
-              get: record => {
-                return record.isStartState ? (
-                  <CheckIcon className="h-5 w-5" />
-                ) : (
-                  ""
-                );
-              },
-            },
-            {
-              label: "Is StopState",
-              get: record => {
-                return record.isStopState ? (
-                  <CheckIcon className="h-5 w-5" />
-                ) : (
-                  ""
-                );
-              },
-            },
-          ]}
-          data={viewModel?.stateSteps || []}
-          onEdit={record =>
-            router.push({
-              pathname: `/admin/state_definitions/${viewModel.id}/steps/${record.id}/update`,
-              query: {
-                definition_name: viewModel.name,
-              },
-            })
-          }
-          onView={record =>
-            router.push({
-              pathname: `/admin/state_definitions/${viewModel.id}/steps/${record.id}/view`,
-              query: {
-                definition_name: viewModel.name,
-              },
-            })
-          }
-          onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
-        />
+        {viewModel.activeTabIndex == 0 && (
+          <StateStepList viewModel={viewModel} />
+        )}
+        {viewModel.activeTabIndex == 1 && (
+          <StateTransitionList viewModel={viewModel} />
+        )}
       </>
     </MaskingLoader>
   );

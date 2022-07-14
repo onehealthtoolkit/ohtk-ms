@@ -14,6 +14,7 @@ import {
   SaveResult,
 } from "lib/services/interface";
 import { StateStep } from "../stateStep";
+import { StateTransition } from "../stateTransition";
 
 export interface IStateDefinitionService extends IService {
   fetchStateDefinitions(
@@ -99,6 +100,7 @@ export class StateDefinitionService implements IStateDefinitionService {
         name: stateDefinition.name,
         isDefault: stateDefinition.isDefault,
         stateSteps: [] as Array<StateStep>,
+        stateTransitions: [] as Array<StateTransition>,
       };
       const stateSteps = getResult.data.adminStateStepQuery;
       if (stateSteps) {
@@ -108,6 +110,18 @@ export class StateDefinitionService implements IStateDefinitionService {
             name: item!.name,
             isStartState: item!.isStartState,
             isStopState: item!.isStopState,
+          };
+        });
+      }
+
+      const stateTransitions = getResult.data.adminStateTransitionQuery;
+      if (stateTransitions) {
+        data.stateTransitions = stateTransitions.map(item => {
+          return {
+            id: item!.id,
+            fromStep: item!.fromStep,
+            toStep: item!.toStep,
+            formDefinition: JSON.stringify(item!.formDefinition),
           };
         });
       }
@@ -158,6 +172,11 @@ export class StateDefinitionService implements IStateDefinitionService {
       }
     }
     return {
+      data: {
+        id: result?.id,
+        name: result?.name,
+        isDefault: result?.isDefault,
+      },
       success: true,
     };
   }

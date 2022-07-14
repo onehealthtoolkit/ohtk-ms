@@ -622,11 +622,13 @@ export type AdminStateStepCreateSuccess = {
   __typename?: "AdminStateStepCreateSuccess";
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
+  fromTransitions: Array<AdminStateTransitionCreateSuccess>;
   id: Scalars["ID"];
   isStartState: Scalars["Boolean"];
   isStopState: Scalars["Boolean"];
   name: Scalars["String"];
   stateDefinition: AdminStateDefinitionCreateSuccess;
+  toTransitions: Array<AdminStateTransitionCreateSuccess>;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -648,6 +650,52 @@ export type AdminStateStepUpdateResult =
 export type AdminStateStepUpdateSuccess = {
   __typename?: "AdminStateStepUpdateSuccess";
   stateStep?: Maybe<StateStepType>;
+};
+
+export type AdminStateTransitionCreateMutation = {
+  __typename?: "AdminStateTransitionCreateMutation";
+  result?: Maybe<AdminStateTransitionCreateResult>;
+};
+
+export type AdminStateTransitionCreateProblem = {
+  __typename?: "AdminStateTransitionCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminStateTransitionCreateResult =
+  | AdminStateTransitionCreateProblem
+  | AdminStateTransitionCreateSuccess;
+
+export type AdminStateTransitionCreateSuccess = {
+  __typename?: "AdminStateTransitionCreateSuccess";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  formDefinition?: Maybe<Scalars["JSONString"]>;
+  fromStep: AdminStateStepCreateSuccess;
+  id: Scalars["ID"];
+  toStep: AdminStateStepCreateSuccess;
+  updatedAt: Scalars["DateTime"];
+};
+
+export type AdminStateTransitionUpdateMutation = {
+  __typename?: "AdminStateTransitionUpdateMutation";
+  result?: Maybe<AdminStateTransitionUpdateResult>;
+};
+
+export type AdminStateTransitionUpdateProblem = {
+  __typename?: "AdminStateTransitionUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminStateTransitionUpdateResult =
+  | AdminStateTransitionUpdateProblem
+  | AdminStateTransitionUpdateSuccess;
+
+export type AdminStateTransitionUpdateSuccess = {
+  __typename?: "AdminStateTransitionUpdateSuccess";
+  stateTransition?: Maybe<StateTransitionType>;
 };
 
 export type AdminUserChangePasswordMutation = {
@@ -843,6 +891,8 @@ export type Mutation = {
   adminStateDefinitionUpdate?: Maybe<AdminStateDefinitionUpdateMutation>;
   adminStateStepCreate?: Maybe<AdminStateStepCreateMutation>;
   adminStateStepUpdate?: Maybe<AdminStateStepUpdateMutation>;
+  adminStateTransitionCreate?: Maybe<AdminStateTransitionCreateMutation>;
+  adminStateTransitionUpdate?: Maybe<AdminStateTransitionUpdateMutation>;
   adminUserChangePassword?: Maybe<AdminUserChangePasswordMutation>;
   adminUserUploadAvatar?: Maybe<AdminUserUploadAvatarMutation>;
   authorityUserRegister?: Maybe<AuthorityUserRegisterMutation>;
@@ -996,6 +1046,19 @@ export type MutationAdminStateStepUpdateArgs = {
   stateDefinitionId: Scalars["ID"];
 };
 
+export type MutationAdminStateTransitionCreateArgs = {
+  formDefinition: Scalars["String"];
+  fromStepId: Scalars["ID"];
+  toStepId: Scalars["ID"];
+};
+
+export type MutationAdminStateTransitionUpdateArgs = {
+  formDefinition: Scalars["String"];
+  fromStepId: Scalars["ID"];
+  id: Scalars["ID"];
+  toStepId: Scalars["ID"];
+};
+
 export type MutationAdminUserChangePasswordArgs = {
   newPassword: Scalars["String"];
 };
@@ -1086,6 +1149,7 @@ export type Query = {
   adminReporterNotificationQuery?: Maybe<AdminReporterNotificationQueryTypeNodeConnection>;
   adminStateDefinitionQuery?: Maybe<AdminStateDefinitionQueryTypeNodeConnection>;
   adminStateStepQuery?: Maybe<Array<Maybe<StateStepType>>>;
+  adminStateTransitionQuery?: Maybe<Array<Maybe<StateTransitionType>>>;
   authorities?: Maybe<AuthorityTypeNodeConnection>;
   authority?: Maybe<AuthorityType>;
   authorityUser?: Maybe<AuthorityUserType>;
@@ -1105,6 +1169,7 @@ export type Query = {
   reporterNotification?: Maybe<ReporterNotificationType>;
   stateDefinitionGet?: Maybe<StateDefinitionType>;
   stateStepGet?: Maybe<StateStepType>;
+  stateTransitionGet?: Maybe<StateTransitionType>;
   syncReportTypes?: Maybe<ReportTypeSyncOutputType>;
 };
 
@@ -1230,6 +1295,10 @@ export type QueryAdminStateStepQueryArgs = {
   definitionId: Scalars["ID"];
 };
 
+export type QueryAdminStateTransitionQueryArgs = {
+  definitionId: Scalars["ID"];
+};
+
 export type QueryAuthoritiesArgs = {
   after?: InputMaybe<Scalars["String"]>;
   before?: InputMaybe<Scalars["String"]>;
@@ -1322,6 +1391,10 @@ export type QueryStateStepGetArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryStateTransitionGetArgs = {
+  id: Scalars["ID"];
+};
+
 export type QuerySyncReportTypesArgs = {
   data: Array<ReportTypeSyncInputType>;
 };
@@ -1392,11 +1465,24 @@ export type StateStepType = {
   __typename?: "StateStepType";
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
+  fromTransitions: Array<AdminStateTransitionCreateSuccess>;
   id: Scalars["ID"];
   isStartState: Scalars["Boolean"];
   isStopState: Scalars["Boolean"];
   name: Scalars["String"];
   stateDefinition: AdminStateDefinitionCreateSuccess;
+  toTransitions: Array<AdminStateTransitionCreateSuccess>;
+  updatedAt: Scalars["DateTime"];
+};
+
+export type StateTransitionType = {
+  __typename?: "StateTransitionType";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  formDefinition?: Maybe<Scalars["GenericScalar"]>;
+  fromStep: AdminStateStepCreateSuccess;
+  id: Scalars["ID"];
+  toStep: AdminStateStepCreateSuccess;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -1543,6 +1629,7 @@ export type AuthorityInheritLookupQuery = {
 export type AuthorityCreateMutationVariables = Exact<{
   code: Scalars["String"];
   name: Scalars["String"];
+  area?: InputMaybe<Scalars["String"]>;
   inherits?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
   >;
@@ -1571,6 +1658,7 @@ export type AuthorityUpdateMutationVariables = Exact<{
   id: Scalars["ID"];
   code: Scalars["String"];
   name: Scalars["String"];
+  area?: InputMaybe<Scalars["String"]>;
   inherits?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
   >;
@@ -1597,6 +1685,7 @@ export type AuthorityUpdateMutation = {
             id: string;
             code: string;
             name: string;
+            area?: any | null;
             inherits: Array<{
               __typename?: "AuthorityInheritType";
               id: string;
@@ -1620,6 +1709,7 @@ export type GetAuthorityQuery = {
     id: string;
     code: string;
     name: string;
+    area?: any | null;
     inherits: Array<{
       __typename?: "AuthorityInheritType";
       id: string;
@@ -2484,6 +2574,25 @@ export type GetStateDefinitionQuery = {
     isStartState: boolean;
     isStopState: boolean;
   } | null> | null;
+  adminStateTransitionQuery?: Array<{
+    __typename?: "StateTransitionType";
+    id: string;
+    formDefinition?: any | null;
+    fromStep: {
+      __typename?: "AdminStateStepCreateSuccess";
+      id: string;
+      name: string;
+      isStartState: boolean;
+      isStopState: boolean;
+    };
+    toStep: {
+      __typename?: "AdminStateStepCreateSuccess";
+      id: string;
+      name: string;
+      isStartState: boolean;
+      isStopState: boolean;
+    };
+  } | null> | null;
 };
 
 export type StateStepsQueryVariables = Exact<{
@@ -2590,6 +2699,132 @@ export type GetStateStepQuery = {
       __typename?: "AdminStateDefinitionCreateSuccess";
       id: string;
       name: string;
+    };
+  } | null;
+};
+
+export type StateTransitionsQueryVariables = Exact<{
+  definitionId: Scalars["ID"];
+}>;
+
+export type StateTransitionsQuery = {
+  __typename?: "Query";
+  adminStateTransitionQuery?: Array<{
+    __typename?: "StateTransitionType";
+    id: string;
+    formDefinition?: any | null;
+    fromStep: {
+      __typename?: "AdminStateStepCreateSuccess";
+      id: string;
+      name: string;
+      isStartState: boolean;
+      isStopState: boolean;
+    };
+    toStep: {
+      __typename?: "AdminStateStepCreateSuccess";
+      id: string;
+      name: string;
+      isStartState: boolean;
+      isStopState: boolean;
+    };
+  } | null> | null;
+};
+
+export type StateTransitionCreateMutationVariables = Exact<{
+  formDefinition: Scalars["String"];
+  fromStepId: Scalars["ID"];
+  toStepId: Scalars["ID"];
+}>;
+
+export type StateTransitionCreateMutation = {
+  __typename?: "Mutation";
+  adminStateTransitionCreate?: {
+    __typename?: "AdminStateTransitionCreateMutation";
+    result?:
+      | {
+          __typename: "AdminStateTransitionCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | { __typename: "AdminStateTransitionCreateSuccess"; id: string }
+      | null;
+  } | null;
+};
+
+export type StateTransitionUpdateMutationVariables = Exact<{
+  id: Scalars["ID"];
+  formDefinition: Scalars["String"];
+  fromStepId: Scalars["ID"];
+  toStepId: Scalars["ID"];
+}>;
+
+export type StateTransitionUpdateMutation = {
+  __typename?: "Mutation";
+  adminStateTransitionUpdate?: {
+    __typename?: "AdminStateTransitionUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminStateTransitionUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminStateTransitionUpdateSuccess";
+          stateTransition?: {
+            __typename?: "StateTransitionType";
+            id: string;
+            formDefinition?: any | null;
+            fromStep: {
+              __typename?: "AdminStateStepCreateSuccess";
+              id: string;
+              name: string;
+              isStartState: boolean;
+              isStopState: boolean;
+            };
+            toStep: {
+              __typename?: "AdminStateStepCreateSuccess";
+              id: string;
+              name: string;
+              isStartState: boolean;
+              isStopState: boolean;
+            };
+          } | null;
+        }
+      | null;
+  } | null;
+};
+
+export type GetStateTransitionQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type GetStateTransitionQuery = {
+  __typename?: "Query";
+  stateTransitionGet?: {
+    __typename?: "StateTransitionType";
+    id: string;
+    formDefinition?: any | null;
+    fromStep: {
+      __typename?: "AdminStateStepCreateSuccess";
+      id: string;
+      name: string;
+      isStartState: boolean;
+      isStopState: boolean;
+    };
+    toStep: {
+      __typename?: "AdminStateStepCreateSuccess";
+      id: string;
+      name: string;
+      isStartState: boolean;
+      isStopState: boolean;
     };
   } | null;
 };
@@ -3189,6 +3424,11 @@ export const AuthorityCreateDocument = {
         },
         {
           kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "area" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
           variable: {
             kind: "Variable",
             name: { kind: "Name", value: "inherits" },
@@ -3223,6 +3463,14 @@ export const AuthorityCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "area" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "area" },
                 },
               },
               {
@@ -3360,6 +3608,11 @@ export const AuthorityUpdateDocument = {
         },
         {
           kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "area" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
           variable: {
             kind: "Variable",
             name: { kind: "Name", value: "inherits" },
@@ -3402,6 +3655,14 @@ export const AuthorityUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "area" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "area" },
                 },
               },
               {
@@ -3455,6 +3716,10 @@ export const AuthorityUpdateDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "area" },
                                   },
                                   {
                                     kind: "Field",
@@ -3572,6 +3837,7 @@ export const GetAuthorityDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "code" } },
                 { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "area" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "inherits" },
@@ -7883,6 +8149,68 @@ export const GetStateDefinitionDocument = {
               ],
             },
           },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminStateTransitionQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "definitionId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "fromStep" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStartState" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStopState" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "toStep" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStartState" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStopState" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "formDefinition" },
+                },
+              ],
+            },
+          },
         ],
       },
     },
@@ -8444,6 +8772,601 @@ export const GetStateStepDocument = {
     },
   ],
 } as unknown as DocumentNode<GetStateStepQuery, GetStateStepQueryVariables>;
+export const StateTransitionsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "StateTransitions" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "definitionId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminStateTransitionQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "definitionId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "definitionId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "fromStep" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStartState" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStopState" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "toStep" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStartState" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStopState" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "formDefinition" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  StateTransitionsQuery,
+  StateTransitionsQueryVariables
+>;
+export const StateTransitionCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "StateTransitionCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "formDefinition" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "fromStepId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "toStepId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminStateTransitionCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "formDefinition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "formDefinition" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "fromStepId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "fromStepId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "toStepId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "toStepId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminStateTransitionCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminStateTransitionCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  StateTransitionCreateMutation,
+  StateTransitionCreateMutationVariables
+>;
+export const StateTransitionUpdateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "StateTransitionUpdate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "formDefinition" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "fromStepId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "toStepId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminStateTransitionUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "formDefinition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "formDefinition" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "fromStepId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "fromStepId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "toStepId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "toStepId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminStateTransitionUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "stateTransition" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "fromStep" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStartState",
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStopState",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "toStep" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStartState",
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStopState",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "formDefinition",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminStateTransitionUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  StateTransitionUpdateMutation,
+  StateTransitionUpdateMutationVariables
+>;
+export const GetStateTransitionDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetStateTransition" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "stateTransitionGet" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "fromStep" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStartState" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStopState" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "toStep" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStartState" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStopState" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "formDefinition" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetStateTransitionQuery,
+  GetStateTransitionQueryVariables
+>;
 export const UsersDocument = {
   kind: "Document",
   definitions: [

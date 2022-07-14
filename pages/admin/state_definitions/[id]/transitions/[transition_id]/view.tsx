@@ -1,23 +1,23 @@
 import { NextPage } from "next";
-import StateStepUpdate from "components/admin/stateDefinition/step/update";
+import StateTransitionView from "components/admin/stateDefinition/transition/view";
 import Layout from "components/layout";
 import Protect from "components/auth/protect";
 import { useRouter } from "next/router";
 import Spinner from "components/widgets/spinner";
 
-const AdminStateStepUpdatePage: NextPage = () => {
+const AdminStateTransitionViewPage: NextPage = () => {
   const router = useRouter();
-  const { step_id } = router.query;
-  if (!step_id) {
+  const { transition_id } = router.query;
+  if (!transition_id) {
     return <Spinner />;
   }
   return (
     <Protect>
       <Layout>
-        <StateStepUpdate />
+        <StateTransitionView />
       </Layout>
     </Protect>
   );
 };
 
-export default AdminStateStepUpdatePage;
+export default AdminStateTransitionViewPage;
