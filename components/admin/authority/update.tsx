@@ -2,6 +2,7 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import {
+  AreaFieldNoSSR,
   CancelButton,
   ErrorText,
   Field,
@@ -18,6 +19,7 @@ import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import { AuthorityUpdateViewModel } from "./updateViewModel";
 import AuthorityInherits from "components/admin/authority/authorityInherits";
+import { toJS } from "mobx";
 
 const AuthorityUpdate = () => {
   const router = useRouter();
@@ -75,6 +77,14 @@ const AuthorityUpdate = () => {
               }
             />
             <ErrorText>{viewModel.fieldErrors.inherits}</ErrorText>
+          </Field>
+          <Field $size="full">
+            <Label htmlFor="area">Area</Label>
+            <AreaFieldNoSSR
+              value={toJS(viewModel.area)}
+              onChange={data => (viewModel.area = data)}
+            />
+            <ErrorText>{viewModel.fieldErrors.area}</ErrorText>
           </Field>
         </FieldGroup>
         {viewModel.submitError.length > 0 && (

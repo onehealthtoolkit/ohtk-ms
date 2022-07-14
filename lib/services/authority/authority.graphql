@@ -55,8 +55,18 @@ query AuthorityInheritLookup($limit: Int!, $nameStartWith: String) {
   }
 }
 
-mutation AuthorityCreate($code: String!, $name: String!, $inherits: [String]) {
-  adminAuthorityCreate(code: $code, name: $name, inherits: $inherits) {
+mutation AuthorityCreate(
+  $code: String!
+  $name: String!
+  $area: String
+  $inherits: [String]
+) {
+  adminAuthorityCreate(
+    code: $code
+    name: $name
+    area: $area
+    inherits: $inherits
+  ) {
     result {
       __typename
       ... on AdminAuthorityCreateSuccess {
@@ -78,9 +88,16 @@ mutation AuthorityUpdate(
   $id: ID!
   $code: String!
   $name: String!
+  $area: String
   $inherits: [String]
 ) {
-  adminAuthorityUpdate(id: $id, code: $code, name: $name, inherits: $inherits) {
+  adminAuthorityUpdate(
+    id: $id
+    code: $code
+    name: $name
+    area: $area
+    inherits: $inherits
+  ) {
     result {
       __typename
       ... on AdminAuthorityUpdateSuccess {
@@ -88,6 +105,7 @@ mutation AuthorityUpdate(
           id
           code
           name
+          area
           inherits {
             id
             code
@@ -111,6 +129,7 @@ query GetAuthority($id: ID!) {
     id
     code
     name
+    area
     inherits {
       id
       code

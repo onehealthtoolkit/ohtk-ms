@@ -1362,6 +1362,7 @@ export type AuthorityInheritLookupQuery = {
 export type AuthorityCreateMutationVariables = Exact<{
   code: Scalars["String"];
   name: Scalars["String"];
+  area?: InputMaybe<Scalars["String"]>;
   inherits?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
   >;
@@ -1390,6 +1391,7 @@ export type AuthorityUpdateMutationVariables = Exact<{
   id: Scalars["ID"];
   code: Scalars["String"];
   name: Scalars["String"];
+  area?: InputMaybe<Scalars["String"]>;
   inherits?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
   >;
@@ -1416,6 +1418,7 @@ export type AuthorityUpdateMutation = {
             id: string;
             code: string;
             name: string;
+            area?: any | null;
             inherits: Array<{
               __typename?: "AuthorityInheritType";
               id: string;
@@ -1439,6 +1442,7 @@ export type GetAuthorityQuery = {
     id: string;
     code: string;
     name: string;
+    area?: any | null;
     inherits: Array<{
       __typename?: "AuthorityInheritType";
       id: string;
@@ -2796,6 +2800,11 @@ export const AuthorityCreateDocument = {
         },
         {
           kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "area" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
           variable: {
             kind: "Variable",
             name: { kind: "Name", value: "inherits" },
@@ -2830,6 +2839,14 @@ export const AuthorityCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "area" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "area" },
                 },
               },
               {
@@ -2967,6 +2984,11 @@ export const AuthorityUpdateDocument = {
         },
         {
           kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "area" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
           variable: {
             kind: "Variable",
             name: { kind: "Name", value: "inherits" },
@@ -3009,6 +3031,14 @@ export const AuthorityUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "area" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "area" },
                 },
               },
               {
@@ -3062,6 +3092,10 @@ export const AuthorityUpdateDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "area" },
                                   },
                                   {
                                     kind: "Field",
@@ -3179,6 +3213,7 @@ export const GetAuthorityDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "code" } },
                 { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "area" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "inherits" },

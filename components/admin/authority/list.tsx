@@ -81,9 +81,6 @@ const AuthorityList = () => {
             onEdit={record =>
               router.push(`/admin/authorities/${record.id}/update`)
             }
-            onDefineArea={record =>
-              router.push(`/admin/authorities/${record.id}/area`)
-            }
             onView={record =>
               router.push(`/admin/authorities/${record.id}/view`)
             }
