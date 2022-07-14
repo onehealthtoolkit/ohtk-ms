@@ -49,10 +49,6 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
           onChange={values =>
             (viewModel.filter.authorities = values.map(item => item.id))
           }
-          onInputChange={(newValue: string) => {
-            const inputValue = newValue.replace(/\W/g, "");
-            return inputValue;
-          }}
         />
       </Field>
 
