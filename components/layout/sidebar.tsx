@@ -13,6 +13,7 @@ import {
   LogoutIcon,
   DocumentReportIcon,
   AnnotationIcon,
+  LightBulbIcon,
 } from "@heroicons/react/solid";
 import useStore from "lib/store";
 import CollapsIcon from "components/layout/CollapsIcon";
@@ -180,6 +181,13 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 icon={<VariableIcon className={iconClassName} />}
               />
 
+              <Menu
+                href="/admin/state_definitions"
+                pathname={pathname}
+                label="State Definition"
+                collapsed={store.menu.collapsed}
+                icon={<LightBulbIcon className={iconClassName} />}
+              />
               <Menu
                 href="/admin/reporter_notifications"
                 pathname={pathname}

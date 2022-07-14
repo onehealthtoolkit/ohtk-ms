@@ -1,4 +1,4 @@
-import { FC, forwardRef, ReactElement } from "react";
+import { ChangeEventHandler, FC, forwardRef, ReactElement } from "react";
 import { PlusIcon } from "@heroicons/react/solid";
 import Spinner from "components/widgets/spinner";
 import tw from "tailwind-styled-components";
@@ -120,6 +120,44 @@ const SelectInput = (
 };
 
 export const Select = forwardRef(SelectInput);
+
+const CheckboxInput = (
+  props: {
+    id: string;
+    label: string;
+    value: string;
+    checked?: boolean;
+    defaultChecked?: boolean;
+    disabled: boolean;
+    onChange?: ChangeEventHandler<HTMLInputElement>;
+  },
+  ref: React.Ref<HTMLInputElement>
+) => {
+  return (
+    <div className="flex items-center mb-4">
+      <input
+        ref={ref}
+        type="checkbox"
+        {...props}
+        className="
+          w-4 h-4 text-blue-600 
+          bg-gray-100 rounded border-gray-300 
+          focus:ring-blue-500 dark:focus:ring-blue-600 
+          dark:ring-offset-gray-800 focus:ring-2 
+          dark:bg-gray-700 dark:border-gray-600
+        "
+      />
+      <label
+        htmlFor={props.id}
+        className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+      >
+        {props.label}
+      </label>
+    </div>
+  );
+};
+
+export const Checkbox = forwardRef(CheckboxInput);
 
 export const Label = tw.label`
   block 
