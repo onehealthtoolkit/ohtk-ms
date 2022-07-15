@@ -1,19 +1,27 @@
 import { BaseViewModel } from "lib/baseViewModel";
 import { Authority } from "lib/services/authority";
 import { IAuthorityService } from "lib/services/authority/authorityService";
-import { makeObservable, observable } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
 
 export class AuthorityViewViewModel extends BaseViewModel {
   id: string;
-  data: Authority = {} as Authority;
+  _data: Authority = {} as Authority;
 
   constructor(id: string, readonly authorityService: IAuthorityService) {
     super();
     makeObservable(this, {
-      data: observable,
+      _data: observable,
+      data: computed,
     });
     this.id = id;
     this.fetch();
+  }
+
+  get data(): Authority {
+    return this._data;
+  }
+  set data(value: Authority) {
+    this._data = value;
   }
 
   async fetch() {

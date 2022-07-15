@@ -1,18 +1,26 @@
 import { BaseViewModel } from "lib/baseViewModel";
 import { IStateStepService, StateStep } from "lib/services/stateStep";
-import { makeObservable, observable } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
 
 export class StateStepViewViewModel extends BaseViewModel {
   id: string;
-  data: StateStep = {} as StateStep;
+  _data: StateStep = {} as StateStep;
 
   constructor(id: string, readonly stateDefinitionService: IStateStepService) {
     super();
     makeObservable(this, {
-      data: observable,
+      _data: observable,
+      data: computed,
     });
     this.id = id;
     this.fetch();
+  }
+
+  get data(): StateStep {
+    return this._data;
+  }
+  set data(value: StateStep) {
+    this._data = value;
   }
 
   async fetch() {

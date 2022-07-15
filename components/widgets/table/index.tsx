@@ -61,6 +61,7 @@ const Table = <T extends ItemWithId | null>({
   onView,
   viewOnRowClick = true,
 }: TableProps<T>) => {
+  const actionVisible = onEdit || (onView && !viewOnRowClick) || onEdit;
   return (
     <div className="mb-4 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
       <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
@@ -70,7 +71,7 @@ const Table = <T extends ItemWithId | null>({
               {columns.map(column => (
                 <TableHeader key={column.label}>{column.label}</TableHeader>
               ))}
-              <TableHeader>Action</TableHeader>
+              {actionVisible && <TableHeader>Action</TableHeader>}
             </tr>
           </thead>
           <tbody className="bg-white">
@@ -86,31 +87,33 @@ const Table = <T extends ItemWithId | null>({
                 {columns.map(column => (
                   <TableCell key={column.label}>{column.get(record)}</TableCell>
                 ))}
-                <TableCell>
-                  <div className="flex">
-                    {onEdit && (
-                      <EditAction
-                        onClick={() => {
-                          onEdit && onEdit(record);
-                        }}
-                      />
-                    )}
-                    {!viewOnRowClick && (
-                      <ClickAction
-                        onClick={() => {
-                          onView && onView(record);
-                        }}
-                      />
-                    )}
-                    {onEdit && (
-                      <DeleteAction
-                        onClick={() => {
-                          onDelete && onDelete(record);
-                        }}
-                      />
-                    )}
-                  </div>
-                </TableCell>
+                {actionVisible && (
+                  <TableCell>
+                    <div className="flex">
+                      {onEdit && (
+                        <EditAction
+                          onClick={() => {
+                            onEdit && onEdit(record);
+                          }}
+                        />
+                      )}
+                      {!viewOnRowClick && (
+                        <ClickAction
+                          onClick={() => {
+                            onView && onView(record);
+                          }}
+                        />
+                      )}
+                      {onEdit && (
+                        <DeleteAction
+                          onClick={() => {
+                            onDelete && onDelete(record);
+                          }}
+                        />
+                      )}
+                    </div>
+                  </TableCell>
+                )}
               </tr>
             ))}
           </tbody>

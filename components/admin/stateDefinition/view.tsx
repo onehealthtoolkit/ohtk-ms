@@ -5,6 +5,7 @@ import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { StateDefinitionViewViewModel } from "./viewViewModel";
 import CheckIcon from "@heroicons/react/solid/CheckIcon";
+import Table from "components/widgets/table";
 
 const StateDefinitionView = () => {
   const router = useRouter();
@@ -20,6 +21,9 @@ const StateDefinitionView = () => {
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <div>
+        <div className="flex items-center flex-wrap mb-4 mt-4">
+          <p>Definition</p>
+        </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="table-fixed w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <tbody>
@@ -57,6 +61,68 @@ const StateDefinitionView = () => {
             </tbody>
           </table>
         </div>
+
+        <div className="flex items-center flex-wrap mb-4 mt-4">
+          <p>Steps</p>
+        </div>
+        <Table
+          columns={[
+            {
+              label: "Id",
+              get: record => record.id,
+            },
+            {
+              label: "Name",
+              get: record => record.name,
+            },
+            {
+              label: "Is StartState",
+              get: record => {
+                return record.isStartState ? (
+                  <CheckIcon className="h-5 w-5" />
+                ) : (
+                  ""
+                );
+              },
+            },
+            {
+              label: "Is StopState",
+              get: record => {
+                return record.isStopState ? (
+                  <CheckIcon className="h-5 w-5" />
+                ) : (
+                  ""
+                );
+              },
+            },
+          ]}
+          data={viewModel?.data.stateSteps || []}
+        />
+
+        <div className="flex items-center flex-wrap mb-4 mt-4">
+          <p>Transitions</p>
+        </div>
+        <Table
+          columns={[
+            {
+              label: "Id",
+              get: record => record.id,
+            },
+            {
+              label: "From Step",
+              get: record => record.fromStep.name,
+            },
+            {
+              label: "To Step",
+              get: record => record.toStep.name,
+            },
+            {
+              label: "Form Definition",
+              get: record => record.formDefinition,
+            },
+          ]}
+          data={viewModel?.data.stateTransitions || []}
+        />
       </div>
     </MaskingLoader>
   );

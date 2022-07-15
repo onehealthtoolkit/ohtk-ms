@@ -1,19 +1,27 @@
 import { BaseViewModel } from "lib/baseViewModel";
 import { ReportType } from "lib/services/reportType";
 import { IReportTypeService } from "lib/services/reportType/reportTypeService";
-import { makeObservable, observable } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
 
 export class ReportTypeViewViewModel extends BaseViewModel {
   id: string;
-  data: ReportType = {} as ReportType;
+  _data: ReportType = {} as ReportType;
 
   constructor(id: string, readonly reportTypeService: IReportTypeService) {
     super();
     makeObservable(this, {
-      data: observable,
+      _data: observable,
+      data: computed,
     });
     this.id = id;
     this.fetch();
+  }
+
+  get data(): ReportType {
+    return this._data;
+  }
+  set data(value: ReportType) {
+    this._data = value;
   }
 
   async fetch() {

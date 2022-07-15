@@ -1,11 +1,11 @@
 import { BaseViewModel } from "lib/baseViewModel";
 import { ReportCategory } from "lib/services/reportCategory";
 import { IReportCategoryService } from "lib/services/reportCategory/reportCategoryService";
-import { makeObservable, observable } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
 
 export class ReportCategoryViewViewModel extends BaseViewModel {
   id: string;
-  data: ReportCategory = {} as ReportCategory;
+  _data: ReportCategory = {} as ReportCategory;
 
   constructor(
     id: string,
@@ -13,10 +13,18 @@ export class ReportCategoryViewViewModel extends BaseViewModel {
   ) {
     super();
     makeObservable(this, {
-      data: observable,
+      _data: observable,
+      data: computed,
     });
     this.id = id;
     this.fetch();
+  }
+
+  get data(): ReportCategory {
+    return this._data;
+  }
+  set data(value: ReportCategory) {
+    this._data = value;
   }
 
   async fetch() {
