@@ -1,0 +1,92 @@
+query StateDefinitions(
+  $limit: Int!
+  $offset: Int!
+  $nameStartWith: String
+  $ordering: String
+) {
+  adminStateDefinitionQuery(
+    limit: $limit
+    offset: $offset
+    name_Istartswith: $nameStartWith
+    ordering: $ordering
+  ) {
+    totalCount
+    results {
+      id
+      name
+      isDefault
+    }
+  }
+}
+
+mutation StateDefinitionCreate($name: String!, $isDefault: Boolean!) {
+  adminStateDefinitionCreate(name: $name, isDefault: $isDefault) {
+    result {
+      __typename
+      ... on AdminStateDefinitionCreateSuccess {
+        id
+        name
+        isDefault
+      }
+      ... on AdminStateDefinitionCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation StateDefinitionUpdate($id: ID!, $name: String!, $isDefault: Boolean!) {
+  adminStateDefinitionUpdate(id: $id, name: $name, isDefault: $isDefault) {
+    result {
+      __typename
+      ... on AdminStateDefinitionUpdateSuccess {
+        stateDefinition {
+          id
+          name
+          isDefault
+        }
+      }
+      ... on AdminStateDefinitionUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+query GetStateDefinition($id: ID!) {
+  stateDefinitionGet(id: $id) {
+    id
+    name
+    isDefault
+  }
+  adminStateStepQuery(definitionId: $id) {
+    id
+    name
+    isStartState
+    isStopState
+  }
+  adminStateTransitionQuery(definitionId: $id) {
+    id
+    fromStep {
+      id
+      name
+      isStartState
+      isStopState
+    }
+    toStep {
+      id
+      name
+      isStartState
+      isStopState
+    }
+    formDefinition
+  }
+}

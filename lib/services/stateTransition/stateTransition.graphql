@@ -1,0 +1,106 @@
+query StateTransitions($definitionId: ID!) {
+  adminStateTransitionQuery(definitionId: $definitionId) {
+    id
+    fromStep {
+      id
+      name
+      isStartState
+      isStopState
+    }
+    toStep {
+      id
+      name
+      isStartState
+      isStopState
+    }
+    formDefinition
+  }
+}
+
+mutation StateTransitionCreate(
+  $formDefinition: String!
+  $fromStepId: ID!
+  $toStepId: ID!
+) {
+  adminStateTransitionCreate(
+    formDefinition: $formDefinition
+    fromStepId: $fromStepId
+    toStepId: $toStepId
+  ) {
+    result {
+      __typename
+      ... on AdminStateTransitionCreateSuccess {
+        id
+      }
+      ... on AdminStateTransitionCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation StateTransitionUpdate(
+  $id: ID!
+  $formDefinition: String!
+  $fromStepId: ID!
+  $toStepId: ID!
+) {
+  adminStateTransitionUpdate(
+    id: $id
+    formDefinition: $formDefinition
+    fromStepId: $fromStepId
+    toStepId: $toStepId
+  ) {
+    result {
+      __typename
+      ... on AdminStateTransitionUpdateSuccess {
+        stateTransition {
+          id
+          fromStep {
+            id
+            name
+            isStartState
+            isStopState
+          }
+          toStep {
+            id
+            name
+            isStartState
+            isStopState
+          }
+          formDefinition
+        }
+      }
+      ... on AdminStateTransitionUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+query GetStateTransition($id: ID!) {
+  stateTransitionGet(id: $id) {
+    id
+    fromStep {
+      id
+      name
+      isStartState
+      isStopState
+    }
+    toStep {
+      id
+      name
+      isStartState
+      isStopState
+    }
+    formDefinition
+  }
+}

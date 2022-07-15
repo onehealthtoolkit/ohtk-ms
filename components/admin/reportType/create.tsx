@@ -135,7 +135,6 @@ const ReportTypeCreate = () => {
                   id="category"
                   placeholder="Category"
                   onChange={evt => {
-                    console.log(evt.target.value);
                     viewModel.categoryId = +evt.target.value;
                   }}
                   disabled={isSubmitting}

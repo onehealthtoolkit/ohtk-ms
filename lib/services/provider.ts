@@ -11,6 +11,9 @@ import { ReportService } from "./report";
 import { CaseService } from "./case";
 import { CaseDefinitionService } from "./caseDefinition";
 import { ReporterNotificationService } from "./reporterNotification";
+import { StateDefinitionService } from "./stateDefinition";
+import { StateStepService } from "./stateStep";
+import { StateTransitionService } from "./stateTransition";
 
 export interface IServiceProvider {
   get authService(): IAuthService;
@@ -24,6 +27,9 @@ export interface IServiceProvider {
   get reporterNotificationService(): ReporterNotificationService;
   get caseService(): CaseService;
   get caseDefinitionService(): CaseDefinitionService;
+  get stateDefinitionService(): StateDefinitionService;
+  get stateStepService(): StateStepService;
+  get stateTransitionService(): StateTransitionService;
 }
 
 export class ServicesProvider implements IServiceProvider {
@@ -40,6 +46,9 @@ export class ServicesProvider implements IServiceProvider {
   reportService: ReportService;
   caseService: CaseService;
   caseDefinitionService: CaseDefinitionService;
+  stateDefinitionService: StateDefinitionService;
+  stateStepService: StateStepService;
+  stateTransitionService: StateTransitionService;
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
@@ -54,6 +63,9 @@ export class ServicesProvider implements IServiceProvider {
     this.reporterNotificationService = new ReporterNotificationService(client);
     this.caseService = new CaseService(client);
     this.caseDefinitionService = new CaseDefinitionService(client);
+    this.stateDefinitionService = new StateDefinitionService(client);
+    this.stateStepService = new StateStepService(client);
+    this.stateTransitionService = new StateTransitionService(client);
   }
 }
 

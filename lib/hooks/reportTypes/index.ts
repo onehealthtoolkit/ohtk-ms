@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import {ReportType} from "lib/services/reportType";
+import { useEffect, useState } from "react";
+import { ReportType } from "lib/services/reportType";
 import useServices from "lib/services/provider";
 
 export default function useReportTypes() {
@@ -17,5 +17,5 @@ export default function useReportTypes() {
     loadReportTypes();
   }, [services.reportTypeService]);
 
-  return reportTypes
+  return reportTypes;
 }
