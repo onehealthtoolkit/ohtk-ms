@@ -1,11 +1,11 @@
 import { BaseViewModel } from "lib/baseViewModel";
 import { ReporterNotification } from "lib/services/reporterNotification";
 import { IReporterNotificationService } from "lib/services/reporterNotification/reporterNotificationService";
-import { makeObservable, observable } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
 
 export class ReporterNotificationViewViewModel extends BaseViewModel {
   id: string;
-  data: ReporterNotification = {} as ReporterNotification;
+  _data: ReporterNotification = {} as ReporterNotification;
 
   constructor(
     id: string,
@@ -13,10 +13,18 @@ export class ReporterNotificationViewViewModel extends BaseViewModel {
   ) {
     super();
     makeObservable(this, {
-      data: observable,
+      _data: observable,
+      data: computed,
     });
     this.id = id;
     this.fetch();
+  }
+
+  get data(): ReporterNotification {
+    return this._data;
+  }
+  set data(value: ReporterNotification) {
+    this._data = value;
   }
 
   async fetch() {

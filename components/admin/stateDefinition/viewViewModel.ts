@@ -1,11 +1,11 @@
 import { BaseViewModel } from "lib/baseViewModel";
 import { StateDefinition } from "lib/services/stateDefinition";
 import { IStateDefinitionService } from "lib/services/stateDefinition/stateDefinitionService";
-import { makeObservable, observable } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
 
 export class StateDefinitionViewViewModel extends BaseViewModel {
   id: string;
-  data: StateDefinition = {} as StateDefinition;
+  _data: StateDefinition = {} as StateDefinition;
 
   constructor(
     id: string,
@@ -13,10 +13,18 @@ export class StateDefinitionViewViewModel extends BaseViewModel {
   ) {
     super();
     makeObservable(this, {
-      data: observable,
+      _data: observable,
+      data: computed,
     });
     this.id = id;
     this.fetch();
+  }
+
+  get data(): StateDefinition {
+    return this._data;
+  }
+  set data(value: StateDefinition) {
+    this._data = value;
   }
 
   async fetch() {

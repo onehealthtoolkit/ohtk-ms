@@ -1,11 +1,11 @@
 import { BaseViewModel } from "lib/baseViewModel";
 import { InvitationCode } from "lib/services/invitationCode";
 import { IInvitationCodeService } from "lib/services/invitationCode/invitationCodeService";
-import { makeObservable, observable } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
 
 export class InvitationCodeViewViewModel extends BaseViewModel {
   id: string;
-  data: InvitationCode = {} as InvitationCode;
+  _data: InvitationCode = {} as InvitationCode;
 
   constructor(
     id: string,
@@ -13,10 +13,18 @@ export class InvitationCodeViewViewModel extends BaseViewModel {
   ) {
     super();
     makeObservable(this, {
-      data: observable,
+      _data: observable,
+      data: computed,
     });
     this.id = id;
     this.fetch();
+  }
+
+  get data(): InvitationCode {
+    return this._data;
+  }
+  set data(value: InvitationCode) {
+    this._data = value;
   }
 
   async fetch() {

@@ -3,11 +3,11 @@ import {
   IStateTransitionService,
   StateTransition,
 } from "lib/services/stateTransition";
-import { makeObservable, observable } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
 
 export class StateTransitionViewViewModel extends BaseViewModel {
   id: string;
-  data: StateTransition = {} as StateTransition;
+  _data: StateTransition = {} as StateTransition;
 
   constructor(
     id: string,
@@ -15,10 +15,18 @@ export class StateTransitionViewViewModel extends BaseViewModel {
   ) {
     super();
     makeObservable(this, {
-      data: observable,
+      _data: observable,
+      data: computed,
     });
     this.id = id;
     this.fetch();
+  }
+
+  get data(): StateTransition {
+    return this._data;
+  }
+  set data(value: StateTransition) {
+    this._data = value;
   }
 
   async fetch() {

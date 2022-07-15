@@ -1,19 +1,27 @@
 import { BaseViewModel } from "lib/baseViewModel";
 import { User } from "lib/services/user";
 import { IUserService } from "lib/services/user/userService";
-import { makeObservable, observable } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
 
 export class UserViewViewModel extends BaseViewModel {
   id: string;
-  data: User = {} as User;
+  _data: User = {} as User;
 
   constructor(id: string, readonly userService: IUserService) {
     super();
     makeObservable(this, {
-      data: observable,
+      _data: observable,
+      data: computed,
     });
     this.id = id;
     this.fetch();
+  }
+
+  get data(): User {
+    return this._data;
+  }
+  set data(value: User) {
+    this._data = value;
   }
 
   async fetch() {
