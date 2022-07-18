@@ -54,10 +54,6 @@ export abstract class StateTransitionViewModel extends BaseFormViewModel {
   }
 
   public parseFormDefinition(value: string): boolean {
-    if (!value || value === "") {
-      this.formDefinition = "{}";
-      return true;
-    }
     try {
       this.formViewModel.parse(JSON.parse(value));
       this.formDefinition = this.formViewModel.jsonString;
@@ -123,6 +119,12 @@ export abstract class StateTransitionViewModel extends BaseFormViewModel {
     if (this.formDefinition.length === 0) {
       isValid = false;
       this.fieldErrors["formDefinition"] = "this field is required";
+    } else {
+      isValid = this.parseFormDefinition(
+        this.isFormBuilderMode
+          ? this.formViewModel.jsonString
+          : this.formDefinition
+      );
     }
     if (this.fromStepId.length === 0) {
       isValid = false;
