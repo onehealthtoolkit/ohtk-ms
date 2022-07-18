@@ -17,6 +17,7 @@ import {
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
+import RoleSelect from "./roleSelect";
 
 const InvitationCodeUpdate = () => {
   const router = useRouter();
@@ -52,6 +53,7 @@ const InvitationCodeUpdate = () => {
             />
             <ErrorText>{viewModel.fieldErrors.code}</ErrorText>
           </Field>
+
           <Field $size="half">
             <Label htmlFor="fromDate">From Date</Label>
             <TextInput
@@ -65,6 +67,7 @@ const InvitationCodeUpdate = () => {
             />
             <ErrorText>{viewModel.fieldErrors.code}</ErrorText>
           </Field>
+
           <Field $size="half">
             <Label htmlFor="throughDate">Through Date</Label>
             <TextInput
@@ -77,6 +80,12 @@ const InvitationCodeUpdate = () => {
               value={viewModel.throughDate}
             />
             <ErrorText>{viewModel.fieldErrors.code}</ErrorText>
+          </Field>
+
+          <Field $size="half">
+            <label htmlFor="role">Role</label>
+            <RoleSelect viewModel={viewModel} />
+            <ErrorText>{viewModel.fieldErrors.role}</ErrorText>
           </Field>
         </FieldGroup>
         {viewModel.submitError.length > 0 && (

@@ -8,7 +8,8 @@ export class InvitationCodeCreateViewModel extends InvitationCodeViewModel {
       this.code,
       this.authorityId,
       new Date(this.fromDate).toISOString(),
-      new Date(this.throughDate).toISOString()
+      new Date(this.throughDate).toISOString(),
+      this.role
     );
   }
 }

@@ -111,6 +111,7 @@ const SelectInput = (
         border
         rounded
         w-full
+        h-10
         py-2
         px-3
         text-grey-darker

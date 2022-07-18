@@ -16,6 +16,7 @@ query invitationCodes(
       code
       fromDate
       throughDate
+      role
     }
   }
 }
@@ -25,12 +26,14 @@ mutation InvitationCodeCreate(
   $authorityId: Int!
   $fromDate: DateTime!
   $throughDate: DateTime!
+  $role: String
 ) {
   adminInvitationCodeCreate(
     code: $code
     authorityId: $authorityId
     fromDate: $fromDate
     throughDate: $throughDate
+    role: $role
   ) {
     result {
       __typename
@@ -54,12 +57,14 @@ mutation InvitationCodeUpdate(
   $code: String!
   $fromDate: DateTime
   $throughDate: DateTime
+  $role: String
 ) {
   adminInvitationCodeUpdate(
     id: $id
     code: $code
     fromDate: $fromDate
     throughDate: $throughDate
+    role: $role
   ) {
     result {
       __typename
@@ -72,6 +77,7 @@ mutation InvitationCodeUpdate(
           authority {
             id
           }
+          role
         }
       }
       ... on AdminInvitationCodeUpdateProblem {
@@ -94,5 +100,6 @@ query GetInvitationCode($id: ID!) {
     }
     fromDate
     throughDate
+    role
   }
 }
