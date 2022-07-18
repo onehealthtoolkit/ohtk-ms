@@ -24,6 +24,9 @@ const Protect = ({ children }: Props) => {
         if (!store.isLogin) {
           return <SignIn />;
         }
+        if (!store.me) {
+          return <Spinner />;
+        }
 
         return <>{children}</>;
       }}

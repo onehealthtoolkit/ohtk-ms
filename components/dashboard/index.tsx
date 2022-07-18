@@ -1,4 +1,3 @@
-import Layout from "components/layout";
 import useStore from "lib/store";
 import React, { useState } from "react";
 import DashboardViewModel from "./dashboardViewModel";
@@ -7,10 +6,11 @@ import AuthorityFilter from "./authorityFilter";
 import MapView from "./mapView";
 import SummaryByCategoryView from "./summaryByCategoryView";
 import CasesTableView from "./casesTableView";
+import { Observer, observer } from "mobx-react";
 
 const Dashboard: React.FC = () => {
   const store = useStore();
-  const [viewModel] = useState(() => {
+  const [viewModel] = useState<DashboardViewModel>(() => {
     const dashboardViewModel = new DashboardViewModel(
       store.me!.authorityId,
       store.me!.authorityName
@@ -18,15 +18,19 @@ const Dashboard: React.FC = () => {
     return dashboardViewModel;
   });
   return (
-    <Layout>
-      <p>Dashboard</p>
-      <AuthorityFilter viewModel={viewModel} />
-      <StatView authorityId={viewModel.authorityId} />
-      <MapView authorityId={viewModel.authorityId} />
-      <SummaryByCategoryView authorityId={viewModel.authorityId} />
-      <CasesTableView authorityId={viewModel.authorityId} />
-    </Layout>
+    <Observer>
+      {() => (
+        <div>
+          <p>Dashboard</p>
+          <AuthorityFilter viewModel={viewModel} />
+          <StatView authorityId={viewModel.authorityId} />
+          <MapView authorityId={viewModel.authorityId} />
+          <SummaryByCategoryView authorityId={viewModel.authorityId} />
+          <CasesTableView authorityId={viewModel.authorityId} />
+        </div>
+      )}
+    </Observer>
   );
 };
 
-export default Dashboard;
+export default observer(Dashboard);
