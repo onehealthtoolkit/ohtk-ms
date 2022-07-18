@@ -11,9 +11,6 @@ const servicesProvider = new ServicesProvider(client);
 const store = new Store(servicesProvider);
 
 function MyApp({ Component, pageProps }: AppProps) {
-  if (store.initTokenPending) {
-    return <div>Loading...</div>;
-  }
   return (
     <ApolloProvider client={client}>
       <ServicesContext.Provider value={servicesProvider}>

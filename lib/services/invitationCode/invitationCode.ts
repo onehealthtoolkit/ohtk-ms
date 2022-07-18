@@ -4,4 +4,5 @@ export type InvitationCode = {
   authorityId?: number;
   fromDate?: string;
   throughDate?: string;
+  role?: string;
 };

@@ -20,24 +20,31 @@ export interface IInvitationCodeService extends IService {
     offset: number,
     searchText: string
   ): Promise<QueryResult<InvitationCode[]>>;
+
   getInvitationCode(id: string): Promise<GetResult<InvitationCode>>;
+
   createInvitationCode(
     code: string,
     authorityId: number,
     fromDate: string,
-    throughDate: string
+    throughDate: string,
+    role: string
   ): Promise<SaveResult<InvitationCode>>;
+
   updateInvitationCode(
     id: string,
     code: string,
     fromDate: string,
-    throughDate: string
+    throughDate: string,
+    role: string
   ): Promise<SaveResult<InvitationCode>>;
+
   deleteInvitationCode(id: string): Promise<DeleteResult>;
 }
 
 export class InvitationCodeService implements IInvitationCodeService {
   client: ApolloClient<NormalizedCacheObject>;
+
   fetchInvitationCodesQuery = {
     limit: 20,
     offset: 0,
@@ -73,6 +80,7 @@ export class InvitationCodeService implements IInvitationCodeService {
           code: item.code,
           fromDate: item.fromDate,
           throughDate: item.throughDate,
+          role: item.role,
         });
       }
     });
@@ -98,6 +106,7 @@ export class InvitationCodeService implements IInvitationCodeService {
         code: invitationCode.code,
         fromDate: invitationCode.fromDate,
         throughDate: invitationCode.throughDate,
+        role: invitationCode.role,
       };
     }
     return {
@@ -109,7 +118,8 @@ export class InvitationCodeService implements IInvitationCodeService {
     code: string,
     authorityId: number,
     fromDate: string,
-    throughDate: string
+    throughDate: string,
+    role: string
   ): Promise<SaveResult<InvitationCode>> {
     const createResult = await this.client.mutate({
       mutation: InvitationCodeCreateDocument,
@@ -118,6 +128,7 @@ export class InvitationCodeService implements IInvitationCodeService {
         authorityId: authorityId,
         fromDate: fromDate,
         throughDate: throughDate,
+        role: role,
       },
       refetchQueries: [
         {
@@ -158,7 +169,8 @@ export class InvitationCodeService implements IInvitationCodeService {
     id: string,
     code: string,
     fromDate: string,
-    throughDate: string
+    throughDate: string,
+    role: string
   ): Promise<SaveResult<InvitationCode>> {
     const updateResult = await this.client.mutate({
       mutation: InvitationCodeUpdateDocument,
@@ -167,6 +179,7 @@ export class InvitationCodeService implements IInvitationCodeService {
         code,
         fromDate,
         throughDate,
+        role,
       },
       refetchQueries: [
         {

@@ -24,6 +24,7 @@ export class InvitationCodeUpdateViewModel extends InvitationCodeViewModel {
         this.throughDate = new Date(data.throughDate)
           .toISOString()
           .split("T")[0];
+      this.role = data.role!;
     }
     this.isLoading = false;
   }
@@ -33,7 +34,8 @@ export class InvitationCodeUpdateViewModel extends InvitationCodeViewModel {
       this.id,
       this.code,
       new Date(this.fromDate).toISOString(),
-      new Date(this.throughDate).toISOString()
+      new Date(this.throughDate).toISOString(),
+      this.role
     );
   }
 }

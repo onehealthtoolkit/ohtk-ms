@@ -60,22 +60,31 @@ export class Store {
 
   async signIn(username: string, password: string): Promise<SignInResult> {
     const result = await this.authService.signIn(username, password);
+
     if (result.success) {
       // this.authService.setRefreshExpiresIn(tokenAuth.refreshExpiresIn);
+      runInAction(() => {
+        this.isLogin = true;
+      });
+
       await this.fetchMe();
-      this.isLogin = true;
     }
     return result;
   }
 
   async fetchMe(): Promise<void> {
-    this.me = await this.profileService.fetchMe();
+    var me = await this.profileService.fetchMe();
+    runInAction(() => {
+      this.me = me;
+    });
   }
 
   async signOut() {
     await this.authService.signOut();
-    this.me = undefined;
-    this.isLogin = false;
+    runInAction(() => {
+      this.me = undefined;
+      this.isLogin = false;
+    });
   }
 
   toggleOpenMenu() {

@@ -13,6 +13,8 @@ export abstract class InvitationCodeViewModel extends BaseFormViewModel {
   _authorityId: number = 0;
   _fromDate: string = "";
   _throughDate: string = "";
+  _role: string = "REP";
+
   constructor(invitationCodeService: IInvitationCodeService) {
     super();
     makeObservable(this, {
@@ -24,6 +26,8 @@ export abstract class InvitationCodeViewModel extends BaseFormViewModel {
       fromDate: computed,
       _throughDate: observable,
       throughDate: computed,
+      _role: observable,
+      role: computed,
       save: action,
       validate: action,
     });
@@ -69,6 +73,18 @@ export abstract class InvitationCodeViewModel extends BaseFormViewModel {
   public set throughDate(value: string) {
     this._throughDate = value;
     delete this.fieldErrors["throughDate"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public get role() {
+    return this._role;
+  }
+
+  public set role(value) {
+    this._role = value;
+    delete this.fieldErrors["role"];
     if (this.submitError.length > 0) {
       this.submitError = "";
     }

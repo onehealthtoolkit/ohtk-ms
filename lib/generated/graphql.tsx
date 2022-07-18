@@ -55,6 +55,14 @@ export type Scalars = {
   Upload: any;
 };
 
+/** An enumeration. */
+export enum AccountsAuthorityUserRoleChoices {
+  /** Officer */
+  Ofc = "OFC",
+  /** Reporter */
+  Rep = "REP",
+}
+
 export type AdminAuthorityCreateMutation = {
   __typename?: "AdminAuthorityCreateMutation";
   result?: Maybe<AdminAuthorityCreateResult>;
@@ -81,7 +89,7 @@ export type AdminAuthorityCreateSuccess = {
   id: Scalars["ID"];
   incidents: Array<IncidentReportType>;
   inherits: Array<AdminAuthorityCreateSuccess>;
-  inviations: Array<AdminInvitationCodeCreateSuccess>;
+  invitations: Array<AdminInvitationCodeCreateSuccess>;
   name: Scalars["String"];
   reportTypes: Array<AdminReportTypeCreateSuccess>;
   updatedAt: Scalars["DateTime"];
@@ -146,6 +154,7 @@ export type AdminAuthorityUserCreateSuccess = {
   avatarUrl?: Maybe<Scalars["String"]>;
   dateJoined: Scalars["DateTime"];
   email: Scalars["String"];
+  fcmToken: Scalars["String"];
   firstName: Scalars["String"];
   id: Scalars["ID"];
   /** Designates whether this user should be treated as active. Unselect this instead of deleting accounts. */
@@ -157,6 +166,7 @@ export type AdminAuthorityUserCreateSuccess = {
   lastLogin?: Maybe<Scalars["DateTime"]>;
   lastName: Scalars["String"];
   password: Scalars["String"];
+  role?: Maybe<AccountsAuthorityUserRoleChoices>;
   telephone?: Maybe<Scalars["String"]>;
   thumbnailAvatarUrl?: Maybe<Scalars["String"]>;
   userPtr: UserType;
@@ -360,6 +370,7 @@ export type AdminInvitationCodeCreateSuccess = {
   deletedAt?: Maybe<Scalars["DateTime"]>;
   fromDate: Scalars["DateTime"];
   id: Scalars["ID"];
+  role: Scalars["String"];
   throughDate: Scalars["DateTime"];
   updatedAt: Scalars["DateTime"];
 };
@@ -370,6 +381,7 @@ export type AdminInvitationCodeQueryType = {
   code: Scalars["String"];
   fromDate: Scalars["DateTime"];
   id: Scalars["ID"];
+  role: Scalars["String"];
   throughDate: Scalars["DateTime"];
 };
 
@@ -563,7 +575,7 @@ export type AdminStateDefinitionCreateSuccess = {
   id: Scalars["ID"];
   isDefault: Scalars["Boolean"];
   name: Scalars["String"];
-  statestepSet: Array<AdminStateStepCreateSuccess>;
+  statestepSet: Array<DeepStateStepType>;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -620,15 +632,16 @@ export type AdminStateStepCreateResult =
 
 export type AdminStateStepCreateSuccess = {
   __typename?: "AdminStateStepCreateSuccess";
+  casestateSet: Array<CaseStateType>;
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
-  fromTransitions: Array<AdminStateTransitionCreateSuccess>;
+  fromTransitions: Array<DeepStateTransitionType>;
   id: Scalars["ID"];
   isStartState: Scalars["Boolean"];
   isStopState: Scalars["Boolean"];
   name: Scalars["String"];
-  stateDefinition: AdminStateDefinitionCreateSuccess;
-  toTransitions: Array<AdminStateTransitionCreateSuccess>;
+  stateDefinition: DeepStateDefinitionType;
+  toTransitions: Array<DeepStateTransitionType>;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -669,12 +682,13 @@ export type AdminStateTransitionCreateResult =
 
 export type AdminStateTransitionCreateSuccess = {
   __typename?: "AdminStateTransitionCreateSuccess";
+  casestatetransitionSet: Array<CaseStateTransitionType>;
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
   formDefinition?: Maybe<Scalars["JSONString"]>;
-  fromStep: AdminStateStepCreateSuccess;
+  fromStep: DeepStateStepType;
   id: Scalars["ID"];
-  toStep: AdminStateStepCreateSuccess;
+  toStep: DeepStateStepType;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -762,13 +776,30 @@ export type CaseDefinitionType = {
   reportType: AdminReportTypeCreateSuccess;
 };
 
+export type CaseStateTransitionType = {
+  __typename?: "CaseStateTransitionType";
+  createdAt: Scalars["DateTime"];
+  createdBy: UserType;
+  formData?: Maybe<Scalars["JSONString"]>;
+  id: Scalars["ID"];
+  transition: StateTransitionType;
+};
+
+export type CaseStateType = {
+  __typename?: "CaseStateType";
+  id: Scalars["ID"];
+  state: DeepStateStepType;
+  transition: CaseStateTransitionType;
+};
+
 export type CaseType = {
   __typename?: "CaseType";
   authorities?: Maybe<Array<Maybe<AuthorityType>>>;
   description: Scalars["String"];
   id: Scalars["UUID"];
   report?: Maybe<IncidentReportType>;
-  stateDefinition?: Maybe<StateDefinitionType>;
+  stateDefinition?: Maybe<DeepStateDefinitionType>;
+  states?: Maybe<Array<Maybe<CaseStateType>>>;
 };
 
 export type CaseTypeNodeConnection = {
@@ -798,6 +829,31 @@ export type CheckInvitationCodeType = {
   code: Scalars["String"];
 };
 
+export type DeepStateDefinitionType = {
+  __typename?: "DeepStateDefinitionType";
+  id: Scalars["ID"];
+  isDefault: Scalars["Boolean"];
+  name: Scalars["String"];
+  statestepSet?: Maybe<Array<Maybe<DeepStateStepType>>>;
+};
+
+export type DeepStateStepType = {
+  __typename?: "DeepStateStepType";
+  id: Scalars["ID"];
+  isStartState: Scalars["Boolean"];
+  isStopState: Scalars["Boolean"];
+  name: Scalars["String"];
+  toTransitions?: Maybe<Array<Maybe<DeepStateTransitionType>>>;
+};
+
+export type DeepStateTransitionType = {
+  __typename?: "DeepStateTransitionType";
+  formDefinition?: Maybe<Scalars["JSONString"]>;
+  fromStep?: Maybe<StateStepType>;
+  id: Scalars["ID"];
+  toStep?: Maybe<StateStepType>;
+};
+
 export type DeleteJsonWebTokenCookie = {
   __typename?: "DeleteJSONWebTokenCookie";
   deleted: Scalars["Boolean"];
@@ -808,6 +864,12 @@ export type DeleteRefreshTokenCookie = {
   deleted: Scalars["Boolean"];
 };
 
+export type EventType = {
+  __typename?: "EventType";
+  cases?: Maybe<Array<Maybe<CaseType>>>;
+  reports?: Maybe<Array<Maybe<IncidentReportType>>>;
+};
+
 export type FeatureType = {
   __typename?: "FeatureType";
   createdAt: Scalars["DateTime"];
@@ -815,6 +877,11 @@ export type FeatureType = {
   key: Scalars["String"];
   updatedAt: Scalars["DateTime"];
   value: Scalars["String"];
+};
+
+export type ForwardStateMutation = {
+  __typename?: "ForwardStateMutation";
+  result?: Maybe<CaseStateType>;
 };
 
 export type ImageType = {
@@ -831,17 +898,13 @@ export type ImageType = {
 export type IncidentReportType = {
   __typename?: "IncidentReportType";
   caseId?: Maybe<Scalars["UUID"]>;
-  cases: Array<CaseType>;
   coverImage?: Maybe<ImageType>;
   createdAt: Scalars["DateTime"];
   data?: Maybe<Scalars["GenericScalar"]>;
-  deletedAt?: Maybe<Scalars["DateTime"]>;
   gpsLocation?: Maybe<Scalars["String"]>;
   id: Scalars["UUID"];
   images?: Maybe<Array<Maybe<ImageType>>>;
   incidentDate: Scalars["Date"];
-  originData: Scalars["JSONString"];
-  originRendererData: Scalars["String"];
   originalData?: Maybe<Scalars["GenericScalar"]>;
   platform?: Maybe<Scalars["String"]>;
   relevantAuthorities: Array<AdminAuthorityCreateSuccess>;
@@ -868,7 +931,16 @@ export type InvitationCodeType = {
   code: Scalars["String"];
   fromDate: Scalars["DateTime"];
   id: Scalars["ID"];
+  role: Scalars["String"];
   throughDate: Scalars["DateTime"];
+};
+
+export type MessageType = {
+  __typename?: "MessageType";
+  body: Scalars["String"];
+  id: Scalars["ID"];
+  image: Scalars["String"];
+  title: Scalars["String"];
 };
 
 export type Mutation = {
@@ -898,8 +970,10 @@ export type Mutation = {
   authorityUserRegister?: Maybe<AuthorityUserRegisterMutation>;
   deleteRefreshTokenCookie?: Maybe<DeleteRefreshTokenCookie>;
   deleteTokenCookie?: Maybe<DeleteJsonWebTokenCookie>;
+  forwardState?: Maybe<ForwardStateMutation>;
   promoteToCase?: Maybe<PromoteToCaseMutation>;
   refreshToken?: Maybe<Refresh>;
+  registerFcmToken?: Maybe<RegisterFcmTokenMutation>;
   revokeToken?: Maybe<Revoke>;
   submitImage?: Maybe<SubmitImage>;
   submitIncidentReport?: Maybe<SubmitIncidentReport>;
@@ -978,6 +1052,7 @@ export type MutationAdminInvitationCodeCreateArgs = {
   code: Scalars["String"];
   fromDate: Scalars["DateTime"];
   inherits?: InputMaybe<Array<InputMaybe<Scalars["Int"]>>>;
+  role?: InputMaybe<Scalars["String"]>;
   throughDate: Scalars["DateTime"];
 };
 
@@ -985,6 +1060,7 @@ export type MutationAdminInvitationCodeUpdateArgs = {
   code: Scalars["String"];
   fromDate?: InputMaybe<Scalars["DateTime"]>;
   id: Scalars["ID"];
+  role?: InputMaybe<Scalars["String"]>;
   throughDate?: InputMaybe<Scalars["DateTime"]>;
 };
 
@@ -1076,12 +1152,23 @@ export type MutationAuthorityUserRegisterArgs = {
   username: Scalars["String"];
 };
 
+export type MutationForwardStateArgs = {
+  caseId: Scalars["ID"];
+  formData?: InputMaybe<Scalars["GenericScalar"]>;
+  transitionId: Scalars["ID"];
+};
+
 export type MutationPromoteToCaseArgs = {
   reportId: Scalars["UUID"];
 };
 
 export type MutationRefreshTokenArgs = {
   refreshToken?: InputMaybe<Scalars["String"]>;
+};
+
+export type MutationRegisterFcmTokenArgs = {
+  token: Scalars["String"];
+  userId: Scalars["String"];
 };
 
 export type MutationRevokeTokenArgs = {
@@ -1158,15 +1245,20 @@ export type Query = {
   casesQuery?: Maybe<CaseTypeNodeConnection>;
   category?: Maybe<CategoryType>;
   checkInvitationCode?: Maybe<CheckInvitationCodeType>;
+  deepStateDefinitionGet?: Maybe<DeepStateDefinitionType>;
+  eventsQuery?: Maybe<EventType>;
   features?: Maybe<Array<Maybe<FeatureType>>>;
   healthCheck?: Maybe<Scalars["String"]>;
   incidentReport?: Maybe<IncidentReportType>;
   incidentReports?: Maybe<IncidentReportTypeNodeConnection>;
   invitationCode?: Maybe<InvitationCodeType>;
   me?: Maybe<UserProfileType>;
+  myMessage?: Maybe<UserMessageType>;
+  myMessages?: Maybe<UserMessageTypeNodeConnection>;
   myReportTypes?: Maybe<Array<Maybe<ReportTypeType>>>;
   reportType?: Maybe<ReportTypeType>;
   reporterNotification?: Maybe<ReporterNotificationType>;
+  statQuery?: Maybe<StatType>;
   stateDefinitionGet?: Maybe<StateDefinitionType>;
   stateStepGet?: Maybe<StateStepType>;
   stateTransitionGet?: Maybe<StateTransitionType>;
@@ -1350,6 +1442,14 @@ export type QueryCheckInvitationCodeArgs = {
   code: Scalars["String"];
 };
 
+export type QueryDeepStateDefinitionGetArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryEventsQueryArgs = {
+  authorityId: Scalars["Int"];
+};
+
 export type QueryIncidentReportArgs = {
   id: Scalars["ID"];
 };
@@ -1375,12 +1475,30 @@ export type QueryInvitationCodeArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryMyMessageArgs = {
+  id: Scalars["String"];
+};
+
+export type QueryMyMessagesArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+};
+
 export type QueryReportTypeArgs = {
   id: Scalars["ID"];
 };
 
 export type QueryReporterNotificationArgs = {
   id: Scalars["ID"];
+};
+
+export type QueryStatQueryArgs = {
+  authorityId: Scalars["Int"];
 };
 
 export type QueryStateDefinitionGetArgs = {
@@ -1405,6 +1523,11 @@ export type Refresh = {
   refreshExpiresIn: Scalars["Int"];
   refreshToken: Scalars["String"];
   token: Scalars["String"];
+};
+
+export type RegisterFcmTokenMutation = {
+  __typename?: "RegisterFcmTokenMutation";
+  success?: Maybe<Scalars["Boolean"]>;
 };
 
 export type ReportTypeSyncInputType = {
@@ -1454,6 +1577,13 @@ export type Revoke = {
   revoked: Scalars["Int"];
 };
 
+export type StatType = {
+  __typename?: "StatType";
+  officialCount?: Maybe<Scalars["Int"]>;
+  openCaseCount?: Maybe<Scalars["Int"]>;
+  reporterCount?: Maybe<Scalars["Int"]>;
+};
+
 export type StateDefinitionType = {
   __typename?: "StateDefinitionType";
   id: Scalars["ID"];
@@ -1463,26 +1593,22 @@ export type StateDefinitionType = {
 
 export type StateStepType = {
   __typename?: "StateStepType";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  fromTransitions: Array<AdminStateTransitionCreateSuccess>;
   id: Scalars["ID"];
   isStartState: Scalars["Boolean"];
   isStopState: Scalars["Boolean"];
   name: Scalars["String"];
-  stateDefinition: AdminStateDefinitionCreateSuccess;
-  toTransitions: Array<AdminStateTransitionCreateSuccess>;
-  updatedAt: Scalars["DateTime"];
+  stateDefinition?: Maybe<StateDefinitionType>;
 };
 
 export type StateTransitionType = {
   __typename?: "StateTransitionType";
+  casestatetransitionSet: Array<CaseStateTransitionType>;
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
   formDefinition?: Maybe<Scalars["GenericScalar"]>;
-  fromStep: AdminStateStepCreateSuccess;
+  fromStep: DeepStateStepType;
   id: Scalars["ID"];
-  toStep: AdminStateStepCreateSuccess;
+  toStep: DeepStateStepType;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -1500,6 +1626,23 @@ export type SubmitIncidentReport = {
 export type SubmitZeroReportMutation = {
   __typename?: "SubmitZeroReportMutation";
   id?: Maybe<Scalars["UUID"]>;
+};
+
+export type UserMessageType = {
+  __typename?: "UserMessageType";
+  id: Scalars["ID"];
+  isSeen: Scalars["Boolean"];
+  message?: Maybe<MessageType>;
+  user?: Maybe<UserType>;
+};
+
+export type UserMessageTypeNodeConnection = {
+  __typename?: "UserMessageTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<UserMessageType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
 };
 
 export type UserProfileType = {
@@ -1930,6 +2073,7 @@ export type InvitationCodesQuery = {
       code: string;
       fromDate: any;
       throughDate: any;
+      role: string;
     } | null>;
   } | null;
 };
@@ -1939,6 +2083,7 @@ export type InvitationCodeCreateMutationVariables = Exact<{
   authorityId: Scalars["Int"];
   fromDate: Scalars["DateTime"];
   throughDate: Scalars["DateTime"];
+  role?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type InvitationCodeCreateMutation = {
@@ -1969,6 +2114,7 @@ export type InvitationCodeUpdateMutationVariables = Exact<{
   code: Scalars["String"];
   fromDate?: InputMaybe<Scalars["DateTime"]>;
   throughDate?: InputMaybe<Scalars["DateTime"]>;
+  role?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type InvitationCodeUpdateMutation = {
@@ -1993,6 +2139,7 @@ export type InvitationCodeUpdateMutation = {
             code: string;
             fromDate: any;
             throughDate: any;
+            role: string;
             authority: {
               __typename?: "AdminAuthorityCreateSuccess";
               id: string;
@@ -2015,6 +2162,7 @@ export type GetInvitationCodeQuery = {
     code: string;
     fromDate: any;
     throughDate: any;
+    role: string;
     authority: { __typename?: "AdminAuthorityCreateSuccess"; id: string };
   } | null;
 };
@@ -2579,14 +2727,14 @@ export type GetStateDefinitionQuery = {
     id: string;
     formDefinition?: any | null;
     fromStep: {
-      __typename?: "AdminStateStepCreateSuccess";
+      __typename?: "DeepStateStepType";
       id: string;
       name: string;
       isStartState: boolean;
       isStopState: boolean;
     };
     toStep: {
-      __typename?: "AdminStateStepCreateSuccess";
+      __typename?: "DeepStateStepType";
       id: string;
       name: string;
       isStartState: boolean;
@@ -2672,11 +2820,11 @@ export type StateStepUpdateMutation = {
             name: string;
             isStartState: boolean;
             isStopState: boolean;
-            stateDefinition: {
-              __typename?: "AdminStateDefinitionCreateSuccess";
+            stateDefinition?: {
+              __typename?: "StateDefinitionType";
               id: string;
               name: string;
-            };
+            } | null;
           } | null;
         }
       | null;
@@ -2695,11 +2843,11 @@ export type GetStateStepQuery = {
     name: string;
     isStartState: boolean;
     isStopState: boolean;
-    stateDefinition: {
-      __typename?: "AdminStateDefinitionCreateSuccess";
+    stateDefinition?: {
+      __typename?: "StateDefinitionType";
       id: string;
       name: string;
-    };
+    } | null;
   } | null;
 };
 
@@ -2714,14 +2862,14 @@ export type StateTransitionsQuery = {
     id: string;
     formDefinition?: any | null;
     fromStep: {
-      __typename?: "AdminStateStepCreateSuccess";
+      __typename?: "DeepStateStepType";
       id: string;
       name: string;
       isStartState: boolean;
       isStopState: boolean;
     };
     toStep: {
-      __typename?: "AdminStateStepCreateSuccess";
+      __typename?: "DeepStateStepType";
       id: string;
       name: string;
       isStartState: boolean;
@@ -2783,14 +2931,14 @@ export type StateTransitionUpdateMutation = {
             id: string;
             formDefinition?: any | null;
             fromStep: {
-              __typename?: "AdminStateStepCreateSuccess";
+              __typename?: "DeepStateStepType";
               id: string;
               name: string;
               isStartState: boolean;
               isStopState: boolean;
             };
             toStep: {
-              __typename?: "AdminStateStepCreateSuccess";
+              __typename?: "DeepStateStepType";
               id: string;
               name: string;
               isStartState: boolean;
@@ -2813,14 +2961,14 @@ export type GetStateTransitionQuery = {
     id: string;
     formDefinition?: any | null;
     fromStep: {
-      __typename?: "AdminStateStepCreateSuccess";
+      __typename?: "DeepStateStepType";
       id: string;
       name: string;
       isStartState: boolean;
       isStopState: boolean;
     };
     toStep: {
-      __typename?: "AdminStateStepCreateSuccess";
+      __typename?: "DeepStateStepType";
       id: string;
       name: string;
       isStartState: boolean;
@@ -4902,6 +5050,7 @@ export const InvitationCodesDocument = {
                         kind: "Field",
                         name: { kind: "Name", value: "throughDate" },
                       },
+                      { kind: "Field", name: { kind: "Name", value: "role" } },
                     ],
                   },
                 },
@@ -4974,6 +5123,11 @@ export const InvitationCodeCreateDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "role" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -5012,6 +5166,14 @@ export const InvitationCodeCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "throughDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "role" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "role" },
                 },
               },
             ],
@@ -5150,6 +5312,11 @@ export const InvitationCodeUpdateDocument = {
             name: { kind: "Name", value: "DateTime" },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "role" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -5188,6 +5355,14 @@ export const InvitationCodeUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "throughDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "role" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "role" },
                 },
               },
             ],
@@ -5253,6 +5428,10 @@ export const InvitationCodeUpdateDocument = {
                                         },
                                       ],
                                     },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "role" },
                                   },
                                 ],
                               },
@@ -5360,6 +5539,7 @@ export const GetInvitationCodeDocument = {
                 },
                 { kind: "Field", name: { kind: "Name", value: "fromDate" } },
                 { kind: "Field", name: { kind: "Name", value: "throughDate" } },
+                { kind: "Field", name: { kind: "Name", value: "role" } },
               ],
             },
           },
