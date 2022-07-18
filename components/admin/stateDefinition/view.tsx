@@ -118,7 +118,16 @@ const StateDefinitionView = () => {
             },
             {
               label: "Form Definition",
-              get: record => record.formDefinition,
+              get: record => {
+                let value;
+                try {
+                  const json = JSON.parse(record.formDefinition);
+                  value = JSON.stringify(json, null, 2);
+                } catch (e) {
+                  value = "Error! Bad definition format";
+                }
+                return <pre className="text-sm">{value}</pre>;
+              },
             },
           ]}
           data={viewModel?.data.stateTransitions || []}

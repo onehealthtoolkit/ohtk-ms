@@ -62,8 +62,8 @@ export class Store {
     const result = await this.authService.signIn(username, password);
     if (result.success) {
       // this.authService.setRefreshExpiresIn(tokenAuth.refreshExpiresIn);
-      this.isLogin = true;
       await this.fetchMe();
+      this.isLogin = true;
     }
     return result;
   }
