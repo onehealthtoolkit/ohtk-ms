@@ -2055,6 +2055,44 @@ export type GetCaseDefinitionQuery = {
   } | null;
 };
 
+export type StatQueryQueryVariables = Exact<{
+  authorityId: Scalars["Int"];
+}>;
+
+export type StatQueryQuery = {
+  __typename?: "Query";
+  statQuery?: {
+    __typename?: "StatType";
+    openCaseCount?: number | null;
+    reporterCount?: number | null;
+    officialCount?: number | null;
+  } | null;
+};
+
+export type EventsQueryQueryVariables = Exact<{
+  authorityId: Scalars["Int"];
+}>;
+
+export type EventsQueryQuery = {
+  __typename?: "Query";
+  eventsQuery?: {
+    __typename?: "EventType";
+    cases?: Array<{
+      __typename?: "CaseType";
+      id: any;
+      report?: {
+        __typename?: "IncidentReportType";
+        gpsLocation?: string | null;
+      } | null;
+    } | null> | null;
+    reports?: Array<{
+      __typename?: "IncidentReportType";
+      id: any;
+      gpsLocation?: string | null;
+    } | null> | null;
+  } | null;
+};
+
 export type InvitationCodesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
@@ -4943,6 +4981,149 @@ export const GetCaseDefinitionDocument = {
   GetCaseDefinitionQuery,
   GetCaseDefinitionQueryVariables
 >;
+export const StatQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "StatQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorityId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "statQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "authorityId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorityId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "openCaseCount" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reporterCount" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "officialCount" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<StatQueryQuery, StatQueryQueryVariables>;
+export const EventsQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "EventsQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorityId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "eventsQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "authorityId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorityId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "cases" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "report" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "gpsLocation" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reports" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "gpsLocation" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<EventsQueryQuery, EventsQueryQueryVariables>;
 export const InvitationCodesDocument = {
   kind: "Document",
   definitions: [

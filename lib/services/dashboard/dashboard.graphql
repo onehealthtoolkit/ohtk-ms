@@ -1,0 +1,22 @@
+query StatQuery($authorityId: Int!) {
+  statQuery(authorityId: $authorityId) {
+    openCaseCount
+    reporterCount
+    officialCount
+  }
+}
+
+query EventsQuery($authorityId: Int!) {
+  eventsQuery(authorityId: $authorityId) {
+    cases {
+      id
+      report {
+        gpsLocation
+      }
+    }
+    reports {
+      id
+      gpsLocation
+    }
+  }
+}
