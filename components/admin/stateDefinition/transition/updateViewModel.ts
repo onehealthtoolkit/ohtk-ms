@@ -24,6 +24,7 @@ export class StateTransitionUpdateViewModel extends StateTransitionViewModel {
       this.formDefinition = data.formDefinition;
       this.fromStepId = data.fromStep.id;
       this.toStepId = data.toStep.id;
+      this.parseFormDefinition(data.formDefinition);
     }
     this.isLoading = false;
   }

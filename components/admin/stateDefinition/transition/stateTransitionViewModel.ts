@@ -5,6 +5,8 @@ import {
   IStateTransitionService,
   StateTransition,
 } from "lib/services/stateTransition";
+import { FormViewModel } from "components/admin/formBuilder";
+import { ParseError } from "components/admin/formBuilder/shared";
 
 export abstract class StateTransitionViewModel extends BaseFormViewModel {
   stateTransitionService: IStateTransitionService;
@@ -13,6 +15,9 @@ export abstract class StateTransitionViewModel extends BaseFormViewModel {
   _formDefinition: string = "";
   _fromStepId: string = "";
   _toStepId: string = "";
+
+  _isFormBuilderMode = false;
+  formViewModel = new FormViewModel();
 
   constructor(
     readonly stateDefinitionId: string,
@@ -29,6 +34,10 @@ export abstract class StateTransitionViewModel extends BaseFormViewModel {
       toStepId: computed,
       save: action,
       validate: action,
+      _isFormBuilderMode: observable,
+      isFormBuilderMode: computed,
+      formViewModel: observable,
+      parseFormDefinition: action,
     });
     this.stateTransitionService = stateTransitionService;
   }
@@ -41,6 +50,21 @@ export abstract class StateTransitionViewModel extends BaseFormViewModel {
     delete this.fieldErrors["formDefinition"];
     if (this.submitError.length > 0) {
       this.submitError = "";
+    }
+  }
+
+  public parseFormDefinition(value: string): boolean {
+    try {
+      this.formViewModel.parse(JSON.parse(value));
+      this.formDefinition = this.formViewModel.jsonString;
+      return true;
+    } catch (e) {
+      if (e instanceof ParseError) {
+        this.fieldErrors["formDefinition"] = e.message;
+      } else {
+        this.fieldErrors["formDefinition"] = "Error! Bad definition format";
+      }
+      return false;
     }
   }
 
@@ -95,6 +119,12 @@ export abstract class StateTransitionViewModel extends BaseFormViewModel {
     if (this.formDefinition.length === 0) {
       isValid = false;
       this.fieldErrors["formDefinition"] = "this field is required";
+    } else {
+      isValid = this.parseFormDefinition(
+        this.isFormBuilderMode
+          ? this.formViewModel.jsonString
+          : this.formDefinition
+      );
     }
     if (this.fromStepId.length === 0) {
       isValid = false;
@@ -105,5 +135,12 @@ export abstract class StateTransitionViewModel extends BaseFormViewModel {
       this.fieldErrors["toStepId"] = "this field is required";
     }
     return isValid;
+  }
+
+  public get isFormBuilderMode(): boolean {
+    return this._isFormBuilderMode;
+  }
+  public set isFormBuilderMode(value: boolean) {
+    this._isFormBuilderMode = value;
   }
 }
