@@ -20,8 +20,7 @@ const Dashboard: React.FC = () => {
   return (
     <Observer>
       {() => (
-        <div>
-          <p>Dashboard</p>
+        <div className="grid gap-4">
           <AuthorityFilter viewModel={viewModel} />
           <StatView authorityId={viewModel.authorityId} />
           <MapView authorityId={viewModel.authorityId} />
