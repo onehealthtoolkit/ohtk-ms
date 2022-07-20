@@ -64,5 +64,121 @@ query GetCase($id: UUID!) {
         telephone
       }
     }
+    stateDefinition {
+      id
+      name
+      isDefault
+      statestepSet {
+        id
+        name
+        isStartState
+        isStopState
+        toTransitions {
+          id
+          fromStep {
+            id
+            name
+            isStartState
+            isStopState
+          }
+          toStep {
+            id
+            name
+            isStartState
+            isStopState
+          }
+          formDefinition
+        }
+      }
+    }
+    states {
+      id
+      state {
+        id
+        name
+        isStartState
+        isStopState
+        toTransitions {
+          id
+          fromStep {
+            id
+            name
+            isStartState
+            isStopState
+          }
+          toStep {
+            id
+            name
+            isStartState
+            isStopState
+          }
+          formDefinition
+        }
+      }
+      transition {
+        id
+        createdAt
+        formData
+        createdBy {
+          id
+          firstName
+          lastName
+        }
+        transition {
+          id
+          fromStep {
+            id
+            name
+            isStartState
+            isStopState
+          }
+          toStep {
+            id
+            name
+            isStartState
+            isStopState
+          }
+          formDefinition
+        }
+      }
+    }
+  }
+}
+
+mutation ForwardState(
+  $caseId: ID!
+  $transitionId: ID!
+  $formData: GenericScalar
+) {
+  forwardState(
+    caseId: $caseId
+    transitionId: $transitionId
+    formData: $formData
+  ) {
+    result {
+      id
+      state {
+        id
+        name
+        isStartState
+        isStopState
+        toTransitions {
+          id
+          fromStep {
+            id
+            name
+            isStartState
+            isStopState
+          }
+          toStep {
+            id
+            name
+            isStartState
+            isStopState
+          }
+          formDefinition
+        }
+      }
+    }
   }
 }
