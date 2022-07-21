@@ -789,7 +789,7 @@ export type CaseStateType = {
   __typename?: "CaseStateType";
   id: Scalars["ID"];
   state: DeepStateStepType;
-  transition: CaseStateTransitionType;
+  transition?: Maybe<CaseStateTransitionType>;
 };
 
 export type CaseType = {
@@ -877,11 +877,6 @@ export type FeatureType = {
   key: Scalars["String"];
   updatedAt: Scalars["DateTime"];
   value: Scalars["String"];
-};
-
-export type ForwardStateMutation = {
-  __typename?: "ForwardStateMutation";
-  result?: Maybe<CaseStateType>;
 };
 
 export type ImageType = {
@@ -1938,6 +1933,142 @@ export type GetCaseQuery = {
         id: string;
         telephone?: string | null;
       } | null;
+    } | null;
+    stateDefinition?: {
+      __typename?: "DeepStateDefinitionType";
+      id: string;
+      name: string;
+      isDefault: boolean;
+      statestepSet?: Array<{
+        __typename?: "DeepStateStepType";
+        id: string;
+        name: string;
+        isStartState: boolean;
+        isStopState: boolean;
+        toTransitions?: Array<{
+          __typename?: "DeepStateTransitionType";
+          id: string;
+          formDefinition?: any | null;
+          fromStep?: {
+            __typename?: "StateStepType";
+            id: string;
+            name: string;
+            isStartState: boolean;
+            isStopState: boolean;
+          } | null;
+          toStep?: {
+            __typename?: "StateStepType";
+            id: string;
+            name: string;
+            isStartState: boolean;
+            isStopState: boolean;
+          } | null;
+        } | null> | null;
+      } | null> | null;
+    } | null;
+    states?: Array<{
+      __typename?: "CaseStateType";
+      id: string;
+      state: {
+        __typename?: "DeepStateStepType";
+        id: string;
+        name: string;
+        isStartState: boolean;
+        isStopState: boolean;
+        toTransitions?: Array<{
+          __typename?: "DeepStateTransitionType";
+          id: string;
+          formDefinition?: any | null;
+          fromStep?: {
+            __typename?: "StateStepType";
+            id: string;
+            name: string;
+            isStartState: boolean;
+            isStopState: boolean;
+          } | null;
+          toStep?: {
+            __typename?: "StateStepType";
+            id: string;
+            name: string;
+            isStartState: boolean;
+            isStopState: boolean;
+          } | null;
+        } | null> | null;
+      };
+      transition?: {
+        __typename?: "CaseStateTransitionType";
+        id: string;
+        createdAt: any;
+        formData?: any | null;
+        createdBy: {
+          __typename?: "UserType";
+          id: string;
+          firstName: string;
+          lastName: string;
+        };
+        transition: {
+          __typename?: "StateTransitionType";
+          id: string;
+          formDefinition?: any | null;
+          fromStep: {
+            __typename?: "DeepStateStepType";
+            id: string;
+            name: string;
+            isStartState: boolean;
+            isStopState: boolean;
+          };
+          toStep: {
+            __typename?: "DeepStateStepType";
+            id: string;
+            name: string;
+            isStartState: boolean;
+            isStopState: boolean;
+          };
+        };
+      } | null;
+    } | null> | null;
+  } | null;
+};
+
+export type ForwardStateMutationVariables = Exact<{
+  caseId: Scalars["ID"];
+  transitionId: Scalars["ID"];
+  formData?: InputMaybe<Scalars["GenericScalar"]>;
+}>;
+
+export type ForwardStateMutation = {
+  __typename?: "Mutation";
+  forwardState?: {
+    __typename?: "ForwardStateMutation";
+    result?: {
+      __typename?: "CaseStateType";
+      id: string;
+      state: {
+        __typename?: "DeepStateStepType";
+        id: string;
+        name: string;
+        isStartState: boolean;
+        isStopState: boolean;
+        toTransitions?: Array<{
+          __typename?: "DeepStateTransitionType";
+          id: string;
+          formDefinition?: any | null;
+          fromStep?: {
+            __typename?: "StateStepType";
+            id: string;
+            name: string;
+            isStartState: boolean;
+            isStopState: boolean;
+          } | null;
+          toStep?: {
+            __typename?: "StateStepType";
+            id: string;
+            name: string;
+            isStartState: boolean;
+            isStopState: boolean;
+          } | null;
+        } | null> | null;
+      };
     } | null;
   } | null;
 };
@@ -4394,6 +4525,369 @@ export const GetCaseDocument = {
                     ],
                   },
                 },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "stateDefinition" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isDefault" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "statestepSet" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "isStartState" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "isStopState" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "toTransitions" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "fromStep" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStartState",
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStopState",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "toStep" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStartState",
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStopState",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "formDefinition",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "states" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "state" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "isStartState" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "isStopState" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "toTransitions" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "fromStep" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStartState",
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStopState",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "toStep" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStartState",
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStopState",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "formDefinition",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "transition" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "createdAt" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "formData" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "createdBy" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "firstName" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "lastName" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "transition" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "fromStep" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStartState",
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStopState",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "toStep" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStartState",
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStopState",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "formDefinition",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -4402,6 +4896,211 @@ export const GetCaseDocument = {
     },
   ],
 } as unknown as DocumentNode<GetCaseQuery, GetCaseQueryVariables>;
+export const ForwardStateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "forwardState" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "caseId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "transitionId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "formData" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "GenericScalar" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "forwardState" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "caseId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "caseId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "transitionId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "transitionId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "formData" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "formData" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "state" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "isStartState" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "isStopState" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "toTransitions" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "fromStep" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStartState",
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStopState",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "toStep" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStartState",
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isStopState",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "formDefinition",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ForwardStateMutation,
+  ForwardStateMutationVariables
+>;
 export const CaseDefinitionsDocument = {
   kind: "Document",
   definitions: [

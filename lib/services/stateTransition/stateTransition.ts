@@ -6,3 +6,10 @@ export type StateTransition = {
   toStep: StateStep;
   formDefinition: string;
 };
+
+export type StateTransitionRef = {
+  id: string;
+  fromStep?: StateStep | null;
+  toStep?: StateStep | null;
+  formDefinition?: string;
+};

@@ -3,8 +3,9 @@ import {
   GetCaseDocument,
   CasesDocument,
   PromoteReportToCaseDocument,
+  ForwardStateDocument,
 } from "lib/generated/graphql";
-import { Image, Case, CaseDetail } from "lib/services/case/case";
+import { Image, Case, CaseDetail, CaseState } from "lib/services/case/case";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
 
 export type CaseFilterData = {
@@ -28,6 +29,12 @@ export interface ICaseService extends IService {
   promoteToCase(reportId: string): Promise<String>;
 
   getCase(id: string): Promise<GetResult<CaseDetail>>;
+
+  forwardState(
+    caseId: string,
+    transitionId: string,
+    formData?: object
+  ): Promise<GetResult<CaseState>>;
 }
 
 export class CaseService implements ICaseService {
@@ -116,10 +123,33 @@ export class CaseService implements ICaseService {
         images: incidentCase.report?.images as Image[],
         reportByName: `${incidentCase.report?.reportedBy?.firstName} ${incidentCase.report?.reportedBy?.lastName}`,
         reportByTelephone: incidentCase.report?.reportedBy?.telephone || "",
+        stateDefinition: incidentCase.stateDefinition,
+        states: incidentCase.states,
       };
     }
     return {
       data,
+    };
+  }
+
+  async forwardState(
+    caseId: string,
+    transitionId: string,
+    formData?: object
+  ): Promise<GetResult<CaseState>> {
+    const forwardStateResult = await this.client.mutate({
+      mutation: ForwardStateDocument,
+      variables: {
+        caseId,
+        transitionId,
+        formData,
+      },
+    });
+
+    const data = forwardStateResult.data?.forwardState?.result as CaseState;
+    return {
+      data,
+      error: forwardStateResult.errors?.map(e => e.message).join(","),
     };
   }
 }

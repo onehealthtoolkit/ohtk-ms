@@ -1,11 +1,14 @@
 import { forwardRef, useState } from "react";
 import { Observer } from "mobx-react";
-import { MaskingLoader } from "components/widgets/forms";
+import { MaskingLoader, TabBar, TabItem } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { CaseViewModel } from "./caseViewModel";
 import getConfig from "next/config";
 import Breadcrumb from "components/layout/breadcrumb";
 import tw from "tailwind-styled-components";
+import CaseStateView from "components/case/caseState/view";
+import { AdjustmentsIcon, CollectionIcon } from "@heroicons/react/solid";
+import useStore from "lib/store";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -104,9 +107,10 @@ export const PromoteToCaseButton = tw.button`
 
 const Case = (props: { id: string }) => {
   const { id } = props;
+  const { me } = useStore();
   const services = useServices();
   const [viewModel] = useState(
-    new CaseViewModel(id as string, services.caseService)
+    new CaseViewModel(id as string, me!, services.caseService)
   );
 
   return (
@@ -114,8 +118,8 @@ const Case = (props: { id: string }) => {
       {() => {
         return (
           <MaskingLoader loading={viewModel.isLoading}>
-            <div>
-              <div className="flex items-center flex-wrap mb-4">
+            <>
+              <div className="flex items-center flex-wrap">
                 <Breadcrumb
                   crumbs={[
                     { text: "Cases", href: "/cases" },
@@ -123,90 +127,129 @@ const Case = (props: { id: string }) => {
                   ]}
                 />
               </div>
+              <TabBar>
+                <TabItem
+                  id="state"
+                  active={viewModel.activeTabIndex == 0}
+                  onTab={() => {
+                    viewModel.activeTabIndex = 0;
+                  }}
+                >
+                  {({ activeCss }) => (
+                    <>
+                      <CollectionIcon className={`mr-2 w-5 h-5 ${activeCss}`} />
+                      <span>State</span>
+                    </>
+                  )}
+                </TabItem>
+                <TabItem
+                  id="detail"
+                  active={viewModel.activeTabIndex == 1}
+                  onTab={() => {
+                    viewModel.activeTabIndex = 1;
+                  }}
+                >
+                  {({ activeCss }) => (
+                    <>
+                      <AdjustmentsIcon
+                        className={`mr-2 w-5 h-5 ${activeCss}`}
+                      />
+                      <span>Detail</span>
+                    </>
+                  )}
+                </TabItem>
+              </TabBar>
+              <div className="h-10"></div>
+              {viewModel.activeTabIndex == 0 && (
+                <CaseStateView viewModel={viewModel.stateViewViewModel} />
+              )}
+              {viewModel.activeTabIndex == 1 && (
+                <>
+                  <div>
+                    <p className="text-md dark:text-gray-400">
+                      Report type: {viewModel.data.reportTypeName}
+                    </p>
+                    <p className="text-sm pt-1 font-bold">
+                      {viewModel.data.rendererData}
+                    </p>
+                  </div>
 
-              <div>
-                <p className="text-md dark:text-gray-400">
-                  Report type: {viewModel.data.reportTypeName}
-                </p>
-                <p className="text-sm pt-1 font-bold">
-                  {viewModel.data.rendererData}
-                </p>
-              </div>
-
-              <div className="relative overflow-x-auto mt-4">
-                <table className="table-fixed border w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                  <tbody>
-                    <TR
-                      label="Created at"
-                      value={
-                        viewModel.data && viewModel.data.createdAt
-                          ? viewModel.data.createdAt.toString()
-                          : ""
-                      }
-                    />
-
-                    <TR
-                      label="Incident date"
-                      value={
-                        viewModel.data && viewModel.data.incidentDate
-                          ? viewModel.data.incidentDate.toString()
-                          : ""
-                      }
-                    />
-
-                    <TR
-                      label="Case type"
-                      value={
-                        viewModel.data && viewModel.data.reportTypeName
-                          ? viewModel.data.reportTypeName
-                          : ""
-                      }
-                    />
-
-                    <TR
-                      label="Case by"
-                      value={
-                        viewModel.data && viewModel.data.reportByName
-                          ? viewModel.data.reportByName
-                          : ""
-                      }
-                    />
-
-                    <TR
-                      label="Phone number"
-                      value={
-                        viewModel.data && viewModel.data.reportByTelephone
-                          ? viewModel.data.reportByTelephone
-                          : ""
-                      }
-                    />
-                  </tbody>
-                </table>
-              </div>
-              <div className="flex flex-wrap pt-6 pb-4">
-                {viewModel.data.images &&
-                  viewModel.data.images.map((image, idx) => (
-                    <div key={idx} className="">
-                      <a href="#">
-                        <img
-                          className="w-40"
-                          src={`${publicRuntimeConfig.serverUrl}/${image.file}`}
-                          alt=""
+                  <div className="relative overflow-x-auto mt-4">
+                    <table className="table-fixed border w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                      <tbody>
+                        <TR
+                          label="Created at"
+                          value={
+                            viewModel.data && viewModel.data.createdAt
+                              ? viewModel.data.createdAt.toString()
+                              : ""
+                          }
                         />
-                      </a>
-                    </div>
-                  ))}
-              </div>
-              <div className="mt-4">
-                <p className="text-md dark:text-gray-400">Form Data</p>
-              </div>
-              <div className="">
-                {viewModel.data.data && renderData(viewModel.data.data)}
-              </div>
-              <div className="flex justify-between items-start p-4 rounded-t dark:border-gray-600">
-                <p className="text-lg dark:text-gray-400">Images</p>
-              </div>
-            </div>
+
+                        <TR
+                          label="Incident date"
+                          value={
+                            viewModel.data && viewModel.data.incidentDate
+                              ? viewModel.data.incidentDate.toString()
+                              : ""
+                          }
+                        />
+
+                        <TR
+                          label="Case type"
+                          value={
+                            viewModel.data && viewModel.data.reportTypeName
+                              ? viewModel.data.reportTypeName
+                              : ""
+                          }
+                        />
+
+                        <TR
+                          label="Case by"
+                          value={
+                            viewModel.data && viewModel.data.reportByName
+                              ? viewModel.data.reportByName
+                              : ""
+                          }
+                        />
+
+                        <TR
+                          label="Phone number"
+                          value={
+                            viewModel.data && viewModel.data.reportByTelephone
+                              ? viewModel.data.reportByTelephone
+                              : ""
+                          }
+                        />
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="flex flex-wrap pt-6 pb-4">
+                    {viewModel.data.images &&
+                      viewModel.data.images.map((image, idx) => (
+                        <div key={idx} className="">
+                          <a href="#">
+                            <img
+                              className="w-40"
+                              src={`${publicRuntimeConfig.serverUrl}/${image.file}`}
+                              alt=""
+                            />
+                          </a>
+                        </div>
+                      ))}
+                  </div>
+                  <div className="mt-4">
+                    <p className="text-md dark:text-gray-400">Form Data</p>
+                  </div>
+                  <div className="">
+                    {viewModel.data.data && renderData(viewModel.data.data)}
+                  </div>
+                  <div className="flex justify-between items-start p-4 rounded-t dark:border-gray-600">
+                    <p className="text-lg dark:text-gray-400">Images</p>
+                  </div>
+                </>
+              )}
+            </>
           </MaskingLoader>
         );
       }}
