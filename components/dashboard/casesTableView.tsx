@@ -18,7 +18,7 @@ type CasesTableViewProps = {
 const CasesTableView: React.FC<CasesTableViewProps> = ({ authorityId }) => {
   const services = useServices();
   const [viewModel] = useState(
-    new CaseTableViewModel(authorityId, services.caseService)
+    () => new CaseTableViewModel(authorityId, services.caseService)
   );
   if (!authorityId) return <Spinner></Spinner>;
   return (

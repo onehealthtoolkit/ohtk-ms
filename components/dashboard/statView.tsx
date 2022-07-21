@@ -23,7 +23,7 @@ type StatViewProps = {
 const StatView: React.FC<StatViewProps> = ({ authorityId }) => {
   const services = useServices();
   const [viewModel] = useState(
-    new StatViewModel(authorityId, services.dashboardService)
+    () => new StatViewModel(authorityId, services.dashboardService)
   );
   if (!authorityId) return <Spinner></Spinner>;
   return (

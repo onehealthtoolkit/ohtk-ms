@@ -1,12 +1,28 @@
 import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
-import { EventsQueryDocument, StatQueryDocument } from "lib/generated/graphql";
+import {
+  EventsQueryDocument,
+  StatQueryDocument,
+  SummaryCaseByCategoryQueryDocument,
+  SummaryReportByCategoryQueryDocument,
+} from "lib/generated/graphql";
 import { IService } from "../interface";
 import { EventData } from "./event";
+import { SummaryByCategoryData } from "./summaryByCategory";
 import { StatData } from "./stat";
 
 export interface IDashboardService extends IService {
   fetchEvent(authorityId: number): Promise<EventData>;
   fetchStat(authorityId: number): Promise<StatData>;
+  fetchSummaryReportByCategory(
+    authorityId: number,
+    fromDate?: Date,
+    toDate?: Date
+  ): Promise<SummaryByCategoryData[]>;
+  fetchSummaryCaseByCategory(
+    authorityId: number,
+    fromDate?: Date,
+    toDate?: Date
+  ): Promise<SummaryByCategoryData[]>;
 }
 
 export class DashboardService implements IDashboardService {
@@ -68,5 +84,59 @@ export class DashboardService implements IDashboardService {
     }
 
     return data;
+  }
+
+  async fetchSummaryReportByCategory(
+    authorityId: number,
+    fromDate: Date,
+    toDate: Date
+  ): Promise<SummaryByCategoryData[]> {
+    const fetchResult = await this.client.query({
+      query: SummaryReportByCategoryQueryDocument,
+      variables: {
+        authorityId,
+        fromDate,
+        toDate,
+      },
+    });
+
+    const items: SummaryByCategoryData[] = [];
+    fetchResult.data.summaryReportByCategoryQuery?.forEach(item => {
+      items.push({
+        category: item.category,
+        ordering: item.ordering || 0,
+        day: new Date(item.day),
+        total: item.total,
+      });
+    });
+
+    return items;
+  }
+
+  async fetchSummaryCaseByCategory(
+    authorityId: number,
+    fromDate: Date,
+    toDate: Date
+  ): Promise<SummaryByCategoryData[]> {
+    const fetchResult = await this.client.query({
+      query: SummaryCaseByCategoryQueryDocument,
+      variables: {
+        authorityId,
+        fromDate,
+        toDate,
+      },
+    });
+
+    const items: SummaryByCategoryData[] = [];
+    fetchResult.data.summaryCaseByCategoryQuery?.forEach(item => {
+      items.push({
+        category: item.category,
+        ordering: item.ordering || 0,
+        day: new Date(item.day),
+        total: item.total,
+      });
+    });
+
+    return items;
   }
 }

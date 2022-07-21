@@ -879,6 +879,11 @@ export type FeatureType = {
   value: Scalars["String"];
 };
 
+export type ForwardStateMutation = {
+  __typename?: "ForwardStateMutation";
+  result?: Maybe<CaseStateType>;
+};
+
 export type ImageType = {
   __typename?: "ImageType";
   createdAt: Scalars["DateTime"];
@@ -1257,6 +1262,8 @@ export type Query = {
   stateDefinitionGet?: Maybe<StateDefinitionType>;
   stateStepGet?: Maybe<StateStepType>;
   stateTransitionGet?: Maybe<StateTransitionType>;
+  summaryCaseByCategoryQuery?: Maybe<Array<SummaryByCategoryType>>;
+  summaryReportByCategoryQuery?: Maybe<Array<SummaryByCategoryType>>;
   syncReportTypes?: Maybe<ReportTypeSyncOutputType>;
 };
 
@@ -1508,6 +1515,18 @@ export type QueryStateTransitionGetArgs = {
   id: Scalars["ID"];
 };
 
+export type QuerySummaryCaseByCategoryQueryArgs = {
+  authorityId: Scalars["Int"];
+  fromDate?: InputMaybe<Scalars["DateTime"]>;
+  toDate?: InputMaybe<Scalars["DateTime"]>;
+};
+
+export type QuerySummaryReportByCategoryQueryArgs = {
+  authorityId: Scalars["Int"];
+  fromDate?: InputMaybe<Scalars["DateTime"]>;
+  toDate?: InputMaybe<Scalars["DateTime"]>;
+};
+
 export type QuerySyncReportTypesArgs = {
   data: Array<ReportTypeSyncInputType>;
 };
@@ -1621,6 +1640,14 @@ export type SubmitIncidentReport = {
 export type SubmitZeroReportMutation = {
   __typename?: "SubmitZeroReportMutation";
   id?: Maybe<Scalars["UUID"]>;
+};
+
+export type SummaryByCategoryType = {
+  __typename?: "SummaryByCategoryType";
+  category: Scalars["String"];
+  day: Scalars["Date"];
+  ordering?: Maybe<Scalars["Int"]>;
+  total: Scalars["Int"];
 };
 
 export type UserMessageType = {
@@ -2030,13 +2057,13 @@ export type GetCaseQuery = {
   } | null;
 };
 
-export type ForwardStateMutationVariables = Exact<{
+export type StateForwardMutationVariables = Exact<{
   caseId: Scalars["ID"];
   transitionId: Scalars["ID"];
   formData?: InputMaybe<Scalars["GenericScalar"]>;
 }>;
 
-export type ForwardStateMutation = {
+export type StateForwardMutation = {
   __typename?: "Mutation";
   forwardState?: {
     __typename?: "ForwardStateMutation";
@@ -2222,6 +2249,40 @@ export type EventsQueryQuery = {
       gpsLocation?: string | null;
     } | null> | null;
   } | null;
+};
+
+export type SummaryReportByCategoryQueryQueryVariables = Exact<{
+  authorityId: Scalars["Int"];
+  fromDate?: InputMaybe<Scalars["DateTime"]>;
+  toDate?: InputMaybe<Scalars["DateTime"]>;
+}>;
+
+export type SummaryReportByCategoryQueryQuery = {
+  __typename?: "Query";
+  summaryReportByCategoryQuery?: Array<{
+    __typename?: "SummaryByCategoryType";
+    category: string;
+    ordering?: number | null;
+    day: any;
+    total: number;
+  }> | null;
+};
+
+export type SummaryCaseByCategoryQueryQueryVariables = Exact<{
+  authorityId: Scalars["Int"];
+  fromDate?: InputMaybe<Scalars["DateTime"]>;
+  toDate?: InputMaybe<Scalars["DateTime"]>;
+}>;
+
+export type SummaryCaseByCategoryQueryQuery = {
+  __typename?: "Query";
+  summaryCaseByCategoryQuery?: Array<{
+    __typename?: "SummaryByCategoryType";
+    category: string;
+    ordering?: number | null;
+    day: any;
+    total: number;
+  }> | null;
 };
 
 export type InvitationCodesQueryVariables = Exact<{
@@ -4896,13 +4957,13 @@ export const GetCaseDocument = {
     },
   ],
 } as unknown as DocumentNode<GetCaseQuery, GetCaseQueryVariables>;
-export const ForwardStateDocument = {
+export const StateForwardDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "mutation",
-      name: { kind: "Name", value: "forwardState" },
+      name: { kind: "Name", value: "StateForward" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -5098,8 +5159,8 @@ export const ForwardStateDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  ForwardStateMutation,
-  ForwardStateMutationVariables
+  StateForwardMutation,
+  StateForwardMutationVariables
 >;
 export const CaseDefinitionsDocument = {
   kind: "Document",
@@ -5823,6 +5884,190 @@ export const EventsQueryDocument = {
     },
   ],
 } as unknown as DocumentNode<EventsQueryQuery, EventsQueryQueryVariables>;
+export const SummaryReportByCategoryQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "SummaryReportByCategoryQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorityId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "fromDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "toDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "summaryReportByCategoryQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "authorityId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorityId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "fromDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "fromDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "toDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "toDate" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "category" } },
+                { kind: "Field", name: { kind: "Name", value: "ordering" } },
+                { kind: "Field", name: { kind: "Name", value: "day" } },
+                { kind: "Field", name: { kind: "Name", value: "total" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SummaryReportByCategoryQueryQuery,
+  SummaryReportByCategoryQueryQueryVariables
+>;
+export const SummaryCaseByCategoryQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "SummaryCaseByCategoryQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorityId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "fromDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "toDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "summaryCaseByCategoryQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "authorityId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorityId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "fromDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "fromDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "toDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "toDate" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "category" } },
+                { kind: "Field", name: { kind: "Name", value: "ordering" } },
+                { kind: "Field", name: { kind: "Name", value: "day" } },
+                { kind: "Field", name: { kind: "Name", value: "total" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SummaryCaseByCategoryQueryQuery,
+  SummaryCaseByCategoryQueryQueryVariables
+>;
 export const InvitationCodesDocument = {
   kind: "Document",
   definitions: [

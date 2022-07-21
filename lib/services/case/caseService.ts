@@ -3,7 +3,7 @@ import {
   GetCaseDocument,
   CasesDocument,
   PromoteReportToCaseDocument,
-  ForwardStateDocument,
+  StateForwardDocument,
 } from "lib/generated/graphql";
 import { Image, Case, CaseDetail, CaseState } from "lib/services/case/case";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
@@ -138,7 +138,7 @@ export class CaseService implements ICaseService {
     formData?: object
   ): Promise<GetResult<CaseState>> {
     const forwardStateResult = await this.client.mutate({
-      mutation: ForwardStateDocument,
+      mutation: StateForwardDocument,
       variables: {
         caseId,
         transitionId,

@@ -20,3 +20,37 @@ query EventsQuery($authorityId: Int!) {
     }
   }
 }
+
+query SummaryReportByCategoryQuery(
+  $authorityId: Int!
+  $fromDate: DateTime
+  $toDate: DateTime
+) {
+  summaryReportByCategoryQuery(
+    authorityId: $authorityId
+    fromDate: $fromDate
+    toDate: $toDate
+  ) {
+    category
+    ordering
+    day
+    total
+  }
+}
+
+query SummaryCaseByCategoryQuery(
+  $authorityId: Int!
+  $fromDate: DateTime
+  $toDate: DateTime
+) {
+  summaryCaseByCategoryQuery(
+    authorityId: $authorityId
+    fromDate: $fromDate
+    toDate: $toDate
+  ) {
+    category
+    ordering
+    day
+    total
+  }
+}
