@@ -9,7 +9,7 @@ const datePicker = ({
   onChange,
 }: {
   id: string;
-  selected: Date | null;
+  selected?: Date | null;
   locale?: string;
   onChange: (date: Date) => void;
 }) => {

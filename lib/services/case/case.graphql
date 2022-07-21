@@ -145,7 +145,7 @@ query GetCase($id: UUID!) {
   }
 }
 
-mutation ForwardState(
+mutation StateForward(
   $caseId: ID!
   $transitionId: ID!
   $formData: GenericScalar

@@ -13,7 +13,9 @@ import {
 } from "chart.js";
 import useServices from "lib/services/provider";
 import { SummaryByCategoryViewModel } from "./summaryByCategoryViewModel";
-import { MaskingLoader } from "components/widgets/forms";
+import { Field, Label, MaskingLoader, Select } from "components/widgets/forms";
+import DatePicker from "components/widgets/datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 ChartJS.register(
   CategoryScale,
@@ -31,7 +33,7 @@ export const options = {
       position: "top" as const,
     },
     title: {
-      display: true,
+      display: false,
       text: "Summary by category",
     },
   },
@@ -43,34 +45,12 @@ export const options = {
       stacked: true,
     },
   },
+  parsing: {
+    // xAxisKey: "day",
+    yAxisKey: "total",
+  },
 };
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
-
-function randomIntFromInterval(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: "Catagory 1",
-      data: labels.map(() => randomIntFromInterval(0, 300)),
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Catagory 2",
-      data: labels.map(() => randomIntFromInterval(0, 300)),
-      backgroundColor: "rgba(203, 240, 249, 1)",
-    },
-    {
-      label: "Catagory 3",
-      data: labels.map(() => randomIntFromInterval(0, 300)),
-      backgroundColor: "rgba(119, 154, 231, 1)",
-    },
-  ],
-};
 type SummaryByCategoryViewProps = {
   authorityId: number;
 };
@@ -80,7 +60,7 @@ const SummaryByCategoryView: React.FC<SummaryByCategoryViewProps> = ({
 }) => {
   const services = useServices();
   const [viewModel] = useState(
-    new SummaryByCategoryViewModel(authorityId, services.dashboardService)
+    () => new SummaryByCategoryViewModel(authorityId, services.dashboardService)
   );
 
   if (!authorityId) return <Spinner></Spinner>;
@@ -89,7 +69,46 @@ const SummaryByCategoryView: React.FC<SummaryByCategoryViewProps> = ({
     <MaskingLoader loading={viewModel.isLoading}>
       <>
         <p className="text-md dark:text-gray-400">Summary by category</p>
-        <Bar options={options} data={data} />
+        <div className="flex flex-row flex-wrap flex-grow mt-2">
+          <div className="w-full md:w-1/4 p-6">
+            <Field $size="full">
+              <Label htmlFor="summaryType">Type</Label>
+              <Select
+                id="summaryType"
+                onChange={evt => viewModel.changeSummaryType(evt.target.value)}
+                value={viewModel.summaryType}
+              >
+                <option value="report">Reports</option>
+                <option value="case">Cases</option>
+              </Select>
+            </Field>
+            <Field $size="full">
+              <Label htmlFor="fromDate">From Date</Label>
+              <DatePicker
+                id="fromDate"
+                selected={viewModel.fromDate}
+                onChange={(date: Date) => {
+                  viewModel.fromDate = date;
+                  viewModel.fetch();
+                }}
+              />
+            </Field>
+            <Field $size="full">
+              <Label htmlFor="throughDate">Through Date</Label>
+              <DatePicker
+                id="throughDate"
+                selected={viewModel.toDate}
+                onChange={(date: Date) => {
+                  viewModel.toDate = date;
+                  viewModel.fetch();
+                }}
+              />
+            </Field>
+          </div>
+          <div className="w-full md:w-3/4 p-6">
+            {viewModel.data && <Bar options={options} data={viewModel.data} />}
+          </div>
+        </div>
       </>
     </MaskingLoader>
   );

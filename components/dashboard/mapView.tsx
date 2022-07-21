@@ -11,7 +11,7 @@ type MapViewProps = {
 const MapView: React.FC<MapViewProps> = ({ authorityId }) => {
   const services = useServices();
   const [viewModel] = useState(
-    new MapViewModel(authorityId, services.dashboardService)
+    () => new MapViewModel(authorityId, services.dashboardService)
   );
   if (!authorityId) return <Spinner></Spinner>;
   return (
