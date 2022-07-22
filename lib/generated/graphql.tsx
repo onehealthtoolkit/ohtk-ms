@@ -414,6 +414,13 @@ export type AdminInvitationCodeUpdateSuccess = {
   invitationCode?: Maybe<InvitationCodeType>;
 };
 
+export type AdminNotificationTemplateAuthorityType = {
+  __typename?: "AdminNotificationTemplateAuthorityType";
+  notificationTemplateId: Scalars["ID"];
+  notificationTemplateName: Scalars["String"];
+  to?: Maybe<Scalars["String"]>;
+};
+
 export type AdminReportTypeCreateMutation = {
   __typename?: "AdminReportTypeCreateMutation";
   result?: Maybe<AdminReportTypeCreateResult>;
@@ -443,6 +450,7 @@ export type AdminReportTypeCreateSuccess = {
   ordering: Scalars["Int"];
   rendererDataTemplate?: Maybe<Scalars["String"]>;
   reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
+  stateDefinition?: Maybe<DeepStateDefinitionType>;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -575,6 +583,7 @@ export type AdminStateDefinitionCreateSuccess = {
   id: Scalars["ID"];
   isDefault: Scalars["Boolean"];
   name: Scalars["String"];
+  reporttypeSet: Array<AdminReportTypeCreateSuccess>;
   statestepSet: Array<DeepStateStepType>;
   updatedAt: Scalars["DateTime"];
 };
@@ -1069,6 +1078,7 @@ export type MutationAdminReportTypeCreateArgs = {
   definition: Scalars["String"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
+  stateDefinitionId?: InputMaybe<Scalars["Int"]>;
 };
 
 export type MutationAdminReportTypeUpdateArgs = {
@@ -1077,6 +1087,7 @@ export type MutationAdminReportTypeUpdateArgs = {
   id: Scalars["ID"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
+  stateDefinitionId?: InputMaybe<Scalars["Int"]>;
 };
 
 export type MutationAdminReporterNotificationCreateArgs = {
@@ -1232,6 +1243,9 @@ export type Query = {
   adminCaseDefinitionQuery?: Maybe<AdminCaseDefinitionQueryTypeNodeConnection>;
   adminCategoryQuery?: Maybe<AdminCategoryQueryTypeNodeConnection>;
   adminInvitationCodeQuery?: Maybe<AdminInvitationCodeQueryTypeNodeConnection>;
+  adminNotificationTemplateAuthorityQuery?: Maybe<
+    Array<Maybe<AdminNotificationTemplateAuthorityType>>
+  >;
   adminReportTypeQuery?: Maybe<AdminReportTypeQueryTypeNodeConnection>;
   adminReporterNotificationQuery?: Maybe<AdminReporterNotificationQueryTypeNodeConnection>;
   adminStateDefinitionQuery?: Maybe<AdminStateDefinitionQueryTypeNodeConnection>;
@@ -1347,6 +1361,10 @@ export type QueryAdminInvitationCodeQueryArgs = {
   limit?: InputMaybe<Scalars["Int"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
+};
+
+export type QueryAdminNotificationTemplateAuthorityQueryArgs = {
+  reportTypeId: Scalars["ID"];
 };
 
 export type QueryAdminReportTypeQueryArgs = {
@@ -1570,6 +1588,7 @@ export type ReportTypeType = {
   ordering: Scalars["Int"];
   rendererDataTemplate?: Maybe<Scalars["String"]>;
   reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
+  stateDefinition?: Maybe<DeepStateDefinitionType>;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -2241,12 +2260,30 @@ export type EventsQueryQuery = {
       report?: {
         __typename?: "IncidentReportType";
         gpsLocation?: string | null;
+        rendererData: string;
+        reportType: {
+          __typename?: "AdminReportTypeCreateSuccess";
+          category: {
+            __typename?: "AdminCategoryCreateSuccess";
+            name: string;
+            icon?: string | null;
+          };
+        };
       } | null;
     } | null> | null;
     reports?: Array<{
       __typename?: "IncidentReportType";
       id: any;
       gpsLocation?: string | null;
+      rendererData: string;
+      reportType: {
+        __typename?: "AdminReportTypeCreateSuccess";
+        category: {
+          __typename?: "AdminCategoryCreateSuccess";
+          name: string;
+          icon?: string | null;
+        };
+      };
     } | null> | null;
   } | null;
 };
@@ -5856,6 +5893,36 @@ export const EventsQueryDocument = {
                               kind: "Field",
                               name: { kind: "Name", value: "gpsLocation" },
                             },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "reportType" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "category" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "icon" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "rendererData" },
+                            },
                           ],
                         },
                       },
@@ -5872,6 +5939,36 @@ export const EventsQueryDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "gpsLocation" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "reportType" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "category" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "icon" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "rendererData" },
                       },
                     ],
                   },

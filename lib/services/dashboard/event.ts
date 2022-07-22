@@ -1,10 +1,19 @@
 export type EventData = {
-  reports: Array<{
-    id: string;
-    location: string;
-  }>;
-  cases: Array<{
-    id: string;
-    location: string;
-  }>;
+  reports: Array<EventItem>;
+  cases: Array<EventItem>;
+};
+
+const eventType = ["report", "case"] as const;
+export type EventItemType = typeof eventType[number];
+
+export type EventItem = {
+  id: string;
+  type: EventItemType;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  data: string;
+  categoryName: string;
+  categoryIcon?: string | null;
 };

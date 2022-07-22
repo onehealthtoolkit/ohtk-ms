@@ -3,10 +3,15 @@ import React, { useState } from "react";
 import DashboardViewModel from "./dashboardViewModel";
 import StatView from "./statView";
 import AuthorityFilter from "./authorityFilter";
-import MapView from "./mapView";
 import SummaryByCategoryView from "./summaryByCategoryView";
 import CasesTableView from "./casesTableView";
 import { Observer, observer } from "mobx-react";
+import dynamic from "next/dynamic";
+
+export const MapView = dynamic(() => import("./mapView"), {
+  loading: () => <p>A map is loading</p>,
+  ssr: false,
+});
 
 const Dashboard: React.FC = () => {
   const store = useStore();

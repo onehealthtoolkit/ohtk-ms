@@ -45,18 +45,45 @@ export class DashboardService implements IDashboardService {
       cases: [],
     };
     fetchResult.data.eventsQuery?.reports?.forEach(item => {
-      if (item)
-        data.reports.push({
-          id: item.id,
-          location: item.gpsLocation || "",
-        });
+      if (item) {
+        const location = item.gpsLocation?.split(",");
+
+        if (location?.length === 2) {
+          const latlng = {
+            lat: +location[1],
+            lng: +location[0],
+          };
+          data.reports.push({
+            id: item.id,
+            type: "report",
+            location: latlng,
+            data: item.rendererData,
+            categoryName: item.reportType.category.name,
+            categoryIcon: item.reportType.category.icon,
+          });
+        }
+      }
     });
     fetchResult.data.eventsQuery?.cases?.forEach(item => {
-      if (item)
-        data.cases.push({
-          id: item.id,
-          location: item.report?.gpsLocation || "",
-        });
+      if (item) {
+        const location = item.report?.gpsLocation?.split(",");
+
+        if (location?.length === 2) {
+          const latlng = {
+            lat: +location[1],
+            lng: +location[0],
+          };
+
+          data.cases.push({
+            id: item.id,
+            type: "case",
+            location: latlng,
+            data: item.report?.rendererData || "",
+            categoryName: item.report?.reportType.category.name || "",
+            categoryIcon: item.report?.reportType.category.icon,
+          });
+        }
+      }
     });
 
     return data;
