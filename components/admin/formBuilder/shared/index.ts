@@ -8,3 +8,5 @@ export * from "./dialog/baseDialog";
 export * from "./dialog/confirmDialog";
 export * from "./parseException";
 export * from "./definitionViewModel";
+export * from "./advanceCondition";
+export * from "./operatorViewModel";

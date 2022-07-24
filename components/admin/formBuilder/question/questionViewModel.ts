@@ -3,17 +3,22 @@ import {
   TFieldValueType,
 } from "components/admin/formBuilder/field";
 import {
+  ComparableOperatorViewModel,
+  ConditionDefinition,
   Definition,
   MovableItemsViewModel,
+  OperatorViewModel,
   ParseError,
 } from "components/admin/formBuilder/shared";
-import { action, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 
 export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
   isCurrent = false;
   isFieldMenusOpen = false;
   fields = Array<FieldViewModel>();
   currentField: FieldViewModel | undefined = undefined;
+  isAdvanceOn = false;
+  _condition: OperatorViewModel = new ComparableOperatorViewModel("=", "", "");
 
   constructor(id: string, name: string) {
     super(id, name);
@@ -28,11 +33,26 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
       fields: observable,
       addField: action,
       deleteField: action,
+      isAdvanceOn: observable,
+      toggleAdvanceOn: action,
+      _condition: observable,
+      condition: computed,
     });
   }
 
   get movableItems() {
     return this.fields;
+  }
+
+  get condition(): OperatorViewModel {
+    return this._condition;
+  }
+  set condition(condition: OperatorViewModel) {
+    this._condition = condition;
+  }
+
+  toggleAdvanceOn() {
+    return (this.isAdvanceOn = !this.isAdvanceOn);
   }
 
   setCurrent() {
@@ -41,6 +61,7 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
 
   unsetCurrent() {
     this.isCurrent = false;
+    this.isAdvanceOn = false;
   }
 
   selectField(id: string) {
@@ -100,6 +121,19 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
       } else {
         this.fields.splice(0, this.fields.length);
       }
+
+      if (definition.condition !== undefined) {
+        const condition = definition.condition as ConditionDefinition;
+        if (condition.operator !== undefined) {
+          this.condition = new OperatorViewModel(condition.operator);
+          this.condition.parse(condition);
+        } else {
+          throw new ParseError(
+            "Error building condition with invalid operator: " +
+              definition.operator
+          );
+        }
+      }
     } catch (e) {
       if (e instanceof ParseError) {
         throw new ParseError(e.message + " << question: " + definition.label);
@@ -121,6 +155,11 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
       fields.push(field.toJson());
     });
     json.fields = fields;
+
+    const condition = this.condition.toJson();
+    if (Object.keys(condition).length > 0) {
+      json.condition = condition;
+    }
     return json;
   }
 }

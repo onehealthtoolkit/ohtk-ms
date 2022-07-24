@@ -1,7 +1,8 @@
 import {
-  FieldActioBar,
+  FieldActionBar,
   FieldViewModel,
 } from "components/admin/formBuilder/field";
+import { AdvanceCondition } from "components/admin/formBuilder/shared";
 import { observer } from "mobx-react";
 import { FC } from "react";
 
@@ -34,19 +35,11 @@ const Field: FC<Props> = ({ value: field, onDelete }) => {
           />
         </div>
       </div>
-      <FieldActioBar value={field} onDelete={onDelete}>
-        {field => <Advance field={field} />}
-      </FieldActioBar>
+      <FieldActionBar value={field} onDelete={onDelete}>
+        {field => <AdvanceCondition viewModel={field} />}
+      </FieldActionBar>
     </div>
   );
-};
-
-type AdvanceProps = {
-  field: FieldViewModel;
-};
-
-const Advance: FC<AdvanceProps> = ({ field }) => {
-  return <div>Advance condition : {field.fieldType}</div>;
 };
 
 export const ImagesField = observer(Field);

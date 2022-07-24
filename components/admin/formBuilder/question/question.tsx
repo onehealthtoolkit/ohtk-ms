@@ -3,6 +3,8 @@ import {
   FieldMenus,
   QuestionViewModel,
 } from "components/admin/formBuilder/question";
+import { QuestionActionBar } from "components/admin/formBuilder/question/questionActionBar";
+import { AdvanceCondition } from "components/admin/formBuilder/shared";
 import { observer } from "mobx-react";
 import { FC } from "react";
 
@@ -62,6 +64,14 @@ const Question: FC<Props> = ({ value: question, onSelect }) => {
           onClick={() => question.setIsDescriptionEditing(true)}
         />
       )}
+      <QuestionActionBar
+        value={question}
+        onDelete={questionId => {
+          console.log("TODO delete question id:", questionId);
+        }}
+      >
+        {question => <AdvanceCondition viewModel={question} />}
+      </QuestionActionBar>
       <FieldList
         values={question.fields}
         onMoveDown={fieldId => question.moveItemDown(fieldId)}
