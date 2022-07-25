@@ -70,11 +70,9 @@ const Bar: FC<FieldActionBarProps> = ({ children, value: field, onDelete }) => {
           </span>
         </button>
       </div>
-      {field.isAdvanceOn && (
-        <div className="rounded-md py-4">{children(field)}</div>
-      )}
+      {field.isAdvanceOn && children(field)}
     </>
   );
 };
 
-export const FieldActioBar = observer(Bar);
+export const FieldActionBar = observer(Bar);

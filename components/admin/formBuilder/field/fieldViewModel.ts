@@ -14,6 +14,11 @@ import {
   Definition,
   ParseError,
 } from "components/admin/formBuilder/shared";
+import {
+  ComparableOperatorViewModel,
+  ConditionDefinition,
+  OperatorViewModel,
+} from "components/admin/formBuilder/shared/operatorViewModel";
 import { action, computed, makeObservable, observable } from "mobx";
 
 export const FIELD_TYPES = [
@@ -54,6 +59,7 @@ export class FieldViewModel extends BaseViewModel {
   isRequired = false;
   isAdvanceOn = false;
   _extension: unknown = undefined;
+  _condition: OperatorViewModel = new ComparableOperatorViewModel("=", "", "");
 
   constructor(id: string, label: string, type: TFieldValueType = "text") {
     super(id, label);
@@ -72,6 +78,8 @@ export class FieldViewModel extends BaseViewModel {
       toggleAdvanceOn: action,
       _extension: observable,
       fieldTypeName: computed,
+      _condition: observable,
+      condition: computed,
     });
     this.fieldType = type;
     this.name = "name";
@@ -99,6 +107,13 @@ export class FieldViewModel extends BaseViewModel {
       default:
         return new TextFieldViewModel();
     }
+  }
+
+  get condition(): OperatorViewModel {
+    return this._condition;
+  }
+  set condition(condition: OperatorViewModel) {
+    this._condition = condition;
   }
 
   get fieldTypeName() {
@@ -145,6 +160,7 @@ export class FieldViewModel extends BaseViewModel {
 
   unsetCurrent() {
     this.isCurrent = false;
+    this.isAdvanceOn = false;
     this.closeAllDialogs();
   }
 
@@ -182,6 +198,19 @@ export class FieldViewModel extends BaseViewModel {
         } else {
           throw new ParseError("Invalid field type: " + fieldType);
         }
+
+        if (definition.condition !== undefined) {
+          const condition = definition.condition as ConditionDefinition;
+          if (condition.operator !== undefined) {
+            this.condition = new OperatorViewModel(condition.operator);
+            this.condition.parse(condition);
+          } else {
+            throw new ParseError(
+              "Error building condition with invalid operator: " +
+                definition.operator
+            );
+          }
+        }
       } else {
         throw new ParseError(
           "Error while building a field without name or type"
@@ -210,6 +239,11 @@ export class FieldViewModel extends BaseViewModel {
     let ext = {};
     if (FIELD_TYPES.indexOf(this.fieldType) > -1) {
       ext = (this.getExtension() as AbstractDefinitionViewModel).toJson();
+    }
+
+    const condition = this.condition.toJson();
+    if (Object.keys(condition).length > 0) {
+      json.condition = condition;
     }
     return { ...json, ...ext };
   }
