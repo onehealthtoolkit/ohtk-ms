@@ -1,10 +1,10 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
 import { IDashboardService } from "lib/services/dashboard/dashboardService";
-import { EventData } from "lib/services/dashboard/event";
+import { EventItem } from "lib/services/dashboard/event";
 
 export class MapViewModel extends BaseViewModel {
-  data: EventData = {} as EventData;
+  data = Array<EventItem>();
   authorityId: number;
 
   constructor(
@@ -25,7 +25,8 @@ export class MapViewModel extends BaseViewModel {
     const data = await this.dashboardService.fetchEvent(this.authorityId);
     if (data) {
       runInAction(() => {
-        this.data = data;
+        data.cases.forEach(it => this.data.push(it));
+        data.reports.forEach(it => this.data.push(it));
       });
     }
     this.isLoading = false;

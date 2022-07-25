@@ -12,11 +12,25 @@ query EventsQuery($authorityId: Int!) {
       id
       report {
         gpsLocation
+        reportType {
+          category {
+            name
+            icon
+          }
+        }
+        rendererData
       }
     }
     reports {
       id
       gpsLocation
+      reportType {
+        category {
+          name
+          icon
+        }
+      }
+      rendererData
     }
   }
 }
