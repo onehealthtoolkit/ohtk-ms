@@ -11,6 +11,7 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   _name: string = "";
   _categoryId: number = 0;
   _definition: string = "";
+  _stateDefinitionId: number = 0;
   _ordering: number = 0;
 
   _isFormBuilderMode = false;
@@ -25,6 +26,8 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
       categoryId: computed,
       _definition: observable,
       definition: computed,
+      _stateDefinitionId: observable,
+      stateDefinitionId: computed,
       _ordering: observable,
       ordering: computed,
       save: action,
@@ -82,6 +85,17 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
         this.fieldErrors["definition"] = "Error! Bad definition format";
       }
       return false;
+    }
+  }
+
+  public get stateDefinitionId(): number {
+    return this._stateDefinitionId;
+  }
+  public set stateDefinitionId(value: number) {
+    this._stateDefinitionId = value;
+    delete this.fieldErrors["stateDefinitionId"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
     }
   }
 

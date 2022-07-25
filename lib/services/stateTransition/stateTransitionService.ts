@@ -4,6 +4,7 @@ import {
   StateTransitionUpdateDocument,
   GetStateTransitionDocument,
   GetStateDefinitionDocument,
+  StateTransistionListByReportTypeDocument,
 } from "lib/generated/graphql";
 import { StateTransition } from "lib/services/stateTransition/stateTransition";
 import {
@@ -39,6 +40,29 @@ export class StateTransitionService implements IStateTransitionService {
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
+  }
+
+  async fetchStateTransitionByReportType(
+    reportTypeId: string
+  ): Promise<StateTransition[]> {
+    const fetchResult = await this.client.query({
+      query: StateTransistionListByReportTypeDocument,
+      variables: {
+        reportTypeId,
+      },
+    });
+
+    const items: StateTransition[] = [];
+    fetchResult.data.transitionListByReportType?.forEach(item => {
+      items.push({
+        id: item.id,
+        fromStep: item.fromStep,
+        toStep: item.toStep,
+        formDefinition: "",
+      });
+    });
+
+    return items;
   }
 
   async getStateTransition(id: string) {

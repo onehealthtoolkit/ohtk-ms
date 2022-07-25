@@ -23,6 +23,7 @@ import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import { ReportCategory } from "lib/services/reportCategory";
 import FormBuilder from "components/admin/formBuilder";
+import useStateDefinitions from "lib/hooks/stateDefinitions";
 
 const ReportTypeUpdateForm = () => {
   const router = useRouter();
@@ -35,6 +36,7 @@ const ReportTypeUpdateForm = () => {
       )
   );
 
+  const stateDefinitions = useStateDefinitions();
   const [categories, setCategories] = useState<ReportCategory[]>();
 
   useEffect(() => {
@@ -162,6 +164,28 @@ const ReportTypeUpdateForm = () => {
                     ))}
                   </Select>
                   <ErrorText>{viewModel.fieldErrors.categoryId}</ErrorText>
+                </Field>
+                <Field $size="half">
+                  <Label htmlFor="stateDefinitionId">State definition</Label>
+                  <Select
+                    id="stateDefinitionId"
+                    placeholder="State definition"
+                    onChange={evt =>
+                      (viewModel.stateDefinitionId = +evt.target.value)
+                    }
+                    disabled={viewModel.isSubmitting}
+                    value={viewModel.stateDefinitionId}
+                  >
+                    <option value={0}>Select item ...</option>
+                    {stateDefinitions?.map(item => (
+                      <option key={`option-${item.id}`} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </Select>
+                  <ErrorText>
+                    {viewModel.fieldErrors.stateDefinitionId}
+                  </ErrorText>
                 </Field>
                 <Field $size="half">
                   <Label htmlFor="ordering">Ordering</Label>

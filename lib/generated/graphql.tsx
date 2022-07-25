@@ -421,6 +421,70 @@ export type AdminNotificationTemplateAuthorityType = {
   to?: Maybe<Scalars["String"]>;
 };
 
+export type AdminNotificationTemplateCreateMutation = {
+  __typename?: "AdminNotificationTemplateCreateMutation";
+  result?: Maybe<AdminNotificationTemplateCreateResult>;
+};
+
+export type AdminNotificationTemplateCreateProblem = {
+  __typename?: "AdminNotificationTemplateCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminNotificationTemplateCreateResult =
+  | AdminNotificationTemplateCreateProblem
+  | AdminNotificationTemplateCreateSuccess;
+
+export type AdminNotificationTemplateCreateSuccess = {
+  __typename?: "AdminNotificationTemplateCreateSuccess";
+  bodyTemplate: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  reportType: AdminReportTypeCreateSuccess;
+  stateTransition: DeepStateTransitionType;
+  titleTemplate: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type AdminNotificationTemplateQueryType = {
+  __typename?: "AdminNotificationTemplateQueryType";
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  reportType: AdminReportTypeCreateSuccess;
+};
+
+export type AdminNotificationTemplateQueryTypeNodeConnection = {
+  __typename?: "AdminNotificationTemplateQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminNotificationTemplateQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
+export type AdminNotificationTemplateUpdateMutation = {
+  __typename?: "AdminNotificationTemplateUpdateMutation";
+  result?: Maybe<AdminNotificationTemplateUpdateResult>;
+};
+
+export type AdminNotificationTemplateUpdateProblem = {
+  __typename?: "AdminNotificationTemplateUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminNotificationTemplateUpdateResult =
+  | AdminNotificationTemplateUpdateProblem
+  | AdminNotificationTemplateUpdateSuccess;
+
+export type AdminNotificationTemplateUpdateSuccess = {
+  __typename?: "AdminNotificationTemplateUpdateSuccess";
+  notificationTemplate?: Maybe<NotificationTemplateType>;
+};
+
 export type AdminReportTypeCreateMutation = {
   __typename?: "AdminReportTypeCreateMutation";
   result?: Maybe<AdminReportTypeCreateResult>;
@@ -447,6 +511,7 @@ export type AdminReportTypeCreateSuccess = {
   id: Scalars["UUID"];
   incidentreports: Array<IncidentReportType>;
   name: Scalars["String"];
+  notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   ordering: Scalars["Int"];
   rendererDataTemplate?: Maybe<Scalars["String"]>;
   reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
@@ -697,6 +762,7 @@ export type AdminStateTransitionCreateSuccess = {
   formDefinition?: Maybe<Scalars["JSONString"]>;
   fromStep: DeepStateStepType;
   id: Scalars["ID"];
+  notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   toStep: DeepStateStepType;
   updatedAt: Scalars["DateTime"];
 };
@@ -964,6 +1030,8 @@ export type Mutation = {
   adminCategoryUpdate?: Maybe<AdminCategoryUpdateMutation>;
   adminInvitationCodeCreate?: Maybe<AdminInvitationCodeCreateMutation>;
   adminInvitationCodeUpdate?: Maybe<AdminInvitationCodeUpdateMutation>;
+  adminNotificationTemplateCreate?: Maybe<AdminNotificationTemplateCreateMutation>;
+  adminNotificationTemplateUpdate?: Maybe<AdminNotificationTemplateUpdateMutation>;
   adminReportTypeCreate?: Maybe<AdminReportTypeCreateMutation>;
   adminReportTypeUpdate?: Maybe<AdminReportTypeUpdateMutation>;
   adminReporterNotificationCreate?: Maybe<AdminReporterNotificationCreateMutation>;
@@ -1071,6 +1139,23 @@ export type MutationAdminInvitationCodeUpdateArgs = {
   id: Scalars["ID"];
   role?: InputMaybe<Scalars["String"]>;
   throughDate?: InputMaybe<Scalars["DateTime"]>;
+};
+
+export type MutationAdminNotificationTemplateCreateArgs = {
+  bodyTemplate: Scalars["String"];
+  name: Scalars["String"];
+  reportTypeId: Scalars["UUID"];
+  stateTransitionId: Scalars["Int"];
+  titleTemplate: Scalars["String"];
+};
+
+export type MutationAdminNotificationTemplateUpdateArgs = {
+  bodyTemplate: Scalars["String"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  reportTypeId: Scalars["UUID"];
+  stateTransitionId: Scalars["Int"];
+  titleTemplate: Scalars["String"];
 };
 
 export type MutationAdminReportTypeCreateArgs = {
@@ -1211,6 +1296,20 @@ export type MutationVerifyTokenArgs = {
   token?: InputMaybe<Scalars["String"]>;
 };
 
+export type NotificationTemplateType = {
+  __typename?: "NotificationTemplateType";
+  bodyTemplate: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  reportType: AdminReportTypeCreateSuccess;
+  stateDefinition?: Maybe<StateDefinitionType>;
+  stateTransition: DeepStateTransitionType;
+  titleTemplate: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
 /** Obtain JSON Web Token mutation */
 export type ObtainJsonWebToken = {
   __typename?: "ObtainJSONWebToken";
@@ -1246,6 +1345,7 @@ export type Query = {
   adminNotificationTemplateAuthorityQuery?: Maybe<
     Array<Maybe<AdminNotificationTemplateAuthorityType>>
   >;
+  adminNotificationTemplateQuery?: Maybe<AdminNotificationTemplateQueryTypeNodeConnection>;
   adminReportTypeQuery?: Maybe<AdminReportTypeQueryTypeNodeConnection>;
   adminReporterNotificationQuery?: Maybe<AdminReporterNotificationQueryTypeNodeConnection>;
   adminStateDefinitionQuery?: Maybe<AdminStateDefinitionQueryTypeNodeConnection>;
@@ -1270,6 +1370,7 @@ export type Query = {
   myMessage?: Maybe<UserMessageType>;
   myMessages?: Maybe<UserMessageTypeNodeConnection>;
   myReportTypes?: Maybe<Array<Maybe<ReportTypeType>>>;
+  notificationTemplateGet?: Maybe<NotificationTemplateType>;
   reportType?: Maybe<ReportTypeType>;
   reporterNotification?: Maybe<ReporterNotificationType>;
   statQuery?: Maybe<StatType>;
@@ -1279,6 +1380,7 @@ export type Query = {
   summaryCaseByCategoryQuery?: Maybe<Array<SummaryByCategoryType>>;
   summaryReportByCategoryQuery?: Maybe<Array<SummaryByCategoryType>>;
   syncReportTypes?: Maybe<ReportTypeSyncOutputType>;
+  transitionListByReportType?: Maybe<Array<StateTransitionType>>;
 };
 
 export type QueryAdminAuthorityGetArgs = {
@@ -1365,6 +1467,18 @@ export type QueryAdminInvitationCodeQueryArgs = {
 
 export type QueryAdminNotificationTemplateAuthorityQueryArgs = {
   reportTypeId: Scalars["ID"];
+};
+
+export type QueryAdminNotificationTemplateQueryArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_Istartswith?: InputMaybe<Scalars["String"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryAdminReportTypeQueryArgs = {
@@ -1509,6 +1623,10 @@ export type QueryMyMessagesArgs = {
   ordering?: InputMaybe<Scalars["String"]>;
 };
 
+export type QueryNotificationTemplateGetArgs = {
+  id: Scalars["ID"];
+};
+
 export type QueryReportTypeArgs = {
   id: Scalars["ID"];
 };
@@ -1549,6 +1667,10 @@ export type QuerySyncReportTypesArgs = {
   data: Array<ReportTypeSyncInputType>;
 };
 
+export type QueryTransitionListByReportTypeArgs = {
+  reportTypeId: Scalars["ID"];
+};
+
 export type Refresh = {
   __typename?: "Refresh";
   payload: Scalars["GenericScalar"];
@@ -1585,6 +1707,7 @@ export type ReportTypeType = {
   id: Scalars["UUID"];
   incidentreports: Array<IncidentReportType>;
   name: Scalars["String"];
+  notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   ordering: Scalars["Int"];
   rendererDataTemplate?: Maybe<Scalars["String"]>;
   reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
@@ -1641,6 +1764,7 @@ export type StateTransitionType = {
   formDefinition?: Maybe<Scalars["GenericScalar"]>;
   fromStep: DeepStateStepType;
   id: Scalars["ID"];
+  notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   toStep: DeepStateStepType;
   updatedAt: Scalars["DateTime"];
 };
@@ -2434,6 +2558,147 @@ export type GetInvitationCodeQuery = {
   } | null;
 };
 
+export type NotificationTemplatesQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+  nameStartWith?: InputMaybe<Scalars["String"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type NotificationTemplatesQuery = {
+  __typename?: "Query";
+  adminNotificationTemplateQuery?: {
+    __typename?: "AdminNotificationTemplateQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminNotificationTemplateQueryType";
+      id: string;
+      name: string;
+      reportType: {
+        __typename?: "AdminReportTypeCreateSuccess";
+        id: any;
+        name: string;
+      };
+    } | null>;
+  } | null;
+};
+
+export type NotificationTemplateCreateMutationVariables = Exact<{
+  name: Scalars["String"];
+  stateTransitionId: Scalars["Int"];
+  reportTypeId: Scalars["UUID"];
+  titleTemplate: Scalars["String"];
+  bodyTemplate: Scalars["String"];
+}>;
+
+export type NotificationTemplateCreateMutation = {
+  __typename?: "Mutation";
+  adminNotificationTemplateCreate?: {
+    __typename?: "AdminNotificationTemplateCreateMutation";
+    result?:
+      | {
+          __typename: "AdminNotificationTemplateCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminNotificationTemplateCreateSuccess";
+          id: string;
+          name: string;
+          reportType: {
+            __typename?: "AdminReportTypeCreateSuccess";
+            id: any;
+            name: string;
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type NotificationTemplateUpdateMutationVariables = Exact<{
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  stateTransitionId: Scalars["Int"];
+  reportTypeId: Scalars["UUID"];
+  titleTemplate: Scalars["String"];
+  bodyTemplate: Scalars["String"];
+}>;
+
+export type NotificationTemplateUpdateMutation = {
+  __typename?: "Mutation";
+  adminNotificationTemplateUpdate?: {
+    __typename?: "AdminNotificationTemplateUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminNotificationTemplateUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminNotificationTemplateUpdateSuccess";
+          notificationTemplate?: {
+            __typename?: "NotificationTemplateType";
+            id: string;
+            name: string;
+            titleTemplate: string;
+            bodyTemplate: string;
+            reportType: {
+              __typename?: "AdminReportTypeCreateSuccess";
+              id: any;
+              name: string;
+            };
+            stateTransition: {
+              __typename?: "DeepStateTransitionType";
+              id: string;
+            };
+          } | null;
+        }
+      | null;
+  } | null;
+};
+
+export type GetNotificationTemplateQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type GetNotificationTemplateQuery = {
+  __typename?: "Query";
+  notificationTemplateGet?: {
+    __typename?: "NotificationTemplateType";
+    id: string;
+    name: string;
+    titleTemplate: string;
+    bodyTemplate: string;
+    reportType: {
+      __typename?: "AdminReportTypeCreateSuccess";
+      id: any;
+      name: string;
+    };
+    stateTransition: {
+      __typename?: "DeepStateTransitionType";
+      id: string;
+      fromStep?: {
+        __typename?: "StateStepType";
+        id: string;
+        name: string;
+      } | null;
+      toStep?: {
+        __typename?: "StateStepType";
+        id: string;
+        name: string;
+      } | null;
+    };
+  } | null;
+};
+
 export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MeQuery = {
@@ -2686,11 +2951,30 @@ export type ReportTypesQuery = {
   } | null;
 };
 
+export type MyReportTypesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MyReportTypesQuery = {
+  __typename?: "Query";
+  myReportTypes?: Array<{
+    __typename?: "ReportTypeType";
+    id: any;
+    name: string;
+    definition?: any | null;
+    ordering: number;
+    category: {
+      __typename?: "AdminCategoryCreateSuccess";
+      id: string;
+      name: string;
+    };
+  } | null> | null;
+};
+
 export type ReportTypeCreateMutationVariables = Exact<{
   categoryId: Scalars["Int"];
   definition: Scalars["String"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
+  stateDefinitionId?: InputMaybe<Scalars["Int"]>;
 }>;
 
 export type ReportTypeCreateMutation = {
@@ -2718,6 +3002,7 @@ export type ReportTypeUpdateMutationVariables = Exact<{
   definition: Scalars["String"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
+  stateDefinitionId?: InputMaybe<Scalars["Int"]>;
 }>;
 
 export type ReportTypeUpdateMutation = {
@@ -2747,6 +3032,11 @@ export type ReportTypeUpdateMutation = {
               id: string;
               name: string;
             };
+            stateDefinition?: {
+              __typename?: "DeepStateDefinitionType";
+              id: string;
+              name: string;
+            } | null;
           } | null;
         }
       | null;
@@ -2770,6 +3060,11 @@ export type GetReportTypeQuery = {
       id: string;
       name: string;
     };
+    stateDefinition?: {
+      __typename?: "DeepStateDefinitionType";
+      id: string;
+      name: string;
+    } | null;
   } | null;
 };
 
@@ -3143,6 +3438,32 @@ export type StateTransitionsQuery = {
       isStopState: boolean;
     };
   } | null> | null;
+};
+
+export type StateTransistionListByReportTypeQueryVariables = Exact<{
+  reportTypeId: Scalars["ID"];
+}>;
+
+export type StateTransistionListByReportTypeQuery = {
+  __typename?: "Query";
+  transitionListByReportType?: Array<{
+    __typename?: "StateTransitionType";
+    id: string;
+    fromStep: {
+      __typename?: "DeepStateStepType";
+      id: string;
+      name: string;
+      isStartState: boolean;
+      isStopState: boolean;
+    };
+    toStep: {
+      __typename?: "DeepStateStepType";
+      id: string;
+      name: string;
+      isStartState: boolean;
+      isStopState: boolean;
+    };
+  }> | null;
 };
 
 export type StateTransitionCreateMutationVariables = Exact<{
@@ -6773,6 +7094,748 @@ export const GetInvitationCodeDocument = {
   GetInvitationCodeQuery,
   GetInvitationCodeQueryVariables
 >;
+export const NotificationTemplatesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "notificationTemplates" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "nameStartWith" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminNotificationTemplateQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name_Istartswith" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "nameStartWith" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "reportType" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  NotificationTemplatesQuery,
+  NotificationTemplatesQueryVariables
+>;
+export const NotificationTemplateCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "NotificationTemplateCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "stateTransitionId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "titleTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "bodyTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminNotificationTemplateCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "stateTransitionId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "stateTransitionId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "titleTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "titleTemplate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "bodyTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "bodyTemplate" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminNotificationTemplateCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "reportType" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminNotificationTemplateCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  NotificationTemplateCreateMutation,
+  NotificationTemplateCreateMutationVariables
+>;
+export const NotificationTemplateUpdateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "NotificationTemplateUpdate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "stateTransitionId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "titleTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "bodyTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminNotificationTemplateUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "stateTransitionId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "stateTransitionId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "titleTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "titleTemplate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "bodyTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "bodyTemplate" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminNotificationTemplateUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "notificationTemplate",
+                              },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "reportType" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "stateTransition",
+                                    },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "titleTemplate",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "bodyTemplate",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminNotificationTemplateUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  NotificationTemplateUpdateMutation,
+  NotificationTemplateUpdateMutationVariables
+>;
+export const GetNotificationTemplateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetNotificationTemplate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "notificationTemplateGet" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reportType" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "stateTransition" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "fromStep" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "toStep" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "titleTemplate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "bodyTemplate" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetNotificationTemplateQuery,
+  GetNotificationTemplateQueryVariables
+>;
 export const MeDocument = {
   kind: "Document",
   definitions: [
@@ -7941,6 +9004,45 @@ export const ReportTypesDocument = {
     },
   ],
 } as unknown as DocumentNode<ReportTypesQuery, ReportTypesQueryVariables>;
+export const MyReportTypesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "MyReportTypes" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "myReportTypes" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "definition" } },
+                { kind: "Field", name: { kind: "Name", value: "ordering" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<MyReportTypesQuery, MyReportTypesQueryVariables>;
 export const ReportTypeCreateDocument = {
   kind: "Document",
   definitions: [
@@ -7996,6 +9098,14 @@ export const ReportTypeCreateDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "stateDefinitionId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -8034,6 +9144,14 @@ export const ReportTypeCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "ordering" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "stateDefinitionId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "stateDefinitionId" },
                 },
               },
             ],
@@ -8186,6 +9304,14 @@ export const ReportTypeUpdateDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "stateDefinitionId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -8232,6 +9358,14 @@ export const ReportTypeUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "ordering" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "stateDefinitionId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "stateDefinitionId" },
                 },
               },
             ],
@@ -8281,6 +9415,26 @@ export const ReportTypeUpdateDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "category" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "stateDefinition",
+                                    },
                                     selectionSet: {
                                       kind: "SelectionSet",
                                       selections: [
@@ -8397,6 +9551,17 @@ export const GetReportTypeDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "stateDefinition" },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
@@ -10266,6 +11431,95 @@ export const StateTransitionsDocument = {
 } as unknown as DocumentNode<
   StateTransitionsQuery,
   StateTransitionsQueryVariables
+>;
+export const StateTransistionListByReportTypeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "StateTransistionListByReportType" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "transitionListByReportType" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "fromStep" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStartState" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStopState" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "toStep" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStartState" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStopState" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  StateTransistionListByReportTypeQuery,
+  StateTransistionListByReportTypeQueryVariables
 >;
 export const StateTransitionCreateDocument = {
   kind: "Document",

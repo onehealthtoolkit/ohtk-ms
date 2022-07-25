@@ -1,0 +1,126 @@
+query notificationTemplates(
+  $limit: Int!
+  $offset: Int!
+  $nameStartWith: String
+  $ordering: String
+) {
+  adminNotificationTemplateQuery(
+    limit: $limit
+    offset: $offset
+    name_Istartswith: $nameStartWith
+    ordering: $ordering
+  ) {
+    totalCount
+    results {
+      id
+      name
+      reportType {
+        id
+        name
+      }
+    }
+  }
+}
+
+mutation NotificationTemplateCreate(
+  $name: String!
+  $stateTransitionId: Int!
+  $reportTypeId: UUID!
+  $titleTemplate: String!
+  $bodyTemplate: String!
+) {
+  adminNotificationTemplateCreate(
+    name: $name
+    stateTransitionId: $stateTransitionId
+    reportTypeId: $reportTypeId
+    titleTemplate: $titleTemplate
+    bodyTemplate: $bodyTemplate
+  ) {
+    result {
+      __typename
+      ... on AdminNotificationTemplateCreateSuccess {
+        id
+        name
+        reportType {
+          id
+          name
+        }
+      }
+      ... on AdminNotificationTemplateCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation NotificationTemplateUpdate(
+  $id: ID!
+  $name: String!
+  $stateTransitionId: Int!
+  $reportTypeId: UUID!
+  $titleTemplate: String!
+  $bodyTemplate: String!
+) {
+  adminNotificationTemplateUpdate(
+    id: $id
+    name: $name
+    stateTransitionId: $stateTransitionId
+    reportTypeId: $reportTypeId
+    titleTemplate: $titleTemplate
+    bodyTemplate: $bodyTemplate
+  ) {
+    result {
+      __typename
+      ... on AdminNotificationTemplateUpdateSuccess {
+        notificationTemplate {
+          id
+          name
+          reportType {
+            id
+            name
+          }
+          stateTransition {
+            id
+          }
+          titleTemplate
+          bodyTemplate
+        }
+      }
+      ... on AdminNotificationTemplateUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+query GetNotificationTemplate($id: ID!) {
+  notificationTemplateGet(id: $id) {
+    id
+    name
+    reportType {
+      id
+      name
+    }
+    stateTransition {
+      id
+      fromStep {
+        id
+        name
+      }
+      toStep {
+        id
+        name
+      }
+    }
+    titleTemplate
+    bodyTemplate
+  }
+}

@@ -4,6 +4,7 @@ import {
   ReportTypeCreateDocument,
   ReportTypeUpdateDocument,
   GetReportTypeDocument,
+  MyReportTypesDocument,
 } from "lib/generated/graphql";
 import { ReportType } from "lib/services/reportType/reportType";
 import {
@@ -20,19 +21,22 @@ export interface IReportTypeService extends IService {
     offset: number,
     searchText: string
   ): Promise<QueryResult<ReportType[]>>;
+  fetchMyReportTypes(): Promise<ReportType[]>;
   getReportType(id: string): Promise<GetResult<ReportType>>;
   createReportType(
     name: string,
     categoryId: number,
     definition: string,
-    ordering: number
+    ordering: number,
+    stateDefinitionId?: number
   ): Promise<SaveResult<ReportType>>;
   updateReportType(
     id: string,
     name: string,
     categoryId: number,
     definition: string,
-    ordering: number
+    ordering: number,
+    stateDefinitionId?: number
   ): Promise<SaveResult<ReportType>>;
   deleteReportType(id: string): Promise<DeleteResult>;
 }
@@ -81,6 +85,27 @@ export class ReportTypeService implements IReportTypeService {
     };
   }
 
+  async fetchMyReportTypes() {
+    const fetchResult = await this.client.query({
+      query: MyReportTypesDocument,
+    });
+
+    const items = Array<ReportType>();
+    fetchResult.data.myReportTypes?.forEach(item => {
+      if (item) {
+        items.push({
+          id: item.id,
+          name: item.name,
+          definition: item.definition,
+          categoryId: +item.category.id,
+          categoryName: item.category.name,
+          ordering: item.ordering,
+        });
+      }
+    });
+    return items;
+  }
+
   async getReportType(id: string) {
     const getResult = await this.client.query({
       query: GetReportTypeDocument,
@@ -99,6 +124,10 @@ export class ReportTypeService implements IReportTypeService {
         categoryName: reportType.category.name,
         definition: JSON.stringify(reportType.definition),
         ordering: reportType.ordering,
+        stateDefinitionId: reportType.stateDefinition
+          ? +reportType.stateDefinition?.id
+          : undefined,
+        stateDefinitionName: reportType.stateDefinition?.name,
       };
     }
     return {
@@ -110,7 +139,8 @@ export class ReportTypeService implements IReportTypeService {
     name: string,
     categoryId: number,
     definition: string,
-    ordering: number
+    ordering: number,
+    stateDefinitionId?: number
   ): Promise<SaveResult<ReportType>> {
     const createResult = await this.client.mutate({
       mutation: ReportTypeCreateDocument,
@@ -119,6 +149,7 @@ export class ReportTypeService implements IReportTypeService {
         categoryId: categoryId,
         definition: definition,
         ordering: ordering,
+        stateDefinitionId: stateDefinitionId || undefined,
       },
       refetchQueries: [
         {
@@ -160,7 +191,8 @@ export class ReportTypeService implements IReportTypeService {
     name: string,
     categoryId: number,
     definition: string,
-    ordering: number
+    ordering: number,
+    stateDefinitionId?: number
   ): Promise<SaveResult<ReportType>> {
     const updateResult = await this.client.mutate({
       mutation: ReportTypeUpdateDocument,
@@ -170,6 +202,7 @@ export class ReportTypeService implements IReportTypeService {
         categoryId: categoryId,
         definition: definition,
         ordering: ordering,
+        stateDefinitionId: stateDefinitionId || undefined,
       },
       refetchQueries: [
         {

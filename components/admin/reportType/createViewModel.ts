@@ -8,7 +8,8 @@ export class ReportTypeCreateViewModel extends ReportTypeViewModel {
       this.name,
       this.categoryId,
       this.definition,
-      this.ordering
+      this.ordering,
+      this.stateDefinitionId
     );
   }
 }

@@ -5,4 +5,6 @@ export type ReportType = {
   categoryId: number;
   categoryName: string;
   ordering: number;
+  stateDefinitionId?: number;
+  stateDefinitionName?: string;
 };
