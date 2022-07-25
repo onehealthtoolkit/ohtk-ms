@@ -221,6 +221,8 @@ export class StateDefinitionService implements IStateDefinitionService {
               data: {
                 __typename: "Query",
                 stateDefinitionGet: newStateDefinitionValue,
+                adminStateStepQuery: cacheItem.adminStateStepQuery,
+                adminStateTransitionQuery: cacheItem.adminStateTransitionQuery,
               },
             });
           }
@@ -249,6 +251,11 @@ export class StateDefinitionService implements IStateDefinitionService {
       }
     }
     return {
+      data: {
+        id: result?.stateDefinition?.id,
+        name: result?.stateDefinition?.name,
+        isDefault: result?.stateDefinition?.isDefault,
+      },
       success: true,
     };
   }

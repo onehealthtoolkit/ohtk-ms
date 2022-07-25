@@ -99,7 +99,7 @@ export abstract class StateDefinitionViewModel extends BaseFormViewModel {
         }
       }
       if (result.success) {
-        this.resultId = result.data!.id!;
+        this.resultId = result.data?.id || "";
       }
       return result.success;
     }
