@@ -81,7 +81,7 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
 
   addField(type: TFieldValueType) {
     const id = crypto.randomUUID();
-    this.fields.push(new FieldViewModel(id, "Field", type));
+    this.fields.push(new FieldViewModel(id, "", type));
   }
 
   deleteField(id: string) {

@@ -82,7 +82,7 @@ export class FieldViewModel extends BaseViewModel {
       condition: computed,
     });
     this.fieldType = type;
-    this.name = "name";
+    this.name = "";
     this._extension = this.constructExtension(type);
   }
 

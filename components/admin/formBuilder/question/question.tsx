@@ -15,7 +15,8 @@ type Props = {
 
 const Question: FC<Props> = ({ value: question, onSelect }) => {
   return question.isCurrent ? (
-    <div className="pt-4 pr-4 flex-grow">
+    <div className="pt-4 pr-4 flex-grow flex-col flex gap-2">
+      <h4 className="text-xs text-gray-600">Question label</h4>
       {question.isLabelEditing ? (
         <input
           className="bg-blue-50 py-2 px-4 w-full"
@@ -40,6 +41,7 @@ const Question: FC<Props> = ({ value: question, onSelect }) => {
           onClick={() => question.setIsLabelEditing(true)}
         />
       )}
+      <h4 className="text-xs text-gray-600">Question description</h4>
       {question.isDescriptionEditing ? (
         <input
           className="bg-blue-50 py-2 px-4 w-full text-sm"
@@ -72,14 +74,17 @@ const Question: FC<Props> = ({ value: question, onSelect }) => {
       >
         {question => <AdvanceCondition viewModel={question} />}
       </QuestionActionBar>
-      <FieldList
-        values={question.fields}
-        onMoveDown={fieldId => question.moveItemDown(fieldId)}
-        onMoveUp={fieldId => question.moveItemUp(fieldId)}
-        onSelect={fieldId => question.selectField(fieldId)}
-        onDelete={fieldId => question.deleteField(fieldId)}
-      />
-      <FieldMenus value={question} />
+      <h4 className="text-xs text-gray-600">Fields</h4>
+      <div className="p-2 mb-4 border-dotted border-2">
+        <FieldList
+          values={question.fields}
+          onMoveDown={fieldId => question.moveItemDown(fieldId)}
+          onMoveUp={fieldId => question.moveItemUp(fieldId)}
+          onSelect={fieldId => question.selectField(fieldId)}
+          onDelete={fieldId => question.deleteField(fieldId)}
+        />
+        <FieldMenus value={question} />
+      </div>
     </div>
   ) : (
     <div className="p-4 flex-grow" onClick={() => onSelect(question.id)}>

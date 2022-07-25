@@ -202,6 +202,7 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
 
   return field.isCurrent ? (
     <div className="pt-4 pr-4 pb-4 w-full" ref={elementRef}>
+      <h4 className="text-sm text-gray-600">Field Label (optional)</h4>
       <div className="flex">
         <div className="flex-grow">
           {field.isLabelEditing ? (
@@ -229,34 +230,37 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
             />
           )}
         </div>
-        <div className="border border-gray-200 rounded bg-white p-2 ml-4 text-blue-600 font-medium">
+        <div className="border border-gray-200 rounded  p-2 ml-4 text-blue-600 font-medium">
           {field.fieldTypeName}
         </div>
       </div>
-      {field.isNameEditing ? (
-        <input
-          className="bg-blue-50 py-2 px-4 w-full text-sm"
-          autoFocus
-          value={field.name}
-          onChange={e => field.setName(e.target.value)}
-          onBlur={() => field.setIsNameEditing(false)}
-          onKeyDown={e => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              field.setIsNameEditing(false);
-            }
-          }}
-        />
-      ) : (
-        <input
-          className="border-b border-gray-200 hover:border-blue-600 py-2 px-4 rounded w-full text-sm cursor-pointer"
-          type={"text"}
-          value={field.name}
-          placeholder="Name"
-          readOnly
-          onClick={() => field.setIsNameEditing(true)}
-        />
-      )}
+      <div className="mt-1">
+        <h4 className="text-sm text-gray-600">Variable name *</h4>
+        {field.isNameEditing ? (
+          <input
+            className="bg-blue-50 py-2 px-4 w-full text-sm"
+            autoFocus
+            value={field.name}
+            onChange={e => field.setName(e.target.value)}
+            onBlur={() => field.setIsNameEditing(false)}
+            onKeyDown={e => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                field.setIsNameEditing(false);
+              }
+            }}
+          />
+        ) : (
+          <input
+            className="border-b border-gray-200 hover:border-blue-600 py-2 px-4 rounded w-full text-sm cursor-pointer"
+            type={"text"}
+            value={field.name}
+            placeholder="Name"
+            readOnly
+            onClick={() => field.setIsNameEditing(true)}
+          />
+        )}
+      </div>
       {renderEditingFieldTypeComponent(field.fieldType)}
       <ConfirmDialog
         viewModel={field.dialog("confirmDelete")}
@@ -270,7 +274,7 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
   ) : (
     <div className="pt-4 pr-4 pb-4 w-full" onClick={() => onSelect(field.id)}>
       <label className="p-2">
-        {field.label || <span className="text-gray-400">Field</span>}
+        {field.label || <span className="text-gray-400">Field Label</span>}
       </label>
       {renderDisplayFieldTypeComponent(field.fieldType)}
     </div>

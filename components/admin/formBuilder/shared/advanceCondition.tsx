@@ -19,7 +19,7 @@ const Advance: FC<AdvanceProps> = ({ viewModel }) => {
       return <div>TODO... Logical operation is to be implemented</div>;
     } else {
       const operatorViewModel = instance as ComparableOperatorViewModel;
-      let title = "{s} advance condition";
+      let title = "{s} display condition";
       if (viewModel instanceof FieldViewModel) {
         title = title.replace("{s}", "Field");
       }

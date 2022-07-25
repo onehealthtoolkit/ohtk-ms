@@ -21,15 +21,13 @@ const List: FC<Props> = ({
   return (
     <>
       {fields.length > 0 ? (
-        <ul className="mt-4 bg-white rounded-md border-2 border-gray-200">
+        <ul className="mt-4 bg-white rounded-md ">
           {fields.map(field => (
             <li
               key={field.id}
-              className={`relative flex items-stretch border-b-2 border-gray-200 
+              className={`m-2 relative flex items-stretch border-2 border-gray-100 hover:border-blue-200
               ${
-                field.isCurrent
-                  ? "border-l-4 border-l-blue-400 bg-gray-50"
-                  : "last:border-0"
+                field.isCurrent ? "border-l-4 border-l-blue-400 bg-gray-50" : ""
               }`}
               onMouseOver={() => (field.isHovered = true)}
               onMouseOut={() => (field.isHovered = false)}

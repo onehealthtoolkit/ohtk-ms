@@ -17,7 +17,7 @@ const Field: FC<Props> = ({ value: field, onDelete }) => {
     <div className="w-full mt-4 flex flex-col items-stretch">
       <div className="flex text-sm">
         <div className="w-1/2 pr-2">
-          Minimum length
+          <h4 className="text-sm text-gray-600">Minimum length</h4>
           <input
             className="border border-gray-200 py-2 px-4 w-full rounded-sm"
             type={"number"}
@@ -26,7 +26,7 @@ const Field: FC<Props> = ({ value: field, onDelete }) => {
           />
         </div>
         <div className="w-1/2 pl-2">
-          Maximum length
+          <h4 className="text-sm text-gray-600">Maximum length</h4>
           <input
             className="border border-gray-200 py-2 px-4 w-full rounded-sm"
             type={"number"}

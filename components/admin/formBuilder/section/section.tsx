@@ -14,7 +14,8 @@ const Section: FC<Props> = ({ value: section }) => {
 
   return (
     <div className="text-gray-900 md:pl-4 w-full md:w-3/4">
-      <div className={"flex flex-col md:min-h-[400px] "}>
+      <div className={"flex flex-col md:min-h-[400px] gap-2"}>
+        <h4 className="text-xs text-gray-600">Section</h4>
         {section.isLabelEditing ? (
           <input
             className="bg-blue-50 py-2 px-4"
@@ -39,12 +40,15 @@ const Section: FC<Props> = ({ value: section }) => {
             onClick={() => section.setIsLabelEditing(true)}
           />
         )}
-        <QuestionList
-          values={section.questions}
-          onMoveDown={questionId => section.moveItemDown(questionId)}
-          onMoveUp={questionId => section.moveItemUp(questionId)}
-          onSelect={questionId => section.selectQuestion(questionId)}
-        />
+        <h4 className="text-xs text-gray-600">Questions</h4>
+        <div className="p-4 border-dotted border-2">
+          <QuestionList
+            values={section.questions}
+            onMoveDown={questionId => section.moveItemDown(questionId)}
+            onMoveUp={questionId => section.moveItemUp(questionId)}
+            onSelect={questionId => section.selectQuestion(questionId)}
+          />
+        </div>
       </div>
       <div className="p-4 flex justify-end ">
         <button
