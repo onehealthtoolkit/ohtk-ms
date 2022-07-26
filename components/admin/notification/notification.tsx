@@ -151,6 +151,7 @@ const Notification = () => {
                   ))}
                 </tbody>
               </table>
+              {viewModel.isDataLoding && <Spinner />}
             </div>
           </div>
         </div>

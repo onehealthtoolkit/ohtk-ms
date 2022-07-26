@@ -14,6 +14,7 @@ export class NotificationViewModel extends BaseFormViewModel {
   _data: Notification[] = [];
   _activeTabIndex: number = 0;
   _reportTypeId: string = "";
+  _isDataLoding: boolean = false;
 
   constructor(notificationService: INotificationService) {
     super();
@@ -24,6 +25,8 @@ export class NotificationViewModel extends BaseFormViewModel {
       activeTabIndex: computed,
       _reportTypeId: observable,
       reportTypeId: computed,
+      _isDataLoding: observable,
+      isDataLoding: computed,
       save: action,
       setValue: action,
       validate: action,
@@ -52,11 +55,19 @@ export class NotificationViewModel extends BaseFormViewModel {
     this._reportTypeId = value;
   }
 
+  public get isDataLoding(): boolean {
+    return this._isDataLoding;
+  }
+  public set isDataLoding(value: boolean) {
+    this._isDataLoding = value;
+  }
+
   setValue(item: Notification, value: string) {
     item.to = value;
   }
 
   async fetch(reportTypeId: string): Promise<void> {
+    this.isDataLoding = true;
     this.reportTypeId = reportTypeId;
     const result = await this.notificationService.fetchNotifications(
       this.reportTypeId
@@ -64,6 +75,8 @@ export class NotificationViewModel extends BaseFormViewModel {
     runInAction(() => {
       this.data = result || [];
     });
+
+    this.isDataLoding = false;
   }
 
   public async save(item: Notification): Promise<boolean> {
