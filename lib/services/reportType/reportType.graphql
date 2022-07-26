@@ -24,17 +24,32 @@ query ReportTypes(
   }
 }
 
+query MyReportTypes {
+  myReportTypes {
+    id
+    name
+    category {
+      id
+      name
+    }
+    definition
+    ordering
+  }
+}
+
 mutation ReportTypeCreate(
   $categoryId: Int!
   $definition: String!
   $name: String!
   $ordering: Int!
+  $stateDefinitionId: Int
 ) {
   adminReportTypeCreate(
     categoryId: $categoryId
     definition: $definition
     name: $name
     ordering: $ordering
+    stateDefinitionId: $stateDefinitionId
   ) {
     result {
       __typename
@@ -59,6 +74,7 @@ mutation ReportTypeUpdate(
   $definition: String!
   $name: String!
   $ordering: Int!
+  $stateDefinitionId: Int
 ) {
   adminReportTypeUpdate(
     id: $id
@@ -66,6 +82,7 @@ mutation ReportTypeUpdate(
     name: $name
     definition: $definition
     ordering: $ordering
+    stateDefinitionId: $stateDefinitionId
   ) {
     result {
       __typename
@@ -75,6 +92,10 @@ mutation ReportTypeUpdate(
           name
           definition
           category {
+            id
+            name
+          }
+          stateDefinition {
             id
             name
           }
@@ -98,6 +119,10 @@ query GetReportType($id: ID!) {
     name
     definition
     category {
+      id
+      name
+    }
+    stateDefinition {
       id
       name
     }

@@ -65,7 +65,7 @@ const InvitationCodeUpdate = () => {
               disabled={viewModel.isSubmitting}
               value={viewModel.fromDate}
             />
-            <ErrorText>{viewModel.fieldErrors.code}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.fromDate}</ErrorText>
           </Field>
 
           <Field $size="half">
@@ -79,7 +79,7 @@ const InvitationCodeUpdate = () => {
               disabled={viewModel.isSubmitting}
               value={viewModel.throughDate}
             />
-            <ErrorText>{viewModel.fieldErrors.code}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.throughDate}</ErrorText>
           </Field>
 
           <Field $size="half">

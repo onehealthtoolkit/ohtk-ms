@@ -20,6 +20,7 @@ export class ReportTypeUpdateViewModel extends ReportTypeViewModel {
       this.name = data.name;
       this.definition = data.definition;
       this.categoryId = data.categoryId;
+      this.stateDefinitionId = data.stateDefinitionId || 0;
       this.ordering = data.ordering;
       this.parseDefinition(data.definition);
     }
@@ -32,7 +33,8 @@ export class ReportTypeUpdateViewModel extends ReportTypeViewModel {
       this.name,
       this.categoryId,
       this.definition,
-      this.ordering
+      this.ordering,
+      this.stateDefinitionId
     );
   }
 }

@@ -17,6 +17,24 @@ query StateTransitions($definitionId: ID!) {
   }
 }
 
+query StateTransistionListByReportType($reportTypeId: ID!) {
+  transitionListByReportType(reportTypeId: $reportTypeId) {
+    id
+    fromStep {
+      id
+      name
+      isStartState
+      isStopState
+    }
+    toStep {
+      id
+      name
+      isStartState
+      isStopState
+    }
+  }
+}
+
 mutation StateTransitionCreate(
   $formDefinition: String!
   $fromStepId: ID!

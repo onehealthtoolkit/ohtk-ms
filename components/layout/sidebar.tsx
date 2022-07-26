@@ -14,6 +14,7 @@ import {
   DocumentReportIcon,
   AnnotationIcon,
   LightBulbIcon,
+  CollectionIcon,
 } from "@heroicons/react/solid";
 import useStore from "lib/store";
 import CollapsIcon from "components/layout/CollapsIcon";
@@ -156,7 +157,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 pathname={pathname}
                 label="Category"
                 collapsed={store.menu.collapsed}
-                icon={<TemplateIcon className={iconClassName} />}
+                icon={<CollectionIcon className={iconClassName} />}
               />
               <Menu
                 href="/admin/report_types/"
@@ -187,6 +188,20 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 label="State Definition"
                 collapsed={store.menu.collapsed}
                 icon={<LightBulbIcon className={iconClassName} />}
+              />
+              <Menu
+                href="/admin/notification_templates"
+                pathname={pathname}
+                label="Notification Template"
+                collapsed={store.menu.collapsed}
+                icon={<TemplateIcon className={iconClassName} />}
+              />
+              <Menu
+                href="/admin/notifications"
+                pathname={pathname}
+                label="Notification"
+                collapsed={store.menu.collapsed}
+                icon={<BellIcon className={iconClassName} />}
               />
               <Menu
                 href="/admin/reporter_notifications"

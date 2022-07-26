@@ -3,16 +3,16 @@ import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
-import { ReportTypeViewViewModel } from "./viewViewModel";
+import { NotificationTemplateViewViewModel } from "./viewViewModel";
 
-const ReportTypeView = () => {
+const NotificationTemplateView = () => {
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
     () =>
-      new ReportTypeViewViewModel(
+      new NotificationTemplateViewViewModel(
         router.query.id as string,
-        services.reportTypeService
+        services.notificationTemplateService
       )
   );
 
@@ -31,6 +31,7 @@ const ReportTypeView = () => {
                 </th>
                 <td className="px-6 py-4">{viewModel.data.id}</td>
               </tr>
+
               <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                 <th
                   scope="row"
@@ -43,21 +44,21 @@ const ReportTypeView = () => {
               <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                 <th
                   scope="row"
-                  className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                  className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Category
+                  Report Type
                 </th>
-                <td className="px-6 py-4">{viewModel.data.categoryName}</td>
+                <td className="px-6 py-4">{viewModel.data.reportTypeName}</td>
               </tr>
               <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                 <th
                   scope="row"
-                  className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                  className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  State Difinition
+                  Transistion
                 </th>
                 <td className="px-6 py-4">
-                  {viewModel.data.stateDefinitionName}
+                  {viewModel.data.fromStepName} to {viewModel.data.toStepName}
                 </td>
               </tr>
               <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
@@ -65,9 +66,18 @@ const ReportTypeView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Ordering
+                  Title Template
                 </th>
-                <td className="px-6 py-4">{viewModel.data.ordering}</td>
+                <td className="px-6 py-4">{viewModel.data.titleTemplate}</td>
+              </tr>
+              <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                >
+                  Body Template
+                </th>
+                <td className="px-6 py-4">{viewModel.data.bodyTemplate}</td>
               </tr>
             </tbody>
           </table>
@@ -77,4 +87,4 @@ const ReportTypeView = () => {
   );
 };
 
-export default observer(ReportTypeView);
+export default observer(NotificationTemplateView);
