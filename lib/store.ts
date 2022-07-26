@@ -50,6 +50,7 @@ export class Store {
         this.initTokenPending = false;
         this.isLogin = true;
       });
+      this.authService.startAutoRefreshToken();
     } else {
       runInAction(() => {
         this.initTokenPending = false;

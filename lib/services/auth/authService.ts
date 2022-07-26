@@ -6,8 +6,38 @@ import {
 } from "lib/generated/graphql";
 import { IService } from "../interface";
 
+const REFRESH_EXPIRES_IN = "refreshExpiresIn";
+
 export function setRefreshExpiresIn(value: number) {
-  localStorage.setItem("refreshExpiresIn", value.toString());
+  localStorage.setItem(REFRESH_EXPIRES_IN, value.toString());
+}
+
+export function getRefreshExpiresIn(): number {
+  const value = localStorage.getItem(REFRESH_EXPIRES_IN);
+  if (value) {
+    try {
+      return parseInt(value);
+    } catch (_) {
+      localStorage.removeItem(REFRESH_EXPIRES_IN);
+      return 0;
+    }
+  }
+  return 0;
+}
+
+export function minutesUntilTokenExpire(): number {
+  const expireTime = getRefreshExpiresIn();
+  if (expireTime == 0) {
+    return 0;
+  }
+  const now = Date.now();
+  const diff = now - expireTime * 1000;
+  if (diff > 0) {
+    return 0;
+  }
+
+  const diffInMinute = diff / (60 * 1000);
+  return diffInMinute * -1;
 }
 
 export type SignInResult = SignInSuccess | SingInFailure;
@@ -26,13 +56,30 @@ export interface IAuthService extends IService {
   refreshToken(): Promise<boolean>;
   signIn(username: string, password: string): Promise<SignInResult>;
   signOut(): Promise<void>;
+  startAutoRefreshToken(): void;
 }
 
 export class AuthService implements IAuthService {
   client: ApolloClient<NormalizedCacheObject>;
+  interval?: number;
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
+  }
+
+  startAutoRefreshToken(): void {
+    if (this.interval != undefined) {
+      clearInterval(this.interval);
+    }
+    // window.setInterval return number
+    // setInterval without window prefix return NodeJS.Timer
+    this.interval = window.setInterval(() => {
+      const diff = minutesUntilTokenExpire();
+      console.debug("refresh interval", diff);
+      if (diff < 3) {
+        this.refreshToken();
+      }
+    }, 60 * 1 * 1000 /* millisec */);
   }
 
   async refreshToken(): Promise<boolean> {
