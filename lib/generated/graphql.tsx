@@ -82,6 +82,7 @@ export type AdminAuthorityCreateSuccess = {
   __typename?: "AdminAuthorityCreateSuccess";
   area?: Maybe<Scalars["GeoJSON"]>;
   authorityInherits: Array<AdminAuthorityCreateSuccess>;
+  authoritynotificationSet: Array<AdminAuthorityNotificationUpsertSuccess>;
   cases: Array<CaseType>;
   code: Scalars["String"];
   createdAt: Scalars["DateTime"];
@@ -94,6 +95,32 @@ export type AdminAuthorityCreateSuccess = {
   reportTypes: Array<AdminReportTypeCreateSuccess>;
   updatedAt: Scalars["DateTime"];
   users: Array<AdminAuthorityUserCreateSuccess>;
+};
+
+export type AdminAuthorityNotificationUpsertMutation = {
+  __typename?: "AdminAuthorityNotificationUpsertMutation";
+  result?: Maybe<AdminAuthorityNotificationUpsertResult>;
+};
+
+export type AdminAuthorityNotificationUpsertProblem = {
+  __typename?: "AdminAuthorityNotificationUpsertProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminAuthorityNotificationUpsertResult =
+  | AdminAuthorityNotificationUpsertProblem
+  | AdminAuthorityNotificationUpsertSuccess;
+
+export type AdminAuthorityNotificationUpsertSuccess = {
+  __typename?: "AdminAuthorityNotificationUpsertSuccess";
+  authority: AdminAuthorityCreateSuccess;
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  id: Scalars["ID"];
+  template: AdminNotificationTemplateCreateSuccess;
+  to: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
 };
 
 export type AdminAuthorityQueryType = {
@@ -438,6 +465,7 @@ export type AdminNotificationTemplateCreateResult =
 
 export type AdminNotificationTemplateCreateSuccess = {
   __typename?: "AdminNotificationTemplateCreateSuccess";
+  authoritynotificationSet: Array<AdminAuthorityNotificationUpsertSuccess>;
   bodyTemplate: Scalars["String"];
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
@@ -1021,6 +1049,7 @@ export type MessageType = {
 export type Mutation = {
   __typename?: "Mutation";
   adminAuthorityCreate?: Maybe<AdminAuthorityCreateMutation>;
+  adminAuthorityNotificationUpsert?: Maybe<AdminAuthorityNotificationUpsertMutation>;
   adminAuthorityUpdate?: Maybe<AdminAuthorityUpdateMutation>;
   adminAuthorityUserCreate?: Maybe<AdminAuthorityUserCreateMutation>;
   adminAuthorityUserUpdate?: Maybe<AdminAuthorityUserUpdateMutation>;
@@ -1065,6 +1094,11 @@ export type MutationAdminAuthorityCreateArgs = {
   code: Scalars["String"];
   inherits?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   name: Scalars["String"];
+};
+
+export type MutationAdminAuthorityNotificationUpsertArgs = {
+  notificationTemplateId: Scalars["Int"];
+  to: Scalars["String"];
 };
 
 export type MutationAdminAuthorityUpdateArgs = {
@@ -1298,6 +1332,7 @@ export type MutationVerifyTokenArgs = {
 
 export type NotificationTemplateType = {
   __typename?: "NotificationTemplateType";
+  authoritynotificationSet: Array<AdminAuthorityNotificationUpsertSuccess>;
   bodyTemplate: Scalars["String"];
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
@@ -2555,6 +2590,48 @@ export type GetInvitationCodeQuery = {
     throughDate: any;
     role: string;
     authority: { __typename?: "AdminAuthorityCreateSuccess"; id: string };
+  } | null;
+};
+
+export type NotificationTemplateAuthorityQueryVariables = Exact<{
+  reportTypeId: Scalars["ID"];
+}>;
+
+export type NotificationTemplateAuthorityQuery = {
+  __typename?: "Query";
+  adminNotificationTemplateAuthorityQuery?: Array<{
+    __typename?: "AdminNotificationTemplateAuthorityType";
+    notificationTemplateId: string;
+    notificationTemplateName: string;
+    to?: string | null;
+  } | null> | null;
+};
+
+export type AuthorityNotificationUpsertMutationVariables = Exact<{
+  notificationTemplateId: Scalars["Int"];
+  to: Scalars["String"];
+}>;
+
+export type AuthorityNotificationUpsertMutation = {
+  __typename?: "Mutation";
+  adminAuthorityNotificationUpsert?: {
+    __typename?: "AdminAuthorityNotificationUpsertMutation";
+    result?:
+      | {
+          __typename: "AdminAuthorityNotificationUpsertProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminAuthorityNotificationUpsertSuccess";
+          id: string;
+          to: string;
+        }
+      | null;
   } | null;
 };
 
@@ -7093,6 +7170,209 @@ export const GetInvitationCodeDocument = {
 } as unknown as DocumentNode<
   GetInvitationCodeQuery,
   GetInvitationCodeQueryVariables
+>;
+export const NotificationTemplateAuthorityDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "NotificationTemplateAuthority" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: {
+              kind: "Name",
+              value: "adminNotificationTemplateAuthorityQuery",
+            },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "notificationTemplateId" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "notificationTemplateName" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "to" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  NotificationTemplateAuthorityQuery,
+  NotificationTemplateAuthorityQueryVariables
+>;
+export const AuthorityNotificationUpsertDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AuthorityNotificationUpsert" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "notificationTemplateId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "to" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAuthorityNotificationUpsert" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "notificationTemplateId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "notificationTemplateId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "to" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "to" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminAuthorityNotificationUpsertSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "to" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminAuthorityNotificationUpsertProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AuthorityNotificationUpsertMutation,
+  AuthorityNotificationUpsertMutationVariables
 >;
 export const NotificationTemplatesDocument = {
   kind: "Document",

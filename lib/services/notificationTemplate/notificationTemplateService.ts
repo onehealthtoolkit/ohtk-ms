@@ -4,6 +4,7 @@ import {
   NotificationTemplateCreateDocument,
   NotificationTemplateUpdateDocument,
   GetNotificationTemplateDocument,
+  NotificationTemplateAuthorityDocument,
 } from "lib/generated/graphql";
 import { NotificationTemplate } from "lib/services/notificationTemplate/notificationTemplate";
 import {
@@ -145,6 +146,13 @@ export class NotificationTemplateService
           variables: this.fetchNotificationTemplatesQuery,
           fetchPolicy: "network-only",
         },
+        {
+          query: NotificationTemplateAuthorityDocument,
+          variables: {
+            reportTypeId,
+          },
+          fetchPolicy: "network-only",
+        },
       ],
       awaitRefetchQueries: true,
     });
@@ -196,6 +204,13 @@ export class NotificationTemplateService
         {
           query: NotificationTemplatesDocument,
           variables: this.fetchNotificationTemplatesQuery,
+          fetchPolicy: "network-only",
+        },
+        {
+          query: NotificationTemplateAuthorityDocument,
+          variables: {
+            reportTypeId,
+          },
           fetchPolicy: "network-only",
         },
       ],

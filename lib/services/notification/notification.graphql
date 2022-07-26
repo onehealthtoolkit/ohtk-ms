@@ -1,0 +1,32 @@
+query NotificationTemplateAuthority($reportTypeId: ID!) {
+  adminNotificationTemplateAuthorityQuery(reportTypeId: $reportTypeId) {
+    notificationTemplateId
+    notificationTemplateName
+    to
+  }
+}
+
+mutation AuthorityNotificationUpsert(
+  $notificationTemplateId: Int!
+  $to: String!
+) {
+  adminAuthorityNotificationUpsert(
+    notificationTemplateId: $notificationTemplateId
+    to: $to
+  ) {
+    result {
+      __typename
+      ... on AdminAuthorityNotificationUpsertSuccess {
+        id
+        to
+      }
+      ... on AdminAuthorityNotificationUpsertProblem {
+        message
+        fields {
+          name
+          message
+        }
+      }
+    }
+  }
+}
