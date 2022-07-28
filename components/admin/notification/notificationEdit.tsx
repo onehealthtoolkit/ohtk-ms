@@ -35,7 +35,7 @@ const NotificationEdit = ({
   const [errorText, serErrorText] = useState<string | undefined>();
   return (
     <div className="w-full md:w-auto grid gap-6 mb-2 grid-cols-3">
-      <div className="py-3 px-6 font-bold text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <div className="py-3 px-6 font-bold text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         {title}
       </div>
       <div>
