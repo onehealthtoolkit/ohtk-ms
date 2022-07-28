@@ -1,4 +1,3 @@
-import { CheckIcon, XIcon } from "@heroicons/react/solid";
 import {
   ErrorText,
   FormMessage,
@@ -13,6 +12,7 @@ import useMyReportTypes from "lib/hooks/reportTypes/myReportTypes";
 import useServices from "lib/services/provider";
 import { observer } from "mobx-react";
 import { useState } from "react";
+import NotificationEdit from "./notificationEdit";
 import { NotificationViewModel } from "./notificationViewModel";
 
 const Notification = () => {
@@ -86,6 +86,27 @@ const Notification = () => {
             ))}
           <div className="flex-1">
             <div className="ml-2 overflow-x-auto relative shadow-md sm:rounded-lg">
+              <div className="w-full md:w-auto grid gap-6 mb-1 grid-cols-3  font-bold text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <div className="py-3 px-6 ">Name</div>
+                <div className="py-3 px-6 ">To</div>
+                <div className="py-3 px-6 ">Action</div>
+              </div>
+              {viewModel.data?.map(item => (
+                <NotificationEdit
+                  key={item.notificationTemplateId}
+                  title={item.notificationTemplateName}
+                  defaultValue={item.to}
+                  onSave={async value => {
+                    viewModel.setValue(item, value);
+                    let result = await viewModel.save(item);
+                    return {
+                      success: result,
+                      msg: item.submitError || item.fieldErrors?.to,
+                    };
+                  }}
+                />
+              ))}
+
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
@@ -119,7 +140,7 @@ const Notification = () => {
                           onChange={evt =>
                             viewModel.setValue(item, evt.target.value)
                           }
-                          disabled={item.isSubmitting}
+                          // disabled={item.isSubmitting}
                           defaultValue={item.to}
                         />
                         <ErrorText>{item.fieldErrors?.to}</ErrorText>
@@ -133,13 +154,13 @@ const Notification = () => {
                               viewModel.save(item);
                             }}
                           >
-                            {item.isSubmitting === true && <Spinner />}
-                            {item.success === true && (
+                            {/* {item.isSubmitting === true && <Spinner />} */}
+                            {/* {item.success === true && (
                               <CheckIcon className="mr-2 -ml-1 w-6 h-6 text-green-600" />
                             )}
                             {item.success === false && (
                               <XIcon className="mr-2 -ml-1 w-6 h-6 text-red-600" />
-                            )}
+                            )} */}
                             Save
                           </button>
                         </div>

@@ -81,20 +81,16 @@ export class NotificationViewModel extends BaseFormViewModel {
 
   public async save(item: Notification): Promise<boolean> {
     this.isSubmitting = true;
-    item.isSubmitting = undefined;
     item.submitError = "";
-    item.success = undefined;
     item.fieldErrors = {};
 
     if (this.validate(item)) {
-      item.isSubmitting = true;
       var result = await this.notificationService.upsertAuthorityNotification(
         this.reportTypeId,
         item.notificationTemplateId,
         item.to!
       );
       runInAction(() => {
-        item.success = result.success;
         if (!result.success) {
           if (result.message) {
             item.submitError = result.message;
@@ -103,7 +99,6 @@ export class NotificationViewModel extends BaseFormViewModel {
             item.fieldErrors = result.fields;
           }
         }
-        item.isSubmitting = false;
       });
       return result.success;
     }
