@@ -31,6 +31,7 @@ export interface INotificationTemplateService extends IService {
     reportTypeId: string,
     titleTemplate: string,
     bodyTemplate: string,
+    condition?: string,
     stateTransitionId?: number
   ): Promise<SaveResult<NotificationTemplate>>;
 
@@ -41,6 +42,7 @@ export interface INotificationTemplateService extends IService {
     reportTypeId: string,
     titleTemplate: string,
     bodyTemplate: string,
+    condition?: string,
     stateTransitionId?: number
   ): Promise<SaveResult<NotificationTemplate>>;
 
@@ -116,6 +118,7 @@ export class NotificationTemplateService
         name: notificationTemplate.name,
         type: notificationTemplate.type,
         typeName: "case transistion",
+        condition: notificationTemplate.condition || "",
         reportTypeId: notificationTemplate.reportType.id,
         reportTypeName: notificationTemplate.reportType.name,
         stateTransitionId: notificationTemplate.stateTransition?.id
@@ -148,6 +151,7 @@ export class NotificationTemplateService
     reportTypeId: string,
     titleTemplate: string,
     bodyTemplate: string,
+    condition?: string,
     stateTransitionId?: number
   ): Promise<SaveResult<NotificationTemplate>> {
     const createResult = await this.client.mutate({
@@ -155,6 +159,7 @@ export class NotificationTemplateService
       variables: {
         name,
         type,
+        condition,
         reportTypeId,
         titleTemplate,
         bodyTemplate,
@@ -209,6 +214,7 @@ export class NotificationTemplateService
     reportTypeId: string,
     titleTemplate: string,
     bodyTemplate: string,
+    condition?: string,
     stateTransitionId?: number
   ): Promise<SaveResult<NotificationTemplate>> {
     const updateResult = await this.client.mutate({
@@ -217,6 +223,7 @@ export class NotificationTemplateService
         id,
         name,
         type,
+        condition,
         reportTypeId,
         titleTemplate,
         bodyTemplate,

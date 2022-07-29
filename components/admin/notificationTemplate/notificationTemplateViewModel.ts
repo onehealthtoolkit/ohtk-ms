@@ -14,6 +14,7 @@ export abstract class NotificationTemplateViewModel extends BaseFormViewModel {
   _type: string = CasesNotificationTemplateTypeChoices.Rep;
   _reportTypeId: string = "";
   _stateTransitionId: number = 0;
+  _condition: string = "";
   _titleTemplate: string = "";
   _bodyTemplate: string = "";
 
@@ -28,6 +29,8 @@ export abstract class NotificationTemplateViewModel extends BaseFormViewModel {
       reportTypeId: computed,
       _stateTransitionId: observable,
       stateTransitionId: computed,
+      _condition: observable,
+      condition: computed,
       _titleTemplate: observable,
       titleTemplate: computed,
       _bodyTemplate: observable,
@@ -66,6 +69,17 @@ export abstract class NotificationTemplateViewModel extends BaseFormViewModel {
   public set reportTypeId(value: string) {
     this._reportTypeId = value;
     delete this.fieldErrors["reportTypeId"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public get condition(): string {
+    return this._condition;
+  }
+  public set condition(value: string) {
+    this._condition = value;
+    delete this.fieldErrors["condition"];
     if (this.submitError.length > 0) {
       this.submitError = "";
     }

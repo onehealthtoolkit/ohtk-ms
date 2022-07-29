@@ -3,6 +3,7 @@ export type NotificationTemplate = {
   name: string;
   type: string;
   typeName?: string;
+  condition?: string;
   reportTypeId: string;
   reportTypeName: string;
   titleTemplate: string;

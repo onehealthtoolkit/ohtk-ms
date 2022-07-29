@@ -22,6 +22,7 @@ export class NotificationTemplateUpdateViewModel extends NotificationTemplateVie
     if (data) {
       this.name = data.name;
       this.type = data.type;
+      this.condition = data.condition || "";
       this.stateTransitionId = data.stateTransitionId || 0;
       this.reportTypeId = data.reportTypeId;
       this.titleTemplate = data.titleTemplate;
@@ -38,6 +39,7 @@ export class NotificationTemplateUpdateViewModel extends NotificationTemplateVie
       this.reportTypeId,
       this.titleTemplate,
       this.bodyTemplate,
+      this.condition,
       this.stateTransitionId || undefined
     );
   }

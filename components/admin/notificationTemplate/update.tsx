@@ -156,6 +156,18 @@ const NotificationTemplateUpdate = () => {
             )}
           </>
           <Field $size="half">
+            <Label htmlFor="condition">Condition</Label>
+            <TextArea
+              id="condition"
+              placeholder="Condition"
+              rows={2}
+              onChange={evt => (viewModel.condition = evt.target.value)}
+              disabled={isSubmitting}
+              defaultValue={viewModel.condition}
+            />
+            <ErrorText>{errors.condition}</ErrorText>
+          </Field>
+          <Field $size="half">
             <Label htmlFor="titleTemplate">Title Template</Label>
             <TextInput
               id="titleTemplate"

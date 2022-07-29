@@ -1189,6 +1189,7 @@ export type MutationAdminInvitationCodeUpdateArgs = {
 
 export type MutationAdminNotificationTemplateCreateArgs = {
   bodyTemplate: Scalars["String"];
+  condition?: InputMaybe<Scalars["String"]>;
   name: Scalars["String"];
   reportTypeId: Scalars["UUID"];
   stateTransitionId?: InputMaybe<Scalars["Int"]>;
@@ -1198,6 +1199,7 @@ export type MutationAdminNotificationTemplateCreateArgs = {
 
 export type MutationAdminNotificationTemplateUpdateArgs = {
   bodyTemplate: Scalars["String"];
+  condition?: InputMaybe<Scalars["String"]>;
   id: Scalars["ID"];
   name: Scalars["String"];
   reportTypeId: Scalars["UUID"];
@@ -2679,6 +2681,7 @@ export type NotificationTemplatesQuery = {
 export type NotificationTemplateCreateMutationVariables = Exact<{
   name: Scalars["String"];
   type: Scalars["String"];
+  condition?: InputMaybe<Scalars["String"]>;
   stateTransitionId?: InputMaybe<Scalars["Int"]>;
   reportTypeId: Scalars["UUID"];
   titleTemplate: Scalars["String"];
@@ -2718,6 +2721,7 @@ export type NotificationTemplateUpdateMutationVariables = Exact<{
   id: Scalars["ID"];
   name: Scalars["String"];
   type: Scalars["String"];
+  condition?: InputMaybe<Scalars["String"]>;
   stateTransitionId?: InputMaybe<Scalars["Int"]>;
   reportTypeId: Scalars["UUID"];
   titleTemplate: Scalars["String"];
@@ -2745,6 +2749,7 @@ export type NotificationTemplateUpdateMutation = {
             id: string;
             name: string;
             type: CasesNotificationTemplateTypeChoices;
+            condition?: string | null;
             titleTemplate: string;
             bodyTemplate: string;
             reportType: {
@@ -2773,6 +2778,7 @@ export type GetNotificationTemplateQuery = {
     id: string;
     name: string;
     type: CasesNotificationTemplateTypeChoices;
+    condition?: string | null;
     titleTemplate: string;
     bodyTemplate: string;
     reportType: {
@@ -7559,6 +7565,14 @@ export const NotificationTemplateCreateDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
+            name: { kind: "Name", value: "condition" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
             name: { kind: "Name", value: "stateTransitionId" },
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
@@ -7624,6 +7638,14 @@ export const NotificationTemplateCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "type" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "condition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "condition" },
                 },
               },
               {
@@ -7808,6 +7830,14 @@ export const NotificationTemplateUpdateDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
+            name: { kind: "Name", value: "condition" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
             name: { kind: "Name", value: "stateTransitionId" },
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
@@ -7881,6 +7911,14 @@ export const NotificationTemplateUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "type" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "condition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "condition" },
                 },
               },
               {
@@ -7961,6 +7999,10 @@ export const NotificationTemplateUpdateDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "type" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "condition" },
                                   },
                                   {
                                     kind: "Field",
@@ -8104,6 +8146,7 @@ export const GetNotificationTemplateDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "name" } },
                 { kind: "Field", name: { kind: "Name", value: "type" } },
+                { kind: "Field", name: { kind: "Name", value: "condition" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "reportType" },

@@ -10,6 +10,7 @@ export class NotificationTemplateCreateViewModel extends NotificationTemplateVie
       this.reportTypeId,
       this.titleTemplate,
       this.bodyTemplate,
+      this.condition,
       this.stateTransitionId || undefined
     );
   }
