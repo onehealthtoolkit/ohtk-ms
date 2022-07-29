@@ -1,18 +1,11 @@
-import { CheckIcon, XIcon } from "@heroicons/react/solid";
-import {
-  ErrorText,
-  FormMessage,
-  MaskingLoader,
-  TabBar,
-  TabItem,
-  TextInput,
-} from "components/widgets/forms";
+import { MaskingLoader, TabBar, TabItem } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useReportCategories from "lib/hooks/reportCategories";
 import useMyReportTypes from "lib/hooks/reportTypes/myReportTypes";
 import useServices from "lib/services/provider";
 import { observer } from "mobx-react";
 import { useState } from "react";
+import NotificationEdit from "./notificationEdit";
 import { NotificationViewModel } from "./notificationViewModel";
 
 const Notification = () => {
@@ -86,71 +79,26 @@ const Notification = () => {
             ))}
           <div className="flex-1">
             <div className="ml-2 overflow-x-auto relative shadow-md sm:rounded-lg">
-              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                    <th scope="col" className="py-3 px-6">
-                      name
-                    </th>
-                    <th scope="col" className="py-3 px-6">
-                      to
-                    </th>
-                    <th scope="col" className="py-3 px-6">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {viewModel.data?.map(item => (
-                    <tr
-                      key={item.notificationTemplateId}
-                      className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
-                    >
-                      <th
-                        scope="row"
-                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {item.notificationTemplateName}
-                      </th>
-                      <td className="py-2 px-6">
-                        <TextInput
-                          type="text"
-                          placeholder="To"
-                          onChange={evt =>
-                            viewModel.setValue(item, evt.target.value)
-                          }
-                          disabled={item.isSubmitting}
-                          defaultValue={item.to}
-                        />
-                        <ErrorText>{item.fieldErrors?.to}</ErrorText>
-                      </td>
-                      <td className="py-2 px-6">
-                        <div className="flex">
-                          <button
-                            type="button"
-                            className="py-2.5 px-5 mr-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 inline-flex items-center"
-                            onClick={() => {
-                              viewModel.save(item);
-                            }}
-                          >
-                            {item.isSubmitting === true && <Spinner />}
-                            {item.success === true && (
-                              <CheckIcon className="mr-2 -ml-1 w-6 h-6 text-green-600" />
-                            )}
-                            {item.success === false && (
-                              <XIcon className="mr-2 -ml-1 w-6 h-6 text-red-600" />
-                            )}
-                            Save
-                          </button>
-                        </div>
-                        {item.submitError && item.submitError.length > 0 && (
-                          <FormMessage>{item.submitError}</FormMessage>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <div className="w-full md:w-auto grid gap-6 mb-1 grid-cols-3  font-bold text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <div className="py-3 px-6 ">Name</div>
+                <div className="py-3 px-6 ">To</div>
+                <div className="py-3 px-6 ">Action</div>
+              </div>
+              {viewModel.data?.map(item => (
+                <NotificationEdit
+                  key={item.notificationTemplateId}
+                  title={item.notificationTemplateName}
+                  defaultValue={item.to}
+                  onSave={async value => {
+                    viewModel.setValue(item, value);
+                    let result = await viewModel.save(item);
+                    return {
+                      success: result,
+                      msg: item.submitError || item.fieldErrors?.to,
+                    };
+                  }}
+                />
+              ))}
               {viewModel.isDataLoding && <Spinner />}
             </div>
           </div>
