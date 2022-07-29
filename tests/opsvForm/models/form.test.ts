@@ -1,0 +1,155 @@
+import Form from "lib/opsvForm/models/form";
+import { FormType, parseForm } from "lib/opsvForm/models/json";
+
+describe("Form", () => {
+  it("load json definition", () => {
+    const source: FormType = {
+      id: "12323",
+      sections: [
+        {
+          label: "section 1",
+          description: "section 1 descrition",
+          questions: [
+            {
+              label: "Name",
+              fields: [
+                {
+                  id: "1",
+                  type: "text",
+                  name: "first_name",
+                  label: "First Name",
+                  required: true,
+                  requiredMessage: "this field is required",
+                  minLength: 3,
+                  minLengthMessage: "must more than 3",
+                  maxLength: 100,
+                  maxLengthMessage: "must less than 100",
+                },
+                {
+                  id: "2",
+                  type: "integer",
+                  name: "age",
+                  label: "Age",
+                  min: 10,
+                  minMessage: "more than 10",
+                  max: 20,
+                  maxMessage: "less than 20",
+                  required: true,
+                  requiredMessage: "this field is required",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: "section 2",
+          questions: [
+            {
+              label: "Address",
+              fields: [
+                {
+                  id: "3",
+                  type: "text",
+                  name: "zip_code",
+                  label: "Zip code",
+                },
+                {
+                  id: "4",
+                  type: "decimal",
+                  name: "salary",
+                  label: "salary",
+                  required: true,
+                  requiredMessage: "salary is required",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const form = parseForm(source);
+    expect(form.id).toEqual("12323");
+    expect(form.numberOfSections).toBe(2);
+    expect(form.sections[0].label).toBe(source["sections"][0]["label"]);
+    expect(form.sections[0].questions.length).toBe(1);
+    expect(form.sections[0].questions[0].label).toBe(
+      source["sections"][0]["questions"][0]["label"]
+    );
+    expect(form.sections[0].questions[0].description).toBe(
+      source["sections"][0]["questions"][0]["description"]
+    );
+    expect(form.sections[0].questions[0].fields.length).toBe(2);
+  });
+
+  describe("form values", () => {
+    it("flatten fields", () => {
+      const form: Form = parseForm({
+        id: "1",
+        sections: [
+          {
+            label: "section1",
+            questions: [
+              {
+                label: "q1",
+                fields: [
+                  {
+                    type: "text",
+                    id: "f1",
+                    name: "firstname",
+                  },
+                  {
+                    type: "text",
+                    id: "f2",
+                    name: "lastname",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+      const field1 = form.values.getDelegate("firstname").getField();
+      expect(field1).toBeDefined();
+      expect(field1.id).toBe("f1");
+      const field2 = form.values.getDelegate("lastname").getField();
+      expect(field2).toBeDefined();
+      expect(field2.id).toBe("f2");
+    });
+
+    it("nested field", () => {
+      const form: Form = parseForm({
+        id: "1",
+        sections: [
+          {
+            label: "section1",
+            questions: [
+              {
+                label: "q1",
+                name: "info",
+                fields: [
+                  {
+                    type: "text",
+                    id: "f1",
+                    name: "firstname",
+                  },
+                  {
+                    type: "text",
+                    id: "f2",
+                    name: "lastname",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+      const field1 = form.values.getDelegate("info.firstname").getField();
+      expect(field1).toBeDefined();
+      expect(field1.id).toBe("f1");
+
+      const field2 = form.values.getDelegate("info.lastname").getField();
+      expect(field2).toBeDefined();
+      expect(field2.id).toBe("f2");
+    });
+  });
+});
