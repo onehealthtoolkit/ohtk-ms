@@ -467,13 +467,15 @@ export type AdminNotificationTemplateCreateSuccess = {
   __typename?: "AdminNotificationTemplateCreateSuccess";
   authoritynotificationSet: Array<AdminAuthorityNotificationUpsertSuccess>;
   bodyTemplate: Scalars["String"];
+  condition?: Maybe<Scalars["String"]>;
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
   id: Scalars["ID"];
   name: Scalars["String"];
   reportType: AdminReportTypeCreateSuccess;
-  stateTransition: DeepStateTransitionType;
+  stateTransition?: Maybe<DeepStateTransitionType>;
   titleTemplate: Scalars["String"];
+  type: CasesNotificationTemplateTypeChoices;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -914,6 +916,16 @@ export type CaseTypeNodeConnection = {
   totalCount?: Maybe<Scalars["Int"]>;
 };
 
+/** An enumeration. */
+export enum CasesNotificationTemplateTypeChoices {
+  /** Case transition */
+  Cas = "CAS",
+  /** Promote to case */
+  Ptc = "PTC",
+  /** Report */
+  Rep = "REP",
+}
+
 export type CategoryType = {
   __typename?: "CategoryType";
   createdAt: Scalars["DateTime"];
@@ -1179,8 +1191,9 @@ export type MutationAdminNotificationTemplateCreateArgs = {
   bodyTemplate: Scalars["String"];
   name: Scalars["String"];
   reportTypeId: Scalars["UUID"];
-  stateTransitionId: Scalars["Int"];
+  stateTransitionId?: InputMaybe<Scalars["Int"]>;
   titleTemplate: Scalars["String"];
+  type: Scalars["String"];
 };
 
 export type MutationAdminNotificationTemplateUpdateArgs = {
@@ -1188,8 +1201,9 @@ export type MutationAdminNotificationTemplateUpdateArgs = {
   id: Scalars["ID"];
   name: Scalars["String"];
   reportTypeId: Scalars["UUID"];
-  stateTransitionId: Scalars["Int"];
+  stateTransitionId?: InputMaybe<Scalars["Int"]>;
   titleTemplate: Scalars["String"];
+  type: Scalars["String"];
 };
 
 export type MutationAdminReportTypeCreateArgs = {
@@ -1334,14 +1348,16 @@ export type NotificationTemplateType = {
   __typename?: "NotificationTemplateType";
   authoritynotificationSet: Array<AdminAuthorityNotificationUpsertSuccess>;
   bodyTemplate: Scalars["String"];
+  condition?: Maybe<Scalars["String"]>;
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
   id: Scalars["ID"];
   name: Scalars["String"];
   reportType: AdminReportTypeCreateSuccess;
   stateDefinition?: Maybe<StateDefinitionType>;
-  stateTransition: DeepStateTransitionType;
+  stateTransition?: Maybe<DeepStateTransitionType>;
   titleTemplate: Scalars["String"];
+  type: CasesNotificationTemplateTypeChoices;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -2662,7 +2678,8 @@ export type NotificationTemplatesQuery = {
 
 export type NotificationTemplateCreateMutationVariables = Exact<{
   name: Scalars["String"];
-  stateTransitionId: Scalars["Int"];
+  type: Scalars["String"];
+  stateTransitionId?: InputMaybe<Scalars["Int"]>;
   reportTypeId: Scalars["UUID"];
   titleTemplate: Scalars["String"];
   bodyTemplate: Scalars["String"];
@@ -2686,6 +2703,7 @@ export type NotificationTemplateCreateMutation = {
           __typename: "AdminNotificationTemplateCreateSuccess";
           id: string;
           name: string;
+          type: CasesNotificationTemplateTypeChoices;
           reportType: {
             __typename?: "AdminReportTypeCreateSuccess";
             id: any;
@@ -2699,7 +2717,8 @@ export type NotificationTemplateCreateMutation = {
 export type NotificationTemplateUpdateMutationVariables = Exact<{
   id: Scalars["ID"];
   name: Scalars["String"];
-  stateTransitionId: Scalars["Int"];
+  type: Scalars["String"];
+  stateTransitionId?: InputMaybe<Scalars["Int"]>;
   reportTypeId: Scalars["UUID"];
   titleTemplate: Scalars["String"];
   bodyTemplate: Scalars["String"];
@@ -2725,6 +2744,7 @@ export type NotificationTemplateUpdateMutation = {
             __typename?: "NotificationTemplateType";
             id: string;
             name: string;
+            type: CasesNotificationTemplateTypeChoices;
             titleTemplate: string;
             bodyTemplate: string;
             reportType: {
@@ -2732,10 +2752,10 @@ export type NotificationTemplateUpdateMutation = {
               id: any;
               name: string;
             };
-            stateTransition: {
+            stateTransition?: {
               __typename?: "DeepStateTransitionType";
               id: string;
-            };
+            } | null;
           } | null;
         }
       | null;
@@ -2752,6 +2772,7 @@ export type GetNotificationTemplateQuery = {
     __typename?: "NotificationTemplateType";
     id: string;
     name: string;
+    type: CasesNotificationTemplateTypeChoices;
     titleTemplate: string;
     bodyTemplate: string;
     reportType: {
@@ -2759,7 +2780,7 @@ export type GetNotificationTemplateQuery = {
       id: any;
       name: string;
     };
-    stateTransition: {
+    stateTransition?: {
       __typename?: "DeepStateTransitionType";
       id: string;
       fromStep?: {
@@ -2772,7 +2793,7 @@ export type GetNotificationTemplateQuery = {
         id: string;
         name: string;
       } | null;
-    };
+    } | null;
   } | null;
 };
 
@@ -7525,14 +7546,22 @@ export const NotificationTemplateCreateDocument = {
         },
         {
           kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "type" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
           variable: {
             kind: "Variable",
             name: { kind: "Name", value: "stateTransitionId" },
           },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
         },
         {
           kind: "VariableDefinition",
@@ -7587,6 +7616,14 @@ export const NotificationTemplateCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "type" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "type" },
                 },
               },
               {
@@ -7654,6 +7691,10 @@ export const NotificationTemplateCreateDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "type" },
                             },
                             {
                               kind: "Field",
@@ -7754,14 +7795,22 @@ export const NotificationTemplateUpdateDocument = {
         },
         {
           kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "type" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
           variable: {
             kind: "Variable",
             name: { kind: "Name", value: "stateTransitionId" },
           },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
         },
         {
           kind: "VariableDefinition",
@@ -7824,6 +7873,14 @@ export const NotificationTemplateUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "type" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "type" },
                 },
               },
               {
@@ -7900,6 +7957,10 @@ export const NotificationTemplateUpdateDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "type" },
                                   },
                                   {
                                     kind: "Field",
@@ -8042,6 +8103,7 @@ export const GetNotificationTemplateDocument = {
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "type" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "reportType" },

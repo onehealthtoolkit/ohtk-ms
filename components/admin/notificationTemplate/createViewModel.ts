@@ -6,10 +6,11 @@ export class NotificationTemplateCreateViewModel extends NotificationTemplateVie
   public _save(): Promise<SaveResult<NotificationTemplate>> {
     return this.notificationTemplateService.createNotificationTemplate(
       this.name,
-      this.stateTransitionId,
+      this.type,
       this.reportTypeId,
       this.titleTemplate,
-      this.bodyTemplate
+      this.bodyTemplate,
+      this.stateTransitionId || undefined
     );
   }
 }

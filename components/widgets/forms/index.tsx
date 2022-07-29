@@ -160,6 +160,45 @@ const CheckboxInput = (
 
 export const Checkbox = forwardRef(CheckboxInput);
 
+const RadioInput = (
+  props: {
+    id: string;
+    name: string;
+    label: string;
+    value: string;
+    checked?: boolean;
+    defaultChecked?: boolean;
+    disabled: boolean;
+    onChange?: ChangeEventHandler<HTMLInputElement>;
+  },
+  ref: React.Ref<HTMLInputElement>
+) => {
+  return (
+    <div className="flex items-center mb-4">
+      <input
+        ref={ref}
+        type="radio"
+        {...props}
+        className="
+          w-4 h-4 text-blue-600 
+          bg-gray-100 rounded border-gray-300 
+          focus:ring-blue-500 dark:focus:ring-blue-600 
+          dark:ring-offset-gray-800 focus:ring-2 
+          dark:bg-gray-700 dark:border-gray-600
+        "
+      />
+      <label
+        htmlFor={props.id}
+        className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+      >
+        {props.label}
+      </label>
+    </div>
+  );
+};
+
+export const Radio = forwardRef(RadioInput);
+
 export const Label = tw.label`
   block 
   text-grey-darker 

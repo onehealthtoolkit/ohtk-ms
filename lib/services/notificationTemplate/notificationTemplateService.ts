@@ -5,6 +5,7 @@ import {
   NotificationTemplateUpdateDocument,
   GetNotificationTemplateDocument,
   NotificationTemplateAuthorityDocument,
+  CasesNotificationTemplateTypeChoices,
 } from "lib/generated/graphql";
 import { NotificationTemplate } from "lib/services/notificationTemplate/notificationTemplate";
 import {
@@ -26,19 +27,21 @@ export interface INotificationTemplateService extends IService {
 
   createNotificationTemplate(
     name: string,
-    stateTransitionId: number,
+    type: string,
     reportTypeId: string,
     titleTemplate: string,
-    bodyTemplate: string
+    bodyTemplate: string,
+    stateTransitionId?: number
   ): Promise<SaveResult<NotificationTemplate>>;
 
   updateNotificationTemplate(
     id: string,
     name: string,
-    stateTransitionId: number,
+    type: string,
     reportTypeId: string,
     titleTemplate: string,
-    bodyTemplate: string
+    bodyTemplate: string,
+    stateTransitionId?: number
   ): Promise<SaveResult<NotificationTemplate>>;
 
   deleteNotificationTemplate(id: string): Promise<DeleteResult>;
@@ -82,6 +85,7 @@ export class NotificationTemplateService
         items.push({
           id: item.id,
           name: item.name,
+          type: "",
           reportTypeId: item.reportType.id,
           reportTypeName: item.reportType.name,
           stateTransitionId: 0,
@@ -110,14 +114,28 @@ export class NotificationTemplateService
       data = {
         id: notificationTemplate.id,
         name: notificationTemplate.name,
+        type: notificationTemplate.type,
+        typeName: "case transistion",
         reportTypeId: notificationTemplate.reportType.id,
         reportTypeName: notificationTemplate.reportType.name,
-        stateTransitionId: +notificationTemplate.stateTransition.id,
+        stateTransitionId: notificationTemplate.stateTransition?.id
+          ? +notificationTemplate.stateTransition?.id
+          : undefined,
         titleTemplate: notificationTemplate.titleTemplate,
         bodyTemplate: notificationTemplate.bodyTemplate,
-        fromStepName: notificationTemplate.stateTransition.fromStep?.name,
-        toStepName: notificationTemplate.stateTransition.toStep?.name,
+        fromStepName: notificationTemplate.stateTransition?.fromStep?.name,
+        toStepName: notificationTemplate.stateTransition?.toStep?.name,
       };
+      switch (notificationTemplate.type) {
+        case CasesNotificationTemplateTypeChoices.Rep:
+          data.typeName = "report";
+          break;
+        case CasesNotificationTemplateTypeChoices.Ptc:
+          data.typeName = "promote to case";
+          break;
+        default:
+          break;
+      }
     }
     return {
       data,
@@ -126,19 +144,21 @@ export class NotificationTemplateService
 
   async createNotificationTemplate(
     name: string,
-    stateTransitionId: number,
+    type: string,
     reportTypeId: string,
     titleTemplate: string,
-    bodyTemplate: string
+    bodyTemplate: string,
+    stateTransitionId?: number
   ): Promise<SaveResult<NotificationTemplate>> {
     const createResult = await this.client.mutate({
       mutation: NotificationTemplateCreateDocument,
       variables: {
         name,
-        stateTransitionId,
+        type,
         reportTypeId,
         titleTemplate,
         bodyTemplate,
+        stateTransitionId,
       },
       refetchQueries: [
         {
@@ -185,20 +205,22 @@ export class NotificationTemplateService
   async updateNotificationTemplate(
     id: string,
     name: string,
-    stateTransitionId: number,
+    type: string,
     reportTypeId: string,
     titleTemplate: string,
-    bodyTemplate: string
+    bodyTemplate: string,
+    stateTransitionId?: number
   ): Promise<SaveResult<NotificationTemplate>> {
     const updateResult = await this.client.mutate({
       mutation: NotificationTemplateUpdateDocument,
       variables: {
         id,
         name,
-        stateTransitionId,
+        type,
         reportTypeId,
         titleTemplate,
         bodyTemplate,
+        stateTransitionId,
       },
       refetchQueries: [
         {

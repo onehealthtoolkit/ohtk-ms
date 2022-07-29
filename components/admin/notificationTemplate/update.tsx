@@ -12,6 +12,7 @@ import {
   FormMessage,
   Label,
   MaskingLoader,
+  Radio,
   SaveButton,
   Select,
   TextArea,
@@ -19,8 +20,9 @@ import {
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
-import useMyReportTypes from "lib/hooks/reportTypes/myReportTypes";
 import useStateTransitions from "lib/hooks/stateTransitions";
+import { CasesNotificationTemplateTypeChoices } from "lib/generated/graphql";
+import useReportTypes from "lib/hooks/reportTypes";
 
 const NotificationTemplateUpdate = () => {
   const router = useRouter();
@@ -33,7 +35,7 @@ const NotificationTemplateUpdate = () => {
       )
   );
 
-  const reportTypes = useMyReportTypes();
+  const reportTypes = useReportTypes();
   const { transitionLoading, stateTransitions } = useStateTransitions(
     viewModel.reportTypeId
   );
@@ -85,34 +87,74 @@ const NotificationTemplateUpdate = () => {
             </Select>
             <ErrorText>{errors.reportTypeId}</ErrorText>
           </Field>
-          <Field $size="half">
-            <Label htmlFor="transistion">Transistion</Label>
-            <div className="relative">
-              {transitionLoading && (
-                <div className="flex absolute inset-y-0 right-5 items-center pl-3 pointer-events-none">
-                  <Spinner />
-                </div>
-              )}
-              <Select
-                id="transistion"
-                onChange={evt => {
-                  viewModel.stateTransitionId = +evt.target.value;
-                }}
-                disabled={isSubmitting || transitionLoading}
-                value={viewModel.stateTransitionId}
-              >
-                <option disabled value={0}>
-                  Select item ...
-                </option>
-                {stateTransitions?.map(item => (
-                  <option key={`option-${item.id}`} value={item.id}>
-                    {item.fromStep.name} to {item.toStep.name}
-                  </option>
-                ))}
-              </Select>
-            </div>
-            <ErrorText>{errors.stateTransitionId}</ErrorText>
+          <Field $size="half" className="flex space-x-8">
+            <Radio
+              id="type-1"
+              label={"report"}
+              name="type"
+              checked={
+                viewModel.type === CasesNotificationTemplateTypeChoices.Rep
+              }
+              value={CasesNotificationTemplateTypeChoices.Rep}
+              disabled={false}
+              onChange={evt => (viewModel.type = evt.target.value)}
+            />
+            <Radio
+              id="type-2"
+              name="type"
+              label={"promote to case"}
+              checked={
+                viewModel.type === CasesNotificationTemplateTypeChoices.Ptc
+              }
+              value={CasesNotificationTemplateTypeChoices.Ptc}
+              disabled={false}
+              onChange={evt => (viewModel.type = evt.target.value)}
+            />
+            <Radio
+              id="type-3"
+              name="type"
+              label={"case transistion"}
+              checked={
+                viewModel.type === CasesNotificationTemplateTypeChoices.Cas
+              }
+              value={CasesNotificationTemplateTypeChoices.Cas}
+              disabled={false}
+              onChange={evt => (viewModel.type = evt.target.value)}
+            />
+            <ErrorText>{errors.type}</ErrorText>
           </Field>
+          <>
+            {viewModel.type == CasesNotificationTemplateTypeChoices.Cas && (
+              <Field $size="half">
+                <Label htmlFor="transistion">Transistion</Label>
+                <div className="relative">
+                  {transitionLoading && (
+                    <div className="flex absolute inset-y-0 right-5 items-center pl-3 pointer-events-none">
+                      <Spinner />
+                    </div>
+                  )}
+                  <Select
+                    id="transistion"
+                    onChange={evt => {
+                      viewModel.stateTransitionId = +evt.target.value;
+                    }}
+                    disabled={isSubmitting || transitionLoading}
+                    value={viewModel.stateTransitionId}
+                  >
+                    <option disabled value={0}>
+                      Select item ...
+                    </option>
+                    {stateTransitions?.map(item => (
+                      <option key={`option-${item.id}`} value={item.id}>
+                        {item.fromStep.name} to {item.toStep.name}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+                <ErrorText>{errors.stateTransitionId}</ErrorText>
+              </Field>
+            )}
+          </>
           <Field $size="half">
             <Label htmlFor="titleTemplate">Title Template</Label>
             <TextInput

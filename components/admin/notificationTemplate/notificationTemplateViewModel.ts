@@ -5,11 +5,13 @@ import {
 } from "lib/services/notificationTemplate";
 import { SaveResult } from "lib/services/interface";
 import { action, computed, makeObservable, observable } from "mobx";
+import { CasesNotificationTemplateTypeChoices } from "lib/generated/graphql";
 
 export abstract class NotificationTemplateViewModel extends BaseFormViewModel {
   notificationTemplateService: INotificationTemplateService;
 
   _name: string = "";
+  _type: string = CasesNotificationTemplateTypeChoices.Rep;
   _reportTypeId: string = "";
   _stateTransitionId: number = 0;
   _titleTemplate: string = "";
@@ -20,6 +22,8 @@ export abstract class NotificationTemplateViewModel extends BaseFormViewModel {
     makeObservable(this, {
       _name: observable,
       name: computed,
+      _type: observable,
+      type: computed,
       _reportTypeId: observable,
       reportTypeId: computed,
       _stateTransitionId: observable,
@@ -40,6 +44,17 @@ export abstract class NotificationTemplateViewModel extends BaseFormViewModel {
   public set name(value: string) {
     this._name = value;
     delete this.fieldErrors["name"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public get type(): string {
+    return this._type;
+  }
+  public set type(value: string) {
+    this._type = value;
+    delete this.fieldErrors["type"];
     if (this.submitError.length > 0) {
       this.submitError = "";
     }
@@ -96,6 +111,11 @@ export abstract class NotificationTemplateViewModel extends BaseFormViewModel {
     this.isSubmitting = true;
 
     if (this.validate()) {
+      if (
+        this.type == CasesNotificationTemplateTypeChoices.Rep ||
+        this.type == CasesNotificationTemplateTypeChoices.Ptc
+      )
+        this.stateTransitionId = 0;
       var result = await this._save();
 
       this.isSubmitting = false;
@@ -121,7 +141,15 @@ export abstract class NotificationTemplateViewModel extends BaseFormViewModel {
       this.fieldErrors["name"] = "this field is required";
     }
 
-    if (this.stateTransitionId === 0) {
+    if (this.type.length === 0) {
+      isValid = false;
+      this.fieldErrors["type"] = "this field is required";
+    }
+
+    if (
+      this.type == CasesNotificationTemplateTypeChoices.Cas &&
+      this.stateTransitionId === 0
+    ) {
       isValid = false;
       this.fieldErrors["stateTransitionId"] = "this field is required";
     }
