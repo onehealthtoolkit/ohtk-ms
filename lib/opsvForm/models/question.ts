@@ -3,6 +3,7 @@ import { Condition } from "./condition";
 import Field from "./fields";
 import Form from "./form";
 import { Values } from "./values";
+import * as _ from "fp-ts/Array";
 
 type QuestionConstructorParams = {
   name?: string;
@@ -30,6 +31,10 @@ export default class Question {
     });
   }
 
+  get numberOfFields() {
+    return this.fields.length;
+  }
+
   public registerValues(parentValues: Values, form?: Form) {
     this.form = form;
     if (this.name) {
@@ -48,5 +53,33 @@ export default class Question {
     } else {
       return true;
     }
+  }
+
+  public validate(): boolean {
+    if (!this.display) {
+      return true;
+    }
+    return _.reduce<Field, boolean>(
+      true,
+      (acc, field) => acc && field.validate()
+    )(this.fields);
+  }
+
+  public loadJsonValue(json: Record<string, any>) {
+    let evaluateJson = json;
+    if (this.name !== undefined && json[this.name] !== undefined) {
+      evaluateJson = json[this.name];
+    }
+    this.fields.forEach(field => field.loadJsonValue(evaluateJson));
+  }
+
+  public toJsonValue(json: Record<string, any>) {
+    let currentJson: Record<string, any> = json;
+    if (this.name !== undefined) {
+      currentJson = {};
+      json[this.name] = currentJson;
+    }
+
+    this.fields.forEach(field => field.toJsonValue(currentJson));
   }
 }

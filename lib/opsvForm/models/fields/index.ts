@@ -81,6 +81,9 @@ export default abstract class Field {
   abstract evaluate(operator: ConditionOperator, value: string): boolean;
 
   validate(): boolean {
+    if (!this.display) {
+      return true;
+    }
     return this._validate();
   }
 
