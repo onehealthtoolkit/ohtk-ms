@@ -74,6 +74,7 @@ const NotificationTemplateUpdate = () => {
                 viewModel.stateTransitionId = 0;
               }}
               disabled={isSubmitting}
+              value={viewModel.reportTypeId}
               defaultValue={viewModel.reportTypeId}
             >
               <option disabled value={""}>
