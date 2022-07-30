@@ -24,13 +24,17 @@ query notificationTemplates(
 
 mutation NotificationTemplateCreate(
   $name: String!
-  $stateTransitionId: Int!
+  $type: String!
+  $condition: String
+  $stateTransitionId: Int
   $reportTypeId: UUID!
   $titleTemplate: String!
   $bodyTemplate: String!
 ) {
   adminNotificationTemplateCreate(
     name: $name
+    type: $type
+    condition: $condition
     stateTransitionId: $stateTransitionId
     reportTypeId: $reportTypeId
     titleTemplate: $titleTemplate
@@ -41,6 +45,7 @@ mutation NotificationTemplateCreate(
       ... on AdminNotificationTemplateCreateSuccess {
         id
         name
+        type
         reportType {
           id
           name
@@ -60,7 +65,9 @@ mutation NotificationTemplateCreate(
 mutation NotificationTemplateUpdate(
   $id: ID!
   $name: String!
-  $stateTransitionId: Int!
+  $type: String!
+  $condition: String
+  $stateTransitionId: Int
   $reportTypeId: UUID!
   $titleTemplate: String!
   $bodyTemplate: String!
@@ -68,6 +75,8 @@ mutation NotificationTemplateUpdate(
   adminNotificationTemplateUpdate(
     id: $id
     name: $name
+    type: $type
+    condition: $condition
     stateTransitionId: $stateTransitionId
     reportTypeId: $reportTypeId
     titleTemplate: $titleTemplate
@@ -79,6 +88,8 @@ mutation NotificationTemplateUpdate(
         notificationTemplate {
           id
           name
+          type
+          condition
           reportType {
             id
             name
@@ -105,6 +116,8 @@ query GetNotificationTemplate($id: ID!) {
   notificationTemplateGet(id: $id) {
     id
     name
+    type
+    condition
     reportType {
       id
       name

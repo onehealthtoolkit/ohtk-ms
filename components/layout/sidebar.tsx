@@ -84,11 +84,9 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
               <CollapsIcon />
             </button>
           )}
-          <span
-            className={`text-white ${store.menu.collapsed ? "hidden" : ""}`}
-          >
-            Opensurveillance
-          </span>
+          <div className="flex w-full items-center justify-center sticky mt-8 top-0 z-10">
+            <img src="/logo.png" width={120} alt="Open surveillance" />
+          </div>
         </div>
         {/* Links */}
         <div className="space-y-8">

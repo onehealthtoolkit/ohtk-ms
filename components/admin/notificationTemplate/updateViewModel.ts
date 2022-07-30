@@ -21,7 +21,9 @@ export class NotificationTemplateUpdateViewModel extends NotificationTemplateVie
     ).data;
     if (data) {
       this.name = data.name;
-      this.stateTransitionId = data.stateTransitionId;
+      this.type = data.type;
+      this.condition = data.condition || "";
+      this.stateTransitionId = data.stateTransitionId || 0;
       this.reportTypeId = data.reportTypeId;
       this.titleTemplate = data.titleTemplate;
       this.bodyTemplate = data.bodyTemplate;
@@ -33,10 +35,12 @@ export class NotificationTemplateUpdateViewModel extends NotificationTemplateVie
     return this.notificationTemplateService.updateNotificationTemplate(
       this.id,
       this.name,
-      this.stateTransitionId,
+      this.type,
       this.reportTypeId,
       this.titleTemplate,
-      this.bodyTemplate
+      this.bodyTemplate,
+      this.condition,
+      this.stateTransitionId || undefined
     );
   }
 }

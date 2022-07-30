@@ -21,7 +21,7 @@ const MenuCollapsed: React.FC<MenuProps> = ({
     <div className="group dropend relative">
       <li
         className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
-          pathname === href && "bg-slate-900"
+          pathname === href && "bg-black"
         }`}
       >
         <Link href={href} passHref>
@@ -62,7 +62,7 @@ const MenuExpaned: React.FC<MenuProps> = ({
   return (
     <li
       className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
-        pathname === href && "bg-slate-900"
+        pathname === href && "bg-black"
       }`}
     >
       <Link href={href} passHref>
