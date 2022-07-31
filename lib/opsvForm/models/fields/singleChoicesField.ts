@@ -82,7 +82,11 @@ export default class SingleChoicesField extends Field {
   _validateInputText = () => {
     var selected = this.selectedOption;
     if (selected && selected.textInput) {
-      return this.text != undefined && this.text.length > 0;
+      const valid = this.text != undefined && this.text.length > 0;
+      if (!valid) {
+        this.markError(this.requiredMessage || "This field is required");
+      }
+      return valid;
     }
     return true;
   };

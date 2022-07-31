@@ -20,7 +20,12 @@ export default class SimpleCondition implements Condition {
   ) {}
 
   evaluate(values: Values) {
-    const field = values.getDelegate(this.name).getField();
-    return field.evaluate(this.operator, this.value);
+    try {
+      // Delegate an unknown field name will throw exception
+      const field = values.getDelegate(this.name).getField();
+      return field.evaluate(this.operator, this.value);
+    } catch (e) {
+      return true;
+    }
   }
 }
