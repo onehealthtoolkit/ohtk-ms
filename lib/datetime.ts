@@ -3,7 +3,7 @@ function pad(n: number, width: number) {
   return tmp.toString().substring(1);
 }
 
-const MONTHS = [
+export const MONTHS = [
   "มกราคม",
   "กุมภาพันธ์",
   "มีนาคม",
