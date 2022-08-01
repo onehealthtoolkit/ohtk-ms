@@ -24,6 +24,7 @@ export class Store {
     this.authService = serviceProvider.authService;
     this.profileService = serviceProvider.profileService;
     makeObservable(this, {
+      bootstrap: action,
       initTokenPending: observable,
       isLogin: observable,
       signIn: action,
@@ -63,12 +64,10 @@ export class Store {
     const result = await this.authService.signIn(username, password);
 
     if (result.success) {
-      // this.authService.setRefreshExpiresIn(tokenAuth.refreshExpiresIn);
+      await this.fetchMe();
       runInAction(() => {
         this.isLogin = true;
       });
-
-      await this.fetchMe();
     }
     return result;
   }

@@ -2,11 +2,12 @@ import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import { GetReportDocument, ReportsDocument } from "lib/generated/graphql";
 import { Image, Report, ReportDetail } from "lib/services/report/report";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
+import { Authority } from "lib/services/authority";
 
 export type ReportFilterData = {
-  fromDate: Date | null;
-  throughDate: Date | null;
-  authorities: string[];
+  fromDate?: Date;
+  throughDate?: Date;
+  authorities?: Pick<Authority, "id" | "code" | "name">[];
 };
 
 export type ReportFilter = ReportFilterData & {
@@ -26,30 +27,21 @@ export interface IReportService extends IService {
 
 export class ReportService implements IReportService {
   client: ApolloClient<NormalizedCacheObject>;
-  fetchReportsQuery: ReportFilter = {
-    fromDate: null,
-    throughDate: null,
-    limit: 20,
-    offset: 0,
-    authorities: [],
-  };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
   }
 
   async fetchReports(limit: number, offset: number, filter: ReportFilterData) {
-    this.fetchReportsQuery = {
-      ...this.fetchReportsQuery,
-      authorities: filter.authorities,
-      fromDate: filter.fromDate,
-      throughDate: filter.throughDate,
-      limit,
-      offset,
-    };
     const fetchResult = await this.client.query({
       query: ReportsDocument,
-      variables: this.fetchReportsQuery,
+      variables: {
+        limit: limit,
+        offset: offset,
+        fromDate: filter.fromDate,
+        throughDate: filter.throughDate,
+        authorities: filter.authorities?.map(a => a.id),
+      },
     });
 
     const items = Array<Report>();

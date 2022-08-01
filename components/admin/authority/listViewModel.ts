@@ -7,11 +7,7 @@ export class AdminAuthorityListViewModel extends BaseViewModel {
 
   nameSearch: string = "";
 
-  constructor(
-    readonly authorityService: IAuthorityService,
-    nameSearch: string = "",
-    offset: number = 0
-  ) {
+  constructor(readonly authorityService: IAuthorityService) {
     super();
     makeObservable(this, {
       data: observable,
@@ -20,17 +16,12 @@ export class AdminAuthorityListViewModel extends BaseViewModel {
       clearNameSearch: action,
       fetch: action,
     });
-    this.nameSearch = nameSearch;
-    this.offset = offset;
-    this.fetch();
   }
 
   setSearchValue(nameSearch: string = "", offset: number = 0) {
-    if (nameSearch != this.nameSearch || this.offset != offset) {
-      this.nameSearch = nameSearch;
-      this.offset = offset;
-      this.fetch();
-    }
+    this.nameSearch = nameSearch;
+    this.offset = offset;
+    this.fetch();
   }
 
   clearNameSearch() {

@@ -3,34 +3,45 @@ import { BaseViewModel } from "lib/baseViewModel";
 import { IReportService, Report } from "lib/services/report";
 import { ReportFilterData } from "lib/services/report/reportService";
 
+const initialFilter: ReportFilterData = {
+  fromDate: undefined,
+  throughDate: undefined,
+  authorities: undefined,
+};
+
+type SearchParams = {
+  fromDate?: Date;
+  throughDate?: Date;
+  offset?: number;
+  authorities?: ReportFilterData["authorities"];
+};
+
 export class ReportListViewModel extends BaseViewModel {
   data: Report[] = [];
-  filter: ReportFilterData = {
-    fromDate: null,
-    throughDate: new Date(),
-    authorities: [],
-  };
+  filter: ReportFilterData = initialFilter;
 
-  constructor(readonly reportService: IReportService, offset: number = 0) {
+  constructor(readonly reportService: IReportService) {
     super();
     makeObservable(this, {
       data: observable,
       filter: observable,
       setSearchValue: action,
       fetch: action,
+      filterReset: action,
     });
-    this.offset = offset;
+  }
+
+  setSearchValue(params: SearchParams) {
+    this.filter.fromDate = params.fromDate;
+    this.filter.throughDate = params.throughDate;
+    this.filter.authorities = params.authorities;
+
+    this.offset = params.offset || 0;
     this.fetch();
   }
 
-  setSearchValue(offset: number = 0) {
-    if (this.offset != offset) {
-      this.offset = offset;
-      this.fetch();
-    }
-  }
-
   async fetch(): Promise<void> {
+    console.log("fetch");
     const result = await this.reportService.fetchReports(
       this.limit,
       this.offset,
@@ -43,5 +54,10 @@ export class ReportListViewModel extends BaseViewModel {
     if (result.error) {
       this.setErrorMessage(result.error);
     }
+  }
+
+  filterReset() {
+    this.filter = initialFilter;
+    this.fetch();
   }
 }

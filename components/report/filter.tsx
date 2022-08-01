@@ -1,6 +1,5 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { SearchButton } from "components/widgets/filter";
 import { Field, Label } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import AsyncSelect from "react-select/async";
@@ -8,6 +7,7 @@ import DatePicker from "components/widgets/datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ReportListViewModel } from "./listViewModel";
 import { Authority } from "lib/services/authority";
+import { runInAction } from "mobx";
 
 export const defaultOptions: Authority[] = [];
 
@@ -20,7 +20,7 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
       .then(result => (result.items ? result.items : []));
 
   return (
-    <div className="md:w-1/4 w-full m-4">
+    <div className="w-full">
       <Field $size="full">
         <Label htmlFor="fromDate">From Date</Label>
         <DatePicker
@@ -41,18 +41,20 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
         <Label htmlFor="throughDate">Authority</Label>
         <AsyncSelect
           cacheOptions
+          value={viewModel.filter.authorities}
           defaultOptions={defaultOptions}
           loadOptions={loadAuthorityOptions}
+          placeholder="type to select"
           isMulti={true}
           getOptionValue={item => item.id}
           getOptionLabel={item => item.name}
-          onChange={values =>
-            (viewModel.filter.authorities = values.map(item => item.id))
-          }
+          onChange={values => {
+            runInAction(() => {
+              viewModel.filter.authorities = [...values];
+            });
+          }}
         />
       </Field>
-
-      <SearchButton onClick={() => viewModel.fetch()}>Search</SearchButton>
     </div>
   );
 };
