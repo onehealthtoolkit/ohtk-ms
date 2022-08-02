@@ -7,14 +7,18 @@ import {
 } from "lib/generated/graphql";
 import { Image, Case, CaseDetail, CaseState } from "lib/services/case/case";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
+import { Authority } from "../authority";
 
 export type CaseFilterData = {
-  fromDate: Date | null;
-  throughDate: Date | null;
-  authorities: string[];
+  fromDate?: Date;
+  throughDate?: Date;
+  authorities?: Pick<Authority, "id" | "code" | "name">[];
 };
 
-export type CaseFilter = CaseFilterData & {
+export type CaseFilter = {
+  fromDate?: Date;
+  throughDate?: Date;
+  authorities?: string[];
   limit: number;
   offset: number;
 };
@@ -40,11 +44,11 @@ export interface ICaseService extends IService {
 export class CaseService implements ICaseService {
   client: ApolloClient<NormalizedCacheObject>;
   fetchCasesQuery: CaseFilter = {
-    fromDate: null,
-    throughDate: null,
+    fromDate: undefined,
+    throughDate: undefined,
     limit: 20,
     offset: 0,
-    authorities: [],
+    authorities: undefined,
   };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
@@ -54,7 +58,7 @@ export class CaseService implements ICaseService {
   async fetchCases(limit: number, offset: number, filter: CaseFilterData) {
     this.fetchCasesQuery = {
       ...this.fetchCasesQuery,
-      authorities: filter.authorities,
+      authorities: filter.authorities?.map(a => a.id),
       fromDate: filter.fromDate,
       throughDate: filter.throughDate,
       limit,

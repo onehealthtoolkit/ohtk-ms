@@ -12,38 +12,45 @@ import { AddButton } from "components/widgets/forms";
 import Paginate from "components/widgets/table/paginate";
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 import { ReportCategory } from "lib/services/reportCategory";
-import {
-  NumberParam,
-  StringParam,
-  useSearchParams,
-} from "lib/hooks/searchParam";
 import TotalItem from "components/widgets/table/totalItem";
+import { ParsedUrlQuery } from "querystring";
+import useUrlParams from "lib/hooks/urlParams/useUrlParams";
+
+const parseUrlParams = (query: ParsedUrlQuery) => {
+  return {
+    q: query.q as string,
+    offset: query.offset ? parseInt(query.offset as string) : 0,
+  };
+};
 
 const ReportCategoryList = () => {
   const router = useRouter();
   const { reportCategoryService } = useServices();
+  const { setUrl, query, resetUrl } = useUrlParams();
 
-  const [searchValue, onSearchChange] = useSearchParams({
-    q: StringParam,
-    limit: NumberParam,
-    offset: NumberParam,
+  const [viewModel] = useState<AdminReportCategoryListViewModel>(() => {
+    const model = new AdminReportCategoryListViewModel(reportCategoryService);
+    model.registerDialog("confirmDelete");
+    return model;
   });
 
-  const [viewModel] = useState<AdminReportCategoryListViewModel>(() =>
-    new AdminReportCategoryListViewModel(
-      reportCategoryService,
-      searchValue.q as string,
-      searchValue.offset as number
-    ).registerDialog("confirmDelete")
-  );
-
   useEffect(() => {
-    viewModel.setSearchValue(
-      searchValue.q as string,
-      searchValue.offset as number
-    );
-  }, [searchValue, viewModel]);
+    if (router.isReady) {
+      const filter = parseUrlParams(query);
+      viewModel.setSearchValue(filter.q, filter.offset);
+    }
+  }, [query, viewModel, router.isReady]);
 
+  const applySearch = ({ q, offset }: { q?: string; offset?: number }) => {
+    const filter = parseUrlParams(query);
+    if (q) {
+      filter.q = q;
+    }
+    if (offset) {
+      filter.offset = offset;
+    }
+    setUrl(filter);
+  };
   if (!viewModel) {
     return <Spinner />;
   }
@@ -55,7 +62,13 @@ const ReportCategoryList = () => {
             <TotalItem totalCount={viewModel.totalCount} />
             <Filter
               nameSearch={viewModel.nameSearch}
-              onChange={value => onSearchChange("q", value)}
+              onChange={value => {
+                if (value == "") {
+                  resetUrl();
+                } else {
+                  applySearch({ q: value, offset: 0 });
+                }
+              }}
             />
             <div className="flex-grow"></div>
             <Link href={"/admin/report_categories/create"} passHref>
@@ -92,7 +105,9 @@ const ReportCategoryList = () => {
             offset={viewModel.offset}
             limit={viewModel.limit}
             totalCount={viewModel.totalCount}
-            onChange={value => onSearchChange("offset", value)}
+            onChange={value => {
+              applySearch({ offset: value });
+            }}
           />
 
           <ConfirmDialog

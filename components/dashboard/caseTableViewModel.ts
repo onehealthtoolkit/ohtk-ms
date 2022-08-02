@@ -7,7 +7,7 @@ export class CaseTableViewModel extends BaseViewModel {
   data: Case[] = [];
   authorityId: number;
   filter: CaseFilterData = {
-    fromDate: null,
+    fromDate: undefined,
     throughDate: new Date(),
     authorities: [],
   };
@@ -18,7 +18,13 @@ export class CaseTableViewModel extends BaseViewModel {
       fetch: action,
     });
     this.authorityId = authorityId;
-    this.filter.authorities = [authorityId.toString()];
+    this.filter.authorities = [
+      {
+        id: authorityId.toString(),
+        code: "",
+        name: "",
+      },
+    ];
     this.fetch();
   }
 

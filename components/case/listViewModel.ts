@@ -3,15 +3,24 @@ import { BaseViewModel } from "lib/baseViewModel";
 import { Case } from "lib/services/case";
 import { CaseFilterData, ICaseService } from "lib/services/case/caseService";
 
+const initialFilter: CaseFilterData = {
+  fromDate: undefined,
+  throughDate: undefined,
+  authorities: undefined,
+};
+
+type SearchParams = {
+  fromDate?: Date;
+  throughDate?: Date;
+  offset?: number;
+  authorities?: CaseFilterData["authorities"];
+};
+
 export class CaseListViewModel extends BaseViewModel {
   data: Case[] = [];
-  filter: CaseFilterData = {
-    fromDate: null,
-    throughDate: new Date(),
-    authorities: [],
-  };
+  filter: CaseFilterData = initialFilter;
 
-  constructor(readonly caseService: ICaseService, offset: number = 0) {
+  constructor(readonly caseService: ICaseService) {
     super();
     makeObservable(this, {
       data: observable,
@@ -19,15 +28,15 @@ export class CaseListViewModel extends BaseViewModel {
       setSearchValue: action,
       fetch: action,
     });
-    this.offset = offset;
-    this.fetch();
   }
 
-  setSearchValue(offset: number = 0) {
-    if (this.offset != offset) {
-      this.offset = offset;
-      this.fetch();
-    }
+  setSearchValue(params: SearchParams) {
+    this.filter.fromDate = params.fromDate;
+    this.filter.throughDate = params.throughDate;
+    this.filter.authorities = params.authorities;
+
+    this.offset = params.offset || 0;
+    this.fetch();
   }
 
   async fetch(): Promise<void> {
@@ -43,5 +52,10 @@ export class CaseListViewModel extends BaseViewModel {
     if (result.error) {
       this.setErrorMessage(result.error);
     }
+  }
+
+  filterReset() {
+    this.filter = initialFilter;
+    this.fetch();
   }
 }

@@ -7,7 +7,7 @@ export default function useReportTypes() {
   const [reportTypes, setReportTypes] = useState<ReportType[]>();
   useEffect(() => {
     async function loadReportTypes() {
-      const result = await services.reportTypeService.fetchReportTypes(
+      const result = await services.reportTypeService.fetchReportTypeSelections(
         100,
         0,
         ""

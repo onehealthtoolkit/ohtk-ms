@@ -10,11 +10,7 @@ export class InvitaionCodeListViewModel extends BaseViewModel {
 
   codeSearch: string = "";
 
-  constructor(
-    readonly invitationCodeService: IInvitationCodeService,
-    codeSearch: string = "",
-    offset: number = 0
-  ) {
+  constructor(readonly invitationCodeService: IInvitationCodeService) {
     super();
     makeObservable(this, {
       data: observable,
@@ -23,17 +19,12 @@ export class InvitaionCodeListViewModel extends BaseViewModel {
       clearCodeSearch: action,
       fetch: action,
     });
-    this.codeSearch = codeSearch;
-    this.offset = offset;
-    this.fetch();
   }
 
   setSearchValue(codeSearch: string = "", offset: number = 0) {
-    if (codeSearch != this.codeSearch || this.offset != offset) {
-      this.codeSearch = codeSearch;
-      this.offset = offset;
-      this.fetch();
-    }
+    this.codeSearch = codeSearch;
+    this.offset = offset;
+    this.fetch();
   }
 
   clearCodeSearch() {
