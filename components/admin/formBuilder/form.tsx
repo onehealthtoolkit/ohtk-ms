@@ -1,5 +1,7 @@
+import { TableIcon, TemplateIcon } from "@heroicons/react/solid";
 import { FormViewModel } from "components/admin/formBuilder/formViewModel";
 import Section, { SectionList } from "components/admin/formBuilder/section";
+import FormRenderer from "components/formRenderer";
 import { observer } from "mobx-react";
 import { FC } from "react";
 
@@ -9,15 +11,41 @@ export type FormBuilderProps = {
 
 const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
   return (
-    <div className="flex relative w-full flex-wrap">
-      <SectionList
-        values={form.sections}
-        onAdd={() => form.addSection()}
-        onSelect={id => form.selectSection(id)}
-        onMoveDown={id => form.moveItemDown(id)}
-        onMoveUp={id => form.moveItemUp(id)}
-      />
-      <Section value={form.currentSection} />
+    <div>
+      <div className="flex flex-row justify-end">
+        <button
+          type="button"
+          className="flex flex-row items-center justify-center
+            gap-2 rounded text-sm font-medium py-1 px-4 
+           bg-gray-200 hover:bg-gray-300 w-48 
+           focus:z-10 focus:ring-2 focus:ring-gray-400 
+          "
+          onClick={() => (form.isSimulationMode = !form.isSimulationMode)}
+        >
+          {form.isSimulationMode ? "Builder" : "Simulator"} mode
+          {form.isSimulationMode ? (
+            <TemplateIcon className="w-5 h-5" />
+          ) : (
+            <TableIcon className="w-5 h-5" />
+          )}
+        </button>
+      </div>
+      {!form.isSimulationMode ? (
+        <div className="flex relative w-full flex-wrap">
+          <SectionList
+            values={form.sections}
+            onAdd={() => form.addSection()}
+            onSelect={id => form.selectSection(id)}
+            onMoveDown={id => form.moveItemDown(id)}
+            onMoveUp={id => form.moveItemUp(id)}
+          />
+          <Section value={form.currentSection} />
+        </div>
+      ) : (
+        form.formRenderer && (
+          <FormRenderer viewModel={form.formRenderer} height="500px" />
+        )
+      )}
     </div>
   );
 };
