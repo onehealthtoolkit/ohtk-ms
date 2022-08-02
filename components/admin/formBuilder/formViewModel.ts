@@ -4,11 +4,14 @@ import {
   MovableItemsViewModel,
   ParseError,
 } from "components/admin/formBuilder/shared";
+import { FormRendererViewModel } from "components/formRenderer";
 import { action, computed, makeObservable, observable } from "mobx";
 
 export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   sections = Array<SectionViewModel>();
   currentSection: SectionViewModel | undefined = undefined;
+  _isSimulationMode = false;
+  formRenderer?: FormRendererViewModel = undefined;
 
   constructor() {
     super("", "");
@@ -19,6 +22,9 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
       selectSection: action,
       parse: action,
       jsonString: computed,
+      _isSimulationMode: observable,
+      isSimulationMode: computed,
+      formRenderer: observable,
     });
   }
 
@@ -85,5 +91,29 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
 
   get jsonString(): string {
     return JSON.stringify(this.toJson(), null, 2);
+  }
+
+  get isSimulationMode() {
+    return this._isSimulationMode;
+  }
+
+  set isSimulationMode(isSimulationMode: boolean) {
+    this._isSimulationMode = isSimulationMode;
+    if (isSimulationMode) {
+      this.formRenderer = new FormRendererViewModel(
+        this.id,
+        this.jsonString,
+        // onFormComplete
+        (formData?: Record<string, any>) => {
+          console.log("form data", formData);
+          this.isSimulationMode = false;
+        },
+        // onFormCancel
+        (message?: string) => {
+          console.log("cancel message", message);
+          this.isSimulationMode = false;
+        }
+      );
+    }
   }
 }

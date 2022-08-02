@@ -55,7 +55,7 @@ const Component: FC<FormQuestionProps> = ({ question }) => {
       {question.description && (
         <h5 className="text-sm">{question.description}</h5>
       )}
-      <div className="flex-col flex gap-4 mt-4">
+      <div className="flex-col flex gap-4 my-4">
         {question.fields.map((field, index) => (
           <div key={index + field.id}>{renderField(field)}</div>
         ))}
