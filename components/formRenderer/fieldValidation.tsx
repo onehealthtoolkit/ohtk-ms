@@ -10,7 +10,7 @@ export type FormFieldValidationProps = {
 const Component: FC<FormFieldValidationProps> = ({ field, children }) => {
   return (
     <div
-      className={`px-4 rounded border ${
+      className={`px-2 rounded border ${
         field.isValid ? "border-white" : "border-red-500"
       } `}
     >

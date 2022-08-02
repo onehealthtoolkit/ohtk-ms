@@ -90,21 +90,13 @@ describe("Calculator", () => {
   }
 
   it("fetch success", async () => {
-    const viewModel = new AdminAuthorityListViewModel(
-      new AuthorityService(),
-      "name1",
-      0
-    );
+    const viewModel = new AdminAuthorityListViewModel(new AuthorityService());
     await viewModel.fetch();
     expect(viewModel.data.length).toEqual(1);
   });
 
   it("fetch not found", async () => {
-    const viewModel = new AdminAuthorityListViewModel(
-      new AuthorityService(),
-      "test",
-      0
-    );
+    const viewModel = new AdminAuthorityListViewModel(new AuthorityService());
     await viewModel.fetch();
     expect(viewModel.data.length).toEqual(0);
   });
