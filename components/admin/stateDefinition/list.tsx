@@ -18,6 +18,7 @@ import Paginate from "components/widgets/table/paginate";
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 import { StateDefinition } from "lib/services/stateDefinition";
 import CheckIcon from "@heroicons/react/solid/CheckIcon";
+import TotalItem from "components/widgets/table/totalItem";
 
 const StateDefinitionList = () => {
   const router = useRouter();
@@ -52,6 +53,7 @@ const StateDefinitionList = () => {
       {() => (
         <div>
           <div className="flex items-center flex-wrap mb-4">
+            <TotalItem totalCount={viewModel.totalCount} />
             <Filter
               nameSearch={viewModel.nameSearch}
               onChange={value => onSearchChange("q", value)}

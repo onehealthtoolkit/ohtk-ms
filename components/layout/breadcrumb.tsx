@@ -8,7 +8,7 @@ export type CrumbProps = {
 const Breadcrumb = ({ crumbs }: { crumbs: Array<CrumbProps> }) => {
   return (
     <nav
-      className="flex mb-3 py-3  text-gray-700 rounded-lg   dark:bg-gray-800 dark:border-gray-700"
+      className="flex mb-3 py-3  text-white rounded-t-lg   dark:bg-gray-800 dark:border-gray-700 bg-[#5E7284]"
       aria-label="Breadcrumb"
     >
       <ol className="inline-flex items-center space-x-1 md:space-x-3">
@@ -23,7 +23,7 @@ const Breadcrumb = ({ crumbs }: { crumbs: Array<CrumbProps> }) => {
             >
               <div className="flex items-center">
                 <svg
-                  className="w-6 h-6 text-gray-400"
+                  className="w-6 h-6 text-white"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -48,17 +48,15 @@ const Breadcrumb = ({ crumbs }: { crumbs: Array<CrumbProps> }) => {
 const Crumb = ({ text, href }: CrumbProps) => {
   if (href) {
     return (
-      <Link
-        className="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white"
-        color="inherit"
-        href={href}
-      >
-        {text}
+      <Link color="inherit" href={href}>
+        <a className="ml-1 text-sm font-medium text-white hover:text-sky-300 md:ml-2 dark:text-gray-400 dark:hover:text-white">
+          {text}
+        </a>
       </Link>
     );
   }
   return (
-    <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
+    <span className="ml-1 text-sm font-medium text-white md:ml-2 dark:text-gray-400">
       {text}
     </span>
   );

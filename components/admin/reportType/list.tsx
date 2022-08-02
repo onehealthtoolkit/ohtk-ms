@@ -17,6 +17,7 @@ import {
 import Paginate from "components/widgets/table/paginate";
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 import { ReportType } from "lib/services/reportType";
+import TotalItem from "components/widgets/table/totalItem";
 
 const ReportTypeList = () => {
   const router = useRouter();
@@ -51,6 +52,7 @@ const ReportTypeList = () => {
       {() => (
         <div>
           <div className="flex items-center flex-wrap mb-4">
+            <TotalItem totalCount={viewModel.totalCount} />
             <Filter
               nameSearch={viewModel.nameSearch}
               onChange={value => onSearchChange("q", value)}

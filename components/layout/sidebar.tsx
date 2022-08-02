@@ -1,25 +1,27 @@
 import { useRouter } from "next/router";
 import React, { FC, useCallback, useRef, useState } from "react";
 import {
-  HomeIcon,
   DocumentTextIcon,
   CubeIcon,
   UserIcon,
   TemplateIcon,
   VariableIcon,
-  DocumentIcon,
   BellIcon,
-  CogIcon,
   LogoutIcon,
   DocumentReportIcon,
   AnnotationIcon,
   LightBulbIcon,
   CollectionIcon,
-} from "@heroicons/react/solid";
+  UserCircleIcon,
+  SpeakerphoneIcon,
+} from "@heroicons/react/outline";
 import useStore from "lib/store";
 import CollapsIcon from "components/layout/CollapsIcon";
 import { observer } from "mobx-react";
 import { Menu } from "./menu";
+import getConfig from "next/config";
+import UserMenu from "./userMenu";
+const { publicRuntimeConfig } = getConfig();
 
 const iconClassName = "h-5 w-5 text-gray-300";
 
@@ -32,7 +34,7 @@ const style: Record<string, string | Record<string, string>> = {
   default: `flex flex-col absolute z-40 top-0 md:static md:block md:left-auto md:top-auto h-screen  shrink-0 bg-slate-800 p-4`,
   open: `duration-200 ease-in transition-all`,
   collapsed: `md:w-16 w-16 p-2`,
-  expanded: `md:w-64 w-64 overflow-y-scroll md:overflow-y-auto no-scrollbar md:translate-x-0 transform transition-all duration-200 ease-in-out translate-x-0`,
+  expanded: `md:w-[250px] w-64 overflow-y-scroll md:overflow-y-auto no-scrollbar md:translate-x-0 transform transition-all duration-200 ease-in-out translate-x-0`,
 };
 const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
   const sidebar = useRef(null);
@@ -104,14 +106,16 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 pathname={pathname}
                 label="Dashboard"
                 collapsed={store.menu.collapsed}
-                icon={<HomeIcon className={iconClassName} />}
+                icon={
+                  <TemplateIcon className={`${iconClassName} -rotate-90`} />
+                }
               />
               <Menu
                 href="/reports/"
                 pathname={pathname}
                 label="Reports"
                 collapsed={store.menu.collapsed}
-                icon={<DocumentTextIcon className={iconClassName} />}
+                icon={<DocumentReportIcon className={iconClassName} />}
               />
 
               <Menu
@@ -119,7 +123,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 pathname={pathname}
                 label="Cases"
                 collapsed={store.menu.collapsed}
-                icon={<DocumentIcon className={iconClassName} />}
+                icon={<DocumentTextIcon className={iconClassName} />}
               />
             </ul>
           </div>
@@ -206,15 +210,42 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 pathname={pathname}
                 label="Reporter notification"
                 collapsed={store.menu.collapsed}
-                icon={<BellIcon className={iconClassName} />}
+                icon={<SpeakerphoneIcon className={iconClassName} />}
               />
+            </ul>
+          </div>
+          <div>
+            <h3
+              className={`
+                text-xs uppercase text-slate-500 font-semibold pl-3 ${
+                  store.menu.collapsed ? "hidden" : ""
+                }`}
+            >
+              <span className="md:sidebar-expanded:block 2xl:block"></span>
+            </h3>
+            <ul className="mt-3">
+              <div className="flex items-center">
+                <div className="w-12 h-12 sm:w-12 sm:h-12">
+                  {store.me?.avatarUrl ? (
+                    <img
+                      src={`${publicRuntimeConfig.serverUrl}/${store.me?.avatarUrl}`}
+                      alt={`${store.me?.username}'s avatar`}
+                      className="shadow-md rounded-full w-full h-full align-middle border-2"
+                    />
+                  ) : (
+                    <div className="rounded-full max-w-full h-12 w-12 align-middle border-2 flex justify-center items-center bg-gray-200 p-4"></div>
+                  )}
+                </div>
+                <UserMenu className="ml-2 text-white" />
+              </div>
               <Menu
                 href="/admin/profile/"
                 pathname={pathname}
                 label="Profile"
                 collapsed={store.menu.collapsed}
-                icon={<CogIcon className={iconClassName} />}
+                icon={<UserCircleIcon className={iconClassName} />}
               />
+
               <Menu
                 href="/admin/logout/"
                 pathname={pathname}

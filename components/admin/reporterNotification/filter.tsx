@@ -18,7 +18,7 @@ const Filter = ({ nameSearch, onChange }: Props) => {
   }, [nameSearch]);
 
   return (
-    <div>
+    <div className="table-filter">
       <FilterTextInput
         type="text"
         value={searchText}

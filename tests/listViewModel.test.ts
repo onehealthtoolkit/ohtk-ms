@@ -21,7 +21,7 @@ export const data: Array<Authority> = [
   },
 ];
 
-describe("Calculator", () => {
+describe("AuthorityList", () => {
   class AuthorityService implements IAuthorityService {
     async lookupAuthorities(
       limit: number,
@@ -90,21 +90,15 @@ describe("Calculator", () => {
   }
 
   it("fetch success", async () => {
-    const viewModel = new AdminAuthorityListViewModel(
-      new AuthorityService(),
-      "name1",
-      0
-    );
+    const viewModel = new AdminAuthorityListViewModel(new AuthorityService());
+    viewModel.setSearchValue("name1");
     await viewModel.fetch();
     expect(viewModel.data.length).toEqual(1);
   });
 
   it("fetch not found", async () => {
-    const viewModel = new AdminAuthorityListViewModel(
-      new AuthorityService(),
-      "test",
-      0
-    );
+    const viewModel = new AdminAuthorityListViewModel(new AuthorityService());
+    viewModel.setSearchValue("name3");
     await viewModel.fetch();
     expect(viewModel.data.length).toEqual(0);
   });

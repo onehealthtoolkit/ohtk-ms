@@ -17,6 +17,7 @@ import {
   StringParam,
   useSearchParams,
 } from "lib/hooks/searchParam";
+import TotalItem from "components/widgets/table/totalItem";
 
 const ReportCategoryList = () => {
   const router = useRouter();
@@ -51,6 +52,7 @@ const ReportCategoryList = () => {
       {() => (
         <div>
           <div className="flex items-center flex-wrap mb-4">
+            <TotalItem totalCount={viewModel.totalCount} />
             <Filter
               nameSearch={viewModel.nameSearch}
               onChange={value => onSearchChange("q", value)}

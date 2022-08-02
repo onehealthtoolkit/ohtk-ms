@@ -18,6 +18,7 @@ import {
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 import { InvitationCode } from "lib/services/invitationCode";
 import { formatDate } from "lib/datetime";
+import TotalItem from "components/widgets/table/totalItem";
 
 const InvitaionCodeList = () => {
   const router = useRouter();
@@ -51,6 +52,7 @@ const InvitaionCodeList = () => {
       {() => (
         <div>
           <div className="flex items-center flex-wrap mb-4">
+            <TotalItem totalCount={viewModel.totalCount} />
             <Filter
               codeSearch={viewModel.codeSearch}
               onChange={value => onSearchChange("q", value)}

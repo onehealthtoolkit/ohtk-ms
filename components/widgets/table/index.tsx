@@ -4,7 +4,7 @@ import { PencilAltIcon, TrashIcon, EyeIcon } from "@heroicons/react/solid";
 import { observer } from "mobx-react";
 
 export const TableHeader = tw.th`
-  px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50
+  px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-[#E0E5EB]
 `;
 
 export const TableCell = tw.td`
@@ -18,7 +18,7 @@ interface ActionHandlerProps {
 const EditAction = (props: ActionHandlerProps) => (
   <PencilAltIcon
     type="edit"
-    className="mx-1 w-8 h-5 text-indigo-600 hover:text-indigo-900 cursor-pointer"
+    className="mx-1 w-8 h-5 text-[#ADC7FF] hover:text-indigo-900 cursor-pointer"
     {...props}
   />
 );
@@ -32,7 +32,7 @@ const ClickAction = (props: ActionHandlerProps) => (
 
 const DeleteAction = (props: ActionHandlerProps) => (
   <TrashIcon
-    className="mx-1 w-8 h-5 text-red-600 hover:text-red-800 cursor-pointer"
+    className="mx-1 w-8 h-5 text-[#DA3535] hover:text-red-800 cursor-pointer"
     {...props}
   />
 );
@@ -77,7 +77,7 @@ const Table = <T extends ItemWithId | null>({
           <tbody className="bg-white">
             {data.map(record => (
               <tr
-                className="hover:bg-gray-50 dark:hover:bg-gray-600"
+                className="hover:bg-gray-50 dark:hover:bg-gray-600 even:bg-[#F6F7F9]"
                 key={record?.id}
                 onClick={evt => {
                   if ((evt.target as HTMLElement).nodeName == "TD")
