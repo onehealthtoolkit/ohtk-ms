@@ -61,7 +61,7 @@ const AuthorityInherits: FC<AuthorityInheritsProps> = ({
             >
               <span className="flex-grow text-left">{authority.name}</span>
               <XCircleIcon
-                className="mx-1 w-5 h-5 text-red-600 hover:text-red-800 cursor-pointer"
+                className="mx-1 w-5 h-5 text-[#DA3535] hover:text-red-800 cursor-pointer"
                 onClick={() => onDelete(authority.id)}
               />
             </button>
@@ -100,7 +100,7 @@ const AuthorityInherits: FC<AuthorityInheritsProps> = ({
               />
               <button
                 aria-label="add button"
-                className="px-2 bg-blue-400 text-white"
+                className="px-4 bg-blue-400 rounded-lg text-white"
                 type="button"
                 onClick={() => {
                   selectedItem && onAdd(selectedItem.id);

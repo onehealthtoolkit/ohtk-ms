@@ -24,15 +24,31 @@ query ReportTypes(
   }
 }
 
+query ReportTypeSelections(
+  $limit: Int!
+  $offset: Int!
+  $nameStartWith: String
+  $ordering: String
+) {
+  adminReportTypeQuery(
+    limit: $limit
+    offset: $offset
+    name_Istartswith: $nameStartWith
+    ordering: $ordering
+  ) {
+    totalCount
+    results {
+      id
+      name
+      ordering
+    }
+  }
+}
+
 query MyReportTypes {
   myReportTypes {
     id
     name
-    category {
-      id
-      name
-    }
-    definition
     ordering
   }
 }

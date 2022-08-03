@@ -14,6 +14,7 @@ import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 import { Authority } from "lib/services/authority";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { ParsedUrlQuery } from "querystring";
+import TotalItem from "components/widgets/table/totalItem";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -60,6 +61,7 @@ const AuthorityList = () => {
       {() => (
         <div>
           <div className="flex items-center flex-wrap mb-4">
+            <TotalItem totalCount={viewModel.totalCount} />
             <Filter
               nameSearch={viewModel.nameSearch}
               onChange={value => {

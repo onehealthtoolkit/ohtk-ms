@@ -8,11 +8,7 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
 
   nameSearch: string = "";
 
-  constructor(
-    readonly reportTypeService: IReportTypeService,
-    nameSearch: string = "",
-    offset: number = 0
-  ) {
+  constructor(readonly reportTypeService: IReportTypeService) {
     super();
     makeObservable(this, {
       data: observable,
@@ -21,18 +17,12 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
       clearNameSearch: action,
       fetch: action,
     });
-
-    this.nameSearch = nameSearch;
-    this.offset = offset;
-    this.fetch();
   }
 
   setSearchValue(nameSearch: string = "", offset: number = 0) {
-    if (nameSearch != this.nameSearch || this.offset != offset) {
-      this.nameSearch = nameSearch;
-      this.offset = offset;
-      this.fetch();
-    }
+    this.nameSearch = nameSearch;
+    this.offset = offset;
+    this.fetch();
   }
 
   clearNameSearch() {

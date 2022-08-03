@@ -41,7 +41,6 @@ export class ReportListViewModel extends BaseViewModel {
   }
 
   async fetch(): Promise<void> {
-    console.log("fetch");
     const result = await this.reportService.fetchReports(
       this.limit,
       this.offset,

@@ -5,6 +5,7 @@ import {
   ReportTypeUpdateDocument,
   GetReportTypeDocument,
   MyReportTypesDocument,
+  ReportTypeSelectionsDocument,
 } from "lib/generated/graphql";
 import { ReportType } from "lib/services/reportType/reportType";
 import {
@@ -17,6 +18,11 @@ import {
 
 export interface IReportTypeService extends IService {
   fetchReportTypes(
+    limit: number,
+    offset: number,
+    searchText: string
+  ): Promise<QueryResult<ReportType[]>>;
+  fetchReportTypeSelections(
     limit: number,
     offset: number,
     searchText: string
@@ -85,6 +91,41 @@ export class ReportTypeService implements IReportTypeService {
     };
   }
 
+  async fetchReportTypeSelections(
+    limit: number,
+    offset: number,
+    searchText: string
+  ) {
+    this.fetchReportTypesQuery = {
+      ...this.fetchReportTypesQuery,
+      limit,
+      offset,
+      nameStartWith: searchText,
+    };
+    const fetchResult = await this.client.query({
+      query: ReportTypeSelectionsDocument,
+      variables: this.fetchReportTypesQuery,
+    });
+
+    const items = Array<ReportType>();
+    fetchResult.data.adminReportTypeQuery?.results.forEach(item => {
+      if (item) {
+        items.push({
+          id: item.id,
+          name: item.name,
+          definition: "",
+          categoryId: 0,
+          categoryName: "",
+          ordering: item.ordering,
+        });
+      }
+    });
+    return {
+      items,
+      totalCount: fetchResult.data.adminReportTypeQuery?.totalCount,
+    };
+  }
+
   async fetchMyReportTypes() {
     const fetchResult = await this.client.query({
       query: MyReportTypesDocument,
@@ -96,9 +137,9 @@ export class ReportTypeService implements IReportTypeService {
         items.push({
           id: item.id,
           name: item.name,
-          definition: item.definition,
-          categoryId: +item.category.id,
-          categoryName: item.category.name,
+          definition: "",
+          categoryId: 0,
+          categoryName: "",
           ordering: item.ordering,
         });
       }

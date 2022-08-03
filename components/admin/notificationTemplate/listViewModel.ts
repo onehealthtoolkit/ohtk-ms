@@ -11,9 +11,7 @@ export class NotificationTemplateListViewModel extends BaseViewModel {
   nameSearch: string = "";
 
   constructor(
-    readonly notificationTemplateService: INotificationTemplateService,
-    nameSearch: string = "",
-    offset: number = 0
+    readonly notificationTemplateService: INotificationTemplateService
   ) {
     super();
     makeObservable(this, {
@@ -23,17 +21,12 @@ export class NotificationTemplateListViewModel extends BaseViewModel {
       clearCodeSearch: action,
       fetch: action,
     });
-    this.nameSearch = nameSearch;
-    this.offset = offset;
-    this.fetch();
   }
 
   setSearchValue(nameSearch: string = "", offset: number = 0) {
-    if (nameSearch != this.nameSearch || this.offset != offset) {
-      this.nameSearch = nameSearch;
-      this.offset = offset;
-      this.fetch();
-    }
+    this.nameSearch = nameSearch;
+    this.offset = offset;
+    this.fetch();
   }
 
   clearCodeSearch() {

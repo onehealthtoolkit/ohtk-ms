@@ -1,7 +1,8 @@
 import { Popover, Transition } from "@headlessui/react";
 import { AdjustmentsIcon, XIcon } from "@heroicons/react/solid";
 import { Fragment } from "react";
-
+import { RefreshIcon } from "@heroicons/react/solid";
+import { forwardRef } from "react";
 import tw from "tailwind-styled-components";
 
 export const SearchButton = tw.button`
@@ -16,15 +17,34 @@ export const SearchButton = tw.button`
   mr-1
 `;
 
-export const ResetButton = tw.button`
-  px-4
-  py-2
-  text-white
-  bg-gray-600
-  hover:border-gray-800
-  rounded
-  border-l
-`;
+export const ResetButton = forwardRef(function ResetButton(
+  props: React.ComponentPropsWithoutRef<"button">,
+  ref: React.Ref<HTMLButtonElement>
+) {
+  return (
+    <button
+      ref={ref}
+      type="button"
+      {...props}
+      className="
+      px-4
+      py-2
+      text-black
+      bg-slate-50
+      hover:border-gray-800
+      border-slate-700
+      rounded
+      items-center
+      inline-flex
+      justify-center
+      border
+      "
+    >
+      <RefreshIcon className="h-5 w-5 text-black mr-2" />
+      <span>{props.children}</span>
+    </button>
+  );
+});
 
 export const FilterTextInput = tw.input`
   px-4 py-2 w-80 border-gray-300 border mr-2

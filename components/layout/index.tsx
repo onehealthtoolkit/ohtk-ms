@@ -1,7 +1,6 @@
 import useStore from "lib/store";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
-import Header from "./header";
 import Sidebar from "./sidebar";
 import { ErrorBoundary } from "components/widgets/errorBoundary";
 
@@ -53,12 +52,10 @@ const Layout = ({ children }: Props) => {
         <Sidebar mobilePosition="left" />
       </aside>
       {/* Content area */}
-      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-        {/*  Site header */}
-        <Header />
+      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden md:px-4">
         <main>
           <ErrorBoundary>
-            <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto relative">
+            <div className="main rounded-lg border w-full max-w-9xl  relative md:mt-2 ">
               {children}
             </div>
           </ErrorBoundary>

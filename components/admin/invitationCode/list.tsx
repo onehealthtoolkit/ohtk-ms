@@ -10,39 +10,48 @@ import useServices from "lib/services/provider";
 import Link from "next/link";
 import { AddButton } from "components/widgets/forms";
 import Paginate from "components/widgets/table/paginate";
-import {
-  NumberParam,
-  StringParam,
-  useSearchParams,
-} from "lib/hooks/searchParam";
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 import { InvitationCode } from "lib/services/invitationCode";
 import { formatDate } from "lib/datetime";
+import TotalItem from "components/widgets/table/totalItem";
+import useUrlParams from "lib/hooks/urlParams/useUrlParams";
+import { ParsedUrlQuery } from "querystring";
+
+const parseUrlParams = (query: ParsedUrlQuery) => {
+  return {
+    q: query.q as string,
+    offset: query.offset ? parseInt(query.offset as string) : 0,
+  };
+};
 
 const InvitaionCodeList = () => {
   const router = useRouter();
   const { invitationCodeService } = useServices();
-  const [searchValue, onSearchChange] = useSearchParams({
-    q: StringParam,
-    limit: NumberParam,
-    offset: NumberParam,
+  const { setUrl, query, resetUrl } = useUrlParams();
+
+  const [viewModel] = useState<InvitaionCodeListViewModel>(() => {
+    const model = new InvitaionCodeListViewModel(invitationCodeService);
+    model.registerDialog("confirmDelete");
+    return model;
   });
 
-  const [viewModel] = useState<InvitaionCodeListViewModel>(() =>
-    new InvitaionCodeListViewModel(
-      invitationCodeService,
-      searchValue.q as string,
-      searchValue.offset as number
-    ).registerDialog("confirmDelete")
-  );
-
   useEffect(() => {
-    viewModel.setSearchValue(
-      searchValue.q as string,
-      searchValue.offset as number
-    );
-  }, [searchValue, viewModel]);
+    if (router.isReady) {
+      const filter = parseUrlParams(query);
+      viewModel.setSearchValue(filter.q, filter.offset);
+    }
+  }, [query, viewModel, router.isReady]);
 
+  const applySearch = ({ q, offset }: { q?: string; offset?: number }) => {
+    const filter = parseUrlParams(query);
+    if (q) {
+      filter.q = q;
+    }
+    if (offset) {
+      filter.offset = offset;
+    }
+    setUrl(filter);
+  };
   if (!viewModel) {
     return <Spinner />;
   }
@@ -51,9 +60,16 @@ const InvitaionCodeList = () => {
       {() => (
         <div>
           <div className="flex items-center flex-wrap mb-4">
+            <TotalItem totalCount={viewModel.totalCount} />
             <Filter
               codeSearch={viewModel.codeSearch}
-              onChange={value => onSearchChange("q", value)}
+              onChange={value => {
+                if (value == "") {
+                  resetUrl();
+                } else {
+                  applySearch({ q: value, offset: 0 });
+                }
+              }}
             />
 
             <div className="flex-grow"></div>
@@ -95,7 +111,9 @@ const InvitaionCodeList = () => {
             offset={viewModel.offset}
             limit={viewModel.limit}
             totalCount={viewModel.totalCount}
-            onChange={value => onSearchChange("offset", value)}
+            onChange={value => {
+              applySearch({ offset: value });
+            }}
           />
 
           <ConfirmDialog

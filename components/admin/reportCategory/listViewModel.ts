@@ -10,11 +10,7 @@ export class AdminReportCategoryListViewModel extends BaseViewModel {
 
   nameSearch: string = "";
 
-  constructor(
-    readonly reportCategorService: IReportCategoryService,
-    nameSearch: string = "",
-    offset: number = 0
-  ) {
+  constructor(readonly reportCategorService: IReportCategoryService) {
     super();
     makeObservable(this, {
       data: observable,
@@ -23,18 +19,12 @@ export class AdminReportCategoryListViewModel extends BaseViewModel {
       clearNameSearch: action,
       fetch: action,
     });
-
-    this.nameSearch = nameSearch;
-    this.offset = offset;
-    this.fetch();
   }
 
   setSearchValue(nameSearch: string = "", offset: number = 0) {
-    if (nameSearch != this.nameSearch || this.offset != offset) {
-      this.nameSearch = nameSearch;
-      this.offset = offset;
-      this.fetch();
-    }
+    this.nameSearch = nameSearch;
+    this.offset = offset;
+    this.fetch();
   }
 
   clearNameSearch() {

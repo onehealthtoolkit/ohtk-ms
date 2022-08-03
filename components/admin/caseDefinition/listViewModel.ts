@@ -8,11 +8,7 @@ export class AdminCaseDefinitionListViewModel extends BaseViewModel {
 
   nameSearch: string = "";
 
-  constructor(
-    readonly caseDefinitionService: ICaseDefinitionService,
-    nameSearch: string = "",
-    offset: number = 0
-  ) {
+  constructor(readonly caseDefinitionService: ICaseDefinitionService) {
     super();
     makeObservable(this, {
       data: observable,
@@ -21,18 +17,12 @@ export class AdminCaseDefinitionListViewModel extends BaseViewModel {
       clearNameSearch: action,
       fetch: action,
     });
-
-    this.nameSearch = nameSearch;
-    this.offset = offset;
-    this.fetch();
   }
 
   setSearchValue(nameSearch: string = "", offset: number = 0) {
-    if (nameSearch != this.nameSearch || this.offset != offset) {
-      this.nameSearch = nameSearch;
-      this.offset = offset;
-      this.fetch();
-    }
+    this.nameSearch = nameSearch;
+    this.offset = offset;
+    this.fetch();
   }
 
   clearNameSearch() {

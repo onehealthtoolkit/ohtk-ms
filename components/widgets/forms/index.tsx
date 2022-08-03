@@ -24,7 +24,7 @@ export const AddButton = forwardRef(function addButton(
         py-2 
         border
       text-white
-      bg-blue-500 
+      bg-[#67C687] 
       border-blue-300
       hover:border-blue-500
         rounded
@@ -201,7 +201,7 @@ export const Radio = forwardRef(RadioInput);
 
 export const Label = tw.label`
   block 
-  text-grey-darker 
+  text-[#1D1E1E] 
   text-sm 
   font-bold 
   mb-2
@@ -218,7 +218,7 @@ export const ErrorText = tw.p`
 export const SaveButton = tw.button`
   border
   text-white
-  bg-blue-500 
+  bg-[#4C81F1] 
   border-blue-300
   hover:border-blue-500
   rounded

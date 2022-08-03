@@ -39,7 +39,7 @@ const MenuCollapsed: React.FC<MenuProps> = ({
           >
             <div className="flex items-center">
               {icon}
-              <div className="group-hover:block absolute  hidden dropdown-menu w-32 h-auto z-50 top-0 left-12 bg-white shadow px-2 py-2">
+              <div className="group-hover:block absolute  hidden dropdown-menu w-auto h-auto z-50 top-0 left-12 bg-white shadow px-6 py-2">
                 <span className="text-sm font-medium ml-3 duration-200">
                   {label}
                 </span>
