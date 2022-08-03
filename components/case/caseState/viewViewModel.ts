@@ -34,16 +34,21 @@ export class CaseStateViewViewModel extends BaseViewModel {
     });
   }
 
-  async forwardState(caseStateId: string, transitionId: string) {
+  async forwardState(
+    caseStateId: string,
+    transitionId: string,
+    formData?: Record<string, any>
+  ) {
     this.isLoading = true;
     const result = await this.caseService.forwardState(
       this.caseId,
-      transitionId
+      transitionId,
+      formData
     );
     runInAction(() => {
       if (result.data) {
         this.states.push(result.data);
-        this.updateCaseStateTransition(caseStateId, transitionId);
+        this.updateCaseStateTransition(caseStateId, transitionId, formData);
       }
       if (result.error) {
         this.setErrorMessage(result.error);
@@ -52,7 +57,11 @@ export class CaseStateViewViewModel extends BaseViewModel {
     this.isLoading = false;
   }
 
-  updateCaseStateTransition(caseStateId: string, transitionId: string) {
+  updateCaseStateTransition(
+    caseStateId: string,
+    transitionId: string,
+    formData?: Record<string, any>
+  ) {
     const caseState = this.states.find(
       caseState => caseState.id === caseStateId
     );
@@ -67,7 +76,7 @@ export class CaseStateViewViewModel extends BaseViewModel {
             firstName: this.me.firstName,
             lastName: this.me.lastName,
           },
-          formData: "",
+          formData: JSON.stringify(formData),
           transition: caseState.state.toTransitions?.find(transition => {
             return transition?.id === transitionId;
           }) as StateTransitionRef,

@@ -106,7 +106,7 @@ const CurrentMarker: FC<CurrentMarkerProps> = observer(
           console.log("bounding box error", e);
         }
       });
-    }, [map]);
+    }, [map, onLocation]);
 
     return (
       <Marker position={[lat, lng]} icon={icon}>

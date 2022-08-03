@@ -18,21 +18,27 @@ const currentYear = new Date().getFullYear();
 
 const Component: FC<FormDateFieldProps> = ({ field }) => {
   const onSelectDay = (value: string) => {
+    field.clearError();
     field.day = parseInt(value) || undefined;
   };
 
   const onSelectMonth = (value: string) => {
+    field.clearError();
     field.month = parseInt(value) || undefined;
   };
 
   const onSelectYear = (value: string) => {
+    field.clearError();
     field.year = parseInt(value) || undefined;
   };
 
   const onSelectHour = (value: string) => {
+    field.clearError();
     field.hour = parseInt(value) || undefined;
   };
+
   const onSelectMinute = (value: string) => {
+    field.clearError();
     field.minute = parseInt(value) || undefined;
   };
 
@@ -155,7 +161,7 @@ type SelectProps = {
 
 const Select: FC<SelectProps> = ({ label, selected, options, onSelect }) => {
   return (
-    <label className="block md:w-1/5 w-1/3 pr-2">
+    <label className="block w-full md:w-1/3 pr-2">
       <span className="text-sm text-right block px-2">{label}</span>
       <select
         className="block border rounded w-full h-10 

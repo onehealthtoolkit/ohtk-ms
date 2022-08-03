@@ -37,7 +37,7 @@ export interface ICaseService extends IService {
   forwardState(
     caseId: string,
     transitionId: string,
-    formData?: object
+    formData?: Record<string, any>
   ): Promise<GetResult<CaseState>>;
 }
 
@@ -139,7 +139,7 @@ export class CaseService implements ICaseService {
   async forwardState(
     caseId: string,
     transitionId: string,
-    formData?: object
+    formData?: Record<string, any>
   ): Promise<GetResult<CaseState>> {
     const forwardStateResult = await this.client.mutate({
       mutation: StateForwardDocument,

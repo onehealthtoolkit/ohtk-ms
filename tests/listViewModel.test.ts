@@ -92,14 +92,12 @@ describe("AuthorityList", () => {
   it("fetch success", async () => {
     const viewModel = new AdminAuthorityListViewModel(new AuthorityService());
     viewModel.setSearchValue("name1");
-    await viewModel.fetch();
     expect(viewModel.data.length).toEqual(1);
   });
 
   it("fetch not found", async () => {
     const viewModel = new AdminAuthorityListViewModel(new AuthorityService());
     viewModel.setSearchValue("name3");
-    await viewModel.fetch();
     expect(viewModel.data.length).toEqual(0);
   });
 });

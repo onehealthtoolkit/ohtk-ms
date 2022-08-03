@@ -16,12 +16,7 @@ const Component: FC<FormIntegerFieldProps> = ({ field }) => {
         className="rounded border border-gray-300 bg-gray-50 py-2 px-4 w-full"
         value={field.value?.toString() || ""}
         onChange={e => {
-          try {
-            field.value = parseInt(e.target.value);
-          } catch (e) {
-            console.log(e);
-            field.value = undefined;
-          }
+          field.value = parseInt(e.target.value) || undefined;
         }}
       />
     </FormFieldValidation>
