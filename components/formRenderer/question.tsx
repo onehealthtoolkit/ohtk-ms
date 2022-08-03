@@ -49,6 +49,9 @@ const Component: FC<FormQuestionProps> = ({ question }) => {
     return <div>Unknown Field</div>;
   };
 
+  if (!question.display) {
+    return null;
+  }
   return (
     <div className="p-4 border-b border-gray-200 last:border-0">
       <h4 className="font-medium text-gray-800">{question.label}</h4>
@@ -56,9 +59,12 @@ const Component: FC<FormQuestionProps> = ({ question }) => {
         <h5 className="text-sm">{question.description}</h5>
       )}
       <div className="flex-col flex gap-4 my-4">
-        {question.fields.map((field, index) => (
-          <div key={index + field.id}>{renderField(field)}</div>
-        ))}
+        {question.fields.map(
+          (field, index) =>
+            field.display && (
+              <div key={index + field.id}>{renderField(field)}</div>
+            )
+        )}
       </div>
     </div>
   );

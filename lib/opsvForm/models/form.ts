@@ -62,18 +62,22 @@ export default class Form {
     return this._currentSectionIdx > 0;
   }
 
-  public next() {
+  public next(): boolean {
     if (this.couldGoToNextSection) {
       if (this.currentSection.validate()) {
         this._currentSectionIdx++;
+        return true;
       }
     }
+    return false;
   }
 
-  public previous() {
+  public previous(): boolean {
     if (this.couldGoToPreviousSection) {
       this._currentSectionIdx--;
+      return true;
     }
+    return false;
   }
 
   public getField<T extends Field>(name: string): T {

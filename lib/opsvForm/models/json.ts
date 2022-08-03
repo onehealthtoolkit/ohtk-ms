@@ -1,5 +1,5 @@
 import SimpleCondition, { Condition } from "./condition";
-import Field from "./fields";
+import Field, { FieldParams } from "./fields";
 import TextField from "./fields/textField";
 import IntegerField from "./fields/integerField";
 import DecimalField from "./fields/decimalField";
@@ -54,8 +54,11 @@ export type BaseFieldType = {
   id: string;
   name: string;
   label?: string;
+  description?: string;
+  suffixLabel?: string;
   required?: boolean;
   requiredMessage?: string;
+  condition?: ConditionType;
 };
 
 export type TextFieldType = {
@@ -81,6 +84,8 @@ export type DecimalFieldType = {
 export type DateFieldType = {
   type: "date";
   withTime?: boolean;
+  beInFuture?: boolean;
+  beInPast?: boolean;
 } & BaseFieldType;
 
 export type LocationFieldType = {
@@ -125,30 +130,54 @@ export function parseQuestion(json: QuestionType): Question {
 }
 
 export function parseField(json: FieldType): Field {
+  const commonParams: FieldParams = {
+    label: json["label"],
+    description: json["description"],
+    required: json["required"],
+    requiredMessage: json["requiredMessage"],
+    suffixLabel: json["suffixLabel"],
+    condition: parseCondition(json["condition"]),
+  };
   switch (json.type) {
     case "text":
-      return new TextField(json["id"], json["name"], json);
+      return new TextField(json["id"], json["name"], {
+        ...commonParams,
+        minLength: json["minLength"],
+        minLengthMessage: json["minLengthMessage"],
+        maxLength: json["maxLength"],
+        maxLengthMessage: json["maxLengthMessage"],
+      });
     case "integer":
-      return new IntegerField(json["id"], json["name"], json);
+      return new IntegerField(json["id"], json["name"], {
+        ...commonParams,
+        min: json["min"],
+        minMessage: json["minMessage"],
+        max: json["max"],
+        maxMessage: json["maxMessage"],
+      });
     case "decimal":
-      return new DecimalField(json["id"], json["name"], json);
+      return new DecimalField(json["id"], json["name"], commonParams);
     case "date":
-      return new DateField(json["id"], json["name"], json);
+      return new DateField(json["id"], json["name"], {
+        ...commonParams,
+        beInFuture: json["beInFuture"],
+        beInPast: json["beInPast"],
+      });
     case "location":
-      return new LocationField(json["id"], json["name"], json);
+      return new LocationField(json["id"], json["name"], commonParams);
     case "singlechoices":
       return new SingleChoicesField(
         json["id"],
         json["name"],
         json["options"],
-        json
+        commonParams
       );
     case "multiplechoices":
       return new MultipleChoicesField(
         json["id"],
         json["name"],
         json["options"],
-        json
+        commonParams
       );
     default:
       return new TextField("unknown", "unknown", {});

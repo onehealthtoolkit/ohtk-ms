@@ -21,7 +21,7 @@ export const data: Array<Authority> = [
   },
 ];
 
-describe("AuthorityList", () => {
+describe("Authority ListViewModel", () => {
   class AuthorityService implements IAuthorityService {
     async lookupAuthorities(
       limit: number,
@@ -91,13 +91,13 @@ describe("AuthorityList", () => {
 
   it("fetch success", async () => {
     const viewModel = new AdminAuthorityListViewModel(new AuthorityService());
-    viewModel.setSearchValue("name1");
+    await viewModel.setSearchValue("name1");
     expect(viewModel.data.length).toEqual(1);
   });
 
   it("fetch not found", async () => {
     const viewModel = new AdminAuthorityListViewModel(new AuthorityService());
-    viewModel.setSearchValue("name3");
+    await viewModel.setSearchValue("name3");
     expect(viewModel.data.length).toEqual(0);
   });
 });
