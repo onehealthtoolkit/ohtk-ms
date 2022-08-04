@@ -114,6 +114,15 @@ describe("Form", () => {
     expect(form.currentSection.label).toBe("section1");
   });
 
+  it("validation should be check to all field in section", () => {
+    const form = parseForm(testForm);
+    form.currentSection.validate();
+    const firstNameField = form.getField("first_name");
+    const ageField = form.getField("age");
+    expect(firstNameField.invalidMessage).toBeDefined();
+    expect(ageField.invalidMessage).toBeDefined();
+  });
+
   it("validation", () => {
     const form = parseForm(testForm);
     expect(form.currentSection.validate()).toBeFalsy();

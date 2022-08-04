@@ -61,7 +61,7 @@ export default class Question {
     }
     return _.reduce<Field, boolean>(
       true,
-      (acc, field) => acc && field.validate()
+      (acc, field) => field.validate() && acc
     )(this.fields);
   }
 

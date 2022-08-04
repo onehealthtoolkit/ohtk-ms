@@ -27,7 +27,7 @@ export default class Section {
   public validate(): boolean {
     return _.reduce<Question, boolean>(
       true,
-      (acc, question) => acc && question.validate()
+      (acc, question) => question.validate() && acc
     )(this.questions);
   }
 }
