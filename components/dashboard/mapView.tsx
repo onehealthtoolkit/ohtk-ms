@@ -65,6 +65,7 @@ const MapView: React.FC<MapViewProps> = ({ authorityId }) => {
 
               {viewModel.data.map(item => {
                 const icon = L.divIcon({
+                  className: "my-div-icon",
                   html: renderToStaticMarkup(
                     MarkerIcon({
                       categoryIcon: item.categoryIcon,
@@ -99,33 +100,15 @@ const MarkerIcon = ({ categoryIcon, type }: MarkerIconProps) => {
   let color = "fill-black";
   switch (type) {
     case "report":
-      color = "fill-red-500";
+      color = "fill-yellow-400";
       break;
     case "case":
-      color = "fill-yellow-500";
+      color = "fill-red-500";
       break;
   }
 
   return (
     <div className="w-[36px] h-[36px] relative top-[-30px] left-[-5px]">
-      <div
-        style={
-          categoryIcon
-            ? {
-                position: "absolute",
-                top: "-36px",
-                left: "-8px",
-                width: "36px",
-                height: "36px",
-                backgroundImage: `url("${publicRuntimeConfig.serverUrl}/${categoryIcon}")`,
-                backgroundPosition: "center center",
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-              }
-            : {}
-        }
-      ></div>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         version="1.0"
@@ -144,6 +127,27 @@ const MarkerIcon = ({ categoryIcon, type }: MarkerIconProps) => {
           <path d="M3370 12794 c-19 -2 -87 -9 -150 -15 -1051 -99 -2031 -694 -2627 -1594 -459 -693 -674 -1584 -563 -2330 180 -1204 1094 -3603 2643 -6935 330 -710 906 -1910 917 -1910 11 0 587 1200 917 1910 1318 2835 2200 5054 2523 6350 155 621 182 978 110 1470 -122 834 -546 1611 -1185 2169 -554 484 -1211 776 -1950 867 -122 15 -556 27 -635 18z m560 -2027 c631 -150 1080 -605 1222 -1239 20 -90 23 -130 23 -313 0 -164 -4 -230 -18 -300 -132 -647 -615 -1132 -1265 -1267 -155 -32 -449 -32 -604 0 -650 135 -1133 620 -1265 1267 -28 138 -25 473 5 611 30 139 64 239 127 371 214 450 623 771 1111 872 143 30 141 30 359 26 171 -3 215 -7 305 -28z" />
         </g>
       </svg>
+
+      <div
+        style={
+          categoryIcon
+            ? {
+                position: "absolute",
+                top: "0px",
+                left: "2px",
+                zIndex: 1000,
+                width: "18px",
+                height: "18px",
+                backgroundImage: `url("${publicRuntimeConfig.serverUrl}/${categoryIcon}")`,
+                backgroundPosition: "center center",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                borderRadius: "50%",
+                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+              }
+            : {}
+        }
+      ></div>
     </div>
   );
 };
