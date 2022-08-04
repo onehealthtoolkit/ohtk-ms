@@ -8,7 +8,7 @@ export const TableHeader = tw.th`
 `;
 
 export const TableCell = tw.td`
-  px-6 py-4 whitespace-no-wrap border-b border-gray-200
+  px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm
 `;
 
 interface ActionHandlerProps {

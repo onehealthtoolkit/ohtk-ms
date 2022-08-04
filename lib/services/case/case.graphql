@@ -15,6 +15,7 @@ query Cases(
     totalCount
     results {
       id
+      isFinished
       report {
         createdAt
         incidentDate
@@ -37,6 +38,12 @@ query Cases(
 query GetCase($id: UUID!) {
   caseGet(id: $id) {
     id
+    description
+    isFinished
+    authorities {
+      id
+      name
+    }
     report {
       createdAt
       incidentDate

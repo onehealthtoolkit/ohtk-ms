@@ -4,12 +4,14 @@ import { StateTransitionRef } from "lib/services/stateTransition/stateTransition
 
 export type Case = {
   id: string;
+  description?: string;
   createdAt?: string;
   incidentDate?: string;
   reportTypeName?: string;
   rendererData?: string;
   reportByName?: string;
   reportByTelephone?: string;
+  isFinished: boolean;
 };
 
 export type Image = {

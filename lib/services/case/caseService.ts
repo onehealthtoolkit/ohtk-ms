@@ -78,6 +78,7 @@ export class CaseService implements ICaseService {
           incidentDate: item.report?.incidentDate,
           rendererData: item.report?.rendererData as string,
           reportTypeName: item.report?.reportType.name as string,
+          isFinished: item.isFinished,
         });
       }
     });
@@ -119,6 +120,8 @@ export class CaseService implements ICaseService {
     if (incidentCase) {
       data = {
         id: incidentCase.id,
+        description: incidentCase.description,
+        isFinished: incidentCase.isFinished,
         createdAt: incidentCase.report?.createdAt,
         incidentDate: incidentCase.report?.incidentDate,
         reportTypeName: incidentCase.report?.reportType?.name,

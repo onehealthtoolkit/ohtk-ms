@@ -902,6 +902,7 @@ export type CaseType = {
   authorities?: Maybe<Array<Maybe<AuthorityType>>>;
   description: Scalars["String"];
   id: Scalars["UUID"];
+  isFinished: Scalars["Boolean"];
   report?: Maybe<IncidentReportType>;
   stateDefinition?: Maybe<DeepStateDefinitionType>;
   states?: Maybe<Array<Maybe<CaseStateType>>>;
@@ -2151,6 +2152,7 @@ export type CasesQuery = {
     results: Array<{
       __typename?: "CaseType";
       id: any;
+      isFinished: boolean;
       report?: {
         __typename?: "IncidentReportType";
         createdAt: any;
@@ -2182,6 +2184,13 @@ export type GetCaseQuery = {
   caseGet?: {
     __typename?: "CaseType";
     id: any;
+    description: string;
+    isFinished: boolean;
+    authorities?: Array<{
+      __typename?: "AuthorityType";
+      id: string;
+      name: string;
+    } | null> | null;
     report?: {
       __typename?: "IncidentReportType";
       createdAt: any;
@@ -4899,6 +4908,10 @@ export const CasesDocument = {
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "isFinished" },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "report" },
                         selectionSet: {
                           kind: "SelectionSet",
@@ -5008,6 +5021,19 @@ export const GetCaseDocument = {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+                { kind: "Field", name: { kind: "Name", value: "isFinished" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "authorities" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "report" },

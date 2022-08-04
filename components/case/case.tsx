@@ -1,14 +1,14 @@
-import { forwardRef, useState } from "react";
-import { Observer } from "mobx-react";
+/* eslint-disable @next/next/no-img-element */
+import { Fragment, useState } from "react";
+import { observer, Observer } from "mobx-react";
 import { MaskingLoader, TabBar, TabItem } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { CaseViewModel } from "./caseViewModel";
 import getConfig from "next/config";
-import Breadcrumb from "components/layout/breadcrumb";
-import tw from "tailwind-styled-components";
 import CaseStateView from "components/case/caseState/view";
 import { AdjustmentsIcon, CollectionIcon } from "@heroicons/react/solid";
 import useStore from "lib/store";
+import CaseStatus from "./caseStatus";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -63,47 +63,52 @@ const TR = (props: { label: string; value: string }) => {
   );
 };
 
-export const PromoteToCaseButtonx = forwardRef(function addButton(
-  props: React.PropsWithoutRef<{}>,
-  ref: React.Ref<HTMLAnchorElement>
-) {
+const ReportInformation = observer(
+  ({ viewModel }: { viewModel: CaseViewModel }) => {
+    return (
+      <div className="relative overflow-x-auto mt-4">
+        <table className="table-fixed border w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <tbody>
+            <TR
+              label="Created at"
+              value={viewModel.data?.createdAt?.toString() || ""}
+            />
+
+            <TR
+              label="Incident date"
+              value={viewModel.data?.incidentDate?.toString() || ""}
+            />
+
+            <TR label="Report by" value={viewModel.data?.reportByName || ""} />
+
+            <TR
+              label="Phone number"
+              value={viewModel.data?.reportByTelephone || ""}
+            />
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+);
+
+const ReportImage = observer(({ viewModel }: { viewModel: CaseViewModel }) => {
   return (
-    <a
-      ref={ref}
-      {...props}
-      className="
-        px-4 
-        py-2 
-        border
-      text-white
-      bg-blue-500 
-      border-blue-300
-      hover:border-blue-500
-        rounded
-        flex 
-        justify-center 
-        items-center
-        cursor-pointer
-      "
-    >
-      <span>Promote To Case</span>
-    </a>
+    <Fragment>
+      {viewModel.data.images?.map((image, idx) => (
+        <div key={idx} className="">
+          <a href="#">
+            <img
+              className="w-40"
+              src={`${publicRuntimeConfig.serverUrl}/${image.file}`}
+              alt=""
+            />
+          </a>
+        </div>
+      ))}
+    </Fragment>
   );
 });
-
-export const PromoteToCaseButton = tw.button`
-  px-4 
-  py-2 
-  border
-  text-white
-  bg-blue-500 
-  border-blue-300
-  hover:border-blue-500
-  rounded
-  flex 
-  justify-center 
-  items-center
-`;
 
 const Case = (props: { id: string }) => {
   const { id } = props;
@@ -119,136 +124,75 @@ const Case = (props: { id: string }) => {
         return (
           <MaskingLoader loading={viewModel.isLoading}>
             <>
-              <div className="flex items-center flex-wrap">
-                <Breadcrumb
-                  crumbs={[
-                    { text: "Cases", href: "/cases" },
-                    { text: viewModel.id },
-                  ]}
-                />
+              <div>
+                <div className="flex gap-2">
+                  <p className="text-md dark:text-gray-400 ">
+                    Report type: {viewModel.data.reportTypeName}
+                  </p>
+                  <CaseStatus isFinished={viewModel.data.isFinished} />
+                </div>
+                <p className="text-sm pt-1 font-bold">
+                  {viewModel.data.description}
+                </p>
               </div>
-              <TabBar>
-                <TabItem
-                  id="state"
-                  active={viewModel.activeTabIndex == 0}
-                  onTab={() => {
-                    viewModel.activeTabIndex = 0;
-                  }}
-                >
-                  {({ activeCss }) => (
-                    <>
-                      <CollectionIcon className={`mr-2 w-5 h-5 ${activeCss}`} />
-                      <span>State</span>
-                    </>
-                  )}
-                </TabItem>
-                <TabItem
-                  id="detail"
-                  active={viewModel.activeTabIndex == 1}
-                  onTab={() => {
-                    viewModel.activeTabIndex = 1;
-                  }}
-                >
-                  {({ activeCss }) => (
-                    <>
-                      <AdjustmentsIcon
-                        className={`mr-2 w-5 h-5 ${activeCss}`}
-                      />
-                      <span>Detail</span>
-                    </>
-                  )}
-                </TabItem>
-              </TabBar>
-              <div className="h-10"></div>
-              {viewModel.activeTabIndex == 0 && (
-                <CaseStateView viewModel={viewModel.stateViewViewModel} />
-              )}
-              {viewModel.activeTabIndex == 1 && (
-                <>
-                  <div>
-                    <p className="text-md dark:text-gray-400">
-                      Report type: {viewModel.data.reportTypeName}
-                    </p>
-                    <p className="text-sm pt-1 font-bold">
-                      {viewModel.data.rendererData}
-                    </p>
-                  </div>
 
-                  <div className="relative overflow-x-auto mt-4">
-                    <table className="table-fixed border w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                      <tbody>
-                        <TR
-                          label="Created at"
-                          value={
-                            viewModel.data && viewModel.data.createdAt
-                              ? viewModel.data.createdAt.toString()
-                              : ""
-                          }
-                        />
+              <ReportInformation viewModel={viewModel} />
 
-                        <TR
-                          label="Incident date"
-                          value={
-                            viewModel.data && viewModel.data.incidentDate
-                              ? viewModel.data.incidentDate.toString()
-                              : ""
-                          }
-                        />
+              <ReportImage viewModel={viewModel} />
 
-                        <TR
-                          label="Case type"
-                          value={
-                            viewModel.data && viewModel.data.reportTypeName
-                              ? viewModel.data.reportTypeName
-                              : ""
-                          }
+              <div>
+                <TabBar>
+                  <TabItem
+                    id="state"
+                    active={viewModel.activeTabIndex == 0}
+                    onTab={() => {
+                      viewModel.activeTabIndex = 0;
+                    }}
+                  >
+                    {({ activeCss }) => (
+                      <>
+                        <CollectionIcon
+                          className={`mr-2 w-5 h-5 ${activeCss}`}
                         />
-
-                        <TR
-                          label="Case by"
-                          value={
-                            viewModel.data && viewModel.data.reportByName
-                              ? viewModel.data.reportByName
-                              : ""
-                          }
+                        <span>State</span>
+                      </>
+                    )}
+                  </TabItem>
+                  <TabItem
+                    id="detail"
+                    active={viewModel.activeTabIndex == 1}
+                    onTab={() => {
+                      viewModel.activeTabIndex = 1;
+                    }}
+                  >
+                    {({ activeCss }) => (
+                      <>
+                        <AdjustmentsIcon
+                          className={`mr-2 w-5 h-5 ${activeCss}`}
                         />
-
-                        <TR
-                          label="Phone number"
-                          value={
-                            viewModel.data && viewModel.data.reportByTelephone
-                              ? viewModel.data.reportByTelephone
-                              : ""
-                          }
-                        />
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="flex flex-wrap pt-6 pb-4">
-                    {viewModel.data.images &&
-                      viewModel.data.images.map((image, idx) => (
-                        <div key={idx} className="">
-                          <a href="#">
-                            <img
-                              className="w-40"
-                              src={`${publicRuntimeConfig.serverUrl}/${image.file}`}
-                              alt=""
-                            />
-                          </a>
-                        </div>
-                      ))}
-                  </div>
-                  <div className="mt-4">
-                    <p className="text-md dark:text-gray-400">Form Data</p>
-                  </div>
-                  <div className="">
-                    {viewModel.data.data && renderData(viewModel.data.data)}
-                  </div>
-                  <div className="flex justify-between items-start p-4 rounded-t dark:border-gray-600">
-                    <p className="text-lg dark:text-gray-400">Images</p>
-                  </div>
-                </>
-              )}
+                        <span>Detail</span>
+                      </>
+                    )}
+                  </TabItem>
+                </TabBar>
+                <div className="h-10"></div>
+                {viewModel.activeTabIndex == 0 && (
+                  <CaseStateView viewModel={viewModel.stateViewViewModel} />
+                )}
+                {viewModel.activeTabIndex == 1 && (
+                  <>
+                    <div className="">
+                      <p className="text-md dark:text-gray-400">Form Data</p>
+                    </div>
+                    <div className="">
+                      {viewModel.data.data && renderData(viewModel.data.data)}
+                    </div>
+                    <div className="flex justify-between items-start p-4 rounded-t dark:border-gray-600">
+                      <p className="text-lg dark:text-gray-400">Images</p>
+                    </div>
+                  </>
+                )}
+              </div>
             </>
           </MaskingLoader>
         );

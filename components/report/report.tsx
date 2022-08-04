@@ -1,10 +1,10 @@
-import { forwardRef, useState } from "react";
+/* eslint-disable @next/next/no-img-element */
+import { useState } from "react";
 import { Observer } from "mobx-react";
 import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ReportViewModel } from "./reportViewModel";
 import getConfig from "next/config";
-import Breadcrumb from "components/layout/breadcrumb";
 import tw from "tailwind-styled-components";
 import Spinner from "components/widgets/spinner";
 import { useRouter } from "next/router";
@@ -63,34 +63,6 @@ const TR = (props: { label: string; value: string }) => {
   );
 };
 
-export const PromoteToCaseButtonx = forwardRef(function addButton(
-  props: React.PropsWithoutRef<{}>,
-  ref: React.Ref<HTMLAnchorElement>
-) {
-  return (
-    <a
-      ref={ref}
-      {...props}
-      className="
-        px-4 
-        py-2 
-        border
-      text-white
-      bg-blue-500 
-      border-blue-300
-      hover:border-blue-500
-        rounded
-        flex 
-        justify-center 
-        items-center
-        cursor-pointer
-      "
-    >
-      <span>Promote To Case</span>
-    </a>
-  );
-});
-
 export const PromoteToCaseButton = tw.button`
   px-4 
   py-2 
@@ -123,26 +95,22 @@ const Report = (props: { id: string }) => {
         return (
           <MaskingLoader loading={viewModel.isLoading}>
             <div>
-              <div className="flex items-center flex-wrap mb-4">
-                <Breadcrumb
-                  crumbs={[
-                    { text: "Reports", href: "/reports" },
-                    { text: viewModel.id },
-                  ]}
-                />
-                <div className="flex-grow"></div>
-                <PromoteToCaseButton
-                  disabled={viewModel.isLoading}
-                  type="button"
-                  onClick={async () => {
-                    const caseId = await viewModel.promoteToCase();
-                    if (caseId) router.push(`/cases/${caseId}`);
-                  }}
-                >
-                  {viewModel.isLoading && <Spinner />}
-                  &nbsp;Promote To Case
-                </PromoteToCaseButton>
-              </div>
+              {viewModel.data.caseId == undefined && (
+                <div className="flex items-center flex-wrap mb-4">
+                  <div className="flex-grow"></div>
+                  <PromoteToCaseButton
+                    disabled={viewModel.isLoading}
+                    type="button"
+                    onClick={async () => {
+                      const caseId = await viewModel.promoteToCase();
+                      if (caseId) router.push(`/cases/${caseId}`);
+                    }}
+                  >
+                    {viewModel.isLoading && <Spinner />}
+                    &nbsp;Promote To Case
+                  </PromoteToCaseButton>
+                </div>
+              )}
 
               <div>
                 <div className="flex gap-2">
@@ -161,64 +129,43 @@ const Report = (props: { id: string }) => {
                   <tbody>
                     <TR
                       label="Created at"
-                      value={
-                        viewModel.data && viewModel.data.createdAt
-                          ? viewModel.data.createdAt.toString()
-                          : ""
-                      }
+                      value={viewModel.data?.createdAt?.toString() || ""}
                     />
 
                     <TR
                       label="Incident date"
-                      value={
-                        viewModel.data && viewModel.data.incidentDate
-                          ? viewModel.data.incidentDate.toString()
-                          : ""
-                      }
+                      value={viewModel.data?.incidentDate?.toString() || ""}
                     />
 
                     <TR
                       label="Report type"
-                      value={
-                        viewModel.data && viewModel.data.reportTypeName
-                          ? viewModel.data.reportTypeName
-                          : ""
-                      }
+                      value={viewModel.data?.reportTypeName || ""}
                     />
 
                     <TR
                       label="Report by"
-                      value={
-                        viewModel.data && viewModel.data.reportByName
-                          ? viewModel.data.reportByName
-                          : ""
-                      }
+                      value={viewModel.data?.reportByName || ""}
                     />
 
                     <TR
                       label="Phone number"
-                      value={
-                        viewModel.data && viewModel.data.reportByTelephone
-                          ? viewModel.data.reportByTelephone
-                          : ""
-                      }
+                      value={viewModel.data?.reportByTelephone || ""}
                     />
                   </tbody>
                 </table>
               </div>
               <div className="flex flex-wrap pt-6 pb-4">
-                {viewModel.data.images &&
-                  viewModel.data.images.map((image, idx) => (
-                    <div key={idx} className="">
-                      <a href="#">
-                        <img
-                          className="w-40"
-                          src={`${publicRuntimeConfig.serverUrl}/${image.file}`}
-                          alt=""
-                        />
-                      </a>
-                    </div>
-                  ))}
+                {viewModel.data.images?.map((image, idx) => (
+                  <div key={idx} className="">
+                    <a href="#">
+                      <img
+                        className="w-40"
+                        src={`${publicRuntimeConfig.serverUrl}/${image.file}`}
+                        alt=""
+                      />
+                    </a>
+                  </div>
+                ))}
               </div>
               <div className="mt-4">
                 <p className="text-md dark:text-gray-400">Form Data</p>
