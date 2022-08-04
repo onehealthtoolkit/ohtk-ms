@@ -1,13 +1,8 @@
-query Users(
-  $limit: Int!
-  $offset: Int!
-  $nameStartWith: String
-  $ordering: String
-) {
+query Users($limit: Int!, $offset: Int!, $q: String, $ordering: String) {
   adminAuthorityUserQuery(
     limit: $limit
     offset: $offset
-    username_Istartswith: $nameStartWith
+    q: $q
     ordering: $ordering
   ) {
     totalCount

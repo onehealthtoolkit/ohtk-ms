@@ -11835,30 +11835,6 @@
                 "deprecationReason": null
               },
               {
-                "name": "email",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": "null",
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "email_Istartswith",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": "null",
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
                 "name": "first",
                 "description": null,
                 "type": {
@@ -11871,59 +11847,11 @@
                 "deprecationReason": null
               },
               {
-                "name": "firstName",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": "null",
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "firstName_Istartswith",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": "null",
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
                 "name": "last",
                 "description": null,
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": "null",
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "lastName",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": "null",
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "lastName_Istartswith",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
                   "ofType": null
                 },
                 "defaultValue": "null",
@@ -11967,19 +11895,7 @@
                 "deprecationReason": null
               },
               {
-                "name": "username",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": "null",
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "username_Istartswith",
+                "name": "q",
                 "description": null,
                 "type": {
                   "kind": "SCALAR",

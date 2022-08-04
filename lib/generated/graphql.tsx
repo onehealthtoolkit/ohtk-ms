@@ -1517,19 +1517,12 @@ export type QueryAdminAuthorityQueryArgs = {
 export type QueryAdminAuthorityUserQueryArgs = {
   after?: InputMaybe<Scalars["String"]>;
   before?: InputMaybe<Scalars["String"]>;
-  email?: InputMaybe<Scalars["String"]>;
-  email_Istartswith?: InputMaybe<Scalars["String"]>;
   first?: InputMaybe<Scalars["Int"]>;
-  firstName?: InputMaybe<Scalars["String"]>;
-  firstName_Istartswith?: InputMaybe<Scalars["String"]>;
   last?: InputMaybe<Scalars["Int"]>;
-  lastName?: InputMaybe<Scalars["String"]>;
-  lastName_Istartswith?: InputMaybe<Scalars["String"]>;
   limit?: InputMaybe<Scalars["Int"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
-  username?: InputMaybe<Scalars["String"]>;
-  username_Istartswith?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryAdminCaseDefinitionQueryArgs = {
@@ -3751,7 +3744,7 @@ export type GetStateTransitionQuery = {
 export type UsersQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
-  nameStartWith?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
   ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
@@ -12646,10 +12639,7 @@ export const UsersDocument = {
         },
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "nameStartWith" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
         {
@@ -12686,11 +12676,8 @@ export const UsersDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "username_Istartswith" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "nameStartWith" },
-                },
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
               },
               {
                 kind: "Argument",

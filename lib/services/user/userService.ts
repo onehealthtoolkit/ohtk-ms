@@ -4,6 +4,7 @@ import {
   UserCreateDocument,
   UserUpdateDocument,
   GetUserDocument,
+  UsersQueryVariables,
 } from "lib/generated/graphql";
 import { User } from "lib/services/user/user";
 import {
@@ -44,10 +45,9 @@ export interface IUserService extends IService {
 
 export class UserService implements IUserService {
   client: ApolloClient<NormalizedCacheObject>;
-  fetchUsersQuery = {
+  fetchUsersQuery: UsersQueryVariables = {
     limit: 20,
     offset: 0,
-    nameStartWith: "",
     ordering: "username,asc",
   };
 
@@ -60,7 +60,7 @@ export class UserService implements IUserService {
       ...this.fetchUsersQuery,
       limit,
       offset,
-      nameStartWith: searchText,
+      q: searchText,
     };
 
     const fetchResult = await this.client.query({
