@@ -1,22 +1,23 @@
+import { FormTransitionViewModel } from "components/case/caseState/formTransitionViewModel";
 import { BaseViewModel } from "lib/baseViewModel";
 import { ICaseService } from "lib/services/case";
 import { CaseState } from "lib/services/case/case";
 import { Me } from "lib/services/profile/me";
 import { DeepStateDefinition } from "lib/services/stateDefinition/stateDefinition";
-import { StateTransitionRef } from "lib/services/stateTransition/stateTransition";
-import { action, makeObservable, observable, runInAction } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 
 export class CaseStateViewViewModel extends BaseViewModel {
   caseId: string = "";
   stateDefinition?: DeepStateDefinition;
   states = Array<CaseState>();
+  formTransitionViewModel?: FormTransitionViewModel = undefined;
 
   constructor(readonly me: Me, readonly caseService: ICaseService) {
     super();
     makeObservable(this, {
       states: observable,
-      forwardState: action,
-      updateCaseStateTransition: action,
+      formTransitionViewModel: observable,
+      showFormTransitionDialog: action,
     });
   }
 
@@ -27,6 +28,7 @@ export class CaseStateViewViewModel extends BaseViewModel {
   ) {
     this.caseId = caseId;
     this.stateDefinition = stateDefinition;
+    this.states.splice(0, this.states.length);
     states.forEach(state => {
       if (state !== null && typeof state !== "undefined") {
         this.states.push(state);
@@ -34,54 +36,15 @@ export class CaseStateViewViewModel extends BaseViewModel {
     });
   }
 
-  async forwardState(
-    caseStateId: string,
-    transitionId: string,
-    formData?: Record<string, any>
-  ) {
-    this.isLoading = true;
-    const result = await this.caseService.forwardState(
-      this.caseId,
-      transitionId,
-      formData
-    );
-    runInAction(() => {
-      if (result.data) {
-        this.states.push(result.data);
-        this.updateCaseStateTransition(caseStateId, transitionId, formData);
-      }
-      if (result.error) {
-        this.setErrorMessage(result.error);
-      }
-    });
-    this.isLoading = false;
-  }
-
-  updateCaseStateTransition(
-    caseStateId: string,
-    transitionId: string,
-    formData?: Record<string, any>
-  ) {
-    const caseState = this.states.find(
-      caseState => caseState.id === caseStateId
-    );
-    if (caseState) {
-      const now = new Date();
-      runInAction(() => {
-        caseState.transition = {
-          id: now.getTime().toString(),
-          createdAt: now.toISOString(),
-          createdBy: {
-            id: this.me.id.toString(),
-            firstName: this.me.firstName,
-            lastName: this.me.lastName,
-          },
-          formData: JSON.stringify(formData),
-          transition: caseState.state.toTransitions?.find(transition => {
-            return transition?.id === transitionId;
-          }) as StateTransitionRef,
-        };
-      });
+  showFormTransitionDialog(transitionId: string, formDefinition?: string) {
+    if (formDefinition) {
+      this.formTransitionViewModel = new FormTransitionViewModel(
+        this.caseService,
+        this.caseId,
+        transitionId,
+        formDefinition
+      );
+      this.formTransitionViewModel.open(null);
     }
   }
 }

@@ -1,7 +1,7 @@
 import { TableIcon, TemplateIcon } from "@heroicons/react/solid";
 import { FormViewModel } from "components/admin/formBuilder/formViewModel";
 import Section, { SectionList } from "components/admin/formBuilder/section";
-import FormRenderer from "components/formRenderer";
+import FormSimulation from "components/admin/formBuilder/simulator/formSimulation";
 import { observer } from "mobx-react";
 import { FC } from "react";
 
@@ -42,8 +42,8 @@ const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
           <Section value={form.currentSection} />
         </div>
       ) : (
-        form.formRenderer && (
-          <FormRenderer viewModel={form.formRenderer} height="500px" />
+        form.formSimulation && (
+          <FormSimulation viewModel={form.formSimulation} />
         )
       )}
     </div>

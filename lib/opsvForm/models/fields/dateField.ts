@@ -1,4 +1,4 @@
-import { makeObservable, observable } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
 import Field, { FieldParams } from ".";
 import { ConditionOperator } from "../condition";
 
@@ -13,11 +13,11 @@ export default class DateField extends Field {
   beInFuture: boolean;
   beInPast: boolean;
 
-  day?: number = undefined; // 1-31
-  month?: number = undefined; // 1-12
-  year?: number = undefined;
-  hour?: number = undefined;
-  minute?: number = undefined;
+  _day?: number = undefined; // 1-31
+  _month?: number = undefined; // 1-12
+  _year?: number = undefined;
+  _hour?: number = undefined;
+  _minute?: number = undefined;
 
   constructor(id: string, name: string, params: DateFieldParams) {
     super(id, name, params);
@@ -26,12 +26,52 @@ export default class DateField extends Field {
       params.beInFuture != undefined ? params.beInFuture! : true;
     this.beInPast = params.beInPast != undefined ? params.beInPast! : true;
     makeObservable(this, {
-      day: observable,
-      month: observable,
-      year: observable,
-      hour: observable,
-      minute: observable,
+      _day: observable,
+      _month: observable,
+      _year: observable,
+      _hour: observable,
+      _minute: observable,
+      day: computed,
+      month: computed,
+      year: computed,
+      hour: computed,
+      minute: computed,
     });
+  }
+
+  get day(): number | undefined {
+    return this._day;
+  }
+  set day(day: number | undefined) {
+    this._day = day;
+  }
+
+  get month(): number | undefined {
+    return this._month;
+  }
+  set month(month: number | undefined) {
+    this._month = month;
+  }
+
+  get year(): number | undefined {
+    return this._year;
+  }
+  set year(year: number | undefined) {
+    this._year = year;
+  }
+
+  get hour(): number | undefined {
+    return this._hour;
+  }
+  set hour(hour: number | undefined) {
+    this._hour = hour;
+  }
+
+  get minute(): number | undefined {
+    return this._minute;
+  }
+  set minute(minute: number | undefined) {
+    this._minute = minute;
   }
 
   get value(): any {

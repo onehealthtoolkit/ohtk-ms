@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, runInAction } from "mobx";
 
 /**
  * Control open/close of modal dialog
@@ -20,8 +20,10 @@ export class ModalDialogViewModel {
     // dialog must be delayed after form is re-rendered
     setTimeout(
       (open, data) => {
-        this.isOpen = open;
-        this.data = data;
+        runInAction(() => {
+          this.isOpen = open;
+          this.data = data;
+        });
       },
       200,
       true,

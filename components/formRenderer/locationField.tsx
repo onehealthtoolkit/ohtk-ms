@@ -106,7 +106,8 @@ const CurrentMarker: FC<CurrentMarkerProps> = observer(
           console.log("bounding box error", e);
         }
       });
-    }, [map, onLocation]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [map]);
 
     return (
       <Marker position={[lat, lng]} icon={icon}>
