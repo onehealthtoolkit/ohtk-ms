@@ -18,6 +18,7 @@ query Reports(
       createdAt
       incidentDate
       rendererData
+      caseId
       reportType {
         id
         name
@@ -40,6 +41,7 @@ query GetReport($id: ID!) {
     gpsLocation
     updatedAt
     rendererData
+    caseId
     data
     reportType {
       id

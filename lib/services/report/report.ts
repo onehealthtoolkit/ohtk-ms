@@ -6,6 +6,7 @@ export type Report = {
   rendererData: string;
   reportByName?: string;
   reportByTelephone?: string;
+  caseId?: string;
 };
 
 export type Image = {

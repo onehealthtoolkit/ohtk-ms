@@ -13,6 +13,7 @@ import Filter from "components/widgets/filter";
 import { isoStringToDate } from "lib/utils";
 import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
+import CaseLink from "components/case/caseLink";
 const JSURL = require("jsurl");
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
@@ -87,6 +88,10 @@ const ReportList = () => {
                 {
                   label: "Data",
                   get: record => record.rendererData,
+                },
+                {
+                  label: "",
+                  get: record => <CaseLink caseId={record.caseId} />,
                 },
               ]}
               data={viewModel.data || []}

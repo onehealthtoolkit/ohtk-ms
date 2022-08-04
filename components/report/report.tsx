@@ -8,6 +8,7 @@ import Breadcrumb from "components/layout/breadcrumb";
 import tw from "tailwind-styled-components";
 import Spinner from "components/widgets/spinner";
 import { useRouter } from "next/router";
+import CaseLink from "components/case/caseLink";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -144,9 +145,12 @@ const Report = (props: { id: string }) => {
               </div>
 
               <div>
-                <p className="text-md dark:text-gray-400">
-                  Report type: {viewModel.data.reportTypeName}
-                </p>
+                <div className="flex gap-2">
+                  <p className="text-md dark:text-gray-400 ">
+                    Report type: {viewModel.data.reportTypeName}
+                  </p>
+                  <CaseLink caseId={viewModel.data.caseId} />
+                </div>
                 <p className="text-sm pt-1 font-bold">
                   {viewModel.data.rendererData}
                 </p>

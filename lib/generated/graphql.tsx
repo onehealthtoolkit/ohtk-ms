@@ -944,6 +944,47 @@ export type CheckInvitationCodeType = {
   code: Scalars["String"];
 };
 
+export type CommentAttachmentType = {
+  __typename?: "CommentAttachmentType";
+  comment: CommentCreateSuccess;
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  file: Scalars["String"];
+  id: Scalars["ID"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type CommentCreateMutation = {
+  __typename?: "CommentCreateMutation";
+  result?: Maybe<CommentCreateResult>;
+};
+
+export type CommentCreateProblem = {
+  __typename?: "CommentCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type CommentCreateResult = CommentCreateProblem | CommentCreateSuccess;
+
+export type CommentCreateSuccess = {
+  __typename?: "CommentCreateSuccess";
+  attachments?: Maybe<Array<Maybe<CommentAttachmentType>>>;
+  body: Scalars["String"];
+  createdBy: UserType;
+  id: Scalars["ID"];
+  threadId?: Maybe<Scalars["Int"]>;
+};
+
+export type CommentType = {
+  __typename?: "CommentType";
+  attachments?: Maybe<Array<Maybe<CommentAttachmentType>>>;
+  body: Scalars["String"];
+  createdBy: UserType;
+  id: Scalars["ID"];
+  threadId?: Maybe<Scalars["Int"]>;
+};
+
 export type DeepStateDefinitionType = {
   __typename?: "DeepStateDefinitionType";
   id: Scalars["ID"];
@@ -1086,6 +1127,7 @@ export type Mutation = {
   adminUserChangePassword?: Maybe<AdminUserChangePasswordMutation>;
   adminUserUploadAvatar?: Maybe<AdminUserUploadAvatarMutation>;
   authorityUserRegister?: Maybe<AuthorityUserRegisterMutation>;
+  commentCreate?: Maybe<CommentCreateMutation>;
   deleteRefreshTokenCookie?: Maybe<DeleteRefreshTokenCookie>;
   deleteTokenCookie?: Maybe<DeleteJsonWebTokenCookie>;
   forwardState?: Maybe<ForwardStateMutation>;
@@ -1298,6 +1340,12 @@ export type MutationAuthorityUserRegisterArgs = {
   username: Scalars["String"];
 };
 
+export type MutationCommentCreateArgs = {
+  body: Scalars["String"];
+  files?: InputMaybe<Array<InputMaybe<Scalars["Upload"]>>>;
+  threadId: Scalars["Int"];
+};
+
 export type MutationForwardStateArgs = {
   caseId: Scalars["ID"];
   formData?: InputMaybe<Scalars["GenericScalar"]>;
@@ -1412,6 +1460,7 @@ export type Query = {
   casesQuery?: Maybe<CaseTypeNodeConnection>;
   category?: Maybe<CategoryType>;
   checkInvitationCode?: Maybe<CheckInvitationCodeType>;
+  comments?: Maybe<Array<Maybe<CommentType>>>;
   deepStateDefinitionGet?: Maybe<DeepStateDefinitionType>;
   eventsQuery?: Maybe<EventType>;
   features?: Maybe<Array<Maybe<FeatureType>>>;
@@ -1627,6 +1676,10 @@ export type QueryCategoryArgs = {
 
 export type QueryCheckInvitationCodeArgs = {
   code: Scalars["String"];
+};
+
+export type QueryCommentsArgs = {
+  threadId: Scalars["ID"];
 };
 
 export type QueryDeepStateDefinitionGetArgs = {
@@ -2865,6 +2918,7 @@ export type ReportsQuery = {
       createdAt: any;
       incidentDate: any;
       rendererData: string;
+      caseId?: any | null;
       reportType: {
         __typename?: "AdminReportTypeCreateSuccess";
         id: any;
@@ -2895,6 +2949,7 @@ export type GetReportQuery = {
     gpsLocation?: string | null;
     updatedAt: any;
     rendererData: string;
+    caseId?: any | null;
     data?: any | null;
     platform?: string | null;
     reportType: {
@@ -8519,6 +8574,10 @@ export const ReportsDocument = {
                       },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "caseId" },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "reportType" },
                         selectionSet: {
                           kind: "SelectionSet",
@@ -8618,6 +8677,7 @@ export const GetReportDocument = {
                   kind: "Field",
                   name: { kind: "Name", value: "rendererData" },
                 },
+                { kind: "Field", name: { kind: "Name", value: "caseId" } },
                 { kind: "Field", name: { kind: "Name", value: "data" } },
                 {
                   kind: "Field",
