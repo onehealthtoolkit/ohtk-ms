@@ -236,7 +236,13 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     <div className="rounded-full max-w-full h-12 w-12 align-middle border-2 flex justify-center items-center bg-gray-200 p-4"></div>
                   )}
                 </div>
-                <UserMenu className="ml-2 text-white" />
+                <span
+                  className={`text-white ${
+                    store.menu.collapsed ? "hidden" : ""
+                  }`}
+                >
+                  <UserMenu className="ml-2 text-white" />
+                </span>
               </div>
               <Menu
                 href="/admin/profile/"

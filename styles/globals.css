@@ -6,7 +6,7 @@
 }
 
 .table-filter {
-  @apply flex;
+  @apply flex w-full md:flex-1;
 }
 
 input[required],
