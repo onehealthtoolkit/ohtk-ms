@@ -47,16 +47,17 @@ const Layout = ({ children }: Props) => {
   }, [ref, store]);
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden bg-[#F2F3F4]">
       <aside ref={ref}>
         <Sidebar mobilePosition="left" />
       </aside>
       {/* Content area */}
-      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden md:px-4">
+      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden md:px-8 m-8">
         <main>
           <ErrorBoundary>
-            <div className="main rounded-lg border w-full max-w-9xl  relative md:mt-2 ">
+            <div className="main rounded-lg border w-full max-w-9xl  relative md:mt-2 bg-white">
               {children}
+              <div className="h-[8rem]"></div>
             </div>
           </ErrorBoundary>
         </main>

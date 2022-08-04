@@ -283,6 +283,7 @@ export const Form: FC<
       grid-cols-2 
       gap-4 
       md:gap-8
+      bg-white
     "
     {...props}
   >
@@ -300,7 +301,6 @@ export const FieldGroup: FC<FieldGroupProps> = tw.div`
   p-4 
   md:p-8
   rounded-md
-  bg-gray-50
   ${(p: FieldGroupProps) => {
     const cls = p.className || "";
     switch (p.$size) {
@@ -338,6 +338,8 @@ export const FormMessage = tw.div`
 `;
 
 export const FormAction = tw.div`
+  p-4
+  md:p-8
   col-span-full
   flex 
   items-center 
