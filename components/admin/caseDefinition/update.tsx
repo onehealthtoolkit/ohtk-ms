@@ -56,6 +56,7 @@ const CaseDefinitionUpdateForm = () => {
               }}
               disabled={isSubmitting}
               value={viewModel.reportTypeId}
+              required
             >
               <option disabled value={""}>
                 Select item ...
@@ -77,6 +78,7 @@ const CaseDefinitionUpdateForm = () => {
               onChange={evt => (viewModel.description = evt.target.value)}
               disabled={isSubmitting}
               defaultValue={viewModel.description}
+              required
             />
             <ErrorText>{errors.description}</ErrorText>
           </Field>
@@ -89,6 +91,7 @@ const CaseDefinitionUpdateForm = () => {
               onChange={evt => (viewModel.condition = evt.target.value)}
               disabled={viewModel.isSubmitting}
               defaultValue={viewModel.condition}
+              required
             />
             <ErrorText>{viewModel.fieldErrors.condition}</ErrorText>
           </Field>

@@ -129,6 +129,7 @@ const ReportTypeUpdateForm = () => {
                     onChange={evt => (viewModel.name = evt.target.value)}
                     disabled={viewModel.isSubmitting}
                     value={viewModel.name}
+                    required
                   />
                   <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
                 </Field>
@@ -141,6 +142,7 @@ const ReportTypeUpdateForm = () => {
                     onChange={evt => (viewModel.definition = evt.target.value)}
                     disabled={viewModel.isSubmitting}
                     value={viewModel.definition}
+                    required
                   />
                   <ErrorText>{viewModel.fieldErrors.definition}</ErrorText>
                 </Field>
@@ -153,6 +155,7 @@ const ReportTypeUpdateForm = () => {
                     onChange={evt => (viewModel.categoryId = +evt.target.value)}
                     disabled={viewModel.isSubmitting}
                     value={viewModel.categoryId}
+                    required
                   >
                     <option value={""} disabled>
                       Select item ...
@@ -196,6 +199,7 @@ const ReportTypeUpdateForm = () => {
                     onChange={evt => (viewModel.ordering = +evt.target.value)}
                     disabled={viewModel.isSubmitting}
                     defaultValue={viewModel.ordering}
+                    required
                   />
                   <ErrorText>{viewModel.fieldErrors.ordering}</ErrorText>
                 </Field>

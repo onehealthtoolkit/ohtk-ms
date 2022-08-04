@@ -119,6 +119,11 @@ export abstract class ReportCategoryViewModel extends BaseFormViewModel {
       this.fieldErrors["name"] = "this field is required";
     }
 
+    if (!this.ordering) {
+      isValid = false;
+      this.fieldErrors["ordering"] = "this field is required";
+    }
+
     return isValid;
   }
 }

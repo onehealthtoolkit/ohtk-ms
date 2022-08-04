@@ -51,6 +51,7 @@ const CaseDefinitionCreate = () => {
             }}
             disabled={isSubmitting}
             defaultValue=""
+            required
           >
             <option disabled value={""}>
               Select item ...
@@ -71,6 +72,7 @@ const CaseDefinitionCreate = () => {
             placeholder="Description"
             onChange={evt => (viewModel.description = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
           <ErrorText>{errors.description}</ErrorText>
         </Field>
@@ -82,6 +84,7 @@ const CaseDefinitionCreate = () => {
             rows={5}
             onChange={evt => (viewModel.condition = evt.target.value)}
             disabled={viewModel.isSubmitting}
+            required
           />
           <ErrorText>{viewModel.fieldErrors.condition}</ErrorText>
         </Field>

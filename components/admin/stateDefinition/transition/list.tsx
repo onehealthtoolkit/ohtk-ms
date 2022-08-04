@@ -11,7 +11,7 @@ export const StateTransitionList = ({
 }) => {
   const router = useRouter();
   return (
-    <>
+    <div>
       <div className="flex items-center flex-wrap mb-4">
         <p></p>
         <div className="flex-grow"></div>
@@ -62,6 +62,6 @@ export const StateTransitionList = ({
         }
         onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
       />
-    </>
+    </div>
   );
 };

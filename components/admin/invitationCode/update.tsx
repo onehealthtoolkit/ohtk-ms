@@ -50,6 +50,7 @@ const InvitationCodeUpdate = () => {
               onChange={evt => (viewModel.code = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.code}
+              required
             />
             <ErrorText>{viewModel.fieldErrors.code}</ErrorText>
           </Field>
@@ -64,6 +65,7 @@ const InvitationCodeUpdate = () => {
               onChange={evt => (viewModel.fromDate = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.fromDate}
+              required
             />
             <ErrorText>{viewModel.fieldErrors.fromDate}</ErrorText>
           </Field>
@@ -78,6 +80,7 @@ const InvitationCodeUpdate = () => {
               onChange={evt => (viewModel.throughDate = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.throughDate}
+              required
             />
             <ErrorText>{viewModel.fieldErrors.throughDate}</ErrorText>
           </Field>

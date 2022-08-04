@@ -138,7 +138,7 @@ export class ReportTypeService implements IReportTypeService {
           id: item.id,
           name: item.name,
           definition: "",
-          categoryId: 0,
+          categoryId: +item.category.id,
           categoryName: "",
           ordering: item.ordering,
         });

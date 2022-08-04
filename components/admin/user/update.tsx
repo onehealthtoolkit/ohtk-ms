@@ -47,8 +47,9 @@ const UserUpdate = () => {
               onChange={evt => (viewModel.username = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.username}
+              required
             />
-            <ErrorText>{errors.firstName}</ErrorText>
+            <ErrorText>{errors.username}</ErrorText>
           </Field>
           <Field $size="half">
             <Label htmlFor="firstName">First Name</Label>
@@ -59,6 +60,7 @@ const UserUpdate = () => {
               onChange={evt => (viewModel.firstName = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.firstName}
+              required
             />
             <ErrorText>{errors.firstName}</ErrorText>
           </Field>
@@ -71,6 +73,7 @@ const UserUpdate = () => {
               onChange={evt => (viewModel.lastName = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.lastName}
+              required
             />
             <ErrorText>{errors.lastName}</ErrorText>
           </Field>
@@ -83,8 +86,9 @@ const UserUpdate = () => {
               onChange={evt => (viewModel.email = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.email}
+              required
             />
-            <ErrorText>{errors.userName}</ErrorText>
+            <ErrorText>{errors.email}</ErrorText>
           </Field>
           <Field $size="half">
             <Label htmlFor="telephone">Telephone</Label>
@@ -96,7 +100,7 @@ const UserUpdate = () => {
               disabled={viewModel.isSubmitting}
               value={viewModel.telephone}
             />
-            <ErrorText>{errors.userName}</ErrorText>
+            <ErrorText>{errors.telephone}</ErrorText>
           </Field>
         </FieldGroup>
         {viewModel.submitError.length > 0 && (

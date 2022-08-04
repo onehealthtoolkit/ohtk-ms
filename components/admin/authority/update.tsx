@@ -52,6 +52,7 @@ const AuthorityUpdate = () => {
               onChange={evt => (viewModel.code = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.code}
+              required
             />
             <ErrorText>{viewModel.fieldErrors.code}</ErrorText>
           </Field>
@@ -64,6 +65,7 @@ const AuthorityUpdate = () => {
               onChange={evt => (viewModel.name = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.name}
+              required
             />
             <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
           </Field>

@@ -7,9 +7,9 @@ const Header = () => {
   const store = useStore();
 
   return (
-    <header className="sticky top-0 bg-white border-b border-slate-200 z-30">
-      <div className="px-4 sm:px-6 md:px-8">
-        <div className="flex items-center justify-between h-16 -mb-px">
+    <header className="sticky top-0">
+      <div className="px-2">
+        <div className="flex items-center justify-between h-8 md:h-0 -mb-px">
           {/* Header: Left side */}
           <div className="md:hidden flex items-center">
             <button
@@ -25,7 +25,7 @@ const Header = () => {
           <div className="flex">{/* hamburger menu for mobile */}</div>
 
           {/* Header: Right side */}
-          <div className="flex items-center">
+          <div className="flex items-center hidden">
             <hr className="w-px h-6 bg-slate-200 mx-3" />
             <UserMenu />
           </div>

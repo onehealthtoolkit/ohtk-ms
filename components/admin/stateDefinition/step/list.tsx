@@ -12,7 +12,7 @@ export const StateStepList = ({
 }) => {
   const router = useRouter();
   return (
-    <>
+    <div>
       <div className="flex items-center flex-wrap mb-4">
         <p></p>
         <div className="flex-grow"></div>
@@ -79,6 +79,6 @@ export const StateStepList = ({
         }
         onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
       />
-    </>
+    </div>
   );
 };

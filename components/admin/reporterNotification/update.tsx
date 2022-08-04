@@ -56,6 +56,7 @@ const ReporterNotificationsUpdateForm = () => {
               }}
               disabled={isSubmitting}
               value={viewModel.reportTypeId}
+              required
             >
               <option disabled value={""}>
                 Select item ...
@@ -77,6 +78,7 @@ const ReporterNotificationsUpdateForm = () => {
               onChange={evt => (viewModel.description = evt.target.value)}
               disabled={isSubmitting}
               defaultValue={viewModel.description}
+              required
             />
             <ErrorText>{errors.description}</ErrorText>
           </Field>
@@ -89,6 +91,7 @@ const ReporterNotificationsUpdateForm = () => {
               onChange={evt => (viewModel.condition = evt.target.value)}
               disabled={viewModel.isSubmitting}
               defaultValue={viewModel.condition}
+              required
             />
             <ErrorText>{viewModel.fieldErrors.condition}</ErrorText>
           </Field>
@@ -101,6 +104,7 @@ const ReporterNotificationsUpdateForm = () => {
               onChange={evt => (viewModel.template = evt.target.value)}
               disabled={viewModel.isSubmitting}
               defaultValue={viewModel.template}
+              required
             />
             <ErrorText>{viewModel.fieldErrors.template}</ErrorText>
           </Field>

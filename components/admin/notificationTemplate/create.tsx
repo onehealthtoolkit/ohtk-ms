@@ -58,6 +58,7 @@ const NotificationTemplateCreate = () => {
             placeholder="Name"
             onChange={evt => (viewModel.name = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
           <ErrorText>{errors.name}</ErrorText>
         </Field>
@@ -71,6 +72,7 @@ const NotificationTemplateCreate = () => {
             }}
             disabled={isSubmitting}
             value={viewModel.reportTypeId}
+            required
           >
             <option disabled value={""}>
               Select item ...
@@ -172,6 +174,7 @@ const NotificationTemplateCreate = () => {
             placeholder="Title Template"
             onChange={evt => (viewModel.titleTemplate = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
           <ErrorText>{errors.titleTemplate}</ErrorText>
         </Field>
@@ -183,6 +186,7 @@ const NotificationTemplateCreate = () => {
             rows={5}
             onChange={evt => (viewModel.bodyTemplate = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
           <ErrorText>{errors.bodyTemplate}</ErrorText>
         </Field>

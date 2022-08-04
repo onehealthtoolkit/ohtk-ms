@@ -53,6 +53,7 @@ const ReportCategoryUpdate = () => {
               onChange={evt => (viewModel.name = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.name}
+              required
             />
             <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
           </Field>
@@ -65,6 +66,7 @@ const ReportCategoryUpdate = () => {
               onChange={evt => (viewModel.ordering = +evt.target.value)}
               disabled={viewModel.isSubmitting}
               defaultValue={viewModel.ordering}
+              required
             />
             <ErrorText>{viewModel.fieldErrors.ordering}</ErrorText>
           </Field>

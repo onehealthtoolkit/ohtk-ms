@@ -45,6 +45,7 @@ const ReportCategoryCreate = () => {
             placeholder="Name"
             onChange={evt => (viewModel.name = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
           <ErrorText>{errors.name}</ErrorText>
         </Field>
@@ -56,6 +57,7 @@ const ReportCategoryCreate = () => {
             placeholder="Ordering"
             onChange={evt => (viewModel.ordering = +evt.target.value)}
             disabled={isSubmitting}
+            required
           />
           <ErrorText>{errors.ordering}</ErrorText>
         </Field>
@@ -72,7 +74,7 @@ const ReportCategoryCreate = () => {
             }}
             disabled={isSubmitting}
           />
-          <ErrorText>{errors.ordering}</ErrorText>
+          <ErrorText>{errors.icon}</ErrorText>
         </Field>
       </FieldGroup>
       {viewModel.submitError.length > 0 && (

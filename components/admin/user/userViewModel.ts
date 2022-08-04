@@ -126,9 +126,24 @@ export abstract class UserViewModel extends BaseFormViewModel {
 
   validate(): boolean {
     let isValid = true;
+    if (this.username.length === 0) {
+      isValid = false;
+      this.fieldErrors["username"] = "this field is required";
+    }
+
     if (this.firstName.length === 0) {
       isValid = false;
       this.fieldErrors["firstName"] = "this field is required";
+    }
+
+    if (this.lastName.length === 0) {
+      isValid = false;
+      this.fieldErrors["lastName"] = "this field is required";
+    }
+
+    if (this.email.length === 0) {
+      isValid = false;
+      this.fieldErrors["email"] = "this field is required";
     }
 
     return isValid;

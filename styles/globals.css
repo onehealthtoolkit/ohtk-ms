@@ -9,7 +9,9 @@
   @apply flex;
 }
 
-input {
+input[required],
+select[required],
+textarea[required] {
   background-color: #fcfbe7;
 }
 
