@@ -12,6 +12,7 @@ export type Case = {
   reportByName?: string;
   reportByTelephone?: string;
   isFinished: boolean;
+  threadId?: number;
 };
 
 export type Image = {
