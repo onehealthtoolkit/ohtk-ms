@@ -3142,6 +3142,7 @@ export type MyReportTypesQuery = {
     id: any;
     name: string;
     ordering: number;
+    category: { __typename?: "AdminCategoryCreateSuccess"; id: string };
   } | null> | null;
 };
 
@@ -9619,6 +9620,16 @@ export const MyReportTypesDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "name" } },
                 { kind: "Field", name: { kind: "Name", value: "ordering" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
               ],
             },
           },

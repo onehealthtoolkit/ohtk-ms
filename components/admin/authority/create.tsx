@@ -48,6 +48,7 @@ const AuthorityCreate = () => {
             placeholder="Code"
             onChange={evt => (viewModel.code = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
           <ErrorText>{errors.code}</ErrorText>
         </Field>
@@ -59,6 +60,7 @@ const AuthorityCreate = () => {
             placeholder="Name"
             onChange={evt => (viewModel.name = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
           <ErrorText>{errors.name}</ErrorText>
         </Field>

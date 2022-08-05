@@ -59,7 +59,7 @@ const ReportTypeList = () => {
     <Observer>
       {() => (
         <div>
-          <div className="flex items-center flex-wrap mb-4">
+          <div className="flex items-center flex-wrap mb-4 gap-2">
             <TotalItem totalCount={viewModel.totalCount} />
             <Filter
               nameSearch={viewModel.nameSearch}
@@ -71,7 +71,7 @@ const ReportTypeList = () => {
                 }
               }}
             />
-            <div className="flex-grow"></div>
+            <div className="flex-grow md:flex-none"></div>
             <Link href={"/admin/report_types/create"} passHref>
               <AddButton />
             </Link>

@@ -50,6 +50,9 @@ query MyReportTypes {
     id
     name
     ordering
+    category {
+      id
+    }
   }
 }
 

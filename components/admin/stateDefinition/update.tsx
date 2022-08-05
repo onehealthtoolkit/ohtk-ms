@@ -61,6 +61,7 @@ const StateDefinitionsUpdateForm = () => {
                 onChange={evt => (viewModel.name = evt.target.value)}
                 disabled={isSubmitting}
                 defaultValue={viewModel.name}
+                required
               />
               <ErrorText>{errors.name}</ErrorText>
             </Field>

@@ -62,6 +62,7 @@ const NotificationTemplateUpdate = () => {
               onChange={evt => (viewModel.name = evt.target.value)}
               disabled={viewModel.isSubmitting}
               defaultValue={viewModel.name}
+              required
             />
             <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
           </Field>
@@ -76,6 +77,7 @@ const NotificationTemplateUpdate = () => {
               disabled={isSubmitting}
               value={viewModel.reportTypeId}
               defaultValue={viewModel.reportTypeId}
+              required
             >
               <option disabled value={""}>
                 Select item ...
@@ -177,6 +179,7 @@ const NotificationTemplateUpdate = () => {
               onChange={evt => (viewModel.titleTemplate = evt.target.value)}
               disabled={isSubmitting}
               defaultValue={viewModel.titleTemplate}
+              required
             />
             <ErrorText>{errors.titleTemplate}</ErrorText>
           </Field>
@@ -189,6 +192,7 @@ const NotificationTemplateUpdate = () => {
               onChange={evt => (viewModel.bodyTemplate = evt.target.value)}
               disabled={isSubmitting}
               defaultValue={viewModel.titleTemplate}
+              required
             />
             <ErrorText>{errors.bodyTemplate}</ErrorText>
           </Field>

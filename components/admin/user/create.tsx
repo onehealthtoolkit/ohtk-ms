@@ -44,8 +44,9 @@ const UserCreate = () => {
             placeholder="User Name"
             onChange={evt => (viewModel.username = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
-          <ErrorText>{errors.userName}</ErrorText>
+          <ErrorText>{errors.username}</ErrorText>
         </Field>
         <Field $size="half">
           <Label htmlFor="firstName">First Name</Label>
@@ -55,8 +56,9 @@ const UserCreate = () => {
             placeholder="First Name"
             onChange={evt => (viewModel.firstName = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
-          <ErrorText>{errors.userName}</ErrorText>
+          <ErrorText>{errors.firstName}</ErrorText>
         </Field>
         <Field $size="half">
           <Label htmlFor="lastName">lastName</Label>
@@ -66,8 +68,9 @@ const UserCreate = () => {
             placeholder="Last Name"
             onChange={evt => (viewModel.lastName = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
-          <ErrorText>{errors.userName}</ErrorText>
+          <ErrorText>{errors.lastName}</ErrorText>
         </Field>
         <Field $size="half">
           <Label htmlFor="email">Email</Label>
@@ -77,8 +80,9 @@ const UserCreate = () => {
             placeholder="Email"
             onChange={evt => (viewModel.email = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
-          <ErrorText>{errors.userName}</ErrorText>
+          <ErrorText>{errors.email}</ErrorText>
         </Field>
         <Field $size="half">
           <Label htmlFor="telephone">Telephone</Label>
@@ -89,7 +93,7 @@ const UserCreate = () => {
             onChange={evt => (viewModel.telephone = evt.target.value)}
             disabled={isSubmitting}
           />
-          <ErrorText>{errors.userName}</ErrorText>
+          <ErrorText>{errors.telephone}</ErrorText>
         </Field>
       </FieldGroup>
       {viewModel.submitError.length > 0 && (

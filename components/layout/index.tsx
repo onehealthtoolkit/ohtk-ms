@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 import Sidebar from "./sidebar";
 import { ErrorBoundary } from "components/widgets/errorBoundary";
+import Header from "./header";
 
 type Props = {
   children: React.ReactNode;
@@ -53,6 +54,7 @@ const Layout = ({ children }: Props) => {
       </aside>
       {/* Content area */}
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden md:px-8 m-8">
+        <Header />
         <main>
           <ErrorBoundary>
             <div className="main rounded-lg border w-full max-w-9xl  relative md:mt-2 bg-white">

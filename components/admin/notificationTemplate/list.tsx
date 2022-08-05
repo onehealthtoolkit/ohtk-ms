@@ -61,7 +61,7 @@ const NotificationTemplateList = () => {
     <Observer>
       {() => (
         <div>
-          <div className="flex items-center flex-wrap mb-4">
+          <div className="flex items-center flex-wrap mb-4 gap-2">
             <TotalItem totalCount={viewModel.totalCount} />
             <Filter
               nameSearch={viewModel.nameSearch}
@@ -73,8 +73,7 @@ const NotificationTemplateList = () => {
                 }
               }}
             />
-
-            <div className="flex-grow"></div>
+            <div className="flex-grow" md:flex-none></div>
             <Link href={"/admin/notification_templates/create"} passHref>
               <AddButton />
             </Link>

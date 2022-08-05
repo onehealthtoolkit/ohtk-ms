@@ -278,6 +278,7 @@ export const Form: FC<
   >
 > = props => (
   <form
+    noValidate
     className="
       grid 
       grid-cols-2 

@@ -46,6 +46,7 @@ const InvitationCodeCreate = () => {
             placeholder="Code"
             onChange={evt => (viewModel.code = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
           <ErrorText>{errors.code}</ErrorText>
         </Field>
@@ -59,6 +60,7 @@ const InvitationCodeCreate = () => {
             pattern="\d{4}-\d{2}-\d{2}"
             onChange={evt => (viewModel.fromDate = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
           <ErrorText>{viewModel.fieldErrors.fromDate}</ErrorText>
         </Field>
@@ -72,7 +74,9 @@ const InvitationCodeCreate = () => {
             pattern="\d{4}-\d{2}-\d{2}"
             onChange={evt => (viewModel.throughDate = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
+          <ErrorText>{viewModel.fieldErrors.throughDate}</ErrorText>
         </Field>
 
         <Field $size="half">

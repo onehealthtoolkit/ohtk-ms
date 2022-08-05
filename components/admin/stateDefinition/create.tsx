@@ -46,6 +46,7 @@ const StateDefinitionCreate = () => {
             placeholder="Name"
             onChange={evt => (viewModel.name = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
           <ErrorText>{errors.name}</ErrorText>
         </Field>

@@ -59,7 +59,7 @@ const InvitaionCodeList = () => {
     <Observer>
       {() => (
         <div>
-          <div className="flex items-center flex-wrap mb-4">
+          <div className="flex items-center flex-wrap mb-4 gap-2">
             <TotalItem totalCount={viewModel.totalCount} />
             <Filter
               codeSearch={viewModel.codeSearch}
@@ -72,7 +72,7 @@ const InvitaionCodeList = () => {
               }}
             />
 
-            <div className="flex-grow"></div>
+            <div className="flex-grow md:flex-none"></div>
             <Link href={"/admin/invitation_codes/create"} passHref>
               <AddButton />
             </Link>

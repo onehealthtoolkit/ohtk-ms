@@ -121,6 +121,16 @@ export abstract class InvitationCodeViewModel extends BaseFormViewModel {
       this.fieldErrors["code"] = "this field is required";
     }
 
+    if (!this.fromDate) {
+      isValid = false;
+      this.fieldErrors["fromDate"] = "this field is required";
+    }
+
+    if (!this.throughDate) {
+      isValid = false;
+      this.fieldErrors["throughDate"] = "this field is required";
+    }
+
     return isValid;
   }
 }

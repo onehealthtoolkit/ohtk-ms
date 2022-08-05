@@ -116,6 +116,7 @@ const ReportTypeCreate = () => {
                   placeholder="Name"
                   onChange={evt => (viewModel.name = evt.target.value)}
                   disabled={isSubmitting}
+                  required
                 />
                 <ErrorText>{errors.name}</ErrorText>
               </Field>
@@ -140,6 +141,7 @@ const ReportTypeCreate = () => {
                   }}
                   disabled={isSubmitting}
                   defaultValue=""
+                  required
                 >
                   <option disabled value={""}>
                     Select item ...
@@ -180,6 +182,7 @@ const ReportTypeCreate = () => {
                   placeholder="Ordering"
                   onChange={evt => (viewModel.ordering = +evt.target.value)}
                   disabled={isSubmitting}
+                  required
                 />
                 <ErrorText>{errors.ordering}</ErrorText>
               </Field>

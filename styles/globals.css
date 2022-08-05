@@ -6,10 +6,12 @@
 }
 
 .table-filter {
-  @apply flex;
+  @apply flex w-full md:flex-1;
 }
 
-input {
+input[required],
+select[required],
+textarea[required] {
   background-color: #fcfbe7;
 }
 

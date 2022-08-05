@@ -53,6 +53,7 @@ const ReporterNotificationCreate = () => {
             }}
             disabled={isSubmitting}
             value={viewModel.reportTypeId}
+            required
           >
             <option disabled value={""}>
               Select item ...
@@ -73,6 +74,7 @@ const ReporterNotificationCreate = () => {
             placeholder="Description"
             onChange={evt => (viewModel.description = evt.target.value)}
             disabled={isSubmitting}
+            required
           />
           <ErrorText>{errors.description}</ErrorText>
         </Field>
@@ -84,6 +86,7 @@ const ReporterNotificationCreate = () => {
             rows={5}
             onChange={evt => (viewModel.condition = evt.target.value)}
             disabled={viewModel.isSubmitting}
+            required
           />
           <ErrorText>{viewModel.fieldErrors.condition}</ErrorText>
         </Field>
@@ -95,6 +98,7 @@ const ReporterNotificationCreate = () => {
             rows={5}
             onChange={evt => (viewModel.template = evt.target.value)}
             disabled={viewModel.isSubmitting}
+            required
           />
           <ErrorText>{viewModel.fieldErrors.template}</ErrorText>
         </Field>

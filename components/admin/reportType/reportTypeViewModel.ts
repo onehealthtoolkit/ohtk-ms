@@ -140,9 +140,25 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
       isValid = false;
       this.fieldErrors["name"] = "this field is required";
     }
-    isValid = this.parseDefinition(
-      this.isFormBuilderMode ? this.formViewModel.jsonString : this.definition
-    );
+
+    if (this.definition.length === 0) {
+      isValid = false;
+      this.fieldErrors["definition"] = "this field is required";
+    } else {
+      isValid = this.parseDefinition(
+        this.isFormBuilderMode ? this.formViewModel.jsonString : this.definition
+      );
+    }
+
+    if (!this.categoryId) {
+      isValid = false;
+      this.fieldErrors["categoryId"] = "this field is required";
+    }
+
+    if (!this.ordering) {
+      isValid = false;
+      this.fieldErrors["ordering"] = "this field is required";
+    }
     return isValid;
   }
 
