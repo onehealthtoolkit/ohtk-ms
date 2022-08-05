@@ -6,13 +6,22 @@ import ReactDOM from "react-dom";
 type Props = {
   store: ModalDialogViewModel | undefined;
   title?: string;
+  // tailwind css ie. h-screen, min-h-[50vh], sm:h-1/3; default to "min-h-[30vh]"
+  heightClassName?: string;
+  // tailwind css; default to "sm:w-[385px] sm:min-w-[30vw] min-w-[80vw]"
+  widthClassName?: string;
   renderContent: (data: any) => ReactElement;
-  renderAction?: (store: ModalDialogViewModel, data: any) => ReactElement;
+  renderAction?: (
+    store: ModalDialogViewModel,
+    data: any
+  ) => ReactElement | null;
 };
 
 const BaseModalDialog: React.FC<Props> = ({
   store,
   title,
+  heightClassName,
+  widthClassName,
   renderContent,
   renderAction,
 }: Props) => {
@@ -31,7 +40,11 @@ const BaseModalDialog: React.FC<Props> = ({
               onClick={() => store.close()}
             ></div>
             <div
-              className={`z-30 sm:w-[385px] sm:min-w-[30vw] min-w-[80vw] min-h-[30vh]
+              className={`z-30 ${heightClassName || "min-h-[30vh]"}      
+                  ${
+                    widthClassName ||
+                    "sm:w-[385px] sm:min-w-[30vw] min-w-[80vw]"
+                  }
                   flex flex-col items-stretch justify-items-stretch gap-2 -translate-y-1/2 p-6 bg-white 
                   rounded-md top-1/2 left-1/2 -translate-x-1/2 absolute ${hidden}
                 `}
@@ -39,7 +52,9 @@ const BaseModalDialog: React.FC<Props> = ({
               {title && (
                 <h1 className="text-center text-xl font-medium">{title}</h1>
               )}
-              <div className="text-center">{renderContent(store.data)}</div>
+              <div className="h-full text-center">
+                {renderContent(store.data)}
+              </div>
               <div>{renderAction && renderAction(store, store.data)}</div>
             </div>
           </Fragment>,

@@ -110,7 +110,7 @@ const Component: FC<FormDateFieldProps> = ({ field }) => {
   return (
     <FormFieldValidation field={field}>
       <h4 className="text-sm text-gray-600">{field.label}</h4>
-      <div className="flex flex-row flex-wrap">
+      <div className="flex flex-row flex-wrap mt-2">
         <Select
           label="Day"
           selected={field.day}
@@ -162,7 +162,7 @@ type SelectProps = {
 const Select: FC<SelectProps> = ({ label, selected, options, onSelect }) => {
   return (
     <label className="block w-full md:w-1/3 pr-2">
-      <span className="text-sm text-right block px-2">{label}</span>
+      <span className="text-sm block">{label}</span>
       <select
         className="block border rounded w-full h-10 
           py-2 px-4 border-gray-300 bg-gray-50

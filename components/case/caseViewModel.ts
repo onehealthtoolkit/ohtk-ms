@@ -10,6 +10,7 @@ import { ICaseService } from "lib/services/case";
 import { CaseDetail } from "lib/services/case/case";
 import { CaseStateViewViewModel } from "components/case/caseState/viewViewModel";
 import { Me } from "lib/services/profile/me";
+import { FetchPolicy } from "@apollo/client";
 
 export class CaseViewModel extends BaseViewModel {
   data: CaseDetail = {} as CaseDetail;
@@ -39,9 +40,9 @@ export class CaseViewModel extends BaseViewModel {
     this._activeTabIndex = value;
   }
 
-  async fetch() {
+  async fetch(policy?: FetchPolicy) {
     this.isLoading = true;
-    const data = (await this.caseService.getCase(this.id)).data;
+    const data = (await this.caseService.getCase(this.id, policy)).data;
     if (data) {
       runInAction(() => {
         this.data = data;

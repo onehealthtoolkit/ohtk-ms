@@ -1,4 +1,8 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import {
+  ApolloClient,
+  FetchPolicy,
+  NormalizedCacheObject,
+} from "@apollo/client";
 import {
   GetCaseDocument,
   CasesDocument,
@@ -32,7 +36,10 @@ export interface ICaseService extends IService {
 
   promoteToCase(reportId: string): Promise<String>;
 
-  getCase(id: string): Promise<GetResult<CaseDetail>>;
+  getCase(
+    id: string,
+    fetchPolicy?: FetchPolicy
+  ): Promise<GetResult<CaseDetail>>;
 
   forwardState(
     caseId: string,
@@ -107,12 +114,16 @@ export class CaseService implements ICaseService {
     return promoteToCaseResult.data?.promoteToCase?.case?.id;
   }
 
-  async getCase(id: string): Promise<GetResult<CaseDetail>> {
+  async getCase(
+    id: string,
+    fetchPolicy: FetchPolicy = "cache-first"
+  ): Promise<GetResult<CaseDetail>> {
     const getResult = await this.client.query({
       query: GetCaseDocument,
       variables: {
         id,
       },
+      fetchPolicy,
     });
 
     let data;
