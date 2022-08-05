@@ -73,7 +73,7 @@ const NotificationTemplateList = () => {
                 }
               }}
             />
-            <div className="flex-grow" md:flex-none></div>
+            <div className="flex-grow md:flex-none"></div>
             <Link href={"/admin/notification_templates/create"} passHref>
               <AddButton />
             </Link>
