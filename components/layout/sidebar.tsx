@@ -19,9 +19,8 @@ import useStore from "lib/store";
 import CollapsIcon from "components/layout/CollapsIcon";
 import { observer } from "mobx-react";
 import { Menu } from "./menu";
-import getConfig from "next/config";
 import UserMenu from "./userMenu";
-const { publicRuntimeConfig } = getConfig();
+import { UserAvatar } from "components/widgets/forms";
 
 const iconClassName = "h-5 w-5 text-gray-300";
 
@@ -225,17 +224,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
             </h3>
             <ul className="mt-3">
               <div className="flex items-center">
-                <div className="w-12 h-12 sm:w-12 sm:h-12">
-                  {store.me?.avatarUrl ? (
-                    <img
-                      src={`${publicRuntimeConfig.serverUrl}/${store.me?.avatarUrl}`}
-                      alt={`${store.me?.username}'s avatar`}
-                      className="shadow-md rounded-full w-full h-full align-middle border-2"
-                    />
-                  ) : (
-                    <div className="rounded-full max-w-full h-12 w-12 align-middle border-2 flex justify-center items-center bg-gray-200 p-4"></div>
-                  )}
-                </div>
+                <UserAvatar url={store.me?.avatarUrl} />
                 <span
                   className={`text-white ${
                     store.menu.collapsed ? "hidden" : ""

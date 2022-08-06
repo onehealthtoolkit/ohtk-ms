@@ -30,7 +30,9 @@ const CaseStateView: FC<CaseStateViewProps> = ({
               viewModel.showFormTransitionDialog(transitionId, formDefinition)
             }
           >
-            {index < viewModel.states.length - 1 ? <StateArrow /> : null}
+            {index < viewModel.states.length - 1 ? (
+              <StateArrow caseState={caseState} />
+            ) : null}
           </CaseStateStep>
         ))}
         <ErrorDisplay message={viewModel.errorMessage} />
@@ -48,9 +50,12 @@ const CaseStateView: FC<CaseStateViewProps> = ({
   );
 };
 
-const StateArrow = () => {
+const StateArrow = ({ caseState }: { caseState: CaseState }) => {
+  const stateTransition = caseState.transition;
+  const router = useRouter();
+
   return (
-    <div className="w-full md:w-1/2 my-4">
+    <div className="w-full my-4">
       <div className="w-5 h-10 bg-gray-300 mx-auto"></div>
       <div
         className="mx-auto w-0 h-0 
@@ -59,6 +64,19 @@ const StateArrow = () => {
                   border-r-[20px] border-r-transparent
                 "
       ></div>
+      {stateTransition && (
+        <div className="flex-row">
+          {" "}
+          <div className="mb-4 text-center text-sm text-gray-700">
+            By {"  "}
+            {stateTransition.createdBy.firstName + "  "}
+            {stateTransition.createdBy.lastName}
+          </div>
+          <div className="mb-4 text-center text-sm text-gray-500">
+            at {formatDateTime(stateTransition.createdAt, router.locale)}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -80,11 +98,13 @@ const CaseStateStep: FC<CaseStateStepProps> = ({
 }: CaseStateStepProps) => {
   return (
     <>
-      <div className="border border-gray-300 rounded-md shadow md:w-1/2">
+      <div className="border border-gray-300 rounded-md">
         <h3
-          className={`py-4 px-4 md:px-8 text-xl rounded-t-md border ${
+          className={`py-4 px-4 md:px-8 rounded-t-md border ${
             caseState.transition
               ? "bg-gray-200 border-gray-200 text-gray-600"
+              : caseState.state.isStopState
+              ? "bg-green-500 border-green-500 text-white"
               : "bg-blue-600 border-blue-600 text-white"
           }`}
         >
@@ -138,7 +158,7 @@ const PendingStep: FC<PendingStepProps> = ({
       )}
     </div>
   ) : (
-    <div>End of step</div>
+    <div></div>
   );
 };
 
@@ -149,19 +169,6 @@ type CompleteStepProps = {
 const CompleteStep: FC<CompleteStepProps> = ({
   stateTransition,
 }: CompleteStepProps) => {
-  const router = useRouter();
   const data = JSON.parse(stateTransition.formData || "{}");
-  return (
-    <div className="text-base flex flex-wrap">
-      <div className="w-1/2 mb-4">
-        By {"  "}
-        {stateTransition.createdBy.firstName + "  "}
-        {stateTransition.createdBy.lastName}
-      </div>
-      <div className="w-1/2 mb-4 text-right">
-        at {formatDateTime(stateTransition.createdAt, router.locale)}
-      </div>
-      {renderData(data)}
-    </div>
-  );
+  return <div className="text-base flex flex-wrap">{renderData(data)}</div>;
 };

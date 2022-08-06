@@ -973,6 +973,7 @@ export type CommentCreateSuccess = {
   __typename?: "CommentCreateSuccess";
   attachments?: Maybe<Array<Maybe<CommentAttachmentType>>>;
   body: Scalars["String"];
+  createdAt: Scalars["DateTime"];
   createdBy: UserType;
   id: Scalars["ID"];
   threadId?: Maybe<Scalars["Int"]>;
@@ -982,6 +983,7 @@ export type CommentType = {
   __typename?: "CommentType";
   attachments?: Maybe<Array<Maybe<CommentAttachmentType>>>;
   body: Scalars["String"];
+  createdAt: Scalars["DateTime"];
   createdBy: UserType;
   id: Scalars["ID"];
   threadId?: Maybe<Scalars["Int"]>;
@@ -1924,6 +1926,7 @@ export type UserProfileType = {
 
 export type UserType = {
   __typename?: "UserType";
+  avatarUrl?: Maybe<Scalars["String"]>;
   firstName: Scalars["String"];
   id: Scalars["ID"];
   lastName: Scalars["String"];
@@ -2477,6 +2480,7 @@ export type QueryCommentsQuery = {
     id: string;
     body: string;
     threadId?: number | null;
+    createdAt: any;
     attachments?: Array<{
       __typename?: "CommentAttachmentType";
       id: string;
@@ -2489,6 +2493,7 @@ export type QueryCommentsQuery = {
       username: string;
       firstName: string;
       lastName: string;
+      avatarUrl?: string | null;
     };
   } | null> | null;
 };
@@ -2520,6 +2525,7 @@ export type MutationCommentCreateMutation = {
           id: string;
           body: string;
           threadId?: number | null;
+          createdAt: any;
           attachments?: Array<{
             __typename?: "CommentAttachmentType";
             file: string;
@@ -2530,6 +2536,7 @@ export type MutationCommentCreateMutation = {
             username: string;
             firstName: string;
             lastName: string;
+            avatarUrl?: string | null;
           };
         }
       | null;
@@ -6423,6 +6430,7 @@ export const QueryCommentsDocument = {
                     ],
                   },
                 },
+                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "createdBy" },
@@ -6441,6 +6449,10 @@ export const QueryCommentsDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "lastName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "avatarUrl" },
                       },
                     ],
                   },
@@ -6579,6 +6591,10 @@ export const MutationCommentCreateDocument = {
                             },
                             {
                               kind: "Field",
+                              name: { kind: "Name", value: "createdAt" },
+                            },
+                            {
+                              kind: "Field",
                               name: { kind: "Name", value: "createdBy" },
                               selectionSet: {
                                 kind: "SelectionSet",
@@ -6598,6 +6614,10 @@ export const MutationCommentCreateDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "lastName" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "avatarUrl" },
                                   },
                                 ],
                               },

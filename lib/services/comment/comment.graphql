@@ -8,11 +8,13 @@ query QueryComments($threadId: ID!) {
       file
       createdAt
     }
+    createdAt
     createdBy {
       id
       username
       firstName
       lastName
+      avatarUrl
     }
   }
 }
@@ -32,11 +34,13 @@ mutation MutationCommentCreate(
         attachments {
           file
         }
+        createdAt
         createdBy {
           id
           username
           firstName
           lastName
+          avatarUrl
         }
       }
       ... on CommentCreateProblem {

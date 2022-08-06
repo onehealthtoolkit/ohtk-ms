@@ -3,8 +3,9 @@ import { User } from "lib/services/user";
 export type Comment = {
   id: string;
   body: string;
-  createdBy: Pick<User, "id" | "username" | "firstName" | "lastName">;
+  createdBy: Omit<User, "email">;
   attachments?: Array<Attachment> | null;
+  createdAt: string;
   threadId?: number | null;
 };
 

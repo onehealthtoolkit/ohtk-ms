@@ -40,7 +40,11 @@ export class CommentService implements ICommentService {
             username: item.createdBy.username,
             firstName: item.createdBy.firstName,
             lastName: item.createdBy.lastName,
+            avatarUrl: item.createdBy.avatarUrl
+              ? item.createdBy.avatarUrl
+              : undefined,
           },
+          createdAt: item.createdAt,
           threadId: item.threadId,
           attachments: item.attachments?.filter(
             it => it !== null

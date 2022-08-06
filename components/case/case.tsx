@@ -1,7 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import { Fragment, useState } from "react";
 import { observer, Observer } from "mobx-react";
-import { MaskingLoader, TabBar, TabItem } from "components/widgets/forms";
+import {
+  Divide,
+  MaskingLoader,
+  TabBar,
+  TabItem,
+} from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { CaseViewModel } from "./caseViewModel";
 import getConfig from "next/config";
@@ -17,7 +22,7 @@ const { publicRuntimeConfig } = getConfig();
 const ReportInformation = observer(
   ({ viewModel }: { viewModel: CaseViewModel }) => {
     return (
-      <div className="relative overflow-x-auto mt-4">
+      <div className="relative overflow-x-auto">
         <table className="table-fixed border w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <tbody>
             <TR
@@ -86,12 +91,15 @@ const Case = (props: { id: string }) => {
                   {viewModel.data.description}
                 </p>
               </div>
+              <Divide hilight />
 
               <ReportInformation viewModel={viewModel} />
 
               <ReportImage viewModel={viewModel} />
 
-              <div>
+              <Divide />
+
+              <div className="mb-4">
                 <TabBar>
                   <TabItem
                     id="state"
@@ -141,12 +149,11 @@ const Case = (props: { id: string }) => {
                     <div className="">
                       {viewModel.data.data && renderData(viewModel.data.data)}
                     </div>
-                    <div className="flex justify-between items-start p-4 rounded-t dark:border-gray-600">
-                      <p className="text-lg dark:text-gray-400">Images</p>
-                    </div>
                   </>
                 )}
               </div>
+
+              <Divide />
 
               <Comments threadId={viewModel.data.threadId} />
             </>
