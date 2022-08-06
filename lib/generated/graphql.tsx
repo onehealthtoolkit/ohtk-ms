@@ -906,6 +906,7 @@ export type CaseType = {
   report?: Maybe<IncidentReportType>;
   stateDefinition?: Maybe<DeepStateDefinitionType>;
   states?: Maybe<Array<Maybe<CaseStateType>>>;
+  threadId?: Maybe<Scalars["Int"]>;
 };
 
 export type CaseTypeNodeConnection = {
@@ -2179,6 +2180,7 @@ export type GetCaseQuery = {
     id: any;
     description: string;
     isFinished: boolean;
+    threadId?: number | null;
     authorities?: Array<{
       __typename?: "AuthorityType";
       id: string;
@@ -2461,6 +2463,76 @@ export type GetCaseDefinitionQuery = {
       id: any;
       name: string;
     };
+  } | null;
+};
+
+export type QueryCommentsQueryVariables = Exact<{
+  threadId: Scalars["ID"];
+}>;
+
+export type QueryCommentsQuery = {
+  __typename?: "Query";
+  comments?: Array<{
+    __typename?: "CommentType";
+    id: string;
+    body: string;
+    threadId?: number | null;
+    attachments?: Array<{
+      __typename?: "CommentAttachmentType";
+      id: string;
+      file: string;
+      createdAt: any;
+    } | null> | null;
+    createdBy: {
+      __typename?: "UserType";
+      id: string;
+      username: string;
+      firstName: string;
+      lastName: string;
+    };
+  } | null> | null;
+};
+
+export type MutationCommentCreateMutationVariables = Exact<{
+  body: Scalars["String"];
+  threadId: Scalars["Int"];
+  files?: InputMaybe<
+    Array<InputMaybe<Scalars["Upload"]>> | InputMaybe<Scalars["Upload"]>
+  >;
+}>;
+
+export type MutationCommentCreateMutation = {
+  __typename?: "Mutation";
+  commentCreate?: {
+    __typename?: "CommentCreateMutation";
+    result?:
+      | {
+          __typename: "CommentCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "CommentCreateSuccess";
+          id: string;
+          body: string;
+          threadId?: number | null;
+          attachments?: Array<{
+            __typename?: "CommentAttachmentType";
+            file: string;
+          } | null> | null;
+          createdBy: {
+            __typename?: "UserType";
+            id: string;
+            username: string;
+            firstName: string;
+            lastName: string;
+          };
+        }
+      | null;
   } | null;
 };
 
@@ -5017,6 +5089,7 @@ export const GetCaseDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "description" } },
                 { kind: "Field", name: { kind: "Name", value: "isFinished" } },
+                { kind: "Field", name: { kind: "Name", value: "threadId" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "authorities" },
@@ -6292,6 +6365,292 @@ export const GetCaseDefinitionDocument = {
 } as unknown as DocumentNode<
   GetCaseDefinitionQuery,
   GetCaseDefinitionQueryVariables
+>;
+export const QueryCommentsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "QueryComments" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "threadId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "comments" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "threadId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "threadId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "body" } },
+                { kind: "Field", name: { kind: "Name", value: "threadId" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "attachments" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "file" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "createdBy" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "firstName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "lastName" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<QueryCommentsQuery, QueryCommentsQueryVariables>;
+export const MutationCommentCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "MutationCommentCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "body" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "threadId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "files" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Upload" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "commentCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "body" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "body" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "threadId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "threadId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "files" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "files" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: { kind: "Name", value: "CommentCreateSuccess" },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "body" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "threadId" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "attachments" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "file" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "createdBy" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "username" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "firstName" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "lastName" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: { kind: "Name", value: "CommentCreateProblem" },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  MutationCommentCreateMutation,
+  MutationCommentCreateMutationVariables
 >;
 export const StatQueryDocument = {
   kind: "Document",

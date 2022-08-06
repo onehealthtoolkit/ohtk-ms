@@ -1,0 +1,51 @@
+query QueryComments($threadId: ID!) {
+  comments(threadId: $threadId) {
+    id
+    body
+    threadId
+    attachments {
+      id
+      file
+      createdAt
+    }
+    createdBy {
+      id
+      username
+      firstName
+      lastName
+    }
+  }
+}
+
+mutation MutationCommentCreate(
+  $body: String!
+  $threadId: Int!
+  $files: [Upload]
+) {
+  commentCreate(body: $body, threadId: $threadId, files: $files) {
+    result {
+      __typename
+      ... on CommentCreateSuccess {
+        id
+        body
+        threadId
+        attachments {
+          file
+        }
+        createdBy {
+          id
+          username
+          firstName
+          lastName
+        }
+      }
+      ... on CommentCreateProblem {
+        message
+        fields {
+          name
+          message
+        }
+      }
+    }
+  }
+}

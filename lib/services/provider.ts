@@ -17,6 +17,7 @@ import { StateTransitionService } from "./stateTransition";
 import { DashboardService } from "./dashboard/dashboardService";
 import { NotificationTemplateService } from "./notificationTemplate";
 import { NotificationService } from "./notification";
+import { CommentService } from "lib/services/comment/commentService";
 
 export interface IServiceProvider {
   get authService(): IAuthService;
@@ -36,6 +37,7 @@ export interface IServiceProvider {
   get dashboardService(): DashboardService;
   get notificationTemplateService(): NotificationTemplateService;
   get notificationService(): NotificationService;
+  get commentService(): CommentService;
 }
 
 export class ServicesProvider implements IServiceProvider {
@@ -58,6 +60,7 @@ export class ServicesProvider implements IServiceProvider {
   dashboardService: DashboardService;
   notificationTemplateService: NotificationTemplateService;
   notificationService: NotificationService;
+  commentService: CommentService;
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
@@ -78,6 +81,7 @@ export class ServicesProvider implements IServiceProvider {
     this.dashboardService = new DashboardService(client);
     this.notificationTemplateService = new NotificationTemplateService(client);
     this.notificationService = new NotificationService(client);
+    this.commentService = new CommentService(client);
   }
 }
 

@@ -133,6 +133,7 @@ export class CaseService implements ICaseService {
         id: incidentCase.id,
         description: incidentCase.description,
         isFinished: incidentCase.isFinished,
+        threadId: incidentCase.threadId || undefined,
         createdAt: incidentCase.report?.createdAt,
         incidentDate: incidentCase.report?.incidentDate,
         reportTypeName: incidentCase.report?.reportType?.name,

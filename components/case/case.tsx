@@ -10,6 +10,7 @@ import { AdjustmentsIcon, CollectionIcon } from "@heroicons/react/solid";
 import useStore from "lib/store";
 import CaseStatus from "./caseStatus";
 import { renderData, TR } from "components/widgets/renderData";
+import Comments from "components/widgets/comments";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -146,6 +147,8 @@ const Case = (props: { id: string }) => {
                   </>
                 )}
               </div>
+
+              <Comments threadId={viewModel.data.threadId} />
             </>
           </MaskingLoader>
         );
