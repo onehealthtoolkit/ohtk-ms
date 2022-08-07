@@ -57,6 +57,8 @@ export type Scalars = {
 
 /** An enumeration. */
 export enum AccountsAuthorityUserRoleChoices {
+  /** Admin */
+  Adm = "ADM",
   /** Officer */
   Ofc = "OFC",
   /** Reporter */
@@ -95,6 +97,11 @@ export type AdminAuthorityCreateSuccess = {
   reportTypes: Array<AdminReportTypeCreateSuccess>;
   updatedAt: Scalars["DateTime"];
   users: Array<AdminAuthorityUserCreateSuccess>;
+};
+
+export type AdminAuthorityDeleteMutation = {
+  __typename?: "AdminAuthorityDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
 };
 
 export type AdminAuthorityNotificationUpsertMutation = {
@@ -201,6 +208,11 @@ export type AdminAuthorityUserCreateSuccess = {
   username: Scalars["String"];
 };
 
+export type AdminAuthorityUserDeleteMutation = {
+  __typename?: "AdminAuthorityUserDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
 export type AdminAuthorityUserQueryType = {
   __typename?: "AdminAuthorityUserQueryType";
   email: Scalars["String"];
@@ -265,6 +277,11 @@ export type AdminCaseDefinitionCreateSuccess = {
   isActive: Scalars["Boolean"];
   reportType: AdminReportTypeCreateSuccess;
   updatedAt: Scalars["DateTime"];
+};
+
+export type AdminCaseDefinitionDeleteMutation = {
+  __typename?: "AdminCaseDefinitionDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
 };
 
 export type AdminCaseDefinitionQueryType = {
@@ -402,6 +419,11 @@ export type AdminInvitationCodeCreateSuccess = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type AdminInvitationCodeDeleteMutation = {
+  __typename?: "AdminInvitationCodeDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
 export type AdminInvitationCodeQueryType = {
   __typename?: "AdminInvitationCodeQueryType";
   authority: AdminAuthorityCreateSuccess;
@@ -477,6 +499,11 @@ export type AdminNotificationTemplateCreateSuccess = {
   titleTemplate: Scalars["String"];
   type: CasesNotificationTemplateTypeChoices;
   updatedAt: Scalars["DateTime"];
+};
+
+export type AdminNotificationTemplateDeleteMutation = {
+  __typename?: "AdminNotificationTemplateDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
 };
 
 export type AdminNotificationTemplateQueryType = {
@@ -683,6 +710,11 @@ export type AdminStateDefinitionCreateSuccess = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type AdminStateDefinitionDeleteMutation = {
+  __typename?: "AdminStateDefinitionDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
 export type AdminStateDefinitionQueryType = {
   __typename?: "AdminStateDefinitionQueryType";
   id: Scalars["ID"];
@@ -749,6 +781,11 @@ export type AdminStateStepCreateSuccess = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type AdminStateStepDeleteMutation = {
+  __typename?: "AdminStateStepDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
 export type AdminStateStepUpdateMutation = {
   __typename?: "AdminStateStepUpdateMutation";
   result?: Maybe<AdminStateStepUpdateResult>;
@@ -795,6 +832,11 @@ export type AdminStateTransitionCreateSuccess = {
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   toStep: DeepStateStepType;
   updatedAt: Scalars["DateTime"];
+};
+
+export type AdminStateTransitionDeleteMutation = {
+  __typename?: "AdminStateTransitionDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
 };
 
 export type AdminStateTransitionUpdateMutation = {
@@ -948,7 +990,7 @@ export type CheckInvitationCodeType = {
 
 export type CommentAttachmentType = {
   __typename?: "CommentAttachmentType";
-  comment: CommentCreateSuccess;
+  comment: CommentUpdateSuccess;
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
   file: Scalars["String"];
@@ -980,8 +1022,36 @@ export type CommentCreateSuccess = {
   threadId?: Maybe<Scalars["Int"]>;
 };
 
+export type CommentDeleteMutation = {
+  __typename?: "CommentDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
 export type CommentType = {
   __typename?: "CommentType";
+  attachments?: Maybe<Array<Maybe<CommentAttachmentType>>>;
+  body: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  createdBy: UserType;
+  id: Scalars["ID"];
+  threadId?: Maybe<Scalars["Int"]>;
+};
+
+export type CommentUpdateMutation = {
+  __typename?: "CommentUpdateMutation";
+  result?: Maybe<CommentUpdateResult>;
+};
+
+export type CommentUpdateProblem = {
+  __typename?: "CommentUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type CommentUpdateResult = CommentUpdateProblem | CommentUpdateSuccess;
+
+export type CommentUpdateSuccess = {
+  __typename?: "CommentUpdateSuccess";
   attachments?: Maybe<Array<Maybe<CommentAttachmentType>>>;
   body: Scalars["String"];
   createdAt: Scalars["DateTime"];
@@ -1108,32 +1178,42 @@ export type MessageType = {
 export type Mutation = {
   __typename?: "Mutation";
   adminAuthorityCreate?: Maybe<AdminAuthorityCreateMutation>;
+  adminAuthorityDelete?: Maybe<AdminAuthorityDeleteMutation>;
   adminAuthorityNotificationUpsert?: Maybe<AdminAuthorityNotificationUpsertMutation>;
   adminAuthorityUpdate?: Maybe<AdminAuthorityUpdateMutation>;
   adminAuthorityUserCreate?: Maybe<AdminAuthorityUserCreateMutation>;
+  adminAuthorityUserDelete?: Maybe<AdminAuthorityUserDeleteMutation>;
   adminAuthorityUserUpdate?: Maybe<AdminAuthorityUserUpdateMutation>;
   adminCaseDefinitionCreate?: Maybe<AdminCaseDefinitionCreateMutation>;
+  adminCaseDefinitionDelete?: Maybe<AdminCaseDefinitionDeleteMutation>;
   adminCaseDefinitionUpdate?: Maybe<AdminCaseDefinitionUpdateMutation>;
   adminCategoryCreate?: Maybe<AdminCategoryCreateMutation>;
   adminCategoryUpdate?: Maybe<AdminCategoryUpdateMutation>;
   adminInvitationCodeCreate?: Maybe<AdminInvitationCodeCreateMutation>;
+  adminInvitationCodeDelete?: Maybe<AdminInvitationCodeDeleteMutation>;
   adminInvitationCodeUpdate?: Maybe<AdminInvitationCodeUpdateMutation>;
   adminNotificationTemplateCreate?: Maybe<AdminNotificationTemplateCreateMutation>;
+  adminNotificationTemplateDelete?: Maybe<AdminNotificationTemplateDeleteMutation>;
   adminNotificationTemplateUpdate?: Maybe<AdminNotificationTemplateUpdateMutation>;
   adminReportTypeCreate?: Maybe<AdminReportTypeCreateMutation>;
   adminReportTypeUpdate?: Maybe<AdminReportTypeUpdateMutation>;
   adminReporterNotificationCreate?: Maybe<AdminReporterNotificationCreateMutation>;
   adminReporterNotificationUpdate?: Maybe<AdminReporterNotificationUpdateMutation>;
   adminStateDefinitionCreate?: Maybe<AdminStateDefinitionCreateMutation>;
+  adminStateDefinitionDelete?: Maybe<AdminStateDefinitionDeleteMutation>;
   adminStateDefinitionUpdate?: Maybe<AdminStateDefinitionUpdateMutation>;
   adminStateStepCreate?: Maybe<AdminStateStepCreateMutation>;
+  adminStateStepDelete?: Maybe<AdminStateStepDeleteMutation>;
   adminStateStepUpdate?: Maybe<AdminStateStepUpdateMutation>;
   adminStateTransitionCreate?: Maybe<AdminStateTransitionCreateMutation>;
+  adminStateTransitionDelete?: Maybe<AdminStateTransitionDeleteMutation>;
   adminStateTransitionUpdate?: Maybe<AdminStateTransitionUpdateMutation>;
   adminUserChangePassword?: Maybe<AdminUserChangePasswordMutation>;
   adminUserUploadAvatar?: Maybe<AdminUserUploadAvatarMutation>;
   authorityUserRegister?: Maybe<AuthorityUserRegisterMutation>;
   commentCreate?: Maybe<CommentCreateMutation>;
+  commentDelete?: Maybe<CommentDeleteMutation>;
+  commentUpdate?: Maybe<CommentUpdateMutation>;
   deleteRefreshTokenCookie?: Maybe<DeleteRefreshTokenCookie>;
   deleteTokenCookie?: Maybe<DeleteJsonWebTokenCookie>;
   forwardState?: Maybe<ForwardStateMutation>;
@@ -1154,6 +1234,10 @@ export type MutationAdminAuthorityCreateArgs = {
   code: Scalars["String"];
   inherits?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   name: Scalars["String"];
+};
+
+export type MutationAdminAuthorityDeleteArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationAdminAuthorityNotificationUpsertArgs = {
@@ -1179,6 +1263,10 @@ export type MutationAdminAuthorityUserCreateArgs = {
   username: Scalars["String"];
 };
 
+export type MutationAdminAuthorityUserDeleteArgs = {
+  id: Scalars["ID"];
+};
+
 export type MutationAdminAuthorityUserUpdateArgs = {
   authorityId?: InputMaybe<Scalars["Int"]>;
   email: Scalars["String"];
@@ -1194,6 +1282,10 @@ export type MutationAdminCaseDefinitionCreateArgs = {
   description: Scalars["String"];
   isActive?: InputMaybe<Scalars["Boolean"]>;
   reportTypeId: Scalars["UUID"];
+};
+
+export type MutationAdminCaseDefinitionDeleteArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationAdminCaseDefinitionUpdateArgs = {
@@ -1227,6 +1319,10 @@ export type MutationAdminInvitationCodeCreateArgs = {
   throughDate: Scalars["DateTime"];
 };
 
+export type MutationAdminInvitationCodeDeleteArgs = {
+  id: Scalars["ID"];
+};
+
 export type MutationAdminInvitationCodeUpdateArgs = {
   code: Scalars["String"];
   fromDate?: InputMaybe<Scalars["DateTime"]>;
@@ -1243,6 +1339,10 @@ export type MutationAdminNotificationTemplateCreateArgs = {
   stateTransitionId?: InputMaybe<Scalars["Int"]>;
   titleTemplate: Scalars["String"];
   type: Scalars["String"];
+};
+
+export type MutationAdminNotificationTemplateDeleteArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationAdminNotificationTemplateUpdateArgs = {
@@ -1297,6 +1397,10 @@ export type MutationAdminStateDefinitionCreateArgs = {
   name: Scalars["String"];
 };
 
+export type MutationAdminStateDefinitionDeleteArgs = {
+  id: Scalars["ID"];
+};
+
 export type MutationAdminStateDefinitionUpdateArgs = {
   id: Scalars["ID"];
   isDefault?: InputMaybe<Scalars["Boolean"]>;
@@ -1308,6 +1412,10 @@ export type MutationAdminStateStepCreateArgs = {
   isStopState?: InputMaybe<Scalars["Boolean"]>;
   name: Scalars["String"];
   stateDefinitionId: Scalars["ID"];
+};
+
+export type MutationAdminStateStepDeleteArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationAdminStateStepUpdateArgs = {
@@ -1322,6 +1430,10 @@ export type MutationAdminStateTransitionCreateArgs = {
   formDefinition: Scalars["String"];
   fromStepId: Scalars["ID"];
   toStepId: Scalars["ID"];
+};
+
+export type MutationAdminStateTransitionDeleteArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationAdminStateTransitionUpdateArgs = {
@@ -1352,6 +1464,15 @@ export type MutationCommentCreateArgs = {
   body: Scalars["String"];
   files?: InputMaybe<Array<InputMaybe<Scalars["Upload"]>>>;
   threadId: Scalars["Int"];
+};
+
+export type MutationCommentDeleteArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationCommentUpdateArgs = {
+  body: Scalars["String"];
+  commentId: Scalars["Int"];
 };
 
 export type MutationForwardStateArgs = {
@@ -1922,9 +2043,13 @@ export type UserProfileType = {
   authorityId?: Maybe<Scalars["Int"]>;
   authorityName?: Maybe<Scalars["String"]>;
   avatarUrl?: Maybe<Scalars["String"]>;
+  email?: Maybe<Scalars["String"]>;
   firstName: Scalars["String"];
   id: Scalars["Int"];
+  isStaff?: Maybe<Scalars["Boolean"]>;
+  isSuperuser?: Maybe<Scalars["Boolean"]>;
   lastName: Scalars["String"];
+  role?: Maybe<Scalars["String"]>;
   username: Scalars["String"];
 };
 
@@ -2961,6 +3086,9 @@ export type MeQuery = {
     authorityId?: number | null;
     authorityName?: string | null;
     avatarUrl?: string | null;
+    isSuperuser?: boolean | null;
+    isStaff?: boolean | null;
+    role?: string | null;
   } | null;
 };
 
@@ -8749,6 +8877,9 @@ export const MeDocument = {
                   name: { kind: "Name", value: "authorityName" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "avatarUrl" } },
+                { kind: "Field", name: { kind: "Name", value: "isSuperuser" } },
+                { kind: "Field", name: { kind: "Name", value: "isStaff" } },
+                { kind: "Field", name: { kind: "Name", value: "role" } },
               ],
             },
           },

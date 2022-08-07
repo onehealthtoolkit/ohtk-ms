@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Observer } from "mobx-react";
-import useStore from "lib/store";
+import useStore, { Store } from "lib/store";
 import SignIn from "components/auth/signin";
 import Spinner from "components/widgets/spinner";
 
 type Props = {
   children: React.ReactNode;
+  guard?: (store: Store) => boolean;
 };
-const Protect = ({ children }: Props) => {
+const Protect = ({ children, guard }: Props) => {
   const store = useStore();
   const [isSSR, setIsSSR] = useState(true);
 
@@ -26,6 +27,12 @@ const Protect = ({ children }: Props) => {
         }
         if (!store.me) {
           return <Spinner />;
+        }
+
+        if (guard != undefined) {
+          if (!guard(store)) {
+            return <div>Not Allow</div>;
+          }
         }
 
         return <>{children}</>;

@@ -27,14 +27,18 @@ export class ProfileService implements IProfileService {
     });
 
     if (!result.errors) {
+      const me = result.data.me!;
       return {
-        username: result.data.me!.username,
-        firstName: result.data.me!.firstName,
-        lastName: result.data.me!.lastName,
-        id: result.data.me!.id,
-        authorityId: result.data.me!.authorityId || 0,
-        authorityName: result.data.me!.authorityName || "",
-        avatarUrl: result.data.me!.avatarUrl || "",
+        username: me.username,
+        firstName: me.firstName,
+        lastName: me.lastName,
+        id: me.id,
+        authorityId: me.authorityId || 0,
+        authorityName: me.authorityName || "",
+        avatarUrl: me.avatarUrl || "",
+        role: me.role || "",
+        isStaff: me.isStaff || false,
+        isSuperUser: me.isSuperuser || false,
       };
     } else {
       throw new Error("Method not implemented.");

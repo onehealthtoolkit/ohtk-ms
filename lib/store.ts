@@ -98,6 +98,26 @@ export class Store {
   closeMenu() {
     if (this.menu.open) this.menu.open = false;
   }
+
+  isStaff() {
+    return this.me?.isStaff || false;
+  }
+
+  get isSuperUser() {
+    return this.me?.isSuperUser || false;
+  }
+
+  get isRoleReporter() {
+    return this.me?.role == "REP";
+  }
+
+  get isRoleOfficer() {
+    return this.me?.role == "OFC";
+  }
+
+  get isRoleAdmin() {
+    return this.me?.role == "ADM";
+  }
 }
 
 export const StoreContext = createContext<Store | null>(null);

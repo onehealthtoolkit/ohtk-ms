@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useRouter } from "next/router";
 import React, { FC, useCallback, useRef, useState } from "react";
 import {
@@ -105,6 +106,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 pathname={pathname}
                 label="Dashboard"
                 collapsed={store.menu.collapsed}
+                display={store.isRoleOfficer || store.isRoleAdmin}
                 icon={
                   <TemplateIcon className={`${iconClassName} -rotate-90`} />
                 }
@@ -114,14 +116,16 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 pathname={pathname}
                 label="Reports"
                 collapsed={store.menu.collapsed}
+                display={store.isRoleOfficer || store.isRoleAdmin}
                 icon={<DocumentReportIcon className={iconClassName} />}
               />
 
               <Menu
-                href="/cases"
+                href="/cases/"
                 pathname={pathname}
                 label="Cases"
                 collapsed={store.menu.collapsed}
+                display={store.isRoleOfficer || store.isRoleAdmin}
                 icon={<DocumentTextIcon className={iconClassName} />}
               />
             </ul>
@@ -144,6 +148,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 pathname={pathname}
                 label="Authorities"
                 collapsed={store.menu.collapsed}
+                display={store.isSuperUser || store.isRoleAdmin}
                 icon={<CubeIcon className={iconClassName} />}
               />
               <Menu
@@ -151,6 +156,9 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 pathname={pathname}
                 label="Users"
                 collapsed={store.menu.collapsed}
+                display={
+                  store.isSuperUser || store.isRoleAdmin || store.isRoleOfficer
+                }
                 icon={<UserIcon className={iconClassName} />}
               />
               <Menu
@@ -158,13 +166,15 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 pathname={pathname}
                 label="Category"
                 collapsed={store.menu.collapsed}
+                display={store.isSuperUser}
                 icon={<CollectionIcon className={iconClassName} />}
               />
               <Menu
                 href="/admin/report_types/"
                 pathname={pathname}
-                label="Report types"
+                label="Report templates"
                 collapsed={store.menu.collapsed}
+                display={store.isSuperUser}
                 icon={<DocumentReportIcon className={iconClassName} />}
               />
               <Menu
@@ -172,43 +182,51 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 pathname={pathname}
                 label="Invitation codes"
                 collapsed={store.menu.collapsed}
+                display={
+                  store.isSuperUser || store.isRoleAdmin || store.isRoleOfficer
+                }
                 icon={<AnnotationIcon className={iconClassName} />}
               />
 
               <Menu
-                href="/admin/case_definitions"
+                href="/admin/case_definitions/"
                 pathname={pathname}
                 label="Case Definition"
                 collapsed={store.menu.collapsed}
+                display={store.isSuperUser}
                 icon={<VariableIcon className={iconClassName} />}
               />
 
               <Menu
-                href="/admin/state_definitions"
+                href="/admin/state_definitions/"
                 pathname={pathname}
                 label="State Definition"
                 collapsed={store.menu.collapsed}
+                display={store.isSuperUser}
                 icon={<LightBulbIcon className={iconClassName} />}
               />
               <Menu
-                href="/admin/notification_templates"
+                href="/admin/notification_templates/"
                 pathname={pathname}
                 label="Notification Template"
                 collapsed={store.menu.collapsed}
+                display={store.isSuperUser}
                 icon={<TemplateIcon className={iconClassName} />}
               />
               <Menu
-                href="/admin/notifications"
+                href="/admin/notifications/"
                 pathname={pathname}
                 label="Notification"
                 collapsed={store.menu.collapsed}
+                display={store.isRoleOfficer || store.isRoleAdmin}
                 icon={<BellIcon className={iconClassName} />}
               />
               <Menu
-                href="/admin/reporter_notifications"
+                href="/admin/reporter_notifications/"
                 pathname={pathname}
                 label="Reporter notification"
                 collapsed={store.menu.collapsed}
+                display={store.isSuperUser}
                 icon={<SpeakerphoneIcon className={iconClassName} />}
               />
             </ul>
@@ -224,7 +242,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
             </h3>
             <ul className="mt-3">
               <div className="flex items-center">
-                <UserAvatar url={store.me?.avatarUrl} />
+                <UserAvatar url={store.me!.avatarUrl} />
                 <span
                   className={`text-white ${
                     store.menu.collapsed ? "hidden" : ""

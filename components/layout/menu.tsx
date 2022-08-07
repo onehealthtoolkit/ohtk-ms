@@ -8,6 +8,7 @@ type MenuProps = {
   icon?: JSX.Element;
   collapsed?: boolean;
   onClick?: MouseEventHandler;
+  display?: boolean;
 };
 
 const MenuCollapsed: React.FC<MenuProps> = ({
@@ -97,7 +98,13 @@ export const Menu: React.FC<MenuProps> = ({
   href,
   collapsed,
   onClick,
+  display,
 }) => {
+  if (display !== undefined) {
+    if (!display) {
+      return null;
+    }
+  }
   return collapsed ? (
     <MenuCollapsed
       pathname={pathname}

@@ -5,6 +5,7 @@ import Protect from "components/auth/protect";
 import Breadcrumb from "components/layout/breadcrumb";
 import { useRouter } from "next/router";
 import Spinner from "components/widgets/spinner";
+import { Store } from "lib/store";
 
 const AdminAuthorityUpdatePage: NextPage = () => {
   const router = useRouter();
@@ -14,7 +15,7 @@ const AdminAuthorityUpdatePage: NextPage = () => {
   }
 
   return (
-    <Protect>
+    <Protect guard={(store: Store) => store.isSuperUser}>
       <Layout>
         <Breadcrumb
           crumbs={[
