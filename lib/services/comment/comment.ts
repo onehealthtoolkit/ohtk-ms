@@ -13,4 +13,5 @@ export type Attachment = {
   id: string;
   createdAt: string;
   file: string;
+  thumbnail: string;
 };

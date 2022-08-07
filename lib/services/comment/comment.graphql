@@ -6,6 +6,7 @@ query QueryComments($threadId: ID!) {
     attachments {
       id
       file
+      thumbnail
       createdAt
     }
     createdAt

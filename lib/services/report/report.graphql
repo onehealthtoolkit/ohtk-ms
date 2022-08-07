@@ -51,10 +51,12 @@ query GetReport($id: ID!) {
     coverImage {
       id
       file
+      thumbnail
     }
     images {
       id
       file
+      thumbnail
     }
     reportedBy {
       firstName

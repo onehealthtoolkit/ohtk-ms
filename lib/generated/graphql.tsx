@@ -953,6 +953,7 @@ export type CommentAttachmentType = {
   deletedAt?: Maybe<Scalars["DateTime"]>;
   file: Scalars["String"];
   id: Scalars["ID"];
+  thumbnail?: Maybe<Scalars["String"]>;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -1052,6 +1053,7 @@ export type ImageType = {
   id: Scalars["UUID"];
   incidentreportSet: Array<IncidentReportType>;
   reportId: Scalars["UUID"];
+  thumbnail?: Maybe<Scalars["String"]>;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -2205,11 +2207,17 @@ export type GetCaseQuery = {
         id: any;
         name: string;
       };
-      coverImage?: { __typename?: "ImageType"; id: any; file: string } | null;
+      coverImage?: {
+        __typename?: "ImageType";
+        id: any;
+        file: string;
+        thumbnail?: string | null;
+      } | null;
       images?: Array<{
         __typename?: "ImageType";
         id: any;
         file: string;
+        thumbnail?: string | null;
       } | null> | null;
       reportedBy?: {
         __typename?: "UserType";
@@ -2487,6 +2495,7 @@ export type QueryCommentsQuery = {
       __typename?: "CommentAttachmentType";
       id: string;
       file: string;
+      thumbnail?: string | null;
       createdAt: any;
     } | null> | null;
     createdBy: {
@@ -3040,11 +3049,17 @@ export type GetReportQuery = {
       id: any;
       name: string;
     };
-    coverImage?: { __typename?: "ImageType"; id: any; file: string } | null;
+    coverImage?: {
+      __typename?: "ImageType";
+      id: any;
+      file: string;
+      thumbnail?: string | null;
+    } | null;
     images?: Array<{
       __typename?: "ImageType";
       id: any;
       file: string;
+      thumbnail?: string | null;
     } | null> | null;
     reportedBy?: {
       __typename?: "UserType";
@@ -5176,6 +5191,10 @@ export const GetCaseDocument = {
                               kind: "Field",
                               name: { kind: "Name", value: "file" },
                             },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "thumbnail" },
+                            },
                           ],
                         },
                       },
@@ -5192,6 +5211,10 @@ export const GetCaseDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "file" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "thumbnail" },
                             },
                           ],
                         },
@@ -6429,6 +6452,10 @@ export const QueryCommentsDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "file" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "thumbnail" },
+                      },
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "createdAt" },
@@ -9104,6 +9131,10 @@ export const GetReportDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "file" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "thumbnail" },
+                      },
                     ],
                   },
                 },
@@ -9115,6 +9146,10 @@ export const GetReportDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "file" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "thumbnail" },
+                      },
                     ],
                   },
                 },

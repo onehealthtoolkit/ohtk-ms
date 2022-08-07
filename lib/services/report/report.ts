@@ -12,6 +12,7 @@ export type Report = {
 export type Image = {
   id: any;
   file: string;
+  thumbnail: string;
 };
 
 export type ReportDetail = Report & {

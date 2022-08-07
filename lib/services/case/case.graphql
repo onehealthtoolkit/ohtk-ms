@@ -60,10 +60,12 @@ query GetCase($id: UUID!) {
       coverImage {
         id
         file
+        thumbnail
       }
       images {
         id
         file
+        thumbnail
       }
       reportedBy {
         firstName

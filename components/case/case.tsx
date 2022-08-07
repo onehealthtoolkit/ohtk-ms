@@ -56,7 +56,7 @@ const ReportImage = observer(({ viewModel }: { viewModel: CaseViewModel }) => {
           <a href="#">
             <img
               className="w-40"
-              src={`${publicRuntimeConfig.serverUrl}/${image.file}`}
+              src={`${publicRuntimeConfig.serverUrl}/${image.thumbnail}`}
               alt=""
             />
           </a>

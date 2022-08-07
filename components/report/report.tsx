@@ -110,7 +110,7 @@ const Report = (props: { id: string }) => {
                     <a href="#">
                       <img
                         className="w-40"
-                        src={`${publicRuntimeConfig.serverUrl}/${image.file}`}
+                        src={`${publicRuntimeConfig.serverUrl}/${image.thumbnail}`}
                         alt=""
                       />
                     </a>

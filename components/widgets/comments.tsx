@@ -183,7 +183,7 @@ const Attachment = ({ file: attachment }: { file: Attachment }) => {
   return (
     <div className="border border-gray-300 p-1 h-24 w-24 flex flex-row justify-center items-center">
       <img
-        src={`${publicRuntimeConfig.serverUrl}/${attachment.file}`}
+        src={`${publicRuntimeConfig.serverUrl}/${attachment.thumbnail}`}
         className="w-full h-full object-cover"
         alt={attachment.file}
       />
