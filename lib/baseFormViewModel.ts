@@ -1,5 +1,11 @@
 import { ModalDialogViewModel } from "lib/dialogViewModel";
-import { computed, makeObservable, observable, ObservableMap } from "mobx";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  ObservableMap,
+} from "mobx";
 
 interface FieldErrors {
   [key: string]: string;
@@ -24,7 +30,14 @@ export class BaseFormViewModel {
       isSubmitting: computed,
       isLoading: computed,
       isValid: computed,
+      clearError: action,
     });
+  }
+  public clearError(name: string) {
+    delete this.fieldErrors[name];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
   }
 
   public get fieldErrors(): FieldErrors {

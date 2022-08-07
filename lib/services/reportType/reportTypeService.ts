@@ -22,28 +22,36 @@ export interface IReportTypeService extends IService {
     offset: number,
     searchText: string
   ): Promise<QueryResult<ReportType[]>>;
+
   fetchReportTypeSelections(
     limit: number,
     offset: number,
     searchText: string
   ): Promise<QueryResult<ReportType[]>>;
+
   fetchMyReportTypes(): Promise<ReportType[]>;
+
   getReportType(id: string): Promise<GetResult<ReportType>>;
+
   createReportType(
     name: string,
     categoryId: number,
     definition: string,
     ordering: number,
-    stateDefinitionId?: number
+    stateDefinitionId?: number,
+    rendererDataTemplate?: string
   ): Promise<SaveResult<ReportType>>;
+
   updateReportType(
     id: string,
     name: string,
     categoryId: number,
     definition: string,
     ordering: number,
-    stateDefinitionId?: number
+    stateDefinitionId?: number,
+    rendererDataTemplate?: string
   ): Promise<SaveResult<ReportType>>;
+
   deleteReportType(id: string): Promise<DeleteResult>;
 }
 
@@ -169,6 +177,9 @@ export class ReportTypeService implements IReportTypeService {
           ? +reportType.stateDefinition?.id
           : undefined,
         stateDefinitionName: reportType.stateDefinition?.name,
+        rendererDataTemplate: reportType.rendererDataTemplate
+          ? reportType.rendererDataTemplate
+          : undefined, // get rid of null
       };
     }
     return {
@@ -181,7 +192,8 @@ export class ReportTypeService implements IReportTypeService {
     categoryId: number,
     definition: string,
     ordering: number,
-    stateDefinitionId?: number
+    stateDefinitionId?: number,
+    rendererDataTemplate?: string
   ): Promise<SaveResult<ReportType>> {
     const createResult = await this.client.mutate({
       mutation: ReportTypeCreateDocument,
@@ -191,6 +203,7 @@ export class ReportTypeService implements IReportTypeService {
         definition: definition,
         ordering: ordering,
         stateDefinitionId: stateDefinitionId || undefined,
+        rendererDataTemplate: rendererDataTemplate,
       },
       refetchQueries: [
         {
@@ -233,7 +246,8 @@ export class ReportTypeService implements IReportTypeService {
     categoryId: number,
     definition: string,
     ordering: number,
-    stateDefinitionId?: number
+    stateDefinitionId?: number,
+    rendererDataTemplate?: string
   ): Promise<SaveResult<ReportType>> {
     const updateResult = await this.client.mutate({
       mutation: ReportTypeUpdateDocument,
@@ -244,6 +258,7 @@ export class ReportTypeService implements IReportTypeService {
         definition: definition,
         ordering: ordering,
         stateDefinitionId: stateDefinitionId || undefined,
+        rendererDataTemplate,
       },
       refetchQueries: [
         {

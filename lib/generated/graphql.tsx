@@ -1259,6 +1259,7 @@ export type MutationAdminReportTypeCreateArgs = {
   definition: Scalars["String"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
+  rendererDataTemplate?: InputMaybe<Scalars["String"]>;
   stateDefinitionId?: InputMaybe<Scalars["Int"]>;
 };
 
@@ -1268,6 +1269,7 @@ export type MutationAdminReportTypeUpdateArgs = {
   id: Scalars["ID"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
+  rendererDataTemplate?: InputMaybe<Scalars["String"]>;
   stateDefinitionId?: InputMaybe<Scalars["Int"]>;
 };
 
@@ -3231,6 +3233,7 @@ export type ReportTypeCreateMutationVariables = Exact<{
   name: Scalars["String"];
   ordering: Scalars["Int"];
   stateDefinitionId?: InputMaybe<Scalars["Int"]>;
+  rendererDataTemplate?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type ReportTypeCreateMutation = {
@@ -3259,6 +3262,7 @@ export type ReportTypeUpdateMutationVariables = Exact<{
   name: Scalars["String"];
   ordering: Scalars["Int"];
   stateDefinitionId?: InputMaybe<Scalars["Int"]>;
+  rendererDataTemplate?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type ReportTypeUpdateMutation = {
@@ -3282,6 +3286,7 @@ export type ReportTypeUpdateMutation = {
             id: any;
             name: string;
             definition?: any | null;
+            rendererDataTemplate?: string | null;
             ordering: number;
             category: {
               __typename?: "AdminCategoryCreateSuccess";
@@ -3310,6 +3315,7 @@ export type GetReportTypeQuery = {
     id: any;
     name: string;
     definition?: any | null;
+    rendererDataTemplate?: string | null;
     ordering: number;
     category: {
       __typename?: "AdminCategoryCreateSuccess";
@@ -10080,6 +10086,14 @@ export const ReportTypeCreateDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "rendererDataTemplate" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -10126,6 +10140,14 @@ export const ReportTypeCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "stateDefinitionId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "rendererDataTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "rendererDataTemplate" },
                 },
               },
             ],
@@ -10286,6 +10308,14 @@ export const ReportTypeUpdateDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "rendererDataTemplate" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -10340,6 +10370,14 @@ export const ReportTypeUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "stateDefinitionId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "rendererDataTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "rendererDataTemplate" },
                 },
               },
             ],
@@ -10421,6 +10459,13 @@ export const ReportTypeUpdateDocument = {
                                           name: { kind: "Name", value: "name" },
                                         },
                                       ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "rendererDataTemplate",
                                     },
                                   },
                                   {
@@ -10543,6 +10588,10 @@ export const GetReportTypeDocument = {
                       { kind: "Field", name: { kind: "Name", value: "name" } },
                     ],
                   },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "rendererDataTemplate" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "ordering" } },
               ],

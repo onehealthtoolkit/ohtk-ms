@@ -7,4 +7,5 @@ export type ReportType = {
   ordering: number;
   stateDefinitionId?: number;
   stateDefinitionName?: string;
+  rendererDataTemplate?: string;
 };

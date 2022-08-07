@@ -6,7 +6,7 @@ export class ReportTypeCreateViewModel extends ReportTypeViewModel {
   public _save(): Promise<SaveResult<ReportType>> {
     return this.reportTypeService.createReportType(
       this.name,
-      this.categoryId,
+      this.categoryId!,
       this.definition,
       this.ordering,
       this.stateDefinitionId

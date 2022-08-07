@@ -9,10 +9,11 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   reportTypeService: IReportTypeService;
 
   _name: string = "";
-  _categoryId: number = 0;
+  _categoryId?: number = undefined;
   _definition: string = "";
   _stateDefinitionId: number = 0;
   _ordering: number = 0;
+  _rendererDataTemplate: string = "";
 
   _isFormBuilderMode = false;
   formViewModel = new FormViewModel();
@@ -28,6 +29,8 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
       definition: computed,
       _stateDefinitionId: observable,
       stateDefinitionId: computed,
+      _rendererDataTemplate: observable,
+      rendererDataTemplate: computed,
       _ordering: observable,
       ordering: computed,
       save: action,
@@ -51,15 +54,13 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
     }
   }
 
-  public get categoryId(): number {
+  public get categoryId(): number | undefined {
     return this._categoryId;
   }
-  public set categoryId(value: number) {
+  public set categoryId(value: number | undefined) {
+    console.log("who set this", value);
     this._categoryId = value;
-    delete this.fieldErrors["categoryId"];
-    if (this.submitError.length > 0) {
-      this.submitError = "";
-    }
+    this.clearError("categoryId");
   }
 
   public get definition(): string {
@@ -67,10 +68,7 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   }
   public set definition(value: string) {
     this._definition = value;
-    delete this.fieldErrors["definition"];
-    if (this.submitError.length > 0) {
-      this.submitError = "";
-    }
+    this.clearError("definition");
   }
 
   public parseDefinition(value: string): boolean {
@@ -93,10 +91,16 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   }
   public set stateDefinitionId(value: number) {
     this._stateDefinitionId = value;
-    delete this.fieldErrors["stateDefinitionId"];
-    if (this.submitError.length > 0) {
-      this.submitError = "";
-    }
+    this.clearError("stateDefinitionId");
+  }
+
+  public get rendererDataTemplate(): string {
+    return this._rendererDataTemplate;
+  }
+
+  public set rendererDataTemplate(value: string) {
+    this._rendererDataTemplate = value;
+    this.clearError("rendererDataTemplate");
   }
 
   public get ordering(): number {
@@ -104,10 +108,7 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   }
   public set ordering(value: number) {
     this._ordering = value;
-    delete this.fieldErrors["ordering"];
-    if (this.submitError.length > 0) {
-      this.submitError = "";
-    }
+    this.clearError("ordering");
   }
 
   public abstract _save(): Promise<SaveResult<ReportType>>;
@@ -155,10 +156,6 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
       this.fieldErrors["categoryId"] = "this field is required";
     }
 
-    if (!this.ordering) {
-      isValid = false;
-      this.fieldErrors["ordering"] = "this field is required";
-    }
     return isValid;
   }
 

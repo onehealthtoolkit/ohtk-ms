@@ -169,6 +169,23 @@ const ReportTypeUpdateForm = () => {
                   <ErrorText>{viewModel.fieldErrors.categoryId}</ErrorText>
                 </Field>
                 <Field $size="half">
+                  <Label htmlFor="name">Description Template</Label>
+                  <TextArea
+                    id="rendererDataTemplate"
+                    placeholder="description template"
+                    rows={5}
+                    onChange={evt =>
+                      (viewModel.rendererDataTemplate = evt.target.value)
+                    }
+                    disabled={viewModel.isSubmitting}
+                    value={viewModel.rendererDataTemplate}
+                  />
+                  <ErrorText>
+                    {viewModel.fieldErrors.rendererDataTemplate}
+                  </ErrorText>
+                </Field>
+
+                <Field $size="half">
                   <Label htmlFor="stateDefinitionId">State definition</Label>
                   <Select
                     id="stateDefinitionId"
@@ -196,9 +213,11 @@ const ReportTypeUpdateForm = () => {
                     id="ordering"
                     type="number"
                     placeholder="Ordering"
-                    onChange={evt => (viewModel.ordering = +evt.target.value)}
+                    onChange={evt =>
+                      (viewModel.ordering = parseInt(evt.target.value))
+                    }
                     disabled={viewModel.isSubmitting}
-                    defaultValue={viewModel.ordering}
+                    value={viewModel.ordering}
                     required
                   />
                   <ErrorText>{viewModel.fieldErrors.ordering}</ErrorText>

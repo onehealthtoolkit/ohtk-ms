@@ -15,6 +15,7 @@ import {
   Select,
   TabBar,
   TabItem,
+  TextArea,
   TextInput,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
@@ -54,7 +55,10 @@ const ReportTypeCreate = () => {
         <TabItem
           id="detail"
           active={!viewModel.isFormBuilderMode}
-          onTab={() => (viewModel.isFormBuilderMode = false)}
+          onTab={() => {
+            viewModel.definition = viewModel.formViewModel.jsonString;
+            viewModel.isFormBuilderMode = false;
+          }}
         >
           {({ activeCss }) => (
             <>
@@ -115,6 +119,7 @@ const ReportTypeCreate = () => {
                   type="text"
                   placeholder="Name"
                   onChange={evt => (viewModel.name = evt.target.value)}
+                  value={viewModel.name}
                   disabled={isSubmitting}
                   required
                 />
@@ -122,12 +127,14 @@ const ReportTypeCreate = () => {
               </Field>
               <Field $size="half">
                 <Label htmlFor="name">Definition</Label>
-                <TextInput
+                <TextArea
                   id="definition"
-                  type="text"
+                  rows={30}
                   placeholder="Definition"
+                  value={viewModel.definition}
                   onChange={evt => (viewModel.definition = evt.target.value)}
                   disabled={isSubmitting}
+                  required
                 />
                 <ErrorText>{errors.definition}</ErrorText>
               </Field>
@@ -136,16 +143,18 @@ const ReportTypeCreate = () => {
                 <Select
                   id="category"
                   placeholder="Category"
+                  value={viewModel.categoryId}
                   onChange={evt => {
-                    viewModel.categoryId = +evt.target.value;
+                    if (evt.target.value) {
+                      viewModel.categoryId = parseInt(evt.target.value);
+                    } else {
+                      viewModel.categoryId = undefined;
+                    }
                   }}
                   disabled={isSubmitting}
-                  defaultValue=""
                   required
                 >
-                  <option disabled value={""}>
-                    Select item ...
-                  </option>
+                  <option value={undefined}>Select item ...</option>
                   {categories?.map(item => (
                     <option key={`option-${item.id}`} value={item.id}>
                       {item.name}
@@ -155,6 +164,22 @@ const ReportTypeCreate = () => {
                 <ErrorText>{errors.categoryId}</ErrorText>
               </Field>
               <Field $size="half">
+                <Label htmlFor="name">Description Template</Label>
+                <TextArea
+                  id="rendererDataTemplate"
+                  placeholder="description template"
+                  rows={5}
+                  onChange={evt =>
+                    (viewModel.rendererDataTemplate = evt.target.value)
+                  }
+                  disabled={viewModel.isSubmitting}
+                  value={viewModel.rendererDataTemplate}
+                />
+                <ErrorText>
+                  {viewModel.fieldErrors.rendererDataTemplate}
+                </ErrorText>
+              </Field>
+              <Field $size="half">
                 <Label htmlFor="stateDefinitionId">State definition</Label>
                 <Select
                   id="stateDefinitionId"
@@ -162,7 +187,7 @@ const ReportTypeCreate = () => {
                   onChange={evt =>
                     (viewModel.stateDefinitionId = +evt.target.value)
                   }
-                  defaultValue={viewModel.stateDefinitionId}
+                  value={viewModel.stateDefinitionId}
                   disabled={viewModel.isSubmitting}
                 >
                   <option value={0}>Select item ...</option>
@@ -182,6 +207,7 @@ const ReportTypeCreate = () => {
                   placeholder="Ordering"
                   onChange={evt => (viewModel.ordering = +evt.target.value)}
                   disabled={isSubmitting}
+                  value={viewModel.ordering}
                   required
                 />
                 <ErrorText>{errors.ordering}</ErrorText>

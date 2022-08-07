@@ -9822,6 +9822,18 @@
                 "deprecationReason": null
               },
               {
+                "name": "rendererDataTemplate",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": "null",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
                 "name": "stateDefinitionId",
                 "description": null,
                 "type": {
@@ -9923,6 +9935,18 @@
                   }
                 },
                 "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "rendererDataTemplate",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": "null",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
