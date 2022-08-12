@@ -17,9 +17,11 @@ import {
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
+import { useTranslation } from "react-i18next";
 
 const StateDefinitionCreate = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () => new StateDefinitionCreateViewModel(services.stateDefinitionService)
@@ -39,11 +41,11 @@ const StateDefinitionCreate = () => {
     >
       <FieldGroup>
         <Field $size="half">
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
           <TextInput
             id="name"
             type="text"
-            placeholder="Name"
+            placeholder={t("form.placeholder.name", "Name")}
             onChange={evt => (viewModel.name = evt.target.value)}
             disabled={isSubmitting}
             required
@@ -56,7 +58,7 @@ const StateDefinitionCreate = () => {
             value="True"
             onChange={evt => (viewModel.isDefault = evt.target.checked)}
             disabled={isSubmitting}
-            label="Default"
+            label={t("form.label.default", "Default")}
           />
         </Field>
       </FieldGroup>
@@ -65,10 +67,10 @@ const StateDefinitionCreate = () => {
       )}
       <FormAction>
         <SaveButton type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <Spinner /> : "บันทึก"}
+          {isSubmitting ? <Spinner /> : t("form.button.save", "Save")}
         </SaveButton>
         <CancelButton type="button" onClick={() => router.back()}>
-          Cancel
+          {t("form.button.cancel", "Cancel")}
         </CancelButton>
       </FormAction>
     </Form>

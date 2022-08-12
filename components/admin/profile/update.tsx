@@ -19,10 +19,12 @@ import useStore from "lib/store";
 import { Observer } from "mobx-react";
 import getConfig from "next/config";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const { publicRuntimeConfig } = getConfig();
 
 const ProfileUpdate = () => {
+  const { t } = useTranslation();
   const store = useStore();
   const services = useServices();
   const [viewModel] = useState(() =>
@@ -67,7 +69,7 @@ const ProfileUpdate = () => {
                   htmlFor="image"
                   className="border text-sm p-2 mt-2 rounded bg-blue-100 hover:border-blue-400 cursor-pointer"
                 >
-                  Change picture
+                  {t("form.label.changePicture", "Change picture")}
                 </label>
                 <input
                   id="image"
@@ -85,27 +87,36 @@ const ProfileUpdate = () => {
                 />
                 <ErrorText>{viewModel.fieldErrors.image}</ErrorText>
                 <p className="p-4 text-lg font-bold text-gray-600">
-                  Name {store.me?.firstName} {store.me?.lastName}
+                  {t("form.label.name", "Name")} {store.me?.firstName}{" "}
+                  {store.me?.lastName}
                 </p>
                 <p className="p-4 text-lg font-bold text-gray-600">
-                  Authority {store.me?.authorityName}
+                  {t("form.label.authority", "Authority")}{" "}
+                  {store.me?.authorityName}
                 </p>
               </Field>
               <Field $size="half" className="text-lg">
-                <Label htmlFor="name">Username</Label>
+                <Label htmlFor="name">
+                  {t("form.label.username", "Usernamee")}
+                </Label>
                 <span>{store.me?.username}</span>
               </Field>
               <Field $size="half">
                 <label className="block border-b border-gray-400 text-gray-600 font-bold my-6 py-2">
-                  Change password
+                  {t("form.label.changePassword", "Change password")}
                 </label>
               </Field>
               <Field $size="half">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">
+                  {t("form.label.newPassword", "Password")}
+                </Label>
                 <TextInput
                   id="password"
                   type="password"
-                  placeholder="New password"
+                  placeholder={t(
+                    "form.placeholder.newPassword",
+                    "New password"
+                  )}
                   onChange={evt => (viewModel.password = evt.target.value)}
                   disabled={viewModel.isSubmitting}
                   value={viewModel.password}
@@ -113,11 +124,16 @@ const ProfileUpdate = () => {
                 <ErrorText>{viewModel.fieldErrors.password}</ErrorText>
               </Field>
               <Field $size="half">
-                <Label htmlFor="confirmPassword">Confirm password</Label>
+                <Label htmlFor="confirmPassword">
+                  {t("form.label.confirmPassword", "Confirm password")}
+                </Label>
                 <TextInput
                   id="confirmPassword"
                   type="password"
-                  placeholder="Confirm password"
+                  placeholder={t(
+                    "form.placeholder.confirmPassword",
+                    "Confirm password"
+                  )}
                   onChange={evt =>
                     (viewModel.confirmPassword = evt.target.value)
                   }
@@ -132,7 +148,11 @@ const ProfileUpdate = () => {
             )}
             <FormAction>
               <SaveButton type="submit" disabled={viewModel.isSubmitting}>
-                {viewModel.isSubmitting ? <Spinner /> : "Save"}
+                {viewModel.isSubmitting ? (
+                  <Spinner />
+                ) : (
+                  t("form.button.save", "Save")
+                )}
               </SaveButton>
             </FormAction>
           </Form>

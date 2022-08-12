@@ -1,0 +1,122 @@
+{
+  "breadcrumb": {
+    "dashboard": "Dashboard",
+    "reports": "Reports",
+    "cases": "Cases",
+    "authorities": "Authorities",
+    "users": "Users",
+    "reportCategories": "Report Category",
+    "reportTypes": "Report Type",
+    "tnvitationCodes": "Invitation codesy",
+    "caseDefinitions": "Case Definitions",
+    "stateDefinitions": "State Definitions",
+    "notificationTemplates": "Notification Templates",
+    "notifications": "Notifications",
+    "reporterNotifications": "Reporter Notifications",
+    "profile": "Profile",
+    "create": "Create",
+    "update": "Update",
+    "view": "View"
+  },
+  "filter": {
+    "searchButton": "Search",
+    "resetButton": "Reset",
+    "placeholder": "Search"
+  },
+  "table": {
+    "id": "ID",
+    "code": "Code",
+    "name": "Name",
+    "action": "Action",
+    "totalItems": "Total <1>{{count}} items</1>",
+    "paginate": "Page {{currentPages}} of {{numberOfPages}} <1>[{{totalCount}} records]</1>"
+  },
+  "form": {
+    "label": {
+      "id": "ID",
+      "code": "Code",
+      "name": "Name",
+      "description": "Description",
+      "ordering": "Ordering",
+      "username": "username",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "telephone": "Telephone",
+      "inherits": "Inherits",
+      "area": "Area",
+      "category": "Category",
+      "reportType": "Report Type",
+      "condition": "condition",
+      "selectItem": "Select item ...",
+      "fromDate": "From Date",
+      "throughDate": "Through Date",
+      "role": "Role",
+      "transition": "Transition",
+      "titleTemplate": "Title Template",
+      "bodyTemplate": "Body Template",
+      "type": "Type",
+      "icon": "Icon",
+      "currentIcon": "Current Icon",
+      "template": "Template",
+      "stateDefinition": "stateDefinition",
+      "default": "Default",
+      "isStartState": "Is Start State",
+      "isStopState": "Is Stop State",
+      "fromStep": "From Step",
+      "toStep": "To Step",
+      "formDefinition": "Form Definition",
+      "changePicture": "Change picture",
+      "authority": "Authority",
+      "changePassword": "Change Password",
+      "newPassword": "Password",
+      "confirmPassword": "Confirm password",
+      "to": "To",
+      "action": "Action"
+    },
+    "placeholder": {
+      "code": "Code",
+      "name": "Name",
+      "description": "Description",
+      "ordering": "Ordering",
+      "username": "username",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "telephone": "Telephone",
+      "inherits": "Inherits",
+      "area": "Area",
+      "category": "Category",
+      "reportType": "Report Type",
+      "condition": "condition",
+      "fromDate": "From Date",
+      "throughDate": "Through Date",
+      "role": "Role",
+      "transition": "Transition",
+      "titleTemplate": "Title Template",
+      "bodyTemplate": "Body Template",
+      "type": "Type",
+      "icon": "Icon",
+      "template": "Template",
+      "stateDefinition": "stateDefinition",
+      "formDefinition": "Form Definition",
+      "newPassword": "Password",
+      "confirmPassword": "Confirm password",
+      "to": "To"
+    },
+    "button": {
+      "delete": "Delete",
+      "add": "Add",
+      "save": "Save",
+      "cancel": "Cancel"
+    }
+  },
+  "dialog": {
+    "title": {
+      "confirmDelete": "Confirm delete"
+    },
+    "content": {
+      "confirmDelete": "Are you sure ?"
+    }
+  }
+}

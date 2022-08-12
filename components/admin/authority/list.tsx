@@ -15,6 +15,7 @@ import { Authority } from "lib/services/authority";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { ParsedUrlQuery } from "querystring";
 import TotalItem from "components/widgets/table/totalItem";
+import { useTranslation } from "react-i18next";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -26,6 +27,7 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
 const AuthorityList = () => {
   const router = useRouter();
   const { authorityService } = useServices();
+  const { t } = useTranslation();
 
   const { setUrl, query, resetUrl } = useUrlParams();
 
@@ -81,15 +83,15 @@ const AuthorityList = () => {
           <Table
             columns={[
               {
-                label: "Id",
+                label: t("form.label.id", "Id"),
                 get: record => record.id,
               },
               {
-                label: "Code",
+                label: t("form.label.code", "Code"),
                 get: record => record.code,
               },
               {
-                label: "Name",
+                label: t("form.label.name", "Name"),
                 get: record => record.name,
               },
             ]}
@@ -115,8 +117,8 @@ const AuthorityList = () => {
 
           <ConfirmDialog
             store={viewModel.dialog("confirmDelete")}
-            title="Confirm delete"
-            content="Are you sure?"
+            title={t("dialog.title.confirmDelete", "Confirm delete")}
+            content={t("dialog.content.confirmDelete", "Are you sure?")}
             onYes={(record: Authority) => viewModel.delete(record.id)}
             onNo={() => viewModel.dialog("confirmDelete")?.close()}
           />

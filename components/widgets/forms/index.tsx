@@ -6,6 +6,7 @@ import tw from "tailwind-styled-components";
 import dynamic from "next/dynamic";
 import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
+import { useTranslation } from "react-i18next";
 
 export * from "./tabs";
 
@@ -14,10 +15,12 @@ export const AreaFieldNoSSR = dynamic(() => import("./areaField"), {
   ssr: false,
 });
 
-export const AddButton = forwardRef(function addButton(
+export const AddButton = forwardRef(function AddButton(
   props: React.PropsWithoutRef<{}>,
   ref: React.Ref<HTMLAnchorElement>
 ) {
+  const { t } = useTranslation();
+
   return (
     <a
       ref={ref}
@@ -38,7 +41,7 @@ export const AddButton = forwardRef(function addButton(
       "
     >
       <PlusIcon className="h-5 w-5 text-white mr-2" />
-      <span>Add</span>
+      <span>{t("form.button.add", "Add")}</span>
     </a>
   );
 });

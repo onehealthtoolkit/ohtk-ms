@@ -5,9 +5,11 @@ import Protect from "components/auth/protect";
 import Breadcrumb from "components/layout/breadcrumb";
 import { useRouter } from "next/router";
 import Spinner from "components/widgets/spinner";
+import { useTranslation } from "react-i18next";
 
 const AdminCaseDefinitionUpdatePage: NextPage = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { id } = router.query;
   if (!id) {
     return <Spinner />;
@@ -17,8 +19,11 @@ const AdminCaseDefinitionUpdatePage: NextPage = () => {
       <Layout>
         <Breadcrumb
           crumbs={[
-            { text: "Case Definitions", href: "/admin/case_definitions" },
-            { text: "Update" },
+            {
+              text: t("breadcrumb.caseDefinitions", "Case Definitions"),
+              href: "/admin/case_definitions",
+            },
+            { text: t("breadcrumb.update", "Update") },
           ]}
         />
         <CaseDefinitionUpdate />

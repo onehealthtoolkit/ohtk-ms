@@ -9,7 +9,9 @@ import { Me, ProfileUpdate } from "lib/services/profile/me";
 
 export interface IProfileService extends IService {
   fetchMe(): Promise<Me>;
+
   uploadAvatar(image: File): Promise<SaveResult<ProfileUpdate>>;
+
   changePassword(newPassword: string): Promise<SaveResult<ProfileUpdate>>;
 }
 

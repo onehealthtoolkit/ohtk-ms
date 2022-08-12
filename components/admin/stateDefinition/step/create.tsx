@@ -18,9 +18,11 @@ import {
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import Breadcrumb from "components/layout/breadcrumb";
+import { useTranslation } from "react-i18next";
 
 const StateStepCreate = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -59,11 +61,11 @@ const StateStepCreate = () => {
       >
         <FieldGroup>
           <Field $size="half">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
             <TextInput
               id="name"
               type="text"
-              placeholder="Name"
+              placeholder={t("form.placeholder.name", "Name")}
               onChange={evt => (viewModel.name = evt.target.value)}
               disabled={isSubmitting}
             />
@@ -75,7 +77,7 @@ const StateStepCreate = () => {
               value="True"
               onChange={evt => (viewModel.isStartState = evt.target.checked)}
               disabled={isSubmitting}
-              label="Is Start State"
+              label={t("form.label.isStartState", "Is Start State")}
             />
           </Field>
           <Field $size="half">
@@ -84,7 +86,7 @@ const StateStepCreate = () => {
               value="True"
               onChange={evt => (viewModel.isStopState = evt.target.checked)}
               disabled={isSubmitting}
-              label="Is Stop State"
+              label={t("form.label.isStopState", "Is Stop State")}
             />
           </Field>
         </FieldGroup>
@@ -93,10 +95,10 @@ const StateStepCreate = () => {
         )}
         <FormAction>
           <SaveButton type="submit" disabled={isSubmitting}>
-            {isSubmitting ? <Spinner /> : "บันทึก"}
+            {isSubmitting ? <Spinner /> : t("form.button.save", "Save")}
           </SaveButton>
           <CancelButton type="button" onClick={() => router.back()}>
-            Cancel
+            {t("form.button.cancel", "Cancel")}
           </CancelButton>
         </FormAction>
       </Form>

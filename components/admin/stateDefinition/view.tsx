@@ -6,9 +6,11 @@ import useServices from "lib/services/provider";
 import { StateDefinitionViewViewModel } from "./viewViewModel";
 import CheckIcon from "@heroicons/react/solid/CheckIcon";
 import Table from "components/widgets/table";
+import { useTranslation } from "react-i18next";
 
 const StateDefinitionView = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -32,7 +34,7 @@ const StateDefinitionView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Id
+                  {t("form.label.id", "Id")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.id}</td>
               </tr>
@@ -41,7 +43,7 @@ const StateDefinitionView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Name
+                  {t("form.label.name", "Name")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.name}</td>
               </tr>
@@ -50,7 +52,7 @@ const StateDefinitionView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Default
+                  {t("form.label.default", "Default")}
                 </th>
                 <td className="px-6 py-4">
                   {viewModel.data.isDefault && (
@@ -68,11 +70,11 @@ const StateDefinitionView = () => {
         <Table
           columns={[
             {
-              label: "Id",
+              label: t("form.label.id", "Id"),
               get: record => record.id,
             },
             {
-              label: "Name",
+              label: t("form.label.name", "Name"),
               get: record => record.name,
             },
             {
@@ -105,7 +107,7 @@ const StateDefinitionView = () => {
         <Table
           columns={[
             {
-              label: "Id",
+              label: t("form.label.id", "Id"),
               get: record => record.id,
             },
             {

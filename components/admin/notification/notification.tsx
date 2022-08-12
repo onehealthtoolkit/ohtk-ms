@@ -5,10 +5,12 @@ import useMyReportTypes from "lib/hooks/reportTypes/myReportTypes";
 import useServices from "lib/services/provider";
 import { observer } from "mobx-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import NotificationEdit from "./notificationEdit";
 import { NotificationViewModel } from "./notificationViewModel";
 
 const Notification = () => {
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () => new NotificationViewModel(services.notificationService)
@@ -80,9 +82,11 @@ const Notification = () => {
           <div className="flex-1">
             <div className="ml-2 overflow-x-auto relative shadow-md sm:rounded-lg">
               <div className="w-full md:w-auto grid gap-6 mb-1 grid-cols-3  font-bold text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <div className="py-3 px-6 ">Name</div>
-                <div className="py-3 px-6 ">To</div>
-                <div className="py-3 px-6 ">Action</div>
+                <div className="py-3 px-6 ">{t("form.label.name", "Name")}</div>
+                <div className="py-3 px-6 ">{t("form.label.to", "To")}</div>
+                <div className="py-3 px-6 ">
+                  {t("form.label.action", "Action")}
+                </div>
               </div>
               {viewModel.data?.map(item => (
                 <NotificationEdit

@@ -16,9 +16,11 @@ import {
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import { UserCreateViewModel } from "./createViewModel";
+import { useTranslation } from "react-i18next";
 
 const UserCreate = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () => new UserCreateViewModel(services.userService)
@@ -37,11 +39,13 @@ const UserCreate = () => {
     >
       <FieldGroup>
         <Field $size="half">
-          <Label htmlFor="userName">User Name</Label>
+          <Label htmlFor="userName">
+            {t("form.label.username", "User Name")}
+          </Label>
           <TextInput
             id="userName"
             type="text"
-            placeholder="User Name"
+            placeholder={t("form.placeholder.username", "User Name")}
             onChange={evt => (viewModel.username = evt.target.value)}
             disabled={isSubmitting}
             required
@@ -49,11 +53,13 @@ const UserCreate = () => {
           <ErrorText>{errors.username}</ErrorText>
         </Field>
         <Field $size="half">
-          <Label htmlFor="firstName">First Name</Label>
+          <Label htmlFor="firstName">
+            {t("form.label.firstName", "First Name")}
+          </Label>
           <TextInput
             id="firstName"
             type="text"
-            placeholder="First Name"
+            placeholder={t("form.placeholder.firstName", "First Name")}
             onChange={evt => (viewModel.firstName = evt.target.value)}
             disabled={isSubmitting}
             required
@@ -61,11 +67,13 @@ const UserCreate = () => {
           <ErrorText>{errors.firstName}</ErrorText>
         </Field>
         <Field $size="half">
-          <Label htmlFor="lastName">lastName</Label>
+          <Label htmlFor="lastName">
+            {t("form.label.lastName", "Last Name")}
+          </Label>
           <TextInput
             id="lastName"
             type="text"
-            placeholder="Last Name"
+            placeholder={t("form.placeholder.lastName", "Last Name")}
             onChange={evt => (viewModel.lastName = evt.target.value)}
             disabled={isSubmitting}
             required
@@ -73,11 +81,11 @@ const UserCreate = () => {
           <ErrorText>{errors.lastName}</ErrorText>
         </Field>
         <Field $size="half">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">{t("form.label.email", "Email")}</Label>
           <TextInput
             id="email"
             type="text"
-            placeholder="Email"
+            placeholder={t("form.placeholder.email", "Email")}
             onChange={evt => (viewModel.email = evt.target.value)}
             disabled={isSubmitting}
             required
@@ -85,11 +93,13 @@ const UserCreate = () => {
           <ErrorText>{errors.email}</ErrorText>
         </Field>
         <Field $size="half">
-          <Label htmlFor="telephone">Telephone</Label>
+          <Label htmlFor="telephone">
+            {t("form.label.telephone", "Telephone")}
+          </Label>
           <TextInput
             id="telephone"
             type="text"
-            placeholder="Telephone"
+            placeholder={t("form.placeholder.email", "Telephone")}
             onChange={evt => (viewModel.telephone = evt.target.value)}
             disabled={isSubmitting}
           />
@@ -101,10 +111,10 @@ const UserCreate = () => {
       )}
       <FormAction>
         <SaveButton type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <Spinner /> : "บันทึก"}
+          {isSubmitting ? <Spinner /> : t("form.button.save", "Save")}
         </SaveButton>
         <CancelButton type="button" onClick={() => router.back()}>
-          Cancel
+          {t("form.button.cancel", "Cancel")}
         </CancelButton>
       </FormAction>
     </Form>

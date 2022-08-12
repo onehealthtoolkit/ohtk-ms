@@ -4,9 +4,11 @@ import { useRouter } from "next/router";
 import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ReporterNotificationViewViewModel } from "./viewViewModel";
+import { useTranslation } from "react-i18next";
 
 const ReporterNotificationView = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -27,7 +29,7 @@ const ReporterNotificationView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Id
+                  {t("form.label.id", "Id")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.id}</td>
               </tr>
@@ -36,7 +38,7 @@ const ReporterNotificationView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Description
+                  {t("form.label.description", "Description")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.description}</td>
               </tr>
@@ -45,7 +47,7 @@ const ReporterNotificationView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Condition
+                  {t("form.label.condition", "Condition")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.condition}</td>
               </tr>
@@ -54,7 +56,7 @@ const ReporterNotificationView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Template
+                  {t("form.label.template", "Template")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.template}</td>
               </tr>

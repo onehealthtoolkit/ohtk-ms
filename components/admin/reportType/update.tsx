@@ -24,9 +24,11 @@ import useServices from "lib/services/provider";
 import { ReportCategory } from "lib/services/reportCategory";
 import FormBuilder from "components/admin/formBuilder";
 import useStateDefinitions from "lib/hooks/stateDefinitions";
+import { useTranslation } from "react-i18next";
 
 const ReportTypeUpdateForm = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -121,11 +123,11 @@ const ReportTypeUpdateForm = () => {
             ) : (
               <>
                 <Field $size="half">
-                  <Label htmlFor="name">Name</Label>
+                  <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
                   <TextInput
                     id="name"
                     type="text"
-                    placeholder="Name"
+                    placeholder={t("form.placeholder.name", "Name")}
                     onChange={evt => (viewModel.name = evt.target.value)}
                     disabled={viewModel.isSubmitting}
                     value={viewModel.name}
@@ -134,10 +136,12 @@ const ReportTypeUpdateForm = () => {
                   <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
                 </Field>
                 <Field $size="half">
-                  <Label htmlFor="name">Definition</Label>
+                  <Label htmlFor="definition">
+                    {t("form.label.definition", "Definition")}
+                  </Label>
                   <TextArea
                     id="definition"
-                    placeholder="Definition"
+                    placeholder={t("form.placeholder.definition", "Definition")}
                     rows={30}
                     onChange={evt => (viewModel.definition = evt.target.value)}
                     disabled={viewModel.isSubmitting}
@@ -148,10 +152,12 @@ const ReportTypeUpdateForm = () => {
                 </Field>
 
                 <Field $size="half">
-                  <Label htmlFor="category">Category</Label>
+                  <Label htmlFor="category">
+                    {t("form.label.category", "Category")}
+                  </Label>
                   <Select
                     id="category"
-                    placeholder="Category"
+                    placeholder={t("form.placeholder.category", "Category")}
                     onChange={evt => (viewModel.categoryId = +evt.target.value)}
                     disabled={viewModel.isSubmitting}
                     value={viewModel.categoryId}
@@ -189,7 +195,10 @@ const ReportTypeUpdateForm = () => {
                   <Label htmlFor="stateDefinitionId">State definition</Label>
                   <Select
                     id="stateDefinitionId"
-                    placeholder="State definition"
+                    placeholder={t(
+                      "form.placeholder.stateDefinition",
+                      "State definition"
+                    )}
                     onChange={evt =>
                       (viewModel.stateDefinitionId = +evt.target.value)
                     }
@@ -208,7 +217,9 @@ const ReportTypeUpdateForm = () => {
                   </ErrorText>
                 </Field>
                 <Field $size="half">
-                  <Label htmlFor="ordering">Ordering</Label>
+                  <Label htmlFor="ordering">
+                    {t("form.label.ordering", "Ordering")}
+                  </Label>
                   <TextInput
                     id="ordering"
                     type="number"
@@ -230,10 +241,14 @@ const ReportTypeUpdateForm = () => {
           )}
           <FormAction>
             <SaveButton type="submit" disabled={viewModel.isSubmitting}>
-              {viewModel.isSubmitting ? <Spinner /> : "Save"}
+              {viewModel.isSubmitting ? (
+                <Spinner />
+              ) : (
+                t("form.button.save", "Save")
+              )}
             </SaveButton>
             <CancelButton type="button" onClick={() => router.back()}>
-              Cancel
+              {t("form.button.cancel", "Cancel")}
             </CancelButton>
           </FormAction>
         </Form>

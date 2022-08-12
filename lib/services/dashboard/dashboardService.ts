@@ -12,12 +12,15 @@ import { StatData } from "./stat";
 
 export interface IDashboardService extends IService {
   fetchEvent(authorityId: number): Promise<EventData>;
+
   fetchStat(authorityId: number): Promise<StatData>;
+
   fetchSummaryReportByCategory(
     authorityId: number,
     fromDate?: Date,
     toDate?: Date
   ): Promise<SummaryByCategoryData[]>;
+
   fetchSummaryCaseByCategory(
     authorityId: number,
     fromDate?: Date,

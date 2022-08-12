@@ -19,11 +19,13 @@ import {
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import getConfig from "next/config";
+import { useTranslation } from "react-i18next";
 
 const { publicRuntimeConfig } = getConfig();
 
 const ReportCategoryUpdate = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -45,11 +47,11 @@ const ReportCategoryUpdate = () => {
       >
         <FieldGroup>
           <Field $size="half">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
             <TextInput
               id="name"
               type="text"
-              placeholder="Name"
+              placeholder={t("form.placeholder.name", "Name")}
               onChange={evt => (viewModel.name = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.name}
@@ -58,11 +60,13 @@ const ReportCategoryUpdate = () => {
             <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
           </Field>
           <Field $size="half">
-            <Label htmlFor="ordering">Ordering</Label>
+            <Label htmlFor="ordering">
+              {t("form.label.ordering", "Ordering")}
+            </Label>
             <TextInput
               id="ordering"
               type="number"
-              placeholder="Ordering"
+              placeholder={t("form.placeholder.ordering", "Ordering")}
               onChange={evt => (viewModel.ordering = +evt.target.value)}
               disabled={viewModel.isSubmitting}
               defaultValue={viewModel.ordering}
@@ -79,7 +83,7 @@ const ReportCategoryUpdate = () => {
                 }`}
               >
                 <Field $size="half">
-                  <Label>Current Icon</Label>
+                  <Label>{t("form.label.currentIcon", "Current Icon")}</Label>
                   <img
                     width={"32"}
                     height={"32"}
@@ -91,12 +95,12 @@ const ReportCategoryUpdate = () => {
             )}
           </div>
           <Field $size="half">
-            <Label htmlFor="icon">Icon</Label>
+            <Label htmlFor="icon">{t("form.label.icon", "Icon")}</Label>
             <TextInput
               id="icon"
               type="file"
               accept="image/*"
-              placeholder="Icon"
+              placeholder={t("form.placeholder.icon", "Icon")}
               onChange={evt => {
                 if (evt.target.files?.length)
                   viewModel.icon = evt.target.files[0];
@@ -111,10 +115,14 @@ const ReportCategoryUpdate = () => {
         )}
         <FormAction>
           <SaveButton type="submit" disabled={viewModel.isSubmitting}>
-            {viewModel.isSubmitting ? <Spinner /> : "Save"}
+            {viewModel.isSubmitting ? (
+              <Spinner />
+            ) : (
+              t("form.button.save", "Save")
+            )}
           </SaveButton>
           <CancelButton type="button" onClick={() => router.back()}>
-            Cancel
+            {t("form.button.cancel", "Cancel")}
           </CancelButton>
         </FormAction>
       </Form>

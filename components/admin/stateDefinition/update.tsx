@@ -23,9 +23,11 @@ import useServices from "lib/services/provider";
 import { AdjustmentsIcon, CollectionIcon } from "@heroicons/react/solid";
 import { StateStepList } from "./step/list";
 import { StateTransitionList } from "./transition/list";
+import { useTranslation } from "react-i18next";
 
 const StateDefinitionsUpdateForm = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -53,11 +55,11 @@ const StateDefinitionsUpdateForm = () => {
         >
           <FieldGroup>
             <Field $size="half">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
               <TextInput
                 id="name"
                 type="text"
-                placeholder="Name"
+                placeholder={t("form.placeholder.name", "Name")}
                 onChange={evt => (viewModel.name = evt.target.value)}
                 disabled={isSubmitting}
                 defaultValue={viewModel.name}
@@ -72,7 +74,7 @@ const StateDefinitionsUpdateForm = () => {
                 defaultChecked={viewModel.isDefault}
                 onChange={evt => (viewModel.isDefault = evt.target.checked)}
                 disabled={isSubmitting}
-                label="Default"
+                label={t("form.label.default", "Default")}
               />
             </Field>
           </FieldGroup>
@@ -84,10 +86,14 @@ const StateDefinitionsUpdateForm = () => {
           )}
           <FormAction>
             <SaveButton type="submit" disabled={viewModel.isSubmitting}>
-              {viewModel.isSubmitting ? <Spinner /> : "Save"}
+              {viewModel.isSubmitting ? (
+                <Spinner />
+              ) : (
+                t("form.button.save", "Save")
+              )}
             </SaveButton>
             <CancelButton type="button" onClick={() => router.back()}>
-              Cancel
+              {t("form.button.cancel", "Cancel")}
             </CancelButton>
           </FormAction>
         </Form>

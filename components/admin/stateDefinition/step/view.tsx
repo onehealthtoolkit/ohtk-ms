@@ -6,9 +6,11 @@ import useServices from "lib/services/provider";
 import { StateStepViewViewModel } from "./viewViewModel";
 import CheckIcon from "@heroicons/react/solid/CheckIcon";
 import Breadcrumb from "components/layout/breadcrumb";
+import { useTranslation } from "react-i18next";
 
 const StateStepView = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -43,7 +45,7 @@ const StateStepView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Id
+                  {t("form.label.id", "Id")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.id}</td>
               </tr>
@@ -52,7 +54,7 @@ const StateStepView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Name
+                  {t("form.label.name", "Name")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.name}</td>
               </tr>
@@ -61,7 +63,7 @@ const StateStepView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Is StartState
+                  {t("form.label.isStartState", "Is Start State")}
                 </th>
                 <td className="px-6 py-4">
                   {viewModel.data.isStartState && (
@@ -74,7 +76,7 @@ const StateStepView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Is StopState
+                  {t("form.label.isStopState", "Is Stop State")}
                 </th>
                 <td className="px-6 py-4">
                   {viewModel.data.isStopState && (

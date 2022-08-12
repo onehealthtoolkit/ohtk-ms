@@ -5,6 +5,7 @@ import {
 } from "components/widgets/filter";
 import { observer } from "mobx-react";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   nameSearch: string;
@@ -13,6 +14,7 @@ type Props = {
 
 const Filter = ({ nameSearch, onChange }: Props) => {
   const [searchText, setSearchText] = useState(nameSearch);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setSearchText(nameSearch);
@@ -23,7 +25,7 @@ const Filter = ({ nameSearch, onChange }: Props) => {
       <FilterTextInput
         type="text"
         value={searchText}
-        placeholder="search"
+        placeholder={t("filter.placeholder", "search")}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setSearchText(e.target.value)
         }
@@ -33,7 +35,7 @@ const Filter = ({ nameSearch, onChange }: Props) => {
           onChange && onChange(searchText);
         }}
       >
-        Search
+        {t("filter.searchButton", "Search")}
       </SearchButton>
 
       <ResetButton
@@ -41,7 +43,7 @@ const Filter = ({ nameSearch, onChange }: Props) => {
           onChange && onChange("");
         }}
       >
-        Reset
+        {t("filter.resetButton", "Reset")}
       </ResetButton>
     </div>
   );

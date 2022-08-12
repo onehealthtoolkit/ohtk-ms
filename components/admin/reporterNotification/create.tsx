@@ -19,9 +19,11 @@ import {
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import useReportTypes from "lib/hooks/reportTypes";
+import { useTranslation } from "react-i18next";
 
 const ReporterNotificationCreate = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -45,7 +47,9 @@ const ReporterNotificationCreate = () => {
     >
       <FieldGroup>
         <Field $size="half">
-          <Label htmlFor="reportType">Report Type</Label>
+          <Label htmlFor="reportType">
+            {t("form.label.reportType", "Report Type")}
+          </Label>
           <Select
             id="reportType"
             onChange={evt => {
@@ -56,7 +60,7 @@ const ReporterNotificationCreate = () => {
             required
           >
             <option disabled value={""}>
-              Select item ...
+              {t("form.label.selectItem", "Select item ...")}
             </option>
             {reportTypes?.map(item => (
               <option key={`option-${item.id}`} value={item.id}>
@@ -67,11 +71,13 @@ const ReporterNotificationCreate = () => {
           <ErrorText>{errors.reportTypeId}</ErrorText>
         </Field>
         <Field $size="half">
-          <Label htmlFor="name">Description</Label>
+          <Label htmlFor="description">
+            {t("form.label.description", "Description")}
+          </Label>
           <TextInput
             id="description"
             type="text"
-            placeholder="Description"
+            placeholder={t("form.placeholder.description", "Description")}
             onChange={evt => (viewModel.description = evt.target.value)}
             disabled={isSubmitting}
             required
@@ -79,10 +85,12 @@ const ReporterNotificationCreate = () => {
           <ErrorText>{errors.description}</ErrorText>
         </Field>
         <Field $size="half">
-          <Label htmlFor="name">Condition</Label>
+          <Label htmlFor="condition">
+            {t("form.label.condition", "Condition")}
+          </Label>
           <TextArea
             id="condition"
-            placeholder="Condition"
+            placeholder={t("form.placeholder.condition", "Condition")}
             rows={5}
             onChange={evt => (viewModel.condition = evt.target.value)}
             disabled={viewModel.isSubmitting}
@@ -91,10 +99,12 @@ const ReporterNotificationCreate = () => {
           <ErrorText>{viewModel.fieldErrors.condition}</ErrorText>
         </Field>
         <Field $size="half">
-          <Label htmlFor="name">Template</Label>
+          <Label htmlFor="template">
+            {t("form.label.template", "Template")}
+          </Label>
           <TextArea
             id="template"
-            placeholder="Template"
+            placeholder={t("form.placeholder.template", "Template")}
             rows={5}
             onChange={evt => (viewModel.template = evt.target.value)}
             disabled={viewModel.isSubmitting}
@@ -108,10 +118,10 @@ const ReporterNotificationCreate = () => {
       )}
       <FormAction>
         <SaveButton type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <Spinner /> : "บันทึก"}
+          {isSubmitting ? <Spinner /> : t("form.button.save", "Save")}
         </SaveButton>
         <CancelButton type="button" onClick={() => router.back()}>
-          Cancel
+          {t("form.button.cancel", "Cancel")}
         </CancelButton>
       </FormAction>
     </Form>

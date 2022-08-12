@@ -6,11 +6,13 @@ import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ReportCategoryViewViewModel } from "./viewViewModel";
 import getConfig from "next/config";
+import { useTranslation } from "react-i18next";
 
 const { publicRuntimeConfig } = getConfig();
 
 const ReportCategoryView = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -31,7 +33,7 @@ const ReportCategoryView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Id
+                  {t("form.label.id", "Id")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.id}</td>
               </tr>
@@ -40,7 +42,7 @@ const ReportCategoryView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Name
+                  {t("form.label.name", "Name")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.name}</td>
               </tr>
@@ -49,7 +51,7 @@ const ReportCategoryView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Icon
+                  {t("form.label.icon", "Icon")}
                 </th>
                 <td className="px-6 py-4">
                   {viewModel.data.icon && (
@@ -67,7 +69,7 @@ const ReportCategoryView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Ordering
+                  {t("form.label.ordering", "Ordering")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.ordering}</td>
               </tr>

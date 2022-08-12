@@ -16,6 +16,7 @@ import { formatDate } from "lib/datetime";
 import TotalItem from "components/widgets/table/totalItem";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { ParsedUrlQuery } from "querystring";
+import { useTranslation } from "react-i18next";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -26,6 +27,7 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
 
 const InvitaionCodeList = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { invitationCodeService } = useServices();
   const { setUrl, query, resetUrl } = useUrlParams();
 
@@ -81,19 +83,21 @@ const InvitaionCodeList = () => {
           <Table
             columns={[
               {
-                label: "Id",
+                label: t("form.label.id", "Id"),
                 get: record => record.id,
               },
               {
-                label: "Code",
+                label: t("form.label.code", "Code"),
                 get: record => record.code,
               },
               {
-                label: "From Date",
+                label: t("form.label.fromDate", "From Date"),
                 get: record => formatDate(record.fromDate, router.locale),
               },
               {
-                label: "Through Date",
+                label: t("form.label.throughDate", {
+                  defaultValue: "Through Date",
+                }),
                 get: record => formatDate(record.throughDate, router.locale),
               },
             ]}
@@ -118,8 +122,8 @@ const InvitaionCodeList = () => {
 
           <ConfirmDialog
             store={viewModel.dialog("confirmDelete")}
-            title="Confirm delete"
-            content="Are you sure?"
+            title={t("dialog.title.confirmDelete", "Confirm delete")}
+            content={t("dialog.content.confirmDelete", "Are you sure?")}
             onYes={(record: InvitationCode) => viewModel.delete(record.id)}
             onNo={() => viewModel.dialog("confirmDelete")?.close()}
           />

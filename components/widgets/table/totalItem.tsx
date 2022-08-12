@@ -1,4 +1,5 @@
 import React from "react";
+import { Trans } from "react-i18next";
 
 type TotalItemProps = {
   totalCount: number;
@@ -7,8 +8,14 @@ type TotalItemProps = {
 const TotalItem: React.FC<TotalItemProps> = ({ totalCount }) => {
   return (
     <div className="text-sm flex-initial w-full md:w-64 rounded-lg bg-gray-100 p-3">
-      รายการทั้งหมด
-      <span className="ml-2 font-bold">{totalCount} รายการ </span>
+      <Trans
+        i18nKey="table.totalItems"
+        count={totalCount}
+        transKeepBasicHtmlNodesFor={["span"]}
+      >
+        รายการทั้งหมด
+        <span className="ml-2 font-bold">{"{{count}}"}รายการ </span>
+      </Trans>
     </div>
   );
 };

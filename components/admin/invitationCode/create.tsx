@@ -17,9 +17,11 @@ import {
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import RoleSelect from "./roleSelect";
+import { useTranslation } from "react-i18next";
 
 const InvitationCodeCreate = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () => new InvitationCodeCreateViewModel(services.invitationCodeService)
@@ -39,11 +41,11 @@ const InvitationCodeCreate = () => {
     >
       <FieldGroup>
         <Field $size="half">
-          <Label htmlFor="code">Code</Label>
+          <Label htmlFor="code">{t("form.label.code", "Code")}</Label>
           <TextInput
             id="code"
             type="text"
-            placeholder="Code"
+            placeholder={t("form.placeholder.code", "Code")}
             onChange={evt => (viewModel.code = evt.target.value)}
             disabled={isSubmitting}
             required
@@ -52,11 +54,13 @@ const InvitationCodeCreate = () => {
         </Field>
 
         <Field $size="half">
-          <Label htmlFor="fromDate">From Date</Label>
+          <Label htmlFor="fromDate">
+            {t("form.label.fromDate", "Form Date")}
+          </Label>
           <TextInput
             id="fromDate"
             type="date"
-            placeholder="From Date"
+            placeholder={t("form.placeholder.fromDate", "From Date")}
             pattern="\d{4}-\d{2}-\d{2}"
             onChange={evt => (viewModel.fromDate = evt.target.value)}
             disabled={isSubmitting}
@@ -66,11 +70,13 @@ const InvitationCodeCreate = () => {
         </Field>
 
         <Field $size="half">
-          <Label htmlFor="throughDate">Through Date</Label>
+          <Label htmlFor="throughDate">
+            {t("form.label.throughDate", "Through Date")}
+          </Label>
           <TextInput
             id="throughDate"
             type="date"
-            placeholder="Through Date"
+            placeholder={t("form.placeholder.throughDate", "Through Date")}
             pattern="\d{4}-\d{2}-\d{2}"
             onChange={evt => (viewModel.throughDate = evt.target.value)}
             disabled={isSubmitting}
@@ -80,7 +86,7 @@ const InvitationCodeCreate = () => {
         </Field>
 
         <Field $size="half">
-          <label htmlFor="role">Role</label>
+          <label htmlFor="role">{t("form.label.role", "Role")}</label>
           <RoleSelect viewModel={viewModel} />
           <ErrorText>{viewModel.fieldErrors.role}</ErrorText>
         </Field>
@@ -90,10 +96,10 @@ const InvitationCodeCreate = () => {
       )}
       <FormAction>
         <SaveButton type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <Spinner /> : "บันทึก"}
+          {isSubmitting ? <Spinner /> : t("form.button.save", "Save")}
         </SaveButton>
         <CancelButton type="button" onClick={() => router.back()}>
-          Cancel
+          {t("form.button.cancel", "Cancel")}
         </CancelButton>
       </FormAction>
     </Form>

@@ -4,9 +4,11 @@ import { useRouter } from "next/router";
 import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { UserViewViewModel } from "./viewViewModel";
+import { useTranslation } from "react-i18next";
 
 const UserView = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () => new UserViewViewModel(router.query.id as string, services.userService)
@@ -23,7 +25,7 @@ const UserView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Id
+                  {t("form.label.id", "Id")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.id}</td>
               </tr>
@@ -32,7 +34,7 @@ const UserView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  User name
+                  {t("form.label.username", "User name")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.username}</td>
               </tr>
@@ -41,7 +43,7 @@ const UserView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  First name
+                  {t("form.label.firstName", "First Name")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.firstName}</td>
               </tr>
@@ -50,7 +52,7 @@ const UserView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Last name
+                  {t("form.label.lastName", "Last Name")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.lastName}</td>
               </tr>
@@ -59,7 +61,7 @@ const UserView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Email
+                  {t("form.label.email", "Email")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.email}</td>
               </tr>
@@ -68,7 +70,7 @@ const UserView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Telephone
+                  {t("form.label.telephone", "Telephone")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.telephone}</td>
               </tr>
