@@ -16,6 +16,7 @@ import TotalItem from "components/widgets/table/totalItem";
 import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { useTranslation } from "react-i18next";
+import { AccountsAuthorityUserRoleChoices } from "lib/generated/graphql";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -52,6 +53,21 @@ const UserList = () => {
       filter.offset = offset;
     }
     setUrl(filter);
+  };
+
+  const getRoleName = (role: string) => {
+    switch (role) {
+      case AccountsAuthorityUserRoleChoices.Rep:
+        return "Reporter";
+      case AccountsAuthorityUserRoleChoices.Ofc:
+        return "Officer";
+      case AccountsAuthorityUserRoleChoices.Adm:
+        return "Admin";
+
+      default:
+        break;
+    }
+    return "";
   };
 
   if (!viewModel) {
@@ -100,6 +116,10 @@ const UserList = () => {
               {
                 label: t("form.label.email", "Email"),
                 get: record => record.email,
+              },
+              {
+                label: t("form.label.role", "Role"),
+                get: record => getRoleName(record.role || ""),
               },
             ]}
             data={viewModel?.data || []}

@@ -11,12 +11,14 @@ import {
   FormMessage,
   Label,
   SaveButton,
+  Select,
   TextInput,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import { UserCreateViewModel } from "./createViewModel";
 import { useTranslation } from "react-i18next";
+import { AccountsAuthorityUserRoleChoices } from "lib/generated/graphql";
 
 const UserCreate = () => {
   const router = useRouter();
@@ -104,6 +106,28 @@ const UserCreate = () => {
             disabled={isSubmitting}
           />
           <ErrorText>{errors.telephone}</ErrorText>
+        </Field>
+        <Field $size="half">
+          <Label htmlFor="role">{t("form.label.role", "Role")}</Label>
+          <Select
+            id="role"
+            onChange={evt => {
+              viewModel.role = evt.target.value;
+            }}
+            placeholder={t("form.placeholder.role", "Role")}
+            disabled={isSubmitting}
+            defaultValue=""
+            required
+          >
+            <option value={AccountsAuthorityUserRoleChoices.Rep}>
+              Reporter
+            </option>
+            <option value={AccountsAuthorityUserRoleChoices.Ofc}>
+              Officer
+            </option>
+            <option value={AccountsAuthorityUserRoleChoices.Adm}>Admin</option>
+          </Select>
+          <ErrorText>{errors.role}</ErrorText>
         </Field>
       </FieldGroup>
       {viewModel.submitError.length > 0 && (

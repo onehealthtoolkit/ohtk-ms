@@ -31,7 +31,8 @@ export interface IUserService extends IService {
     firstName: string,
     lastName: string,
     email: string,
-    telephone: string
+    telephone: string,
+    role: string
   ): Promise<SaveResult<User>>;
 
   updateUser(
@@ -41,7 +42,8 @@ export interface IUserService extends IService {
     firstName: string,
     lastName: string,
     email: string,
-    telephone: string
+    telephone: string,
+    role: string
   ): Promise<SaveResult<User>>;
 
   deleteUser(id: string): Promise<DeleteResult>;
@@ -81,6 +83,7 @@ export class UserService implements IUserService {
           firstName: item.firstName,
           lastName: item.lastName,
           email: item.email,
+          role: item.role,
         });
       }
     });
@@ -108,6 +111,7 @@ export class UserService implements IUserService {
         lastName: user.lastName,
         email: user.email,
         telephone: user.telephone || "",
+        role: user.role,
       };
     }
     return {
@@ -122,7 +126,8 @@ export class UserService implements IUserService {
     firstName: string,
     lastName: string,
     email: string,
-    telephone: string
+    telephone: string,
+    role: string
   ): Promise<SaveResult<User>> {
     const createResult = await this.client.mutate({
       mutation: UserCreateDocument,
@@ -134,6 +139,7 @@ export class UserService implements IUserService {
         lastName,
         email,
         telephone,
+        role,
       },
       refetchQueries: [
         {
@@ -177,7 +183,8 @@ export class UserService implements IUserService {
     firstName: string,
     lastName: string,
     email: string,
-    telephone: string
+    telephone: string,
+    role: string
   ): Promise<SaveResult<User>> {
     const updateResult = await this.client.mutate({
       mutation: UserUpdateDocument,
@@ -189,6 +196,7 @@ export class UserService implements IUserService {
         lastName,
         email,
         telephone,
+        role,
       },
       refetchQueries: [
         {

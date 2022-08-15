@@ -2,6 +2,7 @@ import { BaseFormViewModel } from "lib/baseFormViewModel";
 import { User, IUserService } from "lib/services/user";
 import { SaveResult } from "lib/services/interface";
 import { action, computed, makeObservable, observable } from "mobx";
+import { AccountsAuthorityUserRoleChoices } from "lib/generated/graphql";
 
 export abstract class UserViewModel extends BaseFormViewModel {
   userService: IUserService;
@@ -13,6 +14,7 @@ export abstract class UserViewModel extends BaseFormViewModel {
   _lastName: string = "";
   _email: string = "";
   _telephone: string = "";
+  _role: string = AccountsAuthorityUserRoleChoices.Rep;
   constructor(userService: IUserService) {
     super();
     makeObservable(this, {
@@ -28,6 +30,8 @@ export abstract class UserViewModel extends BaseFormViewModel {
       email: computed,
       _telephone: observable,
       telephone: computed,
+      _role: observable,
+      role: computed,
       save: action,
       validate: action,
     });
@@ -95,6 +99,17 @@ export abstract class UserViewModel extends BaseFormViewModel {
   public set telephone(value: string) {
     this._telephone = value;
     delete this.fieldErrors["telephone"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public get role(): string {
+    return this._role;
+  }
+  public set role(value: string) {
+    this._role = value;
+    delete this.fieldErrors["role"];
     if (this.submitError.length > 0) {
       this.submitError = "";
     }
