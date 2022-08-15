@@ -16,13 +16,19 @@ import useStore from "lib/store";
 import CaseStatus from "./caseStatus";
 import { renderData, TR } from "components/widgets/renderData";
 import Comments from "components/widgets/comments";
+import dynamic from "next/dynamic";
 
 const { publicRuntimeConfig } = getConfig();
+
+const ReportLocation = dynamic(() => import("./reportLocationMap"), {
+  loading: () => <p>A map is loading</p>,
+  ssr: false,
+});
 
 const ReportInformation = observer(
   ({ viewModel }: { viewModel: CaseViewModel }) => {
     return (
-      <div className="relative overflow-x-auto">
+      <div className="relative overflow-x-auto md:w-1/2 w-full">
         <table className="table-fixed border w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <tbody>
             <TR
@@ -93,7 +99,12 @@ const Case = (props: { id: string }) => {
               </div>
               <Divide hilight />
 
-              <ReportInformation viewModel={viewModel} />
+              <div className="flex flex-row gap-2 md:flex-nowrap flex-wrap ">
+                <ReportInformation viewModel={viewModel} />
+                <div className="md:w-1/2 w-full h-[300px] md:h-auto">
+                  <ReportLocation lnglat={viewModel.data.gpsLocation} />
+                </div>
+              </div>
 
               <ReportImage viewModel={viewModel} />
 

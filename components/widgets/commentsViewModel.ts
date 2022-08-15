@@ -22,7 +22,7 @@ export class CommentsViewModel extends BaseFormViewModel {
 
   constructor(
     readonly commentService: ICommentService,
-    readonly threadId?: number
+    readonly threadId?: number | null
   ) {
     super();
     makeObservable(this, {

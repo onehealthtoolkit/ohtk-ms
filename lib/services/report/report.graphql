@@ -42,6 +42,8 @@ query GetReport($id: ID!) {
     updatedAt
     rendererData
     caseId
+    gpsLocation
+    threadId
     data
     reportType {
       id
