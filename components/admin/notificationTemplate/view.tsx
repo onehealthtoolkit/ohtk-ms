@@ -4,9 +4,11 @@ import { useRouter } from "next/router";
 import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { NotificationTemplateViewViewModel } from "./viewViewModel";
+import { useTranslation } from "react-i18next";
 
 const NotificationTemplateView = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -27,7 +29,7 @@ const NotificationTemplateView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Id
+                  {t("form.label.id", "Id")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.id}</td>
               </tr>
@@ -37,7 +39,7 @@ const NotificationTemplateView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Name
+                  {t("form.label.name", "Name")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.name}</td>
               </tr>
@@ -46,7 +48,7 @@ const NotificationTemplateView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Report Type
+                  {t("form.label.reportType", "Report Type")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.reportTypeName}</td>
               </tr>
@@ -55,7 +57,7 @@ const NotificationTemplateView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Type
+                  {t("form.label.type", "Type")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.typeName}</td>
               </tr>
@@ -64,7 +66,7 @@ const NotificationTemplateView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Condition
+                  {t("form.label.condition", "Condition")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.condition}</td>
               </tr>
@@ -73,7 +75,7 @@ const NotificationTemplateView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Transistion
+                  {t("form.label.transistion", "Transistion")}
                 </th>
                 <td className="px-6 py-4">
                   {viewModel.data.fromStepName} to {viewModel.data.toStepName}
@@ -84,7 +86,7 @@ const NotificationTemplateView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Title Template
+                  {t("form.label.titleTemplate", "Title Template")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.titleTemplate}</td>
               </tr>
@@ -93,7 +95,7 @@ const NotificationTemplateView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Body Template
+                  {t("form.label.bodyTemplate", "Body Template")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.bodyTemplate}</td>
               </tr>

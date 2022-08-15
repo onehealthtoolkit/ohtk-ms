@@ -17,6 +17,7 @@ import { ConfirmDialog } from "components/admin/formBuilder/shared";
 import { observer } from "mobx-react";
 import Image from "next/image";
 import { FC, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   value: FieldViewModel;
@@ -26,6 +27,7 @@ type Props = {
 
 const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
   const elementRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
   const onDeleteConfirm = () => {
     field.registerDialog("confirmDelete")?.open(field);
   };
@@ -264,8 +266,8 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
       {renderEditingFieldTypeComponent(field.fieldType)}
       <ConfirmDialog
         viewModel={field.dialog("confirmDelete")}
-        title="Confirm delete"
-        content="Are you sure?"
+        title={t("dialog.title.confirmDelete", "Confirm delete")}
+        content={t("dialog.content.confirmDelete", "Are you sure?")}
         onYes={(field: FieldViewModel) => onDelete(field.id)}
         onNo={() => field.dialog("confirmDelete")?.close()}
         container={elementRef.current?.parentElement}

@@ -1,6 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { observer } from "mobx-react";
 import React from "react";
+import { Trans } from "react-i18next";
 import tw from "tailwind-styled-components";
 
 const iconClassName = "h-5 w-5 ";
@@ -42,8 +43,17 @@ const Paginate: React.FC<PaginateProps> = ({
         <ChevronLeftIcon className={iconClassName} />
       </Btn>
       <div className="mx-4">
-        page {currentPages} of {numberOfPages}{" "}
-        <span className="text-sm">[{totalCount} records]</span>
+        <Trans
+          i18nKey="table.paginate"
+          values={{
+            currentPages: currentPages,
+            numberOfPages: numberOfPages,
+            totalCount: totalCount,
+          }}
+        >
+          page {"{{currentPages}}"} of {"{{numberOfPages}} "}
+          <span className="text-sm">[{"{{totalCount}}"} records]</span>
+        </Trans>
       </div>
       <Btn
         onClick={() => {

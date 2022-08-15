@@ -23,9 +23,11 @@ import useServices from "lib/services/provider";
 import Breadcrumb from "components/layout/breadcrumb";
 import useStateSteps from "lib/hooks/stateSteps";
 import FormBuilder from "components/admin/formBuilder";
+import { useTranslation } from "react-i18next";
 
 const StateTransitionsUpdateForm = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -125,16 +127,18 @@ const StateTransitionsUpdateForm = () => {
             ) : (
               <>
                 <Field $size="half">
-                  <Label htmlFor="fromStepId">From Step</Label>
+                  <Label htmlFor="fromStepId">
+                    {t("form.label.fromStep", "From Step")}
+                  </Label>
                   <Select
                     id="fromStepId"
-                    placeholder="From Step"
+                    placeholder={t("form.placeholder.fromStep", "From Step")}
                     onChange={evt => (viewModel.fromStepId = evt.target.value)}
                     disabled={viewModel.isSubmitting}
                     value={viewModel.fromStepId}
                   >
                     <option value={""} disabled>
-                      Select item ...
+                      {t("form.label.selectItem", " Select item ...")}
                     </option>
                     {stateSteps?.map(item => (
                       <option key={`option-${item.id}`} value={item.id}>
@@ -145,16 +149,18 @@ const StateTransitionsUpdateForm = () => {
                   <ErrorText>{viewModel.fieldErrors.fromStepId}</ErrorText>
                 </Field>
                 <Field $size="half">
-                  <Label htmlFor="toStepId">To Step</Label>
+                  <Label htmlFor="toStepId">
+                    {t("form.label.toStep", "To Step")}
+                  </Label>
                   <Select
                     id="toStepId"
-                    placeholder="To Step"
+                    placeholder={t("form.placeholder.toStep", "To Step")}
                     onChange={evt => (viewModel.toStepId = evt.target.value)}
                     disabled={viewModel.isSubmitting}
                     value={viewModel.toStepId}
                   >
                     <option value={""} disabled>
-                      Select item ...
+                      {t("form.label.selectItem", " Select item ...")}
                     </option>
                     {stateSteps?.map(item => (
                       <option key={`option-${item.id}`} value={item.id}>
@@ -165,10 +171,15 @@ const StateTransitionsUpdateForm = () => {
                   <ErrorText>{viewModel.fieldErrors.fromStepId}</ErrorText>
                 </Field>
                 <Field $size="half">
-                  <Label htmlFor="formDefinition">Form Definition</Label>
+                  <Label htmlFor="formDefinition">
+                    {t("form.label.formDefinition", "Form Definition")}
+                  </Label>
                   <TextArea
                     id="formDefinition"
-                    placeholder="Form Definition"
+                    placeholder={t(
+                      "form.placeholder.formDefinition",
+                      "Form Definition"
+                    )}
                     rows={30}
                     onChange={evt =>
                       (viewModel.formDefinition = evt.target.value)
@@ -184,15 +195,16 @@ const StateTransitionsUpdateForm = () => {
           {viewModel.submitError.length > 0 && (
             <FormMessage>{viewModel.submitError}</FormMessage>
           )}
-          {viewModel.submitError.length > 0 && (
-            <FormMessage>{viewModel.submitError}</FormMessage>
-          )}
           <FormAction>
             <SaveButton type="submit" disabled={viewModel.isSubmitting}>
-              {viewModel.isSubmitting ? <Spinner /> : "Save"}
+              {viewModel.isSubmitting ? (
+                <Spinner />
+              ) : (
+                t("form.button.save", "Save")
+              )}
             </SaveButton>
             <CancelButton type="button" onClick={() => router.back()}>
-              Cancel
+              {t("form.button.cancel", "Cancel")}
             </CancelButton>
           </FormAction>
         </Form>

@@ -13,10 +13,14 @@ const nextConfig = {
   publicRuntimeConfig: {
     serverUrl: "http://opensur.test:8000",
   },
-  i18n: {
-    locales: ["default", "th", "en"],
-    defaultLocale: "th",
-    localeDetection: false,
+  exportPathMap: async function () {
+    return {
+      "/": { page: "/" },
+    };
+  },
+  images: {
+    loader: "akamai",
+    path: "",
   },
 };
 

@@ -5,9 +5,11 @@ import Protect from "components/auth/protect";
 import Breadcrumb from "components/layout/breadcrumb";
 import { useRouter } from "next/router";
 import Spinner from "components/widgets/spinner";
+import { useTranslation } from "react-i18next";
 
 const AdminStateDefinitionViewPage: NextPage = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { id } = router.query;
   if (!id) {
     return <Spinner />;
@@ -18,10 +20,10 @@ const AdminStateDefinitionViewPage: NextPage = () => {
         <Breadcrumb
           crumbs={[
             {
-              text: "State Definition",
+              text: t("breadcrumb.stateDefinitions", "State Definitions"),
               href: "/admin/state_definitions",
             },
-            { text: "View" },
+            { text: t("breadcrumb.view", "View") },
           ]}
         />
         <StateDefinitionView />

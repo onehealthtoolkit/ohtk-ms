@@ -20,12 +20,15 @@ export interface IReportCategoryService extends IService {
     offset: number,
     searchText: string
   ): Promise<QueryResult<ReportCategory[]>>;
+
   getReportCategory(id: string): Promise<GetResult<ReportCategory>>;
+
   createReportCategory(
     name: string,
     ordering: number,
     icon?: File
   ): Promise<SaveResult<ReportCategory>>;
+
   updateReportCategory(
     id: string,
     name: string,
@@ -33,6 +36,7 @@ export interface IReportCategoryService extends IService {
     icon?: File,
     clearIcon?: boolean
   ): Promise<SaveResult<ReportCategory>>;
+
   deleteReportCategory(id: string): Promise<DeleteResult>;
 }
 

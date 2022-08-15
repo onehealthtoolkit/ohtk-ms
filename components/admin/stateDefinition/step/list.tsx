@@ -3,6 +3,7 @@ import { AddButton } from "components/widgets/forms";
 import Table from "components/widgets/table";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 import { StateDefinitionUpdateViewModel } from "../updateViewModel";
 
 export const StateStepList = ({
@@ -11,6 +12,8 @@ export const StateStepList = ({
   viewModel: StateDefinitionUpdateViewModel;
 }) => {
   const router = useRouter();
+  const { t } = useTranslation();
+
   return (
     <div>
       <div className="flex items-center flex-wrap mb-4">
@@ -32,15 +35,15 @@ export const StateStepList = ({
       <Table
         columns={[
           {
-            label: "Id",
+            label: t("form.label.id", "Id"),
             get: record => record.id,
           },
           {
-            label: "Name",
+            label: t("form.label.name", "Name"),
             get: record => record.name,
           },
           {
-            label: "Is StartState",
+            label: t("form.label.isStartState", "Is StartState"),
             get: record => {
               return record.isStartState ? (
                 <CheckIcon className="h-5 w-5" />
@@ -50,7 +53,7 @@ export const StateStepList = ({
             },
           },
           {
-            label: "Is StopState",
+            label: t("form.label.isStopState", "Is StopState"),
             get: record => {
               return record.isStopState ? (
                 <CheckIcon className="h-5 w-5" />

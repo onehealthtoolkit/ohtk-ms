@@ -4,9 +4,11 @@ import { useRouter } from "next/router";
 import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { AuthorityViewViewModel } from "./viewViewModel";
+import { useTranslation } from "react-i18next";
 
 const AuthorityView = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -27,7 +29,7 @@ const AuthorityView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Id
+                  {t("form.label.id", "Id")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.id}</td>
               </tr>
@@ -36,7 +38,7 @@ const AuthorityView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Code
+                  {t("form.label.code", "Code")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.code}</td>
               </tr>
@@ -45,7 +47,7 @@ const AuthorityView = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Name
+                  {t("form.label.name", "Name")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.name}</td>
               </tr>

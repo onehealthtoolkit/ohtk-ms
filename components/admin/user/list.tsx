@@ -15,6 +15,7 @@ import { User } from "lib/services/user";
 import TotalItem from "components/widgets/table/totalItem";
 import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
+import { useTranslation } from "react-i18next";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -25,6 +26,7 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
 
 const UserList = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { userService } = useServices();
   const { setUrl, query, resetUrl } = useUrlParams();
 
@@ -80,23 +82,23 @@ const UserList = () => {
           <Table
             columns={[
               {
-                label: "Id",
+                label: t("form.label.id", "Id"),
                 get: record => record.id,
               },
               {
-                label: "User Name",
+                label: t("form.label.username", "User Name"),
                 get: record => record.username,
               },
               {
-                label: "First Name",
+                label: t("form.label.firstName", "First Name"),
                 get: record => record.firstName,
               },
               {
-                label: "Last Name",
+                label: t("form.label.lastName", "Last Name"),
                 get: record => record.lastName,
               },
               {
-                label: "Email",
+                label: t("form.label.email", "Email"),
                 get: record => record.email,
               },
             ]}
@@ -118,8 +120,8 @@ const UserList = () => {
 
           <ConfirmDialog
             store={viewModel.dialog("confirmDelete")}
-            title="Confirm delete"
-            content="Are you sure?"
+            title={t("dialog.title.confirmDelete", "Confirm delete")}
+            content={t("dialog.content.confirmDelete", "Are you sure?")}
             onYes={(record: User) => viewModel.delete(record.id)}
             onNo={() => viewModel.dialog("confirmDelete")?.close()}
           />

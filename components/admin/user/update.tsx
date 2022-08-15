@@ -17,9 +17,11 @@ import {
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
+import { useTranslation } from "react-i18next";
 
 const UserUpdate = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -39,11 +41,13 @@ const UserUpdate = () => {
       >
         <FieldGroup>
           <Field $size="half">
-            <Label htmlFor="username">User Name</Label>
+            <Label htmlFor="username">
+              {t("form.label.username", "User Name")}
+            </Label>
             <TextInput
               id="username"
               type="text"
-              placeholder="User Name"
+              placeholder={t("form.placeholder.username", "User Name")}
               onChange={evt => (viewModel.username = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.username}
@@ -52,11 +56,13 @@ const UserUpdate = () => {
             <ErrorText>{errors.username}</ErrorText>
           </Field>
           <Field $size="half">
-            <Label htmlFor="firstName">First Name</Label>
+            <Label htmlFor="firstName">
+              {t("form.label.firstName", "First Name")}
+            </Label>
             <TextInput
               id="firstName"
               type="text"
-              placeholder="First Name"
+              placeholder={t("form.placeholder.firstName", "First Name")}
               onChange={evt => (viewModel.firstName = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.firstName}
@@ -65,11 +71,13 @@ const UserUpdate = () => {
             <ErrorText>{errors.firstName}</ErrorText>
           </Field>
           <Field $size="half">
-            <Label htmlFor="lastName">Last Name</Label>
+            <Label htmlFor="lastName">
+              {t("form.label.lastName", "Last Name")}
+            </Label>
             <TextInput
               id="lastName"
               type="text"
-              placeholder="Last Name"
+              placeholder={t("form.placeholder.lastName", "Last Name")}
               onChange={evt => (viewModel.lastName = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.lastName}
@@ -78,11 +86,11 @@ const UserUpdate = () => {
             <ErrorText>{errors.lastName}</ErrorText>
           </Field>
           <Field $size="half">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t("form.label.email", "Email")}</Label>
             <TextInput
               id="email"
               type="text"
-              placeholder="Email"
+              placeholder={t("form.placeholder.email", "Email")}
               onChange={evt => (viewModel.email = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.email}
@@ -91,11 +99,13 @@ const UserUpdate = () => {
             <ErrorText>{errors.email}</ErrorText>
           </Field>
           <Field $size="half">
-            <Label htmlFor="telephone">Telephone</Label>
+            <Label htmlFor="telephone">
+              {t("form.label.telephone", "Telephone")}
+            </Label>
             <TextInput
               id="telephone"
               type="text"
-              placeholder="Telephone"
+              placeholder={t("form.placeholder.telephone", "Telephone")}
               onChange={evt => (viewModel.telephone = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.telephone}
@@ -108,10 +118,14 @@ const UserUpdate = () => {
         )}
         <FormAction>
           <SaveButton type="submit" disabled={viewModel.isSubmitting}>
-            {viewModel.isSubmitting ? <Spinner /> : "Save"}
+            {viewModel.isSubmitting ? (
+              <Spinner />
+            ) : (
+              t("form.button.save", "Save")
+            )}
           </SaveButton>
           <CancelButton type="button" onClick={() => router.back()}>
-            Cancel
+            {t("form.button.cancel", "Cancel")}
           </CancelButton>
         </FormAction>
       </Form>

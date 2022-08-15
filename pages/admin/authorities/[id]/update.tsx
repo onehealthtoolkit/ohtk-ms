@@ -6,9 +6,11 @@ import Breadcrumb from "components/layout/breadcrumb";
 import { useRouter } from "next/router";
 import Spinner from "components/widgets/spinner";
 import { Store } from "lib/store";
+import { useTranslation } from "react-i18next";
 
 const AdminAuthorityUpdatePage: NextPage = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { id } = router.query;
   if (!id) {
     return <Spinner />;
@@ -19,8 +21,11 @@ const AdminAuthorityUpdatePage: NextPage = () => {
       <Layout>
         <Breadcrumb
           crumbs={[
-            { text: "Authorities", href: "/admin/authorities" },
-            { text: "Update" },
+            {
+              text: t("breadcrumb.authorities", "Authorities"),
+              href: "/admin/authorities",
+            },
+            { text: t("breadcrumb.update", "Update") },
           ]}
         />
         <AuthorityUpdate />

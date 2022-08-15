@@ -15,6 +15,7 @@ import { CaseDefinition } from "lib/services/caseDefinition";
 import TotalItem from "components/widgets/table/totalItem";
 import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
+import { useTranslation } from "react-i18next";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -25,6 +26,7 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
 
 const CaseDefinitionList = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { caseDefinitionService } = useServices();
   const { setUrl, query, resetUrl } = useUrlParams();
 
@@ -80,15 +82,15 @@ const CaseDefinitionList = () => {
           <Table
             columns={[
               {
-                label: "Id",
+                label: t("form.label.id", "Id"),
                 get: record => record.id,
               },
               {
-                label: "Report Type",
+                label: t("form.label.reportType", "Report Type"),
                 get: record => record.reportTypeName,
               },
               {
-                label: "description",
+                label: t("form.label.description", "Description"),
                 get: record => record.description,
               },
             ]}
@@ -111,8 +113,8 @@ const CaseDefinitionList = () => {
 
           <ConfirmDialog
             store={viewModel.dialog("confirmDelete")}
-            title="Confirm delete"
-            content="Are you sure?"
+            title={t("dialog.title.confirmDelete", "Confirm delete")}
+            content={t("dialog.content.confirmDelete", "Are you sure?")}
             onYes={(record: CaseDefinition) => viewModel.delete(record.id)}
             onNo={() => viewModel.dialog("confirmDelete")?.close()}
           />

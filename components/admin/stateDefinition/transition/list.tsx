@@ -2,6 +2,7 @@ import { AddButton } from "components/widgets/forms";
 import Table from "components/widgets/table";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 import { StateDefinitionUpdateViewModel } from "../updateViewModel";
 
 export const StateTransitionList = ({
@@ -10,6 +11,8 @@ export const StateTransitionList = ({
   viewModel: StateDefinitionUpdateViewModel;
 }) => {
   const router = useRouter();
+  const { t } = useTranslation();
+
   return (
     <div>
       <div className="flex items-center flex-wrap mb-4">
@@ -31,15 +34,15 @@ export const StateTransitionList = ({
       <Table
         columns={[
           {
-            label: "Id",
+            label: t("form.label.id", "Id"),
             get: record => record.id,
           },
           {
-            label: "From Step",
+            label: t("form.label.fromStep", "From Step"),
             get: record => record.fromStep.name,
           },
           {
-            label: "To Step",
+            label: t("form.label.toStep", "To Step"),
             get: record => record.toStep.name,
           },
         ]}

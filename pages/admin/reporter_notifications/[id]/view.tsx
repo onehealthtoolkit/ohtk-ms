@@ -5,9 +5,11 @@ import Protect from "components/auth/protect";
 import Breadcrumb from "components/layout/breadcrumb";
 import { useRouter } from "next/router";
 import Spinner from "components/widgets/spinner";
+import { useTranslation } from "react-i18next";
 
 const AdminReporterNotificationViewPage: NextPage = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { id } = router.query;
   if (!id) {
     return <Spinner />;
@@ -18,10 +20,13 @@ const AdminReporterNotificationViewPage: NextPage = () => {
         <Breadcrumb
           crumbs={[
             {
-              text: "Reporter Notification",
+              text: t(
+                "breadcrumb.reporterNotifications",
+                "Reporter Notifications"
+              ),
               href: "/admin/reporter_notifications",
             },
-            { text: "View" },
+            { text: t("breadcrumb.view", "View") },
           ]}
         />
         <ReporterNotificationView />

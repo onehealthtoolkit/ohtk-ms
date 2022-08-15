@@ -2,6 +2,7 @@ import { CheckIcon, XIcon } from "@heroicons/react/solid";
 import { ErrorText, TextInput } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const styles = {
   saveButton:
@@ -27,6 +28,8 @@ const NotificationEdit = ({
   onSave,
   indicator = false,
 }: Props) => {
+  const { t } = useTranslation();
+
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>();
   const [editing, setEditing] = useState<boolean>(false);
@@ -41,7 +44,7 @@ const NotificationEdit = ({
       <div>
         <TextInput
           type="text"
-          placeholder="To"
+          placeholder={t("form.placeholder.to", "To")}
           className=""
           onChange={evt => {
             setEditing(true);
@@ -82,7 +85,7 @@ const NotificationEdit = ({
           {indicator && success === false && (
             <XIcon className="mr-2 -ml-1 w-6 h-6 text-red-800" />
           )}
-          Save
+          {t("form.button.save", "Save")}
         </button>
         <button
           type="button"
@@ -93,7 +96,7 @@ const NotificationEdit = ({
             setSuccess(undefined);
           }}
         >
-          Cancel
+          {t("form.button.cancel", "Cancel")}
         </button>
       </div>
     </div>

@@ -22,9 +22,11 @@ import useServices from "lib/services/provider";
 import Breadcrumb from "components/layout/breadcrumb";
 import useStateSteps from "lib/hooks/stateSteps";
 import FormBuilder from "components/admin/formBuilder";
+import { useTranslation } from "react-i18next";
 
 const StateTransitionCreate = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -122,9 +124,12 @@ const StateTransitionCreate = () => {
           ) : (
             <>
               <Field $size="half">
-                <Label htmlFor="fromStepId">From Step</Label>
+                <Label htmlFor="fromStepId">
+                  {t("form.label.fromStep", "From Step")}
+                </Label>
                 <Select
                   id="fromStepId"
+                  placeholder={t("form.placeholder.fromStep", "From Step")}
                   onChange={evt => {
                     viewModel.fromStepId = evt.target.value;
                   }}
@@ -132,7 +137,7 @@ const StateTransitionCreate = () => {
                   defaultValue=""
                 >
                   <option disabled value={""}>
-                    Select item ...
+                    {t("form.label.selectItem", " Select item ...")}
                   </option>
                   {stateSteps?.map(item => (
                     <option key={`option-${item.id}`} value={item.id}>
@@ -144,9 +149,12 @@ const StateTransitionCreate = () => {
               </Field>
 
               <Field $size="half">
-                <Label htmlFor="toStepId">To Step</Label>
+                <Label htmlFor="toStepId">
+                  {t("form.label.toStep", "To Step")}
+                </Label>
                 <Select
                   id="toStepId"
+                  placeholder={t("form.placeholder.toStep", "To Step")}
                   onChange={evt => {
                     viewModel.toStepId = evt.target.value;
                   }}
@@ -154,7 +162,7 @@ const StateTransitionCreate = () => {
                   defaultValue=""
                 >
                   <option disabled value={""}>
-                    Select item ...
+                    {t("form.label.selectItem", "Select item ...")}
                   </option>
                   {stateSteps?.map(item => (
                     <option key={`option-${item.id}`} value={item.id}>
@@ -165,10 +173,15 @@ const StateTransitionCreate = () => {
                 <ErrorText>{errors.toStepId}</ErrorText>
               </Field>
               <Field $size="half">
-                <Label htmlFor="formDefinition">Form Definition</Label>
+                <Label htmlFor="formDefinition">
+                  {t("form.label.formDefinition", "Form Definition")}
+                </Label>
                 <TextArea
                   id="formDefinition"
-                  placeholder="Form Definition"
+                  placeholder={t(
+                    "form.placeholder.formDefinition",
+                    "Form Definition"
+                  )}
                   rows={30}
                   onChange={evt =>
                     (viewModel.formDefinition = evt.target.value)
@@ -186,10 +199,10 @@ const StateTransitionCreate = () => {
         )}
         <FormAction>
           <SaveButton type="submit" disabled={isSubmitting}>
-            {isSubmitting ? <Spinner /> : "บันทึก"}
+            {isSubmitting ? <Spinner /> : t("form.button.save", "Save")}
           </SaveButton>
           <CancelButton type="button" onClick={() => router.back()}>
-            Cancel
+            {t("form.button.cancel", "Cancel")}
           </CancelButton>
         </FormAction>
       </Form>

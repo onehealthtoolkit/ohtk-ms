@@ -5,9 +5,11 @@ import Protect from "components/auth/protect";
 import Breadcrumb from "components/layout/breadcrumb";
 import { useRouter } from "next/router";
 import Spinner from "components/widgets/spinner";
+import { useTranslation } from "react-i18next";
 
 const AdminInvitationCodeUpdatePage: NextPage = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { id } = router.query;
   if (!id) {
     return <Spinner />;
@@ -17,8 +19,11 @@ const AdminInvitationCodeUpdatePage: NextPage = () => {
       <Layout>
         <Breadcrumb
           crumbs={[
-            { text: "Invitation codes", href: "/admin/invitation_codes" },
-            { text: "Update" },
+            {
+              text: t("breadcrumb.invitationCodes", "Invitation codes"),
+              href: "/admin/invitation_codes",
+            },
+            { text: t("breadcrumb.update", "Update") },
           ]}
         />
         <InvitationCodeUpdate />

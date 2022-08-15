@@ -21,7 +21,9 @@ export interface IUserService extends IService {
     offset: number,
     searchText: string
   ): Promise<QueryResult<User[]>>;
+
   getUser(id: string): Promise<GetResult<User>>;
+
   createUser(
     authorityId: number,
     username: string,
@@ -31,6 +33,7 @@ export interface IUserService extends IService {
     email: string,
     telephone: string
   ): Promise<SaveResult<User>>;
+
   updateUser(
     id: string,
     authorityId: number,
@@ -40,6 +43,7 @@ export interface IUserService extends IService {
     email: string,
     telephone: string
   ): Promise<SaveResult<User>>;
+
   deleteUser(id: string): Promise<DeleteResult>;
 }
 

@@ -20,9 +20,11 @@ import useServices from "lib/services/provider";
 import { AuthorityUpdateViewModel } from "./updateViewModel";
 import AuthorityInherits from "components/admin/authority/authorityInherits";
 import { toJS } from "mobx";
+import { useTranslation } from "react-i18next";
 
 const AuthorityUpdate = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -44,11 +46,11 @@ const AuthorityUpdate = () => {
       >
         <FieldGroup>
           <Field $size="half">
-            <Label htmlFor="code">Code</Label>
+            <Label htmlFor="code">{t("form.label.code", "Code")}</Label>
             <TextInput
               id="code"
               type="text"
-              placeholder="Code"
+              placeholder={t("form.placeholder.code", "Code")}
               onChange={evt => (viewModel.code = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.code}
@@ -57,11 +59,11 @@ const AuthorityUpdate = () => {
             <ErrorText>{viewModel.fieldErrors.code}</ErrorText>
           </Field>
           <Field $size="half">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
             <TextInput
               id="name"
               type="text"
-              placeholder="Name"
+              placeholder={t("form.placeholder.name", "Name")}
               onChange={evt => (viewModel.name = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.name}
@@ -70,7 +72,9 @@ const AuthorityUpdate = () => {
             <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
           </Field>
           <Field $size="half">
-            <Label htmlFor="inherits">Inherits</Label>
+            <Label htmlFor="inherits">
+              {t("form.label.inherits", "Inherits")}
+            </Label>
             <AuthorityInherits
               values={viewModel.authorityInherits.slice()}
               onAdd={authorityId => viewModel.addAuthorityInherits(authorityId)}
@@ -81,7 +85,7 @@ const AuthorityUpdate = () => {
             <ErrorText>{viewModel.fieldErrors.inherits}</ErrorText>
           </Field>
           <Field $size="full">
-            <Label htmlFor="area">Area</Label>
+            <Label htmlFor="area">{t("form.label.area", "Area")}</Label>
             <AreaFieldNoSSR
               value={toJS(viewModel.area)}
               onChange={data => (viewModel.area = data)}
@@ -94,10 +98,14 @@ const AuthorityUpdate = () => {
         )}
         <FormAction>
           <SaveButton type="submit" disabled={viewModel.isSubmitting}>
-            {viewModel.isSubmitting ? <Spinner /> : "Save"}
+            {viewModel.isSubmitting ? (
+              <Spinner />
+            ) : (
+              t("form.button.save", "Save")
+            )}
           </SaveButton>
           <CancelButton type="button" onClick={() => router.back()}>
-            Cancel
+            {t("form.button.cancel", "Cancel")}
           </CancelButton>
         </FormAction>
       </Form>

@@ -23,9 +23,11 @@ import useServices from "lib/services/provider";
 import { ReportCategory } from "lib/services/reportCategory";
 import FormBuilder from "components/admin/formBuilder";
 import useStateDefinitions from "lib/hooks/stateDefinitions";
+import { useTranslation } from "react-i18next";
 
 const ReportTypeCreate = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () => new ReportTypeCreateViewModel(services.reportTypeService)
@@ -113,11 +115,11 @@ const ReportTypeCreate = () => {
           ) : (
             <>
               <Field $size="half">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
                 <TextInput
                   id="name"
                   type="text"
-                  placeholder="Name"
+                  placeholder={t("form.placeholder.name", "Name")}
                   onChange={evt => (viewModel.name = evt.target.value)}
                   value={viewModel.name}
                   disabled={isSubmitting}
@@ -139,7 +141,9 @@ const ReportTypeCreate = () => {
                 <ErrorText>{errors.definition}</ErrorText>
               </Field>
               <Field $size="half">
-                <Label htmlFor="category">Category</Label>
+                <Label htmlFor="category">
+                  {t("form.label.category", "Category")}
+                </Label>
                 <Select
                   id="category"
                   placeholder="Category"
@@ -154,7 +158,9 @@ const ReportTypeCreate = () => {
                   disabled={isSubmitting}
                   required
                 >
-                  <option value={undefined}>Select item ...</option>
+                  <option disabled value={""}>
+                    Select item ...
+                  </option>
                   {categories?.map(item => (
                     <option key={`option-${item.id}`} value={item.id}>
                       {item.name}
@@ -183,14 +189,19 @@ const ReportTypeCreate = () => {
                 <Label htmlFor="stateDefinitionId">State definition</Label>
                 <Select
                   id="stateDefinitionId"
-                  placeholder="State definition"
+                  placeholder={t(
+                    "form.placeholder.stateDefinition",
+                    "State definition"
+                  )}
                   onChange={evt =>
                     (viewModel.stateDefinitionId = +evt.target.value)
                   }
                   value={viewModel.stateDefinitionId}
                   disabled={viewModel.isSubmitting}
                 >
-                  <option value={0}>Select item ...</option>
+                  <option value={0}>
+                    {t("form.label.selectItem", "Select item ...")}
+                  </option>
                   {stateDefinitions?.map(item => (
                     <option key={`option-${item.id}`} value={item.id}>
                       {item.name}
@@ -200,11 +211,13 @@ const ReportTypeCreate = () => {
                 <ErrorText>{viewModel.fieldErrors.stateDefinitionId}</ErrorText>
               </Field>
               <Field $size="half">
-                <Label htmlFor="ordering">Ordering</Label>
+                <Label htmlFor="ordering">
+                  {t("form.label.ordering", "Ordering")}
+                </Label>
                 <TextInput
                   id="ordering"
                   type="number"
-                  placeholder="Ordering"
+                  placeholder={t("form.placeholder.ordering", "Ordering")}
                   onChange={evt => (viewModel.ordering = +evt.target.value)}
                   disabled={isSubmitting}
                   value={viewModel.ordering}
@@ -220,10 +233,10 @@ const ReportTypeCreate = () => {
         )}
         <FormAction>
           <SaveButton type="submit" disabled={isSubmitting}>
-            {isSubmitting ? <Spinner /> : "บันทึก"}
+            {isSubmitting ? <Spinner /> : t("form.button.save", "Save")}
           </SaveButton>
           <CancelButton type="button" onClick={() => router.back()}>
-            Cancel
+            {t("form.button.cancel", "Cancel")}
           </CancelButton>
         </FormAction>
       </Form>

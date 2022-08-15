@@ -5,9 +5,11 @@ import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { StateTransitionViewViewModel } from "./viewViewModel";
 import Breadcrumb from "components/layout/breadcrumb";
+import { useTranslation } from "react-i18next";
 
 const StateTransitionView = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -42,7 +44,7 @@ const StateTransitionView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Id
+                  {t("form.label.id", "Id")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.id}</td>
               </tr>
@@ -51,7 +53,7 @@ const StateTransitionView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Form Step
+                  {t("form.label.fromStep", "From Step")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.fromStep?.name}</td>
               </tr>
@@ -60,7 +62,7 @@ const StateTransitionView = () => {
                   scope="row"
                   className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  To Step
+                  {t("form.label.toStep", "To Step")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.toStep?.name}</td>
               </tr>
@@ -69,7 +71,7 @@ const StateTransitionView = () => {
                   scope="row"
                   className="align-top w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                 >
-                  Form Definition
+                  {t("form.label.formDefinition", "Form Definition")}
                 </th>
                 <td className="px-6 py-4">
                   <pre className="text-[13px]">

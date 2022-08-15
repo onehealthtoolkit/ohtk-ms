@@ -15,6 +15,7 @@ import { ReporterNotification } from "lib/services/reporterNotification";
 import TotalItem from "components/widgets/table/totalItem";
 import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
+import { useTranslation } from "react-i18next";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -25,6 +26,7 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
 
 const ReporterNotificationList = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { reporterNotificationService } = useServices();
   const { setUrl, query, resetUrl } = useUrlParams();
 
@@ -82,7 +84,7 @@ const ReporterNotificationList = () => {
           <Table
             columns={[
               {
-                label: "Id",
+                label: t("form.label.id", "Id"),
                 get: record => record.id,
               },
               {
@@ -90,7 +92,7 @@ const ReporterNotificationList = () => {
                 get: record => record.reportType?.name,
               },
               {
-                label: "Description",
+                label: t("form.label.description", "Description"),
                 get: record => record.description,
               },
             ]}
@@ -115,8 +117,8 @@ const ReporterNotificationList = () => {
 
           <ConfirmDialog
             store={viewModel.dialog("confirmDelete")}
-            title="Confirm delete"
-            content="Are you sure?"
+            title={t("dialog.title.confirmDelete", "Confirm delete")}
+            content={t("dialog.content.confirmDelete", "Are you sure?")}
             onYes={(record: ReporterNotification) =>
               viewModel.delete(record.id)
             }

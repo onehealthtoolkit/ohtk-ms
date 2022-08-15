@@ -16,6 +16,7 @@ import { NotificationTemplateListViewModel } from "./listViewModel";
 import TotalItem from "components/widgets/table/totalItem";
 import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
+import { useTranslation } from "react-i18next";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -26,6 +27,7 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
 
 const NotificationTemplateList = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { notificationTemplateService } = useServices();
   const { setUrl, query, resetUrl } = useUrlParams();
 
@@ -82,15 +84,17 @@ const NotificationTemplateList = () => {
           <Table
             columns={[
               {
-                label: "Id",
+                label: t("form.label.id", "Id"),
                 get: record => record.id,
               },
               {
-                label: "Name",
+                label: t("form.label.name", "Name"),
                 get: record => record.name,
               },
               {
-                label: "Report Type",
+                label: t("form.label.reportType", {
+                  defaultValue: "Report Type",
+                }),
                 get: record => record.reportTypeName,
               },
             ]}
@@ -115,8 +119,8 @@ const NotificationTemplateList = () => {
 
           <ConfirmDialog
             store={viewModel.dialog("confirmDelete")}
-            title="Confirm delete"
-            content="Are you sure?"
+            title={t("dialog.title.confirmDelete", "Confirm delete")}
+            content={t("dialog.content.confirmDelete", "Are you sure?")}
             onYes={(record: NotificationTemplate) =>
               viewModel.delete(record.id)
             }

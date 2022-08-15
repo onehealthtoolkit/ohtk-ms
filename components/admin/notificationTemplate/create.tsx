@@ -22,9 +22,11 @@ import useServices from "lib/services/provider";
 import useMyReportTypes from "lib/hooks/reportTypes/myReportTypes";
 import useStateTransitions from "lib/hooks/stateTransitions";
 import { CasesNotificationTemplateTypeChoices } from "lib/generated/graphql";
+import { useTranslation } from "react-i18next";
 
 const NotificationTemplateCreate = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -51,11 +53,11 @@ const NotificationTemplateCreate = () => {
     >
       <FieldGroup>
         <Field $size="half">
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
           <TextInput
             id="name"
             type="text"
-            placeholder="Name"
+            placeholder={t("form.placeholder.name", "Name")}
             onChange={evt => (viewModel.name = evt.target.value)}
             disabled={isSubmitting}
             required
@@ -63,7 +65,9 @@ const NotificationTemplateCreate = () => {
           <ErrorText>{errors.name}</ErrorText>
         </Field>
         <Field $size="half">
-          <Label htmlFor="reportType">Report Type</Label>
+          <Label htmlFor="reportType">
+            {t("form.label.reportType", "Report Type")}
+          </Label>
           <Select
             id="reportType"
             onChange={evt => {
@@ -75,7 +79,7 @@ const NotificationTemplateCreate = () => {
             required
           >
             <option disabled value={""}>
-              Select item ...
+              {t("form.label.selectItem", "Select item ...")}
             </option>
             {reportTypes?.map(item => (
               <option key={`option-${item.id}`} value={item.id}>
@@ -124,7 +128,9 @@ const NotificationTemplateCreate = () => {
         <>
           {viewModel.type == CasesNotificationTemplateTypeChoices.Cas && (
             <Field $size="half">
-              <Label htmlFor="transistion">Transistion</Label>
+              <Label htmlFor="transistion">
+                {t("form.label.transistion", "Transistion")}
+              </Label>
               <div className="relative">
                 {transitionLoading && (
                   <div className="flex absolute inset-y-0 right-5 items-center pl-3 pointer-events-none">
@@ -140,7 +146,7 @@ const NotificationTemplateCreate = () => {
                   value={viewModel.stateTransitionId}
                 >
                   <option disabled value={0}>
-                    Select item ...
+                    {t("form.label.selectItem", "Select item ...")}
                   </option>
                   {stateTransitions?.map(item => (
                     <option key={`option-${item.id}`} value={item.id}>
@@ -155,10 +161,12 @@ const NotificationTemplateCreate = () => {
         </>
 
         <Field $size="half">
-          <Label htmlFor="condition">Condition</Label>
+          <Label htmlFor="condition">
+            {t("form.label.condition", "Condition")}
+          </Label>
           <TextArea
             id="condition"
-            placeholder="Condition"
+            placeholder={t("form.placeholder.condition", "Condition")}
             rows={5}
             onChange={evt => (viewModel.condition = evt.target.value)}
             disabled={isSubmitting}
@@ -167,11 +175,13 @@ const NotificationTemplateCreate = () => {
         </Field>
 
         <Field $size="half">
-          <Label htmlFor="titleTemplate">Title Template</Label>
+          <Label htmlFor="titleTemplate">
+            {t("form.label.titleTemplate", "Title Template")}
+          </Label>
           <TextInput
             id="titleTemplate"
             type="text"
-            placeholder="Title Template"
+            placeholder={t("form.placeholder.titleTemplate", "Title Template")}
             onChange={evt => (viewModel.titleTemplate = evt.target.value)}
             disabled={isSubmitting}
             required
@@ -179,10 +189,12 @@ const NotificationTemplateCreate = () => {
           <ErrorText>{errors.titleTemplate}</ErrorText>
         </Field>
         <Field $size="half">
-          <Label htmlFor="bodyTemplate">Body Template</Label>
+          <Label htmlFor="bodyTemplate">
+            {t("form.label.bodyTemplate", "Body Template")}
+          </Label>
           <TextArea
             id="bodyTemplate"
-            placeholder="Title Template"
+            placeholder={t("form.placeholder.bodyTemplate", "Body Template")}
             rows={5}
             onChange={evt => (viewModel.bodyTemplate = evt.target.value)}
             disabled={isSubmitting}
@@ -196,10 +208,10 @@ const NotificationTemplateCreate = () => {
       )}
       <FormAction>
         <SaveButton type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <Spinner /> : "บันทึก"}
+          {isSubmitting ? <Spinner /> : t("form.button.save", "Save")}
         </SaveButton>
         <CancelButton type="button" onClick={() => router.back()}>
-          Cancel
+          {t("form.button.cancel", "Cancel")}
         </CancelButton>
       </FormAction>
     </Form>
