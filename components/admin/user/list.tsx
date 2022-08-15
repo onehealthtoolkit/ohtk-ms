@@ -18,6 +18,21 @@ import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { useTranslation } from "react-i18next";
 import { AccountsAuthorityUserRoleChoices } from "lib/generated/graphql";
 
+export const getRoleName = (role: string) => {
+  switch (role) {
+    case AccountsAuthorityUserRoleChoices.Rep:
+      return "Reporter";
+    case AccountsAuthorityUserRoleChoices.Ofc:
+      return "Officer";
+    case AccountsAuthorityUserRoleChoices.Adm:
+      return "Admin";
+
+    default:
+      break;
+  }
+  return "";
+};
+
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
     q: query.q as string,
@@ -53,21 +68,6 @@ const UserList = () => {
       filter.offset = offset;
     }
     setUrl(filter);
-  };
-
-  const getRoleName = (role: string) => {
-    switch (role) {
-      case AccountsAuthorityUserRoleChoices.Rep:
-        return "Reporter";
-      case AccountsAuthorityUserRoleChoices.Ofc:
-        return "Officer";
-      case AccountsAuthorityUserRoleChoices.Adm:
-        return "Admin";
-
-      default:
-        break;
-    }
-    return "";
   };
 
   if (!viewModel) {
