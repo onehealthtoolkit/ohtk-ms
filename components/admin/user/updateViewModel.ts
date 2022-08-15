@@ -8,7 +8,7 @@ export class UserUpdateViewModel extends UserViewModel {
   constructor(id: string, userService: IUserService) {
     super(userService);
     this.id = id;
-    this.fetch();
+    if (this.id) this.fetch();
   }
 
   async fetch() {

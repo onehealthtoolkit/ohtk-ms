@@ -1147,6 +1147,7 @@ export type IncidentReportType = {
   reportType: AdminReportTypeCreateSuccess;
   reportedBy?: Maybe<UserType>;
   testFlag: Scalars["Boolean"];
+  threadId?: Maybe<Scalars["Int"]>;
   updatedAt: Scalars["DateTime"];
 };
 

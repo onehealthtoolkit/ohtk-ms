@@ -15,7 +15,7 @@ interface ActionHandlerProps {
   onClick: () => void;
 }
 
-const EditAction = (props: ActionHandlerProps) => (
+export const EditAction = (props: ActionHandlerProps) => (
   <PencilAltIcon
     type="edit"
     className="mx-1 w-8 h-5 text-[#ADC7FF] hover:text-indigo-900 cursor-pointer"
