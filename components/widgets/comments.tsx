@@ -18,7 +18,7 @@ import { formatDateTime } from "lib/datetime";
 const { publicRuntimeConfig } = getConfig();
 
 type CommentsProps = {
-  threadId?: number;
+  threadId?: number | null;
 };
 
 const Comments: React.FC<CommentsProps> = ({ threadId }) => {
@@ -30,7 +30,7 @@ const Comments: React.FC<CommentsProps> = ({ threadId }) => {
     <Observer>
       {() => (
         <>
-          <label className="block mt-4 px-4 text-gray-700 text-sm font-bold flex gap-1">
+          <label className="mt-4 px-4 text-gray-700 text-sm font-bold flex gap-1">
             <ChatAltIcon className="w-5 h-5" />
             <span>Comments</span>
           </label>

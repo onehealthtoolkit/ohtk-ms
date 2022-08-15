@@ -133,7 +133,7 @@ export class CaseService implements ICaseService {
         id: incidentCase.id,
         description: incidentCase.description,
         isFinished: incidentCase.isFinished,
-        threadId: incidentCase.threadId || undefined,
+        threadId: incidentCase.threadId,
         createdAt: incidentCase.report?.createdAt,
         incidentDate: incidentCase.report?.incidentDate,
         reportTypeName: incidentCase.report?.reportType?.name,
@@ -142,6 +142,7 @@ export class CaseService implements ICaseService {
         images: incidentCase.report?.images as Image[],
         reportByName: `${incidentCase.report?.reportedBy?.firstName} ${incidentCase.report?.reportedBy?.lastName}`,
         reportByTelephone: incidentCase.report?.reportedBy?.telephone || "",
+        gpsLocation: incidentCase.report?.gpsLocation,
         stateDefinition: incidentCase.stateDefinition,
         states: incidentCase.states,
       };

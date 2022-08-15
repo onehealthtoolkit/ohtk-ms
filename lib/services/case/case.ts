@@ -12,7 +12,8 @@ export type Case = {
   reportByName?: string;
   reportByTelephone?: string;
   isFinished: boolean;
-  threadId?: number;
+  threadId?: number | null;
+  gpsLocation?: string | null;
 };
 
 export type Image = {
