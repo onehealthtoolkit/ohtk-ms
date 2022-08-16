@@ -7,6 +7,8 @@ export type Report = {
   reportByName?: string;
   reportByTelephone?: string;
   caseId?: string;
+  gpsLocation?: string | null;
+  threadId?: number | null;
 };
 
 export type Image = {

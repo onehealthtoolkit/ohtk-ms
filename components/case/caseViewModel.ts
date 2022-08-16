@@ -11,12 +11,14 @@ import { CaseDetail } from "lib/services/case/case";
 import { CaseStateViewViewModel } from "components/case/caseState/viewViewModel";
 import { Me } from "lib/services/profile/me";
 import { FetchPolicy } from "@apollo/client";
+import { GalleryDialogViewModel } from "components/widgets/dialogs/galleryDialogViewModel";
 
 export class CaseViewModel extends BaseViewModel {
   data: CaseDetail = {} as CaseDetail;
   id: string;
   _activeTabIndex: number = 0;
   stateViewViewModel: CaseStateViewViewModel;
+  galleryViewModel?: GalleryDialogViewModel = undefined;
 
   constructor(id: string, readonly me: Me, readonly caseService: ICaseService) {
     super();
@@ -25,6 +27,8 @@ export class CaseViewModel extends BaseViewModel {
       fetch: action,
       _activeTabIndex: observable,
       activeTabIndex: computed,
+      galleryViewModel: observable,
+      openGallery: action,
     });
     this.id = id;
     this.stateViewViewModel = observable(
@@ -56,5 +60,18 @@ export class CaseViewModel extends BaseViewModel {
       });
     }
     this.isLoading = false;
+  }
+
+  openGallery(imageId: string) {
+    const images =
+      this.data.images?.map(image => ({
+        imageUrl: image.file,
+        thumbnailUrl: image.thumbnail,
+      })) || [];
+
+    const selectedIdx = this.data.images?.findIndex(it => it.id === imageId);
+
+    this.galleryViewModel = new GalleryDialogViewModel(images, selectedIdx);
+    this.galleryViewModel.open(null);
   }
 }

@@ -1,3 +1,4 @@
+import { GalleryDialogViewModel } from "components/widgets/dialogs/galleryDialogViewModel";
 import { BaseFormViewModel } from "lib/baseFormViewModel";
 import { Comment } from "lib/services/comment/comment";
 import { ICommentService } from "lib/services/comment/commentService";
@@ -19,10 +20,11 @@ export class CommentsViewModel extends BaseFormViewModel {
   data: Comment[] = [];
   _body: string = "";
   attachments: LocalFile[] = [];
+  galleryViewModel?: GalleryDialogViewModel = undefined;
 
   constructor(
     readonly commentService: ICommentService,
-    readonly threadId?: number
+    readonly threadId?: number | null
   ) {
     super();
     makeObservable(this, {
@@ -32,6 +34,7 @@ export class CommentsViewModel extends BaseFormViewModel {
       attachments: observable,
       addAttachments: action,
       save: action,
+      galleryViewModel: observable,
     });
     this.fetch();
   }
@@ -98,5 +101,22 @@ export class CommentsViewModel extends BaseFormViewModel {
       this.fetch(); // use cache from refetch
     }
     return result.success;
+  }
+
+  openGallery(commentId: string, imageId: string) {
+    const comment = this.data.find(it => it.id === commentId);
+    if (!comment) {
+      return;
+    }
+    const images =
+      comment.attachments?.map(image => ({
+        imageUrl: image.file,
+        thumbnailUrl: image.thumbnail,
+      })) || [];
+
+    const selectedIdx = comment.attachments?.findIndex(it => it.id === imageId);
+
+    this.galleryViewModel = new GalleryDialogViewModel(images, selectedIdx);
+    this.galleryViewModel.open(null);
   }
 }

@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from "react";
-import { Observer } from "mobx-react";
-import { MaskingLoader } from "components/widgets/forms";
+import { Fragment, useState } from "react";
+import { observer, Observer } from "mobx-react";
+import { Divide, MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ReportViewModel } from "./reportViewModel";
 import getConfig from "next/config";
@@ -10,6 +10,9 @@ import Spinner from "components/widgets/spinner";
 import { useRouter } from "next/router";
 import CaseLink from "components/case/caseLink";
 import { renderData, TR } from "components/widgets/renderData";
+import dynamic from "next/dynamic";
+import Comments from "components/widgets/comments";
+import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -26,6 +29,71 @@ export const PromoteToCaseButton = tw.button`
   justify-center 
   items-center
 `;
+
+const ReportLocation = dynamic(() => import("../case/reportLocationMap"), {
+  loading: () => <p>A map is loading</p>,
+  ssr: false,
+});
+
+const ReportInformation = observer(
+  ({ viewModel }: { viewModel: ReportViewModel }) => {
+    return (
+      <div className="relative overflow-x-auto md:w-1/2 w-full">
+        <table className="table-fixed border w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <tbody>
+            <TR
+              label="Created at"
+              value={viewModel.data?.createdAt?.toString() || ""}
+            />
+
+            <TR
+              label="Incident date"
+              value={viewModel.data?.incidentDate?.toString() || ""}
+            />
+
+            <TR
+              label="Report type"
+              value={viewModel.data?.reportTypeName || ""}
+            />
+
+            <TR label="Report by" value={viewModel.data?.reportByName || ""} />
+
+            <TR
+              label="Phone number"
+              value={viewModel.data?.reportByTelephone || ""}
+            />
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+);
+
+const ReportImage = observer(
+  ({ viewModel }: { viewModel: ReportViewModel }) => {
+    return (
+      <Fragment>
+        {viewModel.data.images?.map((image, idx) => (
+          <div key={idx} className="">
+            <a
+              href="#"
+              onClick={e => {
+                e.preventDefault();
+                viewModel.openGallery(image.id);
+              }}
+            >
+              <img
+                className="w-40"
+                src={`${publicRuntimeConfig.serverUrl}/${image.thumbnail}`}
+                alt=""
+              />
+            </a>
+          </div>
+        ))}
+      </Fragment>
+    );
+  }
+);
 
 const Report = (props: { id: string }) => {
   const { id } = props;
@@ -44,9 +112,9 @@ const Report = (props: { id: string }) => {
       {() => {
         return (
           <MaskingLoader loading={viewModel.isLoading}>
-            <div>
+            <>
               {viewModel.data.caseId == undefined && (
-                <div className="flex items-center flex-wrap mb-4">
+                <div className="flex items-center flex-wrap absolute right-0 top-12">
                   <div className="flex-grow"></div>
                   <PromoteToCaseButton
                     disabled={viewModel.isLoading}
@@ -73,60 +141,34 @@ const Report = (props: { id: string }) => {
                   {viewModel.data.rendererData}
                 </p>
               </div>
+              <Divide hilight />
 
-              <div className="relative overflow-x-auto mt-4">
-                <table className="table-fixed border w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                  <tbody>
-                    <TR
-                      label="Created at"
-                      value={viewModel.data?.createdAt?.toString() || ""}
-                    />
+              <div className="flex flex-row gap-2 md:flex-nowrap flex-wrap ">
+                <ReportInformation viewModel={viewModel} />
+                <div className="md:w-1/2 w-full h-[300px] md:h-auto">
+                  <ReportLocation lnglat={viewModel.data.gpsLocation} />
+                </div>
+              </div>
 
-                    <TR
-                      label="Incident date"
-                      value={viewModel.data?.incidentDate?.toString() || ""}
-                    />
+              <ReportImage viewModel={viewModel} />
 
-                    <TR
-                      label="Report type"
-                      value={viewModel.data?.reportTypeName || ""}
-                    />
+              <Divide />
 
-                    <TR
-                      label="Report by"
-                      value={viewModel.data?.reportByName || ""}
-                    />
+              <div className="mb-4">
+                <div className="">
+                  <p className="text-md dark:text-gray-400">Form Data</p>
+                </div>
+                <div className="">
+                  {viewModel.data.data && renderData(viewModel.data.data)}
+                </div>
+              </div>
 
-                    <TR
-                      label="Phone number"
-                      value={viewModel.data?.reportByTelephone || ""}
-                    />
-                  </tbody>
-                </table>
-              </div>
-              <div className="flex flex-wrap pt-6 pb-4">
-                {viewModel.data.images?.map((image, idx) => (
-                  <div key={idx} className="">
-                    <a href="#">
-                      <img
-                        className="w-40"
-                        src={`${publicRuntimeConfig.serverUrl}/${image.thumbnail}`}
-                        alt=""
-                      />
-                    </a>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-4">
-                <p className="text-md dark:text-gray-400">Form Data</p>
-              </div>
-              <div className="">
-                {viewModel.data.data && renderData(viewModel.data.data)}
-              </div>
-              <div className="flex justify-between items-start p-4 rounded-t dark:border-gray-600">
-                <p className="text-lg dark:text-gray-400">Images</p>
-              </div>
-            </div>
+              <Divide />
+
+              <Comments threadId={viewModel.data.threadId} />
+
+              <GalleryDialog viewModel={viewModel.galleryViewModel} />
+            </>
           </MaskingLoader>
         );
       }}

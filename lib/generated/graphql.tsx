@@ -3183,6 +3183,7 @@ export type GetReportQuery = {
     updatedAt: any;
     rendererData: string;
     caseId?: any | null;
+    threadId?: number | null;
     data?: any | null;
     platform?: string | null;
     reportType: {
@@ -9297,6 +9298,8 @@ export const GetReportDocument = {
                   name: { kind: "Name", value: "rendererData" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "caseId" } },
+                { kind: "Field", name: { kind: "Name", value: "gpsLocation" } },
+                { kind: "Field", name: { kind: "Name", value: "threadId" } },
                 { kind: "Field", name: { kind: "Name", value: "data" } },
                 {
                   kind: "Field",

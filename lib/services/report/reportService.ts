@@ -86,6 +86,8 @@ export class ReportService implements IReportService {
         data: incidentReport.data,
         images: incidentReport.images as Image[],
         caseId: incidentReport.caseId,
+        gpsLocation: incidentReport.gpsLocation,
+        threadId: incidentReport.threadId,
         reportByName: `${incidentReport.reportedBy?.firstName} ${incidentReport.reportedBy?.lastName}`,
         reportByTelephone: incidentReport.reportedBy?.telephone || "",
       };

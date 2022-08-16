@@ -14,11 +14,12 @@ import getConfig from "next/config";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { formatDateTime } from "lib/datetime";
+import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 
 const { publicRuntimeConfig } = getConfig();
 
 type CommentsProps = {
-  threadId?: number;
+  threadId?: number | null;
 };
 
 const Comments: React.FC<CommentsProps> = ({ threadId }) => {
@@ -30,7 +31,7 @@ const Comments: React.FC<CommentsProps> = ({ threadId }) => {
     <Observer>
       {() => (
         <>
-          <label className="block mt-4 px-4 text-gray-700 text-sm font-bold flex gap-1">
+          <label className="mt-4 px-4 text-gray-700 text-sm font-bold flex gap-1">
             <ChatAltIcon className="w-5 h-5" />
             <span>Comments</span>
           </label>
@@ -38,7 +39,11 @@ const Comments: React.FC<CommentsProps> = ({ threadId }) => {
           <div>
             {viewModel.data.length > 0 ? (
               viewModel.data.map(comment => (
-                <Comment key={comment.id} comment={comment} />
+                <Comment
+                  key={comment.id}
+                  comment={comment}
+                  onViewImage={id => viewModel.openGallery(comment.id, id)}
+                />
               ))
             ) : (
               <div>No comments</div>
@@ -46,6 +51,8 @@ const Comments: React.FC<CommentsProps> = ({ threadId }) => {
           </div>
 
           <CommentForm viewModel={viewModel} />
+
+          <GalleryDialog viewModel={viewModel.galleryViewModel} />
         </>
       )}
     </Observer>
@@ -133,7 +140,13 @@ const CommentForm = observer(
   }
 );
 
-const Comment = ({ comment }: { comment: Comment }) => {
+const Comment = ({
+  comment,
+  onViewImage,
+}: {
+  comment: Comment;
+  onViewImage: (id: string) => void;
+}) => {
   const router = useRouter();
   return (
     <>
@@ -157,7 +170,11 @@ const Comment = ({ comment }: { comment: Comment }) => {
             {comment.attachments && comment.attachments.length > 0 && (
               <div className="flex flex-row gap-2 mt-4">
                 {comment.attachments?.map(attachment => (
-                  <Attachment key={attachment.id} file={attachment} />
+                  <Attachment
+                    key={attachment.id}
+                    file={attachment}
+                    onViewImage={onViewImage}
+                  />
                 ))}
               </div>
             )}
@@ -179,9 +196,20 @@ const TempAttachment = ({ file }: { file: LocalFile }) => {
   );
 };
 
-const Attachment = ({ file: attachment }: { file: Attachment }) => {
+const Attachment = ({
+  file: attachment,
+  onViewImage,
+}: {
+  file: Attachment;
+  onViewImage: (id: string) => void;
+}) => {
   return (
-    <div className="border border-gray-300 p-1 h-24 w-24 flex flex-row justify-center items-center">
+    <div
+      className="border border-gray-300 p-1 h-24 w-24 flex flex-row 
+        justify-center items-center cursor-pointer
+      "
+      onClick={() => onViewImage(attachment.id)}
+    >
       <img
         src={`${publicRuntimeConfig.serverUrl}/${attachment.thumbnail}`}
         className="w-full h-full object-cover"
