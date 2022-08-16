@@ -12,17 +12,20 @@ import {
 import { Image, Case, CaseDetail, CaseState } from "lib/services/case/case";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
 import { Authority } from "../authority";
+import { ReportType } from "../reportType";
 
 export type CaseFilterData = {
   fromDate?: Date;
   throughDate?: Date;
   authorities?: Pick<Authority, "id" | "code" | "name">[];
+  reportTypes?: Pick<ReportType, "id" | "name">[];
 };
 
 export type CaseFilter = {
   fromDate?: Date;
   throughDate?: Date;
   authorities?: string[];
+  reportTypes?: string[];
   limit: number;
   offset: number;
 };
@@ -56,6 +59,7 @@ export class CaseService implements ICaseService {
     limit: 20,
     offset: 0,
     authorities: undefined,
+    reportTypes: undefined,
   };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
@@ -66,6 +70,7 @@ export class CaseService implements ICaseService {
     this.fetchCasesQuery = {
       ...this.fetchCasesQuery,
       authorities: filter.authorities?.map(a => a.id),
+      reportTypes: filter.reportTypes?.map(a => a.id),
       fromDate: filter.fromDate,
       throughDate: filter.throughDate,
       limit,

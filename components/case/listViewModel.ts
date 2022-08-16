@@ -7,6 +7,7 @@ const initialFilter: CaseFilterData = {
   fromDate: undefined,
   throughDate: undefined,
   authorities: undefined,
+  reportTypes: undefined,
 };
 
 type SearchParams = {
@@ -14,6 +15,7 @@ type SearchParams = {
   throughDate?: Date;
   offset?: number;
   authorities?: CaseFilterData["authorities"];
+  reportTypes?: CaseFilterData["reportTypes"];
 };
 
 export class CaseListViewModel extends BaseViewModel {
@@ -34,6 +36,7 @@ export class CaseListViewModel extends BaseViewModel {
     this.filter.fromDate = params.fromDate;
     this.filter.throughDate = params.throughDate;
     this.filter.authorities = params.authorities;
+    this.filter.reportTypes = params.reportTypes;
 
     this.offset = params.offset || 0;
     this.fetch();

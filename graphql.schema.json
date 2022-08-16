@@ -14086,6 +14086,22 @@
                 "defaultValue": "null",
                 "isDeprecated": false,
                 "deprecationReason": null
+              },
+              {
+                "name": "report_ReportType_Id_In",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "UUID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "null",
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -14473,6 +14489,22 @@
                   "kind": "SCALAR",
                   "name": "String",
                   "ofType": null
+                },
+                "defaultValue": "null",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "reportType_Id_In",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "UUID",
+                    "ofType": null
+                  }
                 },
                 "defaultValue": "null",
                 "isDeprecated": false,

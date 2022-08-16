@@ -37,7 +37,7 @@ const formatGroupLabel = (data: GroupedOption) => (
   </div>
 );
 
-export interface GroupedOption {
+interface GroupedOption {
   readonly label: string;
   readonly options: readonly ReportCategory[] | readonly ReportType[];
 }

@@ -26,6 +26,7 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
       : undefined,
     offset: query.offset ? parseInt(query.offset as string) : 0,
     authorities: query.authorities ? JSURL.parse(query.authorities) : [],
+    reportTypes: query.reportTypes ? JSURL.parse(query.reportTypes) : [],
   };
 };
 
@@ -50,6 +51,7 @@ const CaseList = () => {
       throughDate: viewModel.filter.throughDate?.toISOString(),
       offset: viewModel.offset,
       authorities: JSURL.stringify(viewModel.filter.authorities),
+      reportTypes: JSURL.stringify(viewModel.filter.reportTypes),
     });
   };
 

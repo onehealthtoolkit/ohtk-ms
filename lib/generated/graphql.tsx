@@ -1795,6 +1795,7 @@ export type QueryCasesQueryArgs = {
   report_RelevantAuthorities_Id_In?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>>
   >;
+  report_ReportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
 };
 
 export type QueryCategoryArgs = {
@@ -1836,6 +1837,7 @@ export type QueryIncidentReportsArgs = {
   relevantAuthorities_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   relevantAuthorities_Name?: InputMaybe<Scalars["String"]>;
   relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]>;
+  reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
 };
 
 export type QueryInvitationCodeArgs = {
@@ -2272,6 +2274,9 @@ export type CasesQueryVariables = Exact<{
   throughDate?: InputMaybe<Scalars["DateTime"]>;
   authorities?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
+  reportTypes?: InputMaybe<
+    Array<InputMaybe<Scalars["UUID"]>> | InputMaybe<Scalars["UUID"]>
   >;
 }>;
 
@@ -3129,6 +3134,9 @@ export type ReportsQueryVariables = Exact<{
   throughDate?: InputMaybe<Scalars["DateTime"]>;
   authorities?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
+  reportTypes?: InputMaybe<
+    Array<InputMaybe<Scalars["UUID"]>> | InputMaybe<Scalars["UUID"]>
   >;
 }>;
 
@@ -5075,6 +5083,17 @@ export const CasesDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypes" },
+          },
+          type: {
+            kind: "ListType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -5108,6 +5127,14 @@ export const CasesDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "authorities" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "report_ReportType_Id_In" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypes" },
                 },
               },
               {
@@ -9073,6 +9100,17 @@ export const ReportsDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypes" },
+          },
+          type: {
+            kind: "ListType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -9103,6 +9141,14 @@ export const ReportsDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "authorities" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportType_Id_In" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypes" },
                 },
               },
               {

@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { CaseListViewModel } from "./listViewModel";
 import { Authority } from "lib/services/authority";
 import { runInAction } from "mobx";
+import ReportTypeSelect from "components/report/reportTypeSelect";
 
 export const defaultOptions: Authority[] = [];
 
@@ -51,6 +52,17 @@ const CaseFilter = ({ viewModel }: { viewModel: CaseListViewModel }) => {
           onChange={values => {
             runInAction(() => {
               viewModel.filter.authorities = [...values];
+            });
+          }}
+        />
+      </Field>
+      <Field $size="full">
+        <Label htmlFor="throughDate">Report type</Label>
+        <ReportTypeSelect
+          value={viewModel.filter.reportTypes}
+          onChange={values => {
+            runInAction(() => {
+              viewModel.filter.reportTypes = [...values];
             });
           }}
         />

@@ -4,11 +4,13 @@ query Reports(
   $fromDate: DateTime
   $throughDate: DateTime
   $authorities: [String]
+  $reportTypes: [UUID]
 ) {
   incidentReports(
     createdAt_Gte: $fromDate
     createdAt_Lte: $throughDate
     relevantAuthorities_Id_In: $authorities
+    reportType_Id_In: $reportTypes
     limit: $limit
     offset: $offset
   ) {
