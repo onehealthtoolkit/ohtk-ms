@@ -3,10 +3,12 @@ import { BaseViewModel } from "lib/baseViewModel";
 import { IReportService } from "lib/services/report";
 import { ReportDetail } from "lib/services/report/report";
 import { ICaseService } from "lib/services/case";
+import { GalleryDialogViewModel } from "components/widgets/dialogs/galleryDialogViewModel";
 
 export class ReportViewModel extends BaseViewModel {
   data: ReportDetail = {} as ReportDetail;
   id: string;
+  galleryViewModel?: GalleryDialogViewModel = undefined;
 
   constructor(
     id: string,
@@ -18,6 +20,8 @@ export class ReportViewModel extends BaseViewModel {
       data: observable,
       fetch: action,
       promoteToCase: action,
+      galleryViewModel: observable,
+      openGallery: action,
     });
     this.id = id;
     this.fetch();
@@ -39,5 +43,18 @@ export class ReportViewModel extends BaseViewModel {
     const result = await this.caseService.promoteToCase(this.id);
     this.isLoading = false;
     return result;
+  }
+
+  openGallery(imageId: string) {
+    const images =
+      this.data.images?.map(image => ({
+        imageUrl: image.file,
+        thumbnailUrl: image.thumbnail,
+      })) || [];
+
+    const selectedIdx = this.data.images?.findIndex(it => it.id === imageId);
+
+    this.galleryViewModel = new GalleryDialogViewModel(images, selectedIdx);
+    this.galleryViewModel.open(null);
   }
 }

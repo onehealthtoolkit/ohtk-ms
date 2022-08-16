@@ -17,6 +17,7 @@ import CaseStatus from "./caseStatus";
 import { renderData, TR } from "components/widgets/renderData";
 import Comments from "components/widgets/comments";
 import dynamic from "next/dynamic";
+import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -59,7 +60,13 @@ const ReportImage = observer(({ viewModel }: { viewModel: CaseViewModel }) => {
     <Fragment>
       {viewModel.data.images?.map((image, idx) => (
         <div key={idx} className="">
-          <a href="#">
+          <a
+            href="#"
+            onClick={e => {
+              e.preventDefault();
+              viewModel.openGallery(image.id);
+            }}
+          >
             <img
               className="w-40"
               src={`${publicRuntimeConfig.serverUrl}/${image.thumbnail}`}
@@ -167,6 +174,8 @@ const Case = (props: { id: string }) => {
               <Divide />
 
               <Comments threadId={viewModel.data.threadId} />
+
+              <GalleryDialog viewModel={viewModel.galleryViewModel} />
             </>
           </MaskingLoader>
         );

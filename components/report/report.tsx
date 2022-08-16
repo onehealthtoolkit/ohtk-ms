@@ -12,6 +12,7 @@ import CaseLink from "components/case/caseLink";
 import { renderData, TR } from "components/widgets/renderData";
 import dynamic from "next/dynamic";
 import Comments from "components/widgets/comments";
+import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -74,7 +75,13 @@ const ReportImage = observer(
       <Fragment>
         {viewModel.data.images?.map((image, idx) => (
           <div key={idx} className="">
-            <a href="#">
+            <a
+              href="#"
+              onClick={e => {
+                e.preventDefault();
+                viewModel.openGallery(image.id);
+              }}
+            >
               <img
                 className="w-40"
                 src={`${publicRuntimeConfig.serverUrl}/${image.thumbnail}`}
@@ -159,6 +166,8 @@ const Report = (props: { id: string }) => {
               <Divide />
 
               <Comments threadId={viewModel.data.threadId} />
+
+              <GalleryDialog viewModel={viewModel.galleryViewModel} />
             </>
           </MaskingLoader>
         );
