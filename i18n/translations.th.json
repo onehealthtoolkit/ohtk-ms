@@ -105,7 +105,8 @@
       "changePassword": "เปลี่ยนรหัสผ่าน",
       "newPassword": "รหัสผ่าน",
       "confirmPassword": "ยืนยันรหัสผ่าน",
-      "to": "ถึง"
+      "to": "ถึง",
+      "selectReportType": "เลือกประเภทรายงาน"
     },
     "button": {
       "delete": "ลบ",

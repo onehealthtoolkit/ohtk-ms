@@ -1,4 +1,4 @@
-import Notification from "components/admin/notification/notification";
+import NotificationUpsert from "components/admin/notification/upsert";
 import Protect from "components/auth/protect";
 import Layout from "components/layout";
 import Breadcrumb from "components/layout/breadcrumb";
@@ -13,7 +13,7 @@ const AdminNotificationsPage: NextPage = () => {
         <Breadcrumb
           crumbs={[{ text: t("breadcrumb.notifications", "Notifications") }]}
         />
-        <Notification />
+        <NotificationUpsert />
       </Layout>
     </Protect>
   );
