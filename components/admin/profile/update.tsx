@@ -14,19 +14,17 @@ import {
   TextInput,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
-import { EditAction } from "components/widgets/table";
 import useServices from "lib/services/provider";
 import useStore from "lib/store";
 import { Observer } from "mobx-react";
 import getConfig from "next/config";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import ProfileInfoUpdate from "components/admin/profile/updateInfo";
 
 const { publicRuntimeConfig } = getConfig();
 
 const ProfileUpdate = () => {
-  const router = useRouter();
   const { t } = useTranslation();
   const store = useStore();
   const services = useServices();
@@ -41,6 +39,62 @@ const ProfileUpdate = () => {
     <Observer>
       {() => (
         <>
+          <FieldGroup>
+            <Field $size="half" className="flex flex-col items-center">
+              <div className="w-48 h-48 sm:w-36 sm:h-36">
+                {viewModel.imageUrl ? (
+                  <img
+                    src={`${publicRuntimeConfig.serverUrl}/${viewModel.imageUrl}`}
+                    alt={`${store.me?.username}'s avatar`}
+                    className="shadow-md rounded-full w-full h-full align-middle border-2"
+                  />
+                ) : (
+                  <div className="rounded-full max-w-full h-auto align-middle border-2 flex justify-center items-center bg-gray-200 p-4">
+                    <PhotographIcon
+                      fill="currentColor"
+                      className="w-24 h-24 my-2"
+                    />
+                  </div>
+                )}
+              </div>
+              <label
+                htmlFor="image"
+                className="border text-sm p-2 mt-2 rounded bg-blue-100 hover:border-blue-400 cursor-pointer"
+              >
+                {t("form.label.changePicture", "Change picture")}
+              </label>
+              <input
+                id="image"
+                type="file"
+                accept="image/*"
+                placeholder="Image"
+                onChange={evt => {
+                  if (evt.target.files?.length) {
+                    viewModel.image = evt.target.files[0];
+                    viewModel.uploadAvatar();
+                  }
+                }}
+                disabled={viewModel.isSubmitting}
+                className="hidden"
+              />
+              <ErrorText>{viewModel.fieldErrors.image}</ErrorText>
+              <p className="p-4 text-lg font-bold text-gray-600">
+                {t("form.label.name", "Name")} {store.me?.firstName}{" "}
+                {store.me?.lastName}{" "}
+              </p>
+              <p className="p-4 text-lg font-bold text-gray-600">
+                {t("form.label.authority", "Authority")}{" "}
+                {store.me?.authorityName}
+              </p>
+            </Field>
+            <Field $size="half" className="text-lg">
+              <Label htmlFor="name">
+                {t("form.label.username", "Usernamee")}
+              </Label>
+              <span>{store.me?.username}</span>
+            </Field>
+          </FieldGroup>
+          <ProfileInfoUpdate />
           <Form
             onSubmit={async evt => {
               evt.preventDefault();
@@ -51,66 +105,6 @@ const ProfileUpdate = () => {
             }}
           >
             <FieldGroup>
-              <Field $size="half" className="flex flex-col items-center">
-                <div className="w-48 h-48 sm:w-36 sm:h-36">
-                  {viewModel.imageUrl ? (
-                    <img
-                      src={`${publicRuntimeConfig.serverUrl}/${viewModel.imageUrl}`}
-                      alt={`${store.me?.username}'s avatar`}
-                      className="shadow-md rounded-full w-full h-full align-middle border-2"
-                    />
-                  ) : (
-                    <div className="rounded-full max-w-full h-auto align-middle border-2 flex justify-center items-center bg-gray-200 p-4">
-                      <PhotographIcon
-                        fill="currentColor"
-                        className="w-24 h-24 my-2"
-                      />
-                    </div>
-                  )}
-                </div>
-                <label
-                  htmlFor="image"
-                  className="border text-sm p-2 mt-2 rounded bg-blue-100 hover:border-blue-400 cursor-pointer"
-                >
-                  {t("form.label.changePicture", "Change picture")}
-                </label>
-                <input
-                  id="image"
-                  type="file"
-                  accept="image/*"
-                  placeholder="Image"
-                  onChange={evt => {
-                    if (evt.target.files?.length) {
-                      viewModel.image = evt.target.files[0];
-                      viewModel.uploadAvatar();
-                    }
-                  }}
-                  disabled={viewModel.isSubmitting}
-                  className="hidden"
-                />
-                <ErrorText>{viewModel.fieldErrors.image}</ErrorText>
-                <p className="p-4 text-lg font-bold text-gray-600">
-                  <span className="flex">
-                    {t("form.label.name", "Name")} {store.me?.firstName}{" "}
-                    {store.me?.lastName}{" "}
-                    <EditAction
-                      onClick={() => {
-                        router.push(`/admin/profile/update/`);
-                      }}
-                    />
-                  </span>
-                </p>
-                <p className="p-4 text-lg font-bold text-gray-600">
-                  {t("form.label.authority", "Authority")}{" "}
-                  {store.me?.authorityName}
-                </p>
-              </Field>
-              <Field $size="half" className="text-lg">
-                <Label htmlFor="name">
-                  {t("form.label.username", "Usernamee")}
-                </Label>
-                <span>{store.me?.username}</span>
-              </Field>
               <Field $size="half">
                 <label className="block border-b border-gray-400 text-gray-600 font-bold my-6 py-2">
                   {t("form.label.changePassword", "Change password")}
@@ -156,7 +150,7 @@ const ProfileUpdate = () => {
             {viewModel.submitError.length > 0 && (
               <FormMessage>{viewModel.submitError}</FormMessage>
             )}
-            <FormAction>
+            <FormAction className="-mt-24">
               <SaveButton type="submit" disabled={viewModel.isSubmitting}>
                 {viewModel.isSubmitting ? (
                   <Spinner />
