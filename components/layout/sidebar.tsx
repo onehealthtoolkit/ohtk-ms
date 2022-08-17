@@ -8,12 +8,10 @@ import {
   TemplateIcon,
   VariableIcon,
   BellIcon,
-  LogoutIcon,
   DocumentReportIcon,
   AnnotationIcon,
   LightBulbIcon,
   CollectionIcon,
-  UserCircleIcon,
   SpeakerphoneIcon,
 } from "@heroicons/react/outline";
 import useStore from "lib/store";
@@ -21,7 +19,6 @@ import CollapsIcon from "components/layout/CollapsIcon";
 import { observer } from "mobx-react";
 import { Menu } from "./menu";
 import UserMenu from "./userMenu";
-import { UserAvatar } from "components/widgets/forms";
 
 const iconClassName = "h-5 w-5 text-gray-300";
 
@@ -53,10 +50,6 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
 
   const onMouseOver = () => {
     setIsCollapsible(false);
-  };
-
-  const onLogout = () => {
-    store.signOut();
   };
 
   return (
@@ -240,34 +233,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
             >
               <span className="md:sidebar-expanded:block 2xl:block"></span>
             </h3>
-            <ul className="mt-3">
-              <div className="flex items-center">
-                <UserAvatar url={store.me!.avatarUrl} />
-                <span
-                  className={`text-white ${
-                    store.menu.collapsed ? "hidden" : ""
-                  }`}
-                >
-                  <UserMenu className="ml-2 text-white" />
-                </span>
-              </div>
-              <Menu
-                href="/admin/profile/"
-                pathname={pathname}
-                label="Profile"
-                collapsed={store.menu.collapsed}
-                icon={<UserCircleIcon className={iconClassName} />}
-              />
-
-              <Menu
-                href="/admin/logout/"
-                pathname={pathname}
-                label="Logout"
-                collapsed={store.menu.collapsed}
-                onClick={onLogout}
-                icon={<LogoutIcon className={iconClassName} />}
-              />
-            </ul>
+            <UserMenu className="ml-2 text-white" />
           </div>
         </div>
       </div>

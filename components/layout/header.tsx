@@ -1,7 +1,6 @@
 import useStore from "lib/store";
 import { observer } from "mobx-react";
 import React from "react";
-import UserMenu from "./userMenu";
 
 const Header = () => {
   const store = useStore();
@@ -23,12 +22,6 @@ const Header = () => {
             </button>{" "}
           </div>
           <div className="flex">{/* hamburger menu for mobile */}</div>
-
-          {/* Header: Right side */}
-          <div className="flex items-center hidden">
-            <hr className="w-px h-6 bg-slate-200 mx-3" />
-            <UserMenu />
-          </div>
         </div>
       </div>
     </header>
