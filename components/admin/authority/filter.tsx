@@ -26,6 +26,11 @@ const Filter = ({ nameSearch, onChange }: Props) => {
         type="text"
         value={searchText}
         placeholder={t("filter.placeholder", "search")}
+        onKeyPress={(e: React.KeyboardEvent) => {
+          if (e.key === "Enter") {
+            onChange && onChange(searchText);
+          }
+        }}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           setSearchText(e.target.value);
         }}
