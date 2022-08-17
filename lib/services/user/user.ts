@@ -6,4 +6,5 @@ export type User = {
   email: string;
   telephone?: string;
   avatarUrl?: string;
+  role?: string | null;
 };

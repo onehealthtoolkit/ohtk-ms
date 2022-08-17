@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
-import { UserUpdateViewModel } from "./updateViewModel";
 import {
   CancelButton,
   ErrorText,
@@ -13,23 +12,32 @@ import {
   Label,
   MaskingLoader,
   SaveButton,
-  Select,
   TextInput,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import { useTranslation } from "react-i18next";
-import { AccountsAuthorityUserRoleChoices } from "lib/generated/graphql";
+import useStore from "lib/store";
+import { UserUpdateViewModel } from "../user/updateViewModel";
 
-const UserUpdate = () => {
+const ProfileInfoUpdate = () => {
+  const { me } = useStore();
   const router = useRouter();
   const { t } = useTranslation();
+
   const services = useServices();
-  const [viewModel] = useState(
-    () =>
-      new UserUpdateViewModel(router.query.id as string, services.userService)
-  );
+
+  const [viewModel] = useState(() => {
+    return new UserUpdateViewModel(
+      me ? me.id.toString() : "",
+      services.userService
+    );
+  });
+
   const errors = viewModel.fieldErrors;
+  if (!me) {
+    return <Spinner />;
+  }
 
   return (
     <MaskingLoader loading={viewModel.isLoading}>
@@ -37,26 +45,13 @@ const UserUpdate = () => {
         onSubmit={async evt => {
           evt.preventDefault();
           if (await viewModel.save()) {
+            me.firstName = viewModel.firstName;
+            me.lastName = viewModel.lastName;
             router.back();
           }
         }}
       >
         <FieldGroup>
-          <Field $size="half">
-            <Label htmlFor="username">
-              {t("form.label.username", "User Name")}
-            </Label>
-            <TextInput
-              id="username"
-              type="text"
-              placeholder={t("form.placeholder.username", "User Name")}
-              onChange={evt => (viewModel.username = evt.target.value)}
-              disabled={viewModel.isSubmitting}
-              value={viewModel.username}
-              required
-            />
-            <ErrorText>{errors.username}</ErrorText>
-          </Field>
           <Field $size="half">
             <Label htmlFor="firstName">
               {t("form.label.firstName", "First Name")}
@@ -88,19 +83,6 @@ const UserUpdate = () => {
             <ErrorText>{errors.lastName}</ErrorText>
           </Field>
           <Field $size="half">
-            <Label htmlFor="email">{t("form.label.email", "Email")}</Label>
-            <TextInput
-              id="email"
-              type="text"
-              placeholder={t("form.placeholder.email", "Email")}
-              onChange={evt => (viewModel.email = evt.target.value)}
-              disabled={viewModel.isSubmitting}
-              value={viewModel.email}
-              required
-            />
-            <ErrorText>{errors.email}</ErrorText>
-          </Field>
-          <Field $size="half">
             <Label htmlFor="telephone">
               {t("form.label.telephone", "Telephone")}
             </Label>
@@ -113,30 +95,6 @@ const UserUpdate = () => {
               value={viewModel.telephone}
             />
             <ErrorText>{errors.telephone}</ErrorText>
-          </Field>
-          <Field $size="half">
-            <Label htmlFor="role">{t("form.label.role", "Role")}</Label>
-            <Select
-              id="role"
-              onChange={evt => {
-                viewModel.role = evt.target.value;
-              }}
-              placeholder={t("form.placeholder.role", "Role")}
-              disabled={viewModel.isSubmitting}
-              value={viewModel.role}
-              required
-            >
-              <option value={AccountsAuthorityUserRoleChoices.Rep}>
-                Reporter
-              </option>
-              <option value={AccountsAuthorityUserRoleChoices.Ofc}>
-                Officer
-              </option>
-              <option value={AccountsAuthorityUserRoleChoices.Adm}>
-                Admin
-              </option>
-            </Select>
-            <ErrorText>{errors.role}</ErrorText>
           </Field>
         </FieldGroup>
         {viewModel.submitError.length > 0 && (
@@ -159,4 +117,4 @@ const UserUpdate = () => {
   );
 };
 
-export default observer(UserUpdate);
+export default observer(ProfileInfoUpdate);

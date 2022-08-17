@@ -17,6 +17,7 @@ import TotalItem from "components/widgets/table/totalItem";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { ParsedUrlQuery } from "querystring";
 import { useTranslation } from "react-i18next";
+import { getRoleName } from "../user/list";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -99,6 +100,10 @@ const InvitaionCodeList = () => {
                   defaultValue: "Through Date",
                 }),
                 get: record => formatDate(record.throughDate, router.locale),
+              },
+              {
+                label: t("form.label.role", "Role"),
+                get: record => getRoleName(record.role || ""),
               },
             ]}
             data={viewModel?.data || []}

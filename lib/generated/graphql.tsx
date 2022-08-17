@@ -219,6 +219,7 @@ export type AdminAuthorityUserQueryType = {
   firstName: Scalars["String"];
   id: Scalars["ID"];
   lastName: Scalars["String"];
+  role?: Maybe<AccountsAuthorityUserRoleChoices>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
   username: Scalars["String"];
 };
@@ -909,6 +910,7 @@ export type AuthorityUserType = {
   firstName: Scalars["String"];
   id: Scalars["ID"];
   lastName: Scalars["String"];
+  role?: Maybe<AccountsAuthorityUserRoleChoices>;
   telephone?: Maybe<Scalars["String"]>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
   username: Scalars["String"];
@@ -1260,6 +1262,7 @@ export type MutationAdminAuthorityUserCreateArgs = {
   firstName: Scalars["String"];
   lastName: Scalars["String"];
   password: Scalars["String"];
+  role?: InputMaybe<Scalars["String"]>;
   telephone?: InputMaybe<Scalars["String"]>;
   username: Scalars["String"];
 };
@@ -1274,6 +1277,7 @@ export type MutationAdminAuthorityUserUpdateArgs = {
   firstName: Scalars["String"];
   id: Scalars["ID"];
   lastName: Scalars["String"];
+  role?: InputMaybe<Scalars["String"]>;
   telephone?: InputMaybe<Scalars["String"]>;
   username: Scalars["String"];
 };
@@ -1791,6 +1795,7 @@ export type QueryCasesQueryArgs = {
   report_RelevantAuthorities_Id_In?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>>
   >;
+  report_ReportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
 };
 
 export type QueryCategoryArgs = {
@@ -1832,6 +1837,7 @@ export type QueryIncidentReportsArgs = {
   relevantAuthorities_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   relevantAuthorities_Name?: InputMaybe<Scalars["String"]>;
   relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]>;
+  reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
 };
 
 export type QueryInvitationCodeArgs = {
@@ -2268,6 +2274,9 @@ export type CasesQueryVariables = Exact<{
   throughDate?: InputMaybe<Scalars["DateTime"]>;
   authorities?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
+  reportTypes?: InputMaybe<
+    Array<InputMaybe<Scalars["UUID"]>> | InputMaybe<Scalars["UUID"]>
   >;
 }>;
 
@@ -3125,6 +3134,9 @@ export type ReportsQueryVariables = Exact<{
   throughDate?: InputMaybe<Scalars["DateTime"]>;
   authorities?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
+  reportTypes?: InputMaybe<
+    Array<InputMaybe<Scalars["UUID"]>> | InputMaybe<Scalars["UUID"]>
   >;
 }>;
 
@@ -3991,6 +4003,7 @@ export type UsersQuery = {
       email: string;
       firstName: string;
       lastName: string;
+      role?: AccountsAuthorityUserRoleChoices | null;
     } | null>;
   } | null;
 };
@@ -4003,6 +4016,7 @@ export type UserCreateMutationVariables = Exact<{
   password: Scalars["String"];
   telephone?: InputMaybe<Scalars["String"]>;
   username: Scalars["String"];
+  role?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type UserCreateMutation = {
@@ -4036,6 +4050,7 @@ export type UserUpdateMutationVariables = Exact<{
   lastName: Scalars["String"];
   telephone?: InputMaybe<Scalars["String"]>;
   username: Scalars["String"];
+  role?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type UserUpdateMutation = {
@@ -4062,6 +4077,7 @@ export type UserUpdateMutation = {
             lastName: string;
             email: string;
             telephone?: string | null;
+            role?: AccountsAuthorityUserRoleChoices | null;
           } | null;
         }
       | null;
@@ -4082,6 +4098,7 @@ export type GetUserQuery = {
     lastName: string;
     email: string;
     telephone?: string | null;
+    role?: AccountsAuthorityUserRoleChoices | null;
   } | null;
 };
 
@@ -5067,6 +5084,17 @@ export const CasesDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypes" },
+          },
+          type: {
+            kind: "ListType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -5100,6 +5128,14 @@ export const CasesDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "authorities" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "report_ReportType_Id_In" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypes" },
                 },
               },
               {
@@ -9065,6 +9101,17 @@ export const ReportsDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypes" },
+          },
+          type: {
+            kind: "ListType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -9095,6 +9142,14 @@ export const ReportsDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "authorities" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportType_Id_In" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypes" },
                 },
               },
               {
@@ -13325,6 +13380,7 @@ export const UsersDocument = {
                         kind: "Field",
                         name: { kind: "Name", value: "username" },
                       },
+                      { kind: "Field", name: { kind: "Name", value: "role" } },
                     ],
                   },
                 },
@@ -13434,6 +13490,11 @@ export const UserCreateDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "role" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -13496,6 +13557,14 @@ export const UserCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "username" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "role" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "role" },
                 },
               },
             ],
@@ -13674,6 +13743,11 @@ export const UserUpdateDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "role" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -13738,6 +13812,14 @@ export const UserUpdateDocument = {
                   name: { kind: "Name", value: "username" },
                 },
               },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "role" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "role" },
+                },
+              },
             ],
             selectionSet: {
               kind: "SelectionSet",
@@ -13793,6 +13875,10 @@ export const UserUpdateDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "telephone" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "role" },
                                   },
                                 ],
                               },
@@ -13889,6 +13975,7 @@ export const GetUserDocument = {
                 { kind: "Field", name: { kind: "Name", value: "lastName" } },
                 { kind: "Field", name: { kind: "Name", value: "email" } },
                 { kind: "Field", name: { kind: "Name", value: "telephone" } },
+                { kind: "Field", name: { kind: "Name", value: "role" } },
               ],
             },
           },

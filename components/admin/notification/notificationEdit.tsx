@@ -34,7 +34,7 @@ const NotificationEdit = ({
   const [success, setSuccess] = useState<boolean>();
   const [editing, setEditing] = useState<boolean>(false);
   const [oldValue, setOldValue] = useState<string | undefined>(defaultValue);
-  const [value, setValue] = useState<string | undefined>(defaultValue);
+  const [value, setValue] = useState<string>(defaultValue || "");
   const [errorText, serErrorText] = useState<string | undefined>();
   return (
     <div className="w-full md:w-auto grid gap-6 mb-2 grid-cols-3">
@@ -64,6 +64,7 @@ const NotificationEdit = ({
           }`}
           onClick={() => {
             if (onSave) {
+              serErrorText("");
               setSubmitting(true);
               onSave(value || "").then(result => {
                 setSuccess(result.success);
@@ -91,7 +92,7 @@ const NotificationEdit = ({
           type="button"
           className={`py-2 px-5 mr-2 ${styles.defaultButton}`}
           onClick={() => {
-            setValue(oldValue);
+            setValue(oldValue || "");
             setEditing(false);
             setSuccess(undefined);
           }}

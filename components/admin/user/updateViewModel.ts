@@ -8,7 +8,7 @@ export class UserUpdateViewModel extends UserViewModel {
   constructor(id: string, userService: IUserService) {
     super(userService);
     this.id = id;
-    this.fetch();
+    if (this.id) this.fetch();
   }
 
   async fetch() {
@@ -20,6 +20,7 @@ export class UserUpdateViewModel extends UserViewModel {
       this.lastName = data.lastName;
       this.email = data.email;
       this.telephone = data.telephone || "";
+      this.role = data.role || "";
     }
     this.isLoading = false;
   }
@@ -32,7 +33,8 @@ export class UserUpdateViewModel extends UserViewModel {
       this.firstName,
       this.lastName,
       this.email,
-      this.telephone
+      this.telephone,
+      this.role
     );
   }
 }

@@ -14,16 +14,19 @@ import {
   TextInput,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
+import { EditAction } from "components/widgets/table";
 import useServices from "lib/services/provider";
 import useStore from "lib/store";
 import { Observer } from "mobx-react";
 import getConfig from "next/config";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const { publicRuntimeConfig } = getConfig();
 
 const ProfileUpdate = () => {
+  const router = useRouter();
   const { t } = useTranslation();
   const store = useStore();
   const services = useServices();
@@ -87,8 +90,15 @@ const ProfileUpdate = () => {
                 />
                 <ErrorText>{viewModel.fieldErrors.image}</ErrorText>
                 <p className="p-4 text-lg font-bold text-gray-600">
-                  {t("form.label.name", "Name")} {store.me?.firstName}{" "}
-                  {store.me?.lastName}
+                  <span className="flex">
+                    {t("form.label.name", "Name")} {store.me?.firstName}{" "}
+                    {store.me?.lastName}{" "}
+                    <EditAction
+                      onClick={() => {
+                        router.push(`/admin/profile/update/`);
+                      }}
+                    />
+                  </span>
                 </p>
                 <p className="p-4 text-lg font-bold text-gray-600">
                   {t("form.label.authority", "Authority")}{" "}

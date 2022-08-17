@@ -13,6 +13,7 @@ query Users($limit: Int!, $offset: Int!, $q: String, $ordering: String) {
       firstName
       lastName
       username
+      role
     }
   }
 }
@@ -25,6 +26,7 @@ mutation UserCreate(
   $password: String!
   $telephone: String = null
   $username: String!
+  $role: String
 ) {
   adminAuthorityUserCreate(
     authorityId: $authorityId
@@ -34,6 +36,7 @@ mutation UserCreate(
     password: $password
     telephone: $telephone
     username: $username
+    role: $role
   ) {
     result {
       __typename
@@ -60,6 +63,7 @@ mutation UserUpdate(
   $lastName: String!
   $telephone: String = null
   $username: String!
+  $role: String
 ) {
   adminAuthorityUserUpdate(
     id: $id
@@ -69,6 +73,7 @@ mutation UserUpdate(
     lastName: $lastName
     telephone: $telephone
     username: $username
+    role: $role
   ) {
     result {
       __typename
@@ -80,6 +85,7 @@ mutation UserUpdate(
           lastName
           email
           telephone
+          role
         }
       }
       ... on AdminAuthorityUserUpdateProblem {
@@ -101,5 +107,6 @@ query GetUser($id: ID!) {
     lastName
     email
     telephone
+    role
   }
 }

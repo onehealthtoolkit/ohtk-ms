@@ -3,11 +3,13 @@ import { GetReportDocument, ReportsDocument } from "lib/generated/graphql";
 import { Image, Report, ReportDetail } from "lib/services/report/report";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
 import { Authority } from "lib/services/authority";
+import { ReportType } from "../reportType";
 
 export type ReportFilterData = {
   fromDate?: Date;
   throughDate?: Date;
   authorities?: Pick<Authority, "id" | "code" | "name">[];
+  reportTypes?: Pick<ReportType, "id" | "name">[];
 };
 
 export type ReportFilter = ReportFilterData & {
@@ -41,6 +43,7 @@ export class ReportService implements IReportService {
         fromDate: filter.fromDate,
         throughDate: filter.throughDate,
         authorities: filter.authorities?.map(a => a.id),
+        reportTypes: filter.reportTypes?.map(a => a.id),
       },
     });
 
