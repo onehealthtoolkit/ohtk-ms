@@ -57,7 +57,7 @@ export class NotificationTemplateService
   fetchNotificationTemplatesQuery = {
     limit: 20,
     offset: 0,
-    nameStartWith: "",
+    q: "",
     ordering: "name,asc",
   };
 
@@ -74,7 +74,7 @@ export class NotificationTemplateService
       ...this.fetchNotificationTemplatesQuery,
       limit,
       offset,
-      nameStartWith: searchText,
+      q: searchText,
     };
     const fetchResult = await this.client.query({
       query: NotificationTemplatesDocument,

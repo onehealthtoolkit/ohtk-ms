@@ -1,13 +1,13 @@
 query notificationTemplates(
   $limit: Int!
   $offset: Int!
-  $nameStartWith: String
+  $q: String
   $ordering: String
 ) {
   adminNotificationTemplateQuery(
     limit: $limit
     offset: $offset
-    name_Istartswith: $nameStartWith
+    q: $q
     ordering: $ordering
   ) {
     totalCount
