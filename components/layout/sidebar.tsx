@@ -28,7 +28,7 @@ const style: Record<string, string | Record<string, string>> = {
     right: "right-0 md:left-0",
   },
   close: `duration-700 ease-out hidden transition-all`,
-  default: `flex flex-col absolute z-40 top-0 md:static md:block md:left-auto md:top-auto h-screen  shrink-0 bg-slate-800 p-4`,
+  default: `flex flex-col absolute z-40 top-0 md:static md:flex md:left-auto md:top-auto h-screen  shrink-0 bg-slate-800 p-4`,
   open: `duration-200 ease-in transition-all`,
   collapsed: `md:w-16 w-16 p-2`,
   expanded: `md:w-[250px] w-64 overflow-y-scroll md:overflow-y-auto no-scrollbar md:translate-x-0 transform transition-all duration-200 ease-in-out translate-x-0`,
@@ -224,17 +224,11 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
               />
             </ul>
           </div>
-          <div>
-            <h3
-              className={`
-                text-xs uppercase text-slate-500 font-semibold pl-3 ${
-                  store.menu.collapsed ? "hidden" : ""
-                }`}
-            >
-              <span className="md:sidebar-expanded:block 2xl:block"></span>
-            </h3>
-            <UserMenu className="ml-2 text-white" />
-          </div>
+        </div>
+        <div className="flex-grow"></div>
+        <div className="divide-y-2 divide-gray-600 mb-16">
+          <div></div>
+          <UserMenu className="ml-2 text-white text-left" />
         </div>
       </div>
     </div>

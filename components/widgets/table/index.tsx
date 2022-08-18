@@ -2,6 +2,7 @@ import React from "react";
 import tw from "tailwind-styled-components";
 import { PencilAltIcon, TrashIcon, EyeIcon } from "@heroicons/react/solid";
 import { observer } from "mobx-react";
+import { Trans } from "react-i18next";
 
 export const TableHeader = tw.th`
   px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-[#E0E5EB]
@@ -118,6 +119,13 @@ const Table = <T extends ItemWithId | null>({
             ))}
           </tbody>
         </table>
+        {!data.length && (
+          <div className="text-center py-6">
+            <Trans i18nKey="table.notFound">
+              <span className="text-sm ">Not found</span>
+            </Trans>
+          </div>
+        )}
       </div>
     </div>
   );
