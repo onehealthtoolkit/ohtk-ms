@@ -2,6 +2,7 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
 import { IReportService, Report } from "lib/services/report";
 import { ReportFilterData } from "lib/services/report/reportService";
+import { ReportCalendarViewModel } from "components/report/calendarViewModel";
 
 const initialFilter: ReportFilterData = {
   fromDate: undefined,
@@ -21,6 +22,8 @@ type SearchParams = {
 export class ReportListViewModel extends BaseViewModel {
   data: Report[] = [];
   filter: ReportFilterData = initialFilter;
+  calendarViewModel = new ReportCalendarViewModel();
+  isCalendarView = false;
 
   constructor(readonly reportService: IReportService) {
     super();
@@ -30,6 +33,9 @@ export class ReportListViewModel extends BaseViewModel {
       setSearchValue: action,
       fetch: action,
       filterReset: action,
+      calendarViewModel: observable,
+      isCalendarView: observable,
+      switchView: action,
     });
   }
 
@@ -52,6 +58,7 @@ export class ReportListViewModel extends BaseViewModel {
     runInAction(() => {
       this.data = result.items || [];
       this.totalCount = result.totalCount || 0;
+      this.calendarViewModel.updateEvents(this.data);
     });
     if (result.error) {
       this.setErrorMessage(result.error);
@@ -61,5 +68,9 @@ export class ReportListViewModel extends BaseViewModel {
   filterReset() {
     this.filter = initialFilter;
     this.fetch();
+  }
+
+  switchView(isCalendarView: boolean) {
+    this.isCalendarView = isCalendarView;
   }
 }

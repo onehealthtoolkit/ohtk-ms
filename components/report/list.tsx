@@ -3,6 +3,7 @@ import Table from "components/widgets/table";
 import { Observer } from "mobx-react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import tw from "tailwind-styled-components";
 import { ReportListViewModel } from "./listViewModel";
 import ErrorDisplay from "components/widgets/errorDisplay";
 import useServices from "lib/services/provider";
@@ -14,6 +15,9 @@ import { isoStringToDate } from "lib/utils";
 import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import CaseLink from "components/case/caseLink";
+import ReportCalendar from "components/report/calendar";
+import { CalendarIcon, TableIcon } from "@heroicons/react/solid";
+
 const JSURL = require("jsurl");
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
@@ -28,6 +32,43 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
     authorities: query.authorities ? JSURL.parse(query.authorities) : [],
     reportTypes: query.reportTypes ? JSURL.parse(query.reportTypes) : [],
   };
+};
+
+export const SwitchViewButton = tw.button`
+  px-4 py-2 rounded
+  flex items-center justify-center  
+  ${(p: { active: number }) => {
+    return p.active
+      ? "text-white bg-blue-500"
+      : "bg-white text-gray-500 border-gray-500 border";
+  }}
+`;
+
+const ViewSwitch = ({
+  isCalendarView,
+  onSwitchView,
+}: {
+  isCalendarView: boolean;
+  onSwitchView: (isCalendarView: boolean) => void;
+}) => {
+  return (
+    <div className="flex space-x-2">
+      <SwitchViewButton
+        active={!isCalendarView ? 1 : 0}
+        onClick={() => onSwitchView(false)}
+      >
+        <TableIcon className="w-5 h-5 mr-2" />
+        <span>ตาราง</span>
+      </SwitchViewButton>
+      <SwitchViewButton
+        active={isCalendarView ? 1 : 0}
+        onClick={() => onSwitchView(true)}
+      >
+        <CalendarIcon className="w-5 h-5 mr-2" />
+        <span>ดูปฏิทินงาน</span>
+      </SwitchViewButton>
+    </div>
+  );
 };
 
 const ReportList = () => {
@@ -62,54 +103,69 @@ const ReportList = () => {
     <Observer>
       {() => (
         <div className="flex flex-col">
-          <Filter
-            onSearch={applySearch}
-            onReset={() => {
-              resetUrl();
-            }}
-          >
-            <ReportFilter viewModel={viewModel} />
-          </Filter>
+          <div className="flex justify-between">
+            <Filter
+              onSearch={applySearch}
+              onReset={() => {
+                resetUrl();
+              }}
+            >
+              <ReportFilter viewModel={viewModel} />
+            </Filter>
+            <ViewSwitch
+              isCalendarView={viewModel.isCalendarView}
+              onSwitchView={isCalendarView =>
+                viewModel.switchView(isCalendarView)
+              }
+            />
+          </div>
 
           <div className="mt-2">
-            <Table
-              columns={[
-                {
-                  label: "Created At",
-                  get: record =>
-                    formatDateTime(record.createdAt, router.locale),
-                },
-                {
-                  label: "Incident Date",
-                  get: record => formatDate(record.incidentDate, router.locale),
-                },
-                {
-                  label: "Report Type",
-                  get: record => record.reportTypeName,
-                },
-                {
-                  label: "Data",
-                  get: record => record.rendererData,
-                },
-                {
-                  label: "",
-                  get: record => <CaseLink caseId={record.caseId} />,
-                },
-              ]}
-              data={viewModel.data || []}
-              onView={record => router.push(`/reports/${record.id}`)}
-            />
-            <ErrorDisplay message={viewModel.errorMessage} />
+            {viewModel.isCalendarView ? (
+              <ReportCalendar viewModel={viewModel.calendarViewModel} />
+            ) : (
+              <>
+                <Table
+                  columns={[
+                    {
+                      label: "Created At",
+                      get: record =>
+                        formatDateTime(record.createdAt, router.locale),
+                    },
+                    {
+                      label: "Incident Date",
+                      get: record =>
+                        formatDate(record.incidentDate, router.locale),
+                    },
+                    {
+                      label: "Report Type",
+                      get: record => record.reportTypeName,
+                    },
+                    {
+                      label: "Data",
+                      get: record => record.rendererData,
+                    },
+                    {
+                      label: "",
+                      get: record => <CaseLink caseId={record.caseId} />,
+                    },
+                  ]}
+                  data={viewModel.data || []}
+                  onView={record => router.push(`/reports/${record.id}`)}
+                />
+                <ErrorDisplay message={viewModel.errorMessage} />
 
-            <Paginate
-              limit={viewModel.limit}
-              offset={viewModel.offset}
-              totalCount={viewModel.totalCount}
-              onChange={value => {
-                viewModel.offset = value;
-                applySearch();
-              }}
-            />
+                <Paginate
+                  limit={viewModel.limit}
+                  offset={viewModel.offset}
+                  totalCount={viewModel.totalCount}
+                  onChange={value => {
+                    viewModel.offset = value;
+                    applySearch();
+                  }}
+                />
+              </>
+            )}
           </div>
         </div>
       )}
