@@ -1,6 +1,6 @@
 export const renderData = (data: Record<string, any>) => {
   if (!data) {
-    return "";
+    return null;
   }
   return (
     <table className="table-fixed border w-full text-sm text-left text-gray-500 dark:text-gray-400">

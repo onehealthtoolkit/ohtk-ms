@@ -110,7 +110,7 @@ const CaseStateStep: FC<CaseStateStepProps> = ({
         >
           {caseState.state.name}
         </h3>
-        <div className="px-4 md:px-8 py-2 md:py-4">
+        <div className="p-4">
           {caseState.transition ? (
             <CompleteStep stateTransition={caseState.transition} />
           ) : (
@@ -170,5 +170,5 @@ const CompleteStep: FC<CompleteStepProps> = ({
   stateTransition,
 }: CompleteStepProps) => {
   const data = JSON.parse(stateTransition.formData || "{}");
-  return <div className="text-base flex flex-wrap">{renderData(data)}</div>;
+  return renderData(data);
 };
