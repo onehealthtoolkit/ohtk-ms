@@ -60,7 +60,7 @@ export class ReportTypeService implements IReportTypeService {
   fetchReportTypesQuery = {
     limit: 20,
     offset: 0,
-    nameStartWith: "",
+    q: "",
     ordering: "category__ordering,asc",
   };
 
@@ -73,7 +73,7 @@ export class ReportTypeService implements IReportTypeService {
       ...this.fetchReportTypesQuery,
       limit,
       offset,
-      nameStartWith: searchText,
+      q: searchText,
     };
     const fetchResult = await this.client.query({
       query: ReportTypesDocument,
@@ -108,7 +108,7 @@ export class ReportTypeService implements IReportTypeService {
       ...this.fetchReportTypesQuery,
       limit,
       offset,
-      nameStartWith: searchText,
+      q: searchText,
     };
     const fetchResult = await this.client.query({
       query: ReportTypeSelectionsDocument,

@@ -1704,10 +1704,9 @@ export type QueryAdminNotificationTemplateQueryArgs = {
   first?: InputMaybe<Scalars["Int"]>;
   last?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
-  name?: InputMaybe<Scalars["String"]>;
-  name_Istartswith?: InputMaybe<Scalars["String"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryAdminReportTypeQueryArgs = {
@@ -1716,10 +1715,9 @@ export type QueryAdminReportTypeQueryArgs = {
   first?: InputMaybe<Scalars["Int"]>;
   last?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
-  name?: InputMaybe<Scalars["String"]>;
-  name_Istartswith?: InputMaybe<Scalars["String"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryAdminReporterNotificationQueryArgs = {
@@ -2936,7 +2934,7 @@ export type AuthorityNotificationUpsertMutation = {
 export type NotificationTemplatesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
-  nameStartWith?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
   ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
@@ -3326,7 +3324,7 @@ export type GetReportCategoryQuery = {
 export type ReportTypesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
-  nameStartWith?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
   ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
@@ -3353,7 +3351,7 @@ export type ReportTypesQuery = {
 export type ReportTypeSelectionsQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
-  nameStartWith?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
   ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
@@ -8101,10 +8099,7 @@ export const NotificationTemplatesDocument = {
         },
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "nameStartWith" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
         {
@@ -8141,11 +8136,8 @@ export const NotificationTemplatesDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "name_Istartswith" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "nameStartWith" },
-                },
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
               },
               {
                 kind: "Argument",
@@ -9991,10 +9983,7 @@ export const ReportTypesDocument = {
         },
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "nameStartWith" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
         {
@@ -10031,11 +10020,8 @@ export const ReportTypesDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "name_Istartswith" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "nameStartWith" },
-                },
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
               },
               {
                 kind: "Argument",
@@ -10126,10 +10112,7 @@ export const ReportTypeSelectionsDocument = {
         },
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "nameStartWith" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
         {
@@ -10166,11 +10149,8 @@ export const ReportTypeSelectionsDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "name_Istartswith" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "nameStartWith" },
-                },
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
               },
               {
                 kind: "Argument",

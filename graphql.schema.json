@@ -13237,30 +13237,6 @@
                 "deprecationReason": null
               },
               {
-                "name": "name",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": "null",
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "name_Istartswith",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": "null",
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
                 "name": "offset",
                 "description": "Query offset",
                 "type": {
@@ -13275,6 +13251,18 @@
               {
                 "name": "ordering",
                 "description": "Query order",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": "null",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "q",
+                "description": null,
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
@@ -13358,30 +13346,6 @@
                 "deprecationReason": null
               },
               {
-                "name": "name",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": "null",
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "name_Istartswith",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": "null",
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
                 "name": "offset",
                 "description": "Query offset",
                 "type": {
@@ -13396,6 +13360,18 @@
               {
                 "name": "ordering",
                 "description": "Query order",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": "null",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "q",
+                "description": null,
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
