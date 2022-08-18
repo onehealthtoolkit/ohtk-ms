@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 type ReportCalendarProps = {
   viewModel: ReportCalendarViewModel;
+  onMonthChange: () => void;
 };
 
 type DayEventsProps = {
@@ -40,7 +41,7 @@ const DayEvents = observer(({ day, viewModel }: DayEventsProps) => {
   );
 });
 
-const ReportCalendar = ({ viewModel }: ReportCalendarProps) => {
+const ReportCalendar = ({ viewModel, onMonthChange }: ReportCalendarProps) => {
   return (
     <div>
       <div className="py-4 px-8 flex flex-row justify-between item-center bg-gray-100">
@@ -54,17 +55,26 @@ const ReportCalendar = ({ viewModel }: ReportCalendarProps) => {
         >
           <ChevronLeftIcon
             className="w-5 h-5 text-gray-400"
-            onClick={() => viewModel.previousMonth()}
+            onClick={() => {
+              viewModel.previousMonth();
+              onMonthChange();
+            }}
           />
           <span
             className="px-5 text-sm text-gray-600"
-            onClick={() => viewModel.today()}
+            onClick={() => {
+              viewModel.today();
+              onMonthChange();
+            }}
           >
             Today
           </span>
           <ChevronRightIcon
             className="w-5 h-5 text-gray-400"
-            onClick={() => viewModel.nextMonth()}
+            onClick={() => {
+              viewModel.nextMonth();
+              onMonthChange();
+            }}
           />
         </button>
       </div>

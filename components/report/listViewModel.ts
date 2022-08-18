@@ -2,7 +2,10 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
 import { IReportService, Report } from "lib/services/report";
 import { ReportFilterData } from "lib/services/report/reportService";
-import { ReportCalendarViewModel } from "components/report/calendarViewModel";
+import {
+  CalendarParams,
+  ReportCalendarViewModel,
+} from "components/report/calendarViewModel";
 
 const initialFilter: ReportFilterData = {
   fromDate: undefined,
@@ -17,7 +20,7 @@ type SearchParams = {
   offset?: number;
   authorities?: ReportFilterData["authorities"];
   reportTypes?: ReportFilterData["reportTypes"];
-};
+} & CalendarParams;
 
 export class ReportListViewModel extends BaseViewModel {
   data: Report[] = [];
@@ -46,6 +49,15 @@ export class ReportListViewModel extends BaseViewModel {
     this.filter.reportTypes = params.reportTypes;
 
     this.offset = params.offset || 0;
+
+    this.isCalendarView = params.isCalendar === 1;
+    if (params.calendarMonth && params.calendarYear) {
+      this.calendarViewModel.toMonthYear(
+        params.calendarMonth,
+        params.calendarYear
+      );
+    }
+
     this.fetch();
   }
 

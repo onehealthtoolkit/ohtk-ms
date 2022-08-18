@@ -1,6 +1,12 @@
 import { Report } from "lib/services/report";
 import { action, makeObservable, observable, toJS } from "mobx";
 
+export type CalendarParams = {
+  isCalendar?: number;
+  calendarMonth?: number;
+  calendarYear?: number;
+};
+
 type Event = {
   report: Report;
   day: number;
@@ -32,6 +38,7 @@ export class ReportCalendarViewModel {
       previousMonth: action,
       today: action,
       nextMonth: action,
+      toMonthYear: action,
     });
     this.year = this.now.getFullYear();
     this.month = this.now.getMonth();
@@ -49,6 +56,12 @@ export class ReportCalendarViewModel {
   today() {
     this.year = this.now.getFullYear();
     this.month = this.now.getMonth();
+    this.printDays();
+  }
+
+  toMonthYear(month: number, year: number) {
+    this.year = year;
+    this.month = month;
     this.printDays();
   }
 

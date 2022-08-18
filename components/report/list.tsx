@@ -31,6 +31,13 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
     offset: query.offset ? parseInt(query.offset as string) : 0,
     authorities: query.authorities ? JSURL.parse(query.authorities) : [],
     reportTypes: query.reportTypes ? JSURL.parse(query.reportTypes) : [],
+    isCalendar: query.isCalendar ? parseInt(query.isCalendar as string) : 0,
+    calendarMonth: query.calendarMonth
+      ? parseInt(query.calendarMonth as string)
+      : undefined,
+    calendarYear: query.calendarYear
+      ? parseInt(query.calendarYear as string)
+      : undefined,
   };
 };
 
@@ -93,6 +100,9 @@ const ReportList = () => {
       offset: viewModel.offset,
       authorities: JSURL.stringify(viewModel.filter.authorities),
       reportTypes: JSURL.stringify(viewModel.filter.reportTypes),
+      isCalendar: viewModel.isCalendarView ? 1 : 0,
+      calendarMonth: viewModel.calendarViewModel.month,
+      calendarYear: viewModel.calendarViewModel.year,
     });
   };
 
@@ -114,15 +124,21 @@ const ReportList = () => {
             </Filter>
             <ViewSwitch
               isCalendarView={viewModel.isCalendarView}
-              onSwitchView={isCalendarView =>
-                viewModel.switchView(isCalendarView)
-              }
+              onSwitchView={isCalendarView => {
+                viewModel.switchView(isCalendarView);
+                applySearch();
+              }}
             />
           </div>
 
           <div className="mt-2">
             {viewModel.isCalendarView ? (
-              <ReportCalendar viewModel={viewModel.calendarViewModel} />
+              <ReportCalendar
+                viewModel={viewModel.calendarViewModel}
+                onMonthChange={() => {
+                  applySearch();
+                }}
+              />
             ) : (
               <>
                 <Table
