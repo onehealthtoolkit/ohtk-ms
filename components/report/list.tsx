@@ -15,8 +15,9 @@ import { isoStringToDate } from "lib/utils";
 import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import CaseLink from "components/case/caseLink";
-import ReportCalendar from "components/report/calendar";
 import { CalendarIcon, TableIcon } from "@heroicons/react/solid";
+import Calendar from "components/widgets/calendar";
+import { ReportDayEvents } from "components/report/dayEvents";
 
 const JSURL = require("jsurl");
 
@@ -133,11 +134,14 @@ const ReportList = () => {
 
           <div className="mt-2">
             {viewModel.isCalendarView ? (
-              <ReportCalendar
+              <Calendar
                 viewModel={viewModel.calendarViewModel}
                 onMonthChange={() => {
                   applySearch();
                 }}
+                dayEvents={({ day, viewModel }) => (
+                  <ReportDayEvents day={day} viewModel={viewModel} />
+                )}
               />
             ) : (
               <>

@@ -3,7 +3,7 @@ import { BaseViewModel } from "lib/baseViewModel";
 import { IReportService, Report } from "lib/services/report";
 import { ReportFilterData } from "lib/services/report/reportService";
 import {
-  CalendarParams,
+  ReportCalendarParams,
   ReportCalendarViewModel,
 } from "components/report/calendarViewModel";
 
@@ -20,7 +20,7 @@ type SearchParams = {
   offset?: number;
   authorities?: ReportFilterData["authorities"];
   reportTypes?: ReportFilterData["reportTypes"];
-} & CalendarParams;
+} & ReportCalendarParams;
 
 export class ReportListViewModel extends BaseViewModel {
   data: Report[] = [];
@@ -57,7 +57,6 @@ export class ReportListViewModel extends BaseViewModel {
         params.calendarYear
       );
     }
-
     this.fetch();
   }
 
@@ -70,7 +69,7 @@ export class ReportListViewModel extends BaseViewModel {
     runInAction(() => {
       this.data = result.items || [];
       this.totalCount = result.totalCount || 0;
-      this.calendarViewModel.updateEvents(this.data);
+      this.calendarViewModel.updateReportEvents(this.data);
     });
     if (result.error) {
       this.setErrorMessage(result.error);
