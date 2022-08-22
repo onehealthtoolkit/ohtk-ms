@@ -4,21 +4,21 @@ import { formatDate, formatDateTime } from "lib/datetime";
 import useServices from "lib/services/provider";
 import { observer } from "mobx-react";
 import { useState } from "react";
-import { CaseTableViewModel } from "./caseTableViewModel";
+import { ReportTableViewModel } from "./reportsTableViewModel";
 
 const styles = {
   row: "border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700",
   title:
     "w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap",
 };
-type CasesTableViewProps = {
+type ReportsTableViewProps = {
   authorityId: number;
 };
 
-const CasesTableView: React.FC<CasesTableViewProps> = ({ authorityId }) => {
+const ReportsTableView: React.FC<ReportsTableViewProps> = ({ authorityId }) => {
   const services = useServices();
   const [viewModel] = useState(
-    () => new CaseTableViewModel(authorityId, services.caseService)
+    () => new ReportTableViewModel(authorityId, services.reportService)
   );
   if (!authorityId) return <Spinner></Spinner>;
   return (
@@ -28,7 +28,7 @@ const CasesTableView: React.FC<CasesTableViewProps> = ({ authorityId }) => {
           <div className="flex flex-wrap items-center">
             <div className="relative w-full max-w-full flex-grow flex-1">
               <span className="font-['Kanit'] font-semibold text-xl text-white">
-                Cases [{viewModel?.data.length}]
+                Reports [{viewModel?.data.length}]
               </span>
             </div>
             <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
@@ -81,4 +81,4 @@ const CasesTableView: React.FC<CasesTableViewProps> = ({ authorityId }) => {
   );
 };
 
-export default observer(CasesTableView);
+export default observer(ReportsTableView);

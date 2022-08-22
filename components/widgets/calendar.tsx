@@ -1,46 +1,28 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
-import { ReportCalendarViewModel } from "components/report/calendarViewModel";
+import {
+  CalendarEvent,
+  CalendarViewModel,
+} from "components/widgets/calendarViewModel";
 import { MONTHS } from "lib/datetime";
 import { observer } from "mobx-react";
-import { useRouter } from "next/router";
+import { ReactElement } from "react";
 
-type ReportCalendarProps = {
-  viewModel: ReportCalendarViewModel;
+type CalendarProps<T extends CalendarEvent> = {
+  viewModel: CalendarViewModel<T>;
+  onMonthChange: () => void;
+  dayEvents: (p: DayEventsProps<T>) => ReactElement;
 };
 
-type DayEventsProps = {
+export type DayEventsProps<T extends CalendarEvent> = {
   day: number | null;
-  viewModel: ReportCalendarViewModel;
+  viewModel: CalendarViewModel<T>;
 };
 
-const DayEvents = observer(({ day, viewModel }: DayEventsProps) => {
-  const router = useRouter();
-  const events = viewModel.getDayEvents(day);
-  return (
-    <div className="flex-grow flex flex-col gap-1 overflow-y-scroll ">
-      {events.map(event => (
-        <p
-          key={event.report.id}
-          className="font-bold hover:bg-gray-100"
-          onClick={() => router.push(`/reports/${event.report.id}`)}
-        >
-          {event.report.reportTypeName}{" "}
-          {event.report.caseId && (
-            <span
-              className="float-right bg-red-500 text-white 
-                font-normal rounded px-1
-              "
-            >
-              case
-            </span>
-          )}
-        </p>
-      ))}
-    </div>
-  );
-});
-
-const ReportCalendar = ({ viewModel }: ReportCalendarProps) => {
+const Calendar = <T extends CalendarEvent>({
+  viewModel,
+  onMonthChange,
+  dayEvents,
+}: CalendarProps<T>) => {
   return (
     <div>
       <div className="py-4 px-8 flex flex-row justify-between item-center bg-gray-100">
@@ -54,17 +36,26 @@ const ReportCalendar = ({ viewModel }: ReportCalendarProps) => {
         >
           <ChevronLeftIcon
             className="w-5 h-5 text-gray-400"
-            onClick={() => viewModel.previousMonth()}
+            onClick={() => {
+              viewModel.previousMonth();
+              onMonthChange();
+            }}
           />
           <span
             className="px-5 text-sm text-gray-600"
-            onClick={() => viewModel.today()}
+            onClick={() => {
+              viewModel.today();
+              onMonthChange();
+            }}
           >
             Today
           </span>
           <ChevronRightIcon
             className="w-5 h-5 text-gray-400"
-            onClick={() => viewModel.nextMonth()}
+            onClick={() => {
+              viewModel.nextMonth();
+              onMonthChange();
+            }}
           />
         </button>
       </div>
@@ -92,7 +83,7 @@ const ReportCalendar = ({ viewModel }: ReportCalendarProps) => {
                   }
                 `}
                 >
-                  <div className="h-32 flex flex-col">
+                  <div className="h-24 flex flex-col">
                     <span
                       className={`rounded-full block w-6 p-1 text-center mb-2 ${
                         viewModel.isToday(d) ? "bg-blue-500 text-white" : ""
@@ -100,7 +91,7 @@ const ReportCalendar = ({ viewModel }: ReportCalendarProps) => {
                     >
                       {d}
                     </span>
-                    <DayEvents day={d} viewModel={viewModel} />
+                    {dayEvents({ day: d, viewModel })}
                   </div>
                 </td>
               ))}
@@ -112,4 +103,4 @@ const ReportCalendar = ({ viewModel }: ReportCalendarProps) => {
   );
 };
 
-export default observer(ReportCalendar);
+export default observer(Calendar);
