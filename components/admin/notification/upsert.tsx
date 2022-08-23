@@ -3,7 +3,7 @@ import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import { observer } from "mobx-react";
 import { CSSProperties, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import NotificationEdit from "./notificationEdit";
 import { NotificationViewModel } from "./notificationViewModel";
 import AsyncSelect from "react-select/async";
@@ -145,6 +145,13 @@ const NotificationUpsert = () => {
                   }}
                 />
               ))}
+              {viewModel.data && !viewModel.data.length && (
+                <div className="text-center py-6">
+                  <Trans i18nKey="table.notFound">
+                    <span className="text-sm ">Not found</span>
+                  </Trans>
+                </div>
+              )}
             </div>
           </div>
         </div>

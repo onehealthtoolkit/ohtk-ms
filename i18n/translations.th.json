@@ -29,7 +29,8 @@
     "name": "ชื่อ",
     "action": "การกระทำ",
     "totalItems": "รวมรายการทั้งหมด <1>{{count}} รายการ</1>",
-    "paginate": "หน้า {{currentPages}} จาก {{numberOfPages}} <1>[{{totalCount}} ระเบียน]</1>"
+    "paginate": "หน้า {{currentPages}} จาก {{numberOfPages}} <1>[{{totalCount}} ระเบียน]</1>",
+    "notFound": "ไม่พบข้อมูล"
   },
   "form": {
     "label": {

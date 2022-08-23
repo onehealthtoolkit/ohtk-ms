@@ -23,10 +23,10 @@ const UserMenu: React.FC<UserMenuProps> = ({ className }) => {
     return (
       <Observer>
         {() => (
-          <ul className="mt-3">
+          <ul className="mt-3 pt-2">
             <Menu as="div" className="relative inline-block  w-full text-left">
               <div className="flexitems-center">
-                <Menu.Button className="inline-flex  w-full justify-center rounded-md bg-black bg-opacity-20  py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+                <Menu.Button className="inline-flex  w-full justify-center rounded-md  py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
                   <UserAvatar url={store.me!.avatarUrl} />
                   <span
                     className={`text-white ${
@@ -61,7 +61,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ className }) => {
               >
                 <Menu.Items
                   className={`${
-                    store.menu.collapsed ? "left-0" : "right-0"
+                    store.menu.collapsed ? "left-14 -mt-16" : "right-0"
                   } absolute z-10  -mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
                 >
                   <div className="px-1 py-1 ">

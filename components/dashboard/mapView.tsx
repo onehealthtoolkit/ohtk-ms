@@ -49,7 +49,6 @@ const MapView: React.FC<MapViewProps> = ({ authorityId }) => {
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <>
-        <p className="text-md dark:text-gray-400">MapView</p>
         <div className="flex pt-2 pb-4">
           <div className="rounded-lg border border-gray-200 shadow-md  w-full">
             <MapContainer

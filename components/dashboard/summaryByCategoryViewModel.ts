@@ -11,8 +11,12 @@ import { SummaryByCategoryData } from "lib/services/dashboard/summaryByCategory"
 import { ChartData } from "chart.js";
 
 const colors = [
-  "rgba(255, 99, 132, 0.5)",
-  "rgba(203, 240, 249, 1)",
+  "#56ADEC",
+  "#626FE6",
+  "#5CE081",
+  "#D9D9D9",
+  "#F6B50B",
+  "#8530A3",
   "rgba(119, 154, 231, 1)",
 ];
 
@@ -41,6 +45,7 @@ export class SummaryByCategoryViewModel extends BaseViewModel {
       toDate: computed,
       fetch: action,
       changeSummaryType: action,
+      filterByCategory: action,
     });
     this.authorityId = authorityId;
     this.fetch();
@@ -151,6 +156,22 @@ export class SummaryByCategoryViewModel extends BaseViewModel {
   changeSummaryType(value: string) {
     this._summaryType = value;
     this.fetch();
+  }
+
+  filterByCategory(values: string[]) {
+    runInAction(() => {
+      let dataset = this.data.datasets.map(item => {
+        return {
+          hidden: item.label ? !values.includes(item.label) : false,
+          label: item.label,
+          data: item.data.map(d => d),
+        };
+      });
+      this.data = {
+        labels: this.data.labels,
+        datasets: dataset,
+      };
+    });
   }
 
   groupBy(list: SummaryByCategoryData[], keyGetter: Function) {

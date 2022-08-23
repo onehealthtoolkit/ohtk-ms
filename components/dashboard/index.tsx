@@ -7,6 +7,7 @@ import SummaryByCategoryView from "./summaryByCategoryView";
 import CasesTableView from "./casesTableView";
 import { Observer, observer } from "mobx-react";
 import dynamic from "next/dynamic";
+import ReportsTableView from "./reportsTableView";
 
 export const MapView = dynamic(() => import("./mapView"), {
   loading: () => <p>A map is loading</p>,
@@ -30,7 +31,14 @@ const Dashboard: React.FC = () => {
           <StatView authorityId={viewModel.authorityId} />
           <MapView authorityId={viewModel.authorityId} />
           <SummaryByCategoryView authorityId={viewModel.authorityId} />
-          <CasesTableView authorityId={viewModel.authorityId} />
+          <div className="flex flex-wrap">
+            <div className="w-full xl:w-1/2">
+              <ReportsTableView authorityId={viewModel.authorityId} />
+            </div>
+            <div className="w-full xl:w-1/2 px-4">
+              <CasesTableView authorityId={viewModel.authorityId} />
+            </div>
+          </div>
         </div>
       )}
     </Observer>

@@ -1,17 +1,17 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
-import { Case, ICaseService } from "lib/services/case";
-import { CaseFilterData } from "lib/services/case/caseService";
+import { Report, IReportService } from "lib/services/report";
+import { ReportFilterData } from "lib/services/report/reportService";
 
-export class CaseTableViewModel extends BaseViewModel {
-  data: Case[] = [];
+export class ReportTableViewModel extends BaseViewModel {
+  data: Report[] = [];
   authorityId: number;
-  filter: CaseFilterData = {
+  filter: ReportFilterData = {
     fromDate: undefined,
     throughDate: new Date(),
     authorities: [],
   };
-  constructor(authorityId: number, readonly caseService: ICaseService) {
+  constructor(authorityId: number, readonly reportService: IReportService) {
     super();
     makeObservable(this, {
       data: observable,
@@ -31,7 +31,7 @@ export class CaseTableViewModel extends BaseViewModel {
 
   async fetch() {
     this.isLoading = true;
-    const result = await this.caseService.fetchCases(
+    const result = await this.reportService.fetchReports(
       this.limit,
       this.offset,
       this.filter
