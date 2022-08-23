@@ -1588,6 +1588,7 @@ export type Query = {
   adminStateTransitionQuery?: Maybe<Array<Maybe<StateTransitionType>>>;
   authorities?: Maybe<AuthorityTypeNodeConnection>;
   authority?: Maybe<AuthorityType>;
+  authorityInheritsDown?: Maybe<Array<AuthorityType>>;
   authorityUser?: Maybe<AuthorityUserType>;
   caseDefinitionGet?: Maybe<CaseDefinitionType>;
   caseGet?: Maybe<CaseType>;
@@ -1766,6 +1767,10 @@ export type QueryAuthoritiesArgs = {
 
 export type QueryAuthorityArgs = {
   id: Scalars["ID"];
+};
+
+export type QueryAuthorityInheritsDownArgs = {
+  authorityId: Scalars["ID"];
 };
 
 export type QueryAuthorityUserArgs = {
@@ -2170,6 +2175,20 @@ export type AuthorityInheritLookupQuery = {
       code: string;
     } | null>;
   } | null;
+};
+
+export type AuthorityInheritsDownLookupQueryVariables = Exact<{
+  authorityId: Scalars["ID"];
+}>;
+
+export type AuthorityInheritsDownLookupQuery = {
+  __typename?: "Query";
+  authorityInheritsDown?: Array<{
+    __typename?: "AuthorityType";
+    id: string;
+    name: string;
+    code: string;
+  }> | null;
 };
 
 export type AuthorityCreateMutationVariables = Exact<{
@@ -4549,6 +4568,59 @@ export const AuthorityInheritLookupDocument = {
 } as unknown as DocumentNode<
   AuthorityInheritLookupQuery,
   AuthorityInheritLookupQueryVariables
+>;
+export const AuthorityInheritsDownLookupDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AuthorityInheritsDownLookup" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorityId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "authorityInheritsDown" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "authorityId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorityId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AuthorityInheritsDownLookupQuery,
+  AuthorityInheritsDownLookupQueryVariables
 >;
 export const AuthorityCreateDocument = {
   kind: "Document",

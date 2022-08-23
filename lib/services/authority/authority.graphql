@@ -55,6 +55,14 @@ query AuthorityInheritLookup($limit: Int!, $nameStartWith: String) {
   }
 }
 
+query AuthorityInheritsDownLookup($authorityId: ID!) {
+  authorityInheritsDown(authorityId: $authorityId) {
+    id
+    name
+    code
+  }
+}
+
 mutation AuthorityCreate(
   $code: String!
   $name: String!

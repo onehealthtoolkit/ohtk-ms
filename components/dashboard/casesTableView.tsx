@@ -24,11 +24,11 @@ const CasesTableView: React.FC<CasesTableViewProps> = ({ authorityId }) => {
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg ">
-        <div className="rounded-t-lg mb-0 px-4 py-2 h-[45px] bg-[#DA3535]">
+        <div className="rounded-t-lg mb-0 px-4 py-2 h-[45px] bg-[#5E7284]">
           <div className="flex flex-wrap items-center">
             <div className="relative w-full max-w-full flex-grow flex-1">
               <span className="font-['Kanit'] font-semibold text-xl text-white">
-                Cases [{viewModel?.data.length}]
+                Cases [{viewModel?.totalCount}]
               </span>
             </div>
             <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">

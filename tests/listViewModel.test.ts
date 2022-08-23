@@ -23,11 +23,16 @@ export const data: Array<Authority> = [
 
 describe("Authority ListViewModel", () => {
   class AuthorityService implements IAuthorityService {
+    lookupAuthorityInheritsDown(authorityId: string): Promise<Authority[]> {
+      console.log(authorityId);
+      throw new Error("Method not implemented.");
+    }
     async lookupAuthorities(
       limit: number,
       offset: number,
       searchText: string
     ): Promise<QueryResult<Authority[]>> {
+      console.log(limit, offset);
       return {
         items: data.filter(it => it.name.includes(searchText)),
         totalCount: data.length,

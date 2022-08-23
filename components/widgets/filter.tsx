@@ -67,9 +67,15 @@ type FilterProps = {
   children: JSX.Element;
   onSearch: () => void;
   onReset: () => void;
+  popPositionClass?: string;
 };
 
-const Filter: React.FC<FilterProps> = ({ children, onSearch, onReset }) => {
+const Filter: React.FC<FilterProps> = ({
+  children,
+  onSearch,
+  onReset,
+  popPositionClass = "left-0",
+}) => {
   return (
     <Popover className="relative">
       {({ open, close }) => (
@@ -89,7 +95,9 @@ const Filter: React.FC<FilterProps> = ({ children, onSearch, onReset }) => {
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <Popover.Panel className="absolute top-full left-0 z-60000 mt-2 px-4 sm:px-0 min-w-[400px]">
+            <Popover.Panel
+              className={`${popPositionClass} absolute top-full  z-[60000] mt-2 px-4 sm:px-0 min-w-[400px]`}
+            >
               <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white">
                 <div className="px-6 py-4 flex items-center justify-between border-b-2 border-gray-300">
                   <div className="text-2xl font-display font-semibold">
