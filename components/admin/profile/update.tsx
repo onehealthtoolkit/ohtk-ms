@@ -68,10 +68,11 @@ const ProfileUpdate = () => {
                 type="file"
                 accept="image/*"
                 placeholder="Image"
-                onChange={evt => {
+                onChange={async evt => {
                   if (evt.target.files?.length) {
                     viewModel.image = evt.target.files[0];
-                    viewModel.uploadAvatar();
+                    if (await viewModel.uploadAvatar())
+                      store.me!.avatarUrl = viewModel.imageUrl;
                   }
                 }}
                 disabled={viewModel.isSubmitting}

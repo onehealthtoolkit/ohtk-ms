@@ -69,18 +69,20 @@ export class ProfileUpdateViewModel extends BaseFormViewModel {
     }
   }
 
-  public async uploadAvatar() {
-    if (!this.image) return;
+  public async uploadAvatar(): Promise<boolean> {
+    if (!this.image) return false;
 
     this.isSubmitting = true;
     var result = await this.profileService.uploadAvatar(this.image);
 
     if (result.success) {
       this.imageUrl = result.data?.avatarUrl || "";
+      return true;
     } else {
       this.fieldErrors["image"] = "Cannot upload image";
     }
     this.isSubmitting = false;
+    return false;
   }
 
   public async changePassword(): Promise<boolean> {
