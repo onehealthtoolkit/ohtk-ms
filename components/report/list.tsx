@@ -139,8 +139,8 @@ const ReportList = () => {
                 onMonthChange={() => {
                   applySearch();
                 }}
-                dayEvents={({ day, viewModel }) => (
-                  <ReportDayEvents day={day} viewModel={viewModel} />
+                dayEvents={({ date, viewModel }) => (
+                  <ReportDayEvents date={date} viewModel={viewModel} />
                 )}
               />
             ) : (

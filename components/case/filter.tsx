@@ -22,22 +22,26 @@ const CaseFilter = ({ viewModel }: { viewModel: CaseListViewModel }) => {
 
   return (
     <div className="w-full">
-      <Field $size="full">
-        <Label htmlFor="fromDate">From Date</Label>
-        <DatePicker
-          id="fromDate"
-          selected={viewModel.filter.fromDate}
-          onChange={(date: Date) => (viewModel.filter.fromDate = date)}
-        />
-      </Field>
-      <Field $size="full">
-        <Label htmlFor="throughDate">Through Date</Label>
-        <DatePicker
-          id="throughDate"
-          selected={viewModel.filter.throughDate}
-          onChange={(date: Date) => (viewModel.filter.throughDate = date)}
-        />
-      </Field>
+      {!viewModel.isCalendarView && (
+        <>
+          <Field $size="full">
+            <Label htmlFor="fromDate">From Date</Label>
+            <DatePicker
+              id="fromDate"
+              selected={viewModel.filter.fromDate}
+              onChange={(date: Date) => (viewModel.filter.fromDate = date)}
+            />
+          </Field>
+          <Field $size="full">
+            <Label htmlFor="throughDate">Through Date</Label>
+            <DatePicker
+              id="throughDate"
+              selected={viewModel.filter.throughDate}
+              onChange={(date: Date) => (viewModel.filter.throughDate = date)}
+            />
+          </Field>
+        </>
+      )}
       <Field $size="full">
         <Label htmlFor="throughDate">Authority</Label>
         <AsyncSelect
