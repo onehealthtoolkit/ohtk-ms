@@ -5,6 +5,7 @@ import {
   AuthorityQueryDocument,
   GetAuthorityDocument,
   AuthorityInheritLookupDocument,
+  AuthorityInheritsDownLookupDocument,
 } from "lib/generated/graphql";
 import { Authority, PolygonData } from "lib/services/authority/authority";
 import {
@@ -21,6 +22,8 @@ export interface IAuthorityService extends IService {
     offset: number,
     searchText: string
   ): Promise<QueryResult<Authority[]>>;
+
+  lookupAuthorityInheritsDown(authorityId: string): Promise<Authority[]>;
 
   fetchAuthorities(
     limit: number,
@@ -85,6 +88,27 @@ export class AuthorityService implements IAuthorityService {
       items,
       totalCount: fetchResult.data.adminAuthorityInheritLookup?.totalCount,
     };
+  }
+
+  async lookupAuthorityInheritsDown(authorityId: string) {
+    const fetchResult = await this.client.query({
+      query: AuthorityInheritsDownLookupDocument,
+      variables: {
+        authorityId,
+      },
+    });
+
+    const items = Array<Authority>();
+    fetchResult.data.authorityInheritsDown?.forEach(item => {
+      if (item) {
+        items.push({
+          id: item.id,
+          name: item.name,
+          code: item.code,
+        });
+      }
+    });
+    return items;
   }
 
   async fetchAuthorities(limit: number, offset: number, searchText: string) {

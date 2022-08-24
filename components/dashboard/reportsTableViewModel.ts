@@ -38,6 +38,7 @@ export class ReportTableViewModel extends BaseViewModel {
     );
     runInAction(() => {
       this.data = result.items || [];
+      this.totalCount = result.totalCount || 0;
     });
     this.isLoading = false;
   }

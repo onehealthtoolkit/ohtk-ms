@@ -24,12 +24,12 @@ export class SummaryByCategoryViewModel extends BaseViewModel {
   authorityId: number;
   _fromDate?: Date = undefined;
   _toDate?: Date = new Date();
+  _summaryType: string = "report";
 
   data: ChartData<"bar"> = {
     datasets: [],
   };
 
-  _summaryType: string = "report";
   constructor(
     authorityId: number,
     readonly dashboardService: IDashboardService
@@ -48,6 +48,7 @@ export class SummaryByCategoryViewModel extends BaseViewModel {
       filterByCategory: action,
     });
     this.authorityId = authorityId;
+    this.setDefaultSearchValue();
     this.fetch();
   }
 
@@ -75,6 +76,23 @@ export class SummaryByCategoryViewModel extends BaseViewModel {
   set toDate(value: Date | undefined) {
     if (value) value.setHours(23, 59, 59, 999);
     this._toDate = value;
+  }
+
+  setSearchValue(fromDate: Date | undefined, toDate: Date | undefined) {
+    if (!fromDate && !toDate) {
+      this.setDefaultSearchValue();
+    } else {
+      this.fromDate = fromDate;
+      this.toDate = toDate;
+    }
+
+    this.fetch();
+  }
+
+  setDefaultSearchValue() {
+    const today = new Date();
+    this.fromDate = new Date(new Date().setDate(today.getDate() - 30));
+    this.toDate = new Date();
   }
 
   async fetch() {
