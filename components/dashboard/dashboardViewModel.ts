@@ -1,15 +1,18 @@
 import { computed, makeObservable, observable, runInAction } from "mobx";
 
+export type DashBoardFilterData = {
+  fromDate?: Date;
+  toDate?: Date;
+};
+
 export default class DashboardViewModel {
-  _authorityId: number;
-  authorityName: string;
+  _authorityId: number = 0;
+  authorityName: string = "";
 
   _fromDate: Date | undefined = undefined;
   _toDate: Date | undefined = undefined;
 
-  constructor(authorityId: number, authorityName: string) {
-    this._authorityId = authorityId;
-    this.authorityName = authorityName;
+  constructor() {
     makeObservable(this, {
       _authorityId: observable,
       authorityId: computed,
@@ -34,6 +37,7 @@ export default class DashboardViewModel {
   }
 
   set fromDate(value: Date | undefined) {
+    if (value) value.setHours(0, 0, 0, 0);
     this._fromDate = value;
   }
   get toDate() {
@@ -41,14 +45,31 @@ export default class DashboardViewModel {
   }
 
   set toDate(value: Date | undefined) {
+    if (value) value.setHours(23, 59, 59, 999);
     this._toDate = value;
   }
 
-  setSearchValue(fromDate: Date | undefined, toDate: Date | undefined) {
+  setSearchValue(
+    authorityId: number,
+    authorityName: string,
+    fromDate: Date | undefined,
+    toDate: Date | undefined
+  ) {
     runInAction(() => {
-      console.log("setSearchValue");
-      this.fromDate = fromDate;
-      this.toDate = toDate;
+      if (!fromDate && !toDate) {
+        this.setDefaultSearchValue();
+      } else {
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+      }
+      this.authorityId = authorityId;
+      this.authorityName = authorityName;
     });
+  }
+
+  setDefaultSearchValue() {
+    const today = new Date();
+    this.fromDate = new Date(new Date().setDate(today.getDate() - 30));
+    this.toDate = new Date();
   }
 }

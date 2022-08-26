@@ -2,21 +2,27 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
 import { IDashboardService } from "lib/services/dashboard/dashboardService";
 import { EventItem } from "lib/services/dashboard/event";
+import { DashBoardFilterData } from "./dashboardViewModel";
 
 export class MapViewModel extends BaseViewModel {
   data = Array<EventItem>();
-  authorityId: number;
+  authorityId: number = 0;
+  fromDate?: Date = undefined;
+  toDate?: Date = new Date();
 
-  constructor(
-    authorityId: number,
-    readonly dashboardService: IDashboardService
-  ) {
+  constructor(readonly dashboardService: IDashboardService) {
     super();
     makeObservable(this, {
       data: observable,
       fetch: action,
     });
+  }
+
+  setSearchValue(authorityId: number, filter: DashBoardFilterData) {
     this.authorityId = authorityId;
+    this.fromDate = filter.fromDate;
+    this.toDate = filter.toDate;
+
     this.fetch();
   }
 

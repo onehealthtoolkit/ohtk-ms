@@ -2,7 +2,7 @@ import { MaskingLoader } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import { observer } from "mobx-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { MapViewModel } from "./mapViewModel";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -13,18 +13,24 @@ import turfBbox from "@turf/bbox";
 import { points as turfPoints } from "@turf/helpers";
 import { EventItemType } from "lib/services/dashboard/event";
 import getConfig from "next/config";
+import { DashBoardFilterData } from "./dashboardViewModel";
 
 const { publicRuntimeConfig } = getConfig();
 
 type MapViewProps = {
   authorityId: number;
+  filter: DashBoardFilterData;
 };
 
-const MapView: React.FC<MapViewProps> = ({ authorityId }) => {
+const MapView: React.FC<MapViewProps> = ({ authorityId, filter }) => {
   const services = useServices();
   const [viewModel] = useState(
-    () => new MapViewModel(authorityId, services.dashboardService)
+    () => new MapViewModel(services.dashboardService)
   );
+  useEffect(() => {
+    if (authorityId) viewModel.setSearchValue(authorityId, filter);
+  }, [viewModel, authorityId, filter]);
+
   if (!authorityId) return <Spinner></Spinner>;
 
   // Default bounds to Chiang Mai, Thailand
@@ -62,7 +68,7 @@ const MapView: React.FC<MapViewProps> = ({ authorityId }) => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
 
-              {viewModel.data.map(item => {
+              {viewModel.data.map((item, index) => {
                 const icon = L.divIcon({
                   className: "my-div-icon",
                   html: renderToStaticMarkup(
@@ -75,7 +81,7 @@ const MapView: React.FC<MapViewProps> = ({ authorityId }) => {
 
                 return (
                   <Marker
-                    key={item.type + item.id}
+                    key={item.type + "_" + index + "_" + item.id}
                     position={[item.location.lat, item.location.lng]}
                     icon={icon}
                   >

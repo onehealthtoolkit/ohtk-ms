@@ -3,7 +3,9 @@ import Spinner from "components/widgets/spinner";
 import { formatDate, formatDateTime } from "lib/datetime";
 import useServices from "lib/services/provider";
 import { observer } from "mobx-react";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { DashBoardFilterData } from "./dashboardViewModel";
 import { ReportTableViewModel } from "./reportsTableViewModel";
 
 const styles = {
@@ -13,14 +15,24 @@ const styles = {
 };
 type ReportsTableViewProps = {
   authorityId: number;
+  filter: DashBoardFilterData;
 };
 
-const ReportsTableView: React.FC<ReportsTableViewProps> = ({ authorityId }) => {
+const ReportsTableView: React.FC<ReportsTableViewProps> = ({
+  authorityId,
+  filter,
+}) => {
+  const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
-    () => new ReportTableViewModel(authorityId, services.reportService)
+    () => new ReportTableViewModel(services.reportService)
   );
+  useEffect(() => {
+    if (authorityId) viewModel.setSearchValue(authorityId, filter);
+  }, [viewModel, authorityId, filter]);
+
   if (!authorityId) return <Spinner></Spinner>;
+
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg ">
@@ -35,6 +47,7 @@ const ReportsTableView: React.FC<ReportsTableViewProps> = ({ authorityId }) => {
               <button
                 className="text-white underline active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
+                onClick={() => router.push(`/reports/`)}
               >
                 {"See all >"}
               </button>
@@ -62,7 +75,11 @@ const ReportsTableView: React.FC<ReportsTableViewProps> = ({ authorityId }) => {
             <tbody className="text-sm font-normal font-['Bai_Jamjuree']">
               {viewModel.data &&
                 viewModel.data.map(item => (
-                  <tr key={item.id} className={styles.row}>
+                  <tr
+                    key={item.id}
+                    className={styles.row}
+                    onClick={() => router.push(`/reports/${item.id}`)}
+                  >
                     <td className="px-6 py-4">
                       {formatDateTime(item.createdAt)}
                     </td>
