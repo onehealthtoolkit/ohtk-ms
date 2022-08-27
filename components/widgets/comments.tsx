@@ -10,13 +10,10 @@ import Spinner from "components/widgets/spinner";
 import { Attachment, Comment } from "lib/services/comment/comment";
 import useServices from "lib/services/provider";
 import { observer, Observer } from "mobx-react";
-import getConfig from "next/config";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { formatDateTime } from "lib/datetime";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
-
-const { publicRuntimeConfig } = getConfig();
 
 type CommentsProps = {
   threadId?: number | null;
@@ -211,7 +208,7 @@ const Attachment = ({
       onClick={() => onViewImage(attachment.id)}
     >
       <img
-        src={`${publicRuntimeConfig.serverUrl}/${attachment.thumbnail}`}
+        src={attachment.thumbnail}
         className="w-full h-full object-cover"
         alt={attachment.file}
       />

@@ -4,8 +4,6 @@ import { PlusIcon } from "@heroicons/react/solid";
 import Spinner from "components/widgets/spinner";
 import tw from "tailwind-styled-components";
 import dynamic from "next/dynamic";
-import getConfig from "next/config";
-const { publicRuntimeConfig } = getConfig();
 import { useTranslation } from "react-i18next";
 
 export * from "./tabs";
@@ -376,7 +374,7 @@ export const UserAvatar = ({ url }: { url?: string }) => {
   return (
     <div className="overflow-hidden relative w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">
       {url ? (
-        <img src={`${publicRuntimeConfig.serverUrl}/${url}`} alt={url} />
+        <img src={url} alt={url} />
       ) : (
         <svg
           className="absolute -left-1 w-12 h-12 text-gray-400"

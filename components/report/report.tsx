@@ -4,7 +4,6 @@ import { observer, Observer } from "mobx-react";
 import { Divide, MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ReportViewModel } from "./reportViewModel";
-import getConfig from "next/config";
 import tw from "tailwind-styled-components";
 import Spinner from "components/widgets/spinner";
 import { useRouter } from "next/router";
@@ -13,8 +12,6 @@ import { renderData, TR } from "components/widgets/renderData";
 import dynamic from "next/dynamic";
 import Comments from "components/widgets/comments";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
-
-const { publicRuntimeConfig } = getConfig();
 
 export const PromoteToCaseButton = tw.button`
   px-4 
@@ -82,11 +79,7 @@ const ReportImage = observer(
                 viewModel.openGallery(image.id);
               }}
             >
-              <img
-                className="w-40"
-                src={`${publicRuntimeConfig.serverUrl}/${image.thumbnail}`}
-                alt=""
-              />
+              <img className="w-40" src={image.thumbnail} alt="" />
             </a>
           </div>
         ))}

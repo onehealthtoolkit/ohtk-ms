@@ -18,10 +18,7 @@ import {
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
-import getConfig from "next/config";
 import { useTranslation } from "react-i18next";
-
-const { publicRuntimeConfig } = getConfig();
 
 const ReportCategoryUpdate = () => {
   const router = useRouter();
@@ -88,7 +85,7 @@ const ReportCategoryUpdate = () => {
                     width={"32"}
                     height={"32"}
                     alt={`icon for ${viewModel.name}`}
-                    src={`${publicRuntimeConfig.serverUrl}/${viewModel.iconUrl}`}
+                    src={viewModel.iconUrl}
                   />
                 </Field>
               </div>

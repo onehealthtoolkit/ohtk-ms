@@ -3,9 +3,6 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/solid";
 import BaseModalDialog from "components/widgets/dialogs/baseModalDialog";
 import { GalleryDialogViewModel } from "components/widgets/dialogs/galleryDialogViewModel";
 import { observer } from "mobx-react";
-import getConfig from "next/config";
-
-const { publicRuntimeConfig } = getConfig();
 
 type GalleryDialogProps = {
   viewModel?: GalleryDialogViewModel;
@@ -42,7 +39,7 @@ const GalleryDialog: React.FC<GalleryDialogProps> = ({ viewModel }) => {
                   </>
                 )}
                 <img
-                  src={`${publicRuntimeConfig.serverUrl}/${viewModel.currentImage.thumbnailUrl}`}
+                  src={viewModel.currentImage.thumbnailUrl}
                   className="h-full object-contain"
                   alt={viewModel.currentImage.imageUrl}
                 />
@@ -64,7 +61,7 @@ const GalleryDialog: React.FC<GalleryDialogProps> = ({ viewModel }) => {
                 >
                   <img
                     onClick={() => viewModel.select(idx)}
-                    src={`${publicRuntimeConfig.serverUrl}/${image.thumbnailUrl}`}
+                    src={image.thumbnailUrl}
                     className="w-full h-full object-cover"
                     alt={image.imageUrl}
                   />

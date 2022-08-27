@@ -6,6 +6,7 @@ import { createUploadLink } from "apollo-upload-client";
 import { RefreshTokenDocument } from "./generated/graphql";
 
 const REFRESH_EXPIRES_IN = "refreshExpiresIn";
+const BACKEND_URL = "backendUrl";
 
 export function setRefreshExpiresIn(value: number) {
   localStorage.setItem(REFRESH_EXPIRES_IN, value.toString());
@@ -29,21 +30,28 @@ const refreshToken = async (): Promise<void> => {
   }
 };
 
+const resolveUri = (defaultUri: string) => {
+  return localStorage.getItem(BACKEND_URL) || defaultUri;
+};
+
 const customFetch = (uri: string, options: Record<string, string>) => {
+  const fetchUri = resolveUri(uri);
+  
   const now = Math.round(new Date().getTime() / 1000);
   const refreshExpiresIn = getRefreshExpiresIn();
   const diff = refreshExpiresIn - now;
   if (refreshExpiresIn !== 0 && diff < 30 && diff > 5) {
     return refreshToken().then(() => {
-      return fetch(uri, options);
+      return fetch(fetchUri, options);
     });
   } else {
-    return fetch(uri, options);
+    return fetch(fetchUri, options);
   }
 };
 
 const httpLink = createUploadLink({
-  uri: "/graphql/",
+  uri: "https://opensur.test/graphql/",
+  credentials: "include",
   fetch: customFetch,
 }) as unknown as ApolloLink;
 
@@ -59,8 +67,6 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 export const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql/",
-  credentials: "include",
   cache: new InMemoryCache(),
   link: from([errorLink, httpLink]),
   defaultOptions: {

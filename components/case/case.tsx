@@ -9,7 +9,6 @@ import {
 } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { CaseViewModel } from "./caseViewModel";
-import getConfig from "next/config";
 import CaseStateView from "components/case/caseState/view";
 import { AdjustmentsIcon, CollectionIcon } from "@heroicons/react/solid";
 import useStore from "lib/store";
@@ -18,8 +17,6 @@ import { renderData, TR } from "components/widgets/renderData";
 import Comments from "components/widgets/comments";
 import dynamic from "next/dynamic";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
-
-const { publicRuntimeConfig } = getConfig();
 
 const ReportLocation = dynamic(() => import("./reportLocationMap"), {
   loading: () => <p>A map is loading</p>,
@@ -67,11 +64,7 @@ const ReportImage = observer(({ viewModel }: { viewModel: CaseViewModel }) => {
               viewModel.openGallery(image.id);
             }}
           >
-            <img
-              className="w-40"
-              src={`${publicRuntimeConfig.serverUrl}/${image.thumbnail}`}
-              alt=""
-            />
+            <img className="w-40" src={image.thumbnail} alt="" />
           </a>
         </div>
       ))}
