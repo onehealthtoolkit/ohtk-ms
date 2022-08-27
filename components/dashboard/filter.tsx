@@ -3,12 +3,9 @@ import React, { Fragment, useState } from "react";
 import { Field, Label } from "components/widgets/forms";
 import DatePicker from "components/widgets/datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Authority } from "lib/services/authority";
 import DashboardViewModel from "./dashboardViewModel";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-
-export const defaultOptions: Authority[] = [];
 
 const DashboardFilter = ({ viewModel }: { viewModel: DashboardViewModel }) => {
   const [periodText, setPeriodText] = useState<String>();

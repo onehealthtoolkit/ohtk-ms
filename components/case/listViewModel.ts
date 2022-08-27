@@ -49,21 +49,30 @@ export class CaseListViewModel extends BaseViewModel {
 
     this.offset = params.offset || 0;
 
+    const filter = { ...this.filter };
     this.isCalendarView = params.isCalendar === 1;
-    if (params.calendarMonth && params.calendarYear) {
+
+    if (
+      this.isCalendarView &&
+      params.calendarMonth !== undefined &&
+      params.calendarYear !== undefined
+    ) {
       this.calendarViewModel.toMonthYear(
         params.calendarMonth,
         params.calendarYear
       );
+
+      filter.fromDate = this.calendarViewModel.getStartDate();
+      filter.throughDate = this.calendarViewModel.getEndDate();
     }
-    this.fetch();
+    this.fetch(filter);
   }
 
-  async fetch(): Promise<void> {
+  async fetch(filter: CaseFilterData): Promise<void> {
     const result = await this.caseService.fetchCases(
       this.limit,
       this.offset,
-      this.filter
+      filter
     );
     runInAction(() => {
       this.data = result.items || [];
@@ -77,7 +86,7 @@ export class CaseListViewModel extends BaseViewModel {
 
   filterReset() {
     this.filter = initialFilter;
-    this.fetch();
+    this.fetch(this.filter);
   }
 
   switchView(isCalendarView: boolean) {

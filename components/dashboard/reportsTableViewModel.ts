@@ -1,31 +1,29 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
 import { Report, IReportService } from "lib/services/report";
-import { ReportFilterData } from "lib/services/report/reportService";
+import { DashBoardFilterData } from "./dashboardViewModel";
 
 export class ReportTableViewModel extends BaseViewModel {
   data: Report[] = [];
-  authorityId: number;
-  filter: ReportFilterData = {
-    fromDate: undefined,
-    throughDate: new Date(),
-    authorities: [],
-  };
-  constructor(authorityId: number, readonly reportService: IReportService) {
+  authorityId: number = 0;
+  fromDate?: Date = undefined;
+  toDate?: Date = new Date();
+
+  constructor(readonly reportService: IReportService) {
     super();
     makeObservable(this, {
       data: observable,
       fetch: action,
     });
-    this.authorityId = authorityId;
-    this.filter.authorities = [
-      {
-        id: authorityId.toString(),
-        code: "",
-        name: "",
-      },
-    ];
+
     this.limit = 5;
+  }
+
+  setSearchValue(authorityId: number, filter: DashBoardFilterData) {
+    this.authorityId = authorityId;
+    this.fromDate = filter.fromDate;
+    this.toDate = filter.toDate;
+
     this.fetch();
   }
 
@@ -34,7 +32,17 @@ export class ReportTableViewModel extends BaseViewModel {
     const result = await this.reportService.fetchReports(
       this.limit,
       this.offset,
-      this.filter
+      {
+        fromDate: this.fromDate,
+        throughDate: this.toDate,
+        authorities: [
+          {
+            id: this.authorityId.toString(),
+            code: "",
+            name: "",
+          },
+        ],
+      }
     );
     runInAction(() => {
       this.data = result.items || [];

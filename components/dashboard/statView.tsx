@@ -2,7 +2,8 @@ import { MaskingLoader } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import { observer } from "mobx-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { DashBoardFilterData } from "./dashboardViewModel";
 import { StatViewModel } from "./statViewModel";
 
 const styles = {
@@ -13,14 +14,21 @@ const styles = {
 };
 type StatViewProps = {
   authorityId: number;
+  filter: DashBoardFilterData;
 };
 
-const StatView: React.FC<StatViewProps> = ({ authorityId }) => {
+const StatView: React.FC<StatViewProps> = ({ authorityId, filter }) => {
   const services = useServices();
   const [viewModel] = useState(
-    () => new StatViewModel(authorityId, services.dashboardService)
+    () => new StatViewModel(services.dashboardService)
   );
+
+  useEffect(() => {
+    if (authorityId) viewModel.setSearchValue(authorityId, filter);
+  }, [viewModel, authorityId, filter]);
+
   if (!authorityId) return <Spinner></Spinner>;
+
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <div className="grid md:grid-cols-4 gap-6">

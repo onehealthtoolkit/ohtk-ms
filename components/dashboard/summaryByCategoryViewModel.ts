@@ -9,6 +9,7 @@ import { BaseViewModel } from "lib/baseViewModel";
 import { IDashboardService } from "lib/services/dashboard/dashboardService";
 import { SummaryByCategoryData } from "lib/services/dashboard/summaryByCategory";
 import { ChartData } from "chart.js";
+import { DashBoardFilterData } from "./dashboardViewModel";
 
 const colors = [
   "#56ADEC",
@@ -21,35 +22,25 @@ const colors = [
 ];
 
 export class SummaryByCategoryViewModel extends BaseViewModel {
-  authorityId: number;
-  _fromDate?: Date = undefined;
-  _toDate?: Date = new Date();
+  authorityId: number = 0;
+  fromDate?: Date = undefined;
+  toDate?: Date = new Date();
   _summaryType: string = "report";
 
   data: ChartData<"bar"> = {
     datasets: [],
   };
 
-  constructor(
-    authorityId: number,
-    readonly dashboardService: IDashboardService
-  ) {
+  constructor(readonly dashboardService: IDashboardService) {
     super();
     makeObservable(this, {
       data: observable,
       _summaryType: observable,
       summaryType: computed,
-      _fromDate: observable,
-      fromDate: computed,
-      _toDate: observable,
-      toDate: computed,
       fetch: action,
       changeSummaryType: action,
       filterByCategory: action,
     });
-    this.authorityId = authorityId;
-    this.setDefaultSearchValue();
-    this.fetch();
   }
 
   get summaryType(): string {
@@ -60,39 +51,12 @@ export class SummaryByCategoryViewModel extends BaseViewModel {
     this._summaryType = value;
   }
 
-  get fromDate(): Date | undefined {
-    return this._fromDate;
-  }
-
-  set fromDate(value: Date | undefined) {
-    if (value) value.setHours(0, 0, 0, 0);
-    this._fromDate = value;
-  }
-
-  get toDate(): Date | undefined {
-    return this._toDate;
-  }
-
-  set toDate(value: Date | undefined) {
-    if (value) value.setHours(23, 59, 59, 999);
-    this._toDate = value;
-  }
-
-  setSearchValue(fromDate: Date | undefined, toDate: Date | undefined) {
-    if (!fromDate && !toDate) {
-      this.setDefaultSearchValue();
-    } else {
-      this.fromDate = fromDate;
-      this.toDate = toDate;
-    }
+  setSearchValue(authorityId: number, filter: DashBoardFilterData) {
+    this.authorityId = authorityId;
+    this.fromDate = filter.fromDate;
+    this.toDate = filter.toDate;
 
     this.fetch();
-  }
-
-  setDefaultSearchValue() {
-    const today = new Date();
-    this.fromDate = new Date(new Date().setDate(today.getDate() - 30));
-    this.toDate = new Date();
   }
 
   async fetch() {
