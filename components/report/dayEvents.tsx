@@ -4,9 +4,9 @@ import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 
 export const ReportDayEvents = observer(
-  ({ day, viewModel }: DayEventsProps<ReportEvent>) => {
+  ({ date, viewModel }: DayEventsProps<ReportEvent>) => {
     const router = useRouter();
-    const events = viewModel.getDayEvents(day);
+    const events = viewModel.getDayEvents(date);
     return (
       <div className="flex-grow flex flex-col gap-1 overflow-y-auto">
         {events.map(event => (

@@ -138,8 +138,8 @@ const CaseList = () => {
                 onMonthChange={() => {
                   applySearch();
                 }}
-                dayEvents={({ day, viewModel }) => (
-                  <CaseDayEvents day={day} viewModel={viewModel} />
+                dayEvents={({ date, viewModel }) => (
+                  <CaseDayEvents date={date} viewModel={viewModel} />
                 )}
               />
             ) : (

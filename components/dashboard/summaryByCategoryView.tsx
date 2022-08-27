@@ -20,6 +20,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import useReportCategories from "lib/hooks/reportCategories";
 import SelectableChips from "components/widgets/chips";
+import { DashBoardFilterData } from "./dashboardViewModel";
 
 ChartJS.register(
   CategoryScale,
@@ -69,27 +70,25 @@ export const options = {
 
 type SummaryByCategoryViewProps = {
   authorityId: number;
-  fromDate?: Date;
-  toDate?: Date;
+  filter: DashBoardFilterData;
   showFilter?: boolean;
 };
 
 const SummaryByCategoryView: React.FC<SummaryByCategoryViewProps> = ({
   authorityId,
-  fromDate,
-  toDate,
+  filter,
   showFilter,
 }) => {
   const services = useServices();
   const [viewModel] = useState(
-    () => new SummaryByCategoryViewModel(authorityId, services.dashboardService)
+    () => new SummaryByCategoryViewModel(services.dashboardService)
   );
 
   const categories = useReportCategories();
 
   useEffect(() => {
-    viewModel.setSearchValue(fromDate, toDate);
-  }, [viewModel, fromDate, toDate]);
+    if (authorityId) viewModel.setSearchValue(authorityId, filter);
+  }, [viewModel, authorityId, filter]);
 
   if (!authorityId) return <Spinner></Spinner>;
 

@@ -5,9 +5,9 @@
     "cases": "Cases",
     "authorities": "Authorities",
     "users": "Users",
-    "reportCategories": "Report Categories",
-    "reportTypes": "Report Templates",
-    "tnvitationCodes": "Invitation Codes",
+    "reportCategories": "Report Category",
+    "reportTypes": "Report Type",
+    "tnvitationCodes": "Invitation codesy",
     "caseDefinitions": "Case Definitions",
     "stateDefinitions": "State Definitions",
     "notificationTemplates": "Notification Templates",
@@ -38,7 +38,7 @@
       "code": "Code",
       "name": "Name",
       "description": "Description",
-      "ordering": "Order",
+      "ordering": "Ordering",
       "username": "username",
       "firstName": "First Name",
       "lastName": "Last Name",
@@ -46,8 +46,8 @@
       "telephone": "Telephone",
       "inherits": "Inherits",
       "area": "Area",
-      "category": "Report Category",
-      "reportType": "Report Template",
+      "category": "Category",
+      "reportType": "Report Type",
       "condition": "condition",
       "selectItem": "Select item ...",
       "fromDate": "From Date",
@@ -60,14 +60,14 @@
       "icon": "Icon",
       "currentIcon": "Current Icon",
       "template": "Template",
-      "stateDefinition": "State Definition",
+      "stateDefinition": "stateDefinition",
       "default": "Default",
       "isStartState": "Is Start State",
       "isStopState": "Is Stop State",
       "fromStep": "From Step",
       "toStep": "To Step",
       "formDefinition": "Form Definition",
-      "changePicture": "Change Picture",
+      "changePicture": "Change picture",
       "authority": "Authority",
       "changePassword": "Change Password",
       "changeProfile": "Change Profile",
@@ -80,17 +80,17 @@
       "code": "Code",
       "name": "Name",
       "description": "Description",
-      "ordering": "Order",
-      "username": "Username",
+      "ordering": "Ordering",
+      "username": "username",
       "firstName": "First Name",
       "lastName": "Last Name",
       "email": "Email",
       "telephone": "Telephone",
       "inherits": "Inherits",
       "area": "Area",
-      "category": "Report Category",
-      "reportType": "Report Template",
-      "condition": "Condition",
+      "category": "Category",
+      "reportType": "Report Type",
+      "condition": "condition",
       "fromDate": "From Date",
       "throughDate": "Through Date",
       "role": "Role",
@@ -100,12 +100,12 @@
       "type": "Type",
       "icon": "Icon",
       "template": "Template",
-      "stateDefinition": "State Definition",
+      "stateDefinition": "stateDefinition",
       "formDefinition": "Form Definition",
       "newPassword": "Password",
       "confirmPassword": "Confirm password",
       "to": "To",
-      "selectReportType": "Select Report Template"
+      "selectReportType": "Select report type"
     },
     "button": {
       "delete": "Delete",
@@ -116,10 +116,10 @@
   },
   "dialog": {
     "title": {
-      "confirmDelete": "Confirm Delete"
+      "confirmDelete": "Confirm delete"
     },
     "content": {
-      "confirmDelete": "Are you sure?"
+      "confirmDelete": "Are you sure ?"
     }
   }
 }

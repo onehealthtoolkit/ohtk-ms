@@ -1,8 +1,7 @@
 import useStore from "lib/store";
 import React, { useEffect, useState } from "react";
-import DashboardViewModel from "./dashboardViewModel";
+import DashboardViewModel, { DashBoardFilterData } from "./dashboardViewModel";
 import StatView from "./statView";
-import AuthorityFilter from "./authorityFilter";
 import SummaryByCategoryView from "./summaryByCategoryView";
 import CasesTableView from "./casesTableView";
 import { Observer, observer } from "mobx-react";
@@ -14,6 +13,7 @@ import { isoStringToDate } from "lib/utils";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { useRouter } from "next/router";
 import DashboardFilter from "./filter";
+import AuthorityFilter from "./authorityFilter";
 
 export const MapView = dynamic(() => import("./mapView"), {
   loading: () => <p>A map is loading</p>,
@@ -22,6 +22,8 @@ export const MapView = dynamic(() => import("./mapView"), {
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
+    authorityId: query.authorityId,
+    authorityName: query.authorityName,
     fromDate: query.fromDate
       ? isoStringToDate(query.fromDate as string)
       : undefined,
@@ -33,23 +35,36 @@ const Dashboard: React.FC = () => {
   const { setUrl, query, resetUrl } = useUrlParams();
   const router = useRouter();
   const store = useStore();
+  const [filterData, setFilterData] = useState<DashBoardFilterData>({});
   const [viewModel] = useState<DashboardViewModel>(() => {
-    const dashboardViewModel = new DashboardViewModel(
-      store.me!.authorityId,
-      store.me!.authorityName
-    );
+    const dashboardViewModel = new DashboardViewModel();
     return dashboardViewModel;
   });
 
   useEffect(() => {
     if (router.isReady) {
       const filter = parseUrlParams(query);
-      viewModel.setSearchValue(filter.fromDate, filter.toDate);
+      if (!filter.authorityId) {
+        filter.authorityId = store.me!.authorityId.toString();
+        filter.authorityName = store.me!.authorityName;
+      }
+      viewModel.setSearchValue(
+        parseInt(filter.authorityId as string),
+        filter.authorityName as string,
+        filter.fromDate,
+        filter.toDate
+      );
+      setFilterData({
+        fromDate: viewModel.fromDate,
+        toDate: viewModel.toDate,
+      });
     }
-  }, [viewModel, router.isReady, query]);
+  }, [viewModel, store.me, router.isReady, query]);
 
   const applySearch = () => {
     setUrl({
+      authorityId: viewModel.authorityId,
+      authorityName: viewModel.authorityName,
       fromDate: viewModel.fromDate?.toISOString(),
       toDate: viewModel.toDate?.toISOString(),
     });
@@ -76,19 +91,24 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          <StatView authorityId={viewModel.authorityId} />
-          <MapView authorityId={viewModel.authorityId} />
+          <StatView authorityId={viewModel.authorityId} filter={filterData} />
+          <MapView authorityId={viewModel.authorityId} filter={filterData} />
           <SummaryByCategoryView
             authorityId={viewModel.authorityId}
-            fromDate={viewModel.fromDate}
-            toDate={viewModel.toDate}
+            filter={filterData}
           />
           <div className="flex flex-wrap">
             <div className="w-full xl:w-1/2">
-              <ReportsTableView authorityId={viewModel.authorityId} />
+              <ReportsTableView
+                authorityId={viewModel.authorityId}
+                filter={filterData}
+              />
             </div>
             <div className="w-full xl:w-1/2 px-4">
-              <CasesTableView authorityId={viewModel.authorityId} />
+              <CasesTableView
+                authorityId={viewModel.authorityId}
+                filter={filterData}
+              />
             </div>
           </div>
         </div>

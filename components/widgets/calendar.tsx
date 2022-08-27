@@ -1,5 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import {
+  CalendarDate,
   CalendarEvent,
   CalendarViewModel,
 } from "components/widgets/calendarViewModel";
@@ -14,7 +15,7 @@ type CalendarProps<T extends CalendarEvent> = {
 };
 
 export type DayEventsProps<T extends CalendarEvent> = {
-  day: number | null;
+  date: CalendarDate | null;
   viewModel: CalendarViewModel<T>;
 };
 
@@ -72,31 +73,38 @@ const Calendar = <T extends CalendarEvent>({
           </tr>
         </thead>
         <tbody>
-          {viewModel.days.map(w => (
-            <tr key={"week" + w} className="">
-              {w.map((d, idx) => (
-                <td
-                  key={w + "day" + idx}
-                  className={`w-[14%] first:w-[15%] last:w-[15%] 
-                  p-2 border text-xs text-gray-600 ${
-                    d ? "bg-white" : "bg-gray-100"
-                  }
-                `}
-                >
-                  <div className="h-24 flex flex-col">
-                    <span
-                      className={`rounded-full block w-6 p-1 text-center mb-2 ${
-                        viewModel.isToday(d) ? "bg-blue-500 text-white" : ""
-                      }`}
+          {viewModel.days.map(
+            (w, wIdx) =>
+              w != null && (
+                <tr key={"week" + wIdx} className="">
+                  {w.map((d, idx) => (
+                    <td
+                      key={"week" + wIdx + "day" + idx}
+                      className={`w-[14%] first:w-[15%] last:w-[15%] 
+                    p-2 border text-xs ${
+                      d && d.month === viewModel.month
+                        ? "bg-white text-gray-700"
+                        : "bg-gray-100 text-gray-400"
+                    }
+                  `}
                     >
-                      {d}
-                    </span>
-                    {dayEvents({ day: d, viewModel })}
-                  </div>
-                </td>
-              ))}
-            </tr>
-          ))}
+                      <div className="h-24 flex flex-col">
+                        <span
+                          className={`rounded-full block w-6 p-1 text-center mb-2 ${
+                            d && viewModel.isToday(d.day)
+                              ? "bg-blue-500 text-white"
+                              : ""
+                          }`}
+                        >
+                          {d?.day}
+                        </span>
+                        {dayEvents({ date: d, viewModel })}
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+              )
+          )}
         </tbody>
       </table>
     </div>

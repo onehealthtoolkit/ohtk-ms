@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import DashboardViewModel from "./dashboardViewModel";
 import Select from "react-select";
 import useServices from "lib/services/provider";
+import useStore from "lib/store";
 
 type AuthorityFilterProps = {
   viewModel: DashboardViewModel;
@@ -14,14 +15,14 @@ type AuthorityOption = {
 
 const AuthroityFilter: React.FC<AuthorityFilterProps> = ({ viewModel }) => {
   const services = useServices();
-
+  const store = useStore();
   const [authorities, setAuthorities] = useState<AuthorityOption[]>();
 
   useEffect(() => {
     async function loadOptions() {
       const authorities =
         await await services.authorityService.lookupAuthorityInheritsDown(
-          viewModel.authorityId.toString()
+          store.me!.authorityId.toString()
         );
 
       setAuthorities(
@@ -33,8 +34,8 @@ const AuthroityFilter: React.FC<AuthorityFilterProps> = ({ viewModel }) => {
         })
       );
     }
-    loadOptions();
-  }, [services.reportTypeService, services.reportCategoryService]);
+    if (store.me) loadOptions();
+  }, [store.me, services.authorityService]);
 
   return (
     <Select<AuthorityOption>
