@@ -22,11 +22,16 @@ const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
           "
           onClick={() => (form.isSimulationMode = !form.isSimulationMode)}
         >
-          {form.isSimulationMode ? "Builder" : "Simulator"} mode
           {form.isSimulationMode ? (
-            <TemplateIcon className="w-5 h-5" />
+            <>
+              <TemplateIcon className="w-5 h-5" />
+              <span>Builder mode &laquo; </span>
+            </>
           ) : (
-            <TableIcon className="w-5 h-5" />
+            <>
+              <span>&raquo; Simulator mode </span>
+              <TableIcon className="w-5 h-5" />
+            </>
           )}
         </button>
       </div>

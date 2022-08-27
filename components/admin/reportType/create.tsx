@@ -13,8 +13,6 @@ import {
   Label,
   SaveButton,
   Select,
-  TabBar,
-  TabItem,
   TextArea,
   TextInput,
 } from "components/widgets/forms";
@@ -24,13 +22,16 @@ import { ReportCategory } from "lib/services/reportCategory";
 import FormBuilder from "components/admin/formBuilder";
 import useStateDefinitions from "lib/hooks/stateDefinitions";
 import { useTranslation } from "react-i18next";
+import FormBuilderDialog from "components/admin/reportType/formBuilderDialog";
 
 const ReportTypeCreate = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const services = useServices();
-  const [viewModel] = useState(
-    () => new ReportTypeCreateViewModel(services.reportTypeService)
+  const [viewModel] = useState(() =>
+    new ReportTypeCreateViewModel(services.reportTypeService).registerDialog(
+      "formBuilder"
+    )
   );
 
   const isSubmitting = viewModel.isSubmitting;
@@ -53,54 +54,6 @@ const ReportTypeCreate = () => {
 
   return (
     <>
-      <TabBar>
-        <TabItem
-          id="detail"
-          active={!viewModel.isFormBuilderMode}
-          onTab={() => {
-            viewModel.definition = viewModel.formViewModel.jsonString;
-            viewModel.isFormBuilderMode = false;
-          }}
-        >
-          {({ activeCss }) => (
-            <>
-              <svg
-                className={`mr-2 w-5 h-5 ${activeCss}`}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-              </svg>
-              <span>Detail</span>
-            </>
-          )}
-        </TabItem>
-        <TabItem
-          id="formBuilder"
-          active={viewModel.isFormBuilderMode}
-          onTab={() => (viewModel.isFormBuilderMode = true)}
-        >
-          {({ activeCss }) => (
-            <>
-              <svg
-                className={`mr-2 w-5 h-5 ${activeCss}`}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
-                <path
-                  fillRule="evenodd"
-                  d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              <span>Form Builder</span>
-            </>
-          )}
-        </TabItem>
-      </TabBar>
       <Form
         onSubmit={async evt => {
           evt.preventDefault();
@@ -110,123 +63,139 @@ const ReportTypeCreate = () => {
         }}
       >
         <FieldGroup>
-          {viewModel.isFormBuilderMode ? (
-            <FormBuilder viewModel={viewModel.formViewModel} />
-          ) : (
-            <>
-              <Field $size="half">
-                <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
-                <TextInput
-                  id="name"
-                  type="text"
-                  placeholder={t("form.placeholder.name", "Name")}
-                  onChange={evt => (viewModel.name = evt.target.value)}
-                  value={viewModel.name}
-                  disabled={isSubmitting}
-                  required
-                />
-                <ErrorText>{errors.name}</ErrorText>
-              </Field>
-              <Field $size="half">
-                <Label htmlFor="name">Definition</Label>
-                <TextArea
-                  id="definition"
-                  rows={30}
-                  placeholder="Definition"
-                  value={viewModel.definition}
-                  onChange={evt => (viewModel.definition = evt.target.value)}
-                  disabled={isSubmitting}
-                  required
-                />
-                <ErrorText>{errors.definition}</ErrorText>
-              </Field>
-              <Field $size="half">
-                <Label htmlFor="category">
-                  {t("form.label.category", "Category")}
-                </Label>
-                <Select
-                  id="category"
-                  placeholder="Category"
-                  value={viewModel.categoryId}
-                  onChange={evt => {
-                    if (evt.target.value) {
-                      viewModel.categoryId = parseInt(evt.target.value);
-                    } else {
-                      viewModel.categoryId = undefined;
-                    }
-                  }}
-                  disabled={isSubmitting}
-                  required
-                >
-                  <option disabled value={""}>
-                    Select item ...
-                  </option>
-                  {categories?.map(item => (
-                    <option key={`option-${item.id}`} value={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </Select>
-                <ErrorText>{errors.categoryId}</ErrorText>
-              </Field>
-              <Field $size="half">
-                <Label htmlFor="name">Description Template</Label>
-                <TextArea
-                  id="rendererDataTemplate"
-                  placeholder="description template"
-                  rows={5}
-                  onChange={evt =>
-                    (viewModel.rendererDataTemplate = evt.target.value)
+          <Field $size="half">
+            <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
+            <TextInput
+              id="name"
+              type="text"
+              placeholder={t("form.placeholder.name", "Name")}
+              onChange={evt => (viewModel.name = evt.target.value)}
+              value={viewModel.name}
+              disabled={isSubmitting}
+              required
+            />
+            <ErrorText>{errors.name}</ErrorText>
+          </Field>
+          <Field $size="half">
+            <Label
+              htmlFor="definition"
+              className="flex flex-row justify-between items-end"
+            >
+              <span>{t("form.label.definition", "Definition")}</span>
+              <button
+                onClick={e => {
+                  e.preventDefault();
+                  const valid = viewModel.parseDefinition(viewModel.definition);
+                  if (valid) {
+                    viewModel.dialog("formBuilder")?.open(null);
                   }
-                  disabled={viewModel.isSubmitting}
-                  value={viewModel.rendererDataTemplate}
-                />
-                <ErrorText>
-                  {viewModel.fieldErrors.rendererDataTemplate}
-                </ErrorText>
-              </Field>
-              <Field $size="half">
-                <Label htmlFor="stateDefinitionId">State definition</Label>
-                <Select
-                  id="stateDefinitionId"
-                  placeholder={t(
-                    "form.placeholder.stateDefinition",
-                    "State definition"
-                  )}
-                  onChange={evt =>
-                    (viewModel.stateDefinitionId = +evt.target.value)
-                  }
-                  value={viewModel.stateDefinitionId}
-                  disabled={viewModel.isSubmitting}
-                >
-                  <option value={0}>
-                    {t("form.label.selectItem", "Select item ...")}
-                  </option>
-                  {stateDefinitions?.map(item => (
-                    <option key={`option-${item.id}`} value={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </Select>
-                <ErrorText>{viewModel.fieldErrors.stateDefinitionId}</ErrorText>
-              </Field>
-              <Field $size="half">
-                <Label htmlFor="ordering">
-                  {t("form.label.ordering", "Ordering")}
-                </Label>
-                <TextInput
-                  id="ordering"
-                  type="number"
-                  placeholder={t("form.placeholder.ordering", "Ordering")}
-                  onChange={evt => (viewModel.ordering = +evt.target.value)}
-                  disabled={isSubmitting}
-                  value={viewModel.ordering}
-                  required
-                />
-                <ErrorText>{errors.ordering}</ErrorText>
-              </Field>
-            </>
-          )}
+                }}
+                className="border
+                  text-white
+                  bg-[#4C81F1] 
+                  border-blue-300
+                  hover:border-blue-500
+                  rounded
+                  p-1
+                "
+              >
+                Form builder
+              </button>
+            </Label>
+            <TextArea
+              id="definition"
+              rows={30}
+              placeholder="Definition"
+              value={viewModel.definition}
+              onChange={evt => (viewModel.definition = evt.target.value)}
+              disabled={isSubmitting}
+              required
+            />
+            <ErrorText>{errors.definition}</ErrorText>
+          </Field>
+          <Field $size="half">
+            <Label htmlFor="category">
+              {t("form.label.category", "Category")}
+            </Label>
+            <Select
+              id="category"
+              placeholder="Category"
+              value={viewModel.categoryId}
+              onChange={evt => {
+                if (evt.target.value) {
+                  viewModel.categoryId = parseInt(evt.target.value);
+                } else {
+                  viewModel.categoryId = undefined;
+                }
+              }}
+              disabled={isSubmitting}
+              required
+            >
+              <option disabled value={""}>
+                Select item ...
+              </option>
+              {categories?.map(item => (
+                <option key={`option-${item.id}`} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </Select>
+            <ErrorText>{errors.categoryId}</ErrorText>
+          </Field>
+          <Field $size="half">
+            <Label htmlFor="name">Description Template</Label>
+            <TextArea
+              id="rendererDataTemplate"
+              placeholder="description template"
+              rows={5}
+              onChange={evt =>
+                (viewModel.rendererDataTemplate = evt.target.value)
+              }
+              disabled={viewModel.isSubmitting}
+              value={viewModel.rendererDataTemplate}
+            />
+            <ErrorText>{viewModel.fieldErrors.rendererDataTemplate}</ErrorText>
+          </Field>
+          <Field $size="half">
+            <Label htmlFor="stateDefinitionId">State definition</Label>
+            <Select
+              id="stateDefinitionId"
+              placeholder={t(
+                "form.placeholder.stateDefinition",
+                "State definition"
+              )}
+              onChange={evt =>
+                (viewModel.stateDefinitionId = +evt.target.value)
+              }
+              value={viewModel.stateDefinitionId}
+              disabled={viewModel.isSubmitting}
+            >
+              <option value={0}>
+                {t("form.label.selectItem", "Select item ...")}
+              </option>
+              {stateDefinitions?.map(item => (
+                <option key={`option-${item.id}`} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </Select>
+            <ErrorText>{viewModel.fieldErrors.stateDefinitionId}</ErrorText>
+          </Field>
+          <Field $size="half">
+            <Label htmlFor="ordering">
+              {t("form.label.ordering", "Ordering")}
+            </Label>
+            <TextInput
+              id="ordering"
+              type="number"
+              placeholder={t("form.placeholder.ordering", "Ordering")}
+              onChange={evt => (viewModel.ordering = +evt.target.value)}
+              disabled={isSubmitting}
+              value={viewModel.ordering}
+              required
+            />
+            <ErrorText>{errors.ordering}</ErrorText>
+          </Field>
         </FieldGroup>
         {viewModel.submitError.length > 0 && (
           <FormMessage>{viewModel.submitError}</FormMessage>
@@ -240,6 +209,14 @@ const ReportTypeCreate = () => {
           </CancelButton>
         </FormAction>
       </Form>
+      <FormBuilderDialog
+        viewModel={viewModel.dialog("formBuilder")}
+        onClose={() => {
+          viewModel.definition = viewModel.formViewModel.jsonString;
+        }}
+      >
+        <FormBuilder viewModel={viewModel.formViewModel} />
+      </FormBuilderDialog>
     </>
   );
 };
