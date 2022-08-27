@@ -69,6 +69,7 @@
       "formDefinition": "คำจำกัดความของแบบฟอร์ม",
       "changePicture": "เปลี่ยนรูปภาพ",
       "authority": "Authority",
+      "password": "รหัสผ่าน",
       "changePassword": "เปลี่ยนรหัสผ่าน",
       "changeProfile": "เปลี่ยนข้อมูลส่วนตัว",
       "newPassword": "รหัสผ่าน",
@@ -104,6 +105,7 @@
       "formDefinition": "คำจำกัดความของแบบฟอร์ม",
       "changePicture": "เปลี่ยนรูปภาพ",
       "authority": "Authority",
+      "password": "รหัสผ่าน",
       "changePassword": "เปลี่ยนรหัสผ่าน",
       "newPassword": "รหัสผ่าน",
       "confirmPassword": "ยืนยันรหัสผ่าน",
@@ -111,6 +113,7 @@
       "selectReportType": "เลือกประเภทรายงาน"
     },
     "button": {
+      "signin": "เข้าสู่ระบบ",
       "delete": "ลบ",
       "add": "เพิ่ม",
       "save": "บันทึก",
@@ -124,5 +127,8 @@
     "content": {
       "confirmDelete": "คุณแน่ใจหรือ ?"
     }
+  },
+  "title": {
+    "login": "ลงชื่อเข้าใช้บัญชีของคุณ"
   }
 }

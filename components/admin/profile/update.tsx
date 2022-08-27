@@ -21,6 +21,7 @@ import getConfig from "next/config";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ProfileInfoUpdate from "components/admin/profile/updateInfo";
+import LanguageSelect from "components/auth/languageSelect";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -94,6 +95,7 @@ const ProfileUpdate = () => {
               </Label>
               <span>{store.me?.username}</span>
             </Field>
+            <LanguageSelect />
           </FieldGroup>
           <ProfileInfoUpdate />
           <Form
