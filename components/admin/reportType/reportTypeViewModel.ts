@@ -15,7 +15,6 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   _ordering: number = 0;
   _rendererDataTemplate: string = "";
 
-  _isFormBuilderMode = false;
   formViewModel = new FormViewModel();
 
   constructor(reportTypeService: IReportTypeService) {
@@ -35,8 +34,6 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
       ordering: computed,
       save: action,
       validate: action,
-      _isFormBuilderMode: observable,
-      isFormBuilderMode: computed,
       formViewModel: observable,
       parseDefinition: action,
     });
@@ -146,9 +143,7 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
       isValid = false;
       this.fieldErrors["definition"] = "this field is required";
     } else {
-      isValid = this.parseDefinition(
-        this.isFormBuilderMode ? this.formViewModel.jsonString : this.definition
-      );
+      isValid = this.parseDefinition(this.definition);
     }
 
     if (!this.categoryId) {
@@ -157,12 +152,5 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
     }
 
     return isValid;
-  }
-
-  public get isFormBuilderMode(): boolean {
-    return this._isFormBuilderMode;
-  }
-  public set isFormBuilderMode(value: boolean) {
-    this._isFormBuilderMode = value;
   }
 }

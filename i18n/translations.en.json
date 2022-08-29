@@ -39,7 +39,7 @@
       "name": "Name",
       "description": "Description",
       "ordering": "Ordering",
-      "username": "username",
+      "username": "Username",
       "firstName": "First Name",
       "lastName": "Last Name",
       "email": "Email",
@@ -71,6 +71,7 @@
       "authority": "Authority",
       "changePassword": "Change Password",
       "changeProfile": "Change Profile",
+      "password": "Password",
       "newPassword": "Password",
       "confirmPassword": "Confirm password",
       "to": "To",
@@ -102,12 +103,14 @@
       "template": "Template",
       "stateDefinition": "stateDefinition",
       "formDefinition": "Form Definition",
+      "password": "Password",
       "newPassword": "Password",
       "confirmPassword": "Confirm password",
       "to": "To",
       "selectReportType": "Select report type"
     },
     "button": {
+      "signin": "Sign In",
       "delete": "Delete",
       "add": "Add",
       "save": "Save",
@@ -121,5 +124,8 @@
     "content": {
       "confirmDelete": "Are you sure ?"
     }
+  },
+  "title": {
+    "login": "Login to Your Account"
   }
 }

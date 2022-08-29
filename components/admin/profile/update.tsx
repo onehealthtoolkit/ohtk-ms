@@ -20,6 +20,7 @@ import { Observer } from "mobx-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ProfileInfoUpdate from "components/admin/profile/updateInfo";
+import LanguageSelect from "components/auth/languageSelect";
 
 const ProfileUpdate = () => {
   const { t } = useTranslation();
@@ -91,6 +92,7 @@ const ProfileUpdate = () => {
               </Label>
               <span>{store.me?.username}</span>
             </Field>
+            <LanguageSelect />
           </FieldGroup>
           <ProfileInfoUpdate />
           <Form
