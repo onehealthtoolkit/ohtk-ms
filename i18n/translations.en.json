@@ -29,7 +29,7 @@
     "name": "Name",
     "action": "Action",
     "totalItems": "Total <1>{{count}} items</1>",
-    "paginate": "Page {{currentPages}} of {{numberOfPages}} <1>[{{totalCount}} records]</1>",
+    "paginate": "Page {{currentPages}} of {{numberOfPages}} <4>[{{totalCount}} records]</4>",
     "notFound": "Data not found."
   },
   "form": {

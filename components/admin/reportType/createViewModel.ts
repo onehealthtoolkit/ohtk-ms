@@ -9,7 +9,10 @@ export class ReportTypeCreateViewModel extends ReportTypeViewModel {
       this.categoryId!,
       this.definition,
       this.ordering,
-      this.stateDefinitionId
+      this.stateDefinitionId,
+      this.rendererDataTemplate,
+      this.followupDefinition,
+      this.rendererFollowupDataTemplate
     );
   }
 }

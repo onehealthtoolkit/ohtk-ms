@@ -12,6 +12,7 @@ import { renderData, TR } from "components/widgets/renderData";
 import dynamic from "next/dynamic";
 import Comments from "components/widgets/comments";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
+import Back from "components/widgets/back";
 
 export const PromoteToCaseButton = tw.button`
   px-4 
@@ -171,6 +172,8 @@ const Report = (props: { id: string }) => {
               )}
 
               <GalleryDialog viewModel={viewModel.galleryViewModel} />
+
+              <Back />
             </>
           </MaskingLoader>
         );

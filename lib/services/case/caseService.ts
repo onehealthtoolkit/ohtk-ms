@@ -89,7 +89,7 @@ export class CaseService implements ICaseService {
           createdAt: item.report?.createdAt,
           incidentDate: item.report?.incidentDate,
           rendererData: item.report?.rendererData as string,
-          reportTypeName: item.report?.reportType.name as string,
+          reportTypeName: item.report?.reportType?.name,
           isFinished: item.isFinished,
         });
       }

@@ -6,6 +6,7 @@ import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ReportCategoryViewViewModel } from "./viewViewModel";
 import { useTranslation } from "react-i18next";
+import Back from "components/widgets/back";
 
 const ReportCategoryView = () => {
   const router = useRouter();
@@ -73,6 +74,7 @@ const ReportCategoryView = () => {
             </tbody>
           </table>
         </div>
+        <Back />
       </div>
     </MaskingLoader>
   );

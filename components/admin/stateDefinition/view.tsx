@@ -7,6 +7,7 @@ import { StateDefinitionViewViewModel } from "./viewViewModel";
 import CheckIcon from "@heroicons/react/solid/CheckIcon";
 import Table from "components/widgets/table";
 import { useTranslation } from "react-i18next";
+import Back from "components/widgets/back";
 
 const StateDefinitionView = () => {
   const router = useRouter();
@@ -134,6 +135,7 @@ const StateDefinitionView = () => {
           ]}
           data={viewModel?.data.stateTransitions || []}
         />
+        <Back />
       </div>
     </MaskingLoader>
   );

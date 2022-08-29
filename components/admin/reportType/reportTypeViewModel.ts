@@ -10,10 +10,12 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
 
   _name: string = "";
   _categoryId?: number = undefined;
-  _definition: string = "";
+  _definition: string = "{}";
   _stateDefinitionId: number = 0;
   _ordering: number = 0;
   _rendererDataTemplate: string = "";
+  _followupDefinition: string = "{}";
+  _rendererFollowupDataTemplate: string = "";
 
   formViewModel = new FormViewModel();
 
@@ -32,6 +34,10 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
       rendererDataTemplate: computed,
       _ordering: observable,
       ordering: computed,
+      _followupDefinition: observable,
+      followupDefinition: computed,
+      _rendererFollowupDataTemplate: observable,
+      rendererFollowupDataTemplate: computed,
       save: action,
       validate: action,
       formViewModel: observable,
@@ -83,6 +89,29 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
     }
   }
 
+  public get followupDefinition(): string {
+    return this._followupDefinition;
+  }
+  public set followupDefinition(value: string) {
+    this._followupDefinition = value;
+    this.clearError("followupDefinition");
+  }
+
+  public parseFollowupDefinition(value: string): boolean {
+    try {
+      this.formViewModel.parse(JSON.parse(value));
+      this.followupDefinition = this.formViewModel.jsonString;
+      return true;
+    } catch (e) {
+      if (e instanceof ParseError) {
+        this.fieldErrors["followupDefinition"] = e.message;
+      } else {
+        this.fieldErrors["followupDefinition"] = "Error! Bad definition format";
+      }
+      return false;
+    }
+  }
+
   public get stateDefinitionId(): number {
     return this._stateDefinitionId;
   }
@@ -98,6 +127,15 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   public set rendererDataTemplate(value: string) {
     this._rendererDataTemplate = value;
     this.clearError("rendererDataTemplate");
+  }
+
+  public get rendererFollowupDataTemplate(): string {
+    return this._rendererFollowupDataTemplate;
+  }
+
+  public set rendererFollowupDataTemplate(value: string) {
+    this._rendererFollowupDataTemplate = value;
+    this.clearError("rendererFollowupDataTemplate");
   }
 
   public get ordering(): number {

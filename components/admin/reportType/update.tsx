@@ -35,7 +35,7 @@ const ReportTypeUpdateForm = () => {
       services.reportTypeService
     ).registerDialog("formBuilder")
   );
-
+  const [selectedDefinition, setSelectedDefinition] = useState("");
   const stateDefinitions = useStateDefinitions();
   const [categories, setCategories] = useState<ReportCategory[]>();
 
@@ -64,6 +64,30 @@ const ReportTypeUpdateForm = () => {
         >
           <FieldGroup>
             <Field $size="half">
+              <Label htmlFor="category">
+                {t("form.label.category", "Category")}
+              </Label>
+              <Select
+                id="category"
+                placeholder={t("form.placeholder.category", "Category")}
+                onChange={evt => (viewModel.categoryId = +evt.target.value)}
+                disabled={viewModel.isSubmitting}
+                value={viewModel.categoryId}
+                required
+              >
+                <option value={""} disabled>
+                  Select item ...
+                </option>
+                {categories?.map(item => (
+                  <option key={`option-${item.id}`} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </Select>
+              <ErrorText>{viewModel.fieldErrors.categoryId}</ErrorText>
+            </Field>
+
+            <Field $size="half">
               <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
               <TextInput
                 id="name"
@@ -85,6 +109,7 @@ const ReportTypeUpdateForm = () => {
                 <button
                   onClick={e => {
                     e.preventDefault();
+                    setSelectedDefinition("definition");
                     const valid = viewModel.parseDefinition(
                       viewModel.definition
                     );
@@ -117,30 +142,55 @@ const ReportTypeUpdateForm = () => {
             </Field>
 
             <Field $size="half">
-              <Label htmlFor="category">
-                {t("form.label.category", "Category")}
-              </Label>
-              <Select
-                id="category"
-                placeholder={t("form.placeholder.category", "Category")}
-                onChange={evt => (viewModel.categoryId = +evt.target.value)}
-                disabled={viewModel.isSubmitting}
-                value={viewModel.categoryId}
-                required
+              <Label
+                htmlFor="followupDefinition"
+                className="flex flex-row justify-between items-end"
               >
-                <option value={""} disabled>
-                  Select item ...
-                </option>
-                {categories?.map(item => (
-                  <option key={`option-${item.id}`} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </Select>
-              <ErrorText>{viewModel.fieldErrors.categoryId}</ErrorText>
+                <span>
+                  {t("form.label.followupDefinition", "Followup Definition")}
+                </span>
+                <button
+                  onClick={e => {
+                    e.preventDefault();
+                    setSelectedDefinition("followupDefinition");
+                    const valid = viewModel.parseFollowupDefinition(
+                      viewModel.followupDefinition
+                    );
+                    if (valid) {
+                      viewModel.dialog("formBuilder")?.open(null);
+                    }
+                  }}
+                  className="border
+                    text-white
+                    bg-[#4C81F1] 
+                    border-blue-300
+                    hover:border-blue-500
+                    rounded
+                    p-1
+                  "
+                >
+                  Form builder
+                </button>
+              </Label>
+              <TextArea
+                id="followupDefinition"
+                placeholder={t(
+                  "form.placeholder.followupDefinition",
+                  "Followup Definition"
+                )}
+                rows={30}
+                onChange={evt =>
+                  (viewModel.followupDefinition = evt.target.value)
+                }
+                disabled={viewModel.isSubmitting}
+                value={viewModel.followupDefinition}
+                required
+              />
+              <ErrorText>{viewModel.fieldErrors.followupDefinition}</ErrorText>
             </Field>
+
             <Field $size="half">
-              <Label htmlFor="name">Description Template</Label>
+              <Label htmlFor="rendererDataTemplate">Description Template</Label>
               <TextArea
                 id="rendererDataTemplate"
                 placeholder="description template"
@@ -153,6 +203,25 @@ const ReportTypeUpdateForm = () => {
               />
               <ErrorText>
                 {viewModel.fieldErrors.rendererDataTemplate}
+              </ErrorText>
+            </Field>
+
+            <Field $size="half">
+              <Label htmlFor="rendererFollowupDataTemplate">
+                Follow Up Description Template
+              </Label>
+              <TextArea
+                id="rendererFollowupDataTemplate"
+                placeholder="follow up description template"
+                rows={5}
+                onChange={evt =>
+                  (viewModel.rendererFollowupDataTemplate = evt.target.value)
+                }
+                disabled={viewModel.isSubmitting}
+                value={viewModel.rendererFollowupDataTemplate}
+              />
+              <ErrorText>
+                {viewModel.fieldErrors.rendererFollowupDataTemplate}
               </ErrorText>
             </Field>
 
@@ -217,7 +286,9 @@ const ReportTypeUpdateForm = () => {
       <FormBuilderDialog
         viewModel={viewModel.dialog("formBuilder")}
         onClose={() => {
-          viewModel.definition = viewModel.formViewModel.jsonString;
+          if (selectedDefinition == "followupDefinition")
+            viewModel.followupDefinition = viewModel.formViewModel.jsonString;
+          else viewModel.definition = viewModel.formViewModel.jsonString;
         }}
       >
         <FormBuilder viewModel={viewModel.formViewModel} />

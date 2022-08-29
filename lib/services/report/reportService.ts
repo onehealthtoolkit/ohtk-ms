@@ -55,7 +55,7 @@ export class ReportService implements IReportService {
           createdAt: item.createdAt,
           incidentDate: item.incidentDate,
           rendererData: item.rendererData,
-          reportTypeName: item.reportType.name,
+          reportTypeName: item.reportType?.name || "",
           caseId: item.caseId,
         });
       }
@@ -81,7 +81,7 @@ export class ReportService implements IReportService {
         id: incidentReport.id,
         createdAt: incidentReport.createdAt,
         incidentDate: incidentReport.incidentDate,
-        reportTypeName: incidentReport.reportType.name,
+        reportTypeName: incidentReport.reportType?.name || "",
         rendererData: incidentReport.rendererData,
         data: incidentReport.data,
         images: incidentReport.images as Image[],

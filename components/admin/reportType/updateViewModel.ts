@@ -24,6 +24,10 @@ export class ReportTypeUpdateViewModel extends ReportTypeViewModel {
       this.ordering = data.ordering;
       this.rendererDataTemplate = data.rendererDataTemplate || "";
       this.parseDefinition(data.definition);
+      if (data.followupDefinition)
+        this.parseFollowupDefinition(data.followupDefinition);
+      this.rendererFollowupDataTemplate =
+        data.rendererFollowupDataTemplate || "";
     }
     this.isLoading = false;
   }
@@ -36,7 +40,9 @@ export class ReportTypeUpdateViewModel extends ReportTypeViewModel {
       this.definition,
       this.ordering,
       this.stateDefinitionId,
-      this.rendererDataTemplate
+      this.rendererDataTemplate,
+      this.followupDefinition,
+      this.rendererFollowupDataTemplate
     );
   }
 }
