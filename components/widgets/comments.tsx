@@ -10,13 +10,11 @@ import Spinner from "components/widgets/spinner";
 import { Attachment, Comment } from "lib/services/comment/comment";
 import useServices from "lib/services/provider";
 import { observer, Observer } from "mobx-react";
-import getConfig from "next/config";
-import { useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { formatDateTime } from "lib/datetime";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
-
-const { publicRuntimeConfig } = getConfig();
+import { BACKEND_DOMAIN } from "lib/client";
 
 type CommentsProps = {
   threadId?: number | null;
@@ -25,6 +23,19 @@ type CommentsProps = {
 const Comments: React.FC<CommentsProps> = ({ threadId }) => {
   const { commentService } = useServices();
   const [viewModel] = useState(new CommentsViewModel(commentService, threadId));
+
+  useEffect(() => {
+    const ws = new WebSocket(
+      `wss://${BACKEND_DOMAIN}/ws/comments/${threadId}/`
+    );
+
+    ws.onmessage = ev => {
+      console.log(ev.data);
+      viewModel.fetch(true);
+    };
+
+    return () => ws.close();
+  }, [viewModel, threadId]);
 
   if (!threadId) return null;
   return (
@@ -59,7 +70,7 @@ const Comments: React.FC<CommentsProps> = ({ threadId }) => {
   );
 };
 
-export default Comments;
+export default memo(Comments);
 
 const CommentForm = observer(
   ({ viewModel }: { viewModel: CommentsViewModel }) => {
@@ -211,7 +222,7 @@ const Attachment = ({
       onClick={() => onViewImage(attachment.id)}
     >
       <img
-        src={`${publicRuntimeConfig.serverUrl}/${attachment.thumbnail}`}
+        src={attachment.thumbnail}
         className="w-full h-full object-cover"
         alt={attachment.file}
       />

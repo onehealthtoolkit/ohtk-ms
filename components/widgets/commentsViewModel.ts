@@ -36,7 +36,9 @@ export class CommentsViewModel extends BaseFormViewModel {
       save: action,
       galleryViewModel: observable,
     });
-    this.fetch();
+    if (this.threadId) {
+      this.fetch();
+    }
   }
 
   public get body(): string {
@@ -65,10 +67,13 @@ export class CommentsViewModel extends BaseFormViewModel {
     this.attachments.push(...attachments);
   }
 
-  async fetch() {
+  async fetch(force?: boolean) {
     if (!this.threadId) return;
 
-    const result = await this.commentService.fetchComments(this.threadId);
+    const result = await this.commentService.fetchComments(
+      this.threadId,
+      force
+    );
     runInAction(() => {
       this.data = result.items || [];
       if (result.error) {
@@ -98,7 +103,6 @@ export class CommentsViewModel extends BaseFormViewModel {
     } else {
       this.body = "";
       this.attachments.splice(0, this.attachments.length);
-      this.fetch(); // use cache from refetch
     }
     return result.success;
   }

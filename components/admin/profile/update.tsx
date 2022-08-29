@@ -17,13 +17,10 @@ import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import useStore from "lib/store";
 import { Observer } from "mobx-react";
-import getConfig from "next/config";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ProfileInfoUpdate from "components/admin/profile/updateInfo";
 import LanguageSelect from "components/auth/languageSelect";
-
-const { publicRuntimeConfig } = getConfig();
 
 const ProfileUpdate = () => {
   const { t } = useTranslation();
@@ -45,7 +42,7 @@ const ProfileUpdate = () => {
               <div className="w-48 h-48 sm:w-36 sm:h-36">
                 {viewModel.imageUrl ? (
                   <img
-                    src={`${publicRuntimeConfig.serverUrl}/${viewModel.imageUrl}`}
+                    src={viewModel.imageUrl}
                     alt={`${store.me?.username}'s avatar`}
                     className="shadow-md rounded-full w-full h-full align-middle border-2"
                   />

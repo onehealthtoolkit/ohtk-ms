@@ -12,10 +12,7 @@ import L, { LatLngTuple } from "leaflet";
 import turfBbox from "@turf/bbox";
 import { points as turfPoints } from "@turf/helpers";
 import { EventItemType } from "lib/services/dashboard/event";
-import getConfig from "next/config";
 import { DashBoardFilterData } from "./dashboardViewModel";
-
-const { publicRuntimeConfig } = getConfig();
 
 type MapViewProps = {
   authorityId: number;
@@ -143,7 +140,7 @@ const MarkerIcon = ({ categoryIcon, type }: MarkerIconProps) => {
                 zIndex: 1000,
                 width: "18px",
                 height: "18px",
-                backgroundImage: `url("${publicRuntimeConfig.serverUrl}/${categoryIcon}")`,
+                backgroundImage: `url("${categoryIcon}")`,
                 backgroundPosition: "center center",
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",

@@ -1,10 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { observer, Observer } from "mobx-react";
 import { Divide, MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ReportViewModel } from "./reportViewModel";
-import getConfig from "next/config";
 import tw from "tailwind-styled-components";
 import Spinner from "components/widgets/spinner";
 import { useRouter } from "next/router";
@@ -14,8 +13,6 @@ import dynamic from "next/dynamic";
 import Comments from "components/widgets/comments";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 import Back from "components/widgets/back";
-
-const { publicRuntimeConfig } = getConfig();
 
 export const PromoteToCaseButton = tw.button`
   px-4 
@@ -83,11 +80,7 @@ const ReportImage = observer(
                 viewModel.openGallery(image.id);
               }}
             >
-              <img
-                className="w-40"
-                src={`${publicRuntimeConfig.serverUrl}/${image.thumbnail}`}
-                alt=""
-              />
+              <img className="w-40" src={image.thumbnail} alt="" />
             </a>
           </div>
         ))}
@@ -100,13 +93,21 @@ const Report = (props: { id: string }) => {
   const { id } = props;
   const router = useRouter();
   const services = useServices();
-  const [viewModel] = useState(
-    new ReportViewModel(
-      id as string,
-      services.reportService,
-      services.caseService
-    )
-  );
+  const [viewModel, setViewModel] = useState<ReportViewModel | undefined>();
+
+  useEffect(() => {
+    setViewModel(
+      new ReportViewModel(
+        id as string,
+        services.reportService,
+        services.caseService
+      )
+    );
+  }, [setViewModel, id, services]);
+
+  if (viewModel === undefined) {
+    return null;
+  }
 
   return (
     <Observer>
@@ -166,7 +167,9 @@ const Report = (props: { id: string }) => {
 
               <Divide />
 
-              <Comments threadId={viewModel.data.threadId} />
+              {viewModel.data.threadId && (
+                <Comments threadId={viewModel.data.threadId} />
+              )}
 
               <GalleryDialog viewModel={viewModel.galleryViewModel} />
 

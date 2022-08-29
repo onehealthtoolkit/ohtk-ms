@@ -5,11 +5,8 @@ import { useRouter } from "next/router";
 import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ReportCategoryViewViewModel } from "./viewViewModel";
-import getConfig from "next/config";
 import { useTranslation } from "react-i18next";
 import Back from "components/widgets/back";
-
-const { publicRuntimeConfig } = getConfig();
 
 const ReportCategoryView = () => {
   const router = useRouter();
@@ -60,7 +57,7 @@ const ReportCategoryView = () => {
                       width={"32"}
                       height={"32"}
                       alt={`icon for ${viewModel.data.name}`}
-                      src={`${publicRuntimeConfig.serverUrl}/${viewModel.data.icon}`}
+                      src={viewModel.data.icon}
                     />
                   )}
                 </td>
