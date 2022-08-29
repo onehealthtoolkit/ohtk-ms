@@ -184,7 +184,9 @@ export class ReportTypeService implements IReportTypeService {
         rendererDataTemplate: reportType.rendererDataTemplate
           ? reportType.rendererDataTemplate
           : undefined, // get rid of null
-        followupDefinition: reportType.followupDefinition,
+        followupDefinition: reportType.followupDefinition
+          ? JSON.stringify(reportType.followupDefinition)
+          : "",
         rendererFollowupDataTemplate:
           reportType.rendererFollowupDataTemplate || undefined,
       };
