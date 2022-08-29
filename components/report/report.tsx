@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { observer, Observer } from "mobx-react";
 import { Divide, MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
@@ -92,13 +92,21 @@ const Report = (props: { id: string }) => {
   const { id } = props;
   const router = useRouter();
   const services = useServices();
-  const [viewModel] = useState(
-    new ReportViewModel(
-      id as string,
-      services.reportService,
-      services.caseService
-    )
-  );
+  const [viewModel, setViewModel] = useState<ReportViewModel | undefined>();
+
+  useEffect(() => {
+    setViewModel(
+      new ReportViewModel(
+        id as string,
+        services.reportService,
+        services.caseService
+      )
+    );
+  }, [setViewModel, id, services]);
+
+  if (viewModel === undefined) {
+    return null;
+  }
 
   return (
     <Observer>
@@ -158,7 +166,9 @@ const Report = (props: { id: string }) => {
 
               <Divide />
 
-              <Comments threadId={viewModel.data.threadId} />
+              {viewModel.data.threadId && (
+                <Comments threadId={viewModel.data.threadId} />
+              )}
 
               <GalleryDialog viewModel={viewModel.galleryViewModel} />
             </>

@@ -5,15 +5,17 @@ import Router from "next/router";
 import { createUploadLink } from "apollo-upload-client";
 import { RefreshTokenDocument } from "./generated/graphql";
 
-const REFRESH_EXPIRES_IN = "refreshExpiresIn";
-const BACKEND_URL = "backendUrl";
+export const BACKEND_DOMAIN = "opensur.test";
+
+const LOCAL_STORAGE_REFRESH_EXPIRES_IN_KEY = "refreshExpiresIn";
+const LOCAL_STORGAGE_BACKEND_URL_KEY = "backendUrl";
 
 export function setRefreshExpiresIn(value: number) {
-  localStorage.setItem(REFRESH_EXPIRES_IN, value.toString());
+  localStorage.setItem(LOCAL_STORAGE_REFRESH_EXPIRES_IN_KEY, value.toString());
 }
 
 export function getRefreshExpiresIn(): number {
-  const value = localStorage.getItem(REFRESH_EXPIRES_IN);
+  const value = localStorage.getItem(LOCAL_STORAGE_REFRESH_EXPIRES_IN_KEY);
   if (value) {
     return parseInt(value);
   }
@@ -31,12 +33,12 @@ const refreshToken = async (): Promise<void> => {
 };
 
 const resolveUri = (defaultUri: string) => {
-  return localStorage.getItem(BACKEND_URL) || defaultUri;
+  return localStorage.getItem(LOCAL_STORGAGE_BACKEND_URL_KEY) || defaultUri;
 };
 
 const customFetch = (uri: string, options: Record<string, string>) => {
   const fetchUri = resolveUri(uri);
-  
+
   const now = Math.round(new Date().getTime() / 1000);
   const refreshExpiresIn = getRefreshExpiresIn();
   const diff = refreshExpiresIn - now;
@@ -50,7 +52,7 @@ const customFetch = (uri: string, options: Record<string, string>) => {
 };
 
 const httpLink = createUploadLink({
-  uri: "https://opensur.test/graphql/",
+  uri: `https://${BACKEND_DOMAIN}/graphql/`,
   credentials: "include",
   fetch: customFetch,
 }) as unknown as ApolloLink;

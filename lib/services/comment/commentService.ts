@@ -7,7 +7,10 @@ import { Attachment, Comment } from "lib/services/comment/comment";
 import { IService, QueryResult, SaveResult } from "lib/services/interface";
 
 export interface ICommentService extends IService {
-  fetchComments(threadId: number): Promise<QueryResult<Comment[]>>;
+  fetchComments(
+    threadId: number,
+    force?: boolean
+  ): Promise<QueryResult<Comment[]>>;
 
   createComment(
     body: string,
@@ -23,11 +26,17 @@ export class CommentService implements ICommentService {
     this.client = client;
   }
 
-  async fetchComments(threadId: number): Promise<QueryResult<Comment[]>> {
+  async fetchComments(
+    threadId: number,
+    force?: boolean
+  ): Promise<QueryResult<Comment[]>> {
     const fetchResult = await this.client.query({
       query: QueryCommentsDocument,
       variables: { threadId: threadId.toString() },
+      fetchPolicy: force ? "network-only" : "cache-first",
     });
+
+    console.log("fetch", force);
 
     const items = Array<Comment>();
     fetchResult.data.comments?.forEach(item => {
