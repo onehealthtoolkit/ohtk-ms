@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { observer } from "mobx-react";
+import { useMemo, useState } from "react";
+import { Observer, observer } from "mobx-react";
 import { useRouter } from "next/router";
 import {
   AreaFieldNoSSR,
@@ -34,17 +34,10 @@ const AuthorityUpdate = () => {
       )
   );
 
-  return (
-    <MaskingLoader loading={viewModel.isLoading}>
-      <Form
-        onSubmit={async evt => {
-          evt.preventDefault();
-          if (await viewModel.save()) {
-            router.back();
-          }
-        }}
-      >
-        <FieldGroup>
+  const codeField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="code">{t("form.label.code", "Code")}</Label>
             <TextInput
@@ -58,6 +51,16 @@ const AuthorityUpdate = () => {
             />
             <ErrorText>{viewModel.fieldErrors.code}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const nameField = useMemo(() => {
+    return (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
             <TextInput
@@ -71,6 +74,15 @@ const AuthorityUpdate = () => {
             />
             <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    );
+  }, [t, viewModel]);
+
+  const inhertitsField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="inherits">
               {t("form.label.inherits", "Inherits")}
@@ -84,6 +96,16 @@ const AuthorityUpdate = () => {
             />
             <ErrorText>{viewModel.fieldErrors.inherits}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const areaField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="full">
             <Label htmlFor="area">{t("form.label.area", "Area")}</Label>
             <AreaFieldNoSSR
@@ -92,6 +114,27 @@ const AuthorityUpdate = () => {
             />
             <ErrorText>{viewModel.fieldErrors.area}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  return (
+    <MaskingLoader loading={viewModel.isLoading}>
+      <Form
+        onSubmit={async evt => {
+          evt.preventDefault();
+          if (await viewModel.save()) {
+            router.back();
+          }
+        }}
+      >
+        <FieldGroup>
+          {codeField}
+          {nameField}
+          {inhertitsField}
+          {areaField}
         </FieldGroup>
         {viewModel.submitError.length > 0 && (
           <FormMessage>{viewModel.submitError}</FormMessage>
