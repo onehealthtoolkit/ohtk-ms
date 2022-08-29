@@ -39,7 +39,9 @@ export interface IReportTypeService extends IService {
     definition: string,
     ordering: number,
     stateDefinitionId?: number,
-    rendererDataTemplate?: string
+    rendererDataTemplate?: string,
+    followupDefinition?: string,
+    rendererFollowupDataTemplate?: string
   ): Promise<SaveResult<ReportType>>;
 
   updateReportType(
@@ -49,7 +51,9 @@ export interface IReportTypeService extends IService {
     definition: string,
     ordering: number,
     stateDefinitionId?: number,
-    rendererDataTemplate?: string
+    rendererDataTemplate?: string,
+    followupDefinition?: string,
+    rendererFollowupDataTemplate?: string
   ): Promise<SaveResult<ReportType>>;
 
   deleteReportType(id: string): Promise<DeleteResult>;
@@ -146,7 +150,7 @@ export class ReportTypeService implements IReportTypeService {
           id: item.id,
           name: item.name,
           definition: "",
-          categoryId: +item.category.id,
+          categoryId: item.category ? parseInt(item.category.id) : 0,
           categoryName: "",
           ordering: item.ordering,
         });
@@ -169,8 +173,8 @@ export class ReportTypeService implements IReportTypeService {
       data = {
         id: reportType.id,
         name: reportType.name,
-        categoryId: +reportType.category.id,
-        categoryName: reportType.category.name,
+        categoryId: reportType.category ? parseInt(reportType.category.id) : 0,
+        categoryName: reportType.category ? reportType.category.name : "",
         definition: JSON.stringify(reportType.definition),
         ordering: reportType.ordering,
         stateDefinitionId: reportType.stateDefinition
@@ -180,6 +184,9 @@ export class ReportTypeService implements IReportTypeService {
         rendererDataTemplate: reportType.rendererDataTemplate
           ? reportType.rendererDataTemplate
           : undefined, // get rid of null
+        followupDefinition: reportType.followupDefinition,
+        rendererFollowupDataTemplate:
+          reportType.rendererFollowupDataTemplate || undefined,
       };
     }
     return {
@@ -193,7 +200,9 @@ export class ReportTypeService implements IReportTypeService {
     definition: string,
     ordering: number,
     stateDefinitionId?: number,
-    rendererDataTemplate?: string
+    rendererDataTemplate?: string,
+    followupDefinition?: string,
+    rendererFollowupDataTemplate?: string
   ): Promise<SaveResult<ReportType>> {
     const createResult = await this.client.mutate({
       mutation: ReportTypeCreateDocument,
@@ -204,6 +213,8 @@ export class ReportTypeService implements IReportTypeService {
         ordering: ordering,
         stateDefinitionId: stateDefinitionId || undefined,
         rendererDataTemplate: rendererDataTemplate,
+        followupDefinition,
+        rendererFollowupDataTemplate,
       },
       refetchQueries: [
         {
@@ -247,7 +258,9 @@ export class ReportTypeService implements IReportTypeService {
     definition: string,
     ordering: number,
     stateDefinitionId?: number,
-    rendererDataTemplate?: string
+    rendererDataTemplate?: string,
+    followupDefinition?: string,
+    rendererFollowupDataTemplate?: string
   ): Promise<SaveResult<ReportType>> {
     const updateResult = await this.client.mutate({
       mutation: ReportTypeUpdateDocument,
@@ -259,6 +272,8 @@ export class ReportTypeService implements IReportTypeService {
         ordering: ordering,
         stateDefinitionId: stateDefinitionId || undefined,
         rendererDataTemplate,
+        followupDefinition,
+        rendererFollowupDataTemplate,
       },
       refetchQueries: [
         {

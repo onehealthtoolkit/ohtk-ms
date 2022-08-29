@@ -58,6 +58,8 @@ mutation ReportTypeCreate(
   $ordering: Int!
   $stateDefinitionId: Int
   $rendererDataTemplate: String
+  $followupDefinition: String
+  $rendererFollowupDataTemplate: String
 ) {
   adminReportTypeCreate(
     categoryId: $categoryId
@@ -66,6 +68,8 @@ mutation ReportTypeCreate(
     ordering: $ordering
     stateDefinitionId: $stateDefinitionId
     rendererDataTemplate: $rendererDataTemplate
+    followupDefinition: $followupDefinition
+    rendererFollowupDataTemplate: $rendererFollowupDataTemplate
   ) {
     result {
       __typename
@@ -92,6 +96,8 @@ mutation ReportTypeUpdate(
   $ordering: Int!
   $stateDefinitionId: Int
   $rendererDataTemplate: String
+  $followupDefinition: String
+  $rendererFollowupDataTemplate: String
 ) {
   adminReportTypeUpdate(
     id: $id
@@ -101,6 +107,8 @@ mutation ReportTypeUpdate(
     ordering: $ordering
     stateDefinitionId: $stateDefinitionId
     rendererDataTemplate: $rendererDataTemplate
+    followupDefinition: $followupDefinition
+    rendererFollowupDataTemplate: $rendererFollowupDataTemplate
   ) {
     result {
       __typename
@@ -118,6 +126,8 @@ mutation ReportTypeUpdate(
             name
           }
           rendererDataTemplate
+          followupDefinition
+          rendererFollowupDataTemplate
           ordering
         }
       }
@@ -146,6 +156,8 @@ query GetReportType($id: ID!) {
       name
     }
     rendererDataTemplate
+    followupDefinition
+    rendererFollowupDataTemplate
     ordering
   }
 }

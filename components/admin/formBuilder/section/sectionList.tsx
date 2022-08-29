@@ -54,9 +54,10 @@ const List: FC<Props> = ({
       </div>
       <button
         type="button"
+        onClick={() => onAdd()}
         className="flex flex-shrink justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-800 focus:z-10 focus:ring-2 focus:ring-blue-200 "
       >
-        <span onClick={() => onAdd()}>Add Section</span>
+        <span>Add Section</span>
       </button>
     </div>
   );

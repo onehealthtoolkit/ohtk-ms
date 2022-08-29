@@ -61,8 +61,8 @@ export class DashboardService implements IDashboardService {
             type: "report",
             location: latlng,
             data: item.rendererData,
-            categoryName: item.reportType.category.name,
-            categoryIcon: item.reportType.category.icon,
+            categoryName: item.reportType?.category?.name || "",
+            categoryIcon: item.reportType?.category?.icon,
           });
         }
       }
@@ -82,8 +82,8 @@ export class DashboardService implements IDashboardService {
             type: "case",
             location: latlng,
             data: item.report?.rendererData || "",
-            categoryName: item.report?.reportType.category.name || "",
-            categoryIcon: item.report?.reportType.category.icon,
+            categoryName: item.report?.reportType?.category?.name || "",
+            categoryIcon: item.report?.reportType?.category?.icon,
           });
         }
       }

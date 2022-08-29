@@ -8,4 +8,6 @@ export type ReportType = {
   stateDefinitionId?: number;
   stateDefinitionName?: string;
   rendererDataTemplate?: string;
+  followupDefinition?: string;
+  rendererFollowupDataTemplate?: string;
 };

@@ -33,6 +33,7 @@ const ReportTypeCreate = () => {
       "formBuilder"
     )
   );
+  const [selectedDefinition, setSelectedDefinition] = useState("");
 
   const isSubmitting = viewModel.isSubmitting;
   const errors = viewModel.fieldErrors;
@@ -63,6 +64,36 @@ const ReportTypeCreate = () => {
         }}
       >
         <FieldGroup>
+          <Field $size="half">
+            <Label htmlFor="category">
+              {t("form.label.category", "Category")}
+            </Label>
+            <Select
+              id="category"
+              placeholder="Category"
+              value={viewModel.categoryId}
+              onChange={evt => {
+                if (evt.target.value) {
+                  viewModel.categoryId = parseInt(evt.target.value);
+                } else {
+                  viewModel.categoryId = undefined;
+                }
+              }}
+              disabled={isSubmitting}
+              defaultValue={viewModel.categoryId || ""}
+              required
+            >
+              <option disabled value={""}>
+                Select item ...
+              </option>
+              {categories?.map(item => (
+                <option key={`option-${item.id}`} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </Select>
+            <ErrorText>{errors.categoryId}</ErrorText>
+          </Field>
           <Field $size="half">
             <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
             <TextInput
@@ -114,33 +145,51 @@ const ReportTypeCreate = () => {
             <ErrorText>{errors.definition}</ErrorText>
           </Field>
           <Field $size="half">
-            <Label htmlFor="category">
-              {t("form.label.category", "Category")}
-            </Label>
-            <Select
-              id="category"
-              placeholder="Category"
-              value={viewModel.categoryId}
-              onChange={evt => {
-                if (evt.target.value) {
-                  viewModel.categoryId = parseInt(evt.target.value);
-                } else {
-                  viewModel.categoryId = undefined;
-                }
-              }}
-              disabled={isSubmitting}
-              required
+            <Label
+              htmlFor="followupDefinition"
+              className="flex flex-row justify-between items-end"
             >
-              <option disabled value={""}>
-                Select item ...
-              </option>
-              {categories?.map(item => (
-                <option key={`option-${item.id}`} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </Select>
-            <ErrorText>{errors.categoryId}</ErrorText>
+              <span>
+                {t("form.label.followupDefinition", "Followup Definition")}
+              </span>
+              <button
+                onClick={e => {
+                  e.preventDefault();
+                  setSelectedDefinition("followupDefinition");
+                  const valid = viewModel.parseFollowupDefinition(
+                    viewModel.followupDefinition
+                  );
+                  if (valid) {
+                    viewModel.dialog("formBuilder")?.open(null);
+                  }
+                }}
+                className="border
+                    text-white
+                    bg-[#4C81F1] 
+                    border-blue-300
+                    hover:border-blue-500
+                    rounded
+                    p-1
+                  "
+              >
+                Form builder
+              </button>
+            </Label>
+            <TextArea
+              id="followupDefinition"
+              placeholder={t(
+                "form.placeholder.followupDefinition",
+                "Followup Definition"
+              )}
+              rows={30}
+              onChange={evt =>
+                (viewModel.followupDefinition = evt.target.value)
+              }
+              disabled={viewModel.isSubmitting}
+              value={viewModel.followupDefinition}
+              required
+            />
+            <ErrorText>{viewModel.fieldErrors.followupDefinition}</ErrorText>
           </Field>
           <Field $size="half">
             <Label htmlFor="name">Description Template</Label>
@@ -156,6 +205,25 @@ const ReportTypeCreate = () => {
             />
             <ErrorText>{viewModel.fieldErrors.rendererDataTemplate}</ErrorText>
           </Field>
+          <Field $size="half">
+            <Label htmlFor="rendererFollowupDataTemplate">
+              Follow Up Description Template
+            </Label>
+            <TextArea
+              id="rendererFollowupDataTemplate"
+              placeholder="follow up description template"
+              rows={5}
+              onChange={evt =>
+                (viewModel.rendererFollowupDataTemplate = evt.target.value)
+              }
+              disabled={viewModel.isSubmitting}
+              value={viewModel.rendererFollowupDataTemplate}
+            />
+            <ErrorText>
+              {viewModel.fieldErrors.rendererFollowupDataTemplate}
+            </ErrorText>
+          </Field>
+
           <Field $size="half">
             <Label htmlFor="stateDefinitionId">State definition</Label>
             <Select
@@ -212,7 +280,9 @@ const ReportTypeCreate = () => {
       <FormBuilderDialog
         viewModel={viewModel.dialog("formBuilder")}
         onClose={() => {
-          viewModel.definition = viewModel.formViewModel.jsonString;
+          if (selectedDefinition == "followupDefinition")
+            viewModel.followupDefinition = viewModel.formViewModel.jsonString;
+          else viewModel.definition = viewModel.formViewModel.jsonString;
         }}
       >
         <FormBuilder viewModel={viewModel.formViewModel} />

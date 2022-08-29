@@ -566,12 +566,15 @@ export type AdminReportTypeCreateSuccess = {
   createdAt: Scalars["DateTime"];
   definition: Scalars["JSONString"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
+  followupDefinition?: Maybe<Scalars["JSONString"]>;
+  followupreports: Array<FollowupReportType>;
   id: Scalars["UUID"];
   incidentreports: Array<IncidentReportType>;
   name: Scalars["String"];
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   ordering: Scalars["Int"];
   rendererDataTemplate?: Maybe<Scalars["String"]>;
+  rendererFollowupDataTemplate?: Maybe<Scalars["String"]>;
   reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
   stateDefinition?: Maybe<DeepStateDefinitionType>;
   updatedAt: Scalars["DateTime"];
@@ -974,14 +977,10 @@ export enum CasesNotificationTemplateTypeChoices {
 
 export type CategoryType = {
   __typename?: "CategoryType";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
   icon?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
-  reporttypeSet: Array<AdminReportTypeCreateSuccess>;
-  updatedAt: Scalars["DateTime"];
 };
 
 export type CheckInvitationCodeType = {
@@ -1112,6 +1111,30 @@ export type FeatureType = {
   value: Scalars["String"];
 };
 
+export type FollowupReportType = {
+  __typename?: "FollowupReportType";
+  data?: Maybe<Scalars["GenericScalar"]>;
+  gpsLocation?: Maybe<Scalars["String"]>;
+  id: Scalars["UUID"];
+  images?: Maybe<Array<Maybe<ImageType>>>;
+  incident?: Maybe<IncidentReportType>;
+  rendererData: Scalars["String"];
+  reportType?: Maybe<ReportTypeType>;
+  reportedBy?: Maybe<UserType>;
+  testFlag: Scalars["Boolean"];
+};
+
+export type FollowupType = {
+  __typename?: "FollowupType";
+  createdAt: Scalars["DateTime"];
+  data?: Maybe<Scalars["GenericScalar"]>;
+  id: Scalars["UUID"];
+  rendererData: Scalars["String"];
+  reportType?: Maybe<ReportTypeType>;
+  reportedBy?: Maybe<UserType>;
+  testFlag: Scalars["Boolean"];
+};
+
 export type ForwardStateMutation = {
   __typename?: "ForwardStateMutation";
   result?: Maybe<CaseStateType>;
@@ -1122,6 +1145,7 @@ export type ImageType = {
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
   file: Scalars["String"];
+  followupreportSet: Array<FollowupReportType>;
   id: Scalars["UUID"];
   incidentreportSet: Array<IncidentReportType>;
   reportId: Scalars["UUID"];
@@ -1135,6 +1159,7 @@ export type IncidentReportType = {
   coverImage?: Maybe<ImageType>;
   createdAt: Scalars["DateTime"];
   data?: Maybe<Scalars["GenericScalar"]>;
+  followups?: Maybe<Array<Maybe<FollowupType>>>;
   gpsLocation?: Maybe<Scalars["String"]>;
   id: Scalars["UUID"];
   images?: Maybe<Array<Maybe<ImageType>>>;
@@ -1144,7 +1169,7 @@ export type IncidentReportType = {
   relevantAuthorities: Array<AdminAuthorityCreateSuccess>;
   relevantAuthorityResolved: Scalars["Boolean"];
   rendererData: Scalars["String"];
-  reportType: AdminReportTypeCreateSuccess;
+  reportType?: Maybe<ReportTypeType>;
   reportedBy?: Maybe<UserType>;
   testFlag: Scalars["Boolean"];
   threadId?: Maybe<Scalars["Int"]>;
@@ -1224,6 +1249,7 @@ export type Mutation = {
   refreshToken?: Maybe<Refresh>;
   registerFcmToken?: Maybe<RegisterFcmTokenMutation>;
   revokeToken?: Maybe<Revoke>;
+  submitFollowupReport?: Maybe<SubmitFollowupReport>;
   submitImage?: Maybe<SubmitImage>;
   submitIncidentReport?: Maybe<SubmitIncidentReport>;
   submitZeroReport?: Maybe<SubmitZeroReportMutation>;
@@ -1364,19 +1390,23 @@ export type MutationAdminNotificationTemplateUpdateArgs = {
 export type MutationAdminReportTypeCreateArgs = {
   categoryId: Scalars["Int"];
   definition: Scalars["String"];
+  followupDefinition?: InputMaybe<Scalars["String"]>;
   name: Scalars["String"];
   ordering: Scalars["Int"];
   rendererDataTemplate?: InputMaybe<Scalars["String"]>;
+  rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]>;
   stateDefinitionId?: InputMaybe<Scalars["Int"]>;
 };
 
 export type MutationAdminReportTypeUpdateArgs = {
   categoryId: Scalars["Int"];
   definition: Scalars["String"];
+  followupDefinition?: InputMaybe<Scalars["String"]>;
   id: Scalars["ID"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
   rendererDataTemplate?: InputMaybe<Scalars["String"]>;
+  rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]>;
   stateDefinitionId?: InputMaybe<Scalars["Int"]>;
 };
 
@@ -1503,6 +1533,12 @@ export type MutationRevokeTokenArgs = {
   refreshToken?: InputMaybe<Scalars["String"]>;
 };
 
+export type MutationSubmitFollowupReportArgs = {
+  data: Scalars["GenericScalar"];
+  followupId?: InputMaybe<Scalars["UUID"]>;
+  incidentId: Scalars["UUID"];
+};
+
 export type MutationSubmitImageArgs = {
   image: Scalars["Upload"];
   imageId?: InputMaybe<Scalars["UUID"]>;
@@ -1599,11 +1635,13 @@ export type Query = {
   deepStateDefinitionGet?: Maybe<DeepStateDefinitionType>;
   eventsQuery?: Maybe<EventType>;
   features?: Maybe<Array<Maybe<FeatureType>>>;
+  followupReport?: Maybe<FollowupReportType>;
   healthCheck?: Maybe<Scalars["String"]>;
   incidentReport?: Maybe<IncidentReportType>;
   incidentReports?: Maybe<IncidentReportTypeNodeConnection>;
   invitationCode?: Maybe<InvitationCodeType>;
   me?: Maybe<UserProfileType>;
+  myIncidentReports?: Maybe<IncidentReportTypeNodeConnection>;
   myMessage?: Maybe<UserMessageType>;
   myMessages?: Maybe<UserMessageTypeNodeConnection>;
   myReportTypes?: Maybe<Array<Maybe<ReportTypeType>>>;
@@ -1821,6 +1859,10 @@ export type QueryEventsQueryArgs = {
   authorityId: Scalars["Int"];
 };
 
+export type QueryFollowupReportArgs = {
+  id: Scalars["ID"];
+};
+
 export type QueryIncidentReportArgs = {
   id: Scalars["ID"];
 };
@@ -1845,6 +1887,24 @@ export type QueryIncidentReportsArgs = {
 
 export type QueryInvitationCodeArgs = {
   id: Scalars["ID"];
+};
+
+export type QueryMyIncidentReportsArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  createdAt_Gte?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_Lte?: InputMaybe<Scalars["DateTime"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  incidentDate_Gte?: InputMaybe<Scalars["Date"]>;
+  incidentDate_Lte?: InputMaybe<Scalars["Date"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+  relevantAuthorities_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  relevantAuthorities_Name?: InputMaybe<Scalars["String"]>;
+  relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]>;
+  reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
 };
 
 export type QueryMyMessageArgs = {
@@ -1938,16 +1998,19 @@ export type ReportTypeType = {
   __typename?: "ReportTypeType";
   authorities: Array<AdminAuthorityCreateSuccess>;
   casedefinitionSet: Array<AdminCaseDefinitionCreateSuccess>;
-  category: AdminCategoryCreateSuccess;
+  category?: Maybe<CategoryType>;
   createdAt: Scalars["DateTime"];
   definition?: Maybe<Scalars["GenericScalar"]>;
   deletedAt?: Maybe<Scalars["DateTime"]>;
+  followupDefinition?: Maybe<Scalars["GenericScalar"]>;
+  followupreports: Array<FollowupReportType>;
   id: Scalars["UUID"];
   incidentreports: Array<IncidentReportType>;
   name: Scalars["String"];
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   ordering: Scalars["Int"];
   rendererDataTemplate?: Maybe<Scalars["String"]>;
+  rendererFollowupDataTemplate?: Maybe<Scalars["String"]>;
   reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
   stateDefinition?: Maybe<DeepStateDefinitionType>;
   updatedAt: Scalars["DateTime"];
@@ -2005,6 +2068,11 @@ export type StateTransitionType = {
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   toStep: DeepStateStepType;
   updatedAt: Scalars["DateTime"];
+};
+
+export type SubmitFollowupReport = {
+  __typename?: "SubmitFollowupReport";
+  result?: Maybe<FollowupReportType>;
 };
 
 export type SubmitImage = {
@@ -2311,11 +2379,11 @@ export type CasesQuery = {
         createdAt: any;
         incidentDate: any;
         rendererData: string;
-        reportType: {
-          __typename?: "AdminReportTypeCreateSuccess";
+        reportType?: {
+          __typename?: "ReportTypeType";
           id: any;
           name: string;
-        };
+        } | null;
         reportedBy?: {
           __typename?: "UserType";
           username: string;
@@ -2354,11 +2422,11 @@ export type GetCaseQuery = {
       rendererData: string;
       data?: any | null;
       platform?: string | null;
-      reportType: {
-        __typename?: "AdminReportTypeCreateSuccess";
+      reportType?: {
+        __typename?: "ReportTypeType";
         id: any;
         name: string;
-      };
+      } | null;
       coverImage?: {
         __typename?: "ImageType";
         id: any;
@@ -2735,14 +2803,14 @@ export type EventsQueryQuery = {
         __typename?: "IncidentReportType";
         gpsLocation?: string | null;
         rendererData: string;
-        reportType: {
-          __typename?: "AdminReportTypeCreateSuccess";
-          category: {
-            __typename?: "AdminCategoryCreateSuccess";
+        reportType?: {
+          __typename?: "ReportTypeType";
+          category?: {
+            __typename?: "CategoryType";
             name: string;
             icon?: string | null;
-          };
-        };
+          } | null;
+        } | null;
       } | null;
     } | null> | null;
     reports?: Array<{
@@ -2750,14 +2818,14 @@ export type EventsQueryQuery = {
       id: any;
       gpsLocation?: string | null;
       rendererData: string;
-      reportType: {
-        __typename?: "AdminReportTypeCreateSuccess";
-        category: {
-          __typename?: "AdminCategoryCreateSuccess";
+      reportType?: {
+        __typename?: "ReportTypeType";
+        category?: {
+          __typename?: "CategoryType";
           name: string;
           icon?: string | null;
-        };
-      };
+        } | null;
+      } | null;
     } | null> | null;
   } | null;
 };
@@ -3169,11 +3237,11 @@ export type ReportsQuery = {
       incidentDate: any;
       rendererData: string;
       caseId?: any | null;
-      reportType: {
-        __typename?: "AdminReportTypeCreateSuccess";
+      reportType?: {
+        __typename?: "ReportTypeType";
         id: any;
         name: string;
-      };
+      } | null;
       reportedBy?: {
         __typename?: "UserType";
         username: string;
@@ -3203,11 +3271,11 @@ export type GetReportQuery = {
     threadId?: number | null;
     data?: any | null;
     platform?: string | null;
-    reportType: {
-      __typename?: "AdminReportTypeCreateSuccess";
+    reportType?: {
+      __typename?: "ReportTypeType";
       id: any;
       name: string;
-    };
+    } | null;
     coverImage?: {
       __typename?: "ImageType";
       id: any;
@@ -3397,7 +3465,7 @@ export type MyReportTypesQuery = {
     id: any;
     name: string;
     ordering: number;
-    category: { __typename?: "AdminCategoryCreateSuccess"; id: string };
+    category?: { __typename?: "CategoryType"; id: string } | null;
   } | null> | null;
 };
 
@@ -3408,6 +3476,8 @@ export type ReportTypeCreateMutationVariables = Exact<{
   ordering: Scalars["Int"];
   stateDefinitionId?: InputMaybe<Scalars["Int"]>;
   rendererDataTemplate?: InputMaybe<Scalars["String"]>;
+  followupDefinition?: InputMaybe<Scalars["String"]>;
+  rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type ReportTypeCreateMutation = {
@@ -3437,6 +3507,8 @@ export type ReportTypeUpdateMutationVariables = Exact<{
   ordering: Scalars["Int"];
   stateDefinitionId?: InputMaybe<Scalars["Int"]>;
   rendererDataTemplate?: InputMaybe<Scalars["String"]>;
+  followupDefinition?: InputMaybe<Scalars["String"]>;
+  rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type ReportTypeUpdateMutation = {
@@ -3461,12 +3533,14 @@ export type ReportTypeUpdateMutation = {
             name: string;
             definition?: any | null;
             rendererDataTemplate?: string | null;
+            followupDefinition?: any | null;
+            rendererFollowupDataTemplate?: string | null;
             ordering: number;
-            category: {
-              __typename?: "AdminCategoryCreateSuccess";
+            category?: {
+              __typename?: "CategoryType";
               id: string;
               name: string;
-            };
+            } | null;
             stateDefinition?: {
               __typename?: "DeepStateDefinitionType";
               id: string;
@@ -3490,12 +3564,10 @@ export type GetReportTypeQuery = {
     name: string;
     definition?: any | null;
     rendererDataTemplate?: string | null;
+    followupDefinition?: any | null;
+    rendererFollowupDataTemplate?: string | null;
     ordering: number;
-    category: {
-      __typename?: "AdminCategoryCreateSuccess";
-      id: string;
-      name: string;
-    };
+    category?: { __typename?: "CategoryType"; id: string; name: string } | null;
     stateDefinition?: {
       __typename?: "DeepStateDefinitionType";
       id: string;
@@ -10371,6 +10443,22 @@ export const ReportTypeCreateDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "followupDefinition" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "rendererFollowupDataTemplate" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -10425,6 +10513,22 @@ export const ReportTypeCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "rendererDataTemplate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "followupDefinition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "followupDefinition" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "rendererFollowupDataTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "rendererFollowupDataTemplate" },
                 },
               },
             ],
@@ -10593,6 +10697,22 @@ export const ReportTypeUpdateDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "followupDefinition" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "rendererFollowupDataTemplate" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -10655,6 +10775,22 @@ export const ReportTypeUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "rendererDataTemplate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "followupDefinition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "followupDefinition" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "rendererFollowupDataTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "rendererFollowupDataTemplate" },
                 },
               },
             ],
@@ -10743,6 +10879,20 @@ export const ReportTypeUpdateDocument = {
                                     name: {
                                       kind: "Name",
                                       value: "rendererDataTemplate",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "followupDefinition",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "rendererFollowupDataTemplate",
                                     },
                                   },
                                   {
@@ -10869,6 +11019,14 @@ export const GetReportTypeDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "rendererDataTemplate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "followupDefinition" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "rendererFollowupDataTemplate" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "ordering" } },
               ],
