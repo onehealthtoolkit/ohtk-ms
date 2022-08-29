@@ -7,6 +7,9 @@ const nextConfig = {
       "/": { page: "/" },
     };
   },
+  publicRuntimeConfig: {
+    serverDomain: process.env.serverDomain || "opensur.test",
+  },
   images: {
     loader: "akamai",
     path: "",

@@ -1,11 +1,12 @@
 /* eslint-disable require-jsdoc */
 import { ApolloClient, ApolloLink, from, InMemoryCache } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-import Router from "next/router";
 import { createUploadLink } from "apollo-upload-client";
 import { RefreshTokenDocument } from "./generated/graphql";
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
 
-export const BACKEND_DOMAIN = "opensur.test";
+export const BACKEND_DOMAIN = publicRuntimeConfig.serverDomain;
 
 const LOCAL_STORAGE_REFRESH_EXPIRES_IN_KEY = "refreshExpiresIn";
 const LOCAL_STORGAGE_BACKEND_URL_KEY = "backendUrl";
@@ -58,14 +59,7 @@ const httpLink = createUploadLink({
 }) as unknown as ApolloLink;
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (process.env.NODE_ENV === "development") {
-    console.error(graphQLErrors || networkError);
-  } else {
-    Router.push({
-      pathname: "/error/[e]",
-      query: { e: (graphQLErrors ? 400 : networkError ? 500 : 0).toString() },
-    });
-  }
+  console.error(graphQLErrors || networkError);
 });
 
 export const client = new ApolloClient({
