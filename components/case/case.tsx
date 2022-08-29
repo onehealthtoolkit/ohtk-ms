@@ -18,6 +18,7 @@ import { renderData, TR } from "components/widgets/renderData";
 import Comments from "components/widgets/comments";
 import dynamic from "next/dynamic";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
+import Back from "components/widgets/back";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -176,6 +177,8 @@ const Case = (props: { id: string }) => {
               <Comments threadId={viewModel.data.threadId} />
 
               <GalleryDialog viewModel={viewModel.galleryViewModel} />
+
+              <Back />
             </>
           </MaskingLoader>
         );

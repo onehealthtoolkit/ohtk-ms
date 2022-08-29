@@ -5,6 +5,7 @@ import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ReporterNotificationViewViewModel } from "./viewViewModel";
 import { useTranslation } from "react-i18next";
+import Back from "components/widgets/back";
 
 const ReporterNotificationView = () => {
   const router = useRouter();
@@ -63,6 +64,7 @@ const ReporterNotificationView = () => {
             </tbody>
           </table>
         </div>
+        <Back />
       </div>
     </MaskingLoader>
   );

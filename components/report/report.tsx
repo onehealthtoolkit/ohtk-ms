@@ -13,6 +13,7 @@ import { renderData, TR } from "components/widgets/renderData";
 import dynamic from "next/dynamic";
 import Comments from "components/widgets/comments";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
+import Back from "components/widgets/back";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -168,6 +169,8 @@ const Report = (props: { id: string }) => {
               <Comments threadId={viewModel.data.threadId} />
 
               <GalleryDialog viewModel={viewModel.galleryViewModel} />
+
+              <Back />
             </>
           </MaskingLoader>
         );

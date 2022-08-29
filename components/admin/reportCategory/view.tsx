@@ -7,6 +7,7 @@ import useServices from "lib/services/provider";
 import { ReportCategoryViewViewModel } from "./viewViewModel";
 import getConfig from "next/config";
 import { useTranslation } from "react-i18next";
+import Back from "components/widgets/back";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -76,6 +77,7 @@ const ReportCategoryView = () => {
             </tbody>
           </table>
         </div>
+        <Back />
       </div>
     </MaskingLoader>
   );
