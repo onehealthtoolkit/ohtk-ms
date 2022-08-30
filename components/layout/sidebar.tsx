@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useRouter } from "next/router";
-import React, { FC, useCallback, useRef, useState } from "react";
+import React, { FC, useCallback, useMemo, useRef, useState } from "react";
 import {
   DocumentTextIcon,
   CubeIcon,
@@ -16,7 +16,7 @@ import {
 } from "@heroicons/react/outline";
 import useStore from "lib/store";
 import CollapsIcon from "components/layout/CollapsIcon";
-import { observer } from "mobx-react";
+import { Observer, observer } from "mobx-react";
 import { Menu } from "./menu";
 import UserMenu from "./userMenu";
 
@@ -52,6 +52,170 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
     setIsCollapsible(false);
   };
 
+  const menuList = useMemo(
+    () => (
+      <Observer>
+        {() => (
+          <>
+            {/* Links */}
+            <div className="space-y-8">
+              <div>
+                <h3
+                  className={`text-xs uppercase text-slate-500 font-semibold pl-3 ${
+                    store.menu.collapsed ? "hidden" : ""
+                  }`}
+                >
+                  <span className="md:sidebar-expanded:block 2xl:block">
+                    Pages
+                  </span>
+                </h3>
+                <ul className="mt-3">
+                  <Menu
+                    href="/"
+                    pathname={pathname}
+                    label="Dashboard"
+                    collapsed={store.menu.collapsed}
+                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    icon={
+                      <TemplateIcon className={`${iconClassName} -rotate-90`} />
+                    }
+                  />
+                  <Menu
+                    href="/reports/"
+                    pathname={pathname}
+                    label="Reports"
+                    collapsed={store.menu.collapsed}
+                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    icon={<DocumentReportIcon className={iconClassName} />}
+                  />
+
+                  <Menu
+                    href="/cases/"
+                    pathname={pathname}
+                    label="Cases"
+                    collapsed={store.menu.collapsed}
+                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    icon={<DocumentTextIcon className={iconClassName} />}
+                  />
+                </ul>
+              </div>
+
+              <div>
+                <h3
+                  className={`
+                text-xs uppercase text-slate-500 font-semibold pl-3 ${
+                  store.menu.collapsed ? "hidden" : ""
+                }`}
+                >
+                  <span className="md:sidebar-expanded:block 2xl:block">
+                    Settings
+                  </span>
+                </h3>
+                <ul className="mt-3">
+                  <Menu
+                    href="/admin/authorities/"
+                    pathname={pathname}
+                    label="Authorities"
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser || store.isRoleAdmin}
+                    icon={<CubeIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/users/"
+                    pathname={pathname}
+                    label="Users"
+                    collapsed={store.menu.collapsed}
+                    display={
+                      store.isSuperUser ||
+                      store.isRoleAdmin ||
+                      store.isRoleOfficer
+                    }
+                    icon={<UserIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/report_categories/"
+                    pathname={pathname}
+                    label="Category"
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser}
+                    icon={<CollectionIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/report_types/"
+                    pathname={pathname}
+                    label="Report templates"
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser}
+                    icon={<DocumentReportIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/invitation_codes/"
+                    pathname={pathname}
+                    label="Invitation codes"
+                    collapsed={store.menu.collapsed}
+                    display={
+                      store.isSuperUser ||
+                      store.isRoleAdmin ||
+                      store.isRoleOfficer
+                    }
+                    icon={<AnnotationIcon className={iconClassName} />}
+                  />
+
+                  <Menu
+                    href="/admin/case_definitions/"
+                    pathname={pathname}
+                    label="Case Definition"
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser}
+                    icon={<VariableIcon className={iconClassName} />}
+                  />
+
+                  <Menu
+                    href="/admin/state_definitions/"
+                    pathname={pathname}
+                    label="State Definition"
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser}
+                    icon={<LightBulbIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/notification_templates/"
+                    pathname={pathname}
+                    label="Notification Template"
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser}
+                    icon={<TemplateIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/notifications/"
+                    pathname={pathname}
+                    label="Notification"
+                    collapsed={store.menu.collapsed}
+                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    icon={<BellIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/reporter_notifications/"
+                    pathname={pathname}
+                    label="Reporter notification"
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser}
+                    icon={<SpeakerphoneIcon className={iconClassName} />}
+                  />
+                </ul>
+              </div>
+            </div>
+            <div className="flex-grow"></div>
+            <div className="divide-y-2 divide-gray-600 mb-16">
+              <div></div>
+              <UserMenu className="ml-2 text-white text-left" />
+            </div>
+          </>
+        )}
+      </Observer>
+    ),
+    [store]
+  );
   return (
     <div>
       {/* Sidebar */}
@@ -83,153 +247,8 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
             <img src="/logo.png" width={120} alt="Open surveillance" />
           </div>
         </div>
-        {/* Links */}
-        <div className="space-y-8">
-          <div>
-            <h3
-              className={`text-xs uppercase text-slate-500 font-semibold pl-3 ${
-                store.menu.collapsed ? "hidden" : ""
-              }`}
-            >
-              <span className="md:sidebar-expanded:block 2xl:block">Pages</span>
-            </h3>
-            <ul className="mt-3">
-              <Menu
-                href="/"
-                pathname={pathname}
-                label="Dashboard"
-                collapsed={store.menu.collapsed}
-                display={store.isRoleOfficer || store.isRoleAdmin}
-                icon={
-                  <TemplateIcon className={`${iconClassName} -rotate-90`} />
-                }
-              />
-              <Menu
-                href="/reports/"
-                pathname={pathname}
-                label="Reports"
-                collapsed={store.menu.collapsed}
-                display={store.isRoleOfficer || store.isRoleAdmin}
-                icon={<DocumentReportIcon className={iconClassName} />}
-              />
 
-              <Menu
-                href="/cases/"
-                pathname={pathname}
-                label="Cases"
-                collapsed={store.menu.collapsed}
-                display={store.isRoleOfficer || store.isRoleAdmin}
-                icon={<DocumentTextIcon className={iconClassName} />}
-              />
-            </ul>
-          </div>
-
-          <div>
-            <h3
-              className={`
-                text-xs uppercase text-slate-500 font-semibold pl-3 ${
-                  store.menu.collapsed ? "hidden" : ""
-                }`}
-            >
-              <span className="md:sidebar-expanded:block 2xl:block">
-                Settings
-              </span>
-            </h3>
-            <ul className="mt-3">
-              <Menu
-                href="/admin/authorities/"
-                pathname={pathname}
-                label="Authorities"
-                collapsed={store.menu.collapsed}
-                display={store.isSuperUser || store.isRoleAdmin}
-                icon={<CubeIcon className={iconClassName} />}
-              />
-              <Menu
-                href="/admin/users/"
-                pathname={pathname}
-                label="Users"
-                collapsed={store.menu.collapsed}
-                display={
-                  store.isSuperUser || store.isRoleAdmin || store.isRoleOfficer
-                }
-                icon={<UserIcon className={iconClassName} />}
-              />
-              <Menu
-                href="/admin/report_categories/"
-                pathname={pathname}
-                label="Category"
-                collapsed={store.menu.collapsed}
-                display={store.isSuperUser}
-                icon={<CollectionIcon className={iconClassName} />}
-              />
-              <Menu
-                href="/admin/report_types/"
-                pathname={pathname}
-                label="Report templates"
-                collapsed={store.menu.collapsed}
-                display={store.isSuperUser}
-                icon={<DocumentReportIcon className={iconClassName} />}
-              />
-              <Menu
-                href="/admin/invitation_codes/"
-                pathname={pathname}
-                label="Invitation codes"
-                collapsed={store.menu.collapsed}
-                display={
-                  store.isSuperUser || store.isRoleAdmin || store.isRoleOfficer
-                }
-                icon={<AnnotationIcon className={iconClassName} />}
-              />
-
-              <Menu
-                href="/admin/case_definitions/"
-                pathname={pathname}
-                label="Case Definition"
-                collapsed={store.menu.collapsed}
-                display={store.isSuperUser}
-                icon={<VariableIcon className={iconClassName} />}
-              />
-
-              <Menu
-                href="/admin/state_definitions/"
-                pathname={pathname}
-                label="State Definition"
-                collapsed={store.menu.collapsed}
-                display={store.isSuperUser}
-                icon={<LightBulbIcon className={iconClassName} />}
-              />
-              <Menu
-                href="/admin/notification_templates/"
-                pathname={pathname}
-                label="Notification Template"
-                collapsed={store.menu.collapsed}
-                display={store.isSuperUser}
-                icon={<TemplateIcon className={iconClassName} />}
-              />
-              <Menu
-                href="/admin/notifications/"
-                pathname={pathname}
-                label="Notification"
-                collapsed={store.menu.collapsed}
-                display={store.isRoleOfficer || store.isRoleAdmin}
-                icon={<BellIcon className={iconClassName} />}
-              />
-              <Menu
-                href="/admin/reporter_notifications/"
-                pathname={pathname}
-                label="Reporter notification"
-                collapsed={store.menu.collapsed}
-                display={store.isSuperUser}
-                icon={<SpeakerphoneIcon className={iconClassName} />}
-              />
-            </ul>
-          </div>
-        </div>
-        <div className="flex-grow"></div>
-        <div className="divide-y-2 divide-gray-600 mb-16">
-          <div></div>
-          <UserMenu className="ml-2 text-white text-left" />
-        </div>
+        {menuList}
       </div>
     </div>
   );

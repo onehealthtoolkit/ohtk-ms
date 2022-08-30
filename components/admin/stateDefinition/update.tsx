@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { observer } from "mobx-react";
+import { useMemo, useState } from "react";
+import { Observer, observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { StateDefinitionUpdateViewModel } from "./updateViewModel";
 import {
@@ -42,6 +42,50 @@ const StateDefinitionsUpdateForm = () => {
   if (router.query.activeTabIndex) {
     viewModel.activeTabIndex = +router.query.activeTabIndex;
   }
+
+  const nameField = useMemo(
+    () => (
+      <Observer>
+        {() => (
+          <Field $size="half">
+            <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
+            <TextInput
+              id="name"
+              type="text"
+              placeholder={t("form.placeholder.name", "Name")}
+              onChange={evt => (viewModel.name = evt.target.value)}
+              disabled={isSubmitting}
+              defaultValue={viewModel.name}
+              required
+            />
+            <ErrorText>{errors.name}</ErrorText>
+          </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const isDefaultField = useMemo(
+    () => (
+      <Observer>
+        {() => (
+          <Field $size="half">
+            <Checkbox
+              id="isDefault"
+              value="True"
+              defaultChecked={viewModel.isDefault}
+              onChange={evt => (viewModel.isDefault = evt.target.checked)}
+              disabled={isSubmitting}
+              label={t("form.label.default", "Default")}
+            />
+          </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <>
@@ -54,29 +98,8 @@ const StateDefinitionsUpdateForm = () => {
           }}
         >
           <FieldGroup>
-            <Field $size="half">
-              <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
-              <TextInput
-                id="name"
-                type="text"
-                placeholder={t("form.placeholder.name", "Name")}
-                onChange={evt => (viewModel.name = evt.target.value)}
-                disabled={isSubmitting}
-                defaultValue={viewModel.name}
-                required
-              />
-              <ErrorText>{errors.name}</ErrorText>
-            </Field>
-            <Field $size="half">
-              <Checkbox
-                id="isDefault"
-                value="True"
-                defaultChecked={viewModel.isDefault}
-                onChange={evt => (viewModel.isDefault = evt.target.checked)}
-                disabled={isSubmitting}
-                label={t("form.label.default", "Default")}
-              />
-            </Field>
+            {nameField}
+            {isDefaultField}
           </FieldGroup>
           {viewModel.submitError.length > 0 && (
             <FormMessage>{viewModel.submitError}</FormMessage>

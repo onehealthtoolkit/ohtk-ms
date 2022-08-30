@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { observer } from "mobx-react";
+import { useMemo, useState } from "react";
+import { Observer, observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { InvitationCodeUpdateViewModel } from "./updateViewModel";
 import {
@@ -32,17 +32,10 @@ const InvitationCodeUpdate = () => {
       )
   );
 
-  return (
-    <MaskingLoader loading={viewModel.isLoading}>
-      <Form
-        onSubmit={async evt => {
-          evt.preventDefault();
-          if (await viewModel.save()) {
-            router.back();
-          }
-        }}
-      >
-        <FieldGroup>
+  const codeField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="code">{t("form.label.code", "Code")}</Label>
             <TextInput
@@ -56,7 +49,16 @@ const InvitationCodeUpdate = () => {
             />
             <ErrorText>{viewModel.fieldErrors.code}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
 
+  const fromDateField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="fromDate">
               {t("form.label.fromDate", "Form Date")}
@@ -73,7 +75,16 @@ const InvitationCodeUpdate = () => {
             />
             <ErrorText>{viewModel.fieldErrors.fromDate}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
 
+  const throughDateField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="throughDate">
               {t("form.label.throughDate", "Through Date")}
@@ -90,12 +101,42 @@ const InvitationCodeUpdate = () => {
             />
             <ErrorText>{viewModel.fieldErrors.throughDate}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
 
+  const roleField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <label htmlFor="role">{t("form.label.role", "Role")}</label>
             <RoleSelect viewModel={viewModel} />
             <ErrorText>{viewModel.fieldErrors.role}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  return (
+    <MaskingLoader loading={viewModel.isLoading}>
+      <Form
+        onSubmit={async evt => {
+          evt.preventDefault();
+          if (await viewModel.save()) {
+            router.back();
+          }
+        }}
+      >
+        <FieldGroup>
+          {codeField}
+          {fromDateField}
+          {throughDateField}
+          {roleField}
         </FieldGroup>
         {viewModel.submitError.length > 0 && (
           <FormMessage>{viewModel.submitError}</FormMessage>

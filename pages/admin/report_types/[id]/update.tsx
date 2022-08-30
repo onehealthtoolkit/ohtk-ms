@@ -10,10 +10,10 @@ import { useTranslation } from "react-i18next";
 const AdminReportTypeUpdatePage: NextPage = () => {
   const router = useRouter();
   const { t } = useTranslation();
-  const { id } = router.query;
-  if (!id) {
+  if (!router.isReady) {
     return <Spinner />;
   }
+
   return (
     <Protect>
       <Layout>

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { observer } from "mobx-react";
+import { useMemo, useState } from "react";
+import { Observer, observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { UserUpdateViewModel } from "./updateViewModel";
 import {
@@ -31,17 +31,10 @@ const UserUpdate = () => {
   );
   const errors = viewModel.fieldErrors;
 
-  return (
-    <MaskingLoader loading={viewModel.isLoading}>
-      <Form
-        onSubmit={async evt => {
-          evt.preventDefault();
-          if (await viewModel.save()) {
-            router.back();
-          }
-        }}
-      >
-        <FieldGroup>
+  const usernameField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="username">
               {t("form.label.username", "User Name")}
@@ -57,6 +50,16 @@ const UserUpdate = () => {
             />
             <ErrorText>{errors.username}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const firstNameField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="firstName">
               {t("form.label.firstName", "First Name")}
@@ -72,6 +75,16 @@ const UserUpdate = () => {
             />
             <ErrorText>{errors.firstName}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const lastNameField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="lastName">
               {t("form.label.lastName", "Last Name")}
@@ -87,6 +100,16 @@ const UserUpdate = () => {
             />
             <ErrorText>{errors.lastName}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const emailField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="email">{t("form.label.email", "Email")}</Label>
             <TextInput
@@ -100,6 +123,16 @@ const UserUpdate = () => {
             />
             <ErrorText>{errors.email}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const telephoneField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="telephone">
               {t("form.label.telephone", "Telephone")}
@@ -114,6 +147,16 @@ const UserUpdate = () => {
             />
             <ErrorText>{errors.telephone}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const roleField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="role">{t("form.label.role", "Role")}</Label>
             <Select
@@ -138,6 +181,29 @@ const UserUpdate = () => {
             </Select>
             <ErrorText>{errors.role}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  return (
+    <MaskingLoader loading={viewModel.isLoading}>
+      <Form
+        onSubmit={async evt => {
+          evt.preventDefault();
+          if (await viewModel.save()) {
+            router.back();
+          }
+        }}
+      >
+        <FieldGroup>
+          {usernameField}
+          {firstNameField}
+          {lastNameField}
+          {emailField}
+          {telephoneField}
+          {roleField}
         </FieldGroup>
         {viewModel.submitError.length > 0 && (
           <FormMessage>{viewModel.submitError}</FormMessage>

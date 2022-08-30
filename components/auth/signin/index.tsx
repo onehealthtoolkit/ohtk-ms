@@ -27,7 +27,7 @@ const SignIn = () => {
           <div className="flex flex-col items-center md:flex-row">
             <div className="h-32 md:h-auto md:w-1/2 p-8">
               <img
-                className="object-cover h-full"
+                className="object-cover h-full w-full"
                 src="/logo_black.png"
                 alt="img"
               />
