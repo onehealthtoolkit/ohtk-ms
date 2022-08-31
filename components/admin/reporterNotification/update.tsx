@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { observer } from "mobx-react";
+import { useMemo, useState } from "react";
+import { Observer, observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { ReporterNotificationUpdateViewModel } from "./updateViewModel";
 import {
@@ -38,41 +38,41 @@ const ReporterNotificationsUpdateForm = () => {
   const isSubmitting = viewModel.isSubmitting;
   const errors = viewModel.fieldErrors;
 
-  return (
-    <MaskingLoader loading={viewModel.isLoading}>
-      <Form
-        onSubmit={async evt => {
-          evt.preventDefault();
-          if (await viewModel.save()) {
-            router.back();
-          }
-        }}
-      >
-        <FieldGroup>
-          <Field $size="half">
-            <Label htmlFor="reportType">
-              {t("form.label.reportType", "Report Type")}
-            </Label>
-            <Select
-              id="reportType"
-              onChange={evt => {
-                viewModel.reportTypeId = evt.target.value;
-              }}
-              disabled={isSubmitting}
-              value={viewModel.reportTypeId}
-              required
-            >
-              <option disabled value={""}>
-                {t("form.label.selectItem", "Select item ...")}
+  const reportTypeField = (
+    <Observer>
+      {() => (
+        <Field $size="half">
+          <Label htmlFor="reportType">
+            {t("form.label.reportType", "Report Type")}
+          </Label>
+          <Select
+            id="reportType"
+            onChange={evt => {
+              viewModel.reportTypeId = evt.target.value;
+            }}
+            disabled={isSubmitting}
+            value={viewModel.reportTypeId}
+            required
+          >
+            <option disabled value={""}>
+              {t("form.label.selectItem", "Select item ...")}
+            </option>
+            {reportTypes?.map(item => (
+              <option key={`option-${item.id}`} value={item.id}>
+                {item.name}
               </option>
-              {reportTypes?.map(item => (
-                <option key={`option-${item.id}`} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </Select>
-            <ErrorText>{errors.reportTypeId}</ErrorText>
-          </Field>
+            ))}
+          </Select>
+          <ErrorText>{errors.reportTypeId}</ErrorText>
+        </Field>
+      )}
+    </Observer>
+  );
+
+  const descriptionField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="description">
               {t("form.label.description", "Description")}
@@ -88,6 +88,16 @@ const ReporterNotificationsUpdateForm = () => {
             />
             <ErrorText>{errors.description}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const conditionField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="condition">
               {t("form.label.condition", "Condition")}
@@ -103,6 +113,16 @@ const ReporterNotificationsUpdateForm = () => {
             />
             <ErrorText>{viewModel.fieldErrors.condition}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const templateField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="template">
               {t("form.label.template", "Template")}
@@ -118,6 +138,27 @@ const ReporterNotificationsUpdateForm = () => {
             />
             <ErrorText>{viewModel.fieldErrors.template}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  return (
+    <MaskingLoader loading={viewModel.isLoading}>
+      <Form
+        onSubmit={async evt => {
+          evt.preventDefault();
+          if (await viewModel.save()) {
+            router.back();
+          }
+        }}
+      >
+        <FieldGroup>
+          {reportTypeField}
+          {descriptionField}
+          {conditionField}
+          {templateField}
         </FieldGroup>
         {viewModel.submitError.length > 0 && (
           <FormMessage>{viewModel.submitError}</FormMessage>

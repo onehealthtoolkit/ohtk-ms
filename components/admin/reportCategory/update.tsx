@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from "react";
-import { observer } from "mobx-react";
+import { useMemo, useState } from "react";
+import { Observer, observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { ReportCategoryUpdateViewModel } from "./updateViewModel";
 import {
@@ -32,17 +32,10 @@ const ReportCategoryUpdate = () => {
       )
   );
 
-  return (
-    <MaskingLoader loading={viewModel.isLoading}>
-      <Form
-        onSubmit={async evt => {
-          evt.preventDefault();
-          if (await viewModel.save()) {
-            router.back();
-          }
-        }}
-      >
-        <FieldGroup>
+  const nameField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
             <TextInput
@@ -56,6 +49,16 @@ const ReportCategoryUpdate = () => {
             />
             <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const orderingField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="ordering">
               {t("form.label.ordering", "Ordering")}
@@ -71,7 +74,16 @@ const ReportCategoryUpdate = () => {
             />
             <ErrorText>{viewModel.fieldErrors.ordering}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
 
+  const iconImgField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <div>
             {viewModel.iconUrl && (
               <div
@@ -91,6 +103,16 @@ const ReportCategoryUpdate = () => {
               </div>
             )}
           </div>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const iconInputField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="icon">{t("form.label.icon", "Icon")}</Label>
             <TextInput
@@ -106,6 +128,27 @@ const ReportCategoryUpdate = () => {
             />
             <ErrorText>{viewModel.fieldErrors.icon}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  return (
+    <MaskingLoader loading={viewModel.isLoading}>
+      <Form
+        onSubmit={async evt => {
+          evt.preventDefault();
+          if (await viewModel.save()) {
+            router.back();
+          }
+        }}
+      >
+        <FieldGroup>
+          {nameField}
+          {orderingField}
+          {iconImgField}
+          {iconInputField}
         </FieldGroup>
         {viewModel.submitError.length > 0 && (
           <FormMessage>{viewModel.submitError}</FormMessage>

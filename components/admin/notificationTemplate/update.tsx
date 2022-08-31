@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { observer } from "mobx-react";
+import { useMemo, useState } from "react";
+import { Observer, observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { NotificationTemplateUpdateViewModel } from "./updateViewModel";
 import {
@@ -44,17 +44,10 @@ const NotificationTemplateUpdate = () => {
   const isSubmitting = viewModel.isSubmitting;
   const errors = viewModel.fieldErrors;
 
-  return (
-    <MaskingLoader loading={viewModel.isLoading}>
-      <Form
-        onSubmit={async evt => {
-          evt.preventDefault();
-          if (await viewModel.save()) {
-            router.back();
-          }
-        }}
-      >
-        <FieldGroup>
+  const nameField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
             <TextInput
@@ -68,32 +61,48 @@ const NotificationTemplateUpdate = () => {
             />
             <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
           </Field>
-          <Field $size="half">
-            <Label htmlFor="reportType">
-              {t("form.label.reportType", "Report Type")}
-            </Label>
-            <Select
-              id="reportType"
-              onChange={evt => {
-                viewModel.reportTypeId = evt.target.value;
-                viewModel.stateTransitionId = 0;
-              }}
-              disabled={isSubmitting}
-              value={viewModel.reportTypeId}
-              defaultValue={viewModel.reportTypeId}
-              required
-            >
-              <option disabled value={""}>
-                {t("form.label.selectItem", "Select item ...")}
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const reportTypeField = (
+    <Observer>
+      {() => (
+        <Field $size="half">
+          <Label htmlFor="reportType">
+            {t("form.label.reportType", "Report Type")}
+          </Label>
+          <Select
+            id="reportType"
+            onChange={evt => {
+              viewModel.reportTypeId = evt.target.value;
+              viewModel.stateTransitionId = 0;
+            }}
+            disabled={isSubmitting}
+            value={viewModel.reportTypeId}
+            required
+          >
+            <option disabled value={""}>
+              {t("form.label.selectItem", "Select item ...")}
+            </option>
+            {reportTypes?.map(item => (
+              <option key={`option-${item.id}`} value={item.id}>
+                {item.name}
               </option>
-              {reportTypes?.map(item => (
-                <option key={`option-${item.id}`} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </Select>
-            <ErrorText>{errors.reportTypeId}</ErrorText>
-          </Field>
+            ))}
+          </Select>
+          <ErrorText>{errors.reportTypeId}</ErrorText>
+        </Field>
+      )}
+    </Observer>
+  );
+
+  const typeField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half" className="flex space-x-8">
             <Radio
               id="type-1"
@@ -130,40 +139,53 @@ const NotificationTemplateUpdate = () => {
             />
             <ErrorText>{errors.type}</ErrorText>
           </Field>
-          <>
-            {viewModel.type == CasesNotificationTemplateTypeChoices.Cas && (
-              <Field $size="half">
-                <Label htmlFor="transistion">
-                  {t("form.label.transistion", "Transistion")}
-                </Label>
-                <div className="relative">
-                  {transitionLoading && (
-                    <div className="flex absolute inset-y-0 right-5 items-center pl-3 pointer-events-none">
-                      <Spinner />
-                    </div>
-                  )}
-                  <Select
-                    id="transistion"
-                    onChange={evt => {
-                      viewModel.stateTransitionId = +evt.target.value;
-                    }}
-                    disabled={isSubmitting || transitionLoading}
-                    value={viewModel.stateTransitionId}
-                  >
-                    <option disabled value={0}>
-                      {t("form.label.selectItem", "Select item ...")}
-                    </option>
-                    {stateTransitions?.map(item => (
-                      <option key={`option-${item.id}`} value={item.id}>
-                        {item.fromStep.name} to {item.toStep.name}
-                      </option>
-                    ))}
-                  </Select>
-                </div>
-                <ErrorText>{errors.stateTransitionId}</ErrorText>
-              </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const transistionField = (
+    <Observer>
+      {() => (
+        <Field $size="half">
+          <Label htmlFor="transistion">
+            {t("form.label.transistion", "Transistion")}
+          </Label>
+          <div className="relative">
+            {transitionLoading && (
+              <div className="flex absolute inset-y-0 right-5 items-center pl-3 pointer-events-none">
+                <Spinner />
+              </div>
             )}
-          </>
+            <Select
+              id="transistion"
+              onChange={evt => {
+                viewModel.stateTransitionId = +evt.target.value;
+              }}
+              disabled={isSubmitting || transitionLoading}
+              value={viewModel.stateTransitionId}
+            >
+              <option disabled value={0}>
+                {t("form.label.selectItem", "Select item ...")}
+              </option>
+              {stateTransitions?.map(item => (
+                <option key={`option-${item.id}`} value={item.id}>
+                  {item.fromStep.name} to {item.toStep.name}
+                </option>
+              ))}
+            </Select>
+          </div>
+          <ErrorText>{errors.stateTransitionId}</ErrorText>
+        </Field>
+      )}
+    </Observer>
+  );
+
+  const conditionField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="condition">
               {t("form.label.condition", "Condition")}
@@ -178,6 +200,16 @@ const NotificationTemplateUpdate = () => {
             />
             <ErrorText>{errors.condition}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const titleTemplateField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="titleTemplate">
               {t("form.label.titleTemplate", "Title Template")}
@@ -196,6 +228,16 @@ const NotificationTemplateUpdate = () => {
             />
             <ErrorText>{errors.titleTemplate}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const bodyField = useMemo(
+    () => (
+      <Observer>
+        {() => (
           <Field $size="half">
             <Label htmlFor="bodyTemplate">
               {t("form.label.bodyTemplate", "Body Template")}
@@ -206,11 +248,38 @@ const NotificationTemplateUpdate = () => {
               rows={5}
               onChange={evt => (viewModel.bodyTemplate = evt.target.value)}
               disabled={isSubmitting}
-              defaultValue={viewModel.titleTemplate}
+              defaultValue={viewModel.bodyTemplate}
               required
             />
             <ErrorText>{errors.bodyTemplate}</ErrorText>
           </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  return (
+    <MaskingLoader loading={viewModel.isLoading}>
+      <Form
+        onSubmit={async evt => {
+          evt.preventDefault();
+          if (await viewModel.save()) {
+            router.back();
+          }
+        }}
+      >
+        <FieldGroup>
+          <>
+            {nameField}
+            {reportTypeField}
+            {typeField}
+            {viewModel.type == CasesNotificationTemplateTypeChoices.Cas &&
+              transistionField}
+            {conditionField}
+            {titleTemplateField}
+            {bodyField}
+          </>
         </FieldGroup>
         {viewModel.submitError.length > 0 && (
           <FormMessage>{viewModel.submitError}</FormMessage>
