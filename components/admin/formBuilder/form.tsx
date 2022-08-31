@@ -44,7 +44,10 @@ const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
             onMoveDown={id => form.moveItemDown(id)}
             onMoveUp={id => form.moveItemUp(id)}
           />
-          <Section value={form.currentSection} />
+          <Section
+            value={form.currentSection}
+            onDelete={sectionId => form.deleteSection(sectionId)}
+          />
         </div>
       ) : (
         form.formSimulation && (

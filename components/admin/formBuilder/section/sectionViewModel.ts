@@ -5,6 +5,7 @@ import {
   ParseError,
 } from "components/admin/formBuilder/shared";
 import { action, makeObservable, observable } from "mobx";
+import { v4 as uuidv4 } from "uuid";
 
 export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
   isCurrent = false;
@@ -50,8 +51,15 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
   }
 
   addQuestion() {
-    const id = crypto.randomUUID();
+    const id = uuidv4();
     this.questions.push(new QuestionViewModel(id, "Question"));
+  }
+
+  deleteQuestion(id: string) {
+    const index = this.questions.findIndex(it => it.id === id);
+    if (index > -1) {
+      this.questions.splice(index, 1);
+    }
   }
 
   parse(definition: Definition) {
@@ -66,7 +74,7 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
         const questions = Array<QuestionViewModel>();
 
         definition.questions.forEach(questionDefinition => {
-          const id = crypto.randomUUID();
+          const id = uuidv4();
           const questionViewModel = new QuestionViewModel(id, "Question");
           questionViewModel.parse(questionDefinition);
           questions.push(questionViewModel);

@@ -1,19 +1,30 @@
 import { QuestionList } from "components/admin/formBuilder/question";
+import { SectionActionBar } from "components/admin/formBuilder/section/sectionActionBar";
 import { SectionViewModel } from "components/admin/formBuilder/section/sectionViewModel";
+import { ConfirmDialog } from "components/admin/formBuilder/shared";
 import { observer } from "mobx-react";
-import { FC } from "react";
+import { FC, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   value: SectionViewModel | undefined;
+  onDelete: (id: string) => void;
 };
 
-const Section: FC<Props> = ({ value: section }) => {
+const Section: FC<Props> = ({ value: section, onDelete }) => {
+  const elementRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
+
   if (!section) {
     return null;
   }
 
+  const onDeleteConfirm = () => {
+    section.registerDialog("confirmDelete")?.open(section);
+  };
+
   return (
-    <div className="text-gray-900 md:pl-4 w-full md:w-3/4">
+    <div className="text-gray-900 md:pl-4 w-full md:w-3/4" ref={elementRef}>
       <div className={"flex flex-col md:min-h-[400px] gap-2"}>
         <h4 className="text-xs text-gray-600">Section</h4>
         {section.isLabelEditing ? (
@@ -40,6 +51,8 @@ const Section: FC<Props> = ({ value: section }) => {
             onClick={() => section.setIsLabelEditing(true)}
           />
         )}
+        <SectionActionBar value={section} onDelete={onDeleteConfirm} />
+
         <h4 className="text-xs text-gray-600">Questions</h4>
         <div className="p-4 border-dotted border-2">
           <QuestionList
@@ -47,6 +60,7 @@ const Section: FC<Props> = ({ value: section }) => {
             onMoveDown={questionId => section.moveItemDown(questionId)}
             onMoveUp={questionId => section.moveItemUp(questionId)}
             onSelect={questionId => section.selectQuestion(questionId)}
+            onDelete={questionId => section.deleteQuestion(questionId)}
           />
         </div>
       </div>
@@ -58,6 +72,14 @@ const Section: FC<Props> = ({ value: section }) => {
           <span onClick={() => section.addQuestion()}>Add Question</span>
         </button>
       </div>
+      <ConfirmDialog
+        viewModel={section.dialog("confirmDelete")}
+        title={t("dialog.title.confirmDelete", "Confirm delete")}
+        content={t("dialog.content.confirmDelete", "Are you sure?")}
+        onYes={(section: SectionViewModel) => onDelete(section.id)}
+        onNo={() => section.dialog("confirmDelete")?.close()}
+        container={elementRef.current?.parentElement}
+      />
     </div>
   );
 };

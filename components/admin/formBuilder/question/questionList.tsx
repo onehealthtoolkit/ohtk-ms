@@ -10,6 +10,7 @@ type Props = {
   onMoveUp: (questionId: string) => void;
   onMoveDown: (questionId: string) => void;
   onSelect: (questionId: string) => void;
+  onDelete: (questionId: string) => void;
 };
 
 const List: FC<Props> = ({
@@ -17,13 +18,14 @@ const List: FC<Props> = ({
   onMoveDown,
   onMoveUp,
   onSelect,
+  onDelete,
 }) => {
   return (
     <>
       {questions.length > 0 ? (
         questions.map(question => (
           <div
-            className={`mt-4 bg-white rounded-md flex items-stretch ${
+            className={`mt-4 bg-white rounded-md flex items-stretch relative ${
               question.isCurrent
                 ? "border-2 border-blue-400"
                 : "border border-gray-200"
@@ -38,7 +40,11 @@ const List: FC<Props> = ({
               onMoveDown={onMoveDown}
               onMoveUp={onMoveUp}
             />
-            <Question value={question} onSelect={onSelect} />
+            <Question
+              value={question}
+              onSelect={onSelect}
+              onDelete={onDelete}
+            />
           </div>
         ))
       ) : (

@@ -62,7 +62,7 @@ const BaseModalDialog: React.FC<Props> = ({
                 {renderContent(store.data)}
               </div>
               <button
-                className="absolute right-4 top-4"
+                className="absolute right-4 top-4 z-10"
                 onClick={() => {
                   onClose && onClose();
                   store.close();

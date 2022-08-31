@@ -44,7 +44,8 @@
     "react-i18next": "^11.18.3",
     "react-leaflet": "^4.0.1",
     "react-leaflet-draw": "^0.20.1",
-    "react-select": "^5.4.0"
+    "react-select": "^5.4.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",
@@ -67,6 +68,7 @@
     "@types/react": "18.0.10",
     "@types/react-datepicker": "^4.4.2",
     "@types/react-dom": "18.0.5",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "autoprefixer": "^10.4.7",
     "babel-jest": "^28.1.1",

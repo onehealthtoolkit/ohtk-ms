@@ -8,6 +8,7 @@ import {
   observable,
   runInAction,
 } from "mobx";
+import { v4 as uuidv4 } from "uuid";
 
 export class FormSimulationViewModel {
   form?: Form = undefined;
@@ -33,7 +34,7 @@ export class FormSimulationViewModel {
   private _init() {
     try {
       const json = JSON.parse(this.definition);
-      json.id = crypto.randomUUID();
+      json.id = uuidv4();
       // json can be empty {}, to be able to run parseForm, then add sections
       if (!json.sections) {
         json.sections = [];

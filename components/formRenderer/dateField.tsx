@@ -91,10 +91,9 @@ const Component: FC<FormDateFieldProps> = ({ field }) => {
   });
 
   const hours = [...Array(24)].map<Option>((_, it) => {
-    const h = it + 1;
     return {
-      label: h / 10 >= 1 ? h.toString() : "0" + it.toString(),
-      value: h,
+      label: it / 10 >= 1 ? it.toString() : "0" + it.toString(),
+      value: it,
       disabled: false,
     };
   });

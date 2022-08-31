@@ -10,6 +10,8 @@ import {
   runInAction,
 } from "mobx";
 
+const { v4: uuidv4 } = require("uuid");
+
 export type LocalFile = {
   id: string;
   file: File;
@@ -58,7 +60,7 @@ export class CommentsViewModel extends BaseFormViewModel {
       const file = files.item(i);
       if (file) {
         attachments.push({
-          id: crypto.randomUUID(),
+          id: uuidv4(),
           file,
           url: URL.createObjectURL(file),
         });
