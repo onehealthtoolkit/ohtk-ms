@@ -23,6 +23,7 @@
     "@turf/helpers": "^6.5.0",
     "apollo-upload-client": "^17.0.0",
     "chart.js": "^3.8.0",
+    "chartjs-plugin-datalabels": "^2.1.0",
     "decimal.js": "^10.3.1",
     "downshift": "^6.1.7",
     "fp-ts": "^2.12.2",
