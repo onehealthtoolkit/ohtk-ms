@@ -65,7 +65,7 @@ export class ReportTypeService implements IReportTypeService {
     limit: 20,
     offset: 0,
     q: "",
-    ordering: "category__ordering,asc",
+    ordering: "category__ordering,asc ordering,asc",
   };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
