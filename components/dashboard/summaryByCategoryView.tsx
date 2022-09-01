@@ -1,7 +1,7 @@
 import Spinner from "components/widgets/spinner";
 import { observer } from "mobx-react";
 import React, { Fragment, useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
+import { Bar, Doughnut } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,6 +10,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  ArcElement,
 } from "chart.js";
 import useServices from "lib/services/provider";
 import { SummaryByCategoryViewModel } from "./summaryByCategoryViewModel";
@@ -21,11 +22,14 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import useReportCategories from "lib/hooks/reportCategories";
 import SelectableChips from "components/widgets/chips";
 import { DashBoardFilterData } from "./dashboardViewModel";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 ChartJS.register(
+  ArcElement,
   CategoryScale,
   LinearScale,
   BarElement,
+  ChartDataLabels,
   Title,
   Tooltip,
   Legend
@@ -38,6 +42,9 @@ export const options = {
     intersect: false,
   },
   plugins: {
+    datalabels: {
+      display: false,
+    },
     legend: {
       position: "bottom" as const,
       align: "start" as const,
@@ -94,9 +101,9 @@ const SummaryByCategoryView: React.FC<SummaryByCategoryViewProps> = ({
 
   return (
     <MaskingLoader loading={viewModel.isLoading}>
-      <div className="flex flex-wrap">
+      <div className="flex items-stretch flex-wrap">
         <div className="w-full xl:w-8/12 mb-12 xl:mb-0">
-          <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg ">
+          <div className="relative flex flex-col min-w-0 break-words w-full  h-full mb-6 shadow-lg ">
             <div className="rounded-t-lg mb-0 px-4 py-2 h-[45px] bg-[#5E7284]">
               <div className="flex flex-wrap items-center">
                 <div className="relative w-full max-w-full flex-grow flex-1">
@@ -223,7 +230,7 @@ const SummaryByCategoryView: React.FC<SummaryByCategoryViewProps> = ({
           </div>
         )}
         <div className="w-full xl:w-4/12 px-4">
-          <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg ">
+          <div className="relative flex flex-col min-w-0 break-words w-full h-full mb-6 shadow-lg ">
             <div className="rounded-t-lg mb-0 px-4 py-2 h-[45px] bg-[#5E7284]">
               <div className="flex flex-wrap items-center">
                 <div className="relative w-full max-w-full flex-grow flex-1">
@@ -233,7 +240,69 @@ const SummaryByCategoryView: React.FC<SummaryByCategoryViewProps> = ({
                 </div>
               </div>
             </div>
-            <div className="block w-full overflow-x-auto p-2"></div>
+            <div className="h-full w-full flex items-center overflow-x-auto p-2">
+              <Doughnut
+                plugins={[
+                  {
+                    id: "doughnutlabel",
+                    beforeDatasetDraw: function (chart) {
+                      const ctx = chart.ctx;
+
+                      ctx.restore();
+                      ctx.font = "30px Kanit";
+                      ctx.textBaseline = "middle";
+                      ctx.fillStyle = "#000";
+
+                      const text = "48";
+                      let centerX =
+                        (chart.chartArea.left + chart.chartArea.right) / 2;
+                      const centerY =
+                        (chart.chartArea.top + chart.chartArea.bottom) / 2;
+
+                      centerX -= ctx.measureText(text).width / 1.98;
+                      ctx.fillText(text, centerX, centerY);
+                      ctx.save();
+                    },
+                  },
+                ]}
+                options={{
+                  responsive: true,
+                  plugins: {
+                    legend: {
+                      position: "right" as const,
+                      align: "start" as const,
+                      onClick: () => null,
+                    },
+                    datalabels: {
+                      color: "#1D1E1E",
+                    },
+                  },
+                }}
+                data={{
+                  labels: ["Animal", "Enviroment", "Dengue", "Human"],
+
+                  datasets: [
+                    {
+                      label: "# of Votes",
+                      data: [12, 19, 3, 5],
+                      backgroundColor: [
+                        "#56ADEC",
+                        "#626FE6",
+                        "#5CE081",
+                        "#67C687",
+                      ],
+                      borderColor: [
+                        "rgba(255, 99, 132, 1)",
+                        "rgba(54, 162, 235, 1)",
+                        "rgba(255, 206, 86, 1)",
+                        "rgba(75, 192, 192, 1)",
+                      ],
+                      borderWidth: 1,
+                    },
+                  ],
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

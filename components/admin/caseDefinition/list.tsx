@@ -48,8 +48,8 @@ const CaseDefinitionList = () => {
     if (q) {
       filter.q = q;
     }
-    if (offset) {
-      filter.offset = offset;
+    if (Number.isInteger(offset)) {
+      filter.offset = offset!;
     }
     setUrl(filter);
   };

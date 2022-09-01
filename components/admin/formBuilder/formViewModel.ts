@@ -6,6 +6,7 @@ import {
 } from "components/admin/formBuilder/shared";
 import { FormSimulationViewModel } from "components/admin/formBuilder/simulator/formSimulationViewModel";
 import { action, computed, makeObservable, observable } from "mobx";
+import { v4 as uuidv4 } from "uuid";
 
 export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   sections = Array<SectionViewModel>();
@@ -33,9 +34,18 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   }
 
   addSection() {
-    const id = crypto.randomUUID();
+    const id = uuidv4();
     const section = new SectionViewModel(id, "Section ...");
     this.sections.push(section);
+  }
+
+  deleteSection(id: string) {
+    const index = this.sections.findIndex(it => it.id === id);
+    if (index > -1) {
+      this.sections.splice(index, 1);
+      this.currentSection?.unsetCurrent();
+      this.currentSection = undefined;
+    }
   }
 
   selectSection(id: string) {
@@ -54,12 +64,14 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   parse(definition: Definition) {
     this.currentSection?.unsetCurrent();
     this.currentSection = undefined;
+    this._isSimulationMode = false;
+
     try {
       if (Array.isArray(definition.sections)) {
         const sections = Array<SectionViewModel>();
 
         definition.sections.forEach(sectionDefinition => {
-          const id = crypto.randomUUID();
+          const id = uuidv4();
           const sectionViewModel = new SectionViewModel(id, "Section");
           sectionViewModel.parse(sectionDefinition);
           sections.push(sectionViewModel);

@@ -11,6 +11,7 @@ import {
   ParseError,
 } from "components/admin/formBuilder/shared";
 import { action, computed, makeObservable, observable } from "mobx";
+import { v4 as uuidv4 } from "uuid";
 
 export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
   isCurrent = false;
@@ -80,7 +81,7 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
   }
 
   addField(type: TFieldValueType) {
-    const id = crypto.randomUUID();
+    const id = uuidv4();
     this.fields.push(new FieldViewModel(id, "", type));
   }
 
@@ -108,7 +109,7 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
         const fields = Array<FieldViewModel>();
 
         definition.fields.forEach(fieldDefinition => {
-          const id = crypto.randomUUID();
+          const id = uuidv4();
           const fieldViewModel = new FieldViewModel(
             id,
             "Field",

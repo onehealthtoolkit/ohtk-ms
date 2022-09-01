@@ -4,18 +4,29 @@ import {
   QuestionViewModel,
 } from "components/admin/formBuilder/question";
 import { QuestionActionBar } from "components/admin/formBuilder/question/questionActionBar";
-import { AdvanceCondition } from "components/admin/formBuilder/shared";
+import {
+  AdvanceCondition,
+  ConfirmDialog,
+} from "components/admin/formBuilder/shared";
 import { observer } from "mobx-react";
-import { FC } from "react";
+import { FC, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   value: QuestionViewModel;
   onSelect: (id: string) => void;
+  onDelete: (id: string) => void;
 };
 
-const Question: FC<Props> = ({ value: question, onSelect }) => {
+const Question: FC<Props> = ({ value: question, onSelect, onDelete }) => {
+  const elementRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
+  const onDeleteConfirm = () => {
+    question.registerDialog("confirmDelete")?.open(question);
+  };
+
   return question.isCurrent ? (
-    <div className="pt-4 pr-4 flex-grow flex-col flex gap-2">
+    <div className="pt-4 pr-4 flex-col flex gap-2 w-full" ref={elementRef}>
       <h4 className="text-xs text-gray-600">Question label</h4>
       {question.isLabelEditing ? (
         <input
@@ -66,14 +77,10 @@ const Question: FC<Props> = ({ value: question, onSelect }) => {
           onClick={() => question.setIsDescriptionEditing(true)}
         />
       )}
-      <QuestionActionBar
-        value={question}
-        onDelete={questionId => {
-          console.log("TODO delete question id:", questionId);
-        }}
-      >
+      <QuestionActionBar value={question} onDelete={onDeleteConfirm}>
         {question => <AdvanceCondition viewModel={question} />}
       </QuestionActionBar>
+
       <h4 className="text-xs text-gray-600">Fields</h4>
       <div className="p-2 mb-4 border-dotted border-2">
         <FieldList
@@ -85,6 +92,14 @@ const Question: FC<Props> = ({ value: question, onSelect }) => {
         />
         <FieldMenus value={question} />
       </div>
+      <ConfirmDialog
+        viewModel={question.dialog("confirmDelete")}
+        title={t("dialog.title.confirmDelete", "Confirm delete")}
+        content={t("dialog.content.confirmDelete", "Are you sure?")}
+        onYes={(question: QuestionViewModel) => onDelete(question.id)}
+        onNo={() => question.dialog("confirmDelete")?.close()}
+        container={elementRef.current?.parentElement}
+      />
     </div>
   ) : (
     <div className="p-4 flex-grow" onClick={() => onSelect(question.id)}>

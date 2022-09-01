@@ -4,6 +4,7 @@ import {
   Definition,
 } from "components/admin/formBuilder/shared";
 import { action, makeObservable, observable } from "mobx";
+import { v4 as uuidv4 } from "uuid";
 
 export class MultiplechoicesFieldViewModel extends AbstractDefinitionViewModel {
   choices = Array<ChoiceViewModel>();
@@ -18,7 +19,7 @@ export class MultiplechoicesFieldViewModel extends AbstractDefinitionViewModel {
   }
 
   addChoice() {
-    const id = crypto.randomUUID();
+    const id = uuidv4();
     this.choices.push(new ChoiceViewModel(id, "Choice"));
   }
 
@@ -34,7 +35,7 @@ export class MultiplechoicesFieldViewModel extends AbstractDefinitionViewModel {
       const choices = Array<ChoiceViewModel>();
 
       definition.options.forEach(choiceDefinition => {
-        const id = crypto.randomUUID();
+        const id = uuidv4();
         const choiceViewModel = new ChoiceViewModel(id, "Choice");
         choiceViewModel.parse(choiceDefinition);
         choices.push(choiceViewModel);

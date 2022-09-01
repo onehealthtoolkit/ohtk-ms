@@ -1,7 +1,13 @@
 import { XCircleIcon } from "@heroicons/react/solid";
 import { ModalDialogViewModel } from "lib/dialogViewModel";
 import { Observer } from "mobx-react";
-import React, { Fragment, ReactElement, ReactNode } from "react";
+import React, {
+  Fragment,
+  ReactElement,
+  ReactNode,
+  useCallback,
+  useEffect,
+} from "react";
 import ReactDOM from "react-dom";
 
 type Props = {
@@ -28,6 +34,26 @@ const BaseModalDialog: React.FC<Props> = ({
   renderAction,
   onClose,
 }: Props) => {
+  const escFunction = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        if (store?.isOpen) {
+          console.log("close dialog");
+          store?.close();
+        }
+      }
+    },
+    [store]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", escFunction, false);
+    return () => {
+      document.removeEventListener("keydown", escFunction, false);
+      console.log("remove listener esc");
+    };
+  }, [escFunction]);
+
   if (!store) {
     return null;
   }
@@ -62,7 +88,7 @@ const BaseModalDialog: React.FC<Props> = ({
                 {renderContent(store.data)}
               </div>
               <button
-                className="absolute right-4 top-4"
+                className="absolute right-4 top-4 z-10"
                 onClick={() => {
                   onClose && onClose();
                   store.close();
