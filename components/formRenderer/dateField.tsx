@@ -16,6 +16,12 @@ export type FormDateFieldProps = {
 
 const currentYear = new Date().getFullYear();
 
+function isLeapYear(year?: number): boolean {
+  return (
+    year != null && ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0)
+  );
+}
+
 const Component: FC<FormDateFieldProps> = ({ field }) => {
   const onSelectDay = (value: string) => {
     field.clearError();
@@ -47,7 +53,7 @@ const Component: FC<FormDateFieldProps> = ({ field }) => {
     const d = it + 1;
     let disabled = false;
     if (field.month) {
-      if (d === 29 && field.month === 2 && field.year && field.year % 4 !== 0)
+      if (d === 29 && field.month === 2 && !isLeapYear(field.year))
         disabled = true;
       if (d === 30 && field.month === 2) disabled = true;
       if (d === 31 && [2, 4, 6, 9, 11].includes(field.month)) disabled = true;
@@ -64,7 +70,7 @@ const Component: FC<FormDateFieldProps> = ({ field }) => {
     const m = it + 1;
     let disabled = false;
     if (field.day) {
-      if (m === 2 && field.day === 29 && field.year && field.year % 4 !== 0)
+      if (m === 2 && field.day === 29 && !isLeapYear(field.year))
         disabled = true;
       if (m === 2 && field.day === 30) disabled = true;
       if ([2, 4, 6, 9, 11].includes(m) && field.day === 31) disabled = true;
@@ -77,11 +83,12 @@ const Component: FC<FormDateFieldProps> = ({ field }) => {
   });
 
   // Year range is between +/- 10 years from now
-  const years = [...Array(20)].map<Option>((_, it) => {
+  const years = [...Array(120)].map<Option>((_, it) => {
     const y = it + currentYear - 9;
     let disabled = false;
     if (field.month && field.day) {
-      if (y % 4 !== 0 && field.month === 2 && field.day === 29) disabled = true;
+      if (!isLeapYear(y) && field.month === 2 && field.day === 29)
+        disabled = true;
     }
     return {
       label: y.toString(),
