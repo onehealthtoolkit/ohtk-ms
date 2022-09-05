@@ -53,6 +53,7 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
   addQuestion() {
     const id = uuidv4();
     this.questions.push(new QuestionViewModel(id, "Question"));
+    this.selectQuestion(id);
   }
 
   deleteQuestion(id: string) {

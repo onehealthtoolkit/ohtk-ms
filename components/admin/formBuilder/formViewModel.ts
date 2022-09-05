@@ -37,6 +37,7 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
     const id = uuidv4();
     const section = new SectionViewModel(id, "Section ...");
     this.sections.push(section);
+    this.selectSection(id);
   }
 
   deleteSection(id: string) {

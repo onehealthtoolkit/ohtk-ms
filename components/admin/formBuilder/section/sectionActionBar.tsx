@@ -16,7 +16,7 @@ const Bar: FC<SectionActionBarProps> = ({
 }) => {
   return (
     <>
-      <div className="w-full pt-4 flex justify-end items-center">
+      <div className="pt-4 flex justify-end items-center">
         {/* Trash icon */}
         <button
           type="button"
