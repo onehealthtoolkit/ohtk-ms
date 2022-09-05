@@ -1,6 +1,17 @@
+import { setBackendSubDomain } from "lib/client";
 import { Store } from "lib/store";
-import { action, computed, makeObservable, observable } from "mobx";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from "mobx";
 
+type serverOption = {
+  label: string;
+  domain: string;
+};
 export class SignInViewModel {
   _username: string = "";
   _password: string = "";
@@ -11,7 +22,11 @@ export class SignInViewModel {
 
   isSubmitting: boolean = false;
 
-  constructor(readonly store: Store) {
+  isLoading: boolean = false;
+
+  serverOptions: serverOption[] = [];
+
+  constructor(readonly store: Store, tenantApiEndpoint: string) {
     makeObservable(this, {
       _username: observable,
       _password: observable,
@@ -19,10 +34,31 @@ export class SignInViewModel {
       password: computed,
       fieldErrors: observable,
       submitError: observable,
+      serverOptions: observable,
       signIn: action,
       validate: action,
       isValid: computed,
+      fetchTenant: action,
     });
+
+    this.fetchTenant(tenantApiEndpoint);
+  }
+
+  async fetchTenant(tenantApiEndpoint: string) {
+    this.isLoading = true;
+    try {
+      const response = await fetch(tenantApiEndpoint);
+      if (response.ok) {
+        const data = (await response.json()) as { tenants: serverOption[] };
+        runInAction(() => {
+          this.serverOptions = data.tenants;
+        });
+      }
+    } finally {
+      runInAction(() => {
+        this.isLoading = false;
+      });
+    }
   }
 
   public get username(): string {
@@ -79,5 +115,9 @@ export class SignInViewModel {
       this.fieldErrors["password"] = "this field is required";
     }
     return isValid;
+  }
+
+  changeServer(subDomainName: string) {
+    setBackendSubDomain(subDomainName);
   }
 }
