@@ -7,7 +7,7 @@ import {
   ObservableMap,
 } from "mobx";
 
-interface FieldErrors {
+export interface FieldErrors {
   [key: string]: string;
 }
 type DialogMap = ObservableMap<string, ModalDialogViewModel>;

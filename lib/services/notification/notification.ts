@@ -1,4 +1,4 @@
-import { FieldErrors } from "react-hook-form";
+import { FieldErrors } from "lib/baseFormViewModel";
 
 export type Notification = {
   notificationTemplateId: number;

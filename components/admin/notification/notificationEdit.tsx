@@ -14,7 +14,7 @@ const styles = {
 };
 type SaveResult = {
   success: boolean;
-  msg: string;
+  msg?: string;
 };
 type Props = {
   title: string;
