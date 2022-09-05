@@ -17,7 +17,7 @@ export function setBackendSubDomain(subdomain: string) {
   } else {
     localStorage.setItem(
       LOCAL_STORGAGE_BACKEND_URL_KEY,
-      `https://${subdomain}.${BACKEND_DOMAIN}/graphql/`
+      `https://${subdomain}/graphql/`
     );
   }
 }

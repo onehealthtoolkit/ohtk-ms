@@ -9,6 +9,8 @@ const nextConfig = {
   },
   publicRuntimeConfig: {
     serverDomain: process.env.serverDomain || "opensur.test",
+    tenantsApiEndpoint:
+      process.env.tenantsApiEndpoint || "https://opensur.test/api/servers/",
   },
   images: {
     loader: "akamai",

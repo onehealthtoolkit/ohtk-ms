@@ -1,26 +1,32 @@
-import React, { useState } from "react";
+/* eslint-disable @next/next/no-img-element */
+import React, { useEffect, useState } from "react";
 import useStore from "lib/store";
 import { observer } from "mobx-react";
 import { SignInViewModel } from "./viewModel";
 import { useTranslation } from "react-i18next";
 import { ServerIcon } from "@heroicons/react/outline";
 import LanguageSelect from "../languageSelect";
-import { setBackendSubDomain } from "lib/client";
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+
+const tenantsApiEndpoint = publicRuntimeConfig.tenantsApiEndpoint;
 
 const SignIn = () => {
   const store = useStore();
-  const [viewModel] = useState(new SignInViewModel(store));
-
-  /* eslint-disable @next/next/no-img-element */
-  const isSubmitting = viewModel.isSubmitting;
-  const errors = viewModel.fieldErrors;
-
+  const [viewModel, setViewModel] = useState<SignInViewModel | undefined>();
   const { t } = useTranslation();
 
-  const onServerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const subdomain = e.target.value;
-    setBackendSubDomain(subdomain);
-  };
+  useEffect(() => {
+    if (!store.initTokenPending) {
+      setViewModel(new SignInViewModel(store, tenantsApiEndpoint));
+    }
+  }, [store]);
+
+  if (viewModel === undefined) {
+    return null;
+  }
+  const isSubmitting = viewModel.isSubmitting;
+  const errors = viewModel.fieldErrors;
 
   return (
     <form
@@ -101,10 +107,18 @@ const SignIn = () => {
                     >
                       <ServerIcon className="h-5 w-5 text-gray-500" />
                     </label>
-                    <select id="server" onChange={onServerChange}>
+                    <select
+                      id="server"
+                      onChange={e => {
+                        viewModel.changeServer(e.target.value);
+                      }}
+                    >
                       <option value="">---</option>
-                      <option value="test">test</option>
-                      <option value="bon">bon</option>
+                      {viewModel.serverOptions.map(option => (
+                        <option key={option.domain} value={option.domain}>
+                          {option.label}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
