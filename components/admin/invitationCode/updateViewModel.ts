@@ -17,7 +17,6 @@ export class InvitationCodeUpdateViewModel extends InvitationCodeViewModel {
       await this.invitationCodeService.getInvitationCode(this.id)
     ).data;
     if (data) {
-      console.log(data);
       this.authorityId = data.authorityId || 0;
       this.code = data.code;
       if (data.fromDate)

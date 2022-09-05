@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import useServices from "lib/services/provider";
 import { InvitationCodeViewModel } from "./invitationCodeViewModel";
+import { observer } from "mobx-react";
 
 type AuthorityFilterProps = {
   viewModel: InvitationCodeViewModel;
@@ -59,4 +60,4 @@ const AuthroitySelect: React.FC<AuthorityFilterProps> = ({ viewModel }) => {
   );
 };
 
-export default AuthroitySelect;
+export default observer(AuthroitySelect);
