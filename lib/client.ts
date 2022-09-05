@@ -11,6 +11,17 @@ export const BACKEND_DOMAIN = publicRuntimeConfig.serverDomain;
 const LOCAL_STORAGE_REFRESH_EXPIRES_IN_KEY = "refreshExpiresIn";
 const LOCAL_STORGAGE_BACKEND_URL_KEY = "backendUrl";
 
+export function setBackendSubDomain(subdomain: string) {
+  if (subdomain === "") {
+    localStorage.removeItem(LOCAL_STORGAGE_BACKEND_URL_KEY);
+  } else {
+    localStorage.setItem(
+      LOCAL_STORGAGE_BACKEND_URL_KEY,
+      `https://${subdomain}.${BACKEND_DOMAIN}/graphql/`
+    );
+  }
+}
+
 export function setRefreshExpiresIn(value: number) {
   localStorage.setItem(LOCAL_STORAGE_REFRESH_EXPIRES_IN_KEY, value.toString());
 }

@@ -43,16 +43,23 @@ export class Store {
     if (typeof window === "undefined") {
       return;
     }
-    const success = await this.authService.refreshToken();
-    console.log("bootstrap", success);
-    if (success) {
-      await this.fetchMe();
-      runInAction(() => {
-        this.initTokenPending = false;
-        this.isLogin = true;
-      });
-      this.authService.startAutoRefreshToken();
-    } else {
+    try {
+      const success = await this.authService.refreshToken();
+      console.log("bootstrap", success);
+      if (success) {
+        await this.fetchMe();
+        runInAction(() => {
+          this.initTokenPending = false;
+          this.isLogin = true;
+        });
+        this.authService.startAutoRefreshToken();
+      } else {
+        runInAction(() => {
+          this.initTokenPending = false;
+          this.isLogin = false;
+        });
+      }
+    } catch (e) {
       runInAction(() => {
         this.initTokenPending = false;
         this.isLogin = false;

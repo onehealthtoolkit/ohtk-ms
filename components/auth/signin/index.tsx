@@ -5,6 +5,7 @@ import { SignInViewModel } from "./viewModel";
 import { useTranslation } from "react-i18next";
 import { ServerIcon } from "@heroicons/react/outline";
 import LanguageSelect from "../languageSelect";
+import { setBackendSubDomain } from "lib/client";
 
 const SignIn = () => {
   const store = useStore();
@@ -14,6 +15,11 @@ const SignIn = () => {
   const errors = viewModel.fieldErrors;
 
   const { t } = useTranslation();
+
+  const onServerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const subdomain = e.target.value;
+    setBackendSubDomain(subdomain);
+  };
 
   return (
     <form
@@ -94,11 +100,10 @@ const SignIn = () => {
                     >
                       <ServerIcon className="h-5 w-5 text-gray-500" />
                     </label>
-                    <select id="server">
-                      <option value="default">Default</option>
-                      <option value="Thailand">Thailand</option>
-                      <option value="Laos">Laos</option>
-                      <option value="Cambodia">Cambodia</option>
+                    <select id="server" onChange={onServerChange}>
+                      <option value="">---</option>
+                      <option value="test">test</option>
+                      <option value="bon">bon</option>
                     </select>
                   </div>
                 </div>
