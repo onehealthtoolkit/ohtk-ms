@@ -51,8 +51,7 @@ const FormInput = ({
       {() => (
         <div
           ref={contentRef}
-          className="text-left overflow-y-auto overscroll-y-contain"
-          style={{ height: "500px" }}
+          className="text-left overflow-y-auto overscroll-y-contain min-height-[500px]"
         >
           {form.currentSection?.questions?.length ? (
             form.currentSection?.questions.map((question, index) => (

@@ -34,6 +34,7 @@ export interface IInvitationCodeService extends IService {
   updateInvitationCode(
     id: string,
     code: string,
+    authorityId: number,
     fromDate: string,
     throughDate: string,
     role: string
@@ -107,6 +108,7 @@ export class InvitationCodeService implements IInvitationCodeService {
         fromDate: invitationCode.fromDate,
         throughDate: invitationCode.throughDate,
         role: invitationCode.role,
+        authorityId: parseInt(invitationCode.authority.id),
       };
     }
     return {
@@ -168,6 +170,7 @@ export class InvitationCodeService implements IInvitationCodeService {
   async updateInvitationCode(
     id: string,
     code: string,
+    authorityId: number,
     fromDate: string,
     throughDate: string,
     role: string
@@ -177,6 +180,7 @@ export class InvitationCodeService implements IInvitationCodeService {
       variables: {
         id,
         code,
+        authorityId,
         fromDate,
         throughDate,
         role,

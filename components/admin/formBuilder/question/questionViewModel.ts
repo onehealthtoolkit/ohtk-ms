@@ -83,6 +83,7 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
   addField(type: TFieldValueType) {
     const id = uuidv4();
     this.fields.push(new FieldViewModel(id, "", type));
+    this.selectField(id);
   }
 
   deleteField(id: string) {

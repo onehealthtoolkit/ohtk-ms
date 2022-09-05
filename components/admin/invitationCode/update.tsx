@@ -19,10 +19,13 @@ import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import RoleSelect from "./roleSelect";
 import { useTranslation } from "react-i18next";
+import useStore from "lib/store";
+import AuthroitySelect from "./authoritySelect";
 
 const InvitationCodeUpdate = () => {
   const router = useRouter();
   const { t } = useTranslation();
+  const { me } = useStore();
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -30,6 +33,19 @@ const InvitationCodeUpdate = () => {
         router.query.id as string,
         services.invitationCodeService
       )
+  );
+
+  const authorityField = (
+    <Observer>
+      {() => (
+        <Field $size="half">
+          <Label htmlFor="authority">
+            {t("form.label.authority", "Authority")}
+          </Label>
+          <AuthroitySelect viewModel={viewModel} />
+        </Field>
+      )}
+    </Observer>
   );
 
   const codeField = useMemo(
@@ -133,6 +149,7 @@ const InvitationCodeUpdate = () => {
         }}
       >
         <FieldGroup>
+          <>{me?.isSuperUser && authorityField}</>
           {codeField}
           {fromDateField}
           {throughDateField}

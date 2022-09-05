@@ -18,9 +18,12 @@ import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import RoleSelect from "./roleSelect";
 import { useTranslation } from "react-i18next";
+import useStore from "lib/store";
+import AuthroitySelect from "./authoritySelect";
 
 const InvitationCodeCreate = () => {
   const router = useRouter();
+  const { me } = useStore();
   const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
@@ -40,6 +43,16 @@ const InvitationCodeCreate = () => {
       }}
     >
       <FieldGroup>
+        <>
+          {me?.isSuperUser && (
+            <Field $size="half">
+              <Label htmlFor="authority">
+                {t("form.label.authority", "Authority")}
+              </Label>
+              <AuthroitySelect viewModel={viewModel} />
+            </Field>
+          )}
+        </>
         <Field $size="half">
           <Label htmlFor="code">{t("form.label.code", "Code")}</Label>
           <TextInput

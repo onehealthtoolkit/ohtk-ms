@@ -17,6 +17,8 @@ export class InvitationCodeUpdateViewModel extends InvitationCodeViewModel {
       await this.invitationCodeService.getInvitationCode(this.id)
     ).data;
     if (data) {
+      console.log(data);
+      this.authorityId = data.authorityId || 0;
       this.code = data.code;
       if (data.fromDate)
         this.fromDate = new Date(data.fromDate).toISOString().split("T")[0];
@@ -33,6 +35,7 @@ export class InvitationCodeUpdateViewModel extends InvitationCodeViewModel {
     return this.invitationCodeService.updateInvitationCode(
       this.id,
       this.code,
+      this.authorityId,
       new Date(this.fromDate).toISOString(),
       new Date(this.throughDate).toISOString(),
       this.role

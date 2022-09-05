@@ -27,9 +27,10 @@ const Section: FC<Props> = ({ value: section, onDelete }) => {
     <div className="text-gray-900 md:pl-4 w-full md:w-3/4" ref={elementRef}>
       <div className={"flex flex-col md:min-h-[400px] gap-2"}>
         <h4 className="text-xs text-gray-600">Section</h4>
-        {section.isLabelEditing ? (
+        <div className="flex flex-row w-full">
           <input
-            className="bg-blue-50 py-2 px-4"
+            className="bg-blue-50 py-2 px-4 flex flex-1"
+            type="text"
             autoFocus
             value={section.label}
             onChange={e => section.setLabel(e.target.value)}
@@ -41,17 +42,9 @@ const Section: FC<Props> = ({ value: section, onDelete }) => {
               }
             }}
           />
-        ) : (
-          <input
-            className="border-b border-gray-200 hover:border-blue-600 py-2 px-4 rounded w-full cursor-pointer"
-            type={"text"}
-            value={section.label}
-            placeholder="Section Label"
-            readOnly
-            onClick={() => section.setIsLabelEditing(true)}
-          />
-        )}
-        <SectionActionBar value={section} onDelete={onDeleteConfirm} />
+
+          <SectionActionBar value={section} onDelete={onDeleteConfirm} />
+        </div>
 
         <h4 className="text-xs text-gray-600">Questions</h4>
         <div className="p-4 border-dotted border-2">
@@ -62,16 +55,18 @@ const Section: FC<Props> = ({ value: section, onDelete }) => {
             onSelect={questionId => section.selectQuestion(questionId)}
             onDelete={questionId => section.deleteQuestion(questionId)}
           />
+
+          <div className="p-4 flex justify-end ">
+            <button
+              type="button"
+              className="flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-800 focus:z-10 focus:ring-2 focus:ring-blue-200 "
+            >
+              <span onClick={() => section.addQuestion()}>Add Question</span>
+            </button>
+          </div>
         </div>
       </div>
-      <div className="p-4 flex justify-end ">
-        <button
-          type="button"
-          className="flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-800 focus:z-10 focus:ring-2 focus:ring-blue-200 "
-        >
-          <span onClick={() => section.addQuestion()}>Add Question</span>
-        </button>
-      </div>
+
       <ConfirmDialog
         viewModel={section.dialog("confirmDelete")}
         title={t("dialog.title.confirmDelete", "Confirm delete")}
