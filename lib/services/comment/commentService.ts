@@ -81,14 +81,6 @@ export class CommentService implements ICommentService {
       context: {
         useMultipart: true,
       },
-      refetchQueries: [
-        {
-          query: QueryCommentsDocument,
-          variables: { threadId: threadId.toString() },
-          fetchPolicy: "network-only",
-        },
-      ],
-      awaitRefetchQueries: true,
     });
 
     const result = createResult.data?.commentCreate?.result;
@@ -113,6 +105,10 @@ export class CommentService implements ICommentService {
     }
     return {
       success: true,
+      data: {
+        id: result?.id,
+        attachments: result?.attachments as Attachment[],
+      },
     };
   }
 }

@@ -9,8 +9,7 @@ import {
   observable,
   runInAction,
 } from "mobx";
-
-const { v4: uuidv4 } = require("uuid");
+import { v4 as uuidv4 } from "uuid";
 
 export type LocalFile = {
   id: string;
@@ -105,6 +104,7 @@ export class CommentsViewModel extends BaseFormViewModel {
     } else {
       this.body = "";
       this.attachments.splice(0, this.attachments.length);
+      this.fetch(true);
     }
     return result.success;
   }

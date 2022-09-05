@@ -1,5 +1,6 @@
 import { FormDateField } from "components/formRenderer/dateField";
 import { FormDecimalField } from "components/formRenderer/decimalField";
+import { FormImagesField } from "components/formRenderer/imagesField";
 import { FormIntegerField } from "components/formRenderer/integerField";
 import { FormMultipleChoicesField } from "components/formRenderer/multipleChoicesField";
 import { FormSingleChoicesField } from "components/formRenderer/singleChoicesField";
@@ -7,6 +8,7 @@ import { FormTextField } from "components/formRenderer/textField";
 import Field from "lib/opsvForm/models/fields";
 import DateField from "lib/opsvForm/models/fields/dateField";
 import DecimalField from "lib/opsvForm/models/fields/decimalField";
+import ImagesField from "lib/opsvForm/models/fields/imagesField";
 import IntegerField from "lib/opsvForm/models/fields/integerField";
 import LocationField from "lib/opsvForm/models/fields/locationField";
 import MultipleChoicesField from "lib/opsvForm/models/fields/multipleChoicesField";
@@ -45,6 +47,8 @@ const Component: FC<FormQuestionProps> = ({ question }) => {
       return <FormDateField field={field} />;
     } else if (field instanceof LocationField) {
       return <FormLocationField field={field} />;
+    } else if (field instanceof ImagesField) {
+      return <FormImagesField field={field} />;
     }
     return <div>Unknown Field</div>;
   };

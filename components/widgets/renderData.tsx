@@ -1,3 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
+import { BACKEND_DOMAIN } from "lib/client";
+
 export const renderData = (data: Record<string, any>) => {
   if (!data) {
     return null;
@@ -25,14 +28,32 @@ const renderItem = (data: Record<string, any>) => {
           >
             {key}
           </th>
-          <td className="px-6 py-4">
-            {(typeof data[key] != "object" || typeof data[key] == "boolean") &&
-              data[key].toString()}
-            {typeof data[key] == "object" && renderData(data[key])}
-          </td>
+          <td className="px-6 py-4">{displayValue(data[key])}</td>
         </tr>
       );
     });
+};
+
+const displayValue = (value: any) => {
+  if (typeof value != "object") {
+    const val: string = value.toString();
+    // Could be an image path
+    if (val.indexOf("attachments/") > -1) {
+      return (
+        <div className="h-14 w-14 border rounded bg-gray-300 relative">
+          <img
+            src={`https://${BACKEND_DOMAIN}/medias/${val}`}
+            alt="attachment"
+            className="w-full h-full object-contain"
+          />
+        </div>
+      );
+    } else {
+      return val;
+    }
+  } else {
+    return renderData(value);
+  }
 };
 
 export const TR = (props: { label: string; value: string }) => {

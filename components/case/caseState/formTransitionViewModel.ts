@@ -1,8 +1,10 @@
 import { ModalDialogViewModel } from "lib/dialogViewModel";
-import Form from "lib/opsvForm/models/form";
+import Form, { FormImageMap } from "lib/opsvForm/models/form";
 import { parseForm } from "lib/opsvForm/models/json";
 import Section from "lib/opsvForm/models/section";
 import { ICaseService } from "lib/services/case";
+import { ICommentService } from "lib/services/comment/commentService";
+import { StateTransitionRef } from "lib/services/stateTransition/stateTransition";
 import {
   action,
   computed,
@@ -16,18 +18,21 @@ export class FormTransitionViewModel extends ModalDialogViewModel {
   form?: Form = undefined;
   errorRendering = false;
   isSubmitting = false;
-  errorForwardState = false;
+  errorForwardState?: string = undefined;
 
   constructor(
     readonly caseService: ICaseService,
+    readonly commentService: ICommentService,
     readonly caseId: string,
-    readonly transitionId: string,
-    readonly definition: string
+    readonly transition: StateTransitionRef,
+    readonly definition: string,
+    readonly threadId?: number | null
   ) {
     super();
     makeObservable(this, {
       form: observable,
       errorRendering: observable,
+      errorForwardState: observable,
       isSubmitting: observable,
       currentSection: computed,
       next: action,
@@ -67,12 +72,12 @@ export class FormTransitionViewModel extends ModalDialogViewModel {
   }
 
   next() {
-    this.errorForwardState = false;
+    this.errorForwardState = undefined;
     this.form?.next();
   }
 
   previous() {
-    this.errorForwardState = false;
+    this.errorForwardState = undefined;
     this.form?.previous();
   }
 
@@ -81,9 +86,40 @@ export class FormTransitionViewModel extends ModalDialogViewModel {
     console.log("on complete form", formData);
 
     this.isSubmitting = true;
+
+    if (formData) {
+      const imageFieldNames = Object.keys(this.form?.images || {});
+
+      try {
+        if (this.threadId) {
+          for (const fieldName of imageFieldNames) {
+            const imageUrls = await this.uploadImages(
+              fieldName,
+              this.form!.images[fieldName]
+            );
+
+            if (imageUrls.length > 0) {
+              formData[fieldName] = (
+                (formData[fieldName] as Array<string>) || []
+              ).concat(...imageUrls);
+            }
+          }
+          // refetch
+          this.commentService.fetchComments(this.threadId, true);
+        }
+      } catch (e) {
+        console.log(e);
+        runInAction(() => {
+          this.isSubmitting = false;
+          this.errorForwardState = "Server error";
+        });
+        return false;
+      }
+    }
+
     const result = await this.caseService.forwardState(
       this.caseId,
-      this.transitionId,
+      this.transition.id,
       formData
     );
 
@@ -95,9 +131,60 @@ export class FormTransitionViewModel extends ModalDialogViewModel {
       return true;
     }
     if (result.error) {
-      this.errorForwardState = true;
+      this.errorForwardState = "Server error";
       return false;
     }
     return false;
   }
+
+  /**
+   * Upload form images through creating comment and its attachments,
+   * then retrieve image urls from response
+   */
+  async uploadImages(field: string, images: FormImageMap): Promise<string[]> {
+    const urls = Array<string>();
+    if (!this.threadId) {
+      return urls;
+    }
+
+    const files = Array<File>();
+    const imageEntries = Object.entries(images);
+
+    // convert base64 to file
+    for (const [uuid, base64] of imageEntries) {
+      const file = await dataURLtoFile(base64, uuid);
+      files.push(file);
+    }
+
+    if (files.length > 0) {
+      const fromTransition = this.transition.fromStep?.name;
+      const toTransition = this.transition.toStep?.name;
+
+      var result = await this.commentService.createComment(
+        `❗️ Attach images in form field: '${field}' during case transition from ` +
+          `'${fromTransition}' to '${toTransition}' `,
+        this.threadId,
+        files
+      );
+
+      if (result.success) {
+        result.data?.attachments?.forEach(attachment =>
+          urls.push(attachment.file)
+        );
+      } else {
+        throw new Error("Failed to upload images");
+      }
+    }
+    return urls;
+  }
+}
+
+function dataURLtoFile(dataurl: string, filename: string): Promise<File> {
+  var arr = dataurl.split(","),
+    mime = arr[0]!.match(/:(.*?);/)![1];
+  return fetch(dataurl)
+    .then(res => res.blob())
+    .then(blob => {
+      return new File([blob], filename, { type: mime });
+    });
 }
