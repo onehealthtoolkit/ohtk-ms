@@ -41,8 +41,6 @@ const NotificationTemplateUpdate = () => {
   const { transitionLoading, stateTransitions } = useStateTransitions(
     viewModel.reportTypeId
   );
-  const isSubmitting = viewModel.isSubmitting;
-  const errors = viewModel.fieldErrors;
 
   const nameField = useMemo(
     () => (
@@ -80,7 +78,7 @@ const NotificationTemplateUpdate = () => {
               viewModel.reportTypeId = evt.target.value;
               viewModel.stateTransitionId = 0;
             }}
-            disabled={isSubmitting}
+            disabled={viewModel.isSubmitting}
             value={viewModel.reportTypeId}
             required
           >
@@ -93,7 +91,7 @@ const NotificationTemplateUpdate = () => {
               </option>
             ))}
           </Select>
-          <ErrorText>{errors.reportTypeId}</ErrorText>
+          <ErrorText>{viewModel.fieldErrors.reportTypeId}</ErrorText>
         </Field>
       )}
     </Observer>
@@ -137,12 +135,12 @@ const NotificationTemplateUpdate = () => {
               disabled={false}
               onChange={evt => (viewModel.type = evt.target.value)}
             />
-            <ErrorText>{errors.type}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.type}</ErrorText>
           </Field>
         )}
       </Observer>
     ),
-    [t, viewModel]
+    [viewModel]
   );
 
   const transistionField = (
@@ -163,7 +161,7 @@ const NotificationTemplateUpdate = () => {
               onChange={evt => {
                 viewModel.stateTransitionId = +evt.target.value;
               }}
-              disabled={isSubmitting || transitionLoading}
+              disabled={viewModel.isSubmitting || transitionLoading}
               value={viewModel.stateTransitionId}
             >
               <option disabled value={0}>
@@ -176,7 +174,7 @@ const NotificationTemplateUpdate = () => {
               ))}
             </Select>
           </div>
-          <ErrorText>{errors.stateTransitionId}</ErrorText>
+          <ErrorText>{viewModel.fieldErrors.stateTransitionId}</ErrorText>
         </Field>
       )}
     </Observer>
@@ -195,10 +193,10 @@ const NotificationTemplateUpdate = () => {
               placeholder={t("form.placeholder.condition", "Condition")}
               rows={2}
               onChange={evt => (viewModel.condition = evt.target.value)}
-              disabled={isSubmitting}
+              disabled={viewModel.isSubmitting}
               defaultValue={viewModel.condition}
             />
-            <ErrorText>{errors.condition}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.condition}</ErrorText>
           </Field>
         )}
       </Observer>
@@ -222,11 +220,11 @@ const NotificationTemplateUpdate = () => {
                 "Title Template"
               )}
               onChange={evt => (viewModel.titleTemplate = evt.target.value)}
-              disabled={isSubmitting}
+              disabled={viewModel.isSubmitting}
               defaultValue={viewModel.titleTemplate}
               required
             />
-            <ErrorText>{errors.titleTemplate}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.titleTemplate}</ErrorText>
           </Field>
         )}
       </Observer>
@@ -247,11 +245,11 @@ const NotificationTemplateUpdate = () => {
               placeholder={t("form.placeholder.bodyTemplate", "Body Template")}
               rows={5}
               onChange={evt => (viewModel.bodyTemplate = evt.target.value)}
-              disabled={isSubmitting}
+              disabled={viewModel.isSubmitting}
               defaultValue={viewModel.bodyTemplate}
               required
             />
-            <ErrorText>{errors.bodyTemplate}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.bodyTemplate}</ErrorText>
           </Field>
         )}
       </Observer>

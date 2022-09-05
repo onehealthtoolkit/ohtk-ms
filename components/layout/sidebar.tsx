@@ -214,7 +214,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
         )}
       </Observer>
     ),
-    [store]
+    [store, pathname]
   );
   return (
     <div>

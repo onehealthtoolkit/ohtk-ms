@@ -29,7 +29,6 @@ const UserUpdate = () => {
     () =>
       new UserUpdateViewModel(router.query.id as string, services.userService)
   );
-  const errors = viewModel.fieldErrors;
 
   const usernameField = useMemo(
     () => (
@@ -48,7 +47,7 @@ const UserUpdate = () => {
               value={viewModel.username}
               required
             />
-            <ErrorText>{errors.username}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.username}</ErrorText>
           </Field>
         )}
       </Observer>
@@ -73,7 +72,7 @@ const UserUpdate = () => {
               value={viewModel.firstName}
               required
             />
-            <ErrorText>{errors.firstName}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.firstName}</ErrorText>
           </Field>
         )}
       </Observer>
@@ -98,7 +97,7 @@ const UserUpdate = () => {
               value={viewModel.lastName}
               required
             />
-            <ErrorText>{errors.lastName}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.lastName}</ErrorText>
           </Field>
         )}
       </Observer>
@@ -121,7 +120,7 @@ const UserUpdate = () => {
               value={viewModel.email}
               required
             />
-            <ErrorText>{errors.email}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.email}</ErrorText>
           </Field>
         )}
       </Observer>
@@ -145,7 +144,7 @@ const UserUpdate = () => {
               disabled={viewModel.isSubmitting}
               value={viewModel.telephone}
             />
-            <ErrorText>{errors.telephone}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.telephone}</ErrorText>
           </Field>
         )}
       </Observer>
@@ -179,7 +178,7 @@ const UserUpdate = () => {
                 Admin
               </option>
             </Select>
-            <ErrorText>{errors.role}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.role}</ErrorText>
           </Field>
         )}
       </Observer>

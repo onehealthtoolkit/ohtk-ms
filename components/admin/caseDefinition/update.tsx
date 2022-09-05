@@ -35,9 +35,6 @@ const CaseDefinitionUpdateForm = () => {
   );
   const reportTypes = useReportTypes();
 
-  const isSubmitting = viewModel.isSubmitting;
-  const errors = viewModel.fieldErrors;
-
   const reportTypeField = (
     <Observer>
       {() => (
@@ -51,7 +48,7 @@ const CaseDefinitionUpdateForm = () => {
               viewModel.reportTypeId = evt.target.value;
             }}
             placeholder={t("form.placeholder.reportType", "Report Type")}
-            disabled={isSubmitting}
+            disabled={viewModel.isSubmitting}
             value={viewModel.reportTypeId}
             required
           >
@@ -64,7 +61,7 @@ const CaseDefinitionUpdateForm = () => {
               </option>
             ))}
           </Select>
-          <ErrorText>{errors.report_type_id}</ErrorText>
+          <ErrorText>{viewModel.fieldErrors.report_type_id}</ErrorText>
         </Field>
       )}
     </Observer>
@@ -83,11 +80,11 @@ const CaseDefinitionUpdateForm = () => {
               type="text"
               placeholder={t("form.placeholder.description", "Description")}
               onChange={evt => (viewModel.description = evt.target.value)}
-              disabled={isSubmitting}
+              disabled={viewModel.isSubmitting}
               defaultValue={viewModel.description}
               required
             />
-            <ErrorText>{errors.description}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.description}</ErrorText>
           </Field>
         )}
       </Observer>

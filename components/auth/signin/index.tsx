@@ -11,6 +11,7 @@ const SignIn = () => {
   const store = useStore();
   const [viewModel] = useState(new SignInViewModel(store));
 
+  /* eslint-disable @next/next/no-img-element */
   const isSubmitting = viewModel.isSubmitting;
   const errors = viewModel.fieldErrors;
 

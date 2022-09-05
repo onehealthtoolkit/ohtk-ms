@@ -35,9 +35,6 @@ const ReporterNotificationsUpdateForm = () => {
   );
   const reportTypes = useReportTypes();
 
-  const isSubmitting = viewModel.isSubmitting;
-  const errors = viewModel.fieldErrors;
-
   const reportTypeField = (
     <Observer>
       {() => (
@@ -50,7 +47,7 @@ const ReporterNotificationsUpdateForm = () => {
             onChange={evt => {
               viewModel.reportTypeId = evt.target.value;
             }}
-            disabled={isSubmitting}
+            disabled={viewModel.isSubmitting}
             value={viewModel.reportTypeId}
             required
           >
@@ -63,7 +60,7 @@ const ReporterNotificationsUpdateForm = () => {
               </option>
             ))}
           </Select>
-          <ErrorText>{errors.reportTypeId}</ErrorText>
+          <ErrorText>{viewModel.fieldErrors.reportTypeId}</ErrorText>
         </Field>
       )}
     </Observer>
@@ -82,11 +79,11 @@ const ReporterNotificationsUpdateForm = () => {
               type="text"
               placeholder={t("form.placeholder.description", "Description")}
               onChange={evt => (viewModel.description = evt.target.value)}
-              disabled={isSubmitting}
+              disabled={viewModel.isSubmitting}
               defaultValue={viewModel.description}
               required
             />
-            <ErrorText>{errors.description}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.description}</ErrorText>
           </Field>
         )}
       </Observer>
