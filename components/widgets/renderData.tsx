@@ -1,6 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import { BACKEND_DOMAIN } from "lib/client";
-
 export const renderData = (data: Record<string, any>) => {
   if (!data) {
     return null;
@@ -37,12 +35,12 @@ const renderItem = (data: Record<string, any>) => {
 const displayValue = (value: any) => {
   if (typeof value != "object") {
     const val: string = value.toString();
-    // Could be an image path
-    if (val.indexOf("attachments/") > -1) {
+    // Could be an image url
+    if (val.match(/\.(png|jpg|jpeg|gif|tif|bmp)$/i)) {
       return (
         <div className="h-14 w-14 border rounded bg-gray-300 relative">
           <img
-            src={`https://${BACKEND_DOMAIN}/medias/${val}`}
+            src={val}
             alt="attachment"
             className="w-full h-full object-contain"
           />

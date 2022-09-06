@@ -92,7 +92,7 @@ export class FormTransitionViewModel extends ModalDialogViewModel {
 
       try {
         if (this.threadId) {
-          for (const fieldName of imageFieldNames) {
+          for await (const fieldName of imageFieldNames) {
             const imageUrls = await this.uploadImages(
               fieldName,
               this.form!.images[fieldName]
@@ -169,7 +169,7 @@ export class FormTransitionViewModel extends ModalDialogViewModel {
 
       if (result.success) {
         result.data?.attachments?.forEach(attachment =>
-          urls.push(attachment.file)
+          urls.push(attachment.thumbnail)
         );
       } else {
         throw new Error("Failed to upload images");

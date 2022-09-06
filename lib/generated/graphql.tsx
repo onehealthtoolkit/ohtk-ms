@@ -1113,6 +1113,7 @@ export type FeatureType = {
 
 export type FollowupReportType = {
   __typename?: "FollowupReportType";
+  createdAt: Scalars["DateTime"];
   data?: Maybe<Scalars["GenericScalar"]>;
   gpsLocation?: Maybe<Scalars["String"]>;
   id: Scalars["UUID"];
@@ -1636,6 +1637,7 @@ export type Query = {
   eventsQuery?: Maybe<EventType>;
   features?: Maybe<Array<Maybe<FeatureType>>>;
   followupReport?: Maybe<FollowupReportType>;
+  followups?: Maybe<Array<Maybe<FollowupReportType>>>;
   healthCheck?: Maybe<Scalars["String"]>;
   incidentReport?: Maybe<IncidentReportType>;
   incidentReports?: Maybe<IncidentReportTypeNodeConnection>;
@@ -1863,6 +1865,10 @@ export type QueryFollowupReportArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryFollowupsArgs = {
+  incidentId: Scalars["ID"];
+};
+
 export type QueryIncidentReportArgs = {
   id: Scalars["ID"];
 };
@@ -2079,6 +2085,7 @@ export type SubmitImage = {
   __typename?: "SubmitImage";
   file?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["UUID"]>;
+  thumbnail?: Maybe<Scalars["String"]>;
 };
 
 export type SubmitIncidentReport = {
@@ -2759,7 +2766,10 @@ export type MutationCommentCreateMutation = {
           createdAt: any;
           attachments?: Array<{
             __typename?: "CommentAttachmentType";
+            id: string;
             file: string;
+            thumbnail?: string | null;
+            createdAt: any;
           } | null> | null;
           createdBy: {
             __typename?: "UserType";
@@ -6925,7 +6935,19 @@ export const MutationCommentCreateDocument = {
                                 selections: [
                                   {
                                     kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
                                     name: { kind: "Name", value: "file" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "thumbnail" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "createdAt" },
                                   },
                                 ],
                               },
