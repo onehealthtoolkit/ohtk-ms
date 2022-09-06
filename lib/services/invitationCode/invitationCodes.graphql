@@ -55,6 +55,7 @@ mutation InvitationCodeCreate(
 mutation InvitationCodeUpdate(
   $id: ID!
   $code: String!
+  $authorityId: Int
   $fromDate: DateTime
   $throughDate: DateTime
   $role: String
@@ -62,6 +63,7 @@ mutation InvitationCodeUpdate(
   adminInvitationCodeUpdate(
     id: $id
     code: $code
+    authorityId: $authorityId
     fromDate: $fromDate
     throughDate: $throughDate
     role: $role

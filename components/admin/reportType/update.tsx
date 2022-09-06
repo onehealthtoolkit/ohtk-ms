@@ -214,10 +214,15 @@ const ReportTypeUpdateForm = () => {
       <Observer>
         {() => (
           <Field $size="half">
-            <Label htmlFor="rendererDataTemplate">Description Template</Label>
+            <Label htmlFor="rendererDataTemplate">
+              {t("form.label.descriptionTemplate", "Description Template")}
+            </Label>
             <TextArea
               id="rendererDataTemplate"
-              placeholder="description template"
+              placeholder={t(
+                "form.placeholder.descriptionTemplate",
+                "Description Template"
+              )}
               rows={5}
               onChange={evt =>
                 (viewModel.rendererDataTemplate = evt.target.value)
@@ -239,11 +244,17 @@ const ReportTypeUpdateForm = () => {
         {() => (
           <Field $size="half">
             <Label htmlFor="rendererFollowupDataTemplate">
-              Follow Up Description Template
+              {t(
+                "form.label.descriptionFollowupTemplate",
+                "Follow Up Description Template"
+              )}
             </Label>
             <TextArea
               id="rendererFollowupDataTemplate"
-              placeholder="follow up description template"
+              placeholder={t(
+                "form.placeholder.descriptionFollowupTemplate",
+                "Follow Up Description Template"
+              )}
               rows={5}
               onChange={evt =>
                 (viewModel.rendererFollowupDataTemplate = evt.target.value)

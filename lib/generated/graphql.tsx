@@ -1113,6 +1113,7 @@ export type FeatureType = {
 
 export type FollowupReportType = {
   __typename?: "FollowupReportType";
+  createdAt: Scalars["DateTime"];
   data?: Maybe<Scalars["GenericScalar"]>;
   gpsLocation?: Maybe<Scalars["String"]>;
   id: Scalars["UUID"];
@@ -1355,6 +1356,7 @@ export type MutationAdminInvitationCodeDeleteArgs = {
 };
 
 export type MutationAdminInvitationCodeUpdateArgs = {
+  authorityId?: InputMaybe<Scalars["Int"]>;
   code: Scalars["String"];
   fromDate?: InputMaybe<Scalars["DateTime"]>;
   id: Scalars["ID"];
@@ -1636,6 +1638,7 @@ export type Query = {
   eventsQuery?: Maybe<EventType>;
   features?: Maybe<Array<Maybe<FeatureType>>>;
   followupReport?: Maybe<FollowupReportType>;
+  followups?: Maybe<Array<Maybe<FollowupReportType>>>;
   healthCheck?: Maybe<Scalars["String"]>;
   incidentReport?: Maybe<IncidentReportType>;
   incidentReports?: Maybe<IncidentReportTypeNodeConnection>;
@@ -1863,6 +1866,10 @@ export type QueryFollowupReportArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryFollowupsArgs = {
+  incidentId: Scalars["ID"];
+};
+
 export type QueryIncidentReportArgs = {
   id: Scalars["ID"];
 };
@@ -2079,6 +2086,7 @@ export type SubmitImage = {
   __typename?: "SubmitImage";
   file?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["UUID"]>;
+  thumbnail?: Maybe<Scalars["String"]>;
 };
 
 export type SubmitIncidentReport = {
@@ -2921,6 +2929,7 @@ export type InvitationCodeCreateMutation = {
 export type InvitationCodeUpdateMutationVariables = Exact<{
   id: Scalars["ID"];
   code: Scalars["String"];
+  authorityId?: InputMaybe<Scalars["Int"]>;
   fromDate?: InputMaybe<Scalars["DateTime"]>;
   throughDate?: InputMaybe<Scalars["DateTime"]>;
   role?: InputMaybe<Scalars["String"]>;
@@ -7751,6 +7760,14 @@ export const InvitationCodeUpdateDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
+            name: { kind: "Name", value: "authorityId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
             name: { kind: "Name", value: "fromDate" },
           },
           type: {
@@ -7796,6 +7813,14 @@ export const InvitationCodeUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "code" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "authorityId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorityId" },
                 },
               },
               {

@@ -37,8 +37,6 @@ const StateDefinitionsUpdateForm = () => {
       )
   );
 
-  const isSubmitting = viewModel.isSubmitting;
-  const errors = viewModel.fieldErrors;
   if (router.query.activeTabIndex) {
     viewModel.activeTabIndex = +router.query.activeTabIndex;
   }
@@ -54,11 +52,11 @@ const StateDefinitionsUpdateForm = () => {
               type="text"
               placeholder={t("form.placeholder.name", "Name")}
               onChange={evt => (viewModel.name = evt.target.value)}
-              disabled={isSubmitting}
+              disabled={viewModel.isSubmitting}
               defaultValue={viewModel.name}
               required
             />
-            <ErrorText>{errors.name}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.name}</ErrorText>
           </Field>
         )}
       </Observer>
@@ -76,7 +74,7 @@ const StateDefinitionsUpdateForm = () => {
               value="True"
               defaultChecked={viewModel.isDefault}
               onChange={evt => (viewModel.isDefault = evt.target.checked)}
-              disabled={isSubmitting}
+              disabled={viewModel.isSubmitting}
               label={t("form.label.default", "Default")}
             />
           </Field>

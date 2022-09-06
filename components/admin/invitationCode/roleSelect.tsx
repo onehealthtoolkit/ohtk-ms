@@ -14,8 +14,7 @@ const RoleSelect: React.FC<RoleSelectProps> = ({ viewModel }) => {
         viewModel.role = evt.target.value;
       }}
       disabled={viewModel.isSubmitting}
-      defaultValue="REP"
-      value={viewModel.role}
+      value={viewModel.role || "REP"}
     >
       <option value="REP">Reporter</option>
       <option value="OFC">Officer</option>
