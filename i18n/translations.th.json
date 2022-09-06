@@ -21,7 +21,9 @@
   "filter": {
     "searchButton": "ค้นหา",
     "resetButton": "รีเซ็ต",
-    "placeholder": "ค้นหา"
+    "placeholder": "ค้นหา",
+    "listView": "ตาราง",
+    "calendarView": "ดูปฏิทินงาน"
   },
   "table": {
     "id": "ไอดี",

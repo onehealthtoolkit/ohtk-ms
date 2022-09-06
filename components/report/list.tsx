@@ -18,8 +18,11 @@ import CaseLink from "components/case/caseLink";
 import { CalendarIcon, TableIcon } from "@heroicons/react/solid";
 import Calendar from "components/widgets/calendar";
 import { ReportDayEvents } from "components/report/dayEvents";
+import { useTranslation } from "react-i18next";
 
 const JSURL = require("jsurl");
+
+const { t } = useTranslation();
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -66,14 +69,14 @@ const ViewSwitch = ({
         onClick={() => onSwitchView(false)}
       >
         <TableIcon className="w-5 h-5 mr-2" />
-        <span>ตาราง</span>
+        <span>{ t("filter.listView", "List") }</span>
       </SwitchViewButton>
       <SwitchViewButton
         active={isCalendarView ? 1 : 0}
         onClick={() => onSwitchView(true)}
       >
         <CalendarIcon className="w-5 h-5 mr-2" />
-        <span>ดูปฏิทินงาน</span>
+        <span>{ t("filter.calendarView", "Calendar") }</span>
       </SwitchViewButton>
     </div>
   );

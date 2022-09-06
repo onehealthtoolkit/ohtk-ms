@@ -21,7 +21,9 @@
   "filter": {
     "searchButton": "Search",
     "resetButton": "Reset",
-    "placeholder": "Search"
+    "placeholder": "Search",
+    "listView": "List",
+    "calendarView": "Calendar"
   },
   "table": {
     "id": "ID",
