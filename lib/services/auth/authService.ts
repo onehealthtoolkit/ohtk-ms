@@ -53,7 +53,7 @@ export type SingInFailure = {
   message: string;
 };
 export interface IAuthService extends IService {
-  refreshToken(): Promise<boolean>;
+  refreshToken(refreshToken?: string): Promise<boolean>;
   signIn(username: string, password: string): Promise<SignInResult>;
   signOut(): Promise<void>;
   startAutoRefreshToken(): void;
@@ -82,9 +82,12 @@ export class AuthService implements IAuthService {
     }, 60 * 1 * 1000 /* millisec */);
   }
 
-  async refreshToken(): Promise<boolean> {
+  async refreshToken(refreshToken?: string): Promise<boolean> {
     const result = await this.client.mutate({
       mutation: RefreshTokenDocument,
+      variables: {
+        refreshToken,
+      },
     });
     console.log("refreshtoken", result);
 

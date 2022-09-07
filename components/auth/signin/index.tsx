@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { ServerIcon } from "@heroicons/react/outline";
 import LanguageSelect from "../languageSelect";
 import getConfig from "next/config";
+import { useRouter } from "next/router";
 const { publicRuntimeConfig } = getConfig();
 
 const tenantsApiEndpoint = publicRuntimeConfig.tenantsApiEndpoint;
@@ -15,6 +16,7 @@ const SignIn = () => {
   const store = useStore();
   const [viewModel, setViewModel] = useState<SignInViewModel | undefined>();
   const { t } = useTranslation();
+  const router = useRouter();
 
   useEffect(() => {
     if (!store.initTokenPending) {
@@ -126,6 +128,16 @@ const SignIn = () => {
                 <button className="block w-full px-4 py-2 mt-4 font-bold leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                   {t("form.button.signin", " Sign In")}
                 </button>
+
+                <div className="mt-8 text-sm font-display font-semibold text-gray-700 text-center">
+                  {t("form.label.noAccount", "Don't have an account ?")}
+                  <a
+                    onClick={() => router.push("/register")}
+                    className="cursor-pointer text-indigo-600 hover:text-indigo-800 ml-2"
+                  >
+                    {t("form.button.signup", " Sign up")}
+                  </a>
+                </div>
               </div>
             </div>
           </div>

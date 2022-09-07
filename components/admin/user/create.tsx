@@ -101,7 +101,7 @@ const UserCreate = () => {
           <TextInput
             id="telephone"
             type="text"
-            placeholder={t("form.placeholder.email", "Telephone")}
+            placeholder={t("form.placeholder.telephone", "Telephone")}
             onChange={evt => (viewModel.telephone = evt.target.value)}
             disabled={isSubmitting}
           />

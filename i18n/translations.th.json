@@ -79,7 +79,11 @@
       "newPassword": "รหัสผ่าน",
       "confirmPassword": "ยืนยันรหัสผ่าน",
       "to": "To",
-      "action": "Action"
+      "action": "Action",
+      "noAccount": "ไม่มีบัญชีผู้ใช้ระบบ",
+      "invitationCode": "รหัสลงทะเบียน",
+      "language": "ภาษา",
+      "server": "เซริฟเวอร์"
     },
     "placeholder": {
       "code": "รหัส",
@@ -116,14 +120,19 @@
       "newPassword": "รหัสผ่าน",
       "confirmPassword": "ยืนยันรหัสผ่าน",
       "to": "ถึง",
-      "selectReportType": "เลือกประเภทรายงาน"
+      "selectReportType": "เลือกประเภทรายงาน",
+      "invitationCode": "รหัสลงทะเบียน",
+      "language": "ภาษา",
+      "server": "เซริฟเวอร์"
     },
     "button": {
       "signin": "เข้าสู่ระบบ",
+      "signup": "ลงทะเบียน",
       "delete": "ลบ",
       "add": "เพิ่ม",
       "save": "บันทึก",
-      "cancel": "ยกเลิก"
+      "cancel": "ยกเลิก",
+      "next": "ไปขั้นตอนต่อไป"
     }
   },
   "dialog": {
@@ -135,6 +144,7 @@
     }
   },
   "title": {
-    "login": "ลงชื่อเข้าใช้บัญชีของคุณ"
+    "login": "ลงชื่อเข้าใช้บัญชีของคุณ",
+    "signup": "ลงทะเบียน"
   }
 }

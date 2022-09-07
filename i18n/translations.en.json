@@ -79,7 +79,11 @@
       "newPassword": "Password",
       "confirmPassword": "Confirm password",
       "to": "To",
-      "action": "Action"
+      "action": "Action",
+      "registerLogin": "Don't have an account ?",
+      "invitationCode": "Invitation Code",
+      "language": "Language",
+      "server": "Server"
     },
     "placeholder": {
       "code": "Code",
@@ -113,14 +117,19 @@
       "newPassword": "Password",
       "confirmPassword": "Confirm password",
       "to": "To",
-      "selectReportType": "Select report type"
+      "selectReportType": "Select report type",
+      "invitationCode": "Invitation Code",
+      "language": "Language",
+      "server": "Server"
     },
     "button": {
       "signin": "Sign In",
+      "signup": "Sign Up",
       "delete": "Delete",
       "add": "Add",
       "save": "Save",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "next": "Next"
     }
   },
   "dialog": {
@@ -132,6 +141,7 @@
     }
   },
   "title": {
-    "login": "Login to Your Account"
+    "login": "Login to Your Account",
+    "signup": "Sign Up"
   }
 }

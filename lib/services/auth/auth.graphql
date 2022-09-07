@@ -7,8 +7,8 @@ mutation DeleteTokenCookie {
   }
 }
 
-mutation RefreshToken {
-  refreshToken {
+mutation RefreshToken($refreshToken: String) {
+  refreshToken(refreshToken: $refreshToken) {
     token
     payload
   }
