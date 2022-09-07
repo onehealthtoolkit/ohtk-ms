@@ -29,7 +29,7 @@ const Register = () => {
         )
       );
     }
-  }, [store, services.registerService, services.authService]);
+  }, [store, services, store.initTokenPending]);
 
   if (viewModel === undefined) {
     return null;

@@ -66,6 +66,7 @@ export class RegisterViewModel {
       isValid: computed,
       fetchTenant: action,
       state: observable,
+      serverOptions: observable,
     });
 
     this.fetchTenant(tenantApiEndpoint);
