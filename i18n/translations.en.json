@@ -5,14 +5,14 @@
     "cases": "Cases",
     "authorities": "Authorities",
     "users": "Users",
-    "reportCategories": "Report Category",
-    "reportTypes": "Report Type",
-    "tnvitationCodes": "Invitation codesy",
+    "reportCategories": "Report Categories",
+    "reportTypes": "Report Types",
+    "tnvitationCodes": "Invitation Codes",
     "caseDefinitions": "Case Definitions",
     "stateDefinitions": "State Definitions",
-    "notificationTemplates": "Notification Templates",
+    "notificationTemplates": "Notification Types",
     "notifications": "Notifications",
-    "reporterNotifications": "Reporter Notifications",
+    "reporterNotifications": "Reporter Alerts",
     "profile": "Profile",
     "create": "Create",
     "update": "Update",
@@ -71,16 +71,16 @@
       "fromStep": "From Step",
       "toStep": "To Step",
       "formDefinition": "Form Definition",
-      "changePicture": "Change picture",
+      "changePicture": "Change Picture",
       "authority": "Authority",
       "changePassword": "Change Password",
       "changeProfile": "Change Profile",
       "password": "Password",
       "newPassword": "Password",
-      "confirmPassword": "Confirm password",
+      "confirmPassword": "Confirm Password",
       "to": "To",
       "action": "Action",
-      "registerLogin": "Don't have an account ?",
+      "registerLogin": "Don't have an account yet?",
       "invitationCode": "Invitation Code",
       "language": "Language",
       "server": "Server"
@@ -90,7 +90,7 @@
       "name": "Name",
       "description": "Description",
       "ordering": "Ordering",
-      "username": "username",
+      "username": "Username",
       "firstName": "First Name",
       "lastName": "Last Name",
       "email": "Email",
@@ -115,9 +115,9 @@
       "formDefinition": "Form Definition",
       "password": "Password",
       "newPassword": "Password",
-      "confirmPassword": "Confirm password",
+      "confirmPassword": "Confirm Password",
       "to": "To",
-      "selectReportType": "Select report type",
+      "selectReportType": "Select Report Type",
       "invitationCode": "Invitation Code",
       "language": "Language",
       "server": "Server"
@@ -134,10 +134,10 @@
   },
   "dialog": {
     "title": {
-      "confirmDelete": "Confirm delete"
+      "confirmDelete": "Confirm Delete"
     },
     "content": {
-      "confirmDelete": "Are you sure ?"
+      "confirmDelete": "Are you sure?"
     }
   },
   "title": {
