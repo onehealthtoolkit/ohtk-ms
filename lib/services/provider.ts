@@ -18,6 +18,7 @@ import { DashboardService } from "./dashboard/dashboardService";
 import { NotificationTemplateService } from "./notificationTemplate";
 import { NotificationService } from "./notification";
 import { CommentService } from "lib/services/comment/commentService";
+import { RegisterService } from "./register/registerService";
 
 export interface IServiceProvider {
   get authService(): IAuthService;
@@ -38,6 +39,7 @@ export interface IServiceProvider {
   get notificationTemplateService(): NotificationTemplateService;
   get notificationService(): NotificationService;
   get commentService(): CommentService;
+  get registerService(): RegisterService;
 }
 
 export class ServicesProvider implements IServiceProvider {
@@ -61,6 +63,7 @@ export class ServicesProvider implements IServiceProvider {
   notificationTemplateService: NotificationTemplateService;
   notificationService: NotificationService;
   commentService: CommentService;
+  registerService: RegisterService;
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
@@ -82,6 +85,7 @@ export class ServicesProvider implements IServiceProvider {
     this.notificationTemplateService = new NotificationTemplateService(client);
     this.notificationService = new NotificationService(client);
     this.commentService = new CommentService(client);
+    this.registerService = new RegisterService(client);
   }
 }
 

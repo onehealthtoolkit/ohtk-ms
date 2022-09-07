@@ -8,7 +8,7 @@ import {
   runInAction,
 } from "mobx";
 
-type serverOption = {
+export type serverOption = {
   label: string;
   domain: string;
 };

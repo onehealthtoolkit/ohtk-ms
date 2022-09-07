@@ -1,0 +1,43 @@
+query CheckCode($code: String!) {
+  checkInvitationCode(code: $code) {
+    code
+    authority {
+      id
+      code
+      name
+    }
+  }
+}
+
+mutation UserRegister(
+  $email: String!
+  $firstName: String!
+  $invitationCode: String!
+  $lastName: String!
+  $telephone: String = null
+  $username: String!
+) {
+  authorityUserRegister(
+    email: $email
+    firstName: $firstName
+    invitationCode: $invitationCode
+    lastName: $lastName
+    telephone: $telephone
+    username: $username
+  ) {
+    me {
+      id
+      username
+      firstName
+      lastName
+      authorityName
+      authorityId
+      avatarUrl
+      role
+      isStaff
+      isSuperuser
+    }
+    refreshToken
+    token
+  }
+}

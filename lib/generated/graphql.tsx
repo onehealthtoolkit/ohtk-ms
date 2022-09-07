@@ -2171,7 +2171,9 @@ export type DeleteTokenCookieMutation = {
   } | null;
 };
 
-export type RefreshTokenMutationVariables = Exact<{ [key: string]: never }>;
+export type RefreshTokenMutationVariables = Exact<{
+  refreshToken?: InputMaybe<Scalars["String"]>;
+}>;
 
 export type RefreshTokenMutation = {
   __typename?: "Mutation";
@@ -3221,6 +3223,55 @@ export type UserUploadAvatarMutation = {
   } | null;
 };
 
+export type CheckCodeQueryVariables = Exact<{
+  code: Scalars["String"];
+}>;
+
+export type CheckCodeQuery = {
+  __typename?: "Query";
+  checkInvitationCode?: {
+    __typename?: "CheckInvitationCodeType";
+    code: string;
+    authority: {
+      __typename?: "AdminAuthorityCreateSuccess";
+      id: string;
+      code: string;
+      name: string;
+    };
+  } | null;
+};
+
+export type UserRegisterMutationVariables = Exact<{
+  email: Scalars["String"];
+  firstName: Scalars["String"];
+  invitationCode: Scalars["String"];
+  lastName: Scalars["String"];
+  telephone?: InputMaybe<Scalars["String"]>;
+  username: Scalars["String"];
+}>;
+
+export type UserRegisterMutation = {
+  __typename?: "Mutation";
+  authorityUserRegister?: {
+    __typename?: "AuthorityUserRegisterMutation";
+    refreshToken?: string | null;
+    token?: string | null;
+    me?: {
+      __typename?: "UserProfileType";
+      id: number;
+      username: string;
+      firstName: string;
+      lastName: string;
+      authorityName?: string | null;
+      authorityId?: number | null;
+      avatarUrl?: string | null;
+      role?: string | null;
+      isStaff?: boolean | null;
+      isSuperuser?: boolean | null;
+    } | null;
+  } | null;
+};
+
 export type ReportsQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
@@ -4245,12 +4296,32 @@ export const RefreshTokenDocument = {
       kind: "OperationDefinition",
       operation: "mutation",
       name: { kind: "Name", value: "RefreshToken" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "refreshToken" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
             kind: "Field",
             name: { kind: "Name", value: "refreshToken" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "refreshToken" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "refreshToken" },
+                },
+              },
+            ],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
@@ -9195,6 +9266,272 @@ export const UserUploadAvatarDocument = {
 } as unknown as DocumentNode<
   UserUploadAvatarMutation,
   UserUploadAvatarMutationVariables
+>;
+export const CheckCodeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "CheckCode" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "code" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "checkInvitationCode" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "code" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "code" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "authority" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CheckCodeQuery, CheckCodeQueryVariables>;
+export const UserRegisterDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UserRegister" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "email" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "firstName" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "invitationCode" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "lastName" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "telephone" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "NullValue" },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "username" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "authorityUserRegister" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "email" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "email" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "firstName" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "firstName" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "invitationCode" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "invitationCode" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "lastName" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "lastName" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "telephone" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "telephone" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "username" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "username" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "me" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "firstName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "lastName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "authorityName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "authorityId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "avatarUrl" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "role" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isStaff" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isSuperuser" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "refreshToken" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "token" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UserRegisterMutation,
+  UserRegisterMutationVariables
 >;
 export const ReportsDocument = {
   kind: "Document",

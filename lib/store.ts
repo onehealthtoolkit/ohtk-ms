@@ -28,6 +28,7 @@ export class Store {
       initTokenPending: observable,
       isLogin: observable,
       signIn: action,
+      register: action,
       fetchMe: action,
       toggleOpenMenu: action,
       toggleCollapseMenu: action,
@@ -82,6 +83,13 @@ export class Store {
   async fetchMe(): Promise<void> {
     var me = await this.profileService.fetchMe();
     runInAction(() => {
+      this.me = me;
+    });
+  }
+
+  async register(me: Me): Promise<void> {
+    runInAction(() => {
+      this.isLogin = true;
       this.me = me;
     });
   }
