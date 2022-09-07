@@ -76,9 +76,9 @@ const ReportImage = observer(({ viewModel }: { viewModel: CaseViewModel }) => {
 const Case = (props: { id: string }) => {
   const { id } = props;
   const { me } = useStore();
-  const services = useServices();
+  const { caseService, commentService } = useServices();
   const [viewModel] = useState(
-    new CaseViewModel(id as string, me!, services.caseService)
+    new CaseViewModel(id as string, me!, caseService, commentService)
   );
 
   return (

@@ -26,9 +26,14 @@ const CaseStateView: FC<CaseStateViewProps> = ({
           <CaseStateStep
             key={caseState.id}
             caseState={caseState}
-            onTransitionSelect={(transitionId, formDefinition) =>
-              viewModel.showFormTransitionDialog(transitionId, formDefinition)
-            }
+            onTransitionSelect={(transitionId, formDefinition) => {
+              const transition = caseState.state.toTransitions?.find(
+                transition => transition?.id == transitionId
+              );
+              if (transition) {
+                viewModel.showFormTransitionDialog(transition, formDefinition);
+              }
+            }}
           >
             {index < viewModel.states.length - 1 ? (
               <StateArrow caseState={caseState} />

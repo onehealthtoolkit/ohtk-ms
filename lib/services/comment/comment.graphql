@@ -33,7 +33,10 @@ mutation MutationCommentCreate(
         body
         threadId
         attachments {
+          id
           file
+          thumbnail
+          createdAt
         }
         createdAt
         createdBy {

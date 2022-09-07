@@ -2769,7 +2769,10 @@ export type MutationCommentCreateMutation = {
           createdAt: any;
           attachments?: Array<{
             __typename?: "CommentAttachmentType";
+            id: string;
             file: string;
+            thumbnail?: string | null;
+            createdAt: any;
           } | null> | null;
           createdBy: {
             __typename?: "UserType";
@@ -7005,7 +7008,19 @@ export const MutationCommentCreateDocument = {
                                 selections: [
                                   {
                                     kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
                                     name: { kind: "Name", value: "file" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "thumbnail" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "createdAt" },
                                   },
                                 ],
                               },

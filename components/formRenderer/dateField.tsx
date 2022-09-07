@@ -83,7 +83,7 @@ const Component: FC<FormDateFieldProps> = ({ field }) => {
   });
 
   // Year range is between +/- 10 years from now
-  const years = [...Array(120)].map<Option>((_, it) => {
+  const years = [...Array(20)].map<Option>((_, it) => {
     const y = it + currentYear - 9;
     let disabled = false;
     if (field.month && field.day) {

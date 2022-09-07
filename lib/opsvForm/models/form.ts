@@ -2,10 +2,16 @@ import { action, computed, makeObservable, observable } from "mobx";
 import Field from "./fields";
 import Section from "./section";
 import { Values } from "./values";
+import { v4 as uuidv4 } from "uuid";
+
+export type FormImageMap = {
+  [id: string]: string; // uuid : base64-encoded image
+};
 
 export default class Form {
   sections: Section[] = [];
   values: Values = new Values();
+  images: { [fieldName: string]: FormImageMap } = {};
 
   _currentSectionIdx: number = 0;
 
@@ -18,6 +24,9 @@ export default class Form {
       couldGoToPreviousSection: computed,
       next: action,
       previous: action,
+      images: observable,
+      addImage: action,
+      removeImage: action,
     });
   }
 
@@ -82,5 +91,20 @@ export default class Form {
 
   public getField<T extends Field>(name: string): T {
     return this.values.getDelegate(name).getField() as T;
+  }
+
+  addImage(fieldName: string, base64: string): string {
+    const id = uuidv4();
+    if (!this.images[fieldName]) {
+      this.images[fieldName] = {};
+    }
+    this.images[fieldName][id] = base64;
+    return id;
+  }
+
+  removeImage(fieldName: string, id: string) {
+    if (this.images[fieldName]) {
+      delete this.images[fieldName][id];
+    }
   }
 }

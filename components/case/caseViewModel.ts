@@ -12,6 +12,7 @@ import { CaseStateViewViewModel } from "components/case/caseState/viewViewModel"
 import { Me } from "lib/services/profile/me";
 import { FetchPolicy } from "@apollo/client";
 import { GalleryDialogViewModel } from "components/widgets/dialogs/galleryDialogViewModel";
+import { ICommentService } from "lib/services/comment/commentService";
 
 export class CaseViewModel extends BaseViewModel {
   data: CaseDetail = {} as CaseDetail;
@@ -20,7 +21,12 @@ export class CaseViewModel extends BaseViewModel {
   stateViewViewModel: CaseStateViewViewModel;
   galleryViewModel?: GalleryDialogViewModel = undefined;
 
-  constructor(id: string, readonly me: Me, readonly caseService: ICaseService) {
+  constructor(
+    id: string,
+    readonly me: Me,
+    readonly caseService: ICaseService,
+    readonly commentService: ICommentService
+  ) {
     super();
     makeObservable(this, {
       data: observable,
@@ -32,7 +38,7 @@ export class CaseViewModel extends BaseViewModel {
     });
     this.id = id;
     this.stateViewViewModel = observable(
-      new CaseStateViewViewModel(me, caseService)
+      new CaseStateViewViewModel(me, caseService, commentService)
     );
     this.fetch();
   }
@@ -54,7 +60,8 @@ export class CaseViewModel extends BaseViewModel {
           this.stateViewViewModel?.init(
             data.id,
             data.stateDefinition,
-            data.states
+            data.states,
+            data.threadId
           );
         }
       });

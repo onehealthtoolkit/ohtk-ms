@@ -7,6 +7,7 @@ import DateField from "./fields/dateField";
 import LocationField from "./fields/locationField";
 import SingleChoicesField from "./fields/singleChoicesField";
 import MultipleChoicesField from "./fields/multipleChoicesField";
+import ImagesField from "./fields/imagesField";
 import Form from "./form";
 import Question from "./question";
 import Section from "./section";
@@ -48,7 +49,8 @@ export type FieldType =
   | DateFieldType
   | LocationFieldType
   | SingleChoicesFieldType
-  | MultipleChoicesFieldType;
+  | MultipleChoicesFieldType
+  | ImagesFieldType;
 
 export type BaseFieldType = {
   id: string;
@@ -100,6 +102,14 @@ export type SingleChoicesFieldType = {
 export type MultipleChoicesFieldType = {
   type: "multiplechoices";
   options: ChoiceOption[];
+} & BaseFieldType;
+
+export type ImagesFieldType = {
+  type: "images";
+  min?: number;
+  max?: number;
+  minMessage?: string;
+  maxMessage?: string;
 } & BaseFieldType;
 
 export function parseForm(json: FormType): Form {
@@ -179,6 +189,14 @@ export function parseField(json: FieldType): Field {
         json["options"],
         commonParams
       );
+    case "images":
+      return new ImagesField(json["id"], json["name"], {
+        ...commonParams,
+        min: json["min"],
+        minMessage: json["minMessage"],
+        max: json["max"],
+        maxMessage: json["maxMessage"],
+      });
     default:
       return new TextField("unknown", "unknown", {});
   }
