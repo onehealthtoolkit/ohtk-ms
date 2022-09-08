@@ -71,19 +71,21 @@ const ReportImage = observer(
   ({ viewModel }: { viewModel: ReportViewModel }) => {
     return (
       <Fragment>
-        {viewModel.data.images?.map((image, idx) => (
-          <div key={idx} className="">
-            <a
-              href="#"
-              onClick={e => {
-                e.preventDefault();
-                viewModel.openGallery(image.id);
-              }}
-            >
-              <img className="w-40" src={image.thumbnail} alt="" />
-            </a>
-          </div>
-        ))}
+        <div className="flex flex-wrap  gap-4">
+          {viewModel.data.images?.map((image, idx) => (
+            <div key={idx} className="">
+              <a
+                href="#"
+                onClick={e => {
+                  e.preventDefault();
+                  viewModel.openGallery(image.id);
+                }}
+              >
+                <img className="w-40 h-32" src={image.thumbnail} alt="" />
+              </a>
+            </div>
+          ))}
+        </div>
       </Fragment>
     );
   }
