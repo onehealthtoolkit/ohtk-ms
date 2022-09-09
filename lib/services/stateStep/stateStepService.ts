@@ -5,6 +5,7 @@ import {
   GetStateStepDocument,
   GetStateDefinitionDocument,
   StateStepsDocument,
+  StateStepDeleteDocument,
 } from "lib/generated/graphql";
 import { StateStep } from "lib/services/stateStep/stateStep";
 import {
@@ -34,7 +35,7 @@ export interface IStateStepService extends IService {
     stateDefinitionId: string
   ): Promise<SaveResult<StateStep>>;
 
-  deleteStateStep(id: string): Promise<DeleteResult>;
+  deleteStateStep(id: string, stateDefinitionId: string): Promise<DeleteResult>;
 }
 
 export class StateStepService implements IStateStepService {
@@ -50,6 +51,7 @@ export class StateStepService implements IStateStepService {
       variables: {
         definitionId: stateDefinitionId,
       },
+      fetchPolicy: "network-only",
     });
 
     const items = Array<StateStep>();
@@ -114,6 +116,13 @@ export class StateStepService implements IStateStepService {
       ],
       awaitRefetchQueries: true,
     });
+
+    if (createResult.errors) {
+      return {
+        success: false,
+        message: createResult.errors.map(o => o.message).join(","),
+      };
+    }
 
     const result = createResult.data?.adminStateStepCreate?.result;
     switch (result?.__typename) {
@@ -189,6 +198,13 @@ export class StateStepService implements IStateStepService {
       },
     });
 
+    if (updateResult.errors) {
+      return {
+        success: false,
+        message: updateResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = updateResult.data?.adminStateStepUpdate?.result;
     switch (result?.__typename) {
       case "AdminStateStepUpdateSuccess": {
@@ -213,8 +229,24 @@ export class StateStepService implements IStateStepService {
       success: true,
     };
   }
-  async deleteStateStep(id: string) {
-    console.log("delete report type", id);
-    return { error: "" };
+
+  async deleteStateStep(id: string, stateDefinitionId: string) {
+    const deleteResult = await this.client.mutate({
+      mutation: StateStepDeleteDocument,
+      variables: {
+        id,
+      },
+      refetchQueries: [
+        {
+          query: GetStateDefinitionDocument,
+          variables: {
+            id: stateDefinitionId,
+          },
+          fetchPolicy: "network-only",
+        },
+      ],
+    });
+
+    return { error: deleteResult.errors?.map(o => o.message).join(",") };
   }
 }

@@ -74,6 +74,12 @@ mutation ReportCategoryUpdate(
   }
 }
 
+mutation ReportCategoryDelete($id: ID!) {
+  adminCategoryDelete(id: $id) {
+    success
+  }
+}
+
 query GetReportCategory($id: ID!) {
   category(id: $id) {
     id

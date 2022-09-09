@@ -77,6 +77,12 @@ mutation StateStepUpdate(
   }
 }
 
+mutation StateStepDelete($id: ID!) {
+  adminStateStepDelete(id: $id) {
+    success
+  }
+}
+
 query GetStateStep($id: ID!) {
   stateStepGet(id: $id) {
     id

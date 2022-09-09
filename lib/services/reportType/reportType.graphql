@@ -142,6 +142,11 @@ mutation ReportTypeUpdate(
   }
 }
 
+mutation ReportTypeDelete($id: ID!) {
+  adminReportTypeDelete(id: $id) {
+    success
+  }
+}
 query GetReportType($id: ID!) {
   reportType(id: $id) {
     id

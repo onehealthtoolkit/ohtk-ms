@@ -6,6 +6,7 @@ import {
   GetReportTypeDocument,
   MyReportTypesDocument,
   ReportTypeSelectionsDocument,
+  ReportTypeDeleteDocument,
 } from "lib/generated/graphql";
 import { ReportType } from "lib/services/reportType/reportType";
 import {
@@ -228,6 +229,13 @@ export class ReportTypeService implements IReportTypeService {
       awaitRefetchQueries: true,
     });
 
+    if (createResult.errors) {
+      return {
+        success: false,
+        message: createResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = createResult.data?.adminReportTypeCreate?.result;
     switch (result?.__typename) {
       case "AdminReportTypeCreateSuccess": {
@@ -310,6 +318,13 @@ export class ReportTypeService implements IReportTypeService {
       },
     });
 
+    if (updateResult.errors) {
+      return {
+        success: false,
+        message: updateResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = updateResult.data?.adminReportTypeUpdate?.result;
     switch (result?.__typename) {
       case "AdminReportTypeUpdateSuccess": {
@@ -335,7 +350,35 @@ export class ReportTypeService implements IReportTypeService {
     };
   }
   async deleteReportType(id: string) {
-    console.log("delete report type", id);
-    return { error: "" };
+    const deleteResult = await this.client.mutate({
+      mutation: ReportTypeDeleteDocument,
+      variables: {
+        id,
+      },
+      refetchQueries: [
+        {
+          query: ReportTypesDocument,
+          variables: this.fetchReportTypesQuery,
+          fetchPolicy: "network-only",
+        },
+      ],
+      awaitRefetchQueries: true,
+      update: cache => {
+        cache.evict({
+          id: cache.identify({
+            __typename: "AdminReportTypeQueryType",
+            id: id,
+          }),
+        });
+        cache.evict({
+          id: cache.identify({
+            __typename: "ReportTypeType",
+            id: id,
+          }),
+        });
+      },
+    });
+
+    return { error: deleteResult.errors?.map(o => o.message).join(",") };
   }
 }

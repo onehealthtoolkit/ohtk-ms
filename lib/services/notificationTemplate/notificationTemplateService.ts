@@ -6,6 +6,7 @@ import {
   GetNotificationTemplateDocument,
   NotificationTemplateAuthorityDocument,
   CasesNotificationTemplateTypeChoices,
+  NotificationTemplateDeleteDocument,
 } from "lib/generated/graphql";
 import { NotificationTemplate } from "lib/services/notificationTemplate/notificationTemplate";
 import {
@@ -182,6 +183,13 @@ export class NotificationTemplateService
       awaitRefetchQueries: true,
     });
 
+    if (createResult.errors) {
+      return {
+        success: false,
+        message: createResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = createResult.data?.adminNotificationTemplateCreate?.result;
     switch (result?.__typename) {
       case "AdminNotificationTemplateCreateSuccess": {
@@ -272,6 +280,13 @@ export class NotificationTemplateService
       },
     });
 
+    if (updateResult.errors) {
+      return {
+        success: false,
+        message: updateResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = updateResult.data?.adminNotificationTemplateUpdate?.result;
     switch (result?.__typename) {
       case "AdminNotificationTemplateUpdateSuccess": {
@@ -298,7 +313,35 @@ export class NotificationTemplateService
   }
 
   async deleteNotificationTemplate(id: string) {
-    console.log("delete Notification Template", id);
-    return { error: "" };
+    const deleteResult = await this.client.mutate({
+      mutation: NotificationTemplateDeleteDocument,
+      variables: {
+        id,
+      },
+      refetchQueries: [
+        {
+          query: NotificationTemplatesDocument,
+          variables: this.fetchNotificationTemplatesQuery,
+          fetchPolicy: "network-only",
+        },
+      ],
+      awaitRefetchQueries: true,
+      update: cache => {
+        cache.evict({
+          id: cache.identify({
+            __typename: "AdminNotificationTemplateQueryType",
+            id: id,
+          }),
+        });
+        cache.evict({
+          id: cache.identify({
+            __typename: "NotificationTemplateType",
+            id: id,
+          }),
+        });
+      },
+    });
+
+    return { error: deleteResult.errors?.map(o => o.message).join(",") };
   }
 }

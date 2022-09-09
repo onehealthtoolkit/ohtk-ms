@@ -5,6 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { StateDefinitionUpdateViewModel } from "../updateViewModel";
+import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
+import { StateStep } from "lib/services/stateStep";
+import { Observer } from "mobx-react";
 
 export const StateStepList = ({
   viewModel,
@@ -31,56 +34,66 @@ export const StateStepList = ({
           <AddButton />
         </Link>
       </div>
-
-      <Table
-        columns={[
-          {
-            label: t("form.label.id", "Id"),
-            get: record => record.id,
-          },
-          {
-            label: t("form.label.name", "Name"),
-            get: record => record.name,
-          },
-          {
-            label: t("form.label.isStartState", "Is StartState"),
-            get: record => {
-              return record.isStartState ? (
-                <CheckIcon className="h-5 w-5" />
-              ) : (
-                ""
-              );
-            },
-          },
-          {
-            label: t("form.label.isStopState", "Is StopState"),
-            get: record => {
-              return record.isStopState ? (
-                <CheckIcon className="h-5 w-5" />
-              ) : (
-                ""
-              );
-            },
-          },
-        ]}
-        data={viewModel?.stateSteps || []}
-        onEdit={record =>
-          router.push({
-            pathname: `/admin/state_definitions/${viewModel.id}/steps/${record.id}/update`,
-            query: {
-              definition_name: viewModel.name,
-            },
-          })
-        }
-        onView={record =>
-          router.push({
-            pathname: `/admin/state_definitions/${viewModel.id}/steps/${record.id}/view`,
-            query: {
-              definition_name: viewModel.name,
-            },
-          })
-        }
-        onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
+      <Observer>
+        {() => (
+          <Table
+            columns={[
+              {
+                label: t("form.label.id", "Id"),
+                get: record => record.id,
+              },
+              {
+                label: t("form.label.name", "Name"),
+                get: record => record.name,
+              },
+              {
+                label: t("form.label.isStartState", "Is StartState"),
+                get: record => {
+                  return record.isStartState ? (
+                    <CheckIcon className="h-5 w-5" />
+                  ) : (
+                    ""
+                  );
+                },
+              },
+              {
+                label: t("form.label.isStopState", "Is StopState"),
+                get: record => {
+                  return record.isStopState ? (
+                    <CheckIcon className="h-5 w-5" />
+                  ) : (
+                    ""
+                  );
+                },
+              },
+            ]}
+            data={viewModel?.stateSteps || []}
+            onEdit={record =>
+              router.push({
+                pathname: `/admin/state_definitions/${viewModel.id}/steps/${record.id}/update`,
+                query: {
+                  definition_name: viewModel.name,
+                },
+              })
+            }
+            onView={record =>
+              router.push({
+                pathname: `/admin/state_definitions/${viewModel.id}/steps/${record.id}/view`,
+                query: {
+                  definition_name: viewModel.name,
+                },
+              })
+            }
+            onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
+          />
+        )}
+      </Observer>
+      <ConfirmDialog
+        store={viewModel.dialog("confirmDelete")}
+        title={t("dialog.title.confirmDelete", "Confirm delete")}
+        content={t("dialog.content.confirmDelete", "Are you sure?")}
+        onYes={(record: StateStep) => viewModel.deleteStep(record.id)}
+        onNo={() => viewModel.dialog("confirmDelete")?.close()}
       />
     </div>
   );

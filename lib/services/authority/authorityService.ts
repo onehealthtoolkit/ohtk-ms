@@ -6,6 +6,7 @@ import {
   GetAuthorityDocument,
   AuthorityInheritLookupDocument,
   AuthorityInheritsDownLookupDocument,
+  AuthorityDeleteDocument,
 } from "lib/generated/graphql";
 import { Authority, PolygonData } from "lib/services/authority/authority";
 import {
@@ -193,6 +194,12 @@ export class AuthorityService implements IAuthorityService {
       ],
       awaitRefetchQueries: true,
     });
+    if (createResult.errors) {
+      return {
+        success: false,
+        message: createResult.errors.map(o => o.message).join(","),
+      };
+    }
 
     const result = createResult.data?.adminAuthorityCreate?.result;
     switch (result?.__typename) {
@@ -266,6 +273,13 @@ export class AuthorityService implements IAuthorityService {
       },
     });
 
+    if (updateResult.errors) {
+      return {
+        success: false,
+        message: updateResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = updateResult.data?.adminAuthorityUpdate?.result;
     switch (result?.__typename) {
       case "AdminAuthorityUpdateSuccess": {
@@ -292,7 +306,35 @@ export class AuthorityService implements IAuthorityService {
   }
 
   async deleteAuthority(id: string) {
-    console.log("delete authority", id);
-    return { error: "" };
+    const deleteResult = await this.client.mutate({
+      mutation: AuthorityDeleteDocument,
+      variables: {
+        id,
+      },
+      refetchQueries: [
+        {
+          query: AuthorityQueryDocument,
+          variables: this.fetchAuthoritiesQuery,
+          fetchPolicy: "network-only",
+        },
+      ],
+      awaitRefetchQueries: true,
+      update: cache => {
+        cache.evict({
+          id: cache.identify({
+            __typename: "AdminAuthorityQueryType",
+            id: id,
+          }),
+        });
+        cache.evict({
+          id: cache.identify({
+            __typename: "AuthorityType",
+            id: id,
+          }),
+        });
+      },
+    });
+
+    return { error: deleteResult.errors?.map(o => o.message).join(",") };
   }
 }

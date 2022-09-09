@@ -50,6 +50,8 @@ export class AdminReportCategoryListViewModel extends BaseViewModel {
     const result = await this.reportCategorService.deleteReportCategory(id);
     if (result.error) {
       this.setErrorMessage(result.error);
+    } else {
+      this.fetch();
     }
   }
 }

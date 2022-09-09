@@ -13,7 +13,7 @@
     "jest:test": "jest",
     "jest:test-watch": "jest --watch",
     "prepare": "husky install",
-    "graphql:generate": "graphql-codegen --config codegen.yml && npx prettier --write ./graphql.schema.json && npx prettier --write ./lib/generated/graphql.tsx"
+    "graphql:generate": "NODE_TLS_REJECT_UNAUTHORIZED=0 graphql-codegen --config codegen.yml && npx prettier --write ./graphql.schema.json && npx prettier --write ./lib/generated/graphql.tsx"
   },
   "dependencies": {
     "@apollo/client": "^3.6.6",

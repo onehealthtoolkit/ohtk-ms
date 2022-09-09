@@ -5,6 +5,7 @@ import {
   UserUpdateDocument,
   GetUserDocument,
   UsersQueryVariables,
+  UserDeleteDocument,
 } from "lib/generated/graphql";
 import { User } from "lib/services/user/user";
 import {
@@ -151,6 +152,13 @@ export class UserService implements IUserService {
       awaitRefetchQueries: true,
     });
 
+    if (createResult.errors) {
+      return {
+        success: false,
+        message: createResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = createResult.data?.adminAuthorityUserCreate?.result;
     switch (result?.__typename) {
       case "AdminAuthorityUserCreateSuccess": {
@@ -232,6 +240,13 @@ export class UserService implements IUserService {
       },
     });
 
+    if (updateResult.errors) {
+      return {
+        success: false,
+        message: updateResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = updateResult.data?.adminAuthorityUserUpdate?.result;
     switch (result?.__typename) {
       case "AdminAuthorityUserUpdateSuccess": {
@@ -258,7 +273,35 @@ export class UserService implements IUserService {
   }
 
   async deleteUser(id: string) {
-    console.log("delete user", id);
-    return { error: "" };
+    const deleteResult = await this.client.mutate({
+      mutation: UserDeleteDocument,
+      variables: {
+        id,
+      },
+      refetchQueries: [
+        {
+          query: UsersDocument,
+          variables: this.fetchUsersQuery,
+          fetchPolicy: "network-only",
+        },
+      ],
+      awaitRefetchQueries: true,
+      update: cache => {
+        cache.evict({
+          id: cache.identify({
+            __typename: "AdminAuthorityUserQueryType",
+            id: id,
+          }),
+        });
+        cache.evict({
+          id: cache.identify({
+            __typename: "AuthorityUserType",
+            id: id,
+          }),
+        });
+      },
+    });
+
+    return { error: deleteResult.errors?.map(o => o.message).join(",") };
   }
 }

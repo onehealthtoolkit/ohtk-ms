@@ -4,6 +4,7 @@ import {
   CaseDefinitionCreateDocument,
   CaseDefinitionUpdateDocument,
   GetCaseDefinitionDocument,
+  CaseDefinitionDeleteDocument,
 } from "lib/generated/graphql";
 import { CaseDefinition } from "lib/services/caseDefinition/caseDefinition";
 import {
@@ -132,6 +133,13 @@ export class CaseDefinitionService implements ICaseDefinitionService {
       awaitRefetchQueries: true,
     });
 
+    if (createResult.errors) {
+      return {
+        success: false,
+        message: createResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = createResult.data?.adminCaseDefinitionCreate?.result;
     switch (result?.__typename) {
       case "AdminCaseDefinitionCreateSuccess": {
@@ -205,6 +213,13 @@ export class CaseDefinitionService implements ICaseDefinitionService {
       },
     });
 
+    if (updateResult.errors) {
+      return {
+        success: false,
+        message: updateResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = updateResult.data?.adminCaseDefinitionUpdate?.result;
     switch (result?.__typename) {
       case "AdminCaseDefinitionUpdateSuccess": {
@@ -230,7 +245,35 @@ export class CaseDefinitionService implements ICaseDefinitionService {
     };
   }
   async deleteCaseDefinition(id: string) {
-    console.log("delete report type", id);
-    return { error: "" };
+    const deleteResult = await this.client.mutate({
+      mutation: CaseDefinitionDeleteDocument,
+      variables: {
+        id,
+      },
+      refetchQueries: [
+        {
+          query: CaseDefinitionsDocument,
+          variables: this.fetchCaseDefinitionsQuery,
+          fetchPolicy: "network-only",
+        },
+      ],
+      awaitRefetchQueries: true,
+      update: cache => {
+        cache.evict({
+          id: cache.identify({
+            __typename: "AdminCaseDefinitionQueryType",
+            id: id,
+          }),
+        });
+        cache.evict({
+          id: cache.identify({
+            __typename: "CaseDefinitionType",
+            id: id,
+          }),
+        });
+      },
+    });
+
+    return { error: deleteResult.errors?.map(o => o.message).join(",") };
   }
 }

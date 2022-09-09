@@ -48,6 +48,8 @@ export class AdminStateDefinitionListViewModel extends BaseViewModel {
     const result = await this.stateDefinitionService.deleteStateDefinition(id);
     if (result.error) {
       this.setErrorMessage(result.error);
+    } else {
+      this.fetch();
     }
   }
 }

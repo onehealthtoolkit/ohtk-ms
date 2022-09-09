@@ -4,6 +4,7 @@ import {
   InvitationCodeCreateDocument,
   InvitationCodeUpdateDocument,
   GetInvitationCodeDocument,
+  InvitationCodeDeleteDocument,
 } from "lib/generated/graphql";
 import { InvitationCode } from "lib/services/invitationCode/invitationCode";
 import {
@@ -142,6 +143,13 @@ export class InvitationCodeService implements IInvitationCodeService {
       awaitRefetchQueries: true,
     });
 
+    if (createResult.errors) {
+      return {
+        success: false,
+        message: createResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = createResult.data?.adminInvitationCodeCreate?.result;
     switch (result?.__typename) {
       case "AdminInvitationCodeCreateSuccess": {
@@ -219,6 +227,13 @@ export class InvitationCodeService implements IInvitationCodeService {
       },
     });
 
+    if (updateResult.errors) {
+      return {
+        success: false,
+        message: updateResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = updateResult.data?.adminInvitationCodeUpdate?.result;
     switch (result?.__typename) {
       case "AdminInvitationCodeUpdateSuccess": {
@@ -245,7 +260,35 @@ export class InvitationCodeService implements IInvitationCodeService {
   }
 
   async deleteInvitationCode(id: string) {
-    console.log("delete invitation code", id);
-    return { error: "" };
+    const deleteResult = await this.client.mutate({
+      mutation: InvitationCodeDeleteDocument,
+      variables: {
+        id,
+      },
+      refetchQueries: [
+        {
+          query: InvitationCodesDocument,
+          variables: this.fetchInvitationCodesQuery,
+          fetchPolicy: "network-only",
+        },
+      ],
+      awaitRefetchQueries: true,
+      update: cache => {
+        cache.evict({
+          id: cache.identify({
+            __typename: "AdminInvitationCodeQueryType",
+            id: id,
+          }),
+        });
+        cache.evict({
+          id: cache.identify({
+            __typename: "InvitationCodeType",
+            id: id,
+          }),
+        });
+      },
+    });
+
+    return { error: deleteResult.errors?.map(o => o.message).join(",") };
   }
 }

@@ -48,6 +48,8 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
     const result = await this.reportTypeService.deleteReportType(id);
     if (result.error) {
       this.setErrorMessage(result.error);
+    } else {
+      this.fetch();
     }
   }
 }

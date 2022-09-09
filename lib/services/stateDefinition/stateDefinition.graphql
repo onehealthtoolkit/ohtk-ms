@@ -61,6 +61,12 @@ mutation StateDefinitionUpdate($id: ID!, $name: String!, $isDefault: Boolean!) {
   }
 }
 
+mutation StateDefinitionDelete($id: ID!) {
+  adminStateDefinitionDelete(id: $id) {
+    success
+  }
+}
+
 query GetStateDefinition($id: ID!) {
   stateDefinitionGet(id: $id) {
     id

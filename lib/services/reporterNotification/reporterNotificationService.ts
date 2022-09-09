@@ -4,6 +4,7 @@ import {
   ReporterNotificationCreateDocument,
   ReporterNotificationUpdateDocument,
   GetReporterNotificationDocument,
+  ReporterNotificationDeleteDocument,
 } from "lib/generated/graphql";
 import { ReporterNotification } from "lib/services/reporterNotification/reporterNotification";
 import {
@@ -148,6 +149,13 @@ export class ReporterNotificationService
       awaitRefetchQueries: true,
     });
 
+    if (createResult.errors) {
+      return {
+        success: false,
+        message: createResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = createResult.data?.adminReporterNotificationCreate?.result;
     switch (result?.__typename) {
       case "AdminReporterNotificationCreateSuccess": {
@@ -225,6 +233,13 @@ export class ReporterNotificationService
       },
     });
 
+    if (updateResult.errors) {
+      return {
+        success: false,
+        message: updateResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = updateResult.data?.adminReporterNotificationUpdate?.result;
     switch (result?.__typename) {
       case "AdminReporterNotificationUpdateSuccess": {
@@ -250,7 +265,35 @@ export class ReporterNotificationService
     };
   }
   async deleteReporterNotification(id: string) {
-    console.log("delete report type", id);
-    return { error: "" };
+    const deleteResult = await this.client.mutate({
+      mutation: ReporterNotificationDeleteDocument,
+      variables: {
+        id,
+      },
+      refetchQueries: [
+        {
+          query: ReporterNotificationsDocument,
+          variables: this.fetchReporterNotificationsQuery,
+          fetchPolicy: "network-only",
+        },
+      ],
+      awaitRefetchQueries: true,
+      update: cache => {
+        cache.evict({
+          id: cache.identify({
+            __typename: "AdminReporterNotificationQueryType",
+            id: id,
+          }),
+        });
+        cache.evict({
+          id: cache.identify({
+            __typename: "ReporterNotificationType",
+            id: id,
+          }),
+        });
+      },
+    });
+
+    return { error: deleteResult.errors?.map(o => o.message).join(",") };
   }
 }

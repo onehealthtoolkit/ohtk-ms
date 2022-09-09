@@ -83,6 +83,13 @@ export class CommentService implements ICommentService {
       },
     });
 
+    if (createResult.errors) {
+      return {
+        success: false,
+        message: createResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = createResult.data?.commentCreate?.result;
     switch (result?.__typename) {
       case "CommentCreateSuccess": {

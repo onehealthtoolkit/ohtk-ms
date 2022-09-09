@@ -91,6 +91,12 @@ mutation ReporterNotificationUpdate(
   }
 }
 
+mutation ReporterNotificationDelete($id: ID!) {
+  adminReporterNotificationDelete(id: $id) {
+    success
+  }
+}
+
 query GetReporterNotification($id: ID!) {
   reporterNotification(id: $id) {
     id

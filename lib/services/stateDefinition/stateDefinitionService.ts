@@ -4,6 +4,7 @@ import {
   StateDefinitionCreateDocument,
   StateDefinitionUpdateDocument,
   GetStateDefinitionDocument,
+  StateDefinitionDeleteDocument,
 } from "lib/generated/graphql";
 import { StateDefinition } from "lib/services/stateDefinition/stateDefinition";
 import {
@@ -151,6 +152,13 @@ export class StateDefinitionService implements IStateDefinitionService {
       awaitRefetchQueries: true,
     });
 
+    if (createResult.errors) {
+      return {
+        success: false,
+        message: createResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = createResult.data?.adminStateDefinitionCreate?.result;
     switch (result?.__typename) {
       case "AdminStateDefinitionCreateSuccess": {
@@ -230,6 +238,13 @@ export class StateDefinitionService implements IStateDefinitionService {
       },
     });
 
+    if (updateResult.errors) {
+      return {
+        success: false,
+        message: updateResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = updateResult.data?.adminStateDefinitionUpdate?.result;
     switch (result?.__typename) {
       case "AdminStateDefinitionUpdateSuccess": {
@@ -259,8 +274,37 @@ export class StateDefinitionService implements IStateDefinitionService {
       success: true,
     };
   }
+
   async deleteStateDefinition(id: string) {
-    console.log("delete report type", id);
-    return { error: "" };
+    const deleteResult = await this.client.mutate({
+      mutation: StateDefinitionDeleteDocument,
+      variables: {
+        id,
+      },
+      refetchQueries: [
+        {
+          query: StateDefinitionsDocument,
+          variables: this.fetchStateDefinitionsQuery,
+          fetchPolicy: "network-only",
+        },
+      ],
+      awaitRefetchQueries: true,
+      update: cache => {
+        cache.evict({
+          id: cache.identify({
+            __typename: "AdminStateDefinitionQueryType",
+            id: id,
+          }),
+        });
+        cache.evict({
+          id: cache.identify({
+            __typename: "StateDefinitionType",
+            id: id,
+          }),
+        });
+      },
+    });
+
+    return { error: deleteResult.errors?.map(o => o.message).join(",") };
   }
 }

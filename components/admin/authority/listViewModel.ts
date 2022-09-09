@@ -47,6 +47,8 @@ export class AdminAuthorityListViewModel extends BaseViewModel {
     const result = await this.authorityService.deleteAuthority(id);
     if (result.error) {
       this.setErrorMessage(result.error);
+    } else {
+      this.fetch();
     }
   }
 }

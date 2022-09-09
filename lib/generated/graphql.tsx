@@ -349,6 +349,11 @@ export type AdminCategoryCreateSuccess = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type AdminCategoryDeleteMutation = {
+  __typename?: "AdminCategoryDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
 export type AdminCategoryQueryType = {
   __typename?: "AdminCategoryQueryType";
   icon?: Maybe<Scalars["String"]>;
@@ -580,6 +585,11 @@ export type AdminReportTypeCreateSuccess = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type AdminReportTypeDeleteMutation = {
+  __typename?: "AdminReportTypeDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
 export type AdminReportTypeQueryType = {
   __typename?: "AdminReportTypeQueryType";
   authorities: Array<AdminAuthorityCreateSuccess>;
@@ -646,6 +656,11 @@ export type AdminReporterNotificationCreateSuccess = {
   reportType?: Maybe<AdminReportTypeCreateSuccess>;
   template: Scalars["String"];
   updatedAt: Scalars["DateTime"];
+};
+
+export type AdminReporterNotificationDeleteMutation = {
+  __typename?: "AdminReporterNotificationDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
 };
 
 export type AdminReporterNotificationQueryType = {
@@ -1217,6 +1232,7 @@ export type Mutation = {
   adminCaseDefinitionDelete?: Maybe<AdminCaseDefinitionDeleteMutation>;
   adminCaseDefinitionUpdate?: Maybe<AdminCaseDefinitionUpdateMutation>;
   adminCategoryCreate?: Maybe<AdminCategoryCreateMutation>;
+  adminCategoryDelete?: Maybe<AdminCategoryDeleteMutation>;
   adminCategoryUpdate?: Maybe<AdminCategoryUpdateMutation>;
   adminInvitationCodeCreate?: Maybe<AdminInvitationCodeCreateMutation>;
   adminInvitationCodeDelete?: Maybe<AdminInvitationCodeDeleteMutation>;
@@ -1225,8 +1241,10 @@ export type Mutation = {
   adminNotificationTemplateDelete?: Maybe<AdminNotificationTemplateDeleteMutation>;
   adminNotificationTemplateUpdate?: Maybe<AdminNotificationTemplateUpdateMutation>;
   adminReportTypeCreate?: Maybe<AdminReportTypeCreateMutation>;
+  adminReportTypeDelete?: Maybe<AdminReportTypeDeleteMutation>;
   adminReportTypeUpdate?: Maybe<AdminReportTypeUpdateMutation>;
   adminReporterNotificationCreate?: Maybe<AdminReporterNotificationCreateMutation>;
+  adminReporterNotificationDelete?: Maybe<AdminReporterNotificationDeleteMutation>;
   adminReporterNotificationUpdate?: Maybe<AdminReporterNotificationUpdateMutation>;
   adminStateDefinitionCreate?: Maybe<AdminStateDefinitionCreateMutation>;
   adminStateDefinitionDelete?: Maybe<AdminStateDefinitionDeleteMutation>;
@@ -1334,6 +1352,10 @@ export type MutationAdminCategoryCreateArgs = {
   ordering: Scalars["Int"];
 };
 
+export type MutationAdminCategoryDeleteArgs = {
+  id: Scalars["ID"];
+};
+
 export type MutationAdminCategoryUpdateArgs = {
   clearIcon?: InputMaybe<Scalars["Boolean"]>;
   icon?: InputMaybe<Scalars["Upload"]>;
@@ -1400,6 +1422,10 @@ export type MutationAdminReportTypeCreateArgs = {
   stateDefinitionId?: InputMaybe<Scalars["Int"]>;
 };
 
+export type MutationAdminReportTypeDeleteArgs = {
+  id: Scalars["ID"];
+};
+
 export type MutationAdminReportTypeUpdateArgs = {
   categoryId: Scalars["Int"];
   definition: Scalars["String"];
@@ -1418,6 +1444,10 @@ export type MutationAdminReporterNotificationCreateArgs = {
   isActive?: InputMaybe<Scalars["Boolean"]>;
   reportTypeId: Scalars["UUID"];
   template: Scalars["String"];
+};
+
+export type MutationAdminReporterNotificationDeleteArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationAdminReporterNotificationUpdateArgs = {
@@ -2341,6 +2371,18 @@ export type AuthorityUpdateMutation = {
   } | null;
 };
 
+export type AuthorityDeleteMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type AuthorityDeleteMutation = {
+  __typename?: "Mutation";
+  adminAuthorityDelete?: {
+    __typename?: "AdminAuthorityDeleteMutation";
+    success?: boolean | null;
+  } | null;
+};
+
 export type GetAuthorityQueryVariables = Exact<{
   id: Scalars["ID"];
 }>;
@@ -2690,6 +2732,18 @@ export type CaseDefinitionUpdateMutation = {
   } | null;
 };
 
+export type CaseDefinitionDeleteMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type CaseDefinitionDeleteMutation = {
+  __typename?: "Mutation";
+  adminCaseDefinitionDelete?: {
+    __typename?: "AdminCaseDefinitionDeleteMutation";
+    success?: boolean | null;
+  } | null;
+};
+
 export type GetCaseDefinitionQueryVariables = Exact<{
   id: Scalars["ID"];
 }>;
@@ -2973,6 +3027,18 @@ export type InvitationCodeUpdateMutation = {
   } | null;
 };
 
+export type InvitationCodeDeleteMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type InvitationCodeDeleteMutation = {
+  __typename?: "Mutation";
+  adminInvitationCodeDelete?: {
+    __typename?: "AdminInvitationCodeDeleteMutation";
+    success?: boolean | null;
+  } | null;
+};
+
 export type GetInvitationCodeQueryVariables = Exact<{
   id: Scalars["ID"];
 }>;
@@ -3143,6 +3209,18 @@ export type NotificationTemplateUpdateMutation = {
           } | null;
         }
       | null;
+  } | null;
+};
+
+export type NotificationTemplateDeleteMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type NotificationTemplateDeleteMutation = {
+  __typename?: "Mutation";
+  adminNotificationTemplateDelete?: {
+    __typename?: "AdminNotificationTemplateDeleteMutation";
+    success?: boolean | null;
   } | null;
 };
 
@@ -3456,6 +3534,18 @@ export type ReportCategoryUpdateMutation = {
   } | null;
 };
 
+export type ReportCategoryDeleteMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type ReportCategoryDeleteMutation = {
+  __typename?: "Mutation";
+  adminCategoryDelete?: {
+    __typename?: "AdminCategoryDeleteMutation";
+    success?: boolean | null;
+  } | null;
+};
+
 export type GetReportCategoryQueryVariables = Exact<{
   id: Scalars["ID"];
 }>;
@@ -3615,6 +3705,18 @@ export type ReportTypeUpdateMutation = {
   } | null;
 };
 
+export type ReportTypeDeleteMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type ReportTypeDeleteMutation = {
+  __typename?: "Mutation";
+  adminReportTypeDelete?: {
+    __typename?: "AdminReportTypeDeleteMutation";
+    success?: boolean | null;
+  } | null;
+};
+
 export type GetReportTypeQueryVariables = Exact<{
   id: Scalars["ID"];
 }>;
@@ -3733,6 +3835,18 @@ export type ReporterNotificationUpdateMutation = {
   } | null;
 };
 
+export type ReporterNotificationDeleteMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type ReporterNotificationDeleteMutation = {
+  __typename?: "Mutation";
+  adminReporterNotificationDelete?: {
+    __typename?: "AdminReporterNotificationDeleteMutation";
+    success?: boolean | null;
+  } | null;
+};
+
 export type GetReporterNotificationQueryVariables = Exact<{
   id: Scalars["ID"];
 }>;
@@ -3833,6 +3947,18 @@ export type StateDefinitionUpdateMutation = {
           } | null;
         }
       | null;
+  } | null;
+};
+
+export type StateDefinitionDeleteMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type StateDefinitionDeleteMutation = {
+  __typename?: "Mutation";
+  adminStateDefinitionDelete?: {
+    __typename?: "AdminStateDefinitionDeleteMutation";
+    success?: boolean | null;
   } | null;
 };
 
@@ -3961,6 +4087,18 @@ export type StateStepUpdateMutation = {
           } | null;
         }
       | null;
+  } | null;
+};
+
+export type StateStepDeleteMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type StateStepDeleteMutation = {
+  __typename?: "Mutation";
+  adminStateStepDelete?: {
+    __typename?: "AdminStateStepDeleteMutation";
+    success?: boolean | null;
   } | null;
 };
 
@@ -4109,6 +4247,18 @@ export type StateTransitionUpdateMutation = {
   } | null;
 };
 
+export type StateTransitionDeleteMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type StateTransitionDeleteMutation = {
+  __typename?: "Mutation";
+  adminStateTransitionDelete?: {
+    __typename?: "AdminStateTransitionDeleteMutation";
+    success?: boolean | null;
+  } | null;
+};
+
 export type GetStateTransitionQueryVariables = Exact<{
   id: Scalars["ID"];
 }>;
@@ -4233,6 +4383,18 @@ export type UserUpdateMutation = {
           } | null;
         }
       | null;
+  } | null;
+};
+
+export type UserDeleteMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type UserDeleteMutation = {
+  __typename?: "Mutation";
+  adminAuthorityUserDelete?: {
+    __typename?: "AdminAuthorityUserDeleteMutation";
+    success?: boolean | null;
   } | null;
 };
 
@@ -5182,6 +5344,54 @@ export const AuthorityUpdateDocument = {
 } as unknown as DocumentNode<
   AuthorityUpdateMutation,
   AuthorityUpdateMutationVariables
+>;
+export const AuthorityDeleteDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AuthorityDelete" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAuthorityDelete" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AuthorityDeleteMutation,
+  AuthorityDeleteMutationVariables
 >;
 export const GetAuthorityDocument = {
   kind: "Document",
@@ -6732,6 +6942,54 @@ export const CaseDefinitionUpdateDocument = {
   CaseDefinitionUpdateMutation,
   CaseDefinitionUpdateMutationVariables
 >;
+export const CaseDefinitionDeleteDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CaseDefinitionDelete" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminCaseDefinitionDelete" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CaseDefinitionDeleteMutation,
+  CaseDefinitionDeleteMutationVariables
+>;
 export const GetCaseDefinitionDocument = {
   kind: "Document",
   definitions: [
@@ -8057,6 +8315,54 @@ export const InvitationCodeUpdateDocument = {
   InvitationCodeUpdateMutation,
   InvitationCodeUpdateMutationVariables
 >;
+export const InvitationCodeDeleteDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "InvitationCodeDelete" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminInvitationCodeDelete" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  InvitationCodeDeleteMutation,
+  InvitationCodeDeleteMutationVariables
+>;
 export const GetInvitationCodeDocument = {
   kind: "Document",
   definitions: [
@@ -9021,6 +9327,54 @@ export const NotificationTemplateUpdateDocument = {
 } as unknown as DocumentNode<
   NotificationTemplateUpdateMutation,
   NotificationTemplateUpdateMutationVariables
+>;
+export const NotificationTemplateDeleteDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "NotificationTemplateDelete" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminNotificationTemplateDelete" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  NotificationTemplateDeleteMutation,
+  NotificationTemplateDeleteMutationVariables
 >;
 export const GetNotificationTemplateDocument = {
   kind: "Document",
@@ -10421,6 +10775,54 @@ export const ReportCategoryUpdateDocument = {
   ReportCategoryUpdateMutation,
   ReportCategoryUpdateMutationVariables
 >;
+export const ReportCategoryDeleteDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ReportCategoryDelete" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminCategoryDelete" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ReportCategoryDeleteMutation,
+  ReportCategoryDeleteMutationVariables
+>;
 export const GetReportCategoryDocument = {
   kind: "Document",
   definitions: [
@@ -11332,6 +11734,54 @@ export const ReportTypeUpdateDocument = {
   ReportTypeUpdateMutation,
   ReportTypeUpdateMutationVariables
 >;
+export const ReportTypeDeleteDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ReportTypeDelete" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminReportTypeDelete" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ReportTypeDeleteMutation,
+  ReportTypeDeleteMutationVariables
+>;
 export const GetReportTypeDocument = {
   kind: "Document",
   definitions: [
@@ -11983,6 +12433,54 @@ export const ReporterNotificationUpdateDocument = {
   ReporterNotificationUpdateMutation,
   ReporterNotificationUpdateMutationVariables
 >;
+export const ReporterNotificationDeleteDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ReporterNotificationDelete" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminReporterNotificationDelete" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ReporterNotificationDeleteMutation,
+  ReporterNotificationDeleteMutationVariables
+>;
 export const GetReporterNotificationDocument = {
   kind: "Document",
   definitions: [
@@ -12482,6 +12980,54 @@ export const StateDefinitionUpdateDocument = {
 } as unknown as DocumentNode<
   StateDefinitionUpdateMutation,
   StateDefinitionUpdateMutationVariables
+>;
+export const StateDefinitionDeleteDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "StateDefinitionDelete" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminStateDefinitionDelete" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  StateDefinitionDeleteMutation,
+  StateDefinitionDeleteMutationVariables
 >;
 export const GetStateDefinitionDocument = {
   kind: "Document",
@@ -13111,6 +13657,54 @@ export const StateStepUpdateDocument = {
 } as unknown as DocumentNode<
   StateStepUpdateMutation,
   StateStepUpdateMutationVariables
+>;
+export const StateStepDeleteDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "StateStepDelete" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminStateStepDelete" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  StateStepDeleteMutation,
+  StateStepDeleteMutationVariables
 >;
 export const GetStateStepDocument = {
   kind: "Document",
@@ -13767,6 +14361,54 @@ export const StateTransitionUpdateDocument = {
 } as unknown as DocumentNode<
   StateTransitionUpdateMutation,
   StateTransitionUpdateMutationVariables
+>;
+export const StateTransitionDeleteDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "StateTransitionDelete" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminStateTransitionDelete" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  StateTransitionDeleteMutation,
+  StateTransitionDeleteMutationVariables
 >;
 export const GetStateTransitionDocument = {
   kind: "Document",
@@ -14520,6 +15162,51 @@ export const UserUpdateDocument = {
     },
   ],
 } as unknown as DocumentNode<UserUpdateMutation, UserUpdateMutationVariables>;
+export const UserDeleteDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UserDelete" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAuthorityUserDelete" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UserDeleteMutation, UserDeleteMutationVariables>;
 export const GetUserDocument = {
   kind: "Document",
   definitions: [

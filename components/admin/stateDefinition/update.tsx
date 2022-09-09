@@ -29,12 +29,13 @@ const StateDefinitionsUpdateForm = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const services = useServices();
-  const [viewModel] = useState(
-    () =>
-      new StateDefinitionUpdateViewModel(
-        router.query.id as string,
-        services.stateDefinitionService
-      )
+  const [viewModel] = useState(() =>
+    new StateDefinitionUpdateViewModel(
+      router.query.id as string,
+      services.stateDefinitionService,
+      services.stateStepService,
+      services.stateTransitionService
+    ).registerDialog("confirmDelete")
   );
 
   if (router.query.activeTabIndex) {
