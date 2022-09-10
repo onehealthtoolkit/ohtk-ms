@@ -14,8 +14,6 @@ import {
   MaskingLoader,
   SaveButton,
   Select,
-  TabBar,
-  TabItem,
   TextArea,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
@@ -24,18 +22,18 @@ import Breadcrumb from "components/layout/breadcrumb";
 import useStateSteps from "lib/hooks/stateSteps";
 import FormBuilder from "components/admin/formBuilder";
 import { useTranslation } from "react-i18next";
+import FormBuilderDialog from "components/admin/stateDefinition/transition/formBuilderDialog";
 
 const StateTransitionsUpdateForm = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const services = useServices();
-  const [viewModel] = useState(
-    () =>
-      new StateTransitionUpdateViewModel(
-        router.query.id as string,
-        router.query.transition_id as string,
-        services.stateTransitionService
-      )
+  const [viewModel] = useState(() =>
+    new StateTransitionUpdateViewModel(
+      router.query.id as string,
+      router.query.transition_id as string,
+      services.stateTransitionService
+    ).registerDialog("formBuilder")
   );
 
   const stateSteps = useStateSteps(router.query.id as string);
@@ -57,61 +55,7 @@ const StateTransitionsUpdateForm = () => {
           { text: "Update Transition" },
         ]}
       />
-      <TabBar>
-        <TabItem
-          id="detail"
-          active={!viewModel.isFormBuilderMode}
-          onTab={() => {
-            viewModel.formDefinition = viewModel.formViewModel.jsonString;
-            viewModel.isFormBuilderMode = false;
-          }}
-        >
-          {({ activeCss }) => (
-            <>
-              <svg
-                className={`mr-2 w-5 h-5 ${activeCss}`}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-              </svg>
-              <span>Detail</span>
-            </>
-          )}
-        </TabItem>
-        <TabItem
-          id="formBuilder"
-          active={viewModel.isFormBuilderMode}
-          onTab={() => {
-            const valid = viewModel.parseFormDefinition(
-              viewModel.formDefinition
-            );
-            if (valid) {
-              viewModel.isFormBuilderMode = true;
-            }
-          }}
-        >
-          {({ activeCss }) => (
-            <>
-              <svg
-                className={`mr-2 w-5 h-5 ${activeCss}`}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
-                <path
-                  fillRule="evenodd"
-                  d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              <span>Form Builder</span>
-            </>
-          )}
-        </TabItem>
-      </TabBar>
+
       <MaskingLoader loading={viewModel.isLoading}>
         <Form
           onSubmit={async evt => {
@@ -122,75 +66,91 @@ const StateTransitionsUpdateForm = () => {
           }}
         >
           <FieldGroup>
-            {viewModel.isFormBuilderMode ? (
-              <FormBuilder viewModel={viewModel.formViewModel} />
-            ) : (
-              <>
-                <Field $size="half">
-                  <Label htmlFor="fromStepId">
-                    {t("form.label.fromStep", "From Step")}
-                  </Label>
-                  <Select
-                    id="fromStepId"
-                    placeholder={t("form.placeholder.fromStep", "From Step")}
-                    onChange={evt => (viewModel.fromStepId = evt.target.value)}
-                    disabled={viewModel.isSubmitting}
-                    value={viewModel.fromStepId}
-                  >
-                    <option value={""} disabled>
-                      {t("form.label.selectItem", " Select item ...")}
-                    </option>
-                    {stateSteps?.map(item => (
-                      <option key={`option-${item.id}`} value={item.id}>
-                        {item.name}
-                      </option>
-                    ))}
-                  </Select>
-                  <ErrorText>{viewModel.fieldErrors.fromStepId}</ErrorText>
-                </Field>
-                <Field $size="half">
-                  <Label htmlFor="toStepId">
-                    {t("form.label.toStep", "To Step")}
-                  </Label>
-                  <Select
-                    id="toStepId"
-                    placeholder={t("form.placeholder.toStep", "To Step")}
-                    onChange={evt => (viewModel.toStepId = evt.target.value)}
-                    disabled={viewModel.isSubmitting}
-                    value={viewModel.toStepId}
-                  >
-                    <option value={""} disabled>
-                      {t("form.label.selectItem", " Select item ...")}
-                    </option>
-                    {stateSteps?.map(item => (
-                      <option key={`option-${item.id}`} value={item.id}>
-                        {item.name}
-                      </option>
-                    ))}
-                  </Select>
-                  <ErrorText>{viewModel.fieldErrors.fromStepId}</ErrorText>
-                </Field>
-                <Field $size="half">
-                  <Label htmlFor="formDefinition">
-                    {t("form.label.formDefinition", "Form Definition")}
-                  </Label>
-                  <TextArea
-                    id="formDefinition"
-                    placeholder={t(
-                      "form.placeholder.formDefinition",
-                      "Form Definition"
-                    )}
-                    rows={30}
-                    onChange={evt =>
-                      (viewModel.formDefinition = evt.target.value)
+            <Field $size="half">
+              <Label htmlFor="fromStepId">
+                {t("form.label.fromStep", "From Step")}
+              </Label>
+              <Select
+                id="fromStepId"
+                placeholder={t("form.placeholder.fromStep", "From Step")}
+                onChange={evt => (viewModel.fromStepId = evt.target.value)}
+                disabled={viewModel.isSubmitting}
+                value={viewModel.fromStepId}
+              >
+                <option value={""} disabled>
+                  {t("form.label.selectItem", " Select item ...")}
+                </option>
+                {stateSteps?.map(item => (
+                  <option key={`option-${item.id}`} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </Select>
+              <ErrorText>{viewModel.fieldErrors.fromStepId}</ErrorText>
+            </Field>
+            <Field $size="half">
+              <Label htmlFor="toStepId">
+                {t("form.label.toStep", "To Step")}
+              </Label>
+              <Select
+                id="toStepId"
+                placeholder={t("form.placeholder.toStep", "To Step")}
+                onChange={evt => (viewModel.toStepId = evt.target.value)}
+                disabled={viewModel.isSubmitting}
+                value={viewModel.toStepId}
+              >
+                <option value={""} disabled>
+                  {t("form.label.selectItem", " Select item ...")}
+                </option>
+                {stateSteps?.map(item => (
+                  <option key={`option-${item.id}`} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </Select>
+              <ErrorText>{viewModel.fieldErrors.fromStepId}</ErrorText>
+            </Field>
+            <Field $size="half">
+              <Label
+                htmlFor="formDefinition"
+                className="flex flex-row justify-between items-end"
+              >
+                <span>{t("form.label.formDefinition", "Form Definition")}</span>
+                <button
+                  onClick={e => {
+                    e.preventDefault();
+                    const valid = viewModel.parseFormDefinition(
+                      viewModel.formDefinition
+                    );
+                    if (valid) {
+                      viewModel.dialog("formBuilder")?.open(null);
                     }
-                    disabled={viewModel.isSubmitting}
-                    defaultValue={viewModel.formDefinition}
-                  />
-                  <ErrorText>{errors.formDefinition}</ErrorText>
-                </Field>
-              </>
-            )}
+                  }}
+                  className="border
+                text-white
+                bg-[#4C81F1] 
+                border-blue-300
+                hover:border-blue-500
+                rounded
+                p-1
+              "
+                >
+                  Form builder
+                </button>
+              </Label>
+              <TextArea
+                id="formDefinition"
+                placeholder={t(
+                  "form.placeholder.formDefinition",
+                  "Form Definition"
+                )}
+                rows={30}
+                onChange={evt => (viewModel.formDefinition = evt.target.value)}
+                disabled={viewModel.isSubmitting}
+                value={viewModel.formDefinition}
+              />
+              <ErrorText>{errors.formDefinition}</ErrorText>
+            </Field>
           </FieldGroup>
           {viewModel.submitError.length > 0 && (
             <FormMessage>{viewModel.submitError}</FormMessage>
@@ -209,6 +169,14 @@ const StateTransitionsUpdateForm = () => {
           </FormAction>
         </Form>
       </MaskingLoader>
+      <FormBuilderDialog
+        viewModel={viewModel.dialog("formBuilder")}
+        onClose={() => {
+          viewModel.formDefinition = viewModel.formViewModel.jsonString;
+        }}
+      >
+        <FormBuilder viewModel={viewModel.formViewModel} />
+      </FormBuilderDialog>
     </>
   );
 };
