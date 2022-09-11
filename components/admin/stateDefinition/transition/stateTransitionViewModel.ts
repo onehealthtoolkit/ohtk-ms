@@ -16,7 +16,6 @@ export abstract class StateTransitionViewModel extends BaseFormViewModel {
   _fromStepId: string = "";
   _toStepId: string = "";
 
-  _isFormBuilderMode = false;
   formViewModel = new FormViewModel();
 
   constructor(
@@ -34,8 +33,6 @@ export abstract class StateTransitionViewModel extends BaseFormViewModel {
       toStepId: computed,
       save: action,
       validate: action,
-      _isFormBuilderMode: observable,
-      isFormBuilderMode: computed,
       formViewModel: observable,
       parseFormDefinition: action,
     });
@@ -55,6 +52,9 @@ export abstract class StateTransitionViewModel extends BaseFormViewModel {
 
   public parseFormDefinition(value: string): boolean {
     try {
+      if (!value) {
+        value = "{}";
+      }
       this.formViewModel.parse(JSON.parse(value));
       this.formDefinition = this.formViewModel.jsonString;
       return true;
@@ -120,11 +120,7 @@ export abstract class StateTransitionViewModel extends BaseFormViewModel {
       isValid = false;
       this.fieldErrors["formDefinition"] = "this field is required";
     } else {
-      isValid = this.parseFormDefinition(
-        this.isFormBuilderMode
-          ? this.formViewModel.jsonString
-          : this.formDefinition
-      );
+      isValid = this.parseFormDefinition(this.formDefinition);
     }
     if (this.fromStepId.length === 0) {
       isValid = false;
@@ -135,12 +131,5 @@ export abstract class StateTransitionViewModel extends BaseFormViewModel {
       this.fieldErrors["toStepId"] = "this field is required";
     }
     return isValid;
-  }
-
-  public get isFormBuilderMode(): boolean {
-    return this._isFormBuilderMode;
-  }
-  public set isFormBuilderMode(value: boolean) {
-    this._isFormBuilderMode = value;
   }
 }

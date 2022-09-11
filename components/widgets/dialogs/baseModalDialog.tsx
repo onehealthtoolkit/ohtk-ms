@@ -39,11 +39,12 @@ const BaseModalDialog: React.FC<Props> = ({
       if (event.key === "Escape") {
         if (store?.isOpen) {
           console.log("close dialog");
+          onClose && onClose();
           store?.close();
         }
       }
     },
-    [store]
+    [store, onClose]
   );
 
   useEffect(() => {
