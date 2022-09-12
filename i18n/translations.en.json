@@ -143,5 +143,19 @@
   "title": {
     "login": "Login to Your Account",
     "signup": "Sign Up"
-  }
+  },
+  "months": [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ]
 }
