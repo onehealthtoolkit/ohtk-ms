@@ -253,7 +253,7 @@ const SummaryByCategoryView: React.FC<SummaryByCategoryViewProps> = ({
                       ctx.textBaseline = "middle";
                       ctx.fillStyle = "#000";
 
-                      const text = "48";
+                      const text = chart.config.data.datasets[0]?.label || "";
                       let centerX =
                         (chart.chartArea.left + chart.chartArea.right) / 2;
                       const centerY =
@@ -278,29 +278,7 @@ const SummaryByCategoryView: React.FC<SummaryByCategoryViewProps> = ({
                     },
                   },
                 }}
-                data={{
-                  labels: ["Animal", "Enviroment", "Dengue", "Human"],
-
-                  datasets: [
-                    {
-                      label: "# of Votes",
-                      data: [12, 19, 3, 5],
-                      backgroundColor: [
-                        "#56ADEC",
-                        "#626FE6",
-                        "#5CE081",
-                        "#67C687",
-                      ],
-                      borderColor: [
-                        "rgba(255, 99, 132, 1)",
-                        "rgba(54, 162, 235, 1)",
-                        "rgba(255, 206, 86, 1)",
-                        "rgba(75, 192, 192, 1)",
-                      ],
-                      borderWidth: 1,
-                    },
-                  ],
-                }}
+                data={viewModel.summaryData}
               />
             </div>
           </div>
