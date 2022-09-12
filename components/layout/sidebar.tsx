@@ -19,6 +19,7 @@ import CollapsIcon from "components/layout/CollapsIcon";
 import { Observer, observer } from "mobx-react";
 import { Menu } from "./menu";
 import UserMenu from "./userMenu";
+import { LocationMarkerIcon } from "@heroicons/react/solid";
 
 const iconClassName = "h-5 w-5 text-gray-300";
 
@@ -96,6 +97,15 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     collapsed={store.menu.collapsed}
                     display={store.isRoleOfficer || store.isRoleAdmin}
                     icon={<DocumentTextIcon className={iconClassName} />}
+                  />
+
+                  <Menu
+                    href="/map/"
+                    pathname={pathname}
+                    label="Map"
+                    collapsed={store.menu.collapsed}
+                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    icon={<LocationMarkerIcon className={iconClassName} />}
                   />
                 </ul>
               </div>
