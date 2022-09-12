@@ -180,7 +180,9 @@ export class RegisterViewModel {
         });
         return true;
       } else {
-        this.submitError = result.message;
+        runInAction(() => {
+          this.submitError = result.message;
+        });
         return false;
       }
     }
@@ -211,7 +213,9 @@ export class RegisterViewModel {
           return true;
         }
       } else {
-        this.submitError = result.message;
+        runInAction(() => {
+          this.submitError = result.message;
+        });
         return false;
       }
     }
