@@ -2931,6 +2931,62 @@ export type SummaryCaseByCategoryQueryQuery = {
   }> | null;
 };
 
+export type QueryFollowupsQueryVariables = Exact<{
+  incidentId: Scalars["ID"];
+}>;
+
+export type QueryFollowupsQuery = {
+  __typename?: "Query";
+  followups?: Array<{
+    __typename?: "FollowupReportType";
+    id: any;
+    rendererData: string;
+    createdAt: any;
+    images?: Array<{
+      __typename?: "ImageType";
+      id: any;
+      file: string;
+      thumbnail?: string | null;
+    } | null> | null;
+  } | null> | null;
+};
+
+export type GetFollowupReportQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type GetFollowupReportQuery = {
+  __typename?: "Query";
+  followupReport?: {
+    __typename?: "FollowupReportType";
+    id: any;
+    data?: any | null;
+    testFlag: boolean;
+    rendererData: string;
+    createdAt: any;
+    incident?: { __typename?: "IncidentReportType"; id: any } | null;
+    reportType?: {
+      __typename?: "ReportTypeType";
+      id: any;
+      name: string;
+    } | null;
+    reportedBy?: {
+      __typename?: "UserType";
+      id: string;
+      username: string;
+      firstName: string;
+      lastName: string;
+      avatarUrl?: string | null;
+    } | null;
+    images?: Array<{
+      __typename?: "ImageType";
+      id: any;
+      file: string;
+      thumbnail?: string | null;
+    } | null> | null;
+  } | null;
+};
+
 export type InvitationCodesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
@@ -7752,6 +7808,205 @@ export const SummaryCaseByCategoryQueryDocument = {
 } as unknown as DocumentNode<
   SummaryCaseByCategoryQueryQuery,
   SummaryCaseByCategoryQueryQueryVariables
+>;
+export const QueryFollowupsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "QueryFollowups" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "incidentId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "followups" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "incidentId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "incidentId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "rendererData" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "images" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "file" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "thumbnail" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<QueryFollowupsQuery, QueryFollowupsQueryVariables>;
+export const GetFollowupReportDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetFollowupReport" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "followupReport" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "data" } },
+                { kind: "Field", name: { kind: "Name", value: "testFlag" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "rendererData" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "incident" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reportType" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reportedBy" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "images" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "file" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "thumbnail" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reportedBy" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "firstName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "lastName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "avatarUrl" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetFollowupReportQuery,
+  GetFollowupReportQueryVariables
 >;
 export const InvitationCodesDocument = {
   kind: "Document",
