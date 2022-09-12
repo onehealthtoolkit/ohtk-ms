@@ -69,7 +69,7 @@ const Component: FC<FormDateFieldProps> = ({ field }) => {
   // month value is between 1-12
   const months = [...Array(12)].map<Option>((_, it) => {
     const { t } = useTranslation();
-    const monthNames = t("months", {joinArrays: ','}).split(",");
+    const monthNames = t("months", {joinArrays: ","}).split(",");
 
     const m = it + 1;
     let disabled = false;
