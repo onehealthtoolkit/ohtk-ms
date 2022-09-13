@@ -33,7 +33,8 @@ const SignIn = () => {
   return (
     <form
       onSubmit={evt => {
-        viewModel.signIn();
+        if (viewModel.isForgotPassword) viewModel.resetPassword();
+        else viewModel.signIn();
         evt.preventDefault();
       }}
     >
@@ -48,97 +49,160 @@ const SignIn = () => {
               />
             </div>
             <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
-              <div className="w-full">
-                <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
-                  {t("title.login", "Login to Your Account")}
-                </h1>
+              {!viewModel.isForgotPassword && (
+                <div className="w-full">
+                  <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
+                    {t("title.login", "Login to Your Account")}
+                  </h1>
 
-                <div className="mb-4">
-                  <label
-                    className="block text-grey-darker text-sm font-bold mb-2"
-                    htmlFor="username"
-                  >
-                    {t("form.label.username", "Username")}
-                  </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                    id="username"
-                    type="text"
-                    placeholder="Username"
-                    onChange={evt => (viewModel.username = evt.target.value)}
-                    disabled={isSubmitting}
-                  />
-                  {errors.password && (
-                    <p className="text-red-700 text-xs italic">
-                      {errors.username}
-                    </p>
-                  )}
-                </div>
-                <div className="mb-6">
-                  <label
-                    className="block text-grey-darker text-sm font-bold mb-2"
-                    htmlFor="password"
-                  >
-                    {t("form.label.password", "Password")}
-                  </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                    id="password"
-                    type="password"
-                    placeholder="*********"
-                    onChange={evt => (viewModel.password = evt.target.value)}
-                    disabled={isSubmitting}
-                  />
-                  {errors.password && (
-                    <p className="text-red-700 text-xs italic">
-                      {errors.password}
-                    </p>
-                  )}
-                </div>
-                {viewModel.submitError.length > 0 && (
-                  <div className="text-red-600">{viewModel.submitError}</div>
-                )}
-                <hr className="my-2" />
-
-                <div className="flex justify-between mb-4">
-                  <LanguageSelect />
-                  <div className="flex">
+                  <div className="mb-4">
                     <label
-                      className="inline-flex items-center  text-grey-darker text-sm font-bold"
-                      htmlFor="server"
+                      className="block text-grey-darker text-sm font-bold mb-2"
+                      htmlFor="username"
                     >
-                      <ServerIcon className="h-5 w-5 text-gray-500" />
+                      {t("form.label.username", "Username")}
                     </label>
-                    <select
-                      id="server"
-                      onChange={e => {
-                        viewModel.changeServer(e.target.value);
-                      }}
+                    <input
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                      id="username"
+                      type="text"
+                      placeholder="Username"
+                      onChange={evt => (viewModel.username = evt.target.value)}
+                      disabled={isSubmitting}
+                    />
+                    {errors.password && (
+                      <p className="text-red-700 text-xs italic">
+                        {errors.username}
+                      </p>
+                    )}
+                  </div>
+                  <div className="mb-6">
+                    <label
+                      className="block text-grey-darker text-sm font-bold mb-2"
+                      htmlFor="password"
                     >
-                      <option value="">---</option>
-                      {viewModel.serverOptions.map(option => (
-                        <option key={option.domain} value={option.domain}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
+                      {t("form.label.password", "Password")}
+                    </label>
+                    <input
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                      id="password"
+                      type="password"
+                      placeholder="*********"
+                      onChange={evt => (viewModel.password = evt.target.value)}
+                      disabled={isSubmitting}
+                    />
+                    {errors.password && (
+                      <p className="text-red-700 text-xs italic">
+                        {errors.password}
+                      </p>
+                    )}
+                  </div>
+                  {viewModel.submitError.length > 0 && (
+                    <div className="text-red-600">{viewModel.submitError}</div>
+                  )}
+                  <hr className="my-2" />
+
+                  <div className="flex justify-between mb-4">
+                    <LanguageSelect />
+                    <div className="flex">
+                      <label
+                        className="inline-flex items-center  text-grey-darker text-sm font-bold"
+                        htmlFor="server"
+                      >
+                        <ServerIcon className="h-5 w-5 text-gray-500" />
+                      </label>
+                      <select
+                        id="server"
+                        onChange={e => {
+                          viewModel.changeServer(e.target.value);
+                        }}
+                      >
+                        <option value="">---</option>
+                        {viewModel.serverOptions.map(option => (
+                          <option key={option.domain} value={option.domain}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <button className="block w-full px-4 py-2 mt-4 font-bold leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
+                    {t("form.button.signin", " Sign In")}
+                  </button>
+
+                  <div className="mt-8 text-sm font-display font-semibold text-gray-700 text-center">
+                    {t("form.label.noAccount", "Don't have an account ?")}
+                    <a
+                      onClick={() => router.push("/register")}
+                      className="cursor-pointer text-indigo-600 hover:text-indigo-800 ml-2"
+                    >
+                      {t("form.button.signup", " Sign up")}
+                    </a>
+                  </div>
+                  <div className="mt-2 text-sm font-display font-semibold text-gray-700 text-center">
+                    <a
+                      onClick={() => viewModel.forgotPassword(true)}
+                      className="cursor-pointer text-indigo-600 hover:text-indigo-800 ml-2"
+                    >
+                      {t("form.button.forgotPassword", " Forgot password?")}
+                    </a>
                   </div>
                 </div>
-
-                <button className="block w-full px-4 py-2 mt-4 font-bold leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
-                  {t("form.button.signin", " Sign In")}
-                </button>
-
-                <div className="mt-8 text-sm font-display font-semibold text-gray-700 text-center">
-                  {t("form.label.noAccount", "Don't have an account ?")}
-                  <a
-                    onClick={() => router.push("/register")}
-                    className="cursor-pointer text-indigo-600 hover:text-indigo-800 ml-2"
+              )}
+              {viewModel.isForgotPassword && (
+                <div className="w-full">
+                  <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
+                    {t("title.forgotPassword", "Forgot password")}
+                  </h1>
+                  <div
+                    className="p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800"
+                    role="alert"
                   >
-                    {t("form.button.signup", " Sign up")}
-                  </a>
+                    <span className="font-medium">
+                      {t(
+                        "form.label.forgotPassword",
+                        'Enter the email address you used to create your account, and click "Reset Password"'
+                      )}
+                    </span>
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      className="block text-grey-darker text-sm font-bold mb-2"
+                      htmlFor="email"
+                    >
+                      {t("form.label.email", "Email")}
+                    </label>
+                    <input
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                      id="email"
+                      type="text"
+                      placeholder={t("form.placeholder.email", "Email")}
+                      onChange={evt => (viewModel.email = evt.target.value)}
+                      disabled={isSubmitting}
+                    />
+                    {errors.email && (
+                      <p className="text-red-700 text-xs italic">
+                        {errors.email}
+                      </p>
+                    )}
+                  </div>
+                  {viewModel.submitError.length > 0 && (
+                    <div className="text-red-600">{viewModel.submitError}</div>
+                  )}
+                  <button className="block w-full px-4 py-2 mt-4 font-bold leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
+                    {t("form.button.resetPassword", "Reset assword")}
+                  </button>
+                  <div className="mt-2 text-sm font-display font-semibold text-gray-700 text-center">
+                    <a
+                      onClick={() => viewModel.forgotPassword(false)}
+                      className="cursor-pointer text-indigo-600 hover:text-indigo-800 ml-2"
+                    >
+                      {t("form.button.cancel", "Cancel")}
+                    </a>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

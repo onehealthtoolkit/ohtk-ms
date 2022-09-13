@@ -86,6 +86,9 @@ mutation UserUpdate(
           email
           telephone
           role
+          authority {
+            id
+          }
         }
       }
       ... on AdminAuthorityUserUpdateProblem {
@@ -114,5 +117,8 @@ query GetUser($id: ID!) {
     email
     telephone
     role
+    authority {
+      id
+    }
   }
 }

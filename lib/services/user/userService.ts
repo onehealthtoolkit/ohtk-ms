@@ -113,6 +113,7 @@ export class UserService implements IUserService {
         email: user.email,
         telephone: user.telephone || "",
         role: user.role,
+        authorityId: parseInt(user.authority.id),
       };
     }
     return {

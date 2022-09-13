@@ -21,6 +21,7 @@ export class UserUpdateViewModel extends UserViewModel {
       this.email = data.email;
       this.telephone = data.telephone || "";
       this.role = data.role || "";
+      this.authorityId = data.authorityId || 0;
     }
     this.isLoading = false;
   }

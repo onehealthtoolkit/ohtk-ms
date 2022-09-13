@@ -7,4 +7,5 @@ export type User = {
   telephone?: string;
   avatarUrl?: string;
   role?: string | null;
+  authorityId?: number;
 };

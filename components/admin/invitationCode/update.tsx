@@ -20,7 +20,7 @@ import useServices from "lib/services/provider";
 import RoleSelect from "./roleSelect";
 import { useTranslation } from "react-i18next";
 import useStore from "lib/store";
-import AuthroitySelect from "./authoritySelect";
+import AuthroitySelect from "components/widgets/authoritySelect";
 
 const InvitationCodeUpdate = () => {
   const router = useRouter();
@@ -42,7 +42,10 @@ const InvitationCodeUpdate = () => {
           <Label htmlFor="authority">
             {t("form.label.authority", "Authority")}
           </Label>
-          <AuthroitySelect viewModel={viewModel} />
+          <AuthroitySelect
+            value={viewModel.authorityId}
+            onChange={value => (viewModel.authorityId = parseInt(value.id))}
+          />
         </Field>
       )}
     </Observer>
