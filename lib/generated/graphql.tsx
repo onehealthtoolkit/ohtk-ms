@@ -3472,6 +3472,7 @@ export type GetReportQuery = {
       __typename?: "ReportTypeType";
       id: any;
       name: string;
+      definition?: any | null;
     } | null;
     coverImage?: {
       __typename?: "ImageType";
@@ -10436,6 +10437,10 @@ export const GetReportDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "definition" },
+                      },
                     ],
                   },
                 },

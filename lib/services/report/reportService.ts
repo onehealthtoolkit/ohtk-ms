@@ -82,6 +82,7 @@ export class ReportService implements IReportService {
         createdAt: incidentReport.createdAt,
         incidentDate: incidentReport.incidentDate,
         reportTypeName: incidentReport.reportType?.name || "",
+        reportTypeDefinition: incidentReport.reportType?.definition,
         rendererData: incidentReport.rendererData,
         data: incidentReport.data,
         images: incidentReport.images as Image[],
