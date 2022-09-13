@@ -1,5 +1,4 @@
 import { FormFieldValidation } from "components/formRenderer/fieldValidation";
-import { MONTHS } from "lib/datetime";
 import DateField from "lib/opsvForm/models/fields/dateField";
 import { observer } from "mobx-react";
 import { FC } from "react";
@@ -24,6 +23,8 @@ function isLeapYear(year?: number): boolean {
 }
 
 const Component: FC<FormDateFieldProps> = ({ field }) => {
+  const { t } = useTranslation();
+
   const onSelectDay = (value: string) => {
     field.clearError();
     field.day = parseInt(value) || undefined;
@@ -68,8 +69,7 @@ const Component: FC<FormDateFieldProps> = ({ field }) => {
 
   // month value is between 1-12
   const months = [...Array(12)].map<Option>((_, it) => {
-    const { t } = useTranslation();
-    const monthNames = t("months", {joinArrays: ","}).split(",");
+    const monthNames = t("months", { joinArrays: "," }).split(",");
 
     const m = it + 1;
     let disabled = false;
