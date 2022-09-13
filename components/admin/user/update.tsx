@@ -20,14 +20,33 @@ import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import { useTranslation } from "react-i18next";
 import { AccountsAuthorityUserRoleChoices } from "lib/generated/graphql";
+import AuthroitySelect from "components/widgets/authoritySelect";
+import useStore from "lib/store";
 
 const UserUpdate = () => {
   const router = useRouter();
+  const { me } = useStore();
   const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () =>
       new UserUpdateViewModel(router.query.id as string, services.userService)
+  );
+
+  const authorityField = (
+    <Observer>
+      {() => (
+        <Field $size="half">
+          <Label htmlFor="authority">
+            {t("form.label.authority", "Authority")}
+          </Label>
+          <AuthroitySelect
+            value={viewModel.authorityId}
+            onChange={value => (viewModel.authorityId = parseInt(value.id))}
+          />
+        </Field>
+      )}
+    </Observer>
   );
 
   const usernameField = useMemo(
@@ -197,6 +216,7 @@ const UserUpdate = () => {
         }}
       >
         <FieldGroup>
+          <>{me?.isSuperUser && authorityField}</>
           {usernameField}
           {firstNameField}
           {lastNameField}

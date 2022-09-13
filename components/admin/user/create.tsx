@@ -19,9 +19,12 @@ import useServices from "lib/services/provider";
 import { UserCreateViewModel } from "./createViewModel";
 import { useTranslation } from "react-i18next";
 import { AccountsAuthorityUserRoleChoices } from "lib/generated/graphql";
+import useStore from "lib/store";
+import AuthroitySelect from "components/widgets/authoritySelect";
 
 const UserCreate = () => {
   const router = useRouter();
+  const { me } = useStore();
   const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
@@ -40,6 +43,19 @@ const UserCreate = () => {
       }}
     >
       <FieldGroup>
+        <>
+          {me?.isSuperUser && (
+            <Field $size="half">
+              <Label htmlFor="authority">
+                {t("form.label.authority", "Authority")}
+              </Label>
+              <AuthroitySelect
+                onChange={value => (viewModel.authorityId = parseInt(value.id))}
+              />
+            </Field>
+          )}
+        </>
+
         <Field $size="half">
           <Label htmlFor="userName">
             {t("form.label.username", "User Name")}

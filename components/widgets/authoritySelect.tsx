@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import useServices from "lib/services/provider";
-import { InvitationCodeViewModel } from "./invitationCodeViewModel";
-import { observer } from "mobx-react";
 
 type AuthorityFilterProps = {
-  viewModel: InvitationCodeViewModel;
+  onChange: (value: AuthorityOption) => void;
+  value?: number;
 };
 
 type AuthorityOption = {
@@ -13,7 +12,10 @@ type AuthorityOption = {
   name: string;
 };
 
-const AuthroitySelect: React.FC<AuthorityFilterProps> = ({ viewModel }) => {
+const AuthroitySelect: React.FC<AuthorityFilterProps> = ({
+  value,
+  onChange,
+}) => {
   const { authorityService } = useServices();
   const [authorities, setAuthorities] = useState<AuthorityOption[]>();
 
@@ -37,9 +39,7 @@ const AuthroitySelect: React.FC<AuthorityFilterProps> = ({ viewModel }) => {
 
   return (
     <Select<AuthorityOption>
-      value={authorities?.find(
-        item => item.id == String(viewModel.authorityId)
-      )}
+      value={authorities?.find(item => item.id == String(value))}
       isMulti={false}
       options={authorities}
       getOptionValue={item => item.id}
@@ -53,11 +53,11 @@ const AuthroitySelect: React.FC<AuthorityFilterProps> = ({ viewModel }) => {
       }}
       onChange={value => {
         if (value) {
-          viewModel.authorityId = parseInt(value.id);
+          onChange(value);
         }
       }}
     />
   );
 };
 
-export default observer(AuthroitySelect);
+export default AuthroitySelect;

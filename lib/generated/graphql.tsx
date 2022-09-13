@@ -4436,6 +4436,10 @@ export type UserUpdateMutation = {
             email: string;
             telephone?: string | null;
             role?: AccountsAuthorityUserRoleChoices | null;
+            authority: {
+              __typename?: "AdminAuthorityCreateSuccess";
+              id: string;
+            };
           } | null;
         }
       | null;
@@ -4469,6 +4473,7 @@ export type GetUserQuery = {
     email: string;
     telephone?: string | null;
     role?: AccountsAuthorityUserRoleChoices | null;
+    authority: { __typename?: "AdminAuthorityCreateSuccess"; id: string };
   } | null;
 };
 
@@ -15364,6 +15369,19 @@ export const UserUpdateDocument = {
                                     kind: "Field",
                                     name: { kind: "Name", value: "role" },
                                   },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "authority" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                      ],
+                                    },
+                                  },
                                 ],
                               },
                             },
@@ -15505,6 +15523,16 @@ export const GetUserDocument = {
                 { kind: "Field", name: { kind: "Name", value: "email" } },
                 { kind: "Field", name: { kind: "Name", value: "telephone" } },
                 { kind: "Field", name: { kind: "Name", value: "role" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "authority" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
               ],
             },
           },
