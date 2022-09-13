@@ -71,7 +71,7 @@ const MapView: React.FC = () => {
   return (
     <Observer>
       {() => (
-        <div className="relative w-full h-screen">
+        <div className="relative w-full h-[80vh]">
           <Map isLoading={viewModel.isLoading} data={viewModel.data} />
           <div className="absolute top-8 right-10 z-[1001]">
             <Filter
