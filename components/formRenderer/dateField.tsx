@@ -3,6 +3,7 @@ import { MONTHS } from "lib/datetime";
 import DateField from "lib/opsvForm/models/fields/dateField";
 import { observer } from "mobx-react";
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 type Option = {
   label: string;
@@ -67,6 +68,9 @@ const Component: FC<FormDateFieldProps> = ({ field }) => {
 
   // month value is between 1-12
   const months = [...Array(12)].map<Option>((_, it) => {
+    const { t } = useTranslation();
+    const monthNames = t("months", {joinArrays: ","}).split(",");
+
     const m = it + 1;
     let disabled = false;
     if (field.day) {
@@ -76,7 +80,7 @@ const Component: FC<FormDateFieldProps> = ({ field }) => {
       if ([2, 4, 6, 9, 11].includes(m) && field.day === 31) disabled = true;
     }
     return {
-      label: MONTHS[m - 1],
+      label: monthNames[m - 1],
       value: m,
       disabled,
     };
