@@ -21,6 +21,25 @@ const colors = [
   "rgba(119, 154, 231, 1)",
 ];
 
+type SummaryCategory = {
+  category: string;
+  total: number;
+};
+const summaryCategory = (array: SummaryByCategoryData[]) => {
+  return array.reduce(
+    (result: SummaryCategory[], currentValue: SummaryByCategoryData) => {
+      let group = result.find(item => item.category == currentValue.category);
+      if (!group) {
+        group = { category: currentValue.category, total: 0 };
+        result.push(group);
+      }
+      group.total += currentValue.total;
+      return result;
+    },
+    []
+  );
+};
+
 export class SummaryByCategoryViewModel extends BaseViewModel {
   authorityId: number = 0;
   fromDate?: Date = undefined;
@@ -31,10 +50,15 @@ export class SummaryByCategoryViewModel extends BaseViewModel {
     datasets: [],
   };
 
+  summaryData: ChartData<"doughnut"> = {
+    datasets: [],
+  };
+
   constructor(readonly dashboardService: IDashboardService) {
     super();
     makeObservable(this, {
       data: observable,
+      summaryData: observable,
       _summaryType: observable,
       summaryType: computed,
       fetch: action,
@@ -118,7 +142,6 @@ export class SummaryByCategoryViewModel extends BaseViewModel {
       data,
       (item: SummaryByCategoryData) => item.category
     );
-    // console.log(groupByCategory);
     let datasets: any[] = this.mapToArray(groupByCategory, (key, value) => ({
       label: key,
       data: Array.from(value.values()),
@@ -132,6 +155,20 @@ export class SummaryByCategoryViewModel extends BaseViewModel {
     this.data = {
       labels: labels,
       datasets: datasets,
+    };
+
+    const summaries = summaryCategory(data);
+    this.summaryData = {
+      labels: summaries.map(item => item.category),
+      datasets: [
+        {
+          label: String(
+            summaries.reduce((sum, current) => sum + current.total, 0)
+          ),
+          data: summaries.map(item => item.total),
+          backgroundColor: colors,
+        },
+      ],
     };
   }
 

@@ -132,6 +132,12 @@ mutation AuthorityUpdate(
   }
 }
 
+mutation AuthorityDelete($id: ID!) {
+  adminAuthorityDelete(id: $id) {
+    success
+  }
+}
+
 query GetAuthority($id: ID!) {
   authority(id: $id) {
     id

@@ -54,6 +54,8 @@ export class NotificationTemplateListViewModel extends BaseViewModel {
       await this.notificationTemplateService.deleteNotificationTemplate(id);
     if (result.error) {
       this.setErrorMessage(result.error);
+    } else {
+      this.fetch();
     }
   }
 }

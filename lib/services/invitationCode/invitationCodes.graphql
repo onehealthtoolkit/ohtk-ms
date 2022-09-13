@@ -93,6 +93,12 @@ mutation InvitationCodeUpdate(
   }
 }
 
+mutation InvitationCodeDelete($id: ID!) {
+  adminInvitationCodeDelete(id: $id) {
+    success
+  }
+}
+
 query GetInvitationCode($id: ID!) {
   invitationCode(id: $id) {
     id

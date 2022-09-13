@@ -1,0 +1,45 @@
+query QueryFollowups($incidentId: ID!) {
+  followups(incidentId: $incidentId) {
+    id
+    rendererData
+    images {
+      id
+      file
+      thumbnail
+    }
+    createdAt
+  }
+}
+
+query GetFollowupReport($id: ID!) {
+  followupReport(id: $id) {
+    id
+    data
+    testFlag
+    rendererData
+    createdAt
+    incident {
+      id
+    }
+    reportType {
+      id
+      name
+    }
+    reportedBy {
+      id
+      username
+    }
+    images {
+      id
+      file
+      thumbnail
+    }
+    reportedBy {
+      id
+      username
+      firstName
+      lastName
+      avatarUrl
+    }
+  }
+}

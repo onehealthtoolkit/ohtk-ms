@@ -1,4 +1,10 @@
-import { action, makeObservable, observable, runInAction } from "mobx";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
 import { IReportService } from "lib/services/report";
 import { ReportDetail } from "lib/services/report/report";
@@ -9,6 +15,8 @@ export class ReportViewModel extends BaseViewModel {
   data: ReportDetail = {} as ReportDetail;
   id: string;
   galleryViewModel?: GalleryDialogViewModel = undefined;
+
+  _activeTabIndex: number = 0;
 
   constructor(
     id: string,
@@ -22,9 +30,18 @@ export class ReportViewModel extends BaseViewModel {
       promoteToCase: action,
       galleryViewModel: observable,
       openGallery: action,
+      _activeTabIndex: observable,
+      activeTabIndex: computed,
     });
     this.id = id;
     this.fetch();
+  }
+
+  public get activeTabIndex(): number {
+    return this._activeTabIndex;
+  }
+  public set activeTabIndex(value: number) {
+    this._activeTabIndex = value;
   }
 
   async fetch() {

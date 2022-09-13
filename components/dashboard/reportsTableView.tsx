@@ -1,3 +1,4 @@
+import CaseLink from "components/case/caseLink";
 import { MaskingLoader } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import { formatDate, formatDateTime } from "lib/datetime";
@@ -70,6 +71,7 @@ const ReportsTableView: React.FC<ReportsTableViewProps> = ({
                 <th scope="col" className="py-3 px-6 whitespace-nowrap">
                   Data
                 </th>
+                <th></th>
               </tr>
             </thead>
             <tbody className="text-sm font-normal font-['Bai_Jamjuree']">
@@ -88,6 +90,9 @@ const ReportsTableView: React.FC<ReportsTableViewProps> = ({
                     </td>
                     <td className="px-6 py-4">{item.reportTypeName}</td>
                     <td className="px-6 py-4">{item.rendererData}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <CaseLink caseId={item.caseId} />
+                    </td>
                   </tr>
                 ))}
             </tbody>

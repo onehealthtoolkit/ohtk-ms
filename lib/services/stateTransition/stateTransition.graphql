@@ -104,6 +104,12 @@ mutation StateTransitionUpdate(
   }
 }
 
+mutation StateTransitionDelete($id: ID!) {
+  adminStateTransitionDelete(id: $id) {
+    success
+  }
+}
+
 query GetStateTransition($id: ID!) {
   stateTransitionGet(id: $id) {
     id

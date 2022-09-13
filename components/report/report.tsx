@@ -1,7 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import { Fragment, useEffect, useState } from "react";
 import { observer, Observer } from "mobx-react";
-import { Divide, MaskingLoader } from "components/widgets/forms";
+import {
+  Divide,
+  MaskingLoader,
+  TabBar,
+  TabItem,
+} from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ReportViewModel } from "./reportViewModel";
 import tw from "tailwind-styled-components";
@@ -13,6 +18,7 @@ import dynamic from "next/dynamic";
 import Comments from "components/widgets/comments";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 import Back from "components/widgets/back";
+import FollowupList from "./followup/list";
 
 export const PromoteToCaseButton = tw.button`
   px-4 
@@ -71,19 +77,21 @@ const ReportImage = observer(
   ({ viewModel }: { viewModel: ReportViewModel }) => {
     return (
       <Fragment>
-        {viewModel.data.images?.map((image, idx) => (
-          <div key={idx} className="">
-            <a
-              href="#"
-              onClick={e => {
-                e.preventDefault();
-                viewModel.openGallery(image.id);
-              }}
-            >
-              <img className="w-40" src={image.thumbnail} alt="" />
-            </a>
-          </div>
-        ))}
+        <div className="flex flex-wrap  gap-4">
+          {viewModel.data.images?.map((image, idx) => (
+            <div key={idx} className="">
+              <a
+                href="#"
+                onClick={e => {
+                  e.preventDefault();
+                  viewModel.openGallery(image.id);
+                }}
+              >
+                <img className="w-40 h-32" src={image.thumbnail} alt="" />
+              </a>
+            </div>
+          ))}
+        </div>
       </Fragment>
     );
   }
@@ -107,6 +115,10 @@ const Report = (props: { id: string }) => {
 
   if (viewModel === undefined) {
     return null;
+  }
+
+  if (router.query.activeTabIndex) {
+    viewModel.activeTabIndex = +router.query.activeTabIndex;
   }
 
   return (
@@ -155,14 +167,62 @@ const Report = (props: { id: string }) => {
               <ReportImage viewModel={viewModel} />
 
               <Divide />
+              <TabBar>
+                <TabItem
+                  id="formData"
+                  active={viewModel.activeTabIndex == 0}
+                  onTab={() => {
+                    viewModel.activeTabIndex = 0;
+                    router.push(
+                      {
+                        pathname: router.pathname,
+                        query: { ...router.query, activeTabIndex: 0 },
+                      },
+                      undefined,
+                      { shallow: true }
+                    );
+                  }}
+                >
+                  {() => (
+                    <>
+                      <span>Form Data</span>
+                    </>
+                  )}
+                </TabItem>
+                <TabItem
+                  id="followup"
+                  active={viewModel.activeTabIndex == 1}
+                  onTab={() => {
+                    viewModel.activeTabIndex = 1;
+                    router.push(
+                      {
+                        pathname: router.pathname,
+                        query: { ...router.query, activeTabIndex: 1 },
+                      },
+                      undefined,
+                      { shallow: true }
+                    );
+                  }}
+                >
+                  {() => (
+                    <>
+                      <span>Followup</span>
+                    </>
+                  )}
+                </TabItem>
+              </TabBar>
 
               <div className="mb-4">
-                <div className="">
-                  <p className="text-md dark:text-gray-400">Form Data</p>
-                </div>
-                <div className="">
-                  {viewModel.data.data && renderData(viewModel.data.data)}
-                </div>
+                {viewModel.activeTabIndex == 0 && (
+                  <div className="">
+                    {viewModel.data.data && renderData(viewModel.data.data)}
+                  </div>
+                )}
+                {viewModel.activeTabIndex == 1 && (
+                  <div className="">
+                    <FollowupList incidentId={viewModel.id} />
+                  </div>
+                )}
               </div>
 
               <Divide />

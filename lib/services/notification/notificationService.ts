@@ -70,6 +70,13 @@ export class NotificationService implements INotificationService {
       awaitRefetchQueries: true,
     });
 
+    if (createResult.errors) {
+      return {
+        success: false,
+        message: createResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = createResult.data?.adminAuthorityNotificationUpsert?.result;
     switch (result?.__typename) {
       case "AdminAuthorityNotificationUpsertSuccess": {

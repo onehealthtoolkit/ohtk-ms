@@ -48,6 +48,8 @@ export class AdminCaseDefinitionListViewModel extends BaseViewModel {
     const result = await this.caseDefinitionService.deleteCaseDefinition(id);
     if (result.error) {
       this.setErrorMessage(result.error);
+    } else {
+      this.fetch();
     }
   }
 }

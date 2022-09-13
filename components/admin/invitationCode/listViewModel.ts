@@ -50,6 +50,8 @@ export class InvitaionCodeListViewModel extends BaseViewModel {
     const result = await this.invitationCodeService.deleteInvitationCode(id);
     if (result.error) {
       this.setErrorMessage(result.error);
+    } else {
+      this.fetch();
     }
   }
 }

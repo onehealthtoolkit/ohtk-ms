@@ -52,6 +52,8 @@ export class AdminReporterNotificationListViewModel extends BaseViewModel {
       await this.reporterNotificationService.deleteReporterNotification(id);
     if (result.error) {
       this.setErrorMessage(result.error);
+    } else {
+      this.fetch();
     }
   }
 }

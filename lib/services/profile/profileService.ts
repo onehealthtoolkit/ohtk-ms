@@ -58,6 +58,13 @@ export class ProfileService implements IProfileService {
       },
     });
 
+    if (uploadResult.errors) {
+      return {
+        success: false,
+        message: uploadResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const success = uploadResult.data?.adminUserUploadAvatar
       ?.success as boolean;
     return {
@@ -70,14 +77,21 @@ export class ProfileService implements IProfileService {
   }
 
   async changePassword(newPassword: string): Promise<SaveResult<never>> {
-    const uploadResult = await this.client.mutate({
+    const changePasswordResult = await this.client.mutate({
       mutation: UserChangePasswordDocument,
       variables: {
         newPassword,
       },
     });
 
-    const success = uploadResult.data?.adminUserChangePassword
+    if (changePasswordResult.errors) {
+      return {
+        success: false,
+        message: changePasswordResult.errors.map(o => o.message).join(","),
+      };
+    }
+
+    const success = changePasswordResult.data?.adminUserChangePassword
       ?.success as boolean;
     return {
       success,

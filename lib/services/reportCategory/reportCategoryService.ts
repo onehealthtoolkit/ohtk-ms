@@ -4,6 +4,7 @@ import {
   ReportCategoryCreateDocument,
   ReportCategoryUpdateDocument,
   GetReportCategoryDocument,
+  ReportCategoryDeleteDocument,
 } from "lib/generated/graphql";
 import { ReportCategory } from "lib/services/reportCategory/reportCategory";
 import {
@@ -133,6 +134,13 @@ export class ReportCategoryService implements IReportCategoryService {
       awaitRefetchQueries: true,
     });
 
+    if (createResult.errors) {
+      return {
+        success: false,
+        message: createResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = createResult.data?.adminCategoryCreate?.result;
     switch (result?.__typename) {
       case "AdminCategoryCreateSuccess": {
@@ -208,6 +216,13 @@ export class ReportCategoryService implements IReportCategoryService {
       },
     });
 
+    if (updateResult.errors) {
+      return {
+        success: false,
+        message: updateResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = updateResult.data?.adminCategoryUpdate?.result;
     switch (result?.__typename) {
       case "AdminCategoryUpdateSuccess": {
@@ -234,7 +249,35 @@ export class ReportCategoryService implements IReportCategoryService {
   }
 
   async deleteReportCategory(id: string) {
-    console.log("delete report category", id);
-    return { error: "" };
+    const deleteResult = await this.client.mutate({
+      mutation: ReportCategoryDeleteDocument,
+      variables: {
+        id,
+      },
+      refetchQueries: [
+        {
+          query: ReportCategoriesDocument,
+          variables: this.fetchReportCategoriesQuery,
+          fetchPolicy: "network-only",
+        },
+      ],
+      awaitRefetchQueries: true,
+      update: cache => {
+        cache.evict({
+          id: cache.identify({
+            __typename: "AdminCategoryQueryType",
+            id: id,
+          }),
+        });
+        cache.evict({
+          id: cache.identify({
+            __typename: "CategoryType",
+            id: id,
+          }),
+        });
+      },
+    });
+
+    return { error: deleteResult.errors?.map(o => o.message).join(",") };
   }
 }

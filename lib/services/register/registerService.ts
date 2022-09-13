@@ -33,6 +33,7 @@ export class RegisterService implements IRegisterService {
       variables: {
         code: invitationCode,
       },
+      fetchPolicy: "network-only",
     });
 
     if (getResult.errors) {
@@ -67,6 +68,7 @@ export class RegisterService implements IRegisterService {
         email: email,
         telephone: telephone,
       },
+      fetchPolicy: "network-only",
     });
 
     if (registerResult.errors) {

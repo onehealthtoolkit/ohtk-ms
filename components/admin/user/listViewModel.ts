@@ -47,6 +47,8 @@ export class AdminUserListViewModel extends BaseViewModel {
     const result = await this.userService.deleteUser(id);
     if (result.error) {
       this.setErrorMessage(result.error);
+    } else {
+      this.fetch();
     }
   }
 }

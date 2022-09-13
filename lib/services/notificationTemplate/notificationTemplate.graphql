@@ -112,6 +112,12 @@ mutation NotificationTemplateUpdate(
   }
 }
 
+mutation NotificationTemplateDelete($id: ID!) {
+  adminNotificationTemplateDelete(id: $id) {
+    success
+  }
+}
+
 query GetNotificationTemplate($id: ID!) {
   notificationTemplateGet(id: $id) {
     id

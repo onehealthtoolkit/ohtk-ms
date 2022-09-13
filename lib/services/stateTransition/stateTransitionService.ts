@@ -5,6 +5,7 @@ import {
   GetStateTransitionDocument,
   GetStateDefinitionDocument,
   StateTransistionListByReportTypeDocument,
+  StateTransitionDeleteDocument,
 } from "lib/generated/graphql";
 import { StateTransition } from "lib/services/stateTransition/stateTransition";
 import {
@@ -32,7 +33,10 @@ export interface IStateTransitionService extends IService {
     stateDefinitionId: string
   ): Promise<SaveResult<StateTransition>>;
 
-  deleteStateTransition(id: string): Promise<DeleteResult>;
+  deleteStateTransition(
+    id: string,
+    stateDefinitionId: string
+  ): Promise<DeleteResult>;
 }
 
 export class StateTransitionService implements IStateTransitionService {
@@ -50,6 +54,7 @@ export class StateTransitionService implements IStateTransitionService {
       variables: {
         reportTypeId,
       },
+      fetchPolicy: "network-only",
     });
 
     const items: StateTransition[] = [];
@@ -112,6 +117,13 @@ export class StateTransitionService implements IStateTransitionService {
       ],
       awaitRefetchQueries: true,
     });
+
+    if (createResult.errors) {
+      return {
+        success: false,
+        message: createResult.errors.map(o => o.message).join(","),
+      };
+    }
 
     const result = createResult.data?.adminStateTransitionCreate?.result;
     switch (result?.__typename) {
@@ -190,6 +202,13 @@ export class StateTransitionService implements IStateTransitionService {
       },
     });
 
+    if (updateResult.errors) {
+      return {
+        success: false,
+        message: updateResult.errors.map(o => o.message).join(","),
+      };
+    }
+
     const result = updateResult.data?.adminStateTransitionUpdate?.result;
     switch (result?.__typename) {
       case "AdminStateTransitionUpdateSuccess": {
@@ -214,8 +233,24 @@ export class StateTransitionService implements IStateTransitionService {
       success: true,
     };
   }
-  async deleteStateTransition(id: string) {
-    console.log("delete report type", id);
-    return { error: "" };
+
+  async deleteStateTransition(id: string, stateDefinitionId: string) {
+    const deleteResult = await this.client.mutate({
+      mutation: StateTransitionDeleteDocument,
+      variables: {
+        id,
+      },
+      refetchQueries: [
+        {
+          query: GetStateDefinitionDocument,
+          variables: {
+            id: stateDefinitionId,
+          },
+          fetchPolicy: "network-only",
+        },
+      ],
+    });
+
+    return { error: deleteResult.errors?.map(o => o.message).join(",") };
   }
 }
