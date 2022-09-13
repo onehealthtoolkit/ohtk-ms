@@ -15,6 +15,7 @@ export type serverOption = {
 export class SignInViewModel {
   _username: string = "";
   _password: string = "";
+  _email: string = "";
 
   fieldErrors: { [key: string]: string } = {};
 
@@ -26,16 +27,23 @@ export class SignInViewModel {
 
   serverOptions: serverOption[] = [];
 
+  isForgotPassword: boolean = false;
+
   constructor(readonly store: Store, tenantApiEndpoint: string) {
     makeObservable(this, {
       _username: observable,
       _password: observable,
       username: computed,
       password: computed,
+      _email: observable,
+      email: computed,
+      isForgotPassword: observable,
       fieldErrors: observable,
       submitError: observable,
       serverOptions: observable,
       signIn: action,
+      forgotPassword: action,
+      resetPassword: action,
       validate: action,
       isValid: computed,
       fetchTenant: action,
@@ -83,6 +91,17 @@ export class SignInViewModel {
     }
   }
 
+  public get email(): string {
+    return this._email;
+  }
+  public set email(value: string) {
+    this._email = value;
+    delete this.fieldErrors["email"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
   public get isValid(): boolean {
     return Object.keys(this.fieldErrors).length === 0;
   }
@@ -95,12 +114,27 @@ export class SignInViewModel {
       if (result.success) {
         return true;
       } else {
-        this.submitError = result.message;
+        runInAction(() => {
+          this.submitError = result.message;
+        });
         return false;
       }
     }
     this.isSubmitting = false;
     return false;
+  }
+
+  public forgotPassword(value: boolean) {
+    this.isForgotPassword = value;
+  }
+
+  public resetPassword() {
+    if (this.email.length === 0) {
+      this.fieldErrors["email"] = "this field is required";
+      return false;
+    }
+
+    return true;
   }
 
   validate(): boolean {

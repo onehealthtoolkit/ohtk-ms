@@ -83,7 +83,8 @@
       "registerLogin": "Don't have an account yet?",
       "invitationCode": "Invitation Code",
       "language": "Language",
-      "server": "Server"
+      "server": "Server",
+      "forgotPassword": "Enter the email address you used to create your account, and click \"Reset Password\""
     },
     "placeholder": {
       "code": "Code",
@@ -125,6 +126,8 @@
     "button": {
       "signin": "Sign In",
       "signup": "Sign Up",
+      "forgotPassword": "Forgot Password?",
+      "resetPassword": "Reset Password",
       "delete": "Delete",
       "add": "Add",
       "save": "Save",
@@ -142,6 +145,7 @@
   },
   "title": {
     "login": "Login to Your Account",
-    "signup": "Sign Up"
+    "signup": "Sign Up",
+    "forgotPassword": "Forgot password"
   }
 }
