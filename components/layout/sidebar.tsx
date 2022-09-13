@@ -20,6 +20,7 @@ import { Observer, observer } from "mobx-react";
 import { Menu } from "./menu";
 import UserMenu from "./userMenu";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
+import { useTranslation } from "react-i18next";
 
 const iconClassName = "h-5 w-5 text-gray-300";
 
@@ -35,6 +36,7 @@ const style: Record<string, string | Record<string, string>> = {
   expanded: `md:w-[250px] w-64 overflow-y-scroll md:overflow-y-auto no-scrollbar md:translate-x-0 transform transition-all duration-200 ease-in-out translate-x-0`,
 };
 const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
+  const { t } = useTranslation();
   const sidebar = useRef(null);
   const router = useRouter();
   const pathname = router.asPath;
@@ -74,7 +76,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/"
                     pathname={pathname}
-                    label="Dashboard"
+                    label={t("breadcrumb.dashboard", "Dashboard")}
                     collapsed={store.menu.collapsed}
                     display={store.isRoleOfficer || store.isRoleAdmin}
                     icon={
@@ -84,7 +86,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/reports/"
                     pathname={pathname}
-                    label="Reports"
+                    label={t("breadcrumb.reports", "Reports")}
                     collapsed={store.menu.collapsed}
                     display={store.isRoleOfficer || store.isRoleAdmin}
                     icon={<DocumentReportIcon className={iconClassName} />}
@@ -93,7 +95,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/cases/"
                     pathname={pathname}
-                    label="Cases"
+                    label={t("breadcrumb.cases", "Cases")}
                     collapsed={store.menu.collapsed}
                     display={store.isRoleOfficer || store.isRoleAdmin}
                     icon={<DocumentTextIcon className={iconClassName} />}
@@ -102,7 +104,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/map/"
                     pathname={pathname}
-                    label="Map"
+                    label={t("breadcrumb.map", "Map")}
                     collapsed={store.menu.collapsed}
                     display={store.isRoleOfficer || store.isRoleAdmin}
                     icon={<LocationMarkerIcon className={iconClassName} />}
@@ -125,7 +127,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/admin/authorities/"
                     pathname={pathname}
-                    label="Authorities"
+                    label={t("breadcrumb.authorities", "Authorities")}
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser || store.isRoleAdmin}
                     icon={<CubeIcon className={iconClassName} />}
@@ -133,7 +135,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/admin/users/"
                     pathname={pathname}
-                    label="Users"
+                    label={t("breadcrumb.users", "Users")}
                     collapsed={store.menu.collapsed}
                     display={
                       store.isSuperUser ||
@@ -145,7 +147,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/admin/report_categories/"
                     pathname={pathname}
-                    label="Category"
+                    label={t("breadcrumb.reportCategories", "Report Categories")}
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
                     icon={<CollectionIcon className={iconClassName} />}
@@ -153,7 +155,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/admin/report_types/"
                     pathname={pathname}
-                    label="Report templates"
+                    label={t("breadcrumb.reportTypes", "Report Types")}
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
                     icon={<DocumentReportIcon className={iconClassName} />}
@@ -161,7 +163,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/admin/invitation_codes/"
                     pathname={pathname}
-                    label="Invitation codes"
+                    label={t("breadcrumb.tnvitationCodes", "Invitation Codes")}
                     collapsed={store.menu.collapsed}
                     display={
                       store.isSuperUser ||
@@ -174,7 +176,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/admin/case_definitions/"
                     pathname={pathname}
-                    label="Case Definition"
+                    label={t("breadcrumb.caseDefinitions", "Case Definition")}
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
                     icon={<VariableIcon className={iconClassName} />}
@@ -183,7 +185,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/admin/state_definitions/"
                     pathname={pathname}
-                    label="State Definition"
+                    label={t("breadcrumb.stateDefinitions", "State Definitions")}
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
                     icon={<LightBulbIcon className={iconClassName} />}
@@ -191,7 +193,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/admin/notification_templates/"
                     pathname={pathname}
-                    label="Notification Template"
+                    label={t("breadcrumb.notificationTemplates", "Notification Types")}
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
                     icon={<TemplateIcon className={iconClassName} />}
@@ -199,7 +201,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/admin/notifications/"
                     pathname={pathname}
-                    label="Notification"
+                    label={t("breadcrumb.notifications", "Notifications")}
                     collapsed={store.menu.collapsed}
                     display={store.isRoleOfficer || store.isRoleAdmin}
                     icon={<BellIcon className={iconClassName} />}
@@ -207,7 +209,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/admin/reporter_notifications/"
                     pathname={pathname}
-                    label="Reporter notification"
+                    label={t("breadcrumb.reporterNotifications", "Reporter Alerts")}
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
                     icon={<SpeakerphoneIcon className={iconClassName} />}
