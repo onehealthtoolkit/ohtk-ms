@@ -9,6 +9,7 @@ import { NotificationViewModel } from "./notificationViewModel";
 import AsyncSelect from "react-select/async";
 import { ReportType } from "lib/services/reportType";
 import { ReportCategory } from "lib/services/reportCategory";
+import { styledReactSelect } from "components/widgets/styledReactSelect";
 
 const groupStyles = {
   display: "flex",
@@ -106,6 +107,7 @@ const NotificationUpsert = () => {
             defaultOptions
             formatGroupLabel={formatGroupLabel}
             styles={{
+              ...styledReactSelect,
               option: styles => {
                 return {
                   ...styles,

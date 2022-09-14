@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import useServices from "lib/services/provider";
+import { styledReactSelect } from "./styledReactSelect";
 
 type AuthorityFilterProps = {
   onChange: (value: AuthorityOption) => void;
@@ -44,13 +45,7 @@ const AuthroitySelect: React.FC<AuthorityFilterProps> = ({
       options={authorities}
       getOptionValue={item => item.id}
       getOptionLabel={item => item.name}
-      styles={{
-        indicatorSeparator: () => ({}),
-        control: base => ({
-          ...base,
-          boxShadow: "none",
-        }),
-      }}
+      styles={styledReactSelect}
       onChange={value => {
         if (value) {
           onChange(value);
