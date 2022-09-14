@@ -18,3 +18,33 @@ textarea[required] {
 input[disabled] {
   @apply bg-gray-100;
 }
+
+.radar-wink-wrapper {
+  pointer-events: none;
+  cursor: inherit;
+}
+
+.radar-wink {
+  width: 160px;
+  height: 160px;
+
+  background-color: #e91e63;
+  border-radius: 160px;
+  opacity: 0.5;
+
+  animation-duration: 1.8s;
+  animation-name: wink;
+  animation-iteration-count: infinite;
+}
+
+@keyframes wink {
+  from {
+    opacity: 0.5;
+    transform: scale(0.1);
+  }
+
+  to {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+}
