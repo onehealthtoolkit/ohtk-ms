@@ -14,6 +14,7 @@ import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { useRouter } from "next/router";
 import DashboardFilter from "./filter";
 import AuthorityFilter from "./authorityFilter";
+import SummaryByCategoryPieView from "./summaryByCategoryPieView";
 
 export const MapView = dynamic(() => import("./mapView"), {
   loading: () => <p>A map is loading</p>,
@@ -93,10 +94,21 @@ const Dashboard: React.FC = () => {
 
           <StatView authorityId={viewModel.authorityId} filter={filterData} />
           <MapView authorityId={viewModel.authorityId} filter={filterData} />
-          <SummaryByCategoryView
-            authorityId={viewModel.authorityId}
-            filter={filterData}
-          />
+          <div className="flex items-stretch flex-wrap">
+            <div className="w-full xl:w-8/12 xl:mb-0">
+              <SummaryByCategoryView
+                authorityId={viewModel.authorityId}
+                filter={filterData}
+              />
+            </div>
+            <div className="w-full xl:w-4/12 md:px-4">
+              <SummaryByCategoryPieView
+                authorityId={viewModel.authorityId}
+                filter={filterData}
+              />
+            </div>
+          </div>
+
           <div className="flex flex-wrap">
             <div className="w-full xl:w-1/2">
               <ReportsTableView
@@ -104,7 +116,7 @@ const Dashboard: React.FC = () => {
                 filter={filterData}
               />
             </div>
-            <div className="w-full xl:w-1/2 px-4">
+            <div className="w-full xl:w-1/2 md:px-4">
               <CasesTableView
                 authorityId={viewModel.authorityId}
                 filter={filterData}
