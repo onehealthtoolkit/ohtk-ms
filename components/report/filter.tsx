@@ -9,6 +9,7 @@ import { ReportListViewModel } from "./listViewModel";
 import { Authority } from "lib/services/authority";
 import { runInAction } from "mobx";
 import ReportTypeSelect from "./reportTypeSelect";
+import { styledReactSelect } from "components/widgets/styledReactSelect";
 
 export const defaultOptions: Authority[] = [];
 
@@ -53,6 +54,7 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
           isMulti={true}
           getOptionValue={item => item.id}
           getOptionLabel={item => item.name}
+          styles={styledReactSelect}
           onChange={values => {
             runInAction(() => {
               viewModel.filter.authorities = [...values];

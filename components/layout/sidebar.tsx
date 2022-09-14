@@ -147,7 +147,10 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/admin/report_categories/"
                     pathname={pathname}
-                    label={t("breadcrumb.reportCategories", "Report Categories")}
+                    label={t(
+                      "breadcrumb.reportCategories",
+                      "Report Categories"
+                    )}
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
                     icon={<CollectionIcon className={iconClassName} />}
@@ -185,7 +188,10 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/admin/state_definitions/"
                     pathname={pathname}
-                    label={t("breadcrumb.stateDefinitions", "State Definitions")}
+                    label={t(
+                      "breadcrumb.stateDefinitions",
+                      "State Definitions"
+                    )}
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
                     icon={<LightBulbIcon className={iconClassName} />}
@@ -193,7 +199,10 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/admin/notification_templates/"
                     pathname={pathname}
-                    label={t("breadcrumb.notificationTemplates", "Notification Types")}
+                    label={t(
+                      "breadcrumb.notificationTemplates",
+                      "Notification Types"
+                    )}
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
                     icon={<TemplateIcon className={iconClassName} />}
@@ -209,7 +218,10 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/admin/reporter_notifications/"
                     pathname={pathname}
-                    label={t("breadcrumb.reporterNotifications", "Reporter Alerts")}
+                    label={t(
+                      "breadcrumb.reporterNotifications",
+                      "Reporter Alerts"
+                    )}
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
                     icon={<SpeakerphoneIcon className={iconClassName} />}
@@ -226,7 +238,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
         )}
       </Observer>
     ),
-    [store, pathname]
+    [store, pathname, t]
   );
   return (
     <div>

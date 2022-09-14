@@ -4,6 +4,7 @@ import Select, { MultiValue } from "react-select";
 import useServices from "lib/services/provider";
 import { ReportType } from "lib/services/reportType";
 import { ReportCategory } from "lib/services/reportCategory";
+import { styledReactSelect } from "components/widgets/styledReactSelect";
 
 interface GroupedOption {
   readonly label: string;
@@ -84,14 +85,7 @@ const ReportTypeSelect: React.FC<ReportTypeSelectProps> = ({
       getOptionValue={item => item.id}
       getOptionLabel={item => item.name}
       formatGroupLabel={formatGroupLabel}
-      styles={{
-        option: styles => {
-          return {
-            ...styles,
-            paddingLeft: "30px",
-          };
-        },
-      }}
+      styles={styledReactSelect}
       onChange={values => {
         onChange(values);
       }}

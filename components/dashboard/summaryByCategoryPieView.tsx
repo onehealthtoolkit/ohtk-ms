@@ -1,34 +1,18 @@
 import Spinner from "components/widgets/spinner";
 import { observer } from "mobx-react";
 import React, { Fragment, useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement } from "chart.js";
 import useServices from "lib/services/provider";
-import { SummaryByCategoryViewModel } from "./summaryByCategoryViewModel";
 import { MaskingLoader } from "components/widgets/forms";
 import "react-datepicker/dist/react-datepicker.css";
+import { DashBoardFilterData } from "./dashboardViewModel";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import { SummaryByCategoryPieViewModel } from "./summaryByCategoryPieViewModel";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import useReportCategories from "lib/hooks/reportCategories";
-import SelectableChips from "components/widgets/chips";
-import { DashBoardFilterData } from "./dashboardViewModel";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(ArcElement, ChartDataLabels);
 
 export const options = {
   responsive: true,
@@ -70,21 +54,20 @@ export const options = {
   },
 };
 
-type SummaryByCategoryViewProps = {
+type SummaryByCategoryPieViewProps = {
   authorityId: number;
   filter: DashBoardFilterData;
+  showFilter?: boolean;
 };
 
-const SummaryByCategoryView: React.FC<SummaryByCategoryViewProps> = ({
+const SummaryByCategoryPieView: React.FC<SummaryByCategoryPieViewProps> = ({
   authorityId,
   filter,
 }) => {
   const services = useServices();
   const [viewModel] = useState(
-    () => new SummaryByCategoryViewModel(services.dashboardService)
+    () => new SummaryByCategoryPieViewModel(services.dashboardService)
   );
-
-  const categories = useReportCategories();
 
   useEffect(() => {
     if (authorityId) viewModel.setSearchValue(authorityId, filter);
@@ -94,12 +77,12 @@ const SummaryByCategoryView: React.FC<SummaryByCategoryViewProps> = ({
 
   return (
     <MaskingLoader loading={viewModel.isLoading}>
-      <div className="relative flex flex-col min-w-0 break-words w-full  h-full mb-6 shadow-lg ">
+      <div className="relative flex flex-col min-w-0 break-words w-full h-full mb-6 shadow-lg ">
         <div className="rounded-t-lg mb-0 px-4 py-2 h-[45px] bg-[#5E7284]">
           <div className="flex flex-wrap items-center">
             <div className="relative w-full max-w-full flex-grow flex-1">
               <span className="font-['Kanit'] font-semibold text-sm text-white">
-                Reporting Trends
+                Total reports
               </span>
             </div>
             <div className="relative w-full max-w-full flex-grow flex-1 text-right">
@@ -163,23 +146,51 @@ const SummaryByCategoryView: React.FC<SummaryByCategoryViewProps> = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-wrap justify-start mt-2 ml-2 gap-2">
-          {categories && (
-            <SelectableChips
-              initialChips={categories?.map(item => item.name)}
-              value={categories?.map(item => item.name)}
-              onChangeChips={(values: string[]) => {
-                viewModel.filterByCategory(values);
-              }}
-            />
-          )}
-        </div>
-        <div className="block w-full overflow-x-auto p-2">
-          {viewModel.data && <Bar options={options} data={viewModel.data} />}
+
+        <div className="h-full w-full flex items-center overflow-x-auto p-2">
+          <Doughnut
+            plugins={[
+              {
+                id: "doughnutlabel",
+                beforeDatasetDraw: function (chart) {
+                  const ctx = chart.ctx;
+
+                  ctx.restore();
+                  ctx.font = "30px Kanit";
+                  ctx.textBaseline = "middle";
+                  ctx.fillStyle = "#000";
+
+                  const text = chart.config.data.datasets[0]?.label || "";
+                  let centerX =
+                    (chart.chartArea.left + chart.chartArea.right) / 2;
+                  const centerY =
+                    (chart.chartArea.top + chart.chartArea.bottom) / 2;
+
+                  centerX -= ctx.measureText(text).width / 1.98;
+                  ctx.fillText(text, centerX, centerY);
+                  ctx.save();
+                },
+              },
+            ]}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: "right" as const,
+                  align: "start" as const,
+                  onClick: () => null,
+                },
+                datalabels: {
+                  color: "#1D1E1E",
+                },
+              },
+            }}
+            data={viewModel.data}
+          />
         </div>
       </div>
     </MaskingLoader>
   );
 };
 
-export default observer(SummaryByCategoryView);
+export default observer(SummaryByCategoryPieView);
