@@ -1,4 +1,4 @@
-import { IDashboardService } from "lib/services/dashboard/dashboardService";
+import { IReportService } from "lib/services/report";
 import { EventItem } from "lib/services/dashboard/event";
 import { ReportType } from "lib/services/reportType";
 import {
@@ -25,7 +25,7 @@ export default class MapViewViewModel {
   data = Array<EventItem>();
   isLive: boolean = false;
 
-  constructor(readonly dashboardService: IDashboardService) {
+  constructor(readonly reportService: IReportService) {
     makeObservable(this, {
       _authorityId: observable,
       authorityId: computed,
@@ -107,16 +107,33 @@ export default class MapViewViewModel {
   }
 
   async fetch() {
-    // [TODO] Change api to filter with date range and report types.
-    // This is a temporary api for mocking purpose
-    const data = await this.dashboardService.fetchEvent(this.authorityId);
-    if (data) {
-      runInAction(() => {
-        this.data = [];
-        data.cases.forEach(it => this.data.push(it));
-        data.reports.forEach(it => this.data.push(it));
+    const result = await this.reportService.fetchReports(1000, 0, {
+      fromDate: this.fromDate,
+      throughDate: this.toDate,
+      reportTypes: this.reportTypes,
+    });
+    runInAction(() => {
+      const events = Array<EventItem>();
+
+      result.items?.forEach(it => {
+        if (it.gpsLocation) {
+          const lnglat = it.gpsLocation.split(",");
+
+          events.push({
+            id: it.id,
+            type: "report",
+            data: it.rendererData,
+            location: {
+              lat: parseFloat(lnglat[1]),
+              lng: parseFloat(lnglat[0]),
+            },
+            categoryName: it.categoryName || "",
+            categoryIcon: it.categoryIcon,
+          });
+        }
       });
-    }
+      this.data = events;
+    });
   }
 
   toggleLiveView() {

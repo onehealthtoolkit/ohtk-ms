@@ -3,10 +3,10 @@ import { EventItemType } from "lib/services/dashboard/event";
 import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 
-// Default bounds to Chiang Mai, Thailand
+// Default bounds, let see the whole world
 export const DEFAULT_BOUNDS: LatLngTuple[] = [
-  [18.781395, 98.978405],
-  [18.796143, 98.992696],
+  [18.836723528017718, -122.0840462],
+  [40.669181691432776, 139.77587699890137],
 ];
 
 // Fix issue when set bounds directly into MapContainer
