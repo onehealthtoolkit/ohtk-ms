@@ -14,7 +14,7 @@ export const AreaFieldNoSSR = dynamic(() => import("./areaField"), {
 });
 
 export const AddButton = forwardRef(function AddButton(
-  props: React.PropsWithoutRef<{}>,
+  props: React.PropsWithoutRef<{ onClick?: () => void }>,
   ref: React.Ref<HTMLAnchorElement>
 ) {
   const { t } = useTranslation();
@@ -115,8 +115,7 @@ const SelectInput = (
         border
         rounded
         w-full
-        h-10
-        py-2
+        h-11        
         px-3
         text-grey-darker
       "
@@ -277,12 +276,19 @@ export const MaskingLoader: FC<LoaderProps> = ({ children, loading }) =>
 
 export const Form: FC<
   React.DetailedHTMLProps<
-    React.FormHTMLAttributes<HTMLFormElement>,
+    React.FormHTMLAttributes<HTMLFormElement> & { allowEnterKey?: boolean },
     HTMLFormElement
   >
 > = props => (
   <form
     noValidate
+    onKeyDown={evt => {
+      if (evt.key === "Enter") {
+        if (!!!props.allowEnterKey) {
+          evt.preventDefault();
+        }
+      }
+    }}
     className="
       grid 
       grid-cols-2 

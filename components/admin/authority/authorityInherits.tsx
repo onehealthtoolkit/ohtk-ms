@@ -1,5 +1,5 @@
-import { XCircleIcon } from "@heroicons/react/solid";
-import { TextInput } from "components/widgets/forms";
+import { XCircleIcon, XIcon } from "@heroicons/react/solid";
+import { AddButton } from "components/widgets/forms";
 import Downshift, { GetInputPropsOptions } from "downshift";
 import { Authority } from "lib/services/authority";
 import useServices from "lib/services/provider";
@@ -24,6 +24,7 @@ const AuthorityInherits: FC<AuthorityInheritsProps> = ({
 }) => {
   const { authorityService } = useServices();
   const [inherits, setInherits] = useState<Authority[]>([]);
+  const [addMode, setAddMode] = useState(false);
 
   const itemToString = (item: Authority | null) => {
     return item ? item.name : "";
@@ -57,11 +58,11 @@ const AuthorityInherits: FC<AuthorityInheritsProps> = ({
             <button
               key={authority.id}
               type="button"
-              className="relative inline-flex items-center w-full px-4 py-2 text-sm font-medium border-b last:border-0 border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 "
+              className="relative inline-flex items-center w-full px-1 py-2 text-sm font-medium border-b last:border-0 border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 "
             >
               <span className="flex-grow text-left">{authority.name}</span>
               <XCircleIcon
-                className="mx-1 w-5 h-5 text-[#DA3535] hover:text-red-800 cursor-pointer"
+                className=" w-5 h-5 text-[#DA3535] hover:text-red-800 cursor-pointer"
                 onClick={() => onDelete(authority.id)}
               />
             </button>
@@ -69,7 +70,15 @@ const AuthorityInherits: FC<AuthorityInheritsProps> = ({
         })}
       </div>
 
-      <Downshift itemToString={itemToString}>
+      <Downshift
+        itemToString={itemToString}
+        onChange={selection => {
+          if (selection) {
+            onAdd(selection.id);
+            setAddMode(false);
+          }
+        }}
+      >
         {({
           inputValue,
           getInputProps,
@@ -83,33 +92,38 @@ const AuthorityInherits: FC<AuthorityInheritsProps> = ({
         }) => (
           <div className="relative w-full flex flex-col gap-1">
             <label {...getLabelProps()}></label>
-            <div className="flex shadow-sm bg-white gap-0.5">
-              <TextInput
-                id="searchText"
-                type="text"
-                placeholder="Search authority inherit"
-                {...(getInputProps({
-                  onKeyDown: event => {
-                    if (event.key === "Enter") {
-                      if (!isOpen) {
-                        event.preventDefault();
-                      }
-                    }
-                  },
-                }) as GetInputPropsOptionsRef)}
-              />
-              <button
-                aria-label="add button"
-                className="px-4 bg-blue-400 rounded-lg text-white"
-                type="button"
-                onClick={() => {
-                  selectedItem && onAdd(selectedItem.id);
-                  clearSelection();
-                }}
+            {addMode ? (
+              <div
+                className="flex gap-0.5 items-stretch shadow
+                        appearance-none
+                        border
+                        rounded
+                        w-full
+                        py-2
+                        px-3
+                        text-grey-darker"
               >
-                Add
-              </button>
-            </div>
+                <input
+                  className="flex-grow focus:outline-none"
+                  {...(getInputProps({
+                    placeholder: "type to search",
+                  }) as GetInputPropsOptionsRef)}
+                />
+                {selectedItem && (
+                  <XIcon
+                    className="h-4 w-4 text-gray-500 mt-1"
+                    onClick={() => clearSelection()}
+                  />
+                )}
+              </div>
+            ) : (
+              <AddButton
+                onClick={() => {
+                  clearSelection();
+                  setAddMode(true);
+                }}
+              />
+            )}
             <ul
               {...getMenuProps()}
               className={`absolute w-full mt-14 bg-white max-h-80 overflow-y-auto z-[1001] ${
