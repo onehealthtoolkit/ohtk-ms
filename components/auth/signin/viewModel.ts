@@ -8,14 +8,13 @@ import {
   runInAction,
 } from "mobx";
 
-export type serverOption = {
+export type ServerOption = {
   label: string;
   domain: string;
 };
 export class SignInViewModel {
   _username: string = "";
   _password: string = "";
-  _email: string = "";
 
   fieldErrors: { [key: string]: string } = {};
 
@@ -25,7 +24,7 @@ export class SignInViewModel {
 
   isLoading: boolean = false;
 
-  serverOptions: serverOption[] = [];
+  serverOptions: ServerOption[] = [];
 
   isForgotPassword: boolean = false;
 
@@ -35,15 +34,12 @@ export class SignInViewModel {
       _password: observable,
       username: computed,
       password: computed,
-      _email: observable,
-      email: computed,
       isForgotPassword: observable,
       fieldErrors: observable,
       submitError: observable,
       serverOptions: observable,
       signIn: action,
       forgotPassword: action,
-      resetPassword: action,
       validate: action,
       isValid: computed,
       fetchTenant: action,
@@ -57,7 +53,7 @@ export class SignInViewModel {
     try {
       const response = await fetch(tenantApiEndpoint);
       if (response.ok) {
-        const data = (await response.json()) as { tenants: serverOption[] };
+        const data = (await response.json()) as { tenants: ServerOption[] };
         runInAction(() => {
           this.serverOptions = data.tenants;
         });
@@ -91,17 +87,6 @@ export class SignInViewModel {
     }
   }
 
-  public get email(): string {
-    return this._email;
-  }
-  public set email(value: string) {
-    this._email = value;
-    delete this.fieldErrors["email"];
-    if (this.submitError.length > 0) {
-      this.submitError = "";
-    }
-  }
-
   public get isValid(): boolean {
     return Object.keys(this.fieldErrors).length === 0;
   }
@@ -126,15 +111,6 @@ export class SignInViewModel {
 
   public forgotPassword(value: boolean) {
     this.isForgotPassword = value;
-  }
-
-  public resetPassword() {
-    if (this.email.length === 0) {
-      this.fieldErrors["email"] = "this field is required";
-      return false;
-    }
-
-    return true;
   }
 
   validate(): boolean {

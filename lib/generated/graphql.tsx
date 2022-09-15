@@ -3022,6 +3022,31 @@ export type GetFollowupReportQuery = {
   } | null;
 };
 
+export type ResetPasswordRequestCreateMutationVariables = Exact<{
+  email: Scalars["String"];
+}>;
+
+export type ResetPasswordRequestCreateMutation = {
+  __typename?: "Mutation";
+  resetPasswordRequest?: {
+    __typename?: "ResetPasswordRequestMutation";
+    success?: boolean | null;
+  } | null;
+};
+
+export type ResetPasswordCreateMutationVariables = Exact<{
+  token: Scalars["String"];
+  password: Scalars["String"];
+}>;
+
+export type ResetPasswordCreateMutation = {
+  __typename?: "Mutation";
+  resetPassword?: {
+    __typename?: "ResetPasswordMutation";
+    success?: boolean | null;
+  } | null;
+};
+
 export type InvitationCodesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
@@ -8043,6 +8068,136 @@ export const GetFollowupReportDocument = {
 } as unknown as DocumentNode<
   GetFollowupReportQuery,
   GetFollowupReportQueryVariables
+>;
+export const ResetPasswordRequestCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ResetPasswordRequestCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "email" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "resetPasswordRequest" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "email" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "email" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ResetPasswordRequestCreateMutation,
+  ResetPasswordRequestCreateMutationVariables
+>;
+export const ResetPasswordCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ResetPasswordCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "token" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "password" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "resetPassword" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "token" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "token" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "password" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "password" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ResetPasswordCreateMutation,
+  ResetPasswordCreateMutationVariables
 >;
 export const InvitationCodesDocument = {
   kind: "Document",

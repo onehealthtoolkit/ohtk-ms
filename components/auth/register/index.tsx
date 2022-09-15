@@ -8,12 +8,14 @@ import getConfig from "next/config";
 import CheckCode from "./checkCode";
 import useServices from "lib/services/provider";
 import RegisterUser from "./registerUser";
+import { useRouter } from "next/router";
 const { publicRuntimeConfig } = getConfig();
 
 const tenantsApiEndpoint = publicRuntimeConfig.tenantsApiEndpoint;
 
 const Register = () => {
   const store = useStore();
+  const router = useRouter();
   const services = useServices();
   const [viewModel, setViewModel] = useState<RegisterViewModel | undefined>();
   const { t } = useTranslation();
@@ -57,6 +59,14 @@ const Register = () => {
               {viewModel.state == RegisterState.detail && (
                 <RegisterUser viewModel={viewModel} />
               )}
+              <div className="mt-2 text-sm font-display font-semibold text-gray-700 text-center">
+                <a
+                  onClick={() => router.back()}
+                  className="cursor-pointer text-indigo-600 hover:text-indigo-800 ml-2"
+                >
+                  {t("form.button.cancel", "Cancel")}
+                </a>
+              </div>
             </div>
           </div>
         </div>

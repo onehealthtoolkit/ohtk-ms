@@ -3,8 +3,8 @@ import React from "react";
 import { observer } from "mobx-react";
 import { RegisterViewModel } from "./viewModel";
 import { useTranslation } from "react-i18next";
-import { ServerIcon } from "@heroicons/react/outline";
 import LanguageSelect from "../languageSelect";
+import ServerSelect from "../serverSelect";
 
 type CheckCodeProps = {
   viewModel: RegisterViewModel;
@@ -52,27 +52,12 @@ const CheckCode: React.FC<CheckCodeProps> = ({ viewModel }) => {
         <label className="block text-grey-darker text-sm font-bold mb-2">
           {t("form.label.server", "Server")}
         </label>
-        <div className="flex">
-          <label
-            className="inline-flex items-center  text-grey-darker text-sm font-bold"
-            htmlFor="server"
-          >
-            <ServerIcon className="h-5 w-5 text-gray-500" />
-          </label>
-          <select
-            id="server"
-            onChange={e => {
-              viewModel.changeServer(e.target.value);
-            }}
-          >
-            <option value="">---</option>
-            {viewModel.serverOptions.map(option => (
-              <option key={option.domain} value={option.domain}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
+        <ServerSelect
+          onChange={value => {
+            viewModel.changeServer(value);
+          }}
+          serverOptions={viewModel.serverOptions}
+        />
       </div>
       {viewModel.submitError.length > 0 && (
         <div className="text-red-600">{viewModel.submitError}</div>

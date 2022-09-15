@@ -150,7 +150,11 @@
   "title": {
     "login": "ลงชื่อเข้าใช้บัญชีของคุณ",
     "signup": "ลงทะเบียน",
-    "forgotPassword": "ลืมรหัสผ่าน"
+    "forgotPassword": "ลืมรหัสผ่าน",
+    "changePassword": "เปลี่ยนรหัสผ่าน"
+  },
+  "message": {
+    "resetPasswordRequestSuccess": "ระบบได้รับคำขอให้รีเซ็ตรหัสผ่านของคุณเรียบร้อย"
   },
   "months": [
     "มกราคม",
