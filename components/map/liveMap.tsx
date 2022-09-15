@@ -1,18 +1,16 @@
-import { renderToStaticMarkup } from "react-dom/server";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
-
 import turfBbox from "@turf/bbox";
 import { points as turfPoints } from "@turf/helpers";
 import {
   DEFAULT_BOUNDS,
-  MarkerIcon,
+  EventMarker,
   SetMapBounds,
 } from "components/map/markerIcon";
 import L, { LatLng, LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { BACKEND_DOMAIN } from "lib/client";
 import { EventItem } from "lib/services/dashboard/event";
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 
 const iconRadar = L.divIcon({
   className: "radar-wink-wrapper",
@@ -51,6 +49,32 @@ const LiveMapView: React.FC<LiveMapViewProps> = ({ data, authorityId }) => {
   const [bounds, setBounds] = useState<LatLngTuple[]>(DEFAULT_BOUNDS);
   const [incomings, setIncomings] = useState<EventItem[]>([]);
 
+  const addIncomingEvent = useCallback(
+    (
+      reportId: string,
+      location: string,
+      rendererData: string,
+      categoryName: string
+    ) => {
+      if (location) {
+        const lnglat = location.split(",");
+        const event: EventItem = {
+          id: reportId,
+          type: "report",
+          location: {
+            lat: parseFloat(lnglat[1]),
+            lng: parseFloat(lnglat[0]),
+          },
+          data: rendererData,
+          categoryName,
+        };
+
+        setIncomings([...incomings, event]);
+      }
+    },
+    [incomings]
+  );
+
   useEffect(() => {
     const points: LatLngTuple[] = data.map(it => [
       it.location.lng,
@@ -71,77 +95,68 @@ const LiveMapView: React.FC<LiveMapViewProps> = ({ data, authorityId }) => {
       `wss://${BACKEND_DOMAIN}/ws/reports/${authorityId}/`
     );
 
+    /**
+     * Message format:
+     * String "{
+        data: {[string]: any},
+        report_date: string (iso),
+        incident_date: string (yyyy-mm-dd),
+        gps_location: string (lng,lat),
+        renderer_data: string,
+        report_id: string,
+        report_type: {
+            id: string,
+            name: string,
+            category: string,
+        }
+       }"
+     */
     ws.onmessage = ev => {
       console.log(ev.data);
+      const data = JSON.parse(ev.data);
+      addIncomingEvent(
+        data["report_id"],
+        data["gps_location"],
+        data["renderer_data"],
+        data["report_type"]["category"]
+      );
     };
 
     return () => ws.close();
-  }, [authorityId]);
-
-  function test() {
-    setIncomings([
-      ...incomings,
-      {
-        id: new Date().getMilliseconds().toString(),
-        type: "report",
-        location: {
-          lat: 18.796143,
-          lng: 98.992696,
-        },
-        data: "hello",
-        categoryName: "human",
-      },
-    ]);
-  }
+  }, [authorityId, addIncomingEvent]);
 
   return (
-    <>
-      <button
-        className="absolute top-10 left-20 p-4 bg-green-200 z-[1001]"
-        onClick={() => test()}
-      >
-        test
-      </button>
-      <MapContainer
-        zoom={12}
-        scrollWheelZoom={false}
-        style={{ height: "100%", width: "100%" }}
-        bounds={bounds}
-      >
-        <TileLayer
-          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+    <MapContainer
+      zoom={12}
+      scrollWheelZoom={false}
+      style={{ height: "100%", width: "100%" }}
+      bounds={bounds}
+    >
+      <TileLayer
+        attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
 
-        <SetMapBounds bounds={bounds} />
+      <SetMapBounds bounds={bounds} />
 
-        {data.map((item, index) => {
-          const icon = L.divIcon({
-            className: "my-div-icon",
-            html: renderToStaticMarkup(
-              MarkerIcon({
-                categoryIcon: item.categoryIcon,
-                type: item.type,
-              })
-            ),
-          });
+      {data.map(item => {
+        return <EventMarker event={item} key={`${item.type}_${item.id}`} />;
+      })}
 
-          return (
-            <Marker
-              key={item.type + "_" + index + "_" + item.id}
-              position={[item.location.lat, item.location.lng]}
-              icon={icon}
-            >
-              <Popup>{item.data || "No data reported"}</Popup>
-            </Marker>
-          );
-        })}
-
-        {incomings.map(item => {
-          return <LocationMarker key={item.id} location={item.location} />;
-        })}
-      </MapContainer>
-    </>
+      {/* Pin */}
+      {incomings.map(item => {
+        return <EventMarker event={item} key={`pin_${item.type}_${item.id}`} />;
+      })}
+      {/* Winking radar */}
+      {incomings.map(item => {
+        return (
+          <LocationMarker
+            key={`wink_${item.type}_${item.id}`}
+            location={item.location}
+          />
+        );
+      })}
+    </MapContainer>
   );
 };
 
