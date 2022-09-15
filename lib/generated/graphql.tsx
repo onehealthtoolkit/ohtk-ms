@@ -104,6 +104,22 @@ export type AdminAuthorityDeleteMutation = {
   success?: Maybe<Scalars["Boolean"]>;
 };
 
+export type AdminAuthorityInheritLookupType = {
+  __typename?: "AdminAuthorityInheritLookupType";
+  code: Scalars["String"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type AdminAuthorityInheritLookupTypeNodeConnection = {
+  __typename?: "AdminAuthorityInheritLookupTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminAuthorityInheritLookupType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
 export type AdminAuthorityNotificationUpsertMutation = {
   __typename?: "AdminAuthorityNotificationUpsertMutation";
   result?: Maybe<AdminAuthorityNotificationUpsertResult>;
@@ -1650,7 +1666,7 @@ export type PromoteToCaseMutation = {
 export type Query = {
   __typename?: "Query";
   adminAuthorityGet?: Maybe<AdminAuthorityQueryType>;
-  adminAuthorityInheritLookup?: Maybe<AuthorityTypeNodeConnection>;
+  adminAuthorityInheritLookup?: Maybe<AdminAuthorityInheritLookupTypeNodeConnection>;
   adminAuthorityQuery?: Maybe<AdminAuthorityQueryTypeNodeConnection>;
   adminAuthorityUserQuery?: Maybe<AdminAuthorityUserQueryTypeNodeConnection>;
   adminCaseDefinitionQuery?: Maybe<AdminCaseDefinitionQueryTypeNodeConnection>;
@@ -1712,10 +1728,9 @@ export type QueryAdminAuthorityInheritLookupArgs = {
   first?: InputMaybe<Scalars["Int"]>;
   last?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
-  name?: InputMaybe<Scalars["String"]>;
-  name_Istartswith?: InputMaybe<Scalars["String"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryAdminAuthorityQueryArgs = {
@@ -1724,10 +1739,9 @@ export type QueryAdminAuthorityQueryArgs = {
   first?: InputMaybe<Scalars["Int"]>;
   last?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
-  name?: InputMaybe<Scalars["String"]>;
-  name_Istartswith?: InputMaybe<Scalars["String"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryAdminAuthorityUserQueryArgs = {
@@ -2269,7 +2283,7 @@ export type AuthoritiesQuery = {
 export type AuthorityQueryQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
-  nameStartWith?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
   ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
@@ -2289,16 +2303,16 @@ export type AuthorityQueryQuery = {
 
 export type AuthorityInheritLookupQueryVariables = Exact<{
   limit: Scalars["Int"];
-  nameStartWith?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type AuthorityInheritLookupQuery = {
   __typename?: "Query";
   adminAuthorityInheritLookup?: {
-    __typename?: "AuthorityTypeNodeConnection";
+    __typename?: "AdminAuthorityInheritLookupTypeNodeConnection";
     totalCount?: number | null;
     results: Array<{
-      __typename?: "AuthorityType";
+      __typename?: "AdminAuthorityInheritLookupType";
       id: string;
       name: string;
       code: string;
@@ -3480,10 +3494,17 @@ export type ReportsQuery = {
       incidentDate: any;
       rendererData: string;
       caseId?: any | null;
+      gpsLocation?: string | null;
       reportType?: {
         __typename?: "ReportTypeType";
         id: any;
         name: string;
+        category?: {
+          __typename?: "CategoryType";
+          id: string;
+          name: string;
+          icon?: string | null;
+        } | null;
       } | null;
       reportedBy?: {
         __typename?: "UserType";
@@ -4831,10 +4852,7 @@ export const AuthorityQueryDocument = {
         },
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "nameStartWith" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
         {
@@ -4871,11 +4889,8 @@ export const AuthorityQueryDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "name_Istartswith" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "nameStartWith" },
-                },
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
               },
               {
                 kind: "Argument",
@@ -4931,10 +4946,7 @@ export const AuthorityInheritLookupDocument = {
         },
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "nameStartWith" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
       ],
@@ -4960,11 +4972,8 @@ export const AuthorityInheritLookupDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "name_Istartswith" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "nameStartWith" },
-                },
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
               },
             ],
             selectionSet: {
@@ -10502,6 +10511,10 @@ export const ReportsDocument = {
                       },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "gpsLocation" },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "reportType" },
                         selectionSet: {
                           kind: "SelectionSet",
@@ -10513,6 +10526,27 @@ export const ReportsDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "category" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "icon" },
+                                  },
+                                ],
+                              },
                             },
                           ],
                         },

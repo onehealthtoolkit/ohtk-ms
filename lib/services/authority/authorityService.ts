@@ -57,7 +57,8 @@ export class AuthorityService implements IAuthorityService {
   fetchAuthoritiesQuery = {
     limit: 20,
     offset: 0,
-    nameStartWith: "",
+    q: "",
+    ordering: "code,asc",
   };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
@@ -68,7 +69,7 @@ export class AuthorityService implements IAuthorityService {
     const variables = {
       limit,
       offset,
-      nameStartWith: searchText,
+      q: searchText,
     };
     const fetchResult = await this.client.query({
       query: AuthorityInheritLookupDocument,
@@ -117,7 +118,7 @@ export class AuthorityService implements IAuthorityService {
       ...this.fetchAuthoritiesQuery,
       limit,
       offset,
-      nameStartWith: searchText,
+      q: searchText,
     };
     const fetchResult = await this.client.query({
       query: AuthorityQueryDocument,

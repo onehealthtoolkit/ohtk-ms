@@ -21,9 +21,15 @@ query Reports(
       incidentDate
       rendererData
       caseId
+      gpsLocation
       reportType {
         id
         name
+        category {
+          id
+          name
+          icon
+        }
       }
       reportedBy {
         username
