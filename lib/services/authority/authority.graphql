@@ -22,13 +22,13 @@ query Authorities(
 query AuthorityQuery(
   $limit: Int!
   $offset: Int!
-  $nameStartWith: String
+  $q: String
   $ordering: String
 ) {
   adminAuthorityQuery(
     limit: $limit
     offset: $offset
-    name_Istartswith: $nameStartWith
+    q: $q
     ordering: $ordering
   ) {
     totalCount
@@ -40,12 +40,8 @@ query AuthorityQuery(
   }
 }
 
-query AuthorityInheritLookup($limit: Int!, $nameStartWith: String) {
-  adminAuthorityInheritLookup(
-    limit: $limit
-    offset: 0
-    name_Istartswith: $nameStartWith
-  ) {
+query AuthorityInheritLookup($limit: Int!, $q: String) {
+  adminAuthorityInheritLookup(limit: $limit, offset: 0, q: $q) {
     totalCount
     results {
       id

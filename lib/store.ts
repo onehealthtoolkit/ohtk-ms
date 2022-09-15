@@ -133,6 +133,10 @@ export class Store {
   get isRoleAdmin() {
     return this.me?.role == "ADM";
   }
+
+  get authorityId() {
+    return this.me?.authorityId;
+  }
 }
 
 export const StoreContext = createContext<Store | null>(null);

@@ -104,6 +104,22 @@ export type AdminAuthorityDeleteMutation = {
   success?: Maybe<Scalars["Boolean"]>;
 };
 
+export type AdminAuthorityInheritLookupType = {
+  __typename?: "AdminAuthorityInheritLookupType";
+  code: Scalars["String"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type AdminAuthorityInheritLookupTypeNodeConnection = {
+  __typename?: "AdminAuthorityInheritLookupTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminAuthorityInheritLookupType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
 export type AdminAuthorityNotificationUpsertMutation = {
   __typename?: "AdminAuthorityNotificationUpsertMutation";
   result?: Maybe<AdminAuthorityNotificationUpsertResult>;
@@ -1267,6 +1283,8 @@ export type Mutation = {
   promoteToCase?: Maybe<PromoteToCaseMutation>;
   refreshToken?: Maybe<Refresh>;
   registerFcmToken?: Maybe<RegisterFcmTokenMutation>;
+  resetPassword?: Maybe<ResetPasswordMutation>;
+  resetPasswordRequest?: Maybe<ResetPasswordRequestMutation>;
   revokeToken?: Maybe<Revoke>;
   submitFollowupReport?: Maybe<SubmitFollowupReport>;
   submitImage?: Maybe<SubmitImage>;
@@ -1561,6 +1579,15 @@ export type MutationRegisterFcmTokenArgs = {
   userId: Scalars["String"];
 };
 
+export type MutationResetPasswordArgs = {
+  password: Scalars["String"];
+  token: Scalars["String"];
+};
+
+export type MutationResetPasswordRequestArgs = {
+  email: Scalars["String"];
+};
+
 export type MutationRevokeTokenArgs = {
   refreshToken?: InputMaybe<Scalars["String"]>;
 };
@@ -1639,7 +1666,7 @@ export type PromoteToCaseMutation = {
 export type Query = {
   __typename?: "Query";
   adminAuthorityGet?: Maybe<AdminAuthorityQueryType>;
-  adminAuthorityInheritLookup?: Maybe<AuthorityTypeNodeConnection>;
+  adminAuthorityInheritLookup?: Maybe<AdminAuthorityInheritLookupTypeNodeConnection>;
   adminAuthorityQuery?: Maybe<AdminAuthorityQueryTypeNodeConnection>;
   adminAuthorityUserQuery?: Maybe<AdminAuthorityUserQueryTypeNodeConnection>;
   adminCaseDefinitionQuery?: Maybe<AdminCaseDefinitionQueryTypeNodeConnection>;
@@ -1701,10 +1728,9 @@ export type QueryAdminAuthorityInheritLookupArgs = {
   first?: InputMaybe<Scalars["Int"]>;
   last?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
-  name?: InputMaybe<Scalars["String"]>;
-  name_Istartswith?: InputMaybe<Scalars["String"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryAdminAuthorityQueryArgs = {
@@ -1713,10 +1739,9 @@ export type QueryAdminAuthorityQueryArgs = {
   first?: InputMaybe<Scalars["Int"]>;
   last?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
-  name?: InputMaybe<Scalars["String"]>;
-  name_Istartswith?: InputMaybe<Scalars["String"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryAdminAuthorityUserQueryArgs = {
@@ -2066,6 +2091,16 @@ export type ReporterNotificationType = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type ResetPasswordMutation = {
+  __typename?: "ResetPasswordMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type ResetPasswordRequestMutation = {
+  __typename?: "ResetPasswordRequestMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
 export type Revoke = {
   __typename?: "Revoke";
   revoked: Scalars["Int"];
@@ -2248,7 +2283,7 @@ export type AuthoritiesQuery = {
 export type AuthorityQueryQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
-  nameStartWith?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
   ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
@@ -2268,16 +2303,16 @@ export type AuthorityQueryQuery = {
 
 export type AuthorityInheritLookupQueryVariables = Exact<{
   limit: Scalars["Int"];
-  nameStartWith?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type AuthorityInheritLookupQuery = {
   __typename?: "Query";
   adminAuthorityInheritLookup?: {
-    __typename?: "AuthorityTypeNodeConnection";
+    __typename?: "AdminAuthorityInheritLookupTypeNodeConnection";
     totalCount?: number | null;
     results: Array<{
-      __typename?: "AuthorityType";
+      __typename?: "AdminAuthorityInheritLookupType";
       id: string;
       name: string;
       code: string;
@@ -4785,10 +4820,7 @@ export const AuthorityQueryDocument = {
         },
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "nameStartWith" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
         {
@@ -4825,11 +4857,8 @@ export const AuthorityQueryDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "name_Istartswith" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "nameStartWith" },
-                },
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
               },
               {
                 kind: "Argument",
@@ -4885,10 +4914,7 @@ export const AuthorityInheritLookupDocument = {
         },
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "nameStartWith" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
       ],
@@ -4914,11 +4940,8 @@ export const AuthorityInheritLookupDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "name_Istartswith" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "nameStartWith" },
-                },
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
               },
             ],
             selectionSet: {
