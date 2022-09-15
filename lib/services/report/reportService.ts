@@ -57,6 +57,9 @@ export class ReportService implements IReportService {
           rendererData: item.rendererData,
           reportTypeName: item.reportType?.name || "",
           caseId: item.caseId,
+          gpsLocation: item.gpsLocation,
+          categoryName: item.reportType?.category?.name,
+          categoryIcon: item.reportType?.category?.icon,
         });
       }
     });

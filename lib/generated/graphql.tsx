@@ -3469,10 +3469,17 @@ export type ReportsQuery = {
       incidentDate: any;
       rendererData: string;
       caseId?: any | null;
+      gpsLocation?: string | null;
       reportType?: {
         __typename?: "ReportTypeType";
         id: any;
         name: string;
+        category?: {
+          __typename?: "CategoryType";
+          id: string;
+          name: string;
+          icon?: string | null;
+        } | null;
       } | null;
       reportedBy?: {
         __typename?: "UserType";
@@ -10349,6 +10356,10 @@ export const ReportsDocument = {
                       },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "gpsLocation" },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "reportType" },
                         selectionSet: {
                           kind: "SelectionSet",
@@ -10360,6 +10371,27 @@ export const ReportsDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "category" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "icon" },
+                                  },
+                                ],
+                              },
                             },
                           ],
                         },
