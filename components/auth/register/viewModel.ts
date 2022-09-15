@@ -9,7 +9,7 @@ import {
   observable,
   runInAction,
 } from "mobx";
-import { serverOption } from "../signin/viewModel";
+import { ServerOption } from "../signin/viewModel";
 
 export enum RegisterState {
   invitation,
@@ -34,7 +34,7 @@ export class RegisterViewModel {
   isLoading: boolean = false;
 
   state: RegisterState = RegisterState.invitation;
-  serverOptions: serverOption[] = [];
+  serverOptions: ServerOption[] = [];
 
   constructor(
     readonly store: Store,
@@ -77,7 +77,7 @@ export class RegisterViewModel {
     try {
       const response = await fetch(tenantApiEndpoint);
       if (response.ok) {
-        const data = (await response.json()) as { tenants: serverOption[] };
+        const data = (await response.json()) as { tenants: ServerOption[] };
         runInAction(() => {
           this.serverOptions = data.tenants;
         });

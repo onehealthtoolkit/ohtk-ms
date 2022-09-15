@@ -4,10 +4,11 @@ import useStore from "lib/store";
 import { observer } from "mobx-react";
 import { SignInViewModel } from "./viewModel";
 import { useTranslation } from "react-i18next";
-import { ServerIcon } from "@heroicons/react/outline";
 import LanguageSelect from "../languageSelect";
 import getConfig from "next/config";
 import { useRouter } from "next/router";
+import ServerSelect from "../serverSelect";
+import ForgotPassword from "../forgotPassword";
 const { publicRuntimeConfig } = getConfig();
 
 const tenantsApiEndpoint = publicRuntimeConfig.tenantsApiEndpoint;
@@ -31,26 +32,25 @@ const SignIn = () => {
   const errors = viewModel.fieldErrors;
 
   return (
-    <form
-      onSubmit={evt => {
-        if (viewModel.isForgotPassword) viewModel.resetPassword();
-        else viewModel.signIn();
-        evt.preventDefault();
-      }}
-    >
-      <div className="flex items-center min-h-screen bg-gray-50">
-        <div className="flex-1 h-full max-w-4xl mx-auto bg-white rounded-xl shadow-xl">
-          <div className="flex flex-col items-center md:flex-row">
-            <div className="h-32 md:h-auto md:w-1/2 p-8">
-              <img
-                className="object-cover h-full w-full"
-                src="/logo_black.png"
-                alt="img"
-              />
-            </div>
-            <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
-              {!viewModel.isForgotPassword && (
-                <div className="w-full">
+    <div className="flex items-center min-h-screen bg-gray-50">
+      <div className="flex-1 h-full max-w-4xl mx-auto bg-white rounded-xl shadow-xl">
+        <div className="flex flex-col items-center md:flex-row">
+          <div className="h-32 md:h-auto md:w-1/2 p-8">
+            <img
+              className="object-cover h-full w-full"
+              src="/logo_black.png"
+              alt="img"
+            />
+          </div>
+          <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+            {!viewModel.isForgotPassword && (
+              <div className="w-full">
+                <form
+                  onSubmit={evt => {
+                    viewModel.signIn();
+                    evt.preventDefault();
+                  }}
+                >
                   <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
                     {t("title.login", "Login to Your Account")}
                   </h1>
@@ -104,27 +104,12 @@ const SignIn = () => {
 
                   <div className="flex justify-between mb-4">
                     <LanguageSelect />
-                    <div className="flex">
-                      <label
-                        className="inline-flex items-center  text-grey-darker text-sm font-bold"
-                        htmlFor="server"
-                      >
-                        <ServerIcon className="h-5 w-5 text-gray-500" />
-                      </label>
-                      <select
-                        id="server"
-                        onChange={e => {
-                          viewModel.changeServer(e.target.value);
-                        }}
-                      >
-                        <option value="">---</option>
-                        {viewModel.serverOptions.map(option => (
-                          <option key={option.domain} value={option.domain}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    <ServerSelect
+                      onChange={value => {
+                        viewModel.changeServer(value);
+                      }}
+                      serverOptions={viewModel.serverOptions}
+                    />
                   </div>
 
                   <button className="block w-full px-4 py-2 mt-4 font-bold leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
@@ -148,66 +133,16 @@ const SignIn = () => {
                       {t("form.button.forgotPassword", " Forgot password?")}
                     </a>
                   </div>
-                </div>
-              )}
-              {viewModel.isForgotPassword && (
-                <div className="w-full">
-                  <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
-                    {t("title.forgotPassword", "Forgot password")}
-                  </h1>
-                  <div
-                    className="p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800"
-                    role="alert"
-                  >
-                    <span className="font-medium">
-                      {t(
-                        "form.label.forgotPassword",
-                        'Enter the email address you used to create your account, and click "Reset Password"'
-                      )}
-                    </span>
-                  </div>
-                  <div className="mb-4">
-                    <label
-                      className="block text-grey-darker text-sm font-bold mb-2"
-                      htmlFor="email"
-                    >
-                      {t("form.label.email", "Email")}
-                    </label>
-                    <input
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                      id="email"
-                      type="text"
-                      placeholder={t("form.placeholder.email", "Email")}
-                      onChange={evt => (viewModel.email = evt.target.value)}
-                      disabled={isSubmitting}
-                    />
-                    {errors.email && (
-                      <p className="text-red-700 text-xs italic">
-                        {errors.email}
-                      </p>
-                    )}
-                  </div>
-                  {viewModel.submitError.length > 0 && (
-                    <div className="text-red-600">{viewModel.submitError}</div>
-                  )}
-                  <button className="block w-full px-4 py-2 mt-4 font-bold leading-5 text-center text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
-                    {t("form.button.resetPassword", "Reset assword")}
-                  </button>
-                  <div className="mt-2 text-sm font-display font-semibold text-gray-700 text-center">
-                    <a
-                      onClick={() => viewModel.forgotPassword(false)}
-                      className="cursor-pointer text-indigo-600 hover:text-indigo-800 ml-2"
-                    >
-                      {t("form.button.cancel", "Cancel")}
-                    </a>
-                  </div>
-                </div>
-              )}
-            </div>
+                </form>
+              </div>
+            )}
+            {viewModel.isForgotPassword && (
+              <ForgotPassword onBack={() => viewModel.forgotPassword(false)} />
+            )}
           </div>
         </div>
       </div>
-    </form>
+    </div>
   );
 };
 

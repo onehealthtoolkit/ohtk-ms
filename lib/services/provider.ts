@@ -20,6 +20,7 @@ import { NotificationService } from "./notification";
 import { CommentService } from "lib/services/comment/commentService";
 import { RegisterService } from "./register/registerService";
 import { FollowupService } from "./followup/followupService";
+import { ForgotPasswordService } from "./forgotPassword/forgotPasswordService";
 
 export interface IServiceProvider {
   get authService(): IAuthService;
@@ -41,6 +42,7 @@ export interface IServiceProvider {
   get notificationService(): NotificationService;
   get commentService(): CommentService;
   get registerService(): RegisterService;
+  get forgotPasswordService(): ForgotPasswordService;
   get followupService(): FollowupService;
 }
 
@@ -66,6 +68,7 @@ export class ServicesProvider implements IServiceProvider {
   notificationService: NotificationService;
   commentService: CommentService;
   registerService: RegisterService;
+  forgotPasswordService: ForgotPasswordService;
   followupService: FollowupService;
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
@@ -89,6 +92,7 @@ export class ServicesProvider implements IServiceProvider {
     this.notificationService = new NotificationService(client);
     this.commentService = new CommentService(client);
     this.registerService = new RegisterService(client);
+    this.forgotPasswordService = new ForgotPasswordService(client);
     this.followupService = new FollowupService(client);
   }
 }

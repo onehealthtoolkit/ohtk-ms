@@ -147,7 +147,11 @@
   "title": {
     "login": "Login to Your Account",
     "signup": "Sign Up",
-    "forgotPassword": "Forgot password"
+    "forgotPassword": "Forgot password",
+    "changePassword": "Change password"
+  },
+  "message": {
+    "resetPasswordRequestSuccess": "We received a request to reset your password."
   },
   "months": [
     "January",
