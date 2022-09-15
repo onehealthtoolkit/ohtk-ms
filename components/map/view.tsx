@@ -24,6 +24,40 @@ export const LiveMap = dynamic(() => import("./liveMap"), {
   ssr: false,
 });
 
+type MapSwitchProps = {
+  active: boolean;
+  onChange: (active: boolean) => void;
+};
+
+const MapSwitch = ({ active, onChange }: MapSwitchProps) => {
+  return (
+    <label
+      htmlFor="live-toggle"
+      className="inline-flex relative items-center cursor-pointer bg-white rounded-md h-10"
+    >
+      <input
+        type="checkbox"
+        value=""
+        id="live-toggle"
+        className="sr-only peer"
+        checked={active}
+        onChange={e => {
+          onChange(e.target.checked);
+        }}
+      />
+      <div
+        className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 
+        peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full 
+        peer-checked:after:border-white after:content-[''] after:absolute after:top-[10px] 
+        after:left-[2px] after:bg-white after:border-gray-300 after:border 
+        after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600
+        "
+      ></div>
+      <span className="mx-2 text-sm font-medium text-gray-900">Live View</span>
+    </label>
+  );
+};
+
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
     authorityId: query.authorityId,
@@ -41,10 +75,10 @@ const MapView: React.FC = () => {
   const { setUrl, query, resetUrl } = useUrlParams();
   const router = useRouter();
   const store = useStore();
-  const { dashboardService } = useServices();
+  const { reportService } = useServices();
 
   const [viewModel] = useState<MapViewViewModel>(() => {
-    const mapViewViewModel = new MapViewViewModel(dashboardService);
+    const mapViewViewModel = new MapViewViewModel(reportService);
     return mapViewViewModel;
   });
 
@@ -88,33 +122,13 @@ const MapView: React.FC = () => {
         <Map data={toJS(viewModel.data)} />
       )}
       <div className="absolute top-8 right-10 z-[1001] flex flex-row">
-        <label
-          htmlFor="live-toggle"
-          className="inline-flex relative items-center cursor-pointer bg-white rounded-md h-10"
-        >
-          <input
-            type="checkbox"
-            value=""
-            id="live-toggle"
-            className="sr-only peer"
-            checked={viewModel.isLive}
-            onChange={() => {
-              viewModel.toggleLiveView();
-              applySearch();
-            }}
-          />
-          <div
-            className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 
-            peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full 
-            peer-checked:after:border-white after:content-[''] after:absolute after:top-[10px] 
-            after:left-[2px] after:bg-white after:border-gray-300 after:border 
-            after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600
-            "
-          ></div>
-          <span className="mx-2 text-sm font-medium text-gray-900">
-            Live View
-          </span>
-        </label>
+        <MapSwitch
+          active={viewModel.isLive}
+          onChange={() => {
+            viewModel.toggleLiveView();
+            applySearch();
+          }}
+        />
         {!viewModel.isLive && (
           <Filter
             onSearch={applySearch}

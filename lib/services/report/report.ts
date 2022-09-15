@@ -9,6 +9,8 @@ export type Report = {
   caseId?: string;
   gpsLocation?: string | null;
   threadId?: number | null;
+  categoryName?: string | null;
+  categoryIcon?: string | null;
 };
 
 export type Image = {
