@@ -1,4 +1,3 @@
-import { BaseViewModel } from "lib/baseViewModel";
 import { IDashboardService } from "lib/services/dashboard/dashboardService";
 import { EventItem } from "lib/services/dashboard/event";
 import { ReportType } from "lib/services/reportType";
@@ -16,7 +15,7 @@ export type MapViewFilterData = {
   reportTypes?: Pick<ReportType, "id" | "name">[];
 };
 
-export default class MapViewViewModel extends BaseViewModel {
+export default class MapViewViewModel {
   _authorityId: number = 0;
   authorityName: string = "";
   _reportTypes?: MapViewFilterData["reportTypes"] = undefined;
@@ -24,9 +23,9 @@ export default class MapViewViewModel extends BaseViewModel {
   _toDate: Date | undefined = undefined;
 
   data = Array<EventItem>();
+  isLive: boolean = false;
 
   constructor(readonly dashboardService: IDashboardService) {
-    super();
     makeObservable(this, {
       _authorityId: observable,
       authorityId: computed,
@@ -39,6 +38,8 @@ export default class MapViewViewModel extends BaseViewModel {
       toDate: computed,
       data: observable,
       fetch: action,
+      isLive: observable,
+      toggleLiveView: action,
     });
   }
 
@@ -76,6 +77,7 @@ export default class MapViewViewModel extends BaseViewModel {
   }
 
   setSearchValue(
+    isLive: boolean,
     authorityId: number,
     authorityName: string,
     fromDate: Date | undefined,
@@ -92,6 +94,7 @@ export default class MapViewViewModel extends BaseViewModel {
       this.authorityId = authorityId;
       this.authorityName = authorityName;
       this.reportTypes = reportTypes;
+      this.isLive = isLive;
     });
 
     this.fetch();
@@ -104,17 +107,19 @@ export default class MapViewViewModel extends BaseViewModel {
   }
 
   async fetch() {
-    this.isLoading = true;
-
     // [TODO] Change api to filter with date range and report types.
     // This is a temporary api for mocking purpose
     const data = await this.dashboardService.fetchEvent(this.authorityId);
     if (data) {
       runInAction(() => {
+        this.data = [];
         data.cases.forEach(it => this.data.push(it));
         data.reports.forEach(it => this.data.push(it));
       });
     }
-    this.isLoading = false;
+  }
+
+  toggleLiveView() {
+    this.isLive = !this.isLive;
   }
 }

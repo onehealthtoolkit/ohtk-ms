@@ -215,7 +215,11 @@ const Report = (props: { id: string }) => {
               <div className="mb-4">
                 {viewModel.activeTabIndex == 0 && (
                   <div className="">
-                    {viewModel.data.data && renderData(viewModel.data.data)}
+                    {viewModel.data.data &&
+                      renderData(
+                        viewModel.data.data,
+                        viewModel.data.reportTypeDefinition
+                      )}
                   </div>
                 )}
                 {viewModel.activeTabIndex == 1 && (

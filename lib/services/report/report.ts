@@ -20,4 +20,5 @@ export type Image = {
 export type ReportDetail = Report & {
   data: Record<string, string> | Record<string, Record<string, string>>;
   images: Array<Image>;
+  reportTypeDefinition?: Record<string, any>;
 };

@@ -50,6 +50,7 @@ query GetReport($id: ID!) {
     reportType {
       id
       name
+      definition
     }
     platform
     coverImage {

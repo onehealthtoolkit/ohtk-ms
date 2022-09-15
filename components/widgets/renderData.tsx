@@ -1,8 +1,90 @@
+import Form from "lib/opsvForm/models/form";
+import { parseForm } from "lib/opsvForm/models/json";
+
 /* eslint-disable @next/next/no-img-element */
-export const renderData = (data: Record<string, any>) => {
+export const renderData = (data: Record<string, any>, definition?: any) => {
   if (!data) {
     return null;
   }
+
+  if (definition) {
+    try {
+      const form = parseForm(definition);
+      form.loadJsonValue(data);
+
+      return renderDefinitionData(form, data);
+    } catch (e) {
+      console.log(e);
+      return <p className="text-red-500">Cannot render data by definition</p>;
+    }
+  }
+  return renderNameValueData(data);
+};
+
+/**
+ * Render form data using format in a form definition
+ * Sort data in a sequence of sections, questions, and fields
+ * @param form
+ * @returns <table /> or null if form data is undefined
+ */
+const renderDefinitionData = (form: Form, data: Record<string, any>) => {
+  return form.sections.length > 0 ? (
+    <table className="table-fixed border text-sm text-left text-gray-500">
+      <tbody>
+        {form.sections.map((section, idx) => {
+          return section.questions.map((question, qidx) => {
+            return (
+              <>
+                {question.name ? (
+                  <tr key={`s-${idx}-q-${qidx}`} className="bg-white border-b">
+                    <th
+                      scope="row"
+                      colSpan={2}
+                      className="px-6 py-4 font-medium text-black bg-gray-100 "
+                    >
+                      {question.name}
+                    </th>
+                  </tr>
+                ) : null}
+                {question.fields.map((field, fidx) => {
+                  return (
+                    <tr
+                      key={`s-${idx}-q-${qidx}-f${fidx}`}
+                      className="bg-white border-b"
+                    >
+                      <th
+                        scope="row"
+                        className="w-1/4 px-6 py-4 font-medium text-gray-900 "
+                      >
+                        {field.name}
+                      </th>
+                      <td className="px-6 py-4">
+                        {question.name
+                          ? displayValue(data[question.name!][field.name])
+                          : displayValue(data[field.name])}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </>
+            );
+          });
+        })}
+      </tbody>
+    </table>
+  ) : null;
+};
+
+/**
+ * Render data in key/value format
+ * @param data
+ * @returns <table /> or null if form data is undefined
+ */
+const renderNameValueData = (data: Record<string, any>) => {
+  if (!data) {
+    return null;
+  }
+
   return (
     <table className="table-fixed border w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <tbody>{renderItem(data)}</tbody>
@@ -50,7 +132,7 @@ const displayValue = (value: any) => {
       return val;
     }
   } else {
-    return renderData(value);
+    return renderNameValueData(value);
   }
 };
 
