@@ -6,9 +6,17 @@ import "react-datepicker/dist/react-datepicker.css";
 import DashboardViewModel from "./dashboardViewModel";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
+import AuthorityFilter from "./authorityFilter";
+import useUrlParams from "lib/hooks/urlParams/useUrlParams";
+import Filter from "components/widgets/filter";
 
-const DashboardFilter = ({ viewModel }: { viewModel: DashboardViewModel }) => {
+type DashboardFilterProp = {
+  viewModel: DashboardViewModel;
+};
+
+const DashboardFilter: React.FC<DashboardFilterProp> = ({ viewModel }) => {
   const [periodText, setPeriodText] = useState<String>();
+  const { setUrl, resetUrl } = useUrlParams();
 
   const setThisWeek = () => {
     const curr = new Date();
@@ -33,8 +41,17 @@ const DashboardFilter = ({ viewModel }: { viewModel: DashboardViewModel }) => {
     setPeriodText("This year");
   };
 
-  return (
-    <div className="w-full">
+  const applySearch = () => {
+    setUrl({
+      authorityId: viewModel.authorityId,
+      authorityName: viewModel.authorityName,
+      fromDate: viewModel.fromDate?.toISOString(),
+      toDate: viewModel.toDate?.toISOString(),
+    });
+  };
+
+  const filterFields = (
+    <>
       <div className="relative w-full max-w-full flex-grow flex-1 text-right">
         <Menu as="div" className="relative inline-block text-left z-[60000]">
           <div>
@@ -102,7 +119,6 @@ const DashboardFilter = ({ viewModel }: { viewModel: DashboardViewModel }) => {
           </Transition>
         </Menu>
       </div>
-
       <Field $size="full">
         <Label htmlFor="fromDate">From Date</Label>
         <DatePicker
@@ -119,6 +135,30 @@ const DashboardFilter = ({ viewModel }: { viewModel: DashboardViewModel }) => {
           onChange={(date: Date) => (viewModel.toDate = date)}
         />
       </Field>
+      <AuthorityFilter viewModel={viewModel} />
+    </>
+  );
+
+  return (
+    <div className="flex items-center justify-between">
+      <div className="w-full md:w-1/4 text-xl text-slate-600">
+        <div
+          className={`inline-flex bg-white justify-center  rounded-2xl border-gray-200  border-2 px-4 py-2 text-xl font-medium  hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+        >
+          {viewModel.authorityName}
+        </div>
+      </div>
+      <div className="px-4">
+        <Filter
+          onSearch={applySearch}
+          onReset={() => {
+            resetUrl();
+          }}
+          popPositionClass="right-0"
+        >
+          {filterFields}
+        </Filter>
+      </div>
     </div>
   );
 };
