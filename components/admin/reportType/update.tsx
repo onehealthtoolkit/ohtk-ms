@@ -316,7 +316,7 @@ const ReportTypeUpdateForm = () => {
                 (viewModel.ordering = parseInt(evt.target.value))
               }
               disabled={viewModel.isSubmitting}
-              value={viewModel.ordering}
+              value={viewModel.ordering == 0 ? "" : viewModel.ordering}
               required
             />
             <ErrorText>{viewModel.fieldErrors.ordering}</ErrorText>

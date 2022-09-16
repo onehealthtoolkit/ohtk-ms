@@ -259,7 +259,7 @@ const ReportTypeCreate = () => {
               placeholder={t("form.placeholder.ordering", "Ordering")}
               onChange={evt => (viewModel.ordering = +evt.target.value)}
               disabled={isSubmitting}
-              value={viewModel.ordering}
+              value={viewModel.ordering == 0 ? "" : viewModel.ordering}
               required
             />
             <ErrorText>{errors.ordering}</ErrorText>
