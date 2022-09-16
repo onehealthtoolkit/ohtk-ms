@@ -10,7 +10,7 @@ import {
 } from "components/map/markerIcon";
 import L, { LatLng, LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { BACKEND_DOMAIN } from "lib/client";
+import { currentWebsocketEndpoint } from "lib/client";
 import { EventItem } from "lib/services/dashboard/event";
 import { memo, useEffect, useState } from "react";
 
@@ -68,7 +68,7 @@ const LiveMapView: React.FC<LiveMapViewProps> = ({ data, authorityId }) => {
 
   useEffect(() => {
     const ws = new WebSocket(
-      `wss://${BACKEND_DOMAIN}/ws/reports/${authorityId}/`
+      `${currentWebsocketEndpoint()}/reports/${authorityId}/`
     );
 
     ws.onmessage = ev => {
