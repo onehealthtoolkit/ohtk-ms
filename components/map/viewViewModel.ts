@@ -106,12 +106,17 @@ export default class MapViewViewModel {
     this.toDate = new Date();
   }
 
-  async fetch() {
-    const result = await this.reportService.fetchReports(1000, 0, {
-      fromDate: this.fromDate,
-      throughDate: this.toDate,
-      reportTypes: this.reportTypes,
-    });
+  async fetch(force?: boolean) {
+    const result = await this.reportService.fetchReports(
+      1000,
+      0,
+      {
+        fromDate: this.fromDate,
+        throughDate: this.toDate,
+        reportTypes: this.reportTypes,
+      },
+      force
+    );
     runInAction(() => {
       const events = Array<EventItem>();
 
@@ -138,5 +143,9 @@ export default class MapViewViewModel {
 
   toggleLiveView() {
     this.isLive = !this.isLive;
+    // force fetch without cache data when switch to query mode
+    if (!this.isLive) {
+      this.fetch(true);
+    }
   }
 }

@@ -1,17 +1,15 @@
-import { renderToStaticMarkup } from "react-dom/server";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-
 import turfBbox from "@turf/bbox";
 import { points as turfPoints } from "@turf/helpers";
 import {
   DEFAULT_BOUNDS,
-  MarkerIcon,
+  EventMarker,
   SetMapBounds,
 } from "components/map/markerIcon";
-import L, { LatLngTuple } from "leaflet";
+import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { EventItem } from "lib/services/dashboard/event";
 import { memo, useEffect, useState } from "react";
+import { MapContainer, TileLayer } from "react-leaflet";
 
 type MapViewProps = {
   data: Array<EventItem>;
@@ -48,26 +46,8 @@ const MapView: React.FC<MapViewProps> = ({ data }) => {
 
       <SetMapBounds bounds={bounds} />
 
-      {data.map((item, index) => {
-        const icon = L.divIcon({
-          className: "my-div-icon",
-          html: renderToStaticMarkup(
-            MarkerIcon({
-              categoryIcon: item.categoryIcon,
-              type: item.type,
-            })
-          ),
-        });
-
-        return (
-          <Marker
-            key={item.type + "_" + index + "_" + item.id}
-            position={[item.location.lat, item.location.lng]}
-            icon={icon}
-          >
-            <Popup>{item.data || "No data reported"}</Popup>
-          </Marker>
-        );
+      {data.map(item => {
+        return <EventMarker event={item} key={`${item.type}_${item.id}`} />;
       })}
     </MapContainer>
   );

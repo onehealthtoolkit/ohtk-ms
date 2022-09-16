@@ -21,7 +21,8 @@ export interface IReportService extends IService {
   fetchReports(
     limit: number,
     offset: number,
-    filter: ReportFilterData
+    filter: ReportFilterData,
+    force?: boolean
   ): Promise<QueryResult<Report[]>>;
 
   getReport(id: string): Promise<GetResult<ReportDetail>>;
@@ -34,7 +35,12 @@ export class ReportService implements IReportService {
     this.client = client;
   }
 
-  async fetchReports(limit: number, offset: number, filter: ReportFilterData) {
+  async fetchReports(
+    limit: number,
+    offset: number,
+    filter: ReportFilterData,
+    force?: boolean
+  ) {
     const fetchResult = await this.client.query({
       query: ReportsDocument,
       variables: {
@@ -45,6 +51,7 @@ export class ReportService implements IReportService {
         authorities: filter.authorities?.map(a => a.id),
         reportTypes: filter.reportTypes?.map(a => a.id),
       },
+      fetchPolicy: force ? "network-only" : "cache-first",
     });
 
     const items = Array<Report>();
