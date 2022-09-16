@@ -1,7 +1,8 @@
-import { LatLngTuple } from "leaflet";
-import { EventItemType } from "lib/services/dashboard/event";
+import L, { LatLngTuple } from "leaflet";
+import { EventItem, EventItemType } from "lib/services/dashboard/event";
 import { useEffect } from "react";
-import { useMap } from "react-leaflet";
+import { renderToStaticMarkup } from "react-dom/server";
+import { Marker, Popup, useMap } from "react-leaflet";
 
 // Default bounds, let see the whole world
 export const DEFAULT_BOUNDS: LatLngTuple[] = [
@@ -79,5 +80,23 @@ export const MarkerIcon = ({ categoryIcon, type }: MarkerIconProps) => {
         }
       ></div>
     </div>
+  );
+};
+
+export const EventMarker = ({ event }: { event: EventItem }) => {
+  const icon = L.divIcon({
+    className: "my-div-icon",
+    html: renderToStaticMarkup(
+      MarkerIcon({
+        categoryIcon: event.categoryIcon,
+        type: event.type,
+      })
+    ),
+  });
+
+  return (
+    <Marker position={[event.location.lat, event.location.lng]} icon={icon}>
+      <Popup>{event.data || "No data reported"}</Popup>
+    </Marker>
   );
 };
