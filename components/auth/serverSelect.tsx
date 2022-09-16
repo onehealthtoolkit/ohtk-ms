@@ -1,4 +1,5 @@
 import { ServerIcon } from "@heroicons/react/outline";
+import { getSubDomain } from "lib/client";
 import { ServerOption } from "./signin/viewModel";
 
 type AuthorityFilterProps = {
@@ -23,6 +24,7 @@ const ServerSelect: React.FC<AuthorityFilterProps> = ({
         onChange={e => {
           onChange(e.target.value);
         }}
+        value={getSubDomain()}
       >
         <option value="">---</option>
         {serverOptions.map(option => (

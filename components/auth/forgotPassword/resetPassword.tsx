@@ -13,15 +13,17 @@ import {
   TextInput,
 } from "components/widgets/forms";
 import { useRouter } from "next/router";
+import { setBackendSubDomain } from "lib/client";
 const { publicRuntimeConfig } = getConfig();
 
 const tenantsApiEndpoint = publicRuntimeConfig.tenantsApiEndpoint;
 
 type ResetPasswordProps = {
   token: string;
+  domain?: string;
 };
 
-const ResetPassword: React.FC<ResetPasswordProps> = ({ token }) => {
+const ResetPassword: React.FC<ResetPasswordProps> = ({ token, domain }) => {
   const services = useServices();
   const router = useRouter();
   const [viewModel, setViewModel] = useState<
@@ -36,7 +38,8 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ token }) => {
         tenantsApiEndpoint
       )
     );
-  }, [services]);
+    if (domain) setBackendSubDomain(domain);
+  }, [services, domain]);
 
   if (viewModel === undefined) {
     return null;
