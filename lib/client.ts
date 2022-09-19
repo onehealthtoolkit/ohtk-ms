@@ -7,10 +7,40 @@ import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
 
 export const BACKEND_DOMAIN = publicRuntimeConfig.serverDomain;
+export const DEFAULT_GRAPHQL_URI = graphqlEndpoint(BACKEND_DOMAIN);
+export const DEFAULT_WEBSOCKET_URI = websocketEndpoint(BACKEND_DOMAIN);
 
 const LOCAL_STORAGE_REFRESH_EXPIRES_IN_KEY = "refreshExpiresIn";
 const LOCAL_STORGAGE_BACKEND_URL_KEY = "backendUrl";
 const LOCAL_STORGAGE_SUB_DOMAIN = "subdomain";
+
+export function graphqlEndpoint(domain: string) {
+  return `https://${domain}/graphql`;
+}
+
+export function websocketEndpoint(domain: string) {
+  return `wss://${domain}/ws`;
+}
+
+export function currentGraphqlEndpoint() {
+  const savedBackendUrl = localStorage.getItem(LOCAL_STORGAGE_BACKEND_URL_KEY);
+  if (savedBackendUrl) {
+    return savedBackendUrl;
+  }
+  return DEFAULT_GRAPHQL_URI;
+}
+
+export function currentWebsocketEndpoint() {
+  const savedBackendUrl = localStorage.getItem(LOCAL_STORGAGE_BACKEND_URL_KEY);
+  if (savedBackendUrl) {
+    const domain = savedBackendUrl
+      .replace("https://", "")
+      .replace("http://", "")
+      .replace("/graphql", "");
+    return websocketEndpoint(domain);
+  }
+  return DEFAULT_WEBSOCKET_URI;
+}
 
 export function setBackendSubDomain(subdomain: string) {
   if (subdomain === "") {
@@ -70,7 +100,7 @@ const customFetch = (uri: string, options: Record<string, string>) => {
 };
 
 const httpLink = createUploadLink({
-  uri: `https://${BACKEND_DOMAIN}/graphql/`,
+  uri: DEFAULT_GRAPHQL_URI,
   credentials: "include",
   fetch: customFetch,
 }) as unknown as ApolloLink;

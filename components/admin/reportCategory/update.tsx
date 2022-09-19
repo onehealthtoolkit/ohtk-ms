@@ -68,6 +68,7 @@ const ReportCategoryUpdate = () => {
               type="number"
               placeholder={t("form.placeholder.ordering", "Ordering")}
               onChange={evt => (viewModel.ordering = +evt.target.value)}
+              value={viewModel.ordering == 0 ? "" : viewModel.ordering}
               disabled={viewModel.isSubmitting}
               defaultValue={viewModel.ordering}
               required

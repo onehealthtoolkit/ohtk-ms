@@ -3,7 +3,7 @@ import { Observer } from "mobx-react";
 import { memo, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { formatDateTime } from "lib/datetime";
-import { BACKEND_DOMAIN } from "lib/client";
+import { currentWebsocketEndpoint } from "lib/client";
 import { FollowupListViewModel } from "./listViewModel";
 import Table from "components/widgets/table";
 import ErrorDisplay from "components/widgets/errorDisplay";
@@ -21,7 +21,7 @@ const FollowupList: React.FC<FollowupListProps> = ({ incidentId }) => {
 
   useEffect(() => {
     const ws = new WebSocket(
-      `wss://${BACKEND_DOMAIN}/ws/followups/${incidentId}/`
+      `${currentWebsocketEndpoint()}/followups/${incidentId}/`
     );
 
     ws.onmessage = ev => {

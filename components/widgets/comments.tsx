@@ -14,7 +14,7 @@ import { memo, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { formatDateTime } from "lib/datetime";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
-import { BACKEND_DOMAIN } from "lib/client";
+import { currentWebsocketEndpoint } from "lib/client";
 
 type CommentsProps = {
   threadId?: number | null;
@@ -26,7 +26,7 @@ const Comments: React.FC<CommentsProps> = ({ threadId }) => {
 
   useEffect(() => {
     const ws = new WebSocket(
-      `wss://${BACKEND_DOMAIN}/ws/comments/${threadId}/`
+      `${currentWebsocketEndpoint()}/comments/${threadId}/`
     );
 
     ws.onmessage = ev => {
