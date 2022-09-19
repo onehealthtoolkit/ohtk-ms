@@ -124,17 +124,23 @@ export default class MapViewViewModel {
         if (it.gpsLocation) {
           const lnglat = it.gpsLocation.split(",");
 
-          events.push({
-            id: it.id,
-            type: "report",
-            data: it.rendererData,
-            location: {
-              lat: parseFloat(lnglat[1]),
-              lng: parseFloat(lnglat[0]),
-            },
-            categoryName: it.categoryName || "",
-            categoryIcon: it.categoryIcon,
-          });
+          try {
+            events.push({
+              id: it.id,
+              type: "report",
+              data: it.rendererData,
+              location: {
+                lat: parseFloat(lnglat[1]),
+                lng: parseFloat(lnglat[0]),
+              },
+              categoryName: it.categoryName || "",
+              categoryIcon: it.categoryIcon,
+              imageUrl: it.imageUrl,
+              createdAt: it.createdAt,
+            });
+          } catch (e) {
+            console.log("Cannot parse (lat,lng) location: " + it.gpsLocation);
+          }
         }
       });
       this.data = events;

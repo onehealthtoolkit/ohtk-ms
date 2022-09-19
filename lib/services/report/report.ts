@@ -11,6 +11,7 @@ export type Report = {
   threadId?: number | null;
   categoryName?: string | null;
   categoryIcon?: string | null;
+  imageUrl?: string | null;
 };
 
 export type Image = {

@@ -8,6 +8,7 @@ import {
 import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { EventItem } from "lib/services/dashboard/event";
+import { useRouter } from "next/router";
 import { memo, useEffect, useState } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 
@@ -16,6 +17,7 @@ type MapViewProps = {
 };
 
 const MapView: React.FC<MapViewProps> = ({ data }) => {
+  const router = useRouter();
   const [bounds, setBounds] = useState<LatLngTuple[]>(DEFAULT_BOUNDS);
 
   useEffect(() => {
@@ -47,7 +49,13 @@ const MapView: React.FC<MapViewProps> = ({ data }) => {
       <SetMapBounds bounds={bounds} />
 
       {data.map(item => {
-        return <EventMarker event={item} key={`${item.type}_${item.id}`} />;
+        return (
+          <EventMarker
+            event={item}
+            key={`${item.type}_${item.id}`}
+            onPopupClick={id => router.push(`/reports/${id}`)}
+          />
+        );
       })}
     </MapContainer>
   );

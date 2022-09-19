@@ -36,7 +36,7 @@ export function currentWebsocketEndpoint() {
     const domain = savedBackendUrl
       .replace("https://", "")
       .replace("http://", "")
-      .replace("/graphql", "");
+      .replace("/graphql/", "");
     return websocketEndpoint(domain);
   }
   return DEFAULT_WEBSOCKET_URI;

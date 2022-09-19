@@ -37,6 +37,9 @@ query Reports(
         lastName
         telephone
       }
+      images {
+        thumbnail
+      }
     }
   }
 }

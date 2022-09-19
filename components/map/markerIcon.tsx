@@ -1,5 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
+import { PhotographIcon } from "@heroicons/react/solid";
 import L, { LatLngTuple } from "leaflet";
+import { formatDateTime } from "lib/datetime";
 import { EventItem, EventItemType } from "lib/services/dashboard/event";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Marker, Popup, useMap } from "react-leaflet";
@@ -83,7 +87,12 @@ export const MarkerIcon = ({ categoryIcon, type }: MarkerIconProps) => {
   );
 };
 
-export const EventMarker = ({ event }: { event: EventItem }) => {
+type EventMarkerProps = {
+  event: EventItem;
+  onPopupClick?: (eventId: string) => void;
+};
+
+export const EventMarker = ({ event, onPopupClick }: EventMarkerProps) => {
   const icon = L.divIcon({
     className: "my-div-icon",
     html: renderToStaticMarkup(
@@ -96,7 +105,41 @@ export const EventMarker = ({ event }: { event: EventItem }) => {
 
   return (
     <Marker position={[event.location.lat, event.location.lng]} icon={icon}>
-      <Popup>{event.data || "No data reported"}</Popup>
+      <Popup>
+        <MarkerPopup event={event} onPopupClick={onPopupClick} />
+      </Popup>
     </Marker>
+  );
+};
+
+export const MarkerPopup = ({ event, onPopupClick }: EventMarkerProps) => {
+  const router = useRouter();
+  return (
+    <div
+      className="flex items-start gap-2 cursor-pointer"
+      onClick={e => {
+        e.preventDefault();
+        onPopupClick && onPopupClick(event.id);
+      }}
+    >
+      <div className="overflow-hidden relative w-10  bg-gray-200 rounded-full">
+        {event.imageUrl ? (
+          <img
+            src={event.imageUrl}
+            alt={event.categoryName}
+            className="w-full h-10 object-cover"
+          />
+        ) : (
+          <PhotographIcon className="w-full fill-gray-400 p-2" />
+        )}
+      </div>
+      <div className="flex flex-col grow">
+        <h1 className="font-bold">{event.categoryName}</h1>
+        <div className="text-[0.65rem] text-gray-500">
+          {formatDateTime(event.createdAt, router.locale)}
+        </div>
+        <div className="mb-1">{event.data || "No data reported"}</div>
+      </div>
+    </div>
   );
 };

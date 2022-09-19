@@ -16,4 +16,6 @@ export type EventItem = {
   data: string;
   categoryName: string;
   categoryIcon?: string | null;
+  createdAt?: string;
+  imageUrl?: string | null;
 };
