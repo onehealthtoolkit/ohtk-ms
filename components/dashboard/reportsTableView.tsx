@@ -58,15 +58,17 @@ const ReportsTableView: React.FC<ReportsTableViewProps> = ({
             },
             {
               label: "Report type",
-              get: record => record.reportTypeName,
+              get: record => {
+                return (
+                  <>
+                    {record.reportTypeName} <CaseLink caseId={record.caseId} />
+                  </>
+                );
+              },
             },
             {
               label: "Data",
               get: record => record.rendererData,
-            },
-            {
-              label: "",
-              get: record => <CaseLink caseId={record.caseId} />,
             },
           ]}
           data={viewModel.data || []}

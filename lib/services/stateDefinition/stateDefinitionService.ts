@@ -150,6 +150,13 @@ export class StateDefinitionService implements IStateDefinitionService {
         },
       ],
       awaitRefetchQueries: true,
+      update: cache => {
+        cache.modify({
+          fields: {
+            adminStateDefinitionQuery: () => undefined,
+          },
+        });
+      },
     });
 
     if (createResult.errors) {
@@ -210,6 +217,11 @@ export class StateDefinitionService implements IStateDefinitionService {
       ],
       awaitRefetchQueries: true,
       update: (cache, result) => {
+        cache.modify({
+          fields: {
+            adminStateDefinitionQuery: () => undefined,
+          },
+        });
         const cacheItem = cache.readQuery({
           query: GetStateDefinitionDocument,
           variables: { id },
