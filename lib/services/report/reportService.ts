@@ -67,6 +67,10 @@ export class ReportService implements IReportService {
           gpsLocation: item.gpsLocation,
           categoryName: item.reportType?.category?.name,
           categoryIcon: item.reportType?.category?.icon,
+          imageUrl:
+            item.images && item.images.length > 0
+              ? item.images[0]?.thumbnail
+              : null,
         });
       }
     });

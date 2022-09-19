@@ -3,12 +3,14 @@ import { points as turfPoints } from "@turf/helpers";
 import {
   DEFAULT_BOUNDS,
   EventMarker,
+  MarkerPopup,
   SetMapBounds,
 } from "components/map/markerIcon";
 import L, { LatLng, LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { currentWebsocketEndpoint } from "lib/client";
 import { EventItem } from "lib/services/dashboard/event";
+import { useRouter } from "next/router";
 import { memo, useCallback, useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 
@@ -20,22 +22,25 @@ const iconRadar = L.divIcon({
 });
 
 type LocationMarkerProps = {
-  location: { lat: number; lng: number };
+  event: EventItem;
+  onPopupClick?: (eventId: string) => void;
 };
 
-const LocationMarker = ({ location }: LocationMarkerProps) => {
+const LocationMarker = ({ event, onPopupClick }: LocationMarkerProps) => {
   const map = useMap();
   const [position, setPosition] = useState<LatLng | null>(null);
 
   useEffect(() => {
-    const position = new LatLng(location.lat, location.lng);
+    const position = new LatLng(event.location.lat, event.location.lng);
     setPosition(position);
     map.flyTo(position, 12);
-  }, [location, map]);
+  }, [event, map]);
 
   return position === null ? null : (
     <Marker position={position} icon={iconRadar}>
-      <Popup>You are here</Popup>
+      <Popup>
+        <MarkerPopup event={event} onPopupClick={onPopupClick} />
+      </Popup>
     </Marker>
   );
 };
@@ -46,6 +51,7 @@ type LiveMapViewProps = {
 };
 
 const LiveMapView: React.FC<LiveMapViewProps> = ({ data, authorityId }) => {
+  const router = useRouter();
   const [bounds, setBounds] = useState<LatLngTuple[]>(DEFAULT_BOUNDS);
   const [incomings, setIncomings] = useState<EventItem[]>([]);
 
@@ -140,19 +146,32 @@ const LiveMapView: React.FC<LiveMapViewProps> = ({ data, authorityId }) => {
       <SetMapBounds bounds={bounds} />
 
       {data.map(item => {
-        return <EventMarker event={item} key={`${item.type}_${item.id}`} />;
+        return (
+          <EventMarker
+            event={item}
+            key={`${item.type}_${item.id}`}
+            onPopupClick={id => router.push(`/reports/${id}`)}
+          />
+        );
       })}
 
       {/* Pin */}
       {incomings.map(item => {
-        return <EventMarker event={item} key={`pin_${item.type}_${item.id}`} />;
+        return (
+          <EventMarker
+            key={`pin_${item.type}_${item.id}`}
+            event={item}
+            onPopupClick={id => router.push(`/reports/${id}`)}
+          />
+        );
       })}
       {/* Winking radar */}
       {incomings.map(item => {
         return (
           <LocationMarker
             key={`wink_${item.type}_${item.id}`}
-            location={item.location}
+            event={item}
+            onPopupClick={id => router.push(`/reports/${id}`)}
           />
         );
       })}

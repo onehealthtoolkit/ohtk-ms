@@ -3513,6 +3513,10 @@ export type ReportsQuery = {
         lastName: string;
         telephone?: string | null;
       } | null;
+      images?: Array<{
+        __typename?: "ImageType";
+        thumbnail?: string | null;
+      } | null> | null;
     } | null>;
   } | null;
 };
@@ -10572,6 +10576,19 @@ export const ReportsDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "telephone" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "images" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "thumbnail" },
                             },
                           ],
                         },
