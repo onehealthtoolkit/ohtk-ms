@@ -42,7 +42,7 @@ const Paginate: React.FC<PaginateProps> = ({
       >
         <ChevronLeftIcon className={iconClassName} />
       </Btn>
-      <div className="mx-4">
+      <div className="mx-4 text-sm">
         <Trans
           i18nKey="table.paginate"
           values={{

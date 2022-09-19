@@ -7,7 +7,7 @@ type TotalItemProps = {
 
 const TotalItem: React.FC<TotalItemProps> = ({ totalCount }) => {
   return (
-    <div className="text-sm flex-initial w-full md:w-64 rounded-lg bg-gray-100 p-3">
+    <div className="text-sm flex-initial w-full md:w-auto rounded-lg bg-gray-100 p-3">
       <Trans
         i18nKey="table.totalItems"
         count={totalCount}
