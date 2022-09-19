@@ -12,6 +12,7 @@ export const DEFAULT_WEBSOCKET_URI = websocketEndpoint(BACKEND_DOMAIN);
 
 const LOCAL_STORAGE_REFRESH_EXPIRES_IN_KEY = "refreshExpiresIn";
 const LOCAL_STORGAGE_BACKEND_URL_KEY = "backendUrl";
+const LOCAL_STORGAGE_SUB_DOMAIN = "subdomain";
 
 export function graphqlEndpoint(domain: string) {
   return `https://${domain}/graphql`;
@@ -45,6 +46,7 @@ export function setBackendSubDomain(subdomain: string) {
   if (subdomain === "") {
     localStorage.removeItem(LOCAL_STORGAGE_BACKEND_URL_KEY);
   } else {
+    localStorage.setItem(LOCAL_STORGAGE_SUB_DOMAIN, subdomain);
     localStorage.setItem(
       LOCAL_STORGAGE_BACKEND_URL_KEY,
       `https://${subdomain}/graphql/`
@@ -62,6 +64,10 @@ export function getRefreshExpiresIn(): number {
     return parseInt(value);
   }
   return 0;
+}
+
+export function getSubDomain() {
+  return localStorage.getItem(LOCAL_STORGAGE_SUB_DOMAIN) || undefined;
 }
 
 const refreshToken = async (): Promise<void> => {

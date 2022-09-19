@@ -11,6 +11,7 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import { SummaryByCategoryPieViewModel } from "./summaryByCategoryPieViewModel";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
+import DashboardCard from "./card";
 
 ChartJS.register(ArcElement, ChartDataLabels);
 
@@ -77,76 +78,63 @@ const SummaryByCategoryPieView: React.FC<SummaryByCategoryPieViewProps> = ({
 
   return (
     <MaskingLoader loading={viewModel.isLoading}>
-      <div className="relative flex flex-col min-w-0 break-words w-full h-full mb-6 shadow-lg ">
-        <div className="rounded-t-lg mb-0 px-4 py-2 h-[45px] bg-[#5E7284]">
-          <div className="flex flex-wrap items-center">
-            <div className="relative w-full max-w-full flex-grow flex-1">
-              <span className="font-['Kanit'] font-semibold text-sm text-white">
-                Total reports
-              </span>
+      <DashboardCard
+        titleClass="bg-[#5E7284]"
+        title="Total reports"
+        action={
+          <Menu as="div" className="relative inline-block text-left">
+            <div>
+              <Menu.Button
+                className={`text-white inline-flex w-full justify-center rounded-md px-0 py-0 text-sm font-medium  underline hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+              >
+                {viewModel.summaryType == "report" ? "Reports" : "Cases"}
+                <ChevronDownIcon
+                  className="ml-2 -mr-1 h-5 w-5 text-slate-100"
+                  aria-hidden="true"
+                />
+              </Menu.Button>
             </div>
-            <div className="relative w-full max-w-full flex-grow flex-1 text-right">
-              <Menu as="div" className="relative inline-block text-left">
-                <div>
-                  <Menu.Button
-                    className={`text-white inline-flex w-full justify-center rounded-md px-0 py-0 text-sm font-medium  underline hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
-                  >
-                    {viewModel.summaryType == "report" ? "Reports" : "Cases"}
-                    <ChevronDownIcon
-                      className="ml-2 -mr-1 h-5 w-5 text-slate-100"
-                      aria-hidden="true"
-                    />
-                  </Menu.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items className="absolute right-0 mt-0 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div className="px-1 py-1 ">
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={`${
+                          active ? "bg-gray-400 text-white" : "text-gray-900"
+                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                        onClick={() => viewModel.changeSummaryType("report")}
+                      >
+                        Reports
+                      </button>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={`${
+                          active ? "bg-gray-400 text-white" : "text-gray-900"
+                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                        onClick={() => viewModel.changeSummaryType("case")}
+                      >
+                        Cases
+                      </button>
+                    )}
+                  </Menu.Item>
                 </div>
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
-                >
-                  <Menu.Items className="absolute right-0 mt-0 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <div className="px-1 py-1 ">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            className={`${
-                              active
-                                ? "bg-gray-400 text-white"
-                                : "text-gray-900"
-                            } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                            onClick={() =>
-                              viewModel.changeSummaryType("report")
-                            }
-                          >
-                            Reports
-                          </button>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            className={`${
-                              active
-                                ? "bg-gray-400 text-white"
-                                : "text-gray-900"
-                            } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                            onClick={() => viewModel.changeSummaryType("case")}
-                          >
-                            Cases
-                          </button>
-                        )}
-                      </Menu.Item>
-                    </div>
-                  </Menu.Items>
-                </Transition>
-              </Menu>
-            </div>
-          </div>
-        </div>
-
+              </Menu.Items>
+            </Transition>
+          </Menu>
+        }
+      >
         <div className="h-full w-full flex items-center overflow-x-auto p-2">
           <Doughnut
             plugins={[
@@ -188,7 +176,7 @@ const SummaryByCategoryPieView: React.FC<SummaryByCategoryPieViewProps> = ({
             data={viewModel.data}
           />
         </div>
-      </div>
+      </DashboardCard>
     </MaskingLoader>
   );
 };

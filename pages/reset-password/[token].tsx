@@ -5,13 +5,13 @@ import ResetPassword from "components/auth/forgotPassword/resetPassword";
 
 const ResetPasswordPage: NextPage = () => {
   const router = useRouter();
-  const { token } = router.query;
+  const { token, domain } = router.query;
   if (!token) {
     return <Spinner />;
   }
   return (
     <div>
-      <ResetPassword token={token as string} />
+      <ResetPassword token={token as string} domain={domain as string} />
     </div>
   );
 };

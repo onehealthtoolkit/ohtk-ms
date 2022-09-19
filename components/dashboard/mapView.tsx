@@ -52,7 +52,7 @@ const MapView: React.FC<MapViewProps> = ({ authorityId, filter }) => {
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <>
-        <div className="flex pt-2 pb-4">
+        <div className="flex">
           <div className="rounded-lg border border-gray-200 shadow-md  w-full">
             <MapContainer
               zoom={12}
