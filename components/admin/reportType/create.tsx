@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { ReportTypeCreateViewModel } from "./createViewModel";
@@ -53,16 +53,15 @@ const ReportTypeCreate = () => {
     loadData();
   }, [services.reportCategoryService]);
 
+  const onSubmit = useCallback(async () => {
+    if (await viewModel.save()) {
+      router.back();
+    }
+  }, [router, viewModel]);
+
   return (
     <>
-      <Form
-        onSubmit={async evt => {
-          evt.preventDefault();
-          if (await viewModel.save()) {
-            router.back();
-          }
-        }}
-      >
+      <Form>
         <FieldGroup>
           <Field $size="half">
             <Label htmlFor="category">
@@ -114,6 +113,7 @@ const ReportTypeCreate = () => {
             >
               <span>{t("form.label.definition", "Definition")}</span>
               <button
+                type="button"
                 onClick={e => {
                   e.preventDefault();
                   const valid = viewModel.parseDefinition(viewModel.definition);
@@ -153,6 +153,7 @@ const ReportTypeCreate = () => {
                 {t("form.label.followupDefinition", "Followup Definition")}
               </span>
               <button
+                type="button"
                 onClick={e => {
                   e.preventDefault();
                   setSelectedDefinition("followupDefinition");
@@ -269,7 +270,7 @@ const ReportTypeCreate = () => {
           <FormMessage>{viewModel.submitError}</FormMessage>
         )}
         <FormAction>
-          <SaveButton type="submit" disabled={isSubmitting}>
+          <SaveButton type="button" disabled={isSubmitting} onClick={onSubmit}>
             {isSubmitting ? <Spinner /> : t("form.button.save", "Save")}
           </SaveButton>
           <CancelButton type="button" onClick={() => router.back()}>

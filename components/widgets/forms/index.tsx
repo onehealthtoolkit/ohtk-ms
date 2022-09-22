@@ -276,31 +276,29 @@ export const MaskingLoader: FC<LoaderProps> = ({ children, loading }) =>
 
 export const Form: FC<
   React.DetailedHTMLProps<
-    React.FormHTMLAttributes<HTMLFormElement> & { allowEnterKey?: boolean },
+    React.FormHTMLAttributes<HTMLFormElement>,
     HTMLFormElement
   >
-> = props => (
-  <form
-    noValidate
-    onKeyDown={evt => {
-      if (evt.key === "Enter") {
-        if (!!!props.allowEnterKey) {
-          evt.preventDefault();
-        }
-      }
-    }}
-    className="
+> = props => {
+  return (
+    <form
+      noValidate
+      className="
       grid 
       grid-cols-2 
       gap-4 
       md:gap-8
       bg-white
     "
-    {...props}
-  >
-    {props.children}
-  </form>
-);
+      onSubmit={e => {
+        e.preventDefault();
+      }}
+      {...props}
+    >
+      {props.children}
+    </form>
+  );
+};
 
 interface FieldGroupProps {
   children: ReactElement | ReactElement[];

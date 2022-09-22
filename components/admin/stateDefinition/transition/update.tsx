@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { StateTransitionUpdateViewModel } from "./updateViewModel";
@@ -40,6 +40,12 @@ const StateTransitionsUpdateForm = () => {
 
   const errors = viewModel.fieldErrors;
 
+  const onSubmit = useCallback(async () => {
+    if (await viewModel.save()) {
+      router.back();
+    }
+  }, [router, viewModel]);
+
   return (
     <>
       <Breadcrumb
@@ -57,14 +63,7 @@ const StateTransitionsUpdateForm = () => {
       />
 
       <MaskingLoader loading={viewModel.isLoading}>
-        <Form
-          onSubmit={async evt => {
-            evt.preventDefault();
-            if (await viewModel.save()) {
-              router.back();
-            }
-          }}
-        >
+        <Form>
           <FieldGroup>
             <Field $size="half">
               <Label htmlFor="fromStepId">
@@ -156,7 +155,11 @@ const StateTransitionsUpdateForm = () => {
             <FormMessage>{viewModel.submitError}</FormMessage>
           )}
           <FormAction>
-            <SaveButton type="submit" disabled={viewModel.isSubmitting}>
+            <SaveButton
+              type="button"
+              disabled={viewModel.isSubmitting}
+              onClick={onSubmit}
+            >
               {viewModel.isSubmitting ? (
                 <Spinner />
               ) : (

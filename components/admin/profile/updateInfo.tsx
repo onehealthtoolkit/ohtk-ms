@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { observer } from "mobx-react";
 import {
   ErrorText,
@@ -33,6 +33,17 @@ const ProfileInfoUpdate = () => {
   });
 
   const errors = viewModel.fieldErrors;
+
+  const onSubmit = useCallback(async () => {
+    if (await viewModel.save()) {
+      if (me) {
+        me.firstName = viewModel.firstName;
+        me.lastName = viewModel.lastName;
+        viewModel.dialog("resultAlert")?.open(null);
+      }
+    }
+  }, [me, viewModel]);
+
   if (!me) {
     return <Spinner />;
   }
@@ -40,17 +51,7 @@ const ProfileInfoUpdate = () => {
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <>
-        <Form
-          className="-mt-12"
-          onSubmit={async evt => {
-            evt.preventDefault();
-            if (await viewModel.save()) {
-              me.firstName = viewModel.firstName;
-              me.lastName = viewModel.lastName;
-              viewModel.dialog("resultAlert")?.open(null);
-            }
-          }}
-        >
+        <Form className="-mt-12">
           <FieldGroup>
             <Field $size="half">
               <label className="block border-b border-gray-400 text-gray-600 font-bold my-6 py-2">
@@ -107,7 +108,11 @@ const ProfileInfoUpdate = () => {
             <FormMessage>{viewModel.submitError}</FormMessage>
           )}
           <FormAction className="-mt-16">
-            <SaveButton type="submit" disabled={viewModel.isSubmitting}>
+            <SaveButton
+              type="button"
+              disabled={viewModel.isSubmitting}
+              onClick={onSubmit}
+            >
               {viewModel.isSubmitting ? (
                 <Spinner />
               ) : (

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { InvitationCodeCreateViewModel } from "./createViewModel";
@@ -30,18 +30,17 @@ const InvitationCodeCreate = () => {
     () => new InvitationCodeCreateViewModel(services.invitationCodeService)
   );
 
+  const onSubmit = useCallback(async () => {
+    if (await viewModel.save()) {
+      router.back();
+    }
+  }, [router, viewModel]);
+
   const isSubmitting = viewModel.isSubmitting;
   const errors = viewModel.fieldErrors;
 
   return (
-    <Form
-      onSubmit={async evt => {
-        evt.preventDefault();
-        if (await viewModel.save()) {
-          router.back();
-        }
-      }}
-    >
+    <Form>
       <FieldGroup>
         <>
           {me?.isSuperUser && (
@@ -110,7 +109,7 @@ const InvitationCodeCreate = () => {
         <FormMessage>{viewModel.submitError}</FormMessage>
       )}
       <FormAction>
-        <SaveButton type="submit" disabled={isSubmitting}>
+        <SaveButton type="button" disabled={isSubmitting} onClick={onSubmit}>
           {isSubmitting ? <Spinner /> : t("form.button.save", "Save")}
         </SaveButton>
         <CancelButton type="button" onClick={() => router.back()}>

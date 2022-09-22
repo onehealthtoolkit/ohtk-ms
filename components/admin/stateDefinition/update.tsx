@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Observer, observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { StateDefinitionUpdateViewModel } from "./updateViewModel";
@@ -37,10 +37,6 @@ const StateDefinitionsUpdateForm = () => {
       services.stateTransitionService
     ).registerDialog("confirmDelete")
   );
-
-  if (router.query.activeTabIndex) {
-    viewModel.activeTabIndex = +router.query.activeTabIndex;
-  }
 
   const nameField = useMemo(
     () => (
@@ -85,17 +81,20 @@ const StateDefinitionsUpdateForm = () => {
     [t, viewModel]
   );
 
+  const onSubmit = useCallback(async () => {
+    if (await viewModel.save()) {
+      router.back();
+    }
+  }, [router, viewModel]);
+
+  if (router.query.activeTabIndex) {
+    viewModel.activeTabIndex = +router.query.activeTabIndex;
+  }
+
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <>
-        <Form
-          onSubmit={async evt => {
-            evt.preventDefault();
-            if (await viewModel.save()) {
-              router.back();
-            }
-          }}
-        >
+        <Form>
           <FieldGroup>
             {nameField}
             {isDefaultField}
@@ -107,7 +106,11 @@ const StateDefinitionsUpdateForm = () => {
             <FormMessage>{viewModel.submitError}</FormMessage>
           )}
           <FormAction>
-            <SaveButton type="submit" disabled={viewModel.isSubmitting}>
+            <SaveButton
+              type="button"
+              disabled={viewModel.isSubmitting}
+              onClick={onSubmit}
+            >
               {viewModel.isSubmitting ? (
                 <Spinner />
               ) : (
