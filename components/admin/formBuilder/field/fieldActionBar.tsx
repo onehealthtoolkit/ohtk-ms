@@ -34,7 +34,7 @@ const Bar: FC<FieldActionBarProps> = ({ children, value: field, onDelete }) => {
         {/* Switch button */}
         <label
           htmlFor="required-toggle"
-          className="inline-flex relative items-center cursor-pointe"
+          className="inline-flex relative items-center cursor-pointer"
         >
           <input
             type="checkbox"

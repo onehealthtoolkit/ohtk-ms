@@ -86,8 +86,8 @@ export type DecimalFieldType = {
 export type DateFieldType = {
   type: "date";
   withTime?: boolean;
-  beInFuture?: boolean;
-  beInPast?: boolean;
+  backwardDaysOffset?: number;
+  forwardDaysOffset?: number;
 } & BaseFieldType;
 
 export type LocationFieldType = {
@@ -170,8 +170,9 @@ export function parseField(json: FieldType): Field {
     case "date":
       return new DateField(json["id"], json["name"], {
         ...commonParams,
-        beInFuture: json["beInFuture"],
-        beInPast: json["beInPast"],
+        withTime: json["withTime"],
+        backwardDaysOffset: json["backwardDaysOffset"],
+        forwardDaysOffset: json["forwardDaysOffset"],
       });
     case "location":
       return new LocationField(json["id"], json["name"], commonParams);
