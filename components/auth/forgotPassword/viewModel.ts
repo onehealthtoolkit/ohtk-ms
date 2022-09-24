@@ -111,6 +111,7 @@ export class ForgotPasswordViewModel {
       this.isSubmitting = false;
       if (result.success) {
         runInAction(() => {
+          this.submitError = "";
           this.resetPasswordRequestSuccess = true;
         });
         return true;
