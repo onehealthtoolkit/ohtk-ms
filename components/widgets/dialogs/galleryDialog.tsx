@@ -39,7 +39,7 @@ const GalleryDialog: React.FC<GalleryDialogProps> = ({ viewModel }) => {
                   </>
                 )}
                 <img
-                  src={viewModel.currentImage.thumbnailUrl}
+                  src={viewModel.currentImage.imageUrl}
                   className="h-full object-contain"
                   alt={viewModel.currentImage.imageUrl}
                 />

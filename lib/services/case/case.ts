@@ -20,6 +20,7 @@ export type Image = {
   id: any;
   file: string;
   thumbnail: string;
+  imageUrl: string;
 };
 
 export type CaseDetail = Case & {

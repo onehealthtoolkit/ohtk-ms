@@ -18,6 +18,7 @@ export type Image = {
   id: any;
   file: string;
   thumbnail: string;
+  imageUrl: string;
 };
 
 export type ReportDetail = Report & {

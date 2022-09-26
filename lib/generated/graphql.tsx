@@ -1179,6 +1179,7 @@ export type ImageType = {
   file: Scalars["String"];
   followupreportSet: Array<FollowupReportType>;
   id: Scalars["UUID"];
+  imageUrl?: Maybe<Scalars["String"]>;
   incidentreportSet: Array<IncidentReportType>;
   reportId: Scalars["UUID"];
   thumbnail?: Maybe<Scalars["String"]>;
@@ -1225,6 +1226,11 @@ export type InvitationCodeType = {
   id: Scalars["ID"];
   role: Scalars["String"];
   throughDate: Scalars["DateTime"];
+};
+
+export type LoginQrTokenType = {
+  __typename?: "LoginQrTokenType";
+  token: Scalars["String"];
 };
 
 export type MessageType = {
@@ -1292,6 +1298,7 @@ export type Mutation = {
   submitZeroReport?: Maybe<SubmitZeroReportMutation>;
   /** Obtain JSON Web Token mutation */
   tokenAuth?: Maybe<ObtainJsonWebToken>;
+  verifyLoginQrToken?: Maybe<VerifyLoginQrTokenMutation>;
   verifyToken?: Maybe<Verify>;
 };
 
@@ -1619,6 +1626,10 @@ export type MutationTokenAuthArgs = {
   username: Scalars["String"];
 };
 
+export type MutationVerifyLoginQrTokenArgs = {
+  token: Scalars["String"];
+};
+
 export type MutationVerifyTokenArgs = {
   token?: InputMaybe<Scalars["String"]>;
 };
@@ -1696,6 +1707,7 @@ export type Query = {
   features?: Maybe<Array<Maybe<FeatureType>>>;
   followupReport?: Maybe<FollowupReportType>;
   followups?: Maybe<Array<Maybe<FollowupReportType>>>;
+  getLoginQrToken?: Maybe<LoginQrTokenType>;
   healthCheck?: Maybe<Scalars["String"]>;
   incidentReport?: Maybe<IncidentReportType>;
   incidentReports?: Maybe<IncidentReportTypeNodeConnection>;
@@ -1923,6 +1935,10 @@ export type QueryFollowupReportArgs = {
 
 export type QueryFollowupsArgs = {
   incidentId: Scalars["ID"];
+};
+
+export type QueryGetLoginQrTokenArgs = {
+  userId: Scalars["ID"];
 };
 
 export type QueryIncidentReportArgs = {
@@ -2201,6 +2217,7 @@ export type UserProfileType = {
   isSuperuser?: Maybe<Scalars["Boolean"]>;
   lastName: Scalars["String"];
   role?: Maybe<Scalars["String"]>;
+  telephone?: Maybe<Scalars["String"]>;
   username: Scalars["String"];
 };
 
@@ -2218,6 +2235,13 @@ export type UserType = {
 export type Verify = {
   __typename?: "Verify";
   payload: Scalars["GenericScalar"];
+};
+
+export type VerifyLoginQrTokenMutation = {
+  __typename?: "VerifyLoginQRTokenMutation";
+  me?: Maybe<UserProfileType>;
+  refreshToken?: Maybe<Scalars["String"]>;
+  token?: Maybe<Scalars["String"]>;
 };
 
 export type DeleteTokenCookieMutationVariables = Exact<{
@@ -2525,6 +2549,7 @@ export type GetCaseQuery = {
         id: any;
         file: string;
         thumbnail?: string | null;
+        imageUrl?: string | null;
       } | null> | null;
       reportedBy?: {
         __typename?: "UserType";
@@ -3556,6 +3581,7 @@ export type GetReportQuery = {
       id: any;
       file: string;
       thumbnail?: string | null;
+      imageUrl?: string | null;
     } | null> | null;
     reportedBy?: {
       __typename?: "UserType";
@@ -5937,6 +5963,10 @@ export const GetCaseDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "thumbnail" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "imageUrl" },
                             },
                           ],
                         },
@@ -10698,6 +10728,10 @@ export const GetReportDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "thumbnail" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "imageUrl" },
                       },
                     ],
                   },
