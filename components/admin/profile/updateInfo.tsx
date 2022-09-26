@@ -37,15 +37,16 @@ const ProfileInfoUpdate = () => {
       );
   }, [services.profileService, me]);
 
-
   const onSubmit = useCallback(async () => {
-    if (await viewModel.save()) {
-      viewModel.me.firstName = viewModel.firstName;
-      viewModel.me.lastName = viewModel.lastName;
-      viewModel.me.telephone = viewModel.telephone;
-      viewModel.dialog("resultAlert")?.open(null);
+    if (viewModel) {
+      if (await viewModel.save()) {
+        viewModel.me.firstName = viewModel.firstName;
+        viewModel.me.lastName = viewModel.lastName;
+        viewModel.me.telephone = viewModel.telephone;
+        viewModel.dialog("resultAlert")?.open(null);
+      }
     }
-  }, [me, viewModel]);
+  }, [viewModel]);
 
   if (!viewModel || !me) {
     return <Spinner />;
