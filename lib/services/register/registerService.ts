@@ -93,6 +93,8 @@ export class RegisterService implements IRegisterService {
         role: me.role || "",
         isStaff: me.isStaff || false,
         isSuperUser: me.isSuperuser || false,
+        email: me.email || "",
+        telephone: me.telephone || "",
       },
       tokenAuth: {
         token: result?.token!,

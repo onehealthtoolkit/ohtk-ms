@@ -10,11 +10,27 @@ query me {
     isSuperuser
     isStaff
     role
+    email
+    telephone
   }
 }
 
 mutation userChangePassword($newPassword: String!) {
   adminUserChangePassword(newPassword: $newPassword) {
+    success
+  }
+}
+
+mutation userUpdateProfile(
+  $firstName: String!
+  $lastName: String!
+  $telephone: String
+) {
+  adminUserUpdateProfile(
+    firstName: $firstName
+    lastName: $lastName
+    telephone: $telephone
+  ) {
     success
   }
 }

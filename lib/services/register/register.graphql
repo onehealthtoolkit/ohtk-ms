@@ -36,6 +36,8 @@ mutation UserRegister(
       role
       isStaff
       isSuperuser
+      email
+      telephone
     }
     refreshToken
     token
