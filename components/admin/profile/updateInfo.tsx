@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { observer } from "mobx-react";
 import {
   ErrorText,
@@ -16,8 +16,8 @@ import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import { useTranslation } from "react-i18next";
 import useStore from "lib/store";
-import { UserUpdateViewModel } from "../user/updateViewModel";
 import AlertDialog from "components/widgets/dialogs/alertDialog";
+import { ProfileUpdateInfoViewModel } from "./updateInfoViewModel";
 
 const ProfileInfoUpdate = () => {
   const { me } = useStore();
@@ -25,28 +25,33 @@ const ProfileInfoUpdate = () => {
 
   const services = useServices();
 
-  const [viewModel] = useState(() => {
-    return new UserUpdateViewModel(
-      me ? me.id.toString() : "",
-      services.userService
-    ).registerDialog("resultAlert");
-  });
+  const [viewModel, setViewModel] = useState<ProfileUpdateInfoViewModel>();
 
-  const errors = viewModel.fieldErrors;
+  useEffect(() => {
+    if (me)
+      setViewModel(
+        new ProfileUpdateInfoViewModel(
+          me,
+          services.profileService
+        ).registerDialog("resultAlert")
+      );
+  }, [services.profileService, me]);
+
 
   const onSubmit = useCallback(async () => {
     if (await viewModel.save()) {
-      if (me) {
-        me.firstName = viewModel.firstName;
-        me.lastName = viewModel.lastName;
-        viewModel.dialog("resultAlert")?.open(null);
-      }
+      viewModel.me.firstName = viewModel.firstName;
+      viewModel.me.lastName = viewModel.lastName;
+      viewModel.me.telephone = viewModel.telephone;
+      viewModel.dialog("resultAlert")?.open(null);
     }
   }, [me, viewModel]);
 
-  if (!me) {
+  if (!viewModel || !me) {
     return <Spinner />;
   }
+
+  const errors = viewModel.fieldErrors;
 
   return (
     <MaskingLoader loading={viewModel.isLoading}>

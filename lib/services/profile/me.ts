@@ -9,6 +9,8 @@ export type Me = {
   role: string;
   isStaff: boolean;
   isSuperUser: boolean;
+  email: string;
+  telephone: string;
 };
 
 export type ProfileUpdate = {

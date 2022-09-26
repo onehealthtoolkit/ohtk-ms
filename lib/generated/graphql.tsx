@@ -899,6 +899,11 @@ export type AdminUserChangePasswordMutation = {
   success?: Maybe<Scalars["Boolean"]>;
 };
 
+export type AdminUserUpdateProfileMutation = {
+  __typename?: "AdminUserUpdateProfileMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
 export type AdminUserUploadAvatarMutation = {
   __typename?: "AdminUserUploadAvatarMutation";
   avatarUrl?: Maybe<Scalars["String"]>;
@@ -1278,6 +1283,7 @@ export type Mutation = {
   adminStateTransitionDelete?: Maybe<AdminStateTransitionDeleteMutation>;
   adminStateTransitionUpdate?: Maybe<AdminStateTransitionUpdateMutation>;
   adminUserChangePassword?: Maybe<AdminUserChangePasswordMutation>;
+  adminUserUpdateProfile?: Maybe<AdminUserUpdateProfileMutation>;
   adminUserUploadAvatar?: Maybe<AdminUserUploadAvatarMutation>;
   authorityUserRegister?: Maybe<AuthorityUserRegisterMutation>;
   commentCreate?: Maybe<CommentCreateMutation>;
@@ -1537,6 +1543,12 @@ export type MutationAdminStateTransitionUpdateArgs = {
 
 export type MutationAdminUserChangePasswordArgs = {
   newPassword: Scalars["String"];
+};
+
+export type MutationAdminUserUpdateProfileArgs = {
+  firstName: Scalars["String"];
+  lastName: Scalars["String"];
+  telephone?: InputMaybe<Scalars["String"]>;
 };
 
 export type MutationAdminUserUploadAvatarArgs = {
@@ -3417,6 +3429,8 @@ export type MeQuery = {
     isSuperuser?: boolean | null;
     isStaff?: boolean | null;
     role?: string | null;
+    email?: string | null;
+    telephone?: string | null;
   } | null;
 };
 
@@ -3428,6 +3442,20 @@ export type UserChangePasswordMutation = {
   __typename?: "Mutation";
   adminUserChangePassword?: {
     __typename?: "AdminUserChangePasswordMutation";
+    success?: boolean | null;
+  } | null;
+};
+
+export type UserUpdateProfileMutationVariables = Exact<{
+  firstName: Scalars["String"];
+  lastName: Scalars["String"];
+  telephone?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type UserUpdateProfileMutation = {
+  __typename?: "Mutation";
+  adminUserUpdateProfile?: {
+    __typename?: "AdminUserUpdateProfileMutation";
     success?: boolean | null;
   } | null;
 };
@@ -3490,6 +3518,8 @@ export type UserRegisterMutation = {
       role?: string | null;
       isStaff?: boolean | null;
       isSuperuser?: boolean | null;
+      email?: string | null;
+      telephone?: string | null;
     } | null;
   } | null;
 };
@@ -9999,6 +10029,8 @@ export const MeDocument = {
                 { kind: "Field", name: { kind: "Name", value: "isSuperuser" } },
                 { kind: "Field", name: { kind: "Name", value: "isStaff" } },
                 { kind: "Field", name: { kind: "Name", value: "role" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
+                { kind: "Field", name: { kind: "Name", value: "telephone" } },
               ],
             },
           },
@@ -10060,6 +10092,98 @@ export const UserChangePasswordDocument = {
 } as unknown as DocumentNode<
   UserChangePasswordMutation,
   UserChangePasswordMutationVariables
+>;
+export const UserUpdateProfileDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "userUpdateProfile" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "firstName" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "lastName" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "telephone" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminUserUpdateProfile" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "firstName" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "firstName" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "lastName" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "lastName" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "telephone" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "telephone" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UserUpdateProfileMutation,
+  UserUpdateProfileMutationVariables
 >;
 export const UserUploadAvatarDocument = {
   kind: "Document",
@@ -10362,6 +10486,11 @@ export const UserRegisterDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "isSuperuser" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "email" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "telephone" },
                       },
                     ],
                   },

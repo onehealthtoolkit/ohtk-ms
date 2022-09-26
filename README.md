@@ -8,20 +8,19 @@
 - React
 - [React-DOM](https://www.npmjs.com/package/react-dom)
 
-```npm install next react react-dom```
+`npm install next react react-dom`
 
 #### Install
 
 Get latest version of ohtk-ms from github:
 
-```git clone https://github.com/onehealthtoolkit/ohtk-ms.git```
+`git clone https://github.com/onehealthtoolkit/ohtk-ms.git`
 
-```cd ~/ohtk-ms```
-
+`cd ~/ohtk-ms`
 
 #### Start Localhost Server
 
-```npm run dev```
+`npm run dev`
 
 Navigate to your local host port 3000:
 

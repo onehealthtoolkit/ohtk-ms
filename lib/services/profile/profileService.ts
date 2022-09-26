@@ -3,6 +3,7 @@ import {
   UserChangePasswordDocument,
   UserUploadAvatarDocument,
   MeDocument,
+  UserUpdateProfileDocument,
 } from "lib/generated/graphql";
 import { IService, SaveResult } from "lib/services/interface";
 import { Me, ProfileUpdate } from "lib/services/profile/me";
@@ -13,6 +14,12 @@ export interface IProfileService extends IService {
   uploadAvatar(image: File): Promise<SaveResult<ProfileUpdate>>;
 
   changePassword(newPassword: string): Promise<SaveResult<ProfileUpdate>>;
+
+  updateProfile(
+    firstName: string,
+    lastName: string,
+    telephone?: string
+  ): Promise<SaveResult<ProfileUpdate>>;
 }
 
 export class ProfileService implements IProfileService {
@@ -41,6 +48,8 @@ export class ProfileService implements IProfileService {
         role: me.role || "",
         isStaff: me.isStaff || false,
         isSuperUser: me.isSuperuser || false,
+        email: me.email || "",
+        telephone: me.telephone || "",
       };
     } else {
       throw new Error("Method not implemented.");
@@ -92,6 +101,34 @@ export class ProfileService implements IProfileService {
     }
 
     const success = changePasswordResult.data?.adminUserChangePassword
+      ?.success as boolean;
+    return {
+      success,
+    };
+  }
+
+  async updateProfile(
+    firstName: string,
+    lastName: string,
+    telephone?: string
+  ): Promise<SaveResult<ProfileUpdate>> {
+    const updateResult = await this.client.mutate({
+      mutation: UserUpdateProfileDocument,
+      variables: {
+        firstName,
+        lastName,
+        telephone,
+      },
+    });
+
+    if (updateResult.errors) {
+      return {
+        success: false,
+        message: updateResult.errors.map(o => o.message).join(","),
+      };
+    }
+
+    const success = updateResult.data?.adminUserUpdateProfile
       ?.success as boolean;
     return {
       success,
