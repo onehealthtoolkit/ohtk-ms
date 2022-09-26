@@ -115,6 +115,7 @@ const ReportTypeUpdateForm = () => {
             >
               <span>{t("form.label.definition", "Definition")}</span>
               <button
+                type="button"
                 onClick={e => {
                   e.preventDefault();
                   setSelectedDefinition("definition");
@@ -165,6 +166,7 @@ const ReportTypeUpdateForm = () => {
                 {t("form.label.followupDefinition", "Followup Definition")}
               </span>
               <button
+                type="button"
                 onClick={e => {
                   e.preventDefault();
                   setSelectedDefinition("followupDefinition");
@@ -330,14 +332,7 @@ const ReportTypeUpdateForm = () => {
   return (
     <>
       <MaskingLoader loading={viewModel.isLoading}>
-        <Form
-          onSubmit={async evt => {
-            evt.preventDefault();
-            if (await viewModel.save()) {
-              router.back();
-            }
-          }}
-        >
+        <Form>
           <FieldGroup>
             {categoryField}
             {nameField}
@@ -352,7 +347,15 @@ const ReportTypeUpdateForm = () => {
             <FormMessage>{viewModel.submitError}</FormMessage>
           )}
           <FormAction>
-            <SaveButton type="submit" disabled={viewModel.isSubmitting}>
+            <SaveButton
+              type="button"
+              disabled={viewModel.isSubmitting}
+              onClick={async () => {
+                if (await viewModel.save()) {
+                  router.back();
+                }
+              }}
+            >
               {viewModel.isSubmitting ? (
                 <Spinner />
               ) : (

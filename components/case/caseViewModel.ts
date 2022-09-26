@@ -72,7 +72,7 @@ export class CaseViewModel extends BaseViewModel {
   openGallery(imageId: string) {
     const images =
       this.data.images?.map(image => ({
-        imageUrl: image.file,
+        imageUrl: image.imageUrl,
         thumbnailUrl: image.thumbnail,
       })) || [];
 

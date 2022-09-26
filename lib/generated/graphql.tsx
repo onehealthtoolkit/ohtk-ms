@@ -1184,6 +1184,7 @@ export type ImageType = {
   file: Scalars["String"];
   followupreportSet: Array<FollowupReportType>;
   id: Scalars["UUID"];
+  imageUrl?: Maybe<Scalars["String"]>;
   incidentreportSet: Array<IncidentReportType>;
   reportId: Scalars["UUID"];
   thumbnail?: Maybe<Scalars["String"]>;
@@ -2560,6 +2561,7 @@ export type GetCaseQuery = {
         id: any;
         file: string;
         thumbnail?: string | null;
+        imageUrl?: string | null;
       } | null> | null;
       reportedBy?: {
         __typename?: "UserType";
@@ -3609,6 +3611,7 @@ export type GetReportQuery = {
       id: any;
       file: string;
       thumbnail?: string | null;
+      imageUrl?: string | null;
     } | null> | null;
     reportedBy?: {
       __typename?: "UserType";
@@ -5990,6 +5993,10 @@ export const GetCaseDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "thumbnail" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "imageUrl" },
                             },
                           ],
                         },
@@ -10850,6 +10857,10 @@ export const GetReportDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "thumbnail" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "imageUrl" },
                       },
                     ],
                   },

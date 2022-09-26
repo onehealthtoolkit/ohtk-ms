@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { StateStepUpdateViewModel } from "./updateViewModel";
@@ -37,6 +37,12 @@ const StateStepsUpdateForm = () => {
   const isSubmitting = viewModel.isSubmitting;
   const errors = viewModel.fieldErrors;
 
+  const onSubmit = useCallback(async () => {
+    if (await viewModel.save()) {
+      router.back();
+    }
+  }, [router, viewModel]);
+
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <>
@@ -53,14 +59,7 @@ const StateStepsUpdateForm = () => {
             { text: "Update Step" },
           ]}
         />
-        <Form
-          onSubmit={async evt => {
-            evt.preventDefault();
-            if (await viewModel.save()) {
-              router.back();
-            }
-          }}
-        >
+        <Form>
           <FieldGroup>
             <Field $size="half">
               <Label htmlFor="name">{t("form.label.name", "Name")}</Label>
@@ -99,7 +98,11 @@ const StateStepsUpdateForm = () => {
             <FormMessage>{viewModel.submitError}</FormMessage>
           )}
           <FormAction>
-            <SaveButton type="submit" disabled={viewModel.isSubmitting}>
+            <SaveButton
+              type="button"
+              disabled={viewModel.isSubmitting}
+              onClick={onSubmit}
+            >
               {viewModel.isSubmitting ? (
                 <Spinner />
               ) : (

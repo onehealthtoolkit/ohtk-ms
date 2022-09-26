@@ -17,7 +17,7 @@ import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import useStore from "lib/store";
 import { Observer } from "mobx-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ProfileInfoUpdate from "components/admin/profile/updateInfo";
 import LanguageSelect from "components/auth/languageSelect";
@@ -32,6 +32,13 @@ const ProfileUpdate = () => {
       services.profileService
     ).registerDialog("resultAlert")
   );
+
+  const onSubmit = useCallback(async () => {
+    const success = await viewModel.changePassword();
+    if (success) {
+      viewModel.dialog("resultAlert")?.open(null);
+    }
+  }, [viewModel]);
 
   return (
     <Observer>
@@ -95,15 +102,7 @@ const ProfileUpdate = () => {
             <LanguageSelect />
           </FieldGroup>
           <ProfileInfoUpdate />
-          <Form
-            onSubmit={async evt => {
-              evt.preventDefault();
-              const success = await viewModel.changePassword();
-              if (success) {
-                viewModel.dialog("resultAlert")?.open(null);
-              }
-            }}
-          >
+          <Form>
             <FieldGroup>
               <Field $size="half">
                 <label className="block border-b border-gray-400 text-gray-600 font-bold my-6 py-2">
@@ -151,7 +150,11 @@ const ProfileUpdate = () => {
               <FormMessage>{viewModel.submitError}</FormMessage>
             )}
             <FormAction className="-mt-24">
-              <SaveButton type="submit" disabled={viewModel.isSubmitting}>
+              <SaveButton
+                type="button"
+                disabled={viewModel.isSubmitting}
+                onClick={onSubmit}
+              >
                 {viewModel.isSubmitting ? (
                   <Spinner />
                 ) : (

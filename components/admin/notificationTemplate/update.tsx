@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Observer, observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { NotificationTemplateUpdateViewModel } from "./updateViewModel";
@@ -257,16 +257,15 @@ const NotificationTemplateUpdate = () => {
     [t, viewModel]
   );
 
+  const onSubmit = useCallback(async () => {
+    if (await viewModel.save()) {
+      router.back();
+    }
+  }, [router, viewModel]);
+
   return (
     <MaskingLoader loading={viewModel.isLoading}>
-      <Form
-        onSubmit={async evt => {
-          evt.preventDefault();
-          if (await viewModel.save()) {
-            router.back();
-          }
-        }}
-      >
+      <Form>
         <FieldGroup>
           <>
             {nameField}
@@ -283,7 +282,11 @@ const NotificationTemplateUpdate = () => {
           <FormMessage>{viewModel.submitError}</FormMessage>
         )}
         <FormAction>
-          <SaveButton type="submit" disabled={viewModel.isSubmitting}>
+          <SaveButton
+            type="button"
+            disabled={viewModel.isSubmitting}
+            onClick={onSubmit}
+          >
             {viewModel.isSubmitting ? (
               <Spinner />
             ) : (

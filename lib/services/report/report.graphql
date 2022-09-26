@@ -71,6 +71,7 @@ query GetReport($id: ID!) {
       id
       file
       thumbnail
+      imageUrl
     }
     reportedBy {
       firstName

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { observer } from "mobx-react";
 import {
   ErrorText,
@@ -37,26 +37,26 @@ const ProfileInfoUpdate = () => {
       );
   }, [services.profileService, me]);
 
-  if (!viewModel) {
+
+  const onSubmit = useCallback(async () => {
+    if (await viewModel.save()) {
+      viewModel.me.firstName = viewModel.firstName;
+      viewModel.me.lastName = viewModel.lastName;
+      viewModel.me.telephone = viewModel.telephone;
+      viewModel.dialog("resultAlert")?.open(null);
+    }
+  }, [me, viewModel]);
+
+  if (!viewModel || !me) {
     return <Spinner />;
   }
+
   const errors = viewModel.fieldErrors;
 
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <>
-        <Form
-          className="-mt-12"
-          onSubmit={async evt => {
-            evt.preventDefault();
-            if (await viewModel.save()) {
-              viewModel.me.firstName = viewModel.firstName;
-              viewModel.me.lastName = viewModel.lastName;
-              viewModel.me.telephone = viewModel.telephone;
-              viewModel.dialog("resultAlert")?.open(null);
-            }
-          }}
-        >
+        <Form className="-mt-12">
           <FieldGroup>
             <Field $size="half">
               <label className="block border-b border-gray-400 text-gray-600 font-bold my-6 py-2">
@@ -113,7 +113,11 @@ const ProfileInfoUpdate = () => {
             <FormMessage>{viewModel.submitError}</FormMessage>
           )}
           <FormAction className="-mt-16">
-            <SaveButton type="submit" disabled={viewModel.isSubmitting}>
+            <SaveButton
+              type="button"
+              disabled={viewModel.isSubmitting}
+              onClick={onSubmit}
+            >
               {viewModel.isSubmitting ? (
                 <Spinner />
               ) : (
