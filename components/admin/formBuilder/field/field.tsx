@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { PhotographIcon, PlusIcon } from "@heroicons/react/solid";
 import {
   DateField,
@@ -15,7 +16,6 @@ import {
 } from "components/admin/formBuilder/field/fieldViewModel";
 import { ConfirmDialog } from "components/admin/formBuilder/shared";
 import { observer } from "mobx-react";
-import Image from "next/image";
 import { FC, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -132,8 +132,8 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
       case "location":
         return (
           <div className="flex flex-col items-stretch w-1/2 mt-2">
-            <Image
-              src="/gmap.jpeg"
+            <img
+              src={"/gmap.jpeg"}
               alt="gmap"
               width="100%"
               height="100"
