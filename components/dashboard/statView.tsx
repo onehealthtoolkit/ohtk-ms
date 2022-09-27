@@ -24,6 +24,7 @@ const StatView: React.FC<StatViewProps> = ({ authorityId, filter }) => {
   );
 
   useEffect(() => {
+    console.log("useEffect");
     if (authorityId) viewModel.setSearchValue(authorityId, filter);
   }, [viewModel, authorityId, filter]);
 

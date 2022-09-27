@@ -28,17 +28,22 @@ export class CaseTableViewModel extends BaseViewModel {
 
   async fetch() {
     this.isLoading = true;
-    const result = await this.caseService.fetchCases(this.limit, this.offset, {
-      fromDate: this.fromDate,
-      throughDate: this.toDate,
-      authorities: [
-        {
-          id: this.authorityId.toString(),
-          code: "",
-          name: "",
-        },
-      ],
-    });
+    const result = await this.caseService.fetchCases(
+      this.limit,
+      this.offset,
+      {
+        fromDate: this.fromDate,
+        throughDate: this.toDate,
+        authorities: [
+          {
+            id: this.authorityId.toString(),
+            code: "",
+            name: "",
+          },
+        ],
+      },
+      true
+    );
     runInAction(() => {
       this.data = result.items || [];
       this.totalCount = result.totalCount || 0;

@@ -5,48 +5,60 @@ import DatePicker from "components/widgets/datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import DashboardViewModel from "./dashboardViewModel";
 import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/solid";
+import { ChevronDownIcon, RefreshIcon } from "@heroicons/react/solid";
 import AuthorityFilter from "./authorityFilter";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import Filter from "components/widgets/filter";
 
 type DashboardFilterProp = {
   viewModel: DashboardViewModel;
+  onRefresh: () => void;
 };
 
-const DashboardFilter: React.FC<DashboardFilterProp> = ({ viewModel }) => {
+const DashboardFilter: React.FC<DashboardFilterProp> = ({
+  viewModel,
+  onRefresh,
+}) => {
+  const [authorityId, setAuthorityId] = useState<number>(viewModel.authorityId);
+  const [authorityName, setAuthorityName] = useState<string>(
+    viewModel.authorityName
+  );
+  const [fromDate, setFromDate] = useState<Date | undefined>(
+    viewModel.fromDate
+  );
+  const [toDate, setToDate] = useState<Date | undefined>(viewModel.toDate);
   const [periodText, setPeriodText] = useState<String>();
   const { setUrl, resetUrl } = useUrlParams();
 
   const setThisWeek = () => {
     const curr = new Date();
     const first = curr.getDate() - curr.getDay();
-    viewModel.fromDate = new Date(curr.setDate(first));
-    viewModel.toDate = new Date();
+    setFromDate(new Date(curr.setDate(first)));
+    setToDate(new Date());
     setPeriodText("This week");
   };
 
   const setThisMonth = () => {
     const curr = new Date();
-    viewModel.fromDate = new Date(curr.setDate(1));
-    viewModel.toDate = new Date();
+    setFromDate(new Date(curr.setDate(1)));
+    setToDate(new Date());
     setPeriodText("This month");
   };
 
   const setThisYear = () => {
     const curr = new Date();
     curr.setMonth(0);
-    viewModel.fromDate = new Date(curr.setDate(1));
-    viewModel.toDate = new Date();
+    setFromDate(new Date(curr.setDate(1)));
+    setToDate(new Date());
     setPeriodText("This year");
   };
 
   const applySearch = () => {
     setUrl({
-      authorityId: viewModel.authorityId,
-      authorityName: viewModel.authorityName,
-      fromDate: viewModel.fromDate?.toISOString(),
-      toDate: viewModel.toDate?.toISOString(),
+      authorityId: authorityId,
+      authorityName: authorityName,
+      fromDate: fromDate?.toISOString(),
+      toDate: toDate?.toISOString(),
     });
   };
 
@@ -123,19 +135,28 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({ viewModel }) => {
         <Label htmlFor="fromDate">From Date</Label>
         <DatePicker
           id="fromDate"
-          selected={viewModel.fromDate}
-          onChange={(date: Date) => (viewModel.fromDate = date)}
+          selected={fromDate}
+          onChange={(date: Date) => setFromDate(date)}
         />
       </Field>
       <Field $size="full">
         <Label htmlFor="toDate">To Date</Label>
         <DatePicker
           id="toDate"
-          selected={viewModel.toDate}
-          onChange={(date: Date) => (viewModel.toDate = date)}
+          selected={toDate}
+          onChange={(date: Date) => setToDate(date)}
         />
       </Field>
-      <AuthorityFilter viewModel={viewModel} />
+      <AuthorityFilter
+        value={{
+          id: viewModel.authorityId.toString(),
+          name: viewModel.authorityName,
+        }}
+        onChange={value => {
+          setAuthorityId(parseInt(value.id));
+          setAuthorityName(value.name);
+        }}
+      />
     </>
   );
 
@@ -146,12 +167,21 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({ viewModel }) => {
           className={`inline-flex bg-white justify-center  rounded-2xl border-gray-200  border-2 px-4 py-2 text-xl font-medium  hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
         >
           {viewModel.authorityName}
+          <button
+            type="button"
+            className="text-blue-400  hover:text-blue-700 focus:outline-none font-medium rounded-full text-sm p-1.5 text-center inline-flex items-center"
+            onClick={() => onRefresh()}
+          >
+            <RefreshIcon className="h-5 w-5" aria-hidden="true" />
+          </button>
         </div>
       </div>
       <div className="px-4">
         <Filter
           onSearch={applySearch}
           onReset={() => {
+            setFromDate(undefined);
+            setToDate(undefined);
             resetUrl();
           }}
           popPositionClass="right-0"

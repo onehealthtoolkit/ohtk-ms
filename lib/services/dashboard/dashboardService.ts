@@ -41,6 +41,7 @@ export class DashboardService implements IDashboardService {
       variables: {
         authorityId,
       },
+      fetchPolicy: "network-only",
     });
 
     const data: EventData = {
@@ -98,6 +99,7 @@ export class DashboardService implements IDashboardService {
       variables: {
         authorityId,
       },
+      fetchPolicy: "network-only",
     });
 
     const data: StatData = {
@@ -128,6 +130,7 @@ export class DashboardService implements IDashboardService {
         fromDate,
         toDate,
       },
+      fetchPolicy: "network-only",
     });
 
     const items: SummaryByCategoryData[] = [];
@@ -155,6 +158,7 @@ export class DashboardService implements IDashboardService {
         fromDate,
         toDate,
       },
+      fetchPolicy: "network-only",
     });
 
     const items: SummaryByCategoryData[] = [];

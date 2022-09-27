@@ -1,8 +1,12 @@
+import { IDashboardService } from "lib/services/dashboard/dashboardService";
 import { computed, makeObservable, observable, runInAction } from "mobx";
 
 export type DashBoardFilterData = {
+  authorityId: number;
+  authorityName: string;
   fromDate?: Date;
   toDate?: Date;
+  refresh: number;
 };
 
 export default class DashboardViewModel {
@@ -12,7 +16,7 @@ export default class DashboardViewModel {
   _fromDate: Date | undefined = undefined;
   _toDate: Date | undefined = undefined;
 
-  constructor() {
+  constructor(readonly dashboardService: IDashboardService) {
     makeObservable(this, {
       _authorityId: observable,
       authorityId: computed,

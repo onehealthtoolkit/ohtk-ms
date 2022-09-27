@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import DashboardViewModel from "./dashboardViewModel";
 import Select from "react-select";
 import useServices from "lib/services/provider";
 import useStore from "lib/store";
 
 type AuthorityFilterProps = {
-  viewModel: DashboardViewModel;
+  value: AuthorityOption;
+  onChange: (value: AuthorityOption) => void;
 };
 
 type AuthorityOption = {
@@ -13,7 +13,10 @@ type AuthorityOption = {
   name: string;
 };
 
-const AuthroityFilter: React.FC<AuthorityFilterProps> = ({ viewModel }) => {
+const AuthroityFilter: React.FC<AuthorityFilterProps> = ({
+  value,
+  onChange,
+}) => {
   const services = useServices();
   const store = useStore();
   const [authorities, setAuthorities] = useState<AuthorityOption[]>();
@@ -39,10 +42,7 @@ const AuthroityFilter: React.FC<AuthorityFilterProps> = ({ viewModel }) => {
 
   return (
     <Select<AuthorityOption>
-      value={{
-        id: viewModel.authorityId.toString(),
-        name: viewModel.authorityName,
-      }}
+      defaultValue={value}
       isMulti={false}
       options={authorities}
       getOptionValue={item => item.id}
@@ -62,8 +62,7 @@ const AuthroityFilter: React.FC<AuthorityFilterProps> = ({ viewModel }) => {
       }}
       onChange={value => {
         if (value) {
-          viewModel.authorityId = parseInt(value.id);
-          viewModel.authorityName = value.name;
+          onChange(value);
         }
       }}
     />

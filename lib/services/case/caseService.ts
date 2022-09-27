@@ -34,7 +34,8 @@ export interface ICaseService extends IService {
   fetchCases(
     limit: number,
     offset: number,
-    filter: CaseFilterData
+    filter: CaseFilterData,
+    force?: boolean
   ): Promise<QueryResult<Case[]>>;
 
   promoteToCase(reportId: string): Promise<String>;
@@ -66,7 +67,12 @@ export class CaseService implements ICaseService {
     this.client = client;
   }
 
-  async fetchCases(limit: number, offset: number, filter: CaseFilterData) {
+  async fetchCases(
+    limit: number,
+    offset: number,
+    filter: CaseFilterData,
+    force?: boolean
+  ) {
     this.fetchCasesQuery = {
       ...this.fetchCasesQuery,
       authorities: filter.authorities?.map(a => a.id),
@@ -79,6 +85,7 @@ export class CaseService implements ICaseService {
     const fetchResult = await this.client.query({
       query: CasesDocument,
       variables: this.fetchCasesQuery,
+      fetchPolicy: force ? "network-only" : "cache-first",
     });
 
     const items = Array<Case>();
