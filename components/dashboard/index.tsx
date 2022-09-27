@@ -14,7 +14,6 @@ import { useRouter } from "next/router";
 import DashboardFilter from "./filter";
 import SummaryByCategoryPieView from "./summaryByCategoryPieView";
 import Spinner from "components/widgets/spinner";
-import useServices from "lib/services/provider";
 
 export const MapView = dynamic(() => import("./mapView"), {
   loading: () => <p>A map is loading</p>,
@@ -34,14 +33,11 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
 
 const Dashboard: React.FC = () => {
   const { query } = useUrlParams();
-  const services = useServices();
   const router = useRouter();
   const store = useStore();
   const [filterData, setFilterData] = useState<DashBoardFilterData>();
   const [viewModel] = useState<DashboardViewModel>(() => {
-    const dashboardViewModel = new DashboardViewModel(
-      services.dashboardService
-    );
+    const dashboardViewModel = new DashboardViewModel();
     return dashboardViewModel;
   });
 
