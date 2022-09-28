@@ -17,7 +17,8 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   _followupDefinition: string = "{}";
   _rendererFollowupDataTemplate: string = "";
 
-  formViewModel = new FormViewModel();
+  definitionFormViewModel = new FormViewModel();
+  followupDefinitionFormViewModel = new FormViewModel();
 
   constructor(reportTypeService: IReportTypeService) {
     super();
@@ -40,7 +41,8 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
       rendererFollowupDataTemplate: computed,
       save: action,
       validate: action,
-      formViewModel: observable,
+      definitionFormViewModel: observable,
+      followupDefinitionFormViewModel: observable,
       parseDefinition: action,
     });
     this.reportTypeService = reportTypeService;
@@ -76,8 +78,8 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
 
   public parseDefinition(value: string): boolean {
     try {
-      this.formViewModel.parse(JSON.parse(value));
-      this.definition = this.formViewModel.jsonString;
+      this.definitionFormViewModel.parse(JSON.parse(value));
+      this.definition = this.definitionFormViewModel.jsonString;
       return true;
     } catch (e) {
       if (e instanceof ParseError) {
@@ -99,8 +101,8 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
 
   public parseFollowupDefinition(value: string): boolean {
     try {
-      this.formViewModel.parse(JSON.parse(value));
-      this.followupDefinition = this.formViewModel.jsonString;
+      this.followupDefinitionFormViewModel.parse(JSON.parse(value));
+      this.followupDefinition = this.followupDefinitionFormViewModel.jsonString;
       return true;
     } catch (e) {
       if (e instanceof ParseError) {

@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { observer } from "mobx-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Observer, observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { ReportTypeCreateViewModel } from "./createViewModel";
 import {
@@ -23,17 +23,17 @@ import FormBuilder from "components/admin/formBuilder";
 import useStateDefinitions from "lib/hooks/stateDefinitions";
 import { useTranslation } from "react-i18next";
 import FormBuilderDialog from "components/admin/reportType/formBuilderDialog";
+import DataTemplateField from "components/admin/reportType/dataTemplateField";
 
 const ReportTypeCreate = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(() =>
-    new ReportTypeCreateViewModel(services.reportTypeService).registerDialog(
-      "formBuilder"
-    )
+    new ReportTypeCreateViewModel(services.reportTypeService)
+      .registerDialog("definitionFormBuilder")
+      .registerDialog("followupDefinitionFormBuilder")
   );
-  const [selectedDefinition, setSelectedDefinition] = useState("");
 
   const isSubmitting = viewModel.isSubmitting;
   const errors = viewModel.fieldErrors;
@@ -58,6 +58,60 @@ const ReportTypeCreate = () => {
       router.back();
     }
   }, [router, viewModel]);
+
+  const rendererDataTemplateField = useMemo(
+    () => (
+      <Observer>
+        {() => (
+          <Field $size="half">
+            <Label htmlFor="name">Description Template</Label>
+            <DataTemplateField
+              placeholder={t(
+                "form.placeholder.descriptionTemplate",
+                "Description Template"
+              )}
+              value={viewModel.rendererDataTemplate}
+              onChange={value => (viewModel.rendererDataTemplate = value)}
+              variableList={viewModel.definitionFormViewModel.variableList}
+            />
+            <ErrorText>{viewModel.fieldErrors.rendererDataTemplate}</ErrorText>
+          </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const rendererFollowupDataTemplateField = useMemo(
+    () => (
+      <Observer>
+        {() => (
+          <Field $size="half">
+            <Label htmlFor="rendererFollowupDataTemplate">
+              Follow Up Description Template
+            </Label>
+            <DataTemplateField
+              placeholder={t(
+                "form.label.descriptionFollowupTemplate",
+                "Follow Up Description Template"
+              )}
+              value={viewModel.rendererFollowupDataTemplate}
+              onChange={value =>
+                (viewModel.rendererFollowupDataTemplate = value)
+              }
+              variableList={
+                viewModel.followupDefinitionFormViewModel.variableList
+              }
+            />
+            <ErrorText>
+              {viewModel.fieldErrors.rendererFollowupDataTemplate}
+            </ErrorText>
+          </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
 
   return (
     <>
@@ -118,7 +172,7 @@ const ReportTypeCreate = () => {
                   e.preventDefault();
                   const valid = viewModel.parseDefinition(viewModel.definition);
                   if (valid) {
-                    viewModel.dialog("formBuilder")?.open(null);
+                    viewModel.dialog("definitionFormBuilder")?.open(null);
                   }
                 }}
                 className="border
@@ -156,12 +210,13 @@ const ReportTypeCreate = () => {
                 type="button"
                 onClick={e => {
                   e.preventDefault();
-                  setSelectedDefinition("followupDefinition");
                   const valid = viewModel.parseFollowupDefinition(
                     viewModel.followupDefinition
                   );
                   if (valid) {
-                    viewModel.dialog("formBuilder")?.open(null);
+                    viewModel
+                      .dialog("followupDefinitionFormBuilder")
+                      ?.open(null);
                   }
                 }}
                 className="border
@@ -192,39 +247,8 @@ const ReportTypeCreate = () => {
             />
             <ErrorText>{viewModel.fieldErrors.followupDefinition}</ErrorText>
           </Field>
-          <Field $size="half">
-            <Label htmlFor="name">Description Template</Label>
-            <TextArea
-              id="rendererDataTemplate"
-              placeholder="description template"
-              rows={5}
-              onChange={evt =>
-                (viewModel.rendererDataTemplate = evt.target.value)
-              }
-              disabled={viewModel.isSubmitting}
-              value={viewModel.rendererDataTemplate}
-            />
-            <ErrorText>{viewModel.fieldErrors.rendererDataTemplate}</ErrorText>
-          </Field>
-          <Field $size="half">
-            <Label htmlFor="rendererFollowupDataTemplate">
-              Follow Up Description Template
-            </Label>
-            <TextArea
-              id="rendererFollowupDataTemplate"
-              placeholder="follow up description template"
-              rows={5}
-              onChange={evt =>
-                (viewModel.rendererFollowupDataTemplate = evt.target.value)
-              }
-              disabled={viewModel.isSubmitting}
-              value={viewModel.rendererFollowupDataTemplate}
-            />
-            <ErrorText>
-              {viewModel.fieldErrors.rendererFollowupDataTemplate}
-            </ErrorText>
-          </Field>
-
+          {rendererDataTemplateField}
+          {rendererFollowupDataTemplateField}
           <Field $size="half">
             <Label htmlFor="stateDefinitionId">State definition</Label>
             <Select
@@ -279,14 +303,21 @@ const ReportTypeCreate = () => {
         </FormAction>
       </Form>
       <FormBuilderDialog
-        viewModel={viewModel.dialog("formBuilder")}
+        viewModel={viewModel.dialog("definitionFormBuilder")}
         onClose={() => {
-          if (selectedDefinition == "followupDefinition")
-            viewModel.followupDefinition = viewModel.formViewModel.jsonString;
-          else viewModel.definition = viewModel.formViewModel.jsonString;
+          viewModel.definition = viewModel.definitionFormViewModel.jsonString;
         }}
       >
-        <FormBuilder viewModel={viewModel.formViewModel} />
+        <FormBuilder viewModel={viewModel.definitionFormViewModel} />
+      </FormBuilderDialog>
+      <FormBuilderDialog
+        viewModel={viewModel.dialog("followupDefinitionFormBuilder")}
+        onClose={() => {
+          viewModel.followupDefinition =
+            viewModel.followupDefinitionFormViewModel.jsonString;
+        }}
+      >
+        <FormBuilder viewModel={viewModel.followupDefinitionFormViewModel} />
       </FormBuilderDialog>
     </>
   );

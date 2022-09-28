@@ -45,6 +45,9 @@
     "react-leaflet": "^4.0.1",
     "react-leaflet-draw": "^0.20.1",
     "react-select": "^5.4.0",
+    "slate": "^0.82.1",
+    "slate-history": "^0.66.0",
+    "slate-react": "^0.83.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

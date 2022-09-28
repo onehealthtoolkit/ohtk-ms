@@ -24,6 +24,7 @@ import FormBuilder from "components/admin/formBuilder";
 import useStateDefinitions from "lib/hooks/stateDefinitions";
 import { useTranslation } from "react-i18next";
 import FormBuilderDialog from "components/admin/reportType/formBuilderDialog";
+import DataTemplateField from "components/admin/reportType/dataTemplateField";
 
 const ReportTypeUpdateForm = () => {
   const router = useRouter();
@@ -33,9 +34,10 @@ const ReportTypeUpdateForm = () => {
     new ReportTypeUpdateViewModel(
       router.query.id as string,
       services.reportTypeService
-    ).registerDialog("formBuilder")
+    )
+      .registerDialog("definitionFormBuilder")
+      .registerDialog("followupDefinitionFormBuilder")
   );
-  const [selectedDefinition, setSelectedDefinition] = useState("");
   const stateDefinitions = useStateDefinitions();
   const [categories, setCategories] = useState<ReportCategory[]>();
 
@@ -118,20 +120,19 @@ const ReportTypeUpdateForm = () => {
                 type="button"
                 onClick={e => {
                   e.preventDefault();
-                  setSelectedDefinition("definition");
                   const valid = viewModel.parseDefinition(viewModel.definition);
                   if (valid) {
-                    viewModel.dialog("formBuilder")?.open(null);
+                    viewModel.dialog("definitionFormBuilder")?.open(null);
                   }
                 }}
                 className="border
-                text-white
-                bg-[#4C81F1] 
-                border-blue-300
-                hover:border-blue-500
-                rounded
-                p-1
-              "
+                  text-white
+                  bg-[#4C81F1] 
+                  border-blue-300
+                  hover:border-blue-500
+                  rounded
+                  p-1
+                "
               >
                 Form builder
               </button>
@@ -169,22 +170,23 @@ const ReportTypeUpdateForm = () => {
                 type="button"
                 onClick={e => {
                   e.preventDefault();
-                  setSelectedDefinition("followupDefinition");
                   const valid = viewModel.parseFollowupDefinition(
                     viewModel.followupDefinition
                   );
                   if (valid) {
-                    viewModel.dialog("formBuilder")?.open(null);
+                    viewModel
+                      .dialog("followupDefinitionFormBuilder")
+                      ?.open(null);
                   }
                 }}
                 className="border
-                text-white
-                bg-[#4C81F1] 
-                border-blue-300
-                hover:border-blue-500
-                rounded
-                p-1
-              "
+                  text-white
+                  bg-[#4C81F1] 
+                  border-blue-300
+                  hover:border-blue-500
+                  rounded
+                  p-1
+                "
               >
                 Form builder
               </button>
@@ -219,18 +221,14 @@ const ReportTypeUpdateForm = () => {
             <Label htmlFor="rendererDataTemplate">
               {t("form.label.descriptionTemplate", "Description Template")}
             </Label>
-            <TextArea
-              id="rendererDataTemplate"
+            <DataTemplateField
               placeholder={t(
                 "form.placeholder.descriptionTemplate",
                 "Description Template"
               )}
-              rows={5}
-              onChange={evt =>
-                (viewModel.rendererDataTemplate = evt.target.value)
-              }
-              disabled={viewModel.isSubmitting}
               value={viewModel.rendererDataTemplate}
+              onChange={value => (viewModel.rendererDataTemplate = value)}
+              variableList={viewModel.definitionFormViewModel.variableList}
             />
             <ErrorText>{viewModel.fieldErrors.rendererDataTemplate}</ErrorText>
           </Field>
@@ -251,18 +249,18 @@ const ReportTypeUpdateForm = () => {
                 "Follow Up Description Template"
               )}
             </Label>
-            <TextArea
-              id="rendererFollowupDataTemplate"
+            <DataTemplateField
               placeholder={t(
-                "form.placeholder.descriptionFollowupTemplate",
+                "form.label.descriptionFollowupTemplate",
                 "Follow Up Description Template"
               )}
-              rows={5}
-              onChange={evt =>
-                (viewModel.rendererFollowupDataTemplate = evt.target.value)
-              }
-              disabled={viewModel.isSubmitting}
               value={viewModel.rendererFollowupDataTemplate}
+              onChange={value =>
+                (viewModel.rendererFollowupDataTemplate = value)
+              }
+              variableList={
+                viewModel.followupDefinitionFormViewModel.variableList
+              }
             />
             <ErrorText>
               {viewModel.fieldErrors.rendererFollowupDataTemplate}
@@ -369,14 +367,21 @@ const ReportTypeUpdateForm = () => {
         </Form>
       </MaskingLoader>
       <FormBuilderDialog
-        viewModel={viewModel.dialog("formBuilder")}
+        viewModel={viewModel.dialog("definitionFormBuilder")}
         onClose={() => {
-          if (selectedDefinition == "followupDefinition")
-            viewModel.followupDefinition = viewModel.formViewModel.jsonString;
-          else viewModel.definition = viewModel.formViewModel.jsonString;
+          viewModel.definition = viewModel.definitionFormViewModel.jsonString;
         }}
       >
-        <FormBuilder viewModel={viewModel.formViewModel} />
+        <FormBuilder viewModel={viewModel.definitionFormViewModel} />
+      </FormBuilderDialog>
+      <FormBuilderDialog
+        viewModel={viewModel.dialog("followupDefinitionFormBuilder")}
+        onClose={() => {
+          viewModel.followupDefinition =
+            viewModel.followupDefinitionFormViewModel.jsonString;
+        }}
+      >
+        <FormBuilder viewModel={viewModel.followupDefinitionFormViewModel} />
       </FormBuilderDialog>
     </>
   );
