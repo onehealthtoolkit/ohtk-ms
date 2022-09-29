@@ -4605,6 +4605,15 @@ export type GetUserQuery = {
   } | null;
 };
 
+export type LoginQrTokenQueryVariables = Exact<{
+  userId: Scalars["ID"];
+}>;
+
+export type LoginQrTokenQuery = {
+  __typename?: "Query";
+  getLoginQrToken?: { __typename?: "LoginQrTokenType"; token: string } | null;
+};
+
 export const DeleteTokenCookieDocument = {
   kind: "Document",
   definitions: [
@@ -15936,3 +15945,51 @@ export const GetUserDocument = {
     },
   ],
 } as unknown as DocumentNode<GetUserQuery, GetUserQueryVariables>;
+export const LoginQrTokenDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "LoginQrToken" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "userId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getLoginQrToken" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "userId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "userId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "token" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<LoginQrTokenQuery, LoginQrTokenQueryVariables>;
