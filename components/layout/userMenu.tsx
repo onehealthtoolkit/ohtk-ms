@@ -7,6 +7,7 @@ import { Transition } from "@headlessui/react";
 import { Menu } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const iconClassName = "mr-2 h-5 w-5 text-gray-300";
 
@@ -15,8 +16,11 @@ type UserMenuProps = {
 };
 const UserMenu: React.FC<UserMenuProps> = ({ className }) => {
   const store = useStore();
-  const signOut = () => {
-    store.signOut();
+  const router = useRouter();
+
+  const signOut = async () => {
+    await store.signOut();
+    router.push("/");
   };
 
   if (store.isLogin) {

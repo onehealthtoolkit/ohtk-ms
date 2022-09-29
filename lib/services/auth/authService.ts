@@ -132,5 +132,6 @@ export class AuthService implements IAuthService {
     if (deleteTokenResult.errors) {
       throw new Error(deleteTokenResult.errors.map(o => o.message).join(","));
     }
+    this.client.resetStore();
   }
 }

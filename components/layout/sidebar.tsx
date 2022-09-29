@@ -129,7 +129,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     pathname={pathname}
                     label={t("breadcrumb.authorities", "Authorities")}
                     collapsed={store.menu.collapsed}
-                    display={store.isSuperUser || store.isRoleAdmin}
+                    display={store.isSuperUser}
                     icon={<CubeIcon className={iconClassName} />}
                   />
                   <Menu
