@@ -3,6 +3,7 @@ import { Observer } from "mobx-react";
 import useStore, { Store } from "lib/store";
 import SignIn from "components/auth/signin";
 import Spinner from "components/widgets/spinner";
+import NotAllow from "./notAllow";
 
 type Props = {
   children: React.ReactNode;
@@ -33,6 +34,10 @@ const Protect = ({ children, guard }: Props) => {
           if (!guard(store)) {
             return <div>Not Allow</div>;
           }
+        }
+
+        if (store.me.isReporter) {
+          return <NotAllow />;
         }
 
         return <>{children}</>;

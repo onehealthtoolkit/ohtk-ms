@@ -91,6 +91,7 @@ export class RegisterService implements IRegisterService {
         authorityName: me.authorityName || "",
         avatarUrl: me.avatarUrl || "",
         role: me.role || "",
+        isReporter: me.role === "REP",
         isStaff: me.isStaff || false,
         isSuperUser: me.isSuperuser || false,
         email: me.email || "",

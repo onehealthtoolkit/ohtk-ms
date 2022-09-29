@@ -7,6 +7,7 @@ export type Me = {
   authorityName: string;
   avatarUrl: string;
   role: string;
+  isReporter: boolean;
   isStaff: boolean;
   isSuperUser: boolean;
   email: string;
