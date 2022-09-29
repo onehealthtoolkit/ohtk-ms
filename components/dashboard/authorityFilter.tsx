@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import useServices from "lib/services/provider";
 import useStore from "lib/store";
+import { styledReactSelect } from "components/widgets/styledReactSelect";
 
 type AuthorityFilterProps = {
   value: AuthorityOption;
@@ -48,16 +49,7 @@ const AuthroityFilter: React.FC<AuthorityFilterProps> = ({
       getOptionValue={item => item.id}
       getOptionLabel={item => item.name}
       styles={{
-        indicatorSeparator: () => ({}),
-        control: base => ({
-          ...base,
-          borderWidth: "2px",
-          borderColor: "#BCC8D3",
-          borderRadius: "1rem",
-          boxShadow: "none",
-          fontSize: "1.25rem",
-          fontWeight: 500,
-        }),
+        ...styledReactSelect,
         menu: provided => ({ ...provided, zIndex: 9999 }),
       }}
       onChange={value => {

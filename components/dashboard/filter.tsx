@@ -147,16 +147,19 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
           onChange={(date: Date) => setToDate(date)}
         />
       </Field>
-      <AuthorityFilter
-        value={{
-          id: viewModel.authorityId.toString(),
-          name: viewModel.authorityName,
-        }}
-        onChange={value => {
-          setAuthorityId(parseInt(value.id));
-          setAuthorityName(value.name);
-        }}
-      />
+      <Field $size="full">
+        <Label htmlFor="toDate">Authority</Label>
+        <AuthorityFilter
+          value={{
+            id: viewModel.authorityId.toString(),
+            name: viewModel.authorityName,
+          }}
+          onChange={value => {
+            setAuthorityId(parseInt(value.id));
+            setAuthorityName(value.name);
+          }}
+        />
+      </Field>
     </>
   );
 
