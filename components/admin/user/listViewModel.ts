@@ -51,4 +51,9 @@ export class AdminUserListViewModel extends BaseViewModel {
       this.fetch();
     }
   }
+
+  async getLoginQrcodeToken(userId: string): Promise<string | undefined> {
+    const result = await this.userService.getLoginQrToken(userId);
+    return result.data;
+  }
 }

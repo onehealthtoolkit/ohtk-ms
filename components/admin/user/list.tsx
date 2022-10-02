@@ -17,6 +17,8 @@ import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { useTranslation } from "react-i18next";
 import { AccountsAuthorityUserRoleChoices } from "lib/generated/graphql";
+import { QrcodeIcon } from "@heroicons/react/solid";
+import QrcodeDialog from "components/admin/user/qrcodeDialog";
 
 export const getRoleName = (role: string) => {
   switch (role) {
@@ -48,7 +50,7 @@ const UserList = () => {
 
   const [viewModel] = useState<AdminUserListViewModel>(() => {
     const model = new AdminUserListViewModel(userService);
-    model.registerDialog("confirmDelete");
+    model.registerDialog("confirmDelete").registerDialog("userQrcode");
     return model;
   });
 
@@ -126,6 +128,26 @@ const UserList = () => {
             onEdit={record => router.push(`/admin/users/${record.id}/update`)}
             onView={record => router.push(`/admin/users/${record.id}/view`)}
             onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
+            actions={record => (
+              <>
+                <QrcodeIcon
+                  onClick={async () => {
+                    const qrValue = await viewModel.getLoginQrcodeToken(
+                      record.id
+                    );
+                    viewModel.dialog("userQrcode")?.open({
+                      record,
+                      value: qrValue,
+                    });
+                  }}
+                  className={`cursor-pointer w-5 h-5 mx-auto ${
+                    record.role === AccountsAuthorityUserRoleChoices.Rep
+                      ? "visible"
+                      : "invisible"
+                  }`}
+                />
+              </>
+            )}
           />
           <ErrorDisplay message={viewModel?.errorMessage} />
 
@@ -144,6 +166,16 @@ const UserList = () => {
             content={t("dialog.content.confirmDelete", "Are you sure?")}
             onYes={(record: User) => viewModel.delete(record.id)}
             onNo={() => viewModel.dialog("confirmDelete")?.close()}
+          />
+
+          <QrcodeDialog
+            store={viewModel.dialog("userQrcode")}
+            title={t("qr.login", "User QR code")}
+            content={data => (
+              <p className="py-5">
+                {data ? (data.record as User).username : ""}
+              </p>
+            )}
           />
         </div>
       )}

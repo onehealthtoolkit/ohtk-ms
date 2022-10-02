@@ -8,6 +8,8 @@ import { FormSimulationViewModel } from "components/admin/formBuilder/simulator/
 import { action, computed, makeObservable, observable } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 
+export type FormVariableItem = { label: string; value: string; type: string };
+
 export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   sections = Array<SectionViewModel>();
   currentSection: SectionViewModel | undefined = undefined;
@@ -26,6 +28,7 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
       _isSimulationMode: observable,
       isSimulationMode: computed,
       formSimulation: observable,
+      variableList: computed,
     });
   }
 
@@ -115,5 +118,62 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
     if (isSimulationMode) {
       this.formSimulation = new FormSimulationViewModel(this.jsonString);
     }
+  }
+
+  get variableList(): Array<FormVariableItem> {
+    let vars = Array<FormVariableItem>();
+    // form variables
+    this.sections.forEach(section => {
+      section.questions.forEach(question => {
+        question.fields.forEach(field => {
+          if (field.name) {
+            vars.push({
+              label: field.name,
+              value: "data." + field.name,
+              type: "Form data",
+            });
+          }
+        });
+      });
+    });
+    // fix variables from report
+    vars = vars.concat(
+      {
+        label: "reportDate",
+        value: "report_date",
+        type: "Report",
+      },
+      {
+        label: "incidentDate",
+        value: "incident_date",
+        type: "Report",
+      },
+      {
+        label: "gpsLocation",
+        value: "gps_location",
+        type: "Report",
+      },
+      {
+        label: "reportId",
+        value: "report_id",
+        type: "Report",
+      },
+      {
+        label: "reportTypeId",
+        value: "report_type.id",
+        type: "Report type",
+      },
+      {
+        label: "reportTypeName",
+        value: "report_type.name",
+        type: "Report type",
+      },
+      {
+        label: "reportCategory",
+        value: "report_type.category",
+        type: "Report category",
+      }
+    );
+    return vars;
   }
 }

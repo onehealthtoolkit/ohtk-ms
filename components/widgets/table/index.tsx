@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import { Trans } from "react-i18next";
 
 export const TableHeader = tw.th`
-  px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-[#E0E5EB]
+  px-6 py-3 text-xs font-medium leading-4 tracking-wider text-center text-gray-500 uppercase border-b border-gray-200 bg-[#E0E5EB]
 `;
 
 export const TableCell = tw.td`
@@ -52,6 +52,7 @@ interface TableProps<T> {
   onDelete?: (record: T) => void;
   onView?: (record: T) => void;
   viewOnRowClick?: boolean;
+  actions?: (record: T) => string | JSX.Element;
 }
 
 const Table = <T extends ItemWithId | null>({
@@ -61,8 +62,10 @@ const Table = <T extends ItemWithId | null>({
   onDelete,
   onView,
   viewOnRowClick = true,
+  actions,
 }: TableProps<T>) => {
-  const actionVisible = onEdit || (onView && !viewOnRowClick) || onEdit;
+  const actionVisible =
+    onEdit || (onView && !viewOnRowClick) || onEdit || actions;
   return (
     <div className="mb-4 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
       <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
@@ -91,6 +94,7 @@ const Table = <T extends ItemWithId | null>({
                 {actionVisible && (
                   <TableCell>
                     <div className="flex">
+                      {actions && actions(record)}
                       {onEdit && (
                         <EditAction
                           onClick={() => {

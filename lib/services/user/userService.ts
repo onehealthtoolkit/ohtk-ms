@@ -6,6 +6,7 @@ import {
   GetUserDocument,
   UsersQueryVariables,
   UserDeleteDocument,
+  LoginQrTokenDocument,
 } from "lib/generated/graphql";
 import { User } from "lib/services/user/user";
 import {
@@ -48,6 +49,8 @@ export interface IUserService extends IService {
   ): Promise<SaveResult<User>>;
 
   deleteUser(id: string): Promise<DeleteResult>;
+
+  getLoginQrToken(userId: string): Promise<GetResult<string>>;
 }
 
 export class UserService implements IUserService {
@@ -304,5 +307,20 @@ export class UserService implements IUserService {
     });
 
     return { error: deleteResult.errors?.map(o => o.message).join(",") };
+  }
+
+  async getLoginQrToken(userId: string) {
+    const getResult = await this.client.query({
+      query: LoginQrTokenDocument,
+      variables: {
+        userId,
+      },
+    });
+
+    const result = getResult.data.getLoginQrToken;
+    return {
+      data: result?.token,
+      error: getResult.errors?.map(o => o.message).join(","),
+    };
   }
 }

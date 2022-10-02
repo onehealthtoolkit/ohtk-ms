@@ -166,5 +166,8 @@
     "October",
     "November",
     "December"
-  ]
+  ],
+  "qr": {
+    "login": "Login QR Code"
+  }
 }

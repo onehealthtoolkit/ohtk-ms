@@ -122,3 +122,9 @@ query GetUser($id: ID!) {
     }
   }
 }
+
+query LoginQrToken($userId: ID!) {
+  getLoginQrToken(userId: $userId) {
+    token
+  }
+}
