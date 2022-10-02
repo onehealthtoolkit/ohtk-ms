@@ -42,7 +42,8 @@ export class ReportTableViewModel extends BaseViewModel {
             name: "",
           },
         ],
-      }
+      },
+      true
     );
     runInAction(() => {
       this.data = result.items || [];

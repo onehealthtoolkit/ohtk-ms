@@ -1,8 +1,11 @@
 import { computed, makeObservable, observable, runInAction } from "mobx";
 
 export type DashBoardFilterData = {
+  authorityId: number;
+  authorityName: string;
   fromDate?: Date;
   toDate?: Date;
+  refresh: number;
 };
 
 export default class DashboardViewModel {
