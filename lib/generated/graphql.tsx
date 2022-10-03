@@ -254,6 +254,11 @@ export type AdminAuthorityUserUpdateMutation = {
   result?: Maybe<AdminAuthorityUserUpdateResult>;
 };
 
+export type AdminAuthorityUserUpdatePasswordMutation = {
+  __typename?: "AdminAuthorityUserUpdatePasswordMutation";
+  result?: Maybe<AdminAuthorityUserUpdateResult>;
+};
+
 export type AdminAuthorityUserUpdateProblem = {
   __typename?: "AdminAuthorityUserUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
@@ -1255,6 +1260,7 @@ export type Mutation = {
   adminAuthorityUserCreate?: Maybe<AdminAuthorityUserCreateMutation>;
   adminAuthorityUserDelete?: Maybe<AdminAuthorityUserDeleteMutation>;
   adminAuthorityUserUpdate?: Maybe<AdminAuthorityUserUpdateMutation>;
+  adminAuthorityUserUpdatePassword?: Maybe<AdminAuthorityUserUpdatePasswordMutation>;
   adminCaseDefinitionCreate?: Maybe<AdminCaseDefinitionCreateMutation>;
   adminCaseDefinitionDelete?: Maybe<AdminCaseDefinitionDeleteMutation>;
   adminCaseDefinitionUpdate?: Maybe<AdminCaseDefinitionUpdateMutation>;
@@ -1356,6 +1362,11 @@ export type MutationAdminAuthorityUserUpdateArgs = {
   role?: InputMaybe<Scalars["String"]>;
   telephone?: InputMaybe<Scalars["String"]>;
   username: Scalars["String"];
+};
+
+export type MutationAdminAuthorityUserUpdatePasswordArgs = {
+  id: Scalars["ID"];
+  password: Scalars["String"];
 };
 
 export type MutationAdminCaseDefinitionCreateArgs = {
@@ -4568,6 +4579,37 @@ export type UserUpdateMutation = {
               __typename?: "AdminAuthorityCreateSuccess";
               id: string;
             };
+          } | null;
+        }
+      | null;
+  } | null;
+};
+
+export type UserUpdatePasswordMutationVariables = Exact<{
+  id: Scalars["ID"];
+  password: Scalars["String"];
+}>;
+
+export type UserUpdatePasswordMutation = {
+  __typename?: "Mutation";
+  adminAuthorityUserUpdatePassword?: {
+    __typename?: "AdminAuthorityUserUpdatePasswordMutation";
+    result?:
+      | {
+          __typename: "AdminAuthorityUserUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminAuthorityUserUpdateSuccess";
+          authorityUser?: {
+            __typename?: "AuthorityUserType";
+            id: string;
+            username: string;
           } | null;
         }
       | null;
@@ -15839,6 +15881,156 @@ export const UserUpdateDocument = {
     },
   ],
 } as unknown as DocumentNode<UserUpdateMutation, UserUpdateMutationVariables>;
+export const UserUpdatePasswordDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UserUpdatePassword" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "password" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAuthorityUserUpdatePassword" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "password" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "password" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminAuthorityUserUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "authorityUser" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "username" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminAuthorityUserUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UserUpdatePasswordMutation,
+  UserUpdatePasswordMutationVariables
+>;
 export const UserDeleteDocument = {
   kind: "Document",
   definitions: [

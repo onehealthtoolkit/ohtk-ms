@@ -17,6 +17,7 @@
     "profile": "Profile",
     "create": "Create",
     "update": "Update",
+    "updatePassword": "Update password",
     "view": "View"
   },
   "filter": {

@@ -102,6 +102,27 @@ mutation UserUpdate(
   }
 }
 
+mutation UserUpdatePassword($id: ID!, $password: String!) {
+  adminAuthorityUserUpdatePassword(id: $id, password: $password) {
+    result {
+      __typename
+      ... on AdminAuthorityUserUpdateSuccess {
+        authorityUser {
+          id
+          username
+        }
+      }
+      ... on AdminAuthorityUserUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
 mutation UserDelete($id: ID!) {
   adminAuthorityUserDelete(id: $id) {
     success
