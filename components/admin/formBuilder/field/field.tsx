@@ -15,6 +15,7 @@ import {
   TFieldValueType,
 } from "components/admin/formBuilder/field/fieldViewModel";
 import { ConfirmDialog } from "components/admin/formBuilder/shared";
+import TagInputField from "components/widgets/forms/tagInputField";
 import { observer } from "mobx-react";
 import { FC, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -262,6 +263,13 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
             onClick={() => field.setIsNameEditing(true)}
           />
         )}
+      </div>
+      <div className="mt-1">
+        <h4 className="text-sm text-gray-600">Tags</h4>
+        <TagInputField
+          value={field.tags}
+          onValueChange={value => (field.tags = value)}
+        />
       </div>
       {renderEditingFieldTypeComponent(field.fieldType)}
       <ConfirmDialog

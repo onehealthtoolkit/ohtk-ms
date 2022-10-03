@@ -60,6 +60,7 @@ export class FieldViewModel extends BaseViewModel {
   isAdvanceOn = false;
   _extension: unknown = undefined;
   _condition: OperatorViewModel = new ComparableOperatorViewModel("=", "", "");
+  _tags = "";
 
   constructor(id: string, label: string, type: TFieldValueType = "text") {
     super(id, label);
@@ -80,6 +81,8 @@ export class FieldViewModel extends BaseViewModel {
       fieldTypeName: computed,
       _condition: observable,
       condition: computed,
+      _tags: observable,
+      tags: computed,
     });
     this.fieldType = type;
     this.name = "";
@@ -154,6 +157,17 @@ export class FieldViewModel extends BaseViewModel {
     this.name = name;
   }
 
+  get tags(): string[] {
+    if (!this._tags) {
+      return [];
+    }
+    return this._tags.split(",");
+  }
+
+  set tags(value: string[]) {
+    this._tags = value.join(",");
+  }
+
   setCurrent() {
     this.isCurrent = true;
   }
@@ -178,6 +192,12 @@ export class FieldViewModel extends BaseViewModel {
         this.label = definition.label as string;
       } else {
         this.label = "Field";
+      }
+
+      if (definition.tags !== undefined) {
+        this._tags = definition.tags as string;
+      } else {
+        this._tags = "";
       }
 
       if (definition.name !== undefined && definition.type !== undefined) {
@@ -235,6 +255,10 @@ export class FieldViewModel extends BaseViewModel {
       type: this.fieldType,
       required: this.isRequired,
     };
+
+    if (this._tags) {
+      json.tags = this._tags;
+    }
 
     let ext = {};
     if (FIELD_TYPES.indexOf(this.fieldType) > -1) {
