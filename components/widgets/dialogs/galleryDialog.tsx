@@ -19,33 +19,37 @@ const GalleryDialog: React.FC<GalleryDialogProps> = ({ viewModel }) => {
       widthClassName="w-[96vw]"
       renderContent={() => (
         <div className="flex flex-col items-center h-full">
-          <div className="flex-grow relative w-full flex items-center justify-center">
+          {viewModel.hasMultipleItems && (
+            <>
+              <button
+                className="rounded-full bg-black hover:bg-slate-400 text-white p-2 
+                  absolute left-4 top-1/2 -translate-y-16
+                "
+                onClick={() => viewModel.previous()}
+              >
+                <ArrowLeftIcon className="w-5 h-5" />
+              </button>
+              <button
+                className="rounded-full bg-black hover:bg-slate-400 text-white p-2 
+                  absolute right-4 top-1/2 -translate-y-16
+                "
+                onClick={() => viewModel.next()}
+              >
+                <ArrowRightIcon className="w-5 h-5" />
+              </button>
+            </>
+          )}
+          <div className="flex-grow h-[calc(100%-6rem)]">
             {viewModel.currentImage ? (
-              <>
-                {viewModel.hasMultipleItems && (
-                  <>
-                    <button
-                      className="rounded-full bg-black hover:bg-slate-400 text-white p-2 absolute left-0 top-1/2"
-                      onClick={() => viewModel.previous()}
-                    >
-                      <ArrowLeftIcon className="w-5 h-5" />
-                    </button>
-                    <button
-                      className="rounded-full bg-black hover:bg-slate-400 text-white p-2 absolute right-0 top-1/2"
-                      onClick={() => viewModel.next()}
-                    >
-                      <ArrowRightIcon className="w-5 h-5" />
-                    </button>
-                  </>
-                )}
-                <img
-                  src={viewModel.currentImage.imageUrl}
-                  className="h-full object-contain"
-                  alt={viewModel.currentImage.imageUrl}
-                />
-              </>
+              <img
+                src={viewModel.currentImage.imageUrl}
+                className="max-h-full w-auto object-contain relative top-1/2 -translate-y-1/2"
+                alt={viewModel.currentImage.imageUrl}
+              />
             ) : (
-              <span>Please select image</span>
+              <span className="relative top-1/2 -translate-y-1/2">
+                Please select image
+              </span>
             )}
           </div>
           {viewModel.hasMultipleItems && (

@@ -116,6 +116,9 @@ const renderItem = (data: Record<string, any>) => {
 
 const displayValue = (value: any) => {
   if (typeof value != "object") {
+    if (value === null || typeof value === "undefined") {
+      return "";
+    }
     const val: string = value.toString();
     // Could be an image url
     if (val.match(/\.(png|jpg|jpeg|gif|tif|bmp)$/i)) {
