@@ -24,6 +24,7 @@ import useStateTransitions from "lib/hooks/stateTransitions";
 import { CasesNotificationTemplateTypeChoices } from "lib/generated/graphql";
 import useReportTypes from "lib/hooks/reportTypes";
 import { useTranslation } from "react-i18next";
+import DataTemplateField from "../reportType/dataTemplateField";
 
 const NotificationTemplateUpdate = () => {
   const router = useRouter();
@@ -240,14 +241,11 @@ const NotificationTemplateUpdate = () => {
             <Label htmlFor="bodyTemplate">
               {t("form.label.bodyTemplate", "Body Template")}
             </Label>
-            <TextArea
-              id="bodyTemplate"
+            <DataTemplateField
               placeholder={t("form.placeholder.bodyTemplate", "Body Template")}
-              rows={5}
-              onChange={evt => (viewModel.bodyTemplate = evt.target.value)}
-              disabled={viewModel.isSubmitting}
-              defaultValue={viewModel.bodyTemplate}
-              required
+              value={viewModel.bodyTemplate}
+              onChange={value => (viewModel.bodyTemplate = value)}
+              variableList={viewModel.variableList}
             />
             <ErrorText>{viewModel.fieldErrors.bodyTemplate}</ErrorText>
           </Field>
