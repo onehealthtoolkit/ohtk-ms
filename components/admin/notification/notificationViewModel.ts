@@ -30,6 +30,7 @@ export class NotificationViewModel extends BaseFormViewModel {
       save: action,
       setValue: action,
       validate: action,
+      delete: action,
     });
     this.notificationService = notificationService;
   }
@@ -98,6 +99,8 @@ export class NotificationViewModel extends BaseFormViewModel {
           if (result.fields) {
             item.fieldErrors = result.fields;
           }
+        } else {
+          item.notificationId = result.data!.id;
         }
       });
       return result.success;
@@ -114,5 +117,18 @@ export class NotificationViewModel extends BaseFormViewModel {
     }
 
     return isValid;
+  }
+
+  async delete(item: Notification): Promise<void> {
+    const result = await this.notificationService.deleteAuthorityNotification(
+      String(item.notificationId),
+      this.reportTypeId
+    );
+    if (result.error) {
+      item.submitError = result.error;
+    } else {
+      item.notificationId = undefined;
+      item.to = undefined;
+    }
   }
 }

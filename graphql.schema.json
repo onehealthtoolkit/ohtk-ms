@@ -574,6 +574,29 @@
       },
       {
         "kind": "OBJECT",
+        "name": "AdminAuthorityNotificationDeleteMutation",
+        "description": null,
+        "fields": [
+          {
+            "name": "success",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "AdminAuthorityNotificationUpsertMutation",
         "description": null,
         "fields": [
@@ -3265,6 +3288,18 @@
         "name": "AdminNotificationTemplateAuthorityType",
         "description": null,
         "fields": [
+          {
+            "name": "notificationId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "notificationTemplateId",
             "description": null,
@@ -9682,6 +9717,35 @@
             "type": {
               "kind": "OBJECT",
               "name": "AdminAuthorityDeleteMutation",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "adminAuthorityNotificationDelete",
+            "description": null,
+            "args": [
+              {
+                "name": "id",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "AdminAuthorityNotificationDeleteMutation",
               "ofType": null
             },
             "isDeprecated": false,

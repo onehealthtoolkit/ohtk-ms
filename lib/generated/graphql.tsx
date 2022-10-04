@@ -120,6 +120,11 @@ export type AdminAuthorityInheritLookupTypeNodeConnection = {
   totalCount?: Maybe<Scalars["Int"]>;
 };
 
+export type AdminAuthorityNotificationDeleteMutation = {
+  __typename?: "AdminAuthorityNotificationDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
 export type AdminAuthorityNotificationUpsertMutation = {
   __typename?: "AdminAuthorityNotificationUpsertMutation";
   result?: Maybe<AdminAuthorityNotificationUpsertResult>;
@@ -492,6 +497,7 @@ export type AdminInvitationCodeUpdateSuccess = {
 
 export type AdminNotificationTemplateAuthorityType = {
   __typename?: "AdminNotificationTemplateAuthorityType";
+  notificationId?: Maybe<Scalars["Int"]>;
   notificationTemplateId: Scalars["ID"];
   notificationTemplateName: Scalars["String"];
   to?: Maybe<Scalars["String"]>;
@@ -1255,6 +1261,7 @@ export type Mutation = {
   __typename?: "Mutation";
   adminAuthorityCreate?: Maybe<AdminAuthorityCreateMutation>;
   adminAuthorityDelete?: Maybe<AdminAuthorityDeleteMutation>;
+  adminAuthorityNotificationDelete?: Maybe<AdminAuthorityNotificationDeleteMutation>;
   adminAuthorityNotificationUpsert?: Maybe<AdminAuthorityNotificationUpsertMutation>;
   adminAuthorityUpdate?: Maybe<AdminAuthorityUpdateMutation>;
   adminAuthorityUserCreate?: Maybe<AdminAuthorityUserCreateMutation>;
@@ -1322,6 +1329,10 @@ export type MutationAdminAuthorityCreateArgs = {
 };
 
 export type MutationAdminAuthorityDeleteArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationAdminAuthorityNotificationDeleteArgs = {
   id: Scalars["ID"];
 };
 
@@ -3230,6 +3241,7 @@ export type NotificationTemplateAuthorityQuery = {
     __typename?: "AdminNotificationTemplateAuthorityType";
     notificationTemplateId: string;
     notificationTemplateName: string;
+    notificationId?: number | null;
     to?: string | null;
   } | null> | null;
 };
@@ -3259,6 +3271,18 @@ export type AuthorityNotificationUpsertMutation = {
           to: string;
         }
       | null;
+  } | null;
+};
+
+export type AuthorityNotificationDeleteMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type AuthorityNotificationDeleteMutation = {
+  __typename?: "Mutation";
+  adminAuthorityNotificationDelete?: {
+    __typename?: "AdminAuthorityNotificationDeleteMutation";
+    success?: boolean | null;
   } | null;
 };
 
@@ -9036,6 +9060,10 @@ export const NotificationTemplateAuthorityDocument = {
                   kind: "Field",
                   name: { kind: "Name", value: "notificationTemplateName" },
                 },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "notificationId" },
+                },
                 { kind: "Field", name: { kind: "Name", value: "to" } },
               ],
             },
@@ -9188,6 +9216,54 @@ export const AuthorityNotificationUpsertDocument = {
 } as unknown as DocumentNode<
   AuthorityNotificationUpsertMutation,
   AuthorityNotificationUpsertMutationVariables
+>;
+export const AuthorityNotificationDeleteDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AuthorityNotificationDelete" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAuthorityNotificationDelete" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AuthorityNotificationDeleteMutation,
+  AuthorityNotificationDeleteMutationVariables
 >;
 export const NotificationTemplatesDocument = {
   kind: "Document",
