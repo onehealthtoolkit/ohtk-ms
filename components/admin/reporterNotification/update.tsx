@@ -21,6 +21,7 @@ import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import useReportTypes from "lib/hooks/reportTypes";
 import { useTranslation } from "react-i18next";
+import DataTemplateField from "../reportType/dataTemplateField";
 
 const ReporterNotificationsUpdateForm = () => {
   const router = useRouter();
@@ -124,14 +125,11 @@ const ReporterNotificationsUpdateForm = () => {
             <Label htmlFor="template">
               {t("form.label.template", "Template")}
             </Label>
-            <TextArea
-              id="template"
+            <DataTemplateField
               placeholder={t("form.placeholder.template", "Template")}
-              rows={5}
-              onChange={evt => (viewModel.template = evt.target.value)}
-              disabled={viewModel.isSubmitting}
-              defaultValue={viewModel.template}
-              required
+              value={viewModel.template}
+              onChange={value => (viewModel.template = value)}
+              variableList={viewModel.variableList}
             />
             <ErrorText>{viewModel.fieldErrors.template}</ErrorText>
           </Field>

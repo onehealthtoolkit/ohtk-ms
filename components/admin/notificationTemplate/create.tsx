@@ -195,7 +195,7 @@ const NotificationTemplateCreate = () => {
           </Label>
           <DataTemplateField
             placeholder={t("form.placeholder.bodyTemplate", "Body Template")}
-            value={viewModel.bodyTemplate}
+            value={null}
             onChange={value => (viewModel.bodyTemplate = value)}
             variableList={viewModel.variableList}
           />
