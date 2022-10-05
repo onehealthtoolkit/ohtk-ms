@@ -46,26 +46,28 @@ const renderDefinitionData = (form: Form, data: Record<string, any>) => {
                     </th>
                   </tr>
                 ) : null}
-                {question.fields.map((field, fidx) => {
-                  return (
-                    <tr
-                      key={`s-${idx}-q-${qidx}-f${fidx}`}
-                      className="bg-white border-b"
-                    >
-                      <th
-                        scope="row"
-                        className="w-1/4 px-6 py-4 font-medium text-gray-900 "
+                {question.fields
+                  .filter(item => item.name != "images")
+                  .map((field, fidx) => {
+                    return (
+                      <tr
+                        key={`s-${idx}-q-${qidx}-f${fidx}`}
+                        className="bg-white border-b"
                       >
-                        {field.name}
-                      </th>
-                      <td className="px-6 py-4">
-                        {question.name
-                          ? displayValue(data[question.name!][field.name])
-                          : displayValue(data[field.name])}
-                      </td>
-                    </tr>
-                  );
-                })}
+                        <th
+                          scope="row"
+                          className="w-1/4 px-6 py-4 font-medium text-gray-900 "
+                        >
+                          {field.name}
+                        </th>
+                        <td className="px-6 py-4">
+                          {question.name
+                            ? displayValue(data[question.name!][field.name])
+                            : displayValue(data[field.name])}
+                        </td>
+                      </tr>
+                    );
+                  })}
               </>
             );
           });
