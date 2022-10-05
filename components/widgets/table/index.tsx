@@ -94,7 +94,6 @@ const Table = <T extends ItemWithId | null>({
                 {actionVisible && (
                   <TableCell>
                     <div className="flex">
-                      {actions && actions(record)}
                       {onEdit && (
                         <EditAction
                           onClick={() => {
@@ -102,6 +101,7 @@ const Table = <T extends ItemWithId | null>({
                           }}
                         />
                       )}
+                      {actions && actions(record)}
                       {!viewOnRowClick && (
                         <ClickAction
                           onClick={() => {

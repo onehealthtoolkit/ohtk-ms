@@ -2,6 +2,7 @@ query NotificationTemplateAuthority($reportTypeId: ID!) {
   adminNotificationTemplateAuthorityQuery(reportTypeId: $reportTypeId) {
     notificationTemplateId
     notificationTemplateName
+    notificationId
     to
   }
 }
@@ -28,5 +29,11 @@ mutation AuthorityNotificationUpsert(
         }
       }
     }
+  }
+}
+
+mutation AuthorityNotificationDelete($id: ID!) {
+  adminAuthorityNotificationDelete(id: $id) {
+    success
   }
 }

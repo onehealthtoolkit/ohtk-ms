@@ -17,6 +17,7 @@
     "profile": "โปรไฟล์",
     "create": "สร้าง",
     "update": "อัพเดท",
+    "updatePassword": "เปลี่ยนรหัสผ่าน",
     "view": "ดู"
   },
   "filter": {

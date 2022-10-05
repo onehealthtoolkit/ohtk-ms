@@ -7,6 +7,7 @@ import {
   UsersQueryVariables,
   UserDeleteDocument,
   LoginQrTokenDocument,
+  UserUpdatePasswordDocument,
 } from "lib/generated/graphql";
 import { User } from "lib/services/user/user";
 import {
@@ -47,6 +48,8 @@ export interface IUserService extends IService {
     telephone: string,
     role: string
   ): Promise<SaveResult<User>>;
+
+  updateUserPassword(id: string, password: string): Promise<SaveResult<User>>;
 
   deleteUser(id: string): Promise<DeleteResult>;
 
@@ -252,6 +255,50 @@ export class UserService implements IUserService {
     }
 
     const result = updateResult.data?.adminAuthorityUserUpdate?.result;
+    switch (result?.__typename) {
+      case "AdminAuthorityUserUpdateSuccess": {
+        console.log("success", result);
+        break;
+      }
+      case "AdminAuthorityUserUpdateProblem": {
+        console.log("problem", result);
+        const fields: any = {};
+        result.fields?.forEach(f => {
+          fields[f.name] = f.message;
+        });
+
+        return {
+          success: false,
+          fields,
+          message: result.message,
+        };
+      }
+    }
+    return {
+      success: true,
+    };
+  }
+
+  async updateUserPassword(
+    id: string,
+    password: string
+  ): Promise<SaveResult<User>> {
+    const updateResult = await this.client.mutate({
+      mutation: UserUpdatePasswordDocument,
+      variables: {
+        id,
+        password,
+      },
+    });
+
+    if (updateResult.errors) {
+      return {
+        success: false,
+        message: updateResult.errors.map(o => o.message).join(","),
+      };
+    }
+
+    const result = updateResult.data?.adminAuthorityUserUpdatePassword?.result;
     switch (result?.__typename) {
       case "AdminAuthorityUserUpdateSuccess": {
         console.log("success", result);

@@ -137,12 +137,20 @@ const NotificationUpsert = () => {
                   key={item.notificationTemplateId}
                   title={item.notificationTemplateName}
                   defaultValue={item.to}
+                  deleteAble={!!item.notificationId}
                   onSave={async value => {
                     viewModel.setValue(item, value);
                     let result = await viewModel.save(item);
                     return {
                       success: result,
                       msg: item.submitError || item.fieldErrors?.to,
+                    };
+                  }}
+                  onDelete={async () => {
+                    await viewModel.delete(item);
+                    return {
+                      success: item.submitError ? false : true,
+                      msg: item.submitError,
                     };
                   }}
                 />

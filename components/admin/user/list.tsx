@@ -17,7 +17,7 @@ import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { useTranslation } from "react-i18next";
 import { AccountsAuthorityUserRoleChoices } from "lib/generated/graphql";
-import { QrcodeIcon } from "@heroicons/react/solid";
+import { KeyIcon, QrcodeIcon } from "@heroicons/react/solid";
 import QrcodeDialog from "components/admin/user/qrcodeDialog";
 
 export const getRoleName = (role: string) => {
@@ -145,6 +145,12 @@ const UserList = () => {
                       ? "visible"
                       : "invisible"
                   }`}
+                />
+                <KeyIcon
+                  onClick={() => {
+                    router.push(`/admin/users/${record.id}/updatePassword`);
+                  }}
+                  className={`cursor-pointer w-5 h-5 mx-auto  text-[#ADC7FF] hover:text-indigo-900`}
                 />
               </>
             )}

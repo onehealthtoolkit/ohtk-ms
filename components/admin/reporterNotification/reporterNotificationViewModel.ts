@@ -5,7 +5,7 @@ import {
 } from "lib/services/reporterNotification";
 import { SaveResult } from "lib/services/interface";
 import { action, computed, makeObservable, observable } from "mobx";
-import { FormViewModel } from "components/admin/formBuilder";
+import { FormVariableItem, FormViewModel } from "components/admin/formBuilder";
 
 export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
   reporterNotificationService: IReporterNotificationService;
@@ -32,6 +32,7 @@ export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
       save: action,
       validate: action,
       formViewModel: observable,
+      variableList: computed,
     });
     this.reporterNotificationService = reporterNotificationService;
   }
@@ -78,6 +79,48 @@ export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
     if (this.submitError.length > 0) {
       this.submitError = "";
     }
+  }
+
+  get variableList(): Array<FormVariableItem> {
+    // fix variables from report
+    let vars = [
+      {
+        label: "reportDate",
+        value: "report_date",
+        type: "Report",
+      },
+      {
+        label: "incidentDate",
+        value: "incident_date",
+        type: "Report",
+      },
+      {
+        label: "gpsLocation",
+        value: "gps_location",
+        type: "Report",
+      },
+      {
+        label: "reportId",
+        value: "report_id",
+        type: "Report",
+      },
+      {
+        label: "reportTypeId",
+        value: "report_type.id",
+        type: "Report type",
+      },
+      {
+        label: "reportTypeName",
+        value: "report_type.name",
+        type: "Report type",
+      },
+      {
+        label: "reportCategory",
+        value: "report_type.category",
+        type: "Report category",
+      },
+    ];
+    return vars;
   }
 
   public abstract _save(): Promise<SaveResult<ReporterNotification>>;

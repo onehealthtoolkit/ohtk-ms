@@ -11,6 +11,8 @@ const styles = {
     "text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 inline-flex items-center",
   disabledButton:
     "text-sm text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg inline-flex",
+  deleteButton:
+    "text-sm text-white bg-red-500 font-medium rounded-lg inline-flex",
 };
 type SaveResult = {
   success: boolean;
@@ -19,13 +21,17 @@ type SaveResult = {
 type Props = {
   title: string;
   defaultValue?: string;
+  deleteAble?: boolean;
   indicator?: boolean;
   onSave: (value: string) => Promise<SaveResult>;
+  onDelete?: () => Promise<SaveResult>;
 };
 const NotificationEdit = ({
   title,
   defaultValue,
+  deleteAble,
   onSave,
+  onDelete,
   indicator = false,
 }: Props) => {
   const { t } = useTranslation();
@@ -36,6 +42,7 @@ const NotificationEdit = ({
   const [oldValue, setOldValue] = useState<string | undefined>(defaultValue);
   const [value, setValue] = useState<string>(defaultValue || "");
   const [errorText, serErrorText] = useState<string | undefined>();
+
   return (
     <div className="w-full md:w-auto grid gap-6 mb-2 grid-cols-3">
       <div className="py-3 px-6 font-bold text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -90,6 +97,7 @@ const NotificationEdit = ({
         </button>
         <button
           type="button"
+          hidden={!deleteAble}
           className={`py-2 px-5 mr-2 ${styles.defaultButton}`}
           onClick={() => {
             setValue(oldValue || "");
@@ -99,6 +107,32 @@ const NotificationEdit = ({
         >
           {t("form.button.cancel", "Cancel")}
         </button>
+        {deleteAble && (
+          <button
+            type="button"
+            className={`py-2 px-5 mr-2 ${styles.deleteButton}`}
+            onClick={() => {
+              if (onDelete) {
+                serErrorText("");
+                setSubmitting(true);
+                onDelete().then(result => {
+                  setSuccess(result.success);
+                  if (result.success) {
+                    setOldValue("");
+                    setValue("");
+                    setEditing(false);
+                  } else {
+                    serErrorText(result.msg);
+                  }
+                  setSubmitting(false);
+                });
+              }
+            }}
+          >
+            {submitting === true && <Spinner />}
+            {t("form.button.delete", "Delete")}
+          </button>
+        )}
       </div>
     </div>
   );

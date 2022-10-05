@@ -1,5 +1,6 @@
 import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import {
+  AuthorityNotificationDeleteDocument,
   AuthorityNotificationUpsertDocument,
   NotificationTemplateAuthorityDocument,
 } from "lib/generated/graphql";
@@ -7,7 +8,7 @@ import {
   AuthorityNotification,
   Notification,
 } from "lib/services/notification/notification";
-import { IService, SaveResult } from "lib/services/interface";
+import { DeleteResult, IService, SaveResult } from "lib/services/interface";
 
 export interface INotificationService extends IService {
   fetchNotifications(reportTypeId: string): Promise<Notification[]>;
@@ -17,6 +18,11 @@ export interface INotificationService extends IService {
     notificationTemplateId: number,
     to: string
   ): Promise<SaveResult<AuthorityNotification>>;
+
+  deleteAuthorityNotification(
+    id: string,
+    reportTypeId: string
+  ): Promise<DeleteResult>;
 }
 
 export class NotificationService implements INotificationService {
@@ -40,6 +46,7 @@ export class NotificationService implements INotificationService {
         items.push({
           notificationTemplateId: +item.notificationTemplateId,
           notificationTemplateName: item.notificationTemplateName,
+          notificationId: item.notificationId || undefined,
           to: item.to || undefined,
         });
       }
@@ -99,6 +106,60 @@ export class NotificationService implements INotificationService {
     }
     return {
       success: true,
+      data: {
+        id: result?.id ? parseInt(result.id) : undefined,
+      },
     };
+  }
+
+  async deleteAuthorityNotification(
+    id: string,
+    reportTypeId: string
+  ): Promise<DeleteResult> {
+    const deleteResult = await this.client.mutate({
+      mutation: AuthorityNotificationDeleteDocument,
+      variables: {
+        id,
+      },
+      refetchQueries: [
+        {
+          query: NotificationTemplateAuthorityDocument,
+          variables: {
+            reportTypeId,
+          },
+          fetchPolicy: "network-only",
+        },
+      ],
+      awaitRefetchQueries: true,
+      update: cache => {
+        cache.evict({
+          id: cache.identify({
+            __typename: "AdminNotificationTemplateAuthorityType",
+            notificationId: id,
+          }),
+        });
+        cache.modify({
+          fields: {
+            adminNotificationTemplateAuthorityQuery: (
+              existingRefs,
+              { readField }
+            ) => {
+              return existingRefs.filter(
+                (commentRef: AuthorityNotification) => {
+                  console.log(
+                    "remove ",
+                    id,
+                    readField("notificationId", commentRef)
+                  );
+                  return id !== readField("notificationId", commentRef);
+                }
+              );
+            },
+          },
+        });
+      },
+    });
+
+    return { error: deleteResult.errors?.map(o => o.message).join(",") };
   }
 }
