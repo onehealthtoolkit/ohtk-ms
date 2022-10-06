@@ -19,6 +19,7 @@ query ReporterNotifications(
       }
       description
       condition
+      titleTemplate
       template
     }
   }
@@ -28,12 +29,14 @@ mutation ReporterNotificationCreate(
   $reportTypeId: UUID!
   $description: String!
   $condition: String!
+  $titleTemplate: String!
   $template: String!
 ) {
   adminReporterNotificationCreate(
     reportTypeId: $reportTypeId
     description: $description
     condition: $condition
+    titleTemplate: $titleTemplate
     template: $template
   ) {
     result {
@@ -57,6 +60,7 @@ mutation ReporterNotificationUpdate(
   $reportTypeId: UUID!
   $description: String!
   $condition: String!
+  $titleTemplate: String!
   $template: String!
 ) {
   adminReporterNotificationUpdate(
@@ -64,6 +68,7 @@ mutation ReporterNotificationUpdate(
     reportTypeId: $reportTypeId
     description: $description
     condition: $condition
+    titleTemplate: $titleTemplate
     template: $template
   ) {
     result {
@@ -77,6 +82,7 @@ mutation ReporterNotificationUpdate(
           }
           description
           condition
+          titleTemplate
           template
         }
       }
@@ -106,6 +112,7 @@ query GetReporterNotification($id: ID!) {
     }
     description
     condition
+    titleTemplate
     template
   }
 }

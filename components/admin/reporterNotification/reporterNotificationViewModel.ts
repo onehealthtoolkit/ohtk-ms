@@ -15,6 +15,7 @@ export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
   _reportTypeId: string = "";
   _description: string = "";
   _condition: string = "";
+  _titleTemplate: string = "";
   _template: string = "";
 
   _isFormBuilderMode = false;
@@ -32,6 +33,8 @@ export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
       description: computed,
       _condition: observable,
       condition: computed,
+      _titleTemplate: observable,
+      titleTemplate: computed,
       _template: observable,
       template: computed,
       save: action,
@@ -70,6 +73,17 @@ export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
   public set condition(value: string) {
     this._condition = value;
     delete this.fieldErrors["condition"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public get titleTemplate(): string {
+    return this._titleTemplate;
+  }
+  public set titleTemplate(value: string) {
+    this._titleTemplate = value;
+    delete this.fieldErrors["titleTemplate"];
     if (this.submitError.length > 0) {
       this.submitError = "";
     }

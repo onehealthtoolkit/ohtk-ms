@@ -73,13 +73,11 @@ const ReporterNotificationsUpdateForm = () => {
       <Observer>
         {() => (
           <Field $size="half">
-            <Label htmlFor="description">
-              {t("form.label.description", "Description")}
-            </Label>
+            <Label htmlFor="description">{t("form.label.name", "Name")}</Label>
             <TextInput
               id="description"
               type="text"
-              placeholder={t("form.placeholder.description", "Description")}
+              placeholder={t("form.placeholder.name", "Name")}
               onChange={evt => (viewModel.description = evt.target.value)}
               disabled={viewModel.isSubmitting}
               defaultValue={viewModel.description}
@@ -118,16 +116,44 @@ const ReporterNotificationsUpdateForm = () => {
     [t, viewModel]
   );
 
+  const titleTemplateField = useMemo(
+    () => (
+      <Observer>
+        {() => (
+          <Field $size="half">
+            <Label htmlFor="titleTemplate">
+              {t("form.label.titleTemplate", "Title Template")}
+            </Label>
+            <TextInput
+              id="titleTemplate"
+              type="text"
+              placeholder={t(
+                "form.placeholder.titleTemplate",
+                "Title Template"
+              )}
+              onChange={evt => (viewModel.titleTemplate = evt.target.value)}
+              disabled={viewModel.isSubmitting}
+              defaultValue={viewModel.titleTemplate}
+              required
+            />
+            <ErrorText>{viewModel.fieldErrors.titleTemplate}</ErrorText>
+          </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
   const templateField = useMemo(
     () => (
       <Observer>
         {() => (
           <Field $size="half">
             <Label htmlFor="template">
-              {t("form.label.template", "Template")}
+              {t("form.label.bodytemplate", "Body Template")}
             </Label>
             <DataTemplateField
-              placeholder={t("form.placeholder.template", "Template")}
+              placeholder={t("form.placeholder.bodyTemplate", "Body Template")}
               value={viewModel.template}
               onChange={value => (viewModel.template = value)}
               variableList={viewModel.formViewModel.variableList}
@@ -150,9 +176,10 @@ const ReporterNotificationsUpdateForm = () => {
     <MaskingLoader loading={viewModel.isLoading}>
       <Form>
         <FieldGroup>
-          {reportTypeField}
           {descriptionField}
+          {reportTypeField}
           {conditionField}
+          {titleTemplateField}
           {templateField}
         </FieldGroup>
         {viewModel.submitError.length > 0 && (

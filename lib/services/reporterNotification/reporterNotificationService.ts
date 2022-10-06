@@ -28,6 +28,7 @@ export interface IReporterNotificationService extends IService {
     reportTypeId: string,
     description: string,
     condition: string,
+    titleTemplate: string,
     template: string
   ): Promise<SaveResult<ReporterNotification>>;
 
@@ -36,6 +37,7 @@ export interface IReporterNotificationService extends IService {
     reportTypeId: string,
     description: string,
     condition: string,
+    titleTemplate: string,
     template: string
   ): Promise<SaveResult<ReporterNotification>>;
 
@@ -86,6 +88,7 @@ export class ReporterNotificationService
             : undefined,
           description: item.description,
           condition: item.condition,
+          titleTemplate: item.titleTemplate,
           template: item.template,
         });
       }
@@ -117,6 +120,7 @@ export class ReporterNotificationService
           : undefined,
         description: reporterNotification.description,
         condition: reporterNotification.condition,
+        titleTemplate: reporterNotification.titleTemplate,
         template: reporterNotification.template,
       };
     }
@@ -129,6 +133,7 @@ export class ReporterNotificationService
     reportTypeId: string,
     description: string,
     condition: string,
+    titleTemplate: string,
     template: string
   ): Promise<SaveResult<ReporterNotification>> {
     const createResult = await this.client.mutate({
@@ -137,6 +142,7 @@ export class ReporterNotificationService
         reportTypeId,
         description,
         condition,
+        titleTemplate,
         template,
       },
       refetchQueries: [
@@ -186,6 +192,7 @@ export class ReporterNotificationService
     reportTypeId: string,
     description: string,
     condition: string,
+    titleTemplate: string,
     template: string
   ): Promise<SaveResult<ReporterNotification>> {
     const updateResult = await this.client.mutate({
@@ -195,6 +202,7 @@ export class ReporterNotificationService
         reportTypeId,
         description,
         condition,
+        titleTemplate,
         template,
       },
       refetchQueries: [

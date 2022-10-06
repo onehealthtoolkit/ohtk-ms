@@ -25,6 +25,7 @@ export class ReporterNotificationUpdateViewModel extends ReporterNotificationVie
       this.reportTypeId = data.reportType?.id || "";
       this.description = data.description;
       this.condition = data.condition;
+      this.titleTemplate = data.titleTemplate;
       this.template = data.template;
     }
     this.isLoading = false;
@@ -36,6 +37,7 @@ export class ReporterNotificationUpdateViewModel extends ReporterNotificationVie
       this.reportTypeId,
       this.description,
       this.condition,
+      this.titleTemplate,
       this.template
     );
   }
