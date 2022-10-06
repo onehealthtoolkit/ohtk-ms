@@ -157,6 +157,10 @@ export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
       isValid = false;
       this.fieldErrors["condition"] = "this field is required";
     }
+    if (this.titleTemplate.length === 0) {
+      isValid = false;
+      this.fieldErrors["titleTemplate"] = "this field is required";
+    }
     if (this.template.length === 0) {
       isValid = false;
       this.fieldErrors["template"] = "this field is required";
