@@ -2,14 +2,16 @@ import { ReporterNotification } from "lib/services/reporterNotification";
 import { IReporterNotificationService } from "lib/services/reporterNotification/reporterNotificationService";
 import { SaveResult } from "lib/services/interface";
 import { ReporterNotificationViewModel } from "./reporterNotificationViewModel";
+import { IReportTypeService } from "lib/services/reportType";
 
 export class ReporterNotificationUpdateViewModel extends ReporterNotificationViewModel {
   id: string;
   constructor(
     id: string,
-    reporterNotificationService: IReporterNotificationService
+    reporterNotificationService: IReporterNotificationService,
+    readonly reportTypeService: IReportTypeService
   ) {
-    super(reporterNotificationService);
+    super(reporterNotificationService, reportTypeService);
     this.id = id;
     this.fetch();
   }

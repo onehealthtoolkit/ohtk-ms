@@ -34,7 +34,8 @@ const NotificationTemplateUpdate = () => {
     () =>
       new NotificationTemplateUpdateViewModel(
         router.query.id as string,
-        services.notificationTemplateService
+        services.notificationTemplateService,
+        services.reportTypeService
       )
   );
 
@@ -245,7 +246,7 @@ const NotificationTemplateUpdate = () => {
               placeholder={t("form.placeholder.bodyTemplate", "Body Template")}
               value={viewModel.bodyTemplate}
               onChange={value => (viewModel.bodyTemplate = value)}
-              variableList={viewModel.variableList}
+              variableList={viewModel.formViewModel.variableList}
             />
             <ErrorText>{viewModel.fieldErrors.bodyTemplate}</ErrorText>
           </Field>

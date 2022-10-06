@@ -31,7 +31,8 @@ const ReporterNotificationsUpdateForm = () => {
     () =>
       new ReporterNotificationUpdateViewModel(
         router.query.id as string,
-        services.reporterNotificationService
+        services.reporterNotificationService,
+        services.reportTypeService
       )
   );
   const reportTypes = useReportTypes();
@@ -129,7 +130,7 @@ const ReporterNotificationsUpdateForm = () => {
               placeholder={t("form.placeholder.template", "Template")}
               value={viewModel.template}
               onChange={value => (viewModel.template = value)}
-              variableList={viewModel.variableList}
+              variableList={viewModel.formViewModel.variableList}
             />
             <ErrorText>{viewModel.fieldErrors.template}</ErrorText>
           </Field>

@@ -29,7 +29,8 @@ const ReporterNotificationCreate = () => {
   const [viewModel] = useState(
     () =>
       new ReporterNotificationCreateViewModel(
-        services.reporterNotificationService
+        services.reporterNotificationService,
+        services.reportTypeService
       )
   );
   const reportTypes = useReportTypes();
@@ -106,7 +107,7 @@ const ReporterNotificationCreate = () => {
             placeholder={t("form.placeholder.template", "Template")}
             value={null}
             onChange={value => (viewModel.template = value)}
-            variableList={viewModel.variableList}
+            variableList={viewModel.formViewModel.variableList}
           />
           <ErrorText>{viewModel.fieldErrors.template}</ErrorText>
         </Field>

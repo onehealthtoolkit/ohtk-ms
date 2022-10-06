@@ -2,14 +2,16 @@ import { NotificationTemplate } from "lib/services/notificationTemplate";
 import { INotificationTemplateService } from "lib/services/notificationTemplate/notificationTemplateService";
 import { SaveResult } from "lib/services/interface";
 import { NotificationTemplateViewModel } from "./notificationTemplateViewModel";
+import { IReportTypeService } from "lib/services/reportType";
 
 export class NotificationTemplateUpdateViewModel extends NotificationTemplateViewModel {
   id: string;
   constructor(
     id: string,
-    notificationTemplateService: INotificationTemplateService
+    notificationTemplateService: INotificationTemplateService,
+    readonly reportTypeService: IReportTypeService
   ) {
-    super(notificationTemplateService);
+    super(notificationTemplateService, reportTypeService);
     this.id = id;
     this.fetch();
   }
