@@ -5,7 +5,9 @@ import {
 } from "lib/services/reporterNotification";
 import { SaveResult } from "lib/services/interface";
 import { action, computed, makeObservable, observable } from "mobx";
-import { FormVariableItem, FormViewModel } from "components/admin/formBuilder";
+import { FormViewModel } from "components/admin/formBuilder";
+import { IReportTypeService } from "lib/services/reportType";
+import { ParseError } from "../formBuilder/shared";
 
 export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
   reporterNotificationService: IReporterNotificationService;
@@ -13,12 +15,16 @@ export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
   _reportTypeId: string = "";
   _description: string = "";
   _condition: string = "";
+  _titleTemplate: string = "";
   _template: string = "";
 
   _isFormBuilderMode = false;
   formViewModel = new FormViewModel();
 
-  constructor(reporterNotificationService: IReporterNotificationService) {
+  constructor(
+    reporterNotificationService: IReporterNotificationService,
+    readonly reportTypeService: IReportTypeService
+  ) {
     super();
     makeObservable(this, {
       _reportTypeId: observable,
@@ -27,12 +33,13 @@ export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
       description: computed,
       _condition: observable,
       condition: computed,
+      _titleTemplate: observable,
+      titleTemplate: computed,
       _template: observable,
       template: computed,
       save: action,
       validate: action,
       formViewModel: observable,
-      variableList: computed,
     });
     this.reporterNotificationService = reporterNotificationService;
   }
@@ -46,6 +53,7 @@ export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
     if (this.submitError.length > 0) {
       this.submitError = "";
     }
+    if (value) this.parseReportTypeDefinition();
   }
 
   public get description(): string {
@@ -70,6 +78,17 @@ export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
     }
   }
 
+  public get titleTemplate(): string {
+    return this._titleTemplate;
+  }
+  public set titleTemplate(value: string) {
+    this._titleTemplate = value;
+    delete this.fieldErrors["titleTemplate"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
   public get template(): string {
     return this._template;
   }
@@ -81,46 +100,27 @@ export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
     }
   }
 
-  get variableList(): Array<FormVariableItem> {
-    // fix variables from report
-    let vars = [
-      {
-        label: "reportDate",
-        value: "report_date",
-        type: "Report",
-      },
-      {
-        label: "incidentDate",
-        value: "incident_date",
-        type: "Report",
-      },
-      {
-        label: "gpsLocation",
-        value: "gps_location",
-        type: "Report",
-      },
-      {
-        label: "reportId",
-        value: "report_id",
-        type: "Report",
-      },
-      {
-        label: "reportTypeId",
-        value: "report_type.id",
-        type: "Report type",
-      },
-      {
-        label: "reportTypeName",
-        value: "report_type.name",
-        type: "Report type",
-      },
-      {
-        label: "reportCategory",
-        value: "report_type.category",
-        type: "Report category",
-      },
-    ];
-    return vars;
+  async parseReportTypeDefinition() {
+    const data = await (
+      await this.reportTypeService.getReportType(this.reportTypeId)
+    ).data;
+    if (data) {
+      this.parseDefinition(data.definition);
+    }
+  }
+
+  public parseDefinition(value: string): boolean {
+    try {
+      this.formViewModel.parse(JSON.parse(value));
+      return true;
+    } catch (e) {
+      if (e instanceof ParseError) {
+        this.fieldErrors["definition"] = e.message;
+      } else {
+        this.fieldErrors["definition"] = "Error! Bad definition format";
+      }
+      return false;
+    }
   }
 
   public abstract _save(): Promise<SaveResult<ReporterNotification>>;
@@ -156,6 +156,10 @@ export abstract class ReporterNotificationViewModel extends BaseFormViewModel {
     if (this.condition.length === 0) {
       isValid = false;
       this.fieldErrors["condition"] = "this field is required";
+    }
+    if (this.titleTemplate.length === 0) {
+      isValid = false;
+      this.fieldErrors["titleTemplate"] = "this field is required";
     }
     if (this.template.length === 0) {
       isValid = false;

@@ -6,7 +6,9 @@ import {
 import { SaveResult } from "lib/services/interface";
 import { action, computed, makeObservable, observable } from "mobx";
 import { CasesNotificationTemplateTypeChoices } from "lib/generated/graphql";
-import { FormVariableItem } from "../formBuilder";
+import { FormViewModel } from "../formBuilder";
+import { ParseError } from "../formBuilder/shared";
+import { IReportTypeService } from "lib/services/reportType";
 
 export abstract class NotificationTemplateViewModel extends BaseFormViewModel {
   notificationTemplateService: INotificationTemplateService;
@@ -19,7 +21,12 @@ export abstract class NotificationTemplateViewModel extends BaseFormViewModel {
   _titleTemplate: string = "";
   _bodyTemplate: string = "";
 
-  constructor(notificationTemplateService: INotificationTemplateService) {
+  formViewModel = new FormViewModel();
+
+  constructor(
+    notificationTemplateService: INotificationTemplateService,
+    readonly reportTypeService: IReportTypeService
+  ) {
     super();
     makeObservable(this, {
       _name: observable,
@@ -38,7 +45,6 @@ export abstract class NotificationTemplateViewModel extends BaseFormViewModel {
       bodyTemplate: computed,
       save: action,
       validate: action,
-      variableList: computed,
     });
     this.notificationTemplateService = notificationTemplateService;
   }
@@ -74,6 +80,8 @@ export abstract class NotificationTemplateViewModel extends BaseFormViewModel {
     if (this.submitError.length > 0) {
       this.submitError = "";
     }
+
+    if (value) this.parseReportTypeDefinition();
   }
 
   public get condition(): string {
@@ -121,46 +129,27 @@ export abstract class NotificationTemplateViewModel extends BaseFormViewModel {
     }
   }
 
-  get variableList(): Array<FormVariableItem> {
-    // fix variables from report
-    let vars = [
-      {
-        label: "reportDate",
-        value: "report_date",
-        type: "Report",
-      },
-      {
-        label: "incidentDate",
-        value: "incident_date",
-        type: "Report",
-      },
-      {
-        label: "gpsLocation",
-        value: "gps_location",
-        type: "Report",
-      },
-      {
-        label: "reportId",
-        value: "report_id",
-        type: "Report",
-      },
-      {
-        label: "reportTypeId",
-        value: "report_type.id",
-        type: "Report type",
-      },
-      {
-        label: "reportTypeName",
-        value: "report_type.name",
-        type: "Report type",
-      },
-      {
-        label: "reportCategory",
-        value: "report_type.category",
-        type: "Report category",
-      },
-    ];
-    return vars;
+  async parseReportTypeDefinition() {
+    const data = await (
+      await this.reportTypeService.getReportType(this.reportTypeId)
+    ).data;
+    if (data) {
+      this.parseDefinition(data.definition);
+    }
+  }
+
+  public parseDefinition(value: string): boolean {
+    try {
+      this.formViewModel.parse(JSON.parse(value));
+      return true;
+    } catch (e) {
+      if (e instanceof ParseError) {
+        this.fieldErrors["definition"] = e.message;
+      } else {
+        this.fieldErrors["definition"] = "Error! Bad definition format";
+      }
+      return false;
+    }
   }
 
   public abstract _save(): Promise<SaveResult<NotificationTemplate>>;

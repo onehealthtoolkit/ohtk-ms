@@ -682,6 +682,7 @@ export type AdminReporterNotificationCreateSuccess = {
   isActive: Scalars["Boolean"];
   reportType?: Maybe<AdminReportTypeCreateSuccess>;
   template: Scalars["String"];
+  titleTemplate: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
 
@@ -697,6 +698,7 @@ export type AdminReporterNotificationQueryType = {
   id: Scalars["ID"];
   reportType?: Maybe<ReportTypeType>;
   template: Scalars["String"];
+  titleTemplate: Scalars["String"];
 };
 
 export type AdminReporterNotificationQueryTypeNodeConnection = {
@@ -1497,6 +1499,7 @@ export type MutationAdminReporterNotificationCreateArgs = {
   isActive?: InputMaybe<Scalars["Boolean"]>;
   reportTypeId: Scalars["UUID"];
   template: Scalars["String"];
+  titleTemplate: Scalars["String"];
 };
 
 export type MutationAdminReporterNotificationDeleteArgs = {
@@ -1510,6 +1513,7 @@ export type MutationAdminReporterNotificationUpdateArgs = {
   isActive?: InputMaybe<Scalars["Boolean"]>;
   reportTypeId: Scalars["UUID"];
   template: Scalars["String"];
+  titleTemplate: Scalars["String"];
 };
 
 export type MutationAdminStateDefinitionCreateArgs = {
@@ -2138,6 +2142,7 @@ export type ReporterNotificationType = {
   isActive: Scalars["Boolean"];
   reportType?: Maybe<AdminReportTypeCreateSuccess>;
   template: Scalars["String"];
+  titleTemplate: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
 
@@ -3977,6 +3982,7 @@ export type ReporterNotificationsQuery = {
       id: string;
       description: string;
       condition: string;
+      titleTemplate: string;
       template: string;
       reportType?: {
         __typename?: "ReportTypeType";
@@ -3991,6 +3997,7 @@ export type ReporterNotificationCreateMutationVariables = Exact<{
   reportTypeId: Scalars["UUID"];
   description: Scalars["String"];
   condition: Scalars["String"];
+  titleTemplate: Scalars["String"];
   template: Scalars["String"];
 }>;
 
@@ -4018,6 +4025,7 @@ export type ReporterNotificationUpdateMutationVariables = Exact<{
   reportTypeId: Scalars["UUID"];
   description: Scalars["String"];
   condition: Scalars["String"];
+  titleTemplate: Scalars["String"];
   template: Scalars["String"];
 }>;
 
@@ -4042,6 +4050,7 @@ export type ReporterNotificationUpdateMutation = {
             id: string;
             description: string;
             condition: string;
+            titleTemplate: string;
             template: string;
             reportType?: {
               __typename?: "AdminReportTypeCreateSuccess";
@@ -4077,6 +4086,7 @@ export type GetReporterNotificationQuery = {
     id: string;
     description: string;
     condition: string;
+    titleTemplate: string;
     template: string;
     reportType?: {
       __typename?: "AdminReportTypeCreateSuccess";
@@ -12771,6 +12781,10 @@ export const ReporterNotificationsDocument = {
                       },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "titleTemplate" },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "template" },
                       },
                     ],
@@ -12838,6 +12852,20 @@ export const ReporterNotificationCreateDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
+            name: { kind: "Name", value: "titleTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
             name: { kind: "Name", value: "template" },
           },
           type: {
@@ -12878,6 +12906,14 @@ export const ReporterNotificationCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "condition" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "titleTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "titleTemplate" },
                 },
               },
               {
@@ -13030,6 +13066,20 @@ export const ReporterNotificationUpdateDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
+            name: { kind: "Name", value: "titleTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
             name: { kind: "Name", value: "template" },
           },
           type: {
@@ -13078,6 +13128,14 @@ export const ReporterNotificationUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "condition" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "titleTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "titleTemplate" },
                 },
               },
               {
@@ -13154,6 +13212,13 @@ export const ReporterNotificationUpdateDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "condition" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "titleTemplate",
+                                    },
                                   },
                                   {
                                     kind: "Field",
@@ -13313,6 +13378,10 @@ export const GetReporterNotificationDocument = {
                 },
                 { kind: "Field", name: { kind: "Name", value: "description" } },
                 { kind: "Field", name: { kind: "Name", value: "condition" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "titleTemplate" },
+                },
                 { kind: "Field", name: { kind: "Name", value: "template" } },
               ],
             },

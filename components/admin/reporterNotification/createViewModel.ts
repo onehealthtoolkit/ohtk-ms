@@ -8,6 +8,7 @@ export class ReporterNotificationCreateViewModel extends ReporterNotificationVie
       this.reportTypeId,
       this.description,
       this.condition,
+      this.titleTemplate,
       this.template
     );
   }

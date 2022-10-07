@@ -6,5 +6,6 @@ export type ReporterNotification = {
   };
   description: string;
   condition: string;
+  titleTemplate: string;
   template: string;
 };

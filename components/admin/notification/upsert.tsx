@@ -10,6 +10,7 @@ import AsyncSelect from "react-select/async";
 import { ReportType } from "lib/services/reportType";
 import { ReportCategory } from "lib/services/reportCategory";
 import { styledReactSelect } from "components/widgets/styledReactSelect";
+import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 
 const groupStyles = {
   display: "flex",
@@ -46,8 +47,10 @@ interface GroupedOption {
 const NotificationUpsert = () => {
   const { t } = useTranslation();
   const services = useServices();
-  const [viewModel] = useState(
-    () => new NotificationViewModel(services.notificationService)
+  const [viewModel] = useState(() =>
+    new NotificationViewModel(services.notificationService).registerDialog(
+      "confirmDelete"
+    )
   );
   const [categories, setCategories] = useState<ReportCategory[]>();
   const [reportTypes, setReportTypes] = useState<ReportType[]>();
@@ -146,12 +149,20 @@ const NotificationUpsert = () => {
                       msg: item.submitError || item.fieldErrors?.to,
                     };
                   }}
-                  onDelete={async () => {
-                    await viewModel.delete(item);
-                    return {
-                      success: item.submitError ? false : true,
-                      msg: item.submitError,
-                    };
+                  onDelete={async callback => {
+                    viewModel
+                      .dialog("confirmDelete")
+                      ?.open(async (result: string) => {
+                        if (result == "yes") {
+                          await viewModel.delete(item);
+                          callback({
+                            success: item.submitError ? false : true,
+                            msg: item.submitError,
+                          });
+                        } else {
+                          callback();
+                        }
+                      });
                   }}
                 />
               ))}
@@ -163,6 +174,17 @@ const NotificationUpsert = () => {
                 </div>
               )}
             </div>
+            <ConfirmDialog
+              store={viewModel.dialog("confirmDelete")}
+              title={t("dialog.title.confirmDelete", "Confirm delete")}
+              content={t("dialog.content.confirmDelete", "Are you sure?")}
+              onYes={(callback: (result: string) => void) => {
+                callback("yes");
+              }}
+              onNo={(callback: (result: string) => void) => {
+                callback("cancel");
+              }}
+            />
           </div>
         </div>
       </>

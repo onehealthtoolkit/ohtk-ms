@@ -24,7 +24,7 @@ type Props = {
   deleteAble?: boolean;
   indicator?: boolean;
   onSave: (value: string) => Promise<SaveResult>;
-  onDelete?: () => Promise<SaveResult>;
+  onDelete?: (callback: (result?: SaveResult) => void) => void;
 };
 const NotificationEdit = ({
   title,
@@ -37,6 +37,7 @@ const NotificationEdit = ({
   const { t } = useTranslation();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [deletting, setDeletting] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>();
   const [editing, setEditing] = useState<boolean>(false);
   const [oldValue, setOldValue] = useState<string | undefined>(defaultValue);
@@ -114,22 +115,24 @@ const NotificationEdit = ({
             onClick={() => {
               if (onDelete) {
                 serErrorText("");
-                setSubmitting(true);
-                onDelete().then(result => {
-                  setSuccess(result.success);
-                  if (result.success) {
-                    setOldValue("");
-                    setValue("");
-                    setEditing(false);
-                  } else {
-                    serErrorText(result.msg);
+                setDeletting(true);
+                onDelete(result => {
+                  if (result) {
+                    setSuccess(result.success);
+                    if (result.success) {
+                      setOldValue("");
+                      setValue("");
+                      setEditing(false);
+                    } else {
+                      serErrorText(result.msg);
+                    }
                   }
-                  setSubmitting(false);
+                  setDeletting(false);
                 });
               }
             }}
           >
-            {submitting === true && <Spinner />}
+            {deletting === true && <Spinner />}
             {t("form.button.delete", "Delete")}
           </button>
         )}

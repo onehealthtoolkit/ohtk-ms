@@ -92,7 +92,7 @@ const ReporterNotificationList = () => {
                 get: record => record.reportType?.name,
               },
               {
-                label: t("form.label.description", "Description"),
+                label: t("form.label.name", "Name"),
                 get: record => record.description,
               },
             ]}

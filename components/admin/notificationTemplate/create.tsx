@@ -32,7 +32,8 @@ const NotificationTemplateCreate = () => {
   const [viewModel] = useState(
     () =>
       new NotificationTemplateCreateViewModel(
-        services.notificationTemplateService
+        services.notificationTemplateService,
+        services.reportTypeService
       )
   );
 
@@ -197,7 +198,7 @@ const NotificationTemplateCreate = () => {
             placeholder={t("form.placeholder.bodyTemplate", "Body Template")}
             value={null}
             onChange={value => (viewModel.bodyTemplate = value)}
-            variableList={viewModel.variableList}
+            variableList={viewModel.formViewModel.variableList}
           />
           <ErrorText>{errors.bodyTemplate}</ErrorText>
         </Field>

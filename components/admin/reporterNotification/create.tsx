@@ -29,7 +29,8 @@ const ReporterNotificationCreate = () => {
   const [viewModel] = useState(
     () =>
       new ReporterNotificationCreateViewModel(
-        services.reporterNotificationService
+        services.reporterNotificationService,
+        services.reportTypeService
       )
   );
   const reportTypes = useReportTypes();
@@ -46,6 +47,18 @@ const ReporterNotificationCreate = () => {
   return (
     <Form>
       <FieldGroup>
+        <Field $size="half">
+          <Label htmlFor="description">{t("form.label.name", "Name")}</Label>
+          <TextInput
+            id="description"
+            type="text"
+            placeholder={t("form.placeholder.name", "Name")}
+            onChange={evt => (viewModel.description = evt.target.value)}
+            disabled={isSubmitting}
+            required
+          />
+          <ErrorText>{errors.description}</ErrorText>
+        </Field>
         <Field $size="half">
           <Label htmlFor="reportType">
             {t("form.label.reportType", "Report Type")}
@@ -71,20 +84,6 @@ const ReporterNotificationCreate = () => {
           <ErrorText>{errors.reportTypeId}</ErrorText>
         </Field>
         <Field $size="half">
-          <Label htmlFor="description">
-            {t("form.label.description", "Description")}
-          </Label>
-          <TextInput
-            id="description"
-            type="text"
-            placeholder={t("form.placeholder.description", "Description")}
-            onChange={evt => (viewModel.description = evt.target.value)}
-            disabled={isSubmitting}
-            required
-          />
-          <ErrorText>{errors.description}</ErrorText>
-        </Field>
-        <Field $size="half">
           <Label htmlFor="condition">
             {t("form.label.condition", "Condition")}
           </Label>
@@ -99,14 +98,28 @@ const ReporterNotificationCreate = () => {
           <ErrorText>{viewModel.fieldErrors.condition}</ErrorText>
         </Field>
         <Field $size="half">
+          <Label htmlFor="titleTemplate">
+            {t("form.label.titleTemplate", "Title Template")}
+          </Label>
+          <TextInput
+            id="titleTemplate"
+            type="text"
+            placeholder={t("form.placeholder.titleTemplate", "Title Template")}
+            onChange={evt => (viewModel.titleTemplate = evt.target.value)}
+            disabled={isSubmitting}
+            required
+          />
+          <ErrorText>{errors.titleTemplate}</ErrorText>
+        </Field>
+        <Field $size="half">
           <Label htmlFor="template">
-            {t("form.label.template", "Template")}
+            {t("form.label.bodyTemplate", "Body Template")}
           </Label>
           <DataTemplateField
-            placeholder={t("form.placeholder.template", "Template")}
+            placeholder={t("form.placeholder.bodyTemplate", "Body Template")}
             value={null}
             onChange={value => (viewModel.template = value)}
-            variableList={viewModel.variableList}
+            variableList={viewModel.formViewModel.variableList}
           />
           <ErrorText>{viewModel.fieldErrors.template}</ErrorText>
         </Field>
