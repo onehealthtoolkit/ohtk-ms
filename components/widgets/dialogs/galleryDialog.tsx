@@ -19,26 +19,6 @@ const GalleryDialog: React.FC<GalleryDialogProps> = ({ viewModel }) => {
       widthClassName="w-[96vw]"
       renderContent={() => (
         <div className="flex flex-col items-center h-full">
-          {viewModel.hasMultipleItems && (
-            <>
-              <button
-                className="rounded-full bg-black hover:bg-slate-400 text-white p-2 
-                  absolute left-4 top-1/2 -translate-y-16
-                "
-                onClick={() => viewModel.previous()}
-              >
-                <ArrowLeftIcon className="w-5 h-5" />
-              </button>
-              <button
-                className="rounded-full bg-black hover:bg-slate-400 text-white p-2 
-                  absolute right-4 top-1/2 -translate-y-16
-                "
-                onClick={() => viewModel.next()}
-              >
-                <ArrowRightIcon className="w-5 h-5" />
-              </button>
-            </>
-          )}
           <div className="flex-grow h-[calc(100%-6rem)]">
             {viewModel.currentImage ? (
               <img
@@ -52,6 +32,26 @@ const GalleryDialog: React.FC<GalleryDialogProps> = ({ viewModel }) => {
               </span>
             )}
           </div>
+          {viewModel.hasMultipleItems && (
+            <>
+              <button
+                className="rounded-full bg-black hover:bg-slate-400 text-white p-2 
+                        absolute left-4 top-1/2 -translate-y-16
+                      "
+                onClick={() => viewModel.previous()}
+              >
+                <ArrowLeftIcon className="w-5 h-5" />
+              </button>
+              <button
+                className="rounded-full bg-black hover:bg-slate-400 text-white p-2 
+                        absolute right-4 top-1/2 -translate-y-16
+                      "
+                onClick={() => viewModel.next()}
+              >
+                <ArrowRightIcon className="w-5 h-5" />
+              </button>
+            </>
+          )}
           {viewModel.hasMultipleItems && (
             <div className="flex space-x-2 mt-4 overflow-x-auto w-full">
               {viewModel.images.map((image, idx) => (
