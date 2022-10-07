@@ -34,12 +34,14 @@ describe("SingleChoicesField", () => {
       field.toJsonValue(json);
       expect(json["disease"]).toBe("mers");
       expect(json["disease_text"]).toBeUndefined();
+      expect(json["disease__value"]).toBe("mers");
 
       field.value = "other";
       field.text = "monkeypox";
       field.toJsonValue(json);
       expect(json["disease"]).toBe("other");
       expect(json["disease_text"]).toBe("monkeypox");
+      expect(json["disease__value"]).toBe("other - monkeypox");
     });
 
     it("to json without value", () => {
@@ -48,6 +50,7 @@ describe("SingleChoicesField", () => {
       field.toJsonValue(json);
       expect(json["disease"]).toBeUndefined();
       expect(json["disease_text"]).toBeUndefined();
+      expect(json["disease__value"]).toBe("");
     });
 
     it("load json value", () => {

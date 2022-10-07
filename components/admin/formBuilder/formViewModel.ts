@@ -129,7 +129,9 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
           if (field.name) {
             vars.push({
               label: field.name,
-              value: "data." + field.name,
+              // Use simplified value for display (postfixed with '__value').
+              // Some real value is an object which cannot be displayed nicely as string.
+              value: `data.${field.name}__value`,
               type: "Form data",
             });
           }

@@ -58,22 +58,29 @@ export function formatThDate(
   }
 }
 
+function getYYYYMMDD(date: Date) {
+  const dd = pad(date.getDate(), 2);
+  const mm = pad(date.getMonth() + 1, 2);
+  const yy = date.getFullYear();
+  return `${yy}-${mm}-${dd}`;
+}
+
+function getHHMM(date: Date) {
+  const hh = pad(date.getHours(), 2);
+  const mm = pad(date.getMinutes(), 2);
+  return `${hh}:${mm}`;
+}
+
 export function formatThDateTime(
   isoDateStr: string,
   long: boolean = false
 ): string {
-  function getTimeStr(date: Date) {
-    const hh = pad(date.getHours(), 2);
-    const mm = pad(date.getMinutes(), 2);
-    return `${hh}:${mm}`;
-  }
-
   if (long) {
     if (!isoDateStr) return "";
     const date = new Date(isoDateStr);
 
     const d = formatThLongDate(isoDateStr);
-    return d + ` เวลา ${getTimeStr(date)}`;
+    return d + ` เวลา ${getHHMM(date)}`;
   } else {
     if (!isoDateStr) return "";
     const date = new Date(isoDateStr);
@@ -81,7 +88,7 @@ export function formatThDateTime(
     const y = date.getFullYear();
     const m = SHORT_MONTHS[date.getMonth()];
     const d = pad(date.getDate(), 2);
-    return `${d} ${m} ${y + 543} ⌽ ${getTimeStr(date)}`;
+    return `${d} ${m} ${y + 543} ⌽ ${getHHMM(date)}`;
   }
 }
 
@@ -93,6 +100,18 @@ export function formatDateTime(isoDateStr?: string, locale?: string): string {
   if (isoDateStr) {
     const d = new Date(isoDateStr);
     return `${d.toLocaleDateString(locale)} ${d.toLocaleTimeString(locale)}`;
+  }
+  return "";
+}
+
+export function formatYmd(isoDateStr?: string): string {
+  return isoDateStr ? getYYYYMMDD(new Date(isoDateStr)) : "";
+}
+
+export function formatYmdt(isoDateStr?: string): string {
+  if (isoDateStr) {
+    const d = new Date(isoDateStr);
+    return `${getYYYYMMDD(d)} ${getHHMM(d)}`;
   }
   return "";
 }

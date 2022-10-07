@@ -128,7 +128,9 @@ export default class MultipleChoicesField extends Field {
     for (const [key, value] of Object.entries(this._text)) {
       values[`${key}_text`] = value;
     }
+    values["value"] = this.value;
     json[this.name] = values;
+    json[this.name + "__value"] = this.renderedValue;
   }
 
   loadJsonValue(json: Record<string, any>): void {
@@ -156,5 +158,20 @@ export default class MultipleChoicesField extends Field {
       default:
         return false;
     }
+  }
+
+  get renderedValue(): string {
+    var fn = _.reduce<ChoiceOption, Array<string>>([], (acc, option) => {
+      if (this._selected[option.value]) {
+        let value = option.value;
+        if (this._text[option.value]) {
+          value += " - " + this._text[option.value];
+        }
+        return [value, ...acc];
+      } else {
+        return [...acc];
+      }
+    });
+    return fn(this.options).join(",");
   }
 }

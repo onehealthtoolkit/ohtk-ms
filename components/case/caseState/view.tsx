@@ -2,7 +2,7 @@ import FormTransition from "components/case/caseState/formTransition";
 import { CaseStateViewViewModel } from "components/case/caseState/viewViewModel";
 import ErrorDisplay from "components/widgets/errorDisplay";
 import { MaskingLoader } from "components/widgets/forms";
-import { renderData } from "components/widgets/renderData";
+import { RenderData } from "components/widgets/renderData";
 import { formatDateTime } from "lib/datetime";
 import { CaseState, CaseStateTransition } from "lib/services/case/case";
 import { DeepStateStep } from "lib/services/stateStep/stateStep";
@@ -175,5 +175,5 @@ const CompleteStep: FC<CompleteStepProps> = ({
   stateTransition,
 }: CompleteStepProps) => {
   const data = JSON.parse(stateTransition.formData || "{}");
-  return renderData(data);
+  return <RenderData data={data} />;
 };

@@ -14,12 +14,14 @@ describe("Decimal Field", () => {
       const json: Record<string, any> = {};
       field.toJsonValue(json);
       expect(json["salary"]).toBe("12000.00");
+      expect(json["salary__value"]).toBe("12000.00");
     });
 
     it("to json without value", () => {
       const json: Record<string, any> = {};
       field.toJsonValue(json);
       expect(json["salary"]).toBeUndefined();
+      expect(json["salary__value"]).toBe("");
     });
 
     it("load json value", () => {

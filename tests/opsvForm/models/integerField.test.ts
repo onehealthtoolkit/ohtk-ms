@@ -13,12 +13,14 @@ describe("Integer field", () => {
       const json: Record<string, any> = {};
       field.toJsonValue(json);
       expect(json["age"]).toBe(23);
+      expect(json["age__value"]).toBe("23");
     });
 
     it("to json without value", () => {
       const json: Record<string, any> = {};
       field.toJsonValue(json);
       expect(json["age"]).toBeUndefined();
+      expect(json["age__value"]).toBe("");
     });
 
     it("load json data", () => {

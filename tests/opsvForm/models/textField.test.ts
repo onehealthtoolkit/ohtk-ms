@@ -13,12 +13,14 @@ describe("Text Field", () => {
       const json: Record<string, any> = {};
       field.toJsonValue(json);
       expect(json["firstName"]).toBe("polawat");
+      expect(json["firstName__value"]).toBe("polawat");
     });
 
     it("to json without value", () => {
       const json: Record<string, any> = {};
       field.toJsonValue(json);
       expect(json["firstName"]).toBeUndefined;
+      expect(json["firstName__value"]).toBe("");
     });
 
     it("load json data", () => {

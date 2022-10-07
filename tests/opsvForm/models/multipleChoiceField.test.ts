@@ -34,7 +34,10 @@ describe("MultipleChoicesField", () => {
         fever: false,
         headache: true,
         other: false,
+        other_text: undefined,
+        value: "headache",
       });
+      expect(json["symptom__value"]).toEqual("headache");
     });
 
     it("to json without value", () => {
@@ -44,7 +47,10 @@ describe("MultipleChoicesField", () => {
         fever: false,
         headache: false,
         other: false,
+        other_text: undefined,
+        value: "",
       });
+      expect(json["symptom__value"]).toEqual("");
     });
 
     it("to json with textinput is selected", () => {
@@ -58,7 +64,9 @@ describe("MultipleChoicesField", () => {
         headache: true,
         other: true,
         other_text: "vomit",
+        value: "other,headache",
       });
+      expect(json["symptom__value"]).toEqual("other - vomit,headache");
     });
 
     it("load json value", () => {
@@ -80,6 +88,7 @@ describe("MultipleChoicesField", () => {
         headache: false,
         other: true,
         other_text: "vomit",
+        value: "other",
       });
     });
   });

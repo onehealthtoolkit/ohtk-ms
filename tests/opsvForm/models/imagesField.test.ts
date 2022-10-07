@@ -15,12 +15,14 @@ describe("Images field", () => {
       const json: Record<string, any> = {};
       field.toJsonValue(json);
       expect(json["images"]).toEqual(["a", "b"]);
+      expect(json["images__value"]).toEqual("a,b");
     });
 
     it("to json without value", () => {
       const json: Record<string, any> = {};
       field.toJsonValue(json);
       expect(json["images"]).toBeUndefined();
+      expect(json["images__value"]).toBe("");
     });
 
     it("load json data", () => {

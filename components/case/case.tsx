@@ -13,7 +13,7 @@ import CaseStateView from "components/case/caseState/view";
 import { AdjustmentsIcon, CollectionIcon } from "@heroicons/react/solid";
 import useStore from "lib/store";
 import CaseStatus from "./caseStatus";
-import { renderData, TR } from "components/widgets/renderData";
+import { RenderData, TR } from "components/widgets/renderData";
 import Comments from "components/widgets/comments";
 import dynamic from "next/dynamic";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
@@ -160,9 +160,7 @@ const Case = (props: { id: string }) => {
                     <div className="">
                       <p className="text-md dark:text-gray-400">Form Data</p>
                     </div>
-                    <div className="">
-                      {viewModel.data.data && renderData(viewModel.data.data)}
-                    </div>
+                    <RenderData data={viewModel.data.data} />
                   </>
                 )}
               </div>

@@ -13,7 +13,7 @@ import tw from "tailwind-styled-components";
 import Spinner from "components/widgets/spinner";
 import { useRouter } from "next/router";
 import CaseLink from "components/case/caseLink";
-import { renderData, TR } from "components/widgets/renderData";
+import { RenderData, TR } from "components/widgets/renderData";
 import dynamic from "next/dynamic";
 import Comments from "components/widgets/comments";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
@@ -214,13 +214,10 @@ const Report = (props: { id: string }) => {
 
               <div className="mb-4">
                 {viewModel.activeTabIndex == 0 && (
-                  <div className="">
-                    {viewModel.data.data &&
-                      renderData(
-                        viewModel.data.data,
-                        viewModel.data.reportTypeDefinition
-                      )}
-                  </div>
+                  <RenderData
+                    data={viewModel.data.data}
+                    definition={viewModel.data.reportTypeDefinition}
+                  />
                 )}
                 {viewModel.activeTabIndex == 1 && (
                   <div className="">
