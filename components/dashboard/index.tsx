@@ -94,7 +94,7 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid xl:grid-cols-2 gap-4">
             <ReportsTableView
               authorityId={viewModel.authorityId}
               filter={filterData}
