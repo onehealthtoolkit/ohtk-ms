@@ -4,7 +4,7 @@ import ImagesField from "lib/opsvForm/models/fields/imagesField";
 import MultipleChoicesField from "lib/opsvForm/models/fields/multipleChoicesField";
 import Form from "lib/opsvForm/models/form";
 import { parseForm } from "lib/opsvForm/models/json";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 type ViewTypeSwitchProps = {
   active: boolean;
@@ -91,8 +91,8 @@ const renderDefinitionData = (form: Form) => {
         {form.sections.map((section, idx) => {
           return section.questions.map((question, qidx) => {
             return (
-              <>
-                {question.name ? (
+              <Fragment key={`root-${idx}-${qidx}`}>
+                {question.name && question.display ? (
                   <tr key={`s-${idx}-q-${qidx}`} className="bg-white border-b">
                     <th
                       scope="row"
@@ -103,17 +103,18 @@ const renderDefinitionData = (form: Form) => {
                     </th>
                   </tr>
                 ) : null}
-                {question.fields
-                  // .filter(item => item.name != "images")
-                  .map((field, fidx) => {
-                    return (
-                      <RowDefinedFieldValue
-                        field={field}
-                        key={`s-${idx}-q-${qidx}-f${fidx}`}
-                      />
-                    );
-                  })}
-              </>
+                {question.display &&
+                  question.fields
+                    // .filter(item => item.name != "images")
+                    .map((field, fidx) => {
+                      return field.display ? (
+                        <RowDefinedFieldValue
+                          field={field}
+                          key={`s-${idx}-q-${qidx}-f${fidx}`}
+                        />
+                      ) : null;
+                    })}
+              </Fragment>
             );
           });
         })}
@@ -137,7 +138,9 @@ const RowDefinedFieldValue = ({ field }: { field: Field }) => {
         {field.name}
       </th>
       <td className="px-6 py-4">
-        {valueList.map(value => displayValue(value))}
+        {valueList.map((value, idx) => (
+          <Fragment key={idx}>{displayValue(value)}</Fragment>
+        ))}
       </td>
     </tr>
   );
