@@ -150,7 +150,7 @@ const ReporterNotificationsUpdateForm = () => {
         {() => (
           <Field $size="half">
             <Label htmlFor="template">
-              {t("form.label.bodytemplate", "Body Template")}
+              {t("form.label.bodyTemplate", "Body Template")}
             </Label>
             <DataTemplateField
               placeholder={t("form.placeholder.bodyTemplate", "Body Template")}

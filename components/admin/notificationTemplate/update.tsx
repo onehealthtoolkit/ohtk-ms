@@ -129,7 +129,7 @@ const NotificationTemplateUpdate = () => {
             <Radio
               id="type-3"
               name="type"
-              label={"case transistion"}
+              label={"case transition"}
               checked={
                 viewModel.type === CasesNotificationTemplateTypeChoices.Cas
               }
@@ -145,12 +145,12 @@ const NotificationTemplateUpdate = () => {
     [viewModel]
   );
 
-  const transistionField = (
+  const transitionField = (
     <Observer>
       {() => (
         <Field $size="half">
-          <Label htmlFor="transistion">
-            {t("form.label.transistion", "Transistion")}
+          <Label htmlFor="transition">
+            {t("form.label.transition", "Transition")}
           </Label>
           <div className="relative">
             {transitionLoading && (
@@ -159,7 +159,7 @@ const NotificationTemplateUpdate = () => {
               </div>
             )}
             <Select
-              id="transistion"
+              id="transition"
               onChange={evt => {
                 viewModel.stateTransitionId = +evt.target.value;
               }}
@@ -271,7 +271,7 @@ const NotificationTemplateUpdate = () => {
             {reportTypeField}
             {typeField}
             {viewModel.type == CasesNotificationTemplateTypeChoices.Cas &&
-              transistionField}
+              transitionField}
             {conditionField}
             {titleTemplateField}
             {bodyField}

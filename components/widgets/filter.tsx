@@ -47,7 +47,7 @@ export const ResetButton = forwardRef(function ResetButton(
 });
 
 export const FilterTextInput = tw.input`
-  px-4 py-2 flex-1 md:max-w-xs border-gray-300 border mr-2
+  px-4 py-2 flex-1 md:max-w-xs border-gray-300 border mr-2 rounded
 `;
 
 export const FilterButton = tw.button`
