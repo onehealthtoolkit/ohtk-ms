@@ -4,9 +4,9 @@ import {
   CalendarEvent,
   CalendarViewModel,
 } from "components/widgets/calendarViewModel";
-import { MONTHS } from "lib/datetime";
 import { observer } from "mobx-react";
 import { ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 
 type CalendarProps<T extends CalendarEvent> = {
   viewModel: CalendarViewModel<T>;
@@ -24,11 +24,15 @@ const Calendar = <T extends CalendarEvent>({
   onMonthChange,
   dayEvents,
 }: CalendarProps<T>) => {
+  const { t } = useTranslation();
+  const monthNames = t("months", { joinArrays: "," }).split(",");
+  const dayNames = t("days", { joinArrays: "," }).split(",");
+
   return (
     <div>
       <div className="py-4 px-8 flex flex-row justify-between item-center bg-gray-100">
         <h1 className="font-medium text-lg leading-10">
-          {MONTHS[viewModel.month]} {viewModel.year}
+          {monthNames[viewModel.month]} {viewModel.year}
         </h1>
         <button
           className="rounded-md bg-white border border-gray-300 
@@ -63,13 +67,13 @@ const Calendar = <T extends CalendarEvent>({
       <table className="w-full border-collapse border">
         <thead>
           <tr className="text-xs text-center">
-            <th className="font-medium p-3 border">Sun</th>
-            <th className="font-medium p-3 border">Mon</th>
-            <th className="font-medium p-3 border">Tue</th>
-            <th className="font-medium p-3 border">Wed</th>
-            <th className="font-medium p-3 border">Thu</th>
-            <th className="font-medium p-3 border">Fri</th>
-            <th className="font-medium p-3 border">Sat</th>
+            <th className="font-medium p-3 border">{dayNames[0]}</th>
+            <th className="font-medium p-3 border">{dayNames[1]}</th>
+            <th className="font-medium p-3 border">{dayNames[2]}</th>
+            <th className="font-medium p-3 border">{dayNames[3]}</th>
+            <th className="font-medium p-3 border">{dayNames[4]}</th>
+            <th className="font-medium p-3 border">{dayNames[5]}</th>
+            <th className="font-medium p-3 border">{dayNames[6]}</th>
           </tr>
         </thead>
         <tbody>

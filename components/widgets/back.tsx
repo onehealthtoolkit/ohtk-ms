@@ -21,7 +21,7 @@ const Back = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="mt-6 p-4 md:p-8 col-span-full flex items-center justify-start">
+    <div className="mt-6 md:mt-14 col-span-full flex items-center justify-start">
       <BackButton type="button" onClick={() => router.back()}>
         <ChevronLeftIcon className="mr-2 -ml-1 w-5 h-5" />
         {t("form.button.back", "Back")}

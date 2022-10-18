@@ -1,7 +1,6 @@
 import useStore from "lib/store";
 import React, { useEffect, useState } from "react";
 import DashboardViewModel, { DashBoardFilterData } from "./dashboardViewModel";
-import StatView from "./statView";
 import SummaryByCategoryView from "./summaryByCategoryView";
 import CasesTableView from "./casesTableView";
 import { Observer, observer } from "mobx-react";
@@ -79,7 +78,6 @@ const Dashboard: React.FC = () => {
       {() => (
         <div className="grid gap-4">
           <DashboardFilter viewModel={viewModel} onRefresh={() => refresh()} />
-          <StatView authorityId={viewModel.authorityId} filter={filterData} />
           <MapView authorityId={viewModel.authorityId} filter={filterData} />
           <div className="grid md:grid-cols-3 gap-4">
             <div className="md:col-span-2">
@@ -96,7 +94,7 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid xl:grid-cols-2 gap-4">
             <ReportsTableView
               authorityId={viewModel.authorityId}
               filter={filterData}

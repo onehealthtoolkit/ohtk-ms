@@ -82,7 +82,7 @@
       "confirmPassword": "Confirm Password",
       "to": "To",
       "action": "Action",
-      "registerLogin": "Don't have an account yet?",
+      "noAccount": "Don't have an account yet?",
       "invitationCode": "Invitation Code",
       "language": "Language",
       "server": "Server",
@@ -119,7 +119,7 @@
       "password": "Password",
       "newPassword": "Password",
       "confirmPassword": "Confirm Password",
-      "to": "To",
+      "to": "email:john@gmail.com, user:pphetra",
       "selectReportType": "Select Report Type",
       "invitationCode": "Invitation Code",
       "language": "Language",
@@ -168,6 +168,7 @@
     "November",
     "December"
   ],
+  "days": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   "qr": {
     "login": "Login QR Code"
   }
