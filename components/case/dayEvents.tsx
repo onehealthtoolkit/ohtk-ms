@@ -12,7 +12,7 @@ export const CaseDayEvents = observer(
         {events.map(event => (
           <p
             key={event.id}
-            className="font-bold hover:bg-gray-100"
+            className="font-bold hover:bg-gray-100 cursor-pointer"
             onClick={() => router.push(`/cases/${event.id}`)}
           >
             {event.name}
