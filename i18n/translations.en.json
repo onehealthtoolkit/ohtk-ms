@@ -82,7 +82,7 @@
       "confirmPassword": "Confirm Password",
       "to": "To",
       "action": "Action",
-      "registerLogin": "Don't have an account yet?",
+      "noAccount": "Don't have an account yet?",
       "invitationCode": "Invitation Code",
       "language": "Language",
       "server": "Server",
