@@ -1,8 +1,55 @@
+/* eslint-disable @next/next/no-img-element */
+import Field from "lib/opsvForm/models/fields";
+import ImagesField from "lib/opsvForm/models/fields/imagesField";
+import MultipleChoicesField from "lib/opsvForm/models/fields/multipleChoicesField";
 import Form from "lib/opsvForm/models/form";
 import { parseForm } from "lib/opsvForm/models/json";
+import { Fragment, useState } from "react";
 
-/* eslint-disable @next/next/no-img-element */
-export const renderData = (data: Record<string, any>, definition?: any) => {
+type ViewTypeSwitchProps = {
+  active: boolean;
+  onChange: (active: boolean) => void;
+};
+
+const ViewTypeSwitch = ({ active, onChange }: ViewTypeSwitchProps) => {
+  return (
+    <label
+      htmlFor="live-toggle"
+      className="inline-flex relative items-center cursor-pointer bg-white rounded-md h-10"
+    >
+      <span className="mx-2 text-sm font-medium text-gray-900">Raw</span>
+      <input
+        type="checkbox"
+        value=""
+        id="live-toggle"
+        className="sr-only peer"
+        checked={active}
+        onChange={e => {
+          onChange(e.target.checked);
+        }}
+      />
+      <div
+        className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 
+        peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full 
+        peer-checked:after:border-white after:content-[''] after:absolute after:top-[10px] 
+        after:left-[45px] after:bg-white after:border-gray-300 after:border 
+        after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600
+        "
+      ></div>
+      <span className="mx-2 text-sm font-medium text-gray-900">Definition</span>
+    </label>
+  );
+};
+
+export const RenderData = ({
+  data,
+  definition,
+}: {
+  data?: Record<string, any>;
+  definition?: any;
+}) => {
+  const [isDefinitionView, setIsDefinitionView] = useState(true);
+
   if (!data) {
     return null;
   }
@@ -12,13 +59,23 @@ export const renderData = (data: Record<string, any>, definition?: any) => {
       const form = parseForm(definition);
       form.loadJsonValue(data);
 
-      return renderDefinitionData(form, data);
+      return (
+        <>
+          <div className="float-right">
+            <ViewTypeSwitch
+              active={isDefinitionView}
+              onChange={setIsDefinitionView}
+            />
+          </div>
+          {isDefinitionView ? renderDefinitionData(form) : renderRawData(data)}
+        </>
+      );
     } catch (e) {
       console.log(e);
       return <p className="text-red-500">Cannot render data by definition</p>;
     }
   }
-  return renderNameValueData(data);
+  return renderRawData(data);
 };
 
 /**
@@ -27,15 +84,15 @@ export const renderData = (data: Record<string, any>, definition?: any) => {
  * @param form
  * @returns <table /> or null if form data is undefined
  */
-const renderDefinitionData = (form: Form, data: Record<string, any>) => {
+const renderDefinitionData = (form: Form) => {
   return form.sections.length > 0 ? (
-    <table className="table-fixed border text-sm text-left text-gray-500">
+    <table className="table-fixed border text-sm text-left text-gray-500 w-full">
       <tbody>
         {form.sections.map((section, idx) => {
           return section.questions.map((question, qidx) => {
             return (
-              <>
-                {question.name ? (
+              <Fragment key={`root-${idx}-${qidx}`}>
+                {question.name && question.display ? (
                   <tr key={`s-${idx}-q-${qidx}`} className="bg-white border-b">
                     <th
                       scope="row"
@@ -46,29 +103,18 @@ const renderDefinitionData = (form: Form, data: Record<string, any>) => {
                     </th>
                   </tr>
                 ) : null}
-                {question.fields
-                  .filter(item => item.name != "images")
-                  .map((field, fidx) => {
-                    return (
-                      <tr
-                        key={`s-${idx}-q-${qidx}-f${fidx}`}
-                        className="bg-white border-b"
-                      >
-                        <th
-                          scope="row"
-                          className="w-1/4 px-6 py-4 font-medium text-gray-900 "
-                        >
-                          {field.name}
-                        </th>
-                        <td className="px-6 py-4">
-                          {question.name
-                            ? displayValue(data[question.name!][field.name])
-                            : displayValue(data[field.name])}
-                        </td>
-                      </tr>
-                    );
-                  })}
-              </>
+                {question.display &&
+                  question.fields
+                    // .filter(item => item.name != "images")
+                    .map((field, fidx) => {
+                      return field.display ? (
+                        <RowDefinedFieldValue
+                          field={field}
+                          key={`s-${idx}-q-${qidx}-f${fidx}`}
+                        />
+                      ) : null;
+                    })}
+              </Fragment>
             );
           });
         })}
@@ -77,12 +123,35 @@ const renderDefinitionData = (form: Form, data: Record<string, any>) => {
   ) : null;
 };
 
+const RowDefinedFieldValue = ({ field }: { field: Field }) => {
+  let valueList: string[] = [];
+
+  if (field instanceof MultipleChoicesField || field instanceof ImagesField) {
+    valueList = field.renderedValue.split(",");
+  } else {
+    valueList = [field.renderedValue];
+  }
+
+  return (
+    <tr className="bg-white border-b">
+      <th scope="row" className="w-1/4 px-6 py-4 font-medium text-gray-900 ">
+        {field.name}
+      </th>
+      <td className="px-6 py-4">
+        {valueList.map((value, idx) => (
+          <Fragment key={idx}>{displayValue(value)}</Fragment>
+        ))}
+      </td>
+    </tr>
+  );
+};
+
 /**
  * Render data in key/value format
  * @param data
  * @returns <table /> or null if form data is undefined
  */
-const renderNameValueData = (data: Record<string, any>) => {
+const renderRawData = (data: Record<string, any>) => {
   if (!data) {
     return null;
   }
@@ -97,7 +166,10 @@ const renderNameValueData = (data: Record<string, any>) => {
 const renderItem = (data: Record<string, any>) => {
   return Object.keys(data)
     .sort()
-    .filter(key => key != "images" && data[key] != null)
+    .filter(
+      key =>
+        key != "images" && data[key] != null && key.indexOf("__value") === -1
+    )
     .map((key: string) => {
       return (
         <tr
@@ -134,10 +206,10 @@ const displayValue = (value: any) => {
         </div>
       );
     } else {
-      return val;
+      return <p>{val}</p>;
     }
   } else {
-    return renderNameValueData(value);
+    return renderRawData(value);
   }
 };
 

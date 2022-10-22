@@ -25,6 +25,7 @@ export default class DecimalField extends PrimitiveField<Decimal> {
 
   toJsonValue(json: Record<string, any>) {
     json[this.name] = this.value?.toFixed(2);
+    json[this.name + "__value"] = this.renderedValue;
   }
 
   loadJsonValue(json: Record<string, any>) {
@@ -48,5 +49,11 @@ export default class DecimalField extends PrimitiveField<Decimal> {
           return false;
       }
     }
+  }
+
+  get renderedValue(): string {
+    return this.value !== null && typeof this.value !== "undefined"
+      ? this.value.toFixed(2)
+      : "";
   }
 }

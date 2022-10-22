@@ -61,6 +61,7 @@ export type BaseFieldType = {
   required?: boolean;
   requiredMessage?: string;
   condition?: ConditionType;
+  tags?: string;
 };
 
 export type TextFieldType = {
@@ -147,6 +148,7 @@ export function parseField(json: FieldType): Field {
     requiredMessage: json["requiredMessage"],
     suffixLabel: json["suffixLabel"],
     condition: parseCondition(json["condition"]),
+    tags: json["tags"],
   };
   switch (json.type) {
     case "text":

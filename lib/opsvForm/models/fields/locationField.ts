@@ -1,3 +1,4 @@
+import { toJS } from "mobx";
 import { FieldParams } from ".";
 import { ConditionOperator } from "../condition";
 import PrimitiveField from "./primitiveField";
@@ -33,5 +34,11 @@ export default class LocationField extends PrimitiveField<string> {
           return this._value.indexOf(value) >= 0;
       }
     }
+  }
+
+  get renderedValue(): string {
+    return this.value !== null && typeof this.value !== "undefined"
+      ? String(toJS(this.value)) + " (Lng,Lat)"
+      : "";
   }
 }

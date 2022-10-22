@@ -1,3 +1,4 @@
+import { formatYmd, formatYmdt } from "lib/datetime";
 import { computed, makeObservable, observable } from "mobx";
 import Field, { FieldParams } from ".";
 import { ConditionOperator } from "../condition";
@@ -74,7 +75,7 @@ export default class DateField extends Field {
     this._minute = minute;
   }
 
-  get value(): any {
+  get value(): string | undefined {
     if (
       this.year === undefined ||
       this.month === undefined ||
@@ -103,6 +104,7 @@ export default class DateField extends Field {
 
   toJsonValue(json: Record<string, any>): void {
     json[this.name] = this.value;
+    json[this.name + "__value"] = this.renderedValue;
   }
 
   loadJsonValue(json: Record<string, any>): void {
@@ -215,5 +217,13 @@ export default class DateField extends Field {
     }
 
     return false;
+  }
+
+  get renderedValue(): string {
+    return this.value !== null && typeof this.value !== "undefined"
+      ? this.withTime
+        ? formatYmdt(this.value)
+        : formatYmd(this.value)
+      : "";
   }
 }

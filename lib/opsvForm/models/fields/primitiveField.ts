@@ -10,6 +10,7 @@ export default abstract class PrimitiveField<T> extends Field {
       _value: observable,
       value: computed,
       loadJsonValue: action,
+      renderedValue: computed,
     });
   }
 
@@ -22,8 +23,15 @@ export default abstract class PrimitiveField<T> extends Field {
     this._value = value;
   }
 
+  get renderedValue(): string {
+    return this._value !== null && typeof this._value !== "undefined"
+      ? String(toJS(this._value))
+      : "";
+  }
+
   toJsonValue(json: Record<string, any>) {
     json[this.name] = toJS(this.value);
+    json[this.name + "__value"] = this.renderedValue;
   }
 
   loadJsonValue(json: Record<string, any>) {

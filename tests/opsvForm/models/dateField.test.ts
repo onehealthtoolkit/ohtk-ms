@@ -1,3 +1,4 @@
+import { formatYmd, formatYmdt } from "lib/datetime";
 import DateField from "lib/opsvForm/models/fields/dateField";
 
 describe("Date field", () => {
@@ -16,6 +17,25 @@ describe("Date field", () => {
       field.toJsonValue(json);
 
       expect(json["dob"]).toBe(new Date(2022, 10, 1).toISOString());
+      expect(json["dob__value"]).toBe(
+        formatYmd(new Date(2022, 10, 1).toISOString())
+      );
+    });
+
+    it("to json with value with time", () => {
+      field.withTime = true;
+      field.day = 1;
+      field.month = 11;
+      field.year = 2022;
+      field.hour = 12;
+      field.minute = 13;
+      const json: Record<string, any> = {};
+      field.toJsonValue(json);
+
+      expect(json["dob"]).toBe(new Date(2022, 10, 1, 12, 13).toISOString());
+      expect(json["dob__value"]).toBe(
+        formatYmdt(new Date(2022, 10, 1, 12, 13).toISOString())
+      );
     });
 
     it("to json without value", () => {
@@ -23,6 +43,7 @@ describe("Date field", () => {
       field.toJsonValue(json);
 
       expect(json["dob"]).toBeUndefined();
+      expect(json["dob__value"]).toEqual("");
     });
 
     it("load json data", () => {

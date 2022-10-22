@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable, toJS } from "mobx";
 import Field, { FieldParams } from ".";
 import { ConditionOperator } from "../condition";
 import { valueIsUndefinedAndNotRequiredGuard } from "./helpers";
@@ -94,7 +94,9 @@ export default class SingleChoicesField extends Field {
   toJsonValue(json: Record<string, any>): void {
     json[this.name] = this.value;
     json[`${this.name}_text`] = this.text;
+    json[this.name + "__value"] = this.renderedValue;
   }
+
   loadJsonValue(json: Record<string, any>): void {
     this.value = json[this.name];
     this.text = json[`${this.name}_text`];
@@ -110,5 +112,11 @@ export default class SingleChoicesField extends Field {
       default:
         return this.value!.indexOf(value) >= 0;
     }
+  }
+
+  get renderedValue(): string {
+    return this.value !== null && typeof this.value !== "undefined"
+      ? toJS(this.value) + (this.text ? " - " + toJS(this.text) : "")
+      : "";
   }
 }

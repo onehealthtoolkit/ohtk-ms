@@ -22,7 +22,7 @@ const Field: FC<Props> = ({ value: field, onDelete }) => {
             return (
               <li
                 key={choice.id}
-                className="flex text-sm items-center mt-2 relative"
+                className="flex text-sm items-center mt-2 relative md:flex-row flex-col"
                 onMouseOver={() => choice.setIsHovered(true)}
                 onMouseOut={() => choice.setIsHovered(false)}
               >
@@ -40,14 +40,14 @@ const Field: FC<Props> = ({ value: field, onDelete }) => {
                   <div className="mr-2 rounded-full w-5 h-5 border border-gray-400 bg-white"></div>
                 )}
                 <input
-                  className="block border-b border-gray-200 py-2 px-4 flex-grow rounded mr-2"
+                  className="block border-b border-gray-200 py-2 px-4 w-full flex-grow-0 md:w-min md:flex-grow rounded mr-2"
                   type={"text"}
                   value={choice.label}
                   placeholder="Label"
                   onChange={e => choice.setLabel(e.target.value)}
                 />
                 <input
-                  className="block border-b border-gray-200 py-2 px-4 w-28 rounded mr-2"
+                  className="block border-b border-gray-200 py-2 px-4 w-full flex-grow-0 md:w-min md:flex-grow rounded mr-2"
                   type={"text"}
                   value={choice.value}
                   placeholder="Value"

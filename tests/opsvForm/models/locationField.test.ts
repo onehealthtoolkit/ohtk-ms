@@ -13,12 +13,14 @@ describe("Location Field", () => {
       const json: Record<string, any> = {};
       field.toJsonValue(json);
       expect(json["location"]).toBe(field.value);
+      expect(json["location__value"]).toBe(field.value + " (Lng,Lat)");
     });
 
     it("to json without value", () => {
       const json: Record<string, any> = {};
       field.toJsonValue(json);
       expect(json["location"]).toBeUndefined();
+      expect(json["location__value"]).toBe("");
     });
 
     it("load json data", () => {

@@ -10,6 +10,7 @@ export type FieldParams = {
   required?: boolean;
   requiredMessage?: string;
   condition?: Condition;
+  tags?: string;
 };
 
 export default abstract class Field {
@@ -21,6 +22,7 @@ export default abstract class Field {
   required?: boolean;
   requiredMessage?: string;
   condition?: Condition;
+  tags?: string;
 
   invalidMessage?: string = undefined;
 
@@ -34,6 +36,7 @@ export default abstract class Field {
       required,
       requiredMessage,
       condition,
+      tags,
     }: FieldParams
   ) {
     this.label = label;
@@ -42,6 +45,8 @@ export default abstract class Field {
     this.required = required;
     this.requiredMessage = requiredMessage;
     this.condition = condition;
+    this.tags = tags;
+
     makeObservable(this, {
       invalidMessage: observable,
       markError: action,
@@ -51,6 +56,8 @@ export default abstract class Field {
     });
   }
   abstract get value(): any;
+
+  abstract get renderedValue(): any;
 
   get display() {
     if (this.condition && this.form) {
