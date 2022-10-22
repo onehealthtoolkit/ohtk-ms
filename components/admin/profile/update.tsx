@@ -84,21 +84,13 @@ const ProfileUpdate = () => {
                 className="hidden"
               />
               <ErrorText>{viewModel.fieldErrors.image}</ErrorText>
-              <p className="p-4 text-lg font-bold text-gray-600">
-                {t("form.label.name", "Name")} {store.me?.firstName}{" "}
-                {store.me?.lastName}{" "}
-              </p>
-              <p className="p-4 text-lg font-bold text-gray-600">
-                {t("form.label.authority", "Authority")}{" "}
-                {store.me?.authorityName}
-              </p>
             </Field>
-            <Field $size="half" className="text-lg">
-              <Label htmlFor="name">
-                {t("form.label.username", "Usernamee")}
-              </Label>
-              <span>{store.me?.username}</span>
-            </Field>
+            <p className="pt-4 pb-4 text-lg font-bold text-gray-600">
+              {t("form.label.authority", "Authority")} {store.me?.authorityName}
+            </p>
+            <p className="pb-4 text-lg font-bold text-gray-600">
+              {t("form.label.username", "Usernamee")} {store.me?.username}
+            </p>
             <LanguageSelect />
           </FieldGroup>
           <ProfileInfoUpdate />
