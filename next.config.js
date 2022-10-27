@@ -16,6 +16,10 @@ const nextConfig = {
     loader: "akamai",
     path: "",
   },
+  experimental: {
+    outputStandalone: true, // next 12.1.x
+    // for next 12.2.x -> root: { output: "standalone" }
+  },
 };
 
 module.exports = nextConfig;
