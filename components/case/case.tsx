@@ -18,6 +18,7 @@ import Comments from "components/widgets/comments";
 import dynamic from "next/dynamic";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 import Back from "components/widgets/back";
+import { formatYmdt } from "lib/datetime";
 
 const ReportLocation = dynamic(() => import("./reportLocationMap"), {
   loading: () => <p>A map is loading</p>,
@@ -32,7 +33,7 @@ const ReportInformation = observer(
           <tbody>
             <TR
               label="Created at"
-              value={viewModel.data?.createdAt?.toString() || ""}
+              value={formatYmdt(viewModel.data?.createdAt)}
             />
 
             <TR
