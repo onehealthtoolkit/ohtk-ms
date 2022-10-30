@@ -22,7 +22,8 @@ export interface IUserService extends IService {
   fetchUsers(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ): Promise<QueryResult<User[]>>;
 
   getUser(id: string): Promise<GetResult<User>>;
@@ -68,7 +69,12 @@ export class UserService implements IUserService {
     this.client = client;
   }
 
-  async fetchUsers(limit: number, offset: number, searchText: string) {
+  async fetchUsers(
+    limit: number,
+    offset: number,
+    searchText: string,
+    force?: boolean
+  ) {
     this.fetchUsersQuery = {
       ...this.fetchUsersQuery,
       limit,
@@ -79,6 +85,7 @@ export class UserService implements IUserService {
     const fetchResult = await this.client.query({
       query: UsersDocument,
       variables: this.fetchUsersQuery,
+      fetchPolicy: force ? "network-only" : "cache-first",
     });
 
     const items = Array<User>();

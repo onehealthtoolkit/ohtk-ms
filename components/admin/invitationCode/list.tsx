@@ -63,7 +63,10 @@ const InvitaionCodeList = () => {
       {() => (
         <div>
           <div className="flex items-center flex-wrap mb-4 gap-2">
-            <TotalItem totalCount={viewModel.totalCount} />
+            <TotalItem
+              totalCount={viewModel.totalCount}
+              onRefresh={() => viewModel.fetch(true)}
+            />
             <Filter
               codeSearch={viewModel.codeSearch}
               onChange={value => {

@@ -31,11 +31,12 @@ export class InvitaionCodeListViewModel extends BaseViewModel {
     this.codeSearch = "";
   }
 
-  async fetch(): Promise<void> {
+  async fetch(force?: boolean): Promise<void> {
     const result = await this.invitationCodeService.fetchInvitationCodes(
       this.limit,
       this.offset,
-      this.codeSearch
+      this.codeSearch,
+      force
     );
     runInAction(() => {
       this.data = result.items || [];

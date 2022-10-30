@@ -19,7 +19,8 @@ export interface IReportCategoryService extends IService {
   fetchReportCategories(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ): Promise<QueryResult<ReportCategory[]>>;
 
   getReportCategory(id: string): Promise<GetResult<ReportCategory>>;
@@ -57,7 +58,8 @@ export class ReportCategoryService implements IReportCategoryService {
   async fetchReportCategories(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ) {
     this.fetchReportCategoriesQuery = {
       ...this.fetchReportCategoriesQuery,
@@ -68,6 +70,7 @@ export class ReportCategoryService implements IReportCategoryService {
     const fetchResult = await this.client.query({
       query: ReportCategoriesDocument,
       variables: this.fetchReportCategoriesQuery,
+      fetchPolicy: force ? "network-only" : "cache-first",
     });
 
     const items = Array<ReportCategory>();

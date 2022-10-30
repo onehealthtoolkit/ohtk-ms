@@ -19,7 +19,8 @@ export interface IInvitationCodeService extends IService {
   fetchInvitationCodes(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ): Promise<QueryResult<InvitationCode[]>>;
 
   getInvitationCode(id: string): Promise<GetResult<InvitationCode>>;
@@ -61,7 +62,8 @@ export class InvitationCodeService implements IInvitationCodeService {
   async fetchInvitationCodes(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ) {
     this.fetchInvitationCodesQuery = {
       ...this.fetchInvitationCodesQuery,
@@ -72,6 +74,7 @@ export class InvitationCodeService implements IInvitationCodeService {
     const fetchResult = await this.client.query({
       query: InvitationCodesDocument,
       variables: this.fetchInvitationCodesQuery,
+      fetchPolicy: force ? "network-only" : "cache-first",
     });
 
     const items = Array<InvitationCode>();

@@ -21,7 +21,8 @@ export interface IStateDefinitionService extends IService {
   fetchStateDefinitions(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ): Promise<QueryResult<StateDefinition[]>>;
 
   getStateDefinition(id: string): Promise<GetResult<StateDefinition>>;
@@ -56,7 +57,8 @@ export class StateDefinitionService implements IStateDefinitionService {
   async fetchStateDefinitions(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ) {
     this.fetchStateDefinitionsQuery = {
       ...this.fetchStateDefinitionsQuery,
@@ -67,6 +69,7 @@ export class StateDefinitionService implements IStateDefinitionService {
     const fetchResult = await this.client.query({
       query: StateDefinitionsDocument,
       variables: this.fetchStateDefinitionsQuery,
+      fetchPolicy: force ? "network-only" : "cache-first",
     });
 
     const items = Array<StateDefinition>();

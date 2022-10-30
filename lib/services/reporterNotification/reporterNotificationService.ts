@@ -19,7 +19,8 @@ export interface IReporterNotificationService extends IService {
   fetchReporterNotifications(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ): Promise<QueryResult<ReporterNotification[]>>;
 
   getReporterNotification(id: string): Promise<GetResult<ReporterNotification>>;
@@ -62,7 +63,8 @@ export class ReporterNotificationService
   async fetchReporterNotifications(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ) {
     this.fetchReporterNotificationsQuery = {
       ...this.fetchReporterNotificationsQuery,
@@ -73,6 +75,7 @@ export class ReporterNotificationService
     const fetchResult = await this.client.query({
       query: ReporterNotificationsDocument,
       variables: this.fetchReporterNotificationsQuery,
+      fetchPolicy: force ? "network-only" : "cache-first",
     });
 
     const items = Array<ReporterNotification>();

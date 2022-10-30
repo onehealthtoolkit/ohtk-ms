@@ -19,7 +19,8 @@ export interface ICaseDefinitionService extends IService {
   fetchCaseDefinitions(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ): Promise<QueryResult<CaseDefinition[]>>;
 
   getCaseDefinition(id: string): Promise<GetResult<CaseDefinition>>;
@@ -56,7 +57,8 @@ export class CaseDefinitionService implements ICaseDefinitionService {
   async fetchCaseDefinitions(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ) {
     this.fetchCaseDefinitionsQuery = {
       ...this.fetchCaseDefinitionsQuery,
@@ -67,6 +69,7 @@ export class CaseDefinitionService implements ICaseDefinitionService {
     const fetchResult = await this.client.query({
       query: CaseDefinitionsDocument,
       variables: this.fetchCaseDefinitionsQuery,
+      fetchPolicy: force ? "network-only" : "cache-first",
     });
 
     const items = Array<CaseDefinition>();

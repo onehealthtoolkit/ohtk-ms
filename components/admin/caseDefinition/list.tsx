@@ -62,7 +62,10 @@ const CaseDefinitionList = () => {
       {() => (
         <div>
           <div className="flex items-center flex-wrap mb-4 gap-2">
-            <TotalItem totalCount={viewModel.totalCount} />
+            <TotalItem
+              totalCount={viewModel.totalCount}
+              onRefresh={() => viewModel.fetch(true)}
+            />
             <Filter
               nameSearch={viewModel.nameSearch}
               onChange={value => {
