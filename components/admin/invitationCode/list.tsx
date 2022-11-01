@@ -108,6 +108,10 @@ const InvitaionCodeList = () => {
                 label: t("form.label.role", "Role"),
                 get: record => getRoleName(record.role || ""),
               },
+              {
+                label: t("form.label.authority", "Authority"),
+                get: record => record.authorityName,
+              },
             ]}
             data={viewModel?.data || []}
             onEdit={record =>

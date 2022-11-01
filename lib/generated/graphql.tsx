@@ -3137,6 +3137,7 @@ export type InvitationCodesQuery = {
       fromDate: any;
       throughDate: any;
       role: string;
+      authority: { __typename?: "AdminAuthorityCreateSuccess"; name: string };
     } | null>;
   } | null;
 };
@@ -3207,6 +3208,7 @@ export type InvitationCodeUpdateMutation = {
             authority: {
               __typename?: "AdminAuthorityCreateSuccess";
               id: string;
+              name: string;
             };
           } | null;
         }
@@ -3239,7 +3241,11 @@ export type GetInvitationCodeQuery = {
     fromDate: any;
     throughDate: any;
     role: string;
-    authority: { __typename?: "AdminAuthorityCreateSuccess"; id: string };
+    authority: {
+      __typename?: "AdminAuthorityCreateSuccess";
+      id: string;
+      name: string;
+    };
   } | null;
 };
 
@@ -8463,6 +8469,19 @@ export const InvitationCodesDocument = {
                         name: { kind: "Name", value: "throughDate" },
                       },
                       { kind: "Field", name: { kind: "Name", value: "role" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "authority" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
                     ],
                   },
                 },
@@ -8854,6 +8873,10 @@ export const InvitationCodeUpdateDocument = {
                                           kind: "Field",
                                           name: { kind: "Name", value: "id" },
                                         },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
                                       ],
                                     },
                                   },
@@ -9010,6 +9033,7 @@ export const GetInvitationCodeDocument = {
                     kind: "SelectionSet",
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
                     ],
                   },
                 },

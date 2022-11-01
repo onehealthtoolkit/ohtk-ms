@@ -96,6 +96,7 @@ export class InvitationCodeService implements IInvitationCodeService {
           fromDate: item.fromDate,
           throughDate: item.throughDate,
           role: item.role,
+          authorityName: item.authority.name,
         });
       }
     });
@@ -123,6 +124,7 @@ export class InvitationCodeService implements IInvitationCodeService {
         throughDate: invitationCode.throughDate,
         role: invitationCode.role,
         authorityId: parseInt(invitationCode.authority.id),
+        authorityName: invitationCode.authority.name,
       };
     }
     return {
