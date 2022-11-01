@@ -46,7 +46,7 @@ export class StateDefinitionService implements IStateDefinitionService {
   fetchStateDefinitionsQuery = {
     limit: 20,
     offset: 0,
-    nameStartWith: "",
+    nameContains: "",
     ordering: "name,asc",
   };
 
@@ -64,7 +64,7 @@ export class StateDefinitionService implements IStateDefinitionService {
       ...this.fetchStateDefinitionsQuery,
       limit,
       offset,
-      nameStartWith: searchText,
+      nameContains: searchText,
     };
     const fetchResult = await this.client.query({
       query: StateDefinitionsDocument,

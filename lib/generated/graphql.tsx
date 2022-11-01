@@ -1206,6 +1206,7 @@ export type ImageType = {
 
 export type IncidentReportType = {
   __typename?: "IncidentReportType";
+  authorities?: Maybe<Array<Maybe<AuthorityType>>>;
   caseId?: Maybe<Scalars["UUID"]>;
   coverImage?: Maybe<ImageType>;
   createdAt: Scalars["DateTime"];
@@ -1809,6 +1810,7 @@ export type QueryAdminCaseDefinitionQueryArgs = {
   after?: InputMaybe<Scalars["String"]>;
   before?: InputMaybe<Scalars["String"]>;
   description?: InputMaybe<Scalars["String"]>;
+  description_Contains?: InputMaybe<Scalars["String"]>;
   description_Istartswith?: InputMaybe<Scalars["String"]>;
   first?: InputMaybe<Scalars["Int"]>;
   last?: InputMaybe<Scalars["Int"]>;
@@ -1824,6 +1826,7 @@ export type QueryAdminCategoryQueryArgs = {
   last?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
   name?: InputMaybe<Scalars["String"]>;
+  name_Contains?: InputMaybe<Scalars["String"]>;
   name_Istartswith?: InputMaybe<Scalars["String"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
@@ -1832,13 +1835,14 @@ export type QueryAdminCategoryQueryArgs = {
 export type QueryAdminInvitationCodeQueryArgs = {
   after?: InputMaybe<Scalars["String"]>;
   before?: InputMaybe<Scalars["String"]>;
-  code?: InputMaybe<Scalars["String"]>;
-  code_Istartswith?: InputMaybe<Scalars["String"]>;
   first?: InputMaybe<Scalars["Int"]>;
   last?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
+  role?: InputMaybe<Scalars["String"]>;
+  role_Contains?: InputMaybe<Scalars["String"]>;
+  role_Istartswith?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryAdminNotificationTemplateAuthorityQueryArgs = {
@@ -1871,6 +1875,7 @@ export type QueryAdminReporterNotificationQueryArgs = {
   after?: InputMaybe<Scalars["String"]>;
   before?: InputMaybe<Scalars["String"]>;
   description?: InputMaybe<Scalars["String"]>;
+  description_Contains?: InputMaybe<Scalars["String"]>;
   description_Istartswith?: InputMaybe<Scalars["String"]>;
   first?: InputMaybe<Scalars["Int"]>;
   last?: InputMaybe<Scalars["Int"]>;
@@ -1886,6 +1891,7 @@ export type QueryAdminStateDefinitionQueryArgs = {
   last?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
   name?: InputMaybe<Scalars["String"]>;
+  name_Contains?: InputMaybe<Scalars["String"]>;
   name_Istartswith?: InputMaybe<Scalars["String"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
@@ -2229,6 +2235,7 @@ export type SummaryByCategoryType = {
 
 export type UserMessageType = {
   __typename?: "UserMessageType";
+  createdAt: Scalars["DateTime"];
   id: Scalars["ID"];
   isSeen: Scalars["Boolean"];
   message?: Maybe<MessageType>;
@@ -2740,7 +2747,7 @@ export type StateForwardMutation = {
 export type CaseDefinitionsQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
-  descriptionStartWith?: InputMaybe<Scalars["String"]>;
+  descriptionContains?: InputMaybe<Scalars["String"]>;
   ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
@@ -3114,7 +3121,7 @@ export type ResetPasswordCreateMutation = {
 export type InvitationCodesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
-  codeStartWith?: InputMaybe<Scalars["String"]>;
+  roleContains?: InputMaybe<Scalars["String"]>;
   ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
@@ -3678,7 +3685,7 @@ export type PromoteReportToCaseMutation = {
 export type ReportCategoriesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
-  nameStartWith?: InputMaybe<Scalars["String"]>;
+  nameContains?: InputMaybe<Scalars["String"]>;
   ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
@@ -3968,7 +3975,7 @@ export type GetReportTypeQuery = {
 export type ReporterNotificationsQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
-  descriptionStartWith?: InputMaybe<Scalars["String"]>;
+  descriptionContains?: InputMaybe<Scalars["String"]>;
   ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
@@ -4099,7 +4106,7 @@ export type GetReporterNotificationQuery = {
 export type StateDefinitionsQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
-  nameStartWith?: InputMaybe<Scalars["String"]>;
+  nameContains?: InputMaybe<Scalars["String"]>;
   ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
@@ -6724,7 +6731,7 @@ export const CaseDefinitionsDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "descriptionStartWith" },
+            name: { kind: "Name", value: "descriptionContains" },
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
@@ -6762,10 +6769,10 @@ export const CaseDefinitionsDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "description_Istartswith" },
+                name: { kind: "Name", value: "description_Contains" },
                 value: {
                   kind: "Variable",
-                  name: { kind: "Name", value: "descriptionStartWith" },
+                  name: { kind: "Name", value: "descriptionContains" },
                 },
               },
               {
@@ -8382,7 +8389,7 @@ export const InvitationCodesDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "codeStartWith" },
+            name: { kind: "Name", value: "roleContains" },
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
@@ -8420,10 +8427,10 @@ export const InvitationCodesDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "code_Istartswith" },
+                name: { kind: "Name", value: "role_Contains" },
                 value: {
                   kind: "Variable",
-                  name: { kind: "Name", value: "codeStartWith" },
+                  name: { kind: "Name", value: "roleContains" },
                 },
               },
               {
@@ -11126,7 +11133,7 @@ export const ReportCategoriesDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "nameStartWith" },
+            name: { kind: "Name", value: "nameContains" },
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
@@ -11164,10 +11171,10 @@ export const ReportCategoriesDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "name_Istartswith" },
+                name: { kind: "Name", value: "name_Contains" },
                 value: {
                   kind: "Variable",
-                  name: { kind: "Name", value: "nameStartWith" },
+                  name: { kind: "Name", value: "nameContains" },
                 },
               },
               {
@@ -12690,7 +12697,7 @@ export const ReporterNotificationsDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "descriptionStartWith" },
+            name: { kind: "Name", value: "descriptionContains" },
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
@@ -12728,10 +12735,10 @@ export const ReporterNotificationsDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "description_Istartswith" },
+                name: { kind: "Name", value: "description_Contains" },
                 value: {
                   kind: "Variable",
-                  name: { kind: "Name", value: "descriptionStartWith" },
+                  name: { kind: "Name", value: "descriptionContains" },
                 },
               },
               {
@@ -13428,7 +13435,7 @@ export const StateDefinitionsDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "nameStartWith" },
+            name: { kind: "Name", value: "nameContains" },
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
@@ -13466,10 +13473,10 @@ export const StateDefinitionsDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "name_Istartswith" },
+                name: { kind: "Name", value: "name_Contains" },
                 value: {
                   kind: "Variable",
-                  name: { kind: "Name", value: "nameStartWith" },
+                  name: { kind: "Name", value: "nameContains" },
                 },
               },
               {

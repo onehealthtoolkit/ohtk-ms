@@ -1,13 +1,13 @@
 query invitationCodes(
   $limit: Int!
   $offset: Int!
-  $codeStartWith: String
+  $roleContains: String
   $ordering: String
 ) {
   adminInvitationCodeQuery(
     limit: $limit
     offset: $offset
-    code_Istartswith: $codeStartWith
+    role_Contains: $roleContains
     ordering: $ordering
   ) {
     totalCount

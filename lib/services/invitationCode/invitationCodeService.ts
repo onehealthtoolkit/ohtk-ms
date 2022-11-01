@@ -5,6 +5,7 @@ import {
   InvitationCodeUpdateDocument,
   GetInvitationCodeDocument,
   InvitationCodeDeleteDocument,
+  AccountsAuthorityUserRoleChoices,
 } from "lib/generated/graphql";
 import { InvitationCode } from "lib/services/invitationCode/invitationCode";
 import {
@@ -51,7 +52,7 @@ export class InvitationCodeService implements IInvitationCodeService {
   fetchInvitationCodesQuery = {
     limit: 20,
     offset: 0,
-    codeStartWith: "",
+    roleContains: "",
     ordering: "code,asc",
   };
 
@@ -65,11 +66,20 @@ export class InvitationCodeService implements IInvitationCodeService {
     searchText: string,
     force?: boolean
   ) {
+    if (searchText) {
+      const txt = searchText.toLocaleLowerCase();
+      if ("reporter".indexOf(txt) !== -1)
+        searchText = AccountsAuthorityUserRoleChoices.Rep;
+      else if ("officer".indexOf(txt) !== -1)
+        searchText = AccountsAuthorityUserRoleChoices.Ofc;
+      else if ("admin".indexOf(txt) !== -1)
+        searchText = AccountsAuthorityUserRoleChoices.Adm;
+    }
     this.fetchInvitationCodesQuery = {
       ...this.fetchInvitationCodesQuery,
       limit,
       offset,
-      codeStartWith: searchText,
+      roleContains: searchText,
     };
     const fetchResult = await this.client.query({
       query: InvitationCodesDocument,

@@ -46,7 +46,7 @@ export class CaseDefinitionService implements ICaseDefinitionService {
   fetchCaseDefinitionsQuery = {
     limit: 20,
     offset: 0,
-    descriptionStartWith: "",
+    descriptionContains: "",
     ordering: "reportType__name,asc",
   };
 
@@ -64,7 +64,7 @@ export class CaseDefinitionService implements ICaseDefinitionService {
       ...this.fetchCaseDefinitionsQuery,
       limit,
       offset,
-      descriptionStartWith: searchText,
+      descriptionContains: searchText,
     };
     const fetchResult = await this.client.query({
       query: CaseDefinitionsDocument,

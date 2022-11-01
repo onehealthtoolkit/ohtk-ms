@@ -1,13 +1,13 @@
 query ReporterNotifications(
   $limit: Int!
   $offset: Int!
-  $descriptionStartWith: String
+  $descriptionContains: String
   $ordering: String
 ) {
   adminReporterNotificationQuery(
     limit: $limit
     offset: $offset
-    description_Istartswith: $descriptionStartWith
+    description_Contains: $descriptionContains
     ordering: $ordering
   ) {
     totalCount

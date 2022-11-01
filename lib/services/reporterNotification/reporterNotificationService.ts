@@ -52,7 +52,7 @@ export class ReporterNotificationService
   fetchReporterNotificationsQuery = {
     limit: 20,
     offset: 0,
-    descriptionStartWith: "",
+    descriptionContains: "",
     ordering: "description,asc",
   };
 
@@ -70,7 +70,7 @@ export class ReporterNotificationService
       ...this.fetchReporterNotificationsQuery,
       limit,
       offset,
-      descriptionStartWith: searchText,
+      descriptionContains: searchText,
     };
     const fetchResult = await this.client.query({
       query: ReporterNotificationsDocument,

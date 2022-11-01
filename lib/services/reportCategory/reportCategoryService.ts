@@ -47,7 +47,7 @@ export class ReportCategoryService implements IReportCategoryService {
   fetchReportCategoriesQuery = {
     limit: 20,
     offset: 0,
-    nameStartWith: "",
+    nameContains: "",
     ordering: "ordering,asc",
   };
 
@@ -65,7 +65,7 @@ export class ReportCategoryService implements IReportCategoryService {
       ...this.fetchReportCategoriesQuery,
       limit,
       offset,
-      nameStartWith: searchText,
+      nameContains: searchText,
     };
     const fetchResult = await this.client.query({
       query: ReportCategoriesDocument,
