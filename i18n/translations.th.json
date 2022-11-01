@@ -8,7 +8,7 @@
     "users": "ผู้ใช้",
     "reportCategories": "กลุ่มรายงาน",
     "reportTypes": "ประเภทรายงาน",
-    "tnvitationCodes": "รหัสคำเชิญ",
+    "invitationCodes": "รหัสคำเชิญ",
     "caseDefinitions": "นิยามของเคส",
     "stateDefinitions": "กำหนดสถานะ",
     "notificationTemplates": "เทมเพลตการแจ้งเตือน",
