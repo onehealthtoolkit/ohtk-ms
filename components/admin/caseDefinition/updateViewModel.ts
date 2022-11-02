@@ -1,12 +1,17 @@
 import { CaseDefinition } from "lib/services/caseDefinition";
 import { ICaseDefinitionService } from "lib/services/caseDefinition/caseDefinitionService";
 import { SaveResult } from "lib/services/interface";
+import { IReportTypeService } from "lib/services/reportType";
 import { CaseDefinitionViewModel } from "./caseDefinitionViewModel";
 
 export class CaseDefinitionUpdateViewModel extends CaseDefinitionViewModel {
   id: string;
-  constructor(id: string, caseDefinitionService: ICaseDefinitionService) {
-    super(caseDefinitionService);
+  constructor(
+    id: string,
+    caseDefinitionService: ICaseDefinitionService,
+    reportTypeService: IReportTypeService
+  ) {
+    super(caseDefinitionService, reportTypeService);
     this.id = id;
     this.fetch();
   }

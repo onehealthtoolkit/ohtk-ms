@@ -14,13 +14,22 @@ import {
   MaskingLoader,
   SaveButton,
   Select,
-  TextArea,
   TextInput,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import useReportTypes from "lib/hooks/reportTypes";
 import { useTranslation } from "react-i18next";
+import dynamic from "next/dynamic";
+import { toJS } from "mobx";
+
+export const ConditionField = dynamic(
+  () => import("./conditionTemplateEditor"),
+  {
+    loading: () => <p>A condition field is loading</p>,
+    ssr: false,
+  }
+);
 
 const CaseDefinitionUpdateForm = () => {
   const router = useRouter();
@@ -30,7 +39,8 @@ const CaseDefinitionUpdateForm = () => {
     () =>
       new CaseDefinitionUpdateViewModel(
         router.query.id as string,
-        services.caseDefinitionService
+        services.caseDefinitionService,
+        services.reportTypeService
       )
   );
   const reportTypes = useReportTypes();
@@ -100,14 +110,11 @@ const CaseDefinitionUpdateForm = () => {
             <Label htmlFor="condition">
               {t("form.label.condition", "Condition")}
             </Label>
-            <TextArea
-              id="condition"
+            <ConditionField
+              value={viewModel.condition}
+              onChange={value => (viewModel.condition = value)}
               placeholder={t("form.placeholder.condition", "Condition")}
-              rows={5}
-              onChange={evt => (viewModel.condition = evt.target.value)}
-              disabled={viewModel.isSubmitting}
-              defaultValue={viewModel.condition}
-              required
+              variableList={toJS(viewModel.conditionVariables)}
             />
             <ErrorText>{viewModel.fieldErrors.condition}</ErrorText>
           </Field>

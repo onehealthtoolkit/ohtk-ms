@@ -1043,7 +1043,7 @@ export type CommentAttachmentType = {
   comment: CommentUpdateSuccess;
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
-  file: Scalars["String"];
+  file?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
   thumbnail?: Maybe<Scalars["String"]>;
   updatedAt: Scalars["DateTime"];
@@ -1206,6 +1206,7 @@ export type ImageType = {
 
 export type IncidentReportType = {
   __typename?: "IncidentReportType";
+  authorities?: Maybe<Array<Maybe<AuthorityType>>>;
   caseId?: Maybe<Scalars["UUID"]>;
   coverImage?: Maybe<ImageType>;
   createdAt: Scalars["DateTime"];
@@ -2229,6 +2230,7 @@ export type SummaryByCategoryType = {
 
 export type UserMessageType = {
   __typename?: "UserMessageType";
+  createdAt: Scalars["DateTime"];
   id: Scalars["ID"];
   isSeen: Scalars["Boolean"];
   message?: Maybe<MessageType>;
@@ -2877,7 +2879,7 @@ export type QueryCommentsQuery = {
     attachments?: Array<{
       __typename?: "CommentAttachmentType";
       id: string;
-      file: string;
+      file?: string | null;
       thumbnail?: string | null;
       createdAt: any;
     } | null> | null;
@@ -2923,7 +2925,7 @@ export type MutationCommentCreateMutation = {
           attachments?: Array<{
             __typename?: "CommentAttachmentType";
             id: string;
-            file: string;
+            file?: string | null;
             thumbnail?: string | null;
             createdAt: any;
           } | null> | null;
