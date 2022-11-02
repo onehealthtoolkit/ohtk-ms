@@ -79,6 +79,7 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   public parseDefinition(value: string): boolean {
     try {
       this.definitionFormViewModel.parse(JSON.parse(value));
+      this.definitionFormViewModel.setLabel(this.name + " Definition");
       this.definition = this.definitionFormViewModel.jsonString;
       return true;
     } catch (e) {
@@ -102,6 +103,9 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   public parseFollowupDefinition(value: string): boolean {
     try {
       this.followupDefinitionFormViewModel.parse(JSON.parse(value));
+      this.followupDefinitionFormViewModel.setLabel(
+        this.name + " Followup Definition"
+      );
       this.followupDefinition = this.followupDefinitionFormViewModel.jsonString;
       return true;
     } catch (e) {
