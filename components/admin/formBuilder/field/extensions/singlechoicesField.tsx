@@ -17,6 +17,16 @@ const Field: FC<Props> = ({ value: field, onDelete }) => {
   return (
     <div className="w-full mt-4 flex flex-col items-stretch">
       <ul>
+        <li className="md:flex items-center mt-2 relative hidden md:flex-row ">
+          <div className="mr-2 w-5 h-5"></div>
+          <div className="block border-b border-gray-200 py-2 px-4 w-full flex-grow-0 md:w-min md:flex-grow text-gray-600 text-sm">
+            Label
+          </div>
+          <div className="block border-b border-gray-200 py-2 px-4 w-full flex-grow-0 md:w-min md:flex-grow text-gray-600 text-sm">
+            Value (leave blank to use label as value)
+          </div>
+          <div className="w-8 h-8"></div>
+        </li>
         {fieldExtension.choices.length > 0 ? (
           fieldExtension.choices.map(choice => {
             return (
@@ -55,7 +65,7 @@ const Field: FC<Props> = ({ value: field, onDelete }) => {
                 />
                 <label
                   htmlFor={"textInput" + choice.id}
-                  className="flex flex-col items-center pl-2 text-xs"
+                  className="flex flex-col items-center md:pl-2 text-xs"
                 >
                   <input
                     id={"textInput" + choice.id}
