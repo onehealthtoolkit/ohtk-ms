@@ -50,7 +50,6 @@ export class ReportListViewModel extends BaseViewModel {
 
     this.offset = params.offset || 0;
 
-    const filter = { ...this.filter };
     this.isCalendarView = params.isCalendar === 1;
 
     if (
@@ -63,17 +62,18 @@ export class ReportListViewModel extends BaseViewModel {
         params.calendarYear
       );
 
-      filter.fromDate = this.calendarViewModel.getStartDate();
-      filter.throughDate = this.calendarViewModel.getEndDate();
+      this.filter.fromDate = this.calendarViewModel.getStartDate();
+      this.filter.throughDate = this.calendarViewModel.getEndDate();
     }
-    this.fetch(filter);
+    this.fetch();
   }
 
-  async fetch(filter: ReportFilterData): Promise<void> {
+  async fetch(force?: boolean): Promise<void> {
     const result = await this.reportService.fetchReports(
       this.limit,
       this.offset,
-      filter
+      this.filter,
+      force
     );
     runInAction(() => {
       this.data = result.items || [];
@@ -87,7 +87,7 @@ export class ReportListViewModel extends BaseViewModel {
 
   filterReset() {
     this.filter = initialFilter;
-    this.fetch(this.filter);
+    this.fetch();
   }
 
   switchView(isCalendarView: boolean) {

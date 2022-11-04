@@ -18,6 +18,7 @@ import CaseStatus from "./caseStatus";
 import { CalendarIcon, TableIcon } from "@heroicons/react/solid";
 import { CaseDayEvents } from "components/case/dayEvents";
 import Calendar from "components/widgets/calendar";
+import TotalItem from "components/widgets/table/totalItem";
 
 const JSURL = require("jsurl");
 
@@ -114,7 +115,7 @@ const CaseList = () => {
     <Observer>
       {() => (
         <div className="flex flex-col">
-          <div className="flex justify-between">
+          <div className="flex flex-wrap">
             <Filter
               onSearch={applySearch}
               onReset={() => {
@@ -123,6 +124,12 @@ const CaseList = () => {
             >
               <CaseFilter viewModel={viewModel} />
             </Filter>
+            <div className="flex-grow ml-6">
+              <TotalItem
+                totalCount={viewModel.totalCount}
+                onRefresh={() => viewModel.fetch(true)}
+              />
+            </div>
             <ViewSwitch
               isCalendarView={viewModel.isCalendarView}
               onSwitchView={isCalendarView => {

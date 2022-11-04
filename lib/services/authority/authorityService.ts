@@ -29,7 +29,8 @@ export interface IAuthorityService extends IService {
   fetchAuthorities(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ): Promise<QueryResult<Authority[]>>;
 
   getAuthority(id: string): Promise<GetResult<Authority>>;
@@ -113,7 +114,12 @@ export class AuthorityService implements IAuthorityService {
     return items;
   }
 
-  async fetchAuthorities(limit: number, offset: number, searchText: string) {
+  async fetchAuthorities(
+    limit: number,
+    offset: number,
+    searchText: string,
+    force?: boolean
+  ) {
     this.fetchAuthoritiesQuery = {
       ...this.fetchAuthoritiesQuery,
       limit,
@@ -123,6 +129,7 @@ export class AuthorityService implements IAuthorityService {
     const fetchResult = await this.client.query({
       query: AuthorityQueryDocument,
       variables: this.fetchAuthoritiesQuery,
+      fetchPolicy: force ? "network-only" : "cache-first",
     });
 
     const items = Array<Authority>();

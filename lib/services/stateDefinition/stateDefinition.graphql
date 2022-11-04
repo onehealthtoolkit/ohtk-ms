@@ -1,13 +1,13 @@
 query StateDefinitions(
   $limit: Int!
   $offset: Int!
-  $nameStartWith: String
+  $nameContains: String
   $ordering: String
 ) {
   adminStateDefinitionQuery(
     limit: $limit
     offset: $offset
-    name_Istartswith: $nameStartWith
+    name_Contains: $nameContains
     ordering: $ordering
   ) {
     totalCount

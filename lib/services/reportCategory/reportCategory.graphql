@@ -1,13 +1,13 @@
 query ReportCategories(
   $limit: Int!
   $offset: Int!
-  $nameStartWith: String
+  $nameContains: String
   $ordering: String
 ) {
   adminCategoryQuery(
     limit: $limit
     offset: $offset
-    name_Istartswith: $nameStartWith
+    name_Contains: $nameContains
     ordering: $ordering
   ) {
     totalCount

@@ -21,7 +21,8 @@ export interface INotificationTemplateService extends IService {
   fetchNotificationTemplates(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ): Promise<QueryResult<NotificationTemplate[]>>;
 
   getNotificationTemplate(id: string): Promise<GetResult<NotificationTemplate>>;
@@ -69,7 +70,8 @@ export class NotificationTemplateService
   async fetchNotificationTemplates(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ) {
     this.fetchNotificationTemplatesQuery = {
       ...this.fetchNotificationTemplatesQuery,
@@ -80,6 +82,7 @@ export class NotificationTemplateService
     const fetchResult = await this.client.query({
       query: NotificationTemplatesDocument,
       variables: this.fetchNotificationTemplatesQuery,
+      fetchPolicy: force ? "network-only" : "cache-first",
     });
 
     const items = Array<NotificationTemplate>();

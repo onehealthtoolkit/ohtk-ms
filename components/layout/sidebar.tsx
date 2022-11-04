@@ -145,6 +145,18 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     icon={<UserIcon className={iconClassName} />}
                   />
                   <Menu
+                    href="/admin/invitation_codes/"
+                    pathname={pathname}
+                    label={t("breadcrumb.tnvitationCodes", "Invitation Codes")}
+                    collapsed={store.menu.collapsed}
+                    display={
+                      store.isSuperUser ||
+                      store.isRoleAdmin ||
+                      store.isRoleOfficer
+                    }
+                    icon={<AnnotationIcon className={iconClassName} />}
+                  />
+                  <Menu
                     href="/admin/report_categories/"
                     pathname={pathname}
                     label={t(
@@ -164,28 +176,6 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     icon={<DocumentReportIcon className={iconClassName} />}
                   />
                   <Menu
-                    href="/admin/invitation_codes/"
-                    pathname={pathname}
-                    label={t("breadcrumb.tnvitationCodes", "Invitation Codes")}
-                    collapsed={store.menu.collapsed}
-                    display={
-                      store.isSuperUser ||
-                      store.isRoleAdmin ||
-                      store.isRoleOfficer
-                    }
-                    icon={<AnnotationIcon className={iconClassName} />}
-                  />
-
-                  <Menu
-                    href="/admin/case_definitions/"
-                    pathname={pathname}
-                    label={t("breadcrumb.caseDefinitions", "Case Definition")}
-                    collapsed={store.menu.collapsed}
-                    display={store.isSuperUser}
-                    icon={<VariableIcon className={iconClassName} />}
-                  />
-
-                  <Menu
                     href="/admin/state_definitions/"
                     pathname={pathname}
                     label={t(
@@ -195,6 +185,25 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
                     icon={<LightBulbIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/case_definitions/"
+                    pathname={pathname}
+                    label={t("breadcrumb.caseDefinitions", "Case Definition")}
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser}
+                    icon={<VariableIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/reporter_notifications/"
+                    pathname={pathname}
+                    label={t(
+                      "breadcrumb.reporterNotifications",
+                      "Reporter Alerts"
+                    )}
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser}
+                    icon={<SpeakerphoneIcon className={iconClassName} />}
                   />
                   <Menu
                     href="/admin/notification_templates/"
@@ -214,17 +223,6 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     collapsed={store.menu.collapsed}
                     display={store.isRoleOfficer || store.isRoleAdmin}
                     icon={<BellIcon className={iconClassName} />}
-                  />
-                  <Menu
-                    href="/admin/reporter_notifications/"
-                    pathname={pathname}
-                    label={t(
-                      "breadcrumb.reporterNotifications",
-                      "Reporter Alerts"
-                    )}
-                    collapsed={store.menu.collapsed}
-                    display={store.isSuperUser}
-                    icon={<SpeakerphoneIcon className={iconClassName} />}
                   />
                 </ul>
               </div>

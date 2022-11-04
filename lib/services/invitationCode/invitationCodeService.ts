@@ -5,6 +5,7 @@ import {
   InvitationCodeUpdateDocument,
   GetInvitationCodeDocument,
   InvitationCodeDeleteDocument,
+  AccountsAuthorityUserRoleChoices,
 } from "lib/generated/graphql";
 import { InvitationCode } from "lib/services/invitationCode/invitationCode";
 import {
@@ -19,7 +20,8 @@ export interface IInvitationCodeService extends IService {
   fetchInvitationCodes(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ): Promise<QueryResult<InvitationCode[]>>;
 
   getInvitationCode(id: string): Promise<GetResult<InvitationCode>>;
@@ -50,7 +52,7 @@ export class InvitationCodeService implements IInvitationCodeService {
   fetchInvitationCodesQuery = {
     limit: 20,
     offset: 0,
-    codeStartWith: "",
+    roleContains: "",
     ordering: "code,asc",
   };
 
@@ -61,17 +63,28 @@ export class InvitationCodeService implements IInvitationCodeService {
   async fetchInvitationCodes(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ) {
+    if (searchText) {
+      const txt = searchText.toLocaleLowerCase();
+      if ("reporter".indexOf(txt) !== -1)
+        searchText = AccountsAuthorityUserRoleChoices.Rep;
+      else if ("officer".indexOf(txt) !== -1)
+        searchText = AccountsAuthorityUserRoleChoices.Ofc;
+      else if ("admin".indexOf(txt) !== -1)
+        searchText = AccountsAuthorityUserRoleChoices.Adm;
+    }
     this.fetchInvitationCodesQuery = {
       ...this.fetchInvitationCodesQuery,
       limit,
       offset,
-      codeStartWith: searchText,
+      roleContains: searchText,
     };
     const fetchResult = await this.client.query({
       query: InvitationCodesDocument,
       variables: this.fetchInvitationCodesQuery,
+      fetchPolicy: force ? "network-only" : "cache-first",
     });
 
     const items = Array<InvitationCode>();
@@ -83,6 +96,7 @@ export class InvitationCodeService implements IInvitationCodeService {
           fromDate: item.fromDate,
           throughDate: item.throughDate,
           role: item.role,
+          authorityName: item.authority.name,
         });
       }
     });
@@ -110,6 +124,7 @@ export class InvitationCodeService implements IInvitationCodeService {
         throughDate: invitationCode.throughDate,
         role: invitationCode.role,
         authorityId: parseInt(invitationCode.authority.id),
+        authorityName: invitationCode.authority.name,
       };
     }
     return {

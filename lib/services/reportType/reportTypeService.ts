@@ -21,7 +21,8 @@ export interface IReportTypeService extends IService {
   fetchReportTypes(
     limit: number,
     offset: number,
-    searchText: string
+    searchText: string,
+    force?: boolean
   ): Promise<QueryResult<ReportType[]>>;
 
   fetchReportTypeSelections(
@@ -73,7 +74,12 @@ export class ReportTypeService implements IReportTypeService {
     this.client = client;
   }
 
-  async fetchReportTypes(limit: number, offset: number, searchText: string) {
+  async fetchReportTypes(
+    limit: number,
+    offset: number,
+    searchText: string,
+    force?: boolean
+  ) {
     this.fetchReportTypesQuery = {
       ...this.fetchReportTypesQuery,
       limit,
@@ -83,6 +89,7 @@ export class ReportTypeService implements IReportTypeService {
     const fetchResult = await this.client.query({
       query: ReportTypesDocument,
       variables: this.fetchReportTypesQuery,
+      fetchPolicy: force ? "network-only" : "cache-first",
     });
 
     const items = Array<ReportType>();

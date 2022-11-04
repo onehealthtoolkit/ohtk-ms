@@ -31,11 +31,12 @@ export class AdminReportCategoryListViewModel extends BaseViewModel {
     this.nameSearch = "";
   }
 
-  async fetch(): Promise<void> {
+  async fetch(force?: boolean): Promise<void> {
     const result = await this.reportCategorService.fetchReportCategories(
       this.limit,
       this.offset,
-      this.nameSearch
+      this.nameSearch,
+      force
     );
     runInAction(() => {
       this.data = result.items || [];

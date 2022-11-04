@@ -19,6 +19,7 @@ import { CalendarIcon, TableIcon } from "@heroicons/react/solid";
 import Calendar from "components/widgets/calendar";
 import { ReportDayEvents } from "components/report/dayEvents";
 import { useTranslation } from "react-i18next";
+import TotalItem from "components/widgets/table/totalItem";
 
 const JSURL = require("jsurl");
 
@@ -116,7 +117,7 @@ const ReportList = () => {
     <Observer>
       {() => (
         <div className="flex flex-col">
-          <div className="flex justify-between">
+          <div className="flex flex-wrap">
             <Filter
               onSearch={applySearch}
               onReset={() => {
@@ -125,6 +126,13 @@ const ReportList = () => {
             >
               <ReportFilter viewModel={viewModel} />
             </Filter>
+            <div className="flex-grow ml-6">
+              <TotalItem
+                totalCount={viewModel.totalCount}
+                onRefresh={() => viewModel.fetch(true)}
+              />
+            </div>
+
             <ViewSwitch
               isCalendarView={viewModel.isCalendarView}
               onSwitchView={isCalendarView => {

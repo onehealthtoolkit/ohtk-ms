@@ -33,12 +33,13 @@ export class NotificationTemplateListViewModel extends BaseViewModel {
     this.nameSearch = "";
   }
 
-  async fetch(): Promise<void> {
+  async fetch(force?: boolean): Promise<void> {
     const result =
       await this.notificationTemplateService.fetchNotificationTemplates(
         this.limit,
         this.offset,
-        this.nameSearch
+        this.nameSearch,
+        force
       );
     runInAction(() => {
       this.data = result.items || [];

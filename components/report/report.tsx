@@ -19,6 +19,7 @@ import Comments from "components/widgets/comments";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 import Back from "components/widgets/back";
 import FollowupList from "./followup/list";
+import { formatYmdt } from "lib/datetime";
 
 export const PromoteToCaseButton = tw.button`
   px-4 
@@ -47,7 +48,7 @@ const ReportInformation = observer(
           <tbody>
             <TR
               label="Created at"
-              value={viewModel.data?.createdAt?.toString() || ""}
+              value={formatYmdt(viewModel.data?.createdAt)}
             />
 
             <TR
