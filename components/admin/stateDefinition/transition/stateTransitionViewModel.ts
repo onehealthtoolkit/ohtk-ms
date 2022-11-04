@@ -56,6 +56,7 @@ export abstract class StateTransitionViewModel extends BaseFormViewModel {
         value = "{}";
       }
       this.formViewModel.parse(JSON.parse(value));
+      this.formViewModel.setLabel("Transition Definition");
       this.formDefinition = this.formViewModel.jsonString;
       return true;
     } catch (e) {

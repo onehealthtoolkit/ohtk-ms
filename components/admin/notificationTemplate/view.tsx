@@ -6,6 +6,7 @@ import useServices from "lib/services/provider";
 import { NotificationTemplateViewViewModel } from "./viewViewModel";
 import { useTranslation } from "react-i18next";
 import Back from "components/widgets/back";
+import { CasesNotificationTemplateTypeChoices } from "lib/generated/graphql";
 
 const NotificationTemplateView = () => {
   const router = useRouter();
@@ -71,17 +72,20 @@ const NotificationTemplateView = () => {
                 </th>
                 <td className="px-6 py-4">{viewModel.data.condition}</td>
               </tr>
-              <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-                >
-                  {t("form.label.transition", "Transition")}
-                </th>
-                <td className="px-6 py-4">
-                  {viewModel.data.fromStepName} to {viewModel.data.toStepName}
-                </td>
-              </tr>
+              {viewModel.data.type ===
+                CasesNotificationTemplateTypeChoices.Cas && (
+                <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                  >
+                    {t("form.label.transition", "Transition")}
+                  </th>
+                  <td className="px-6 py-4">
+                    {viewModel.data.fromStepName} to {viewModel.data.toStepName}
+                  </td>
+                </tr>
+              )}
               <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                 <th
                   scope="row"

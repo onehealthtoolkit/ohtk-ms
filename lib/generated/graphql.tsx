@@ -1043,7 +1043,7 @@ export type CommentAttachmentType = {
   comment: CommentUpdateSuccess;
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
-  file: Scalars["String"];
+  file?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
   thumbnail?: Maybe<Scalars["String"]>;
   updatedAt: Scalars["DateTime"];
@@ -2884,7 +2884,7 @@ export type QueryCommentsQuery = {
     attachments?: Array<{
       __typename?: "CommentAttachmentType";
       id: string;
-      file: string;
+      file?: string | null;
       thumbnail?: string | null;
       createdAt: any;
     } | null> | null;
@@ -2930,7 +2930,7 @@ export type MutationCommentCreateMutation = {
           attachments?: Array<{
             __typename?: "CommentAttachmentType";
             id: string;
-            file: string;
+            file?: string | null;
             thumbnail?: string | null;
             createdAt: any;
           } | null> | null;

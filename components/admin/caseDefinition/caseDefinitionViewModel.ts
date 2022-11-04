@@ -1,19 +1,26 @@
+import { FormVariableItem, FormViewModel } from "components/admin/formBuilder";
 import { BaseFormViewModel } from "lib/baseFormViewModel";
 import {
   CaseDefinition,
   ICaseDefinitionService,
 } from "lib/services/caseDefinition";
 import { SaveResult } from "lib/services/interface";
+import { IReportTypeService } from "lib/services/reportType";
 import { action, computed, makeObservable, observable } from "mobx";
 
 export abstract class CaseDefinitionViewModel extends BaseFormViewModel {
   caseDefinitionService: ICaseDefinitionService;
+  reportTypeService: IReportTypeService;
 
   _reportTypeId: string = "";
   _description: string = "";
   _condition: string = "";
+  _conditionVariables: FormVariableItem[] = [];
 
-  constructor(caseDefinitionService: ICaseDefinitionService) {
+  constructor(
+    caseDefinitionService: ICaseDefinitionService,
+    reportTypeService: IReportTypeService
+  ) {
     super();
     makeObservable(this, {
       _reportTypeId: observable,
@@ -22,10 +29,13 @@ export abstract class CaseDefinitionViewModel extends BaseFormViewModel {
       description: computed,
       _condition: observable,
       condition: computed,
+      _conditionVariables: observable,
+      conditionVariables: computed,
       save: action,
       validate: action,
     });
     this.caseDefinitionService = caseDefinitionService;
+    this.reportTypeService = reportTypeService;
   }
 
   public get reportTypeId(): string {
@@ -33,6 +43,19 @@ export abstract class CaseDefinitionViewModel extends BaseFormViewModel {
   }
   public set reportTypeId(value: string) {
     this._reportTypeId = value;
+
+    this.reportTypeService.getReportType(value).then(result => {
+      if (result.data) {
+        try {
+          const formBuilder = new FormViewModel();
+          formBuilder.parse(JSON.parse(result.data.definition));
+          this.conditionVariables = formBuilder.conditionVariableList;
+        } catch (e) {
+          console.log("Error! Bad definition format");
+        }
+      }
+    });
+
     delete this.fieldErrors["reportTypeId"];
     if (this.submitError.length > 0) {
       this.submitError = "";
@@ -59,6 +82,13 @@ export abstract class CaseDefinitionViewModel extends BaseFormViewModel {
     if (this.submitError.length > 0) {
       this.submitError = "";
     }
+  }
+
+  public get conditionVariables(): FormVariableItem[] {
+    return this._conditionVariables;
+  }
+  public set conditionVariables(value: FormVariableItem[]) {
+    this._conditionVariables = value;
   }
 
   public abstract _save(): Promise<SaveResult<CaseDefinition>>;

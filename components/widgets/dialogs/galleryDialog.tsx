@@ -34,6 +34,7 @@ const GalleryDialog: React.FC<GalleryDialogProps> = ({ viewModel }) => {
           </div>
           {viewModel.hasMultipleItems && (
             <>
+              {/* next/previous control buttons */}
               <button
                 className="rounded-full bg-black hover:bg-slate-400 text-white p-2 
                         absolute left-4 top-1/2 -translate-y-16
@@ -50,28 +51,27 @@ const GalleryDialog: React.FC<GalleryDialogProps> = ({ viewModel }) => {
               >
                 <ArrowRightIcon className="w-5 h-5" />
               </button>
+              {/* Thumbnails */}
+              <div className="flex space-x-2 mt-4 overflow-x-auto w-full">
+                {viewModel.images.map((image, idx) => (
+                  <div
+                    key={idx}
+                    className={`${
+                      idx === viewModel._currentIndex
+                        ? "border-red-400 border-2 p-0 shadow shadow-black"
+                        : "border-transparent p-1 border"
+                    } h-20 w-20 cursor-pointer flex-shrink-0`}
+                  >
+                    <img
+                      onClick={() => viewModel.select(idx)}
+                      src={image.thumbnailUrl}
+                      className="w-full h-full object-cover"
+                      alt={image.imageUrl}
+                    />
+                  </div>
+                ))}
+              </div>
             </>
-          )}
-          {viewModel.hasMultipleItems && (
-            <div className="flex space-x-2 mt-4 overflow-x-auto w-full">
-              {viewModel.images.map((image, idx) => (
-                <div
-                  key={idx}
-                  className={`${
-                    idx === viewModel._currentIndex
-                      ? "border-red-400 border-2 p-0 shadow shadow-black"
-                      : "border-transparent p-1 border"
-                  } h-20 w-20 cursor-pointer flex-shrink-0`}
-                >
-                  <img
-                    onClick={() => viewModel.select(idx)}
-                    src={image.thumbnailUrl}
-                    className="w-full h-full object-cover"
-                    alt={image.imageUrl}
-                  />
-                </div>
-              ))}
-            </div>
           )}
         </div>
       )}

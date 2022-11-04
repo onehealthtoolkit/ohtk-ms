@@ -29,6 +29,7 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
       isSimulationMode: computed,
       formSimulation: observable,
       variableList: computed,
+      conditionVariableList: computed,
     });
   }
 
@@ -120,6 +121,8 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
     }
   }
 
+  // Simplified form variables used in Description template / followup template
+  // in Report type config
   get variableList(): Array<FormVariableItem> {
     let vars = Array<FormVariableItem>();
     // form variables
@@ -176,6 +179,26 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
         type: "Report category",
       }
     );
+    return vars;
+  }
+
+  // Form variables used in Case Definition's condition config
+  get conditionVariableList(): Array<FormVariableItem> {
+    let vars = Array<FormVariableItem>();
+    // form variables
+    this.sections.forEach(section => {
+      section.questions.forEach(question => {
+        question.fields.forEach(field => {
+          if (field.name) {
+            vars.push({
+              label: field.name,
+              value: `data.${field.name}`,
+              type: "Form data",
+            });
+          }
+        });
+      });
+    });
     return vars;
   }
 }

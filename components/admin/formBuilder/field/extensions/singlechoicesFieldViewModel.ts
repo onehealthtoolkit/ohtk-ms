@@ -50,9 +50,13 @@ export class SinglechoicesFieldViewModel extends AbstractDefinitionViewModel {
     const json: Definition = {};
     const choices = Array<Definition>();
     this.choices.forEach(choice => {
+      const label = choice.label && choice.label.trim();
+      const value = choice.value && choice.value.trim();
+
       const item = {
-        label: choice.label,
-        value: choice.value,
+        label,
+        // if value is empty, use label as value
+        value: value || label,
       } as { label: string; value: string; textInput?: boolean };
 
       if (choice.hasTextInput) {
