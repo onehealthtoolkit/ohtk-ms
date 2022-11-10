@@ -48,6 +48,7 @@ query GetCase($id: UUID!) {
       name
     }
     report {
+      id
       createdAt
       incidentDate
       gpsLocation
@@ -57,6 +58,7 @@ query GetCase($id: UUID!) {
       reportType {
         id
         name
+        definition
       }
       platform
       coverImage {

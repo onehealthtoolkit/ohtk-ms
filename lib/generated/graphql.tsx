@@ -2212,6 +2212,7 @@ export type SubmitImage = {
   __typename?: "SubmitImage";
   file?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["UUID"]>;
+  imageUrl?: Maybe<Scalars["String"]>;
   thumbnail?: Maybe<Scalars["String"]>;
 };
 
@@ -2572,6 +2573,7 @@ export type GetCaseQuery = {
     } | null> | null;
     report?: {
       __typename?: "IncidentReportType";
+      id: any;
       createdAt: any;
       incidentDate: any;
       gpsLocation?: string | null;
@@ -2583,6 +2585,7 @@ export type GetCaseQuery = {
         __typename?: "ReportTypeType";
         id: any;
         name: string;
+        definition?: any | null;
       } | null;
       coverImage?: {
         __typename?: "ImageType";
@@ -6011,6 +6014,7 @@ export const GetCaseDocument = {
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "createdAt" },
@@ -6045,6 +6049,10 @@ export const GetCaseDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "definition" },
                             },
                           ],
                         },

@@ -50,6 +50,10 @@ export class CaseViewModel extends BaseViewModel {
     this._activeTabIndex = value;
   }
 
+  get reportId() {
+    return this.data.reportId ? String(this.data.reportId) : "";
+  }
+
   async fetch(policy?: FetchPolicy) {
     this.isLoading = true;
     const data = (await this.caseService.getCase(this.id, policy)).data;
