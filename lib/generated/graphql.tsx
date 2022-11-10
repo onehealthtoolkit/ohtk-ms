@@ -3092,6 +3092,7 @@ export type GetFollowupReportQuery = {
       id: any;
       file: string;
       thumbnail?: string | null;
+      imageUrl?: string | null;
     } | null> | null;
   } | null;
 };
@@ -8198,6 +8199,10 @@ export const GetFollowupReportDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "thumbnail" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "imageUrl" },
                       },
                     ],
                   },

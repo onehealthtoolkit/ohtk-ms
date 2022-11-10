@@ -61,7 +61,7 @@ const ReportImage = observer(({ viewModel }: { viewModel: CaseViewModel }) => {
     <Fragment>
       <div className="flex flex-wrap  gap-4">
         {viewModel.data.images?.map((image, idx) => (
-          <div key={idx} className="">
+          <div key={idx} className="w-40 h-32">
             <a
               href="#"
               onClick={e => {
@@ -69,7 +69,11 @@ const ReportImage = observer(({ viewModel }: { viewModel: CaseViewModel }) => {
                 viewModel.openGallery(image.id);
               }}
             >
-              <img className="w-40" src={image.thumbnail} alt="" />
+              <img
+                className="w-full h-full object-cover"
+                src={image.thumbnail}
+                alt=""
+              />
             </a>
           </div>
         ))}
