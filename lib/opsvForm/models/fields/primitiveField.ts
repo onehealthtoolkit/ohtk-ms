@@ -25,7 +25,9 @@ export default abstract class PrimitiveField<T> extends Field {
 
   get renderedValue(): string {
     return this._value !== null && typeof this._value !== "undefined"
-      ? String(toJS(this._value))
+      ? Array.isArray(this._value)
+        ? this._value.join(", ")
+        : String(toJS(this._value))
       : "";
   }
 

@@ -117,7 +117,7 @@ export default class MultipleChoicesField extends Field {
         return [...acc];
       }
     });
-    return fn(this.options).join(",");
+    return fn(this.options).join(", ");
   }
 
   toJsonValue(json: Record<string, any>): void {
@@ -172,6 +172,6 @@ export default class MultipleChoicesField extends Field {
         return [...acc];
       }
     });
-    return fn(this.options).join(",");
+    return fn(this.options).join(", ");
   }
 }

@@ -134,10 +134,4 @@ export default class ImagesField extends PrimitiveField<Array<string>> {
       }
     }
   }
-
-  get renderedValue(): string {
-    return this.value !== null && typeof this.value !== "undefined"
-      ? this.value.join(",")
-      : "";
-  }
 }
