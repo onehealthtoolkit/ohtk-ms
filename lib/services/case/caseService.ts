@@ -149,6 +149,8 @@ export class CaseService implements ICaseService {
         createdAt: incidentCase.report?.createdAt,
         incidentDate: incidentCase.report?.incidentDate,
         reportTypeName: incidentCase.report?.reportType?.name,
+        reportTypeDefinition: incidentCase.report?.reportType?.definition,
+        reportId: incidentCase.report?.id,
         rendererData: incidentCase.report?.rendererData,
         data: incidentCase.report?.data,
         images: incidentCase.report?.images as Image[],

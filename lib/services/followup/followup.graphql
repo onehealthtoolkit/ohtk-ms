@@ -33,6 +33,7 @@ query GetFollowupReport($id: ID!) {
       id
       file
       thumbnail
+      imageUrl
     }
     reportedBy {
       id

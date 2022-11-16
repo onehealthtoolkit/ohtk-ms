@@ -14,6 +14,7 @@ export type Case = {
   isFinished: boolean;
   threadId?: number | null;
   gpsLocation?: string | null;
+  reportId?: number;
 };
 
 export type Image = {
@@ -24,6 +25,7 @@ export type Image = {
 };
 
 export type CaseDetail = Case & {
+  reportTypeDefinition?: string;
   data?: Record<string, string> | Record<string, Record<string, string>>;
   images?: Array<Image>;
   stateDefinition?: DeepStateDefinition | null;

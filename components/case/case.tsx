@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Fragment, useState } from "react";
+import { Fragment, useCallback, useState } from "react";
 import { observer, Observer } from "mobx-react";
 import {
   Divide,
@@ -19,6 +19,8 @@ import dynamic from "next/dynamic";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 import Back from "components/widgets/back";
 import { formatYmdt } from "lib/datetime";
+import FollowupList from "components/report/followup/list";
+import { useRouter } from "next/router";
 
 const ReportLocation = dynamic(() => import("./reportLocationMap"), {
   loading: () => <p>A map is loading</p>,
@@ -59,7 +61,7 @@ const ReportImage = observer(({ viewModel }: { viewModel: CaseViewModel }) => {
     <Fragment>
       <div className="flex flex-wrap  gap-4">
         {viewModel.data.images?.map((image, idx) => (
-          <div key={idx} className="">
+          <div key={idx} className="w-40 h-32">
             <a
               href="#"
               onClick={e => {
@@ -67,7 +69,11 @@ const ReportImage = observer(({ viewModel }: { viewModel: CaseViewModel }) => {
                 viewModel.openGallery(image.id);
               }}
             >
-              <img className="w-40" src={image.thumbnail} alt="" />
+              <img
+                className="w-full h-full object-cover"
+                src={image.thumbnail}
+                alt=""
+              />
             </a>
           </div>
         ))}
@@ -78,11 +84,30 @@ const ReportImage = observer(({ viewModel }: { viewModel: CaseViewModel }) => {
 
 const Case = (props: { id: string }) => {
   const { id } = props;
+  const router = useRouter();
   const { me } = useStore();
   const { caseService, commentService } = useServices();
   const [viewModel] = useState(
     new CaseViewModel(id as string, me!, caseService, commentService)
   );
+
+  const setUrl = useCallback(
+    (query: Record<string, string>) => {
+      router.push(
+        {
+          pathname: router.pathname,
+          query: { ...router.query, ...query },
+        },
+        undefined,
+        { shallow: true }
+      );
+    },
+    [router]
+  );
+
+  if (router.query.activeTabIndex) {
+    viewModel.activeTabIndex = +router.query.activeTabIndex;
+  }
 
   return (
     <Observer>
@@ -121,6 +146,7 @@ const Case = (props: { id: string }) => {
                     active={viewModel.activeTabIndex == 0}
                     onTab={() => {
                       viewModel.activeTabIndex = 0;
+                      setUrl({ activeTabIndex: "0" });
                     }}
                   >
                     {({ activeCss }) => (
@@ -137,6 +163,7 @@ const Case = (props: { id: string }) => {
                     active={viewModel.activeTabIndex == 1}
                     onTab={() => {
                       viewModel.activeTabIndex = 1;
+                      setUrl({ activeTabIndex: "1" });
                     }}
                   >
                     {({ activeCss }) => (
@@ -145,6 +172,20 @@ const Case = (props: { id: string }) => {
                           className={`mr-2 w-5 h-5 ${activeCss}`}
                         />
                         <span>Detail</span>
+                      </>
+                    )}
+                  </TabItem>
+                  <TabItem
+                    id="followup"
+                    active={viewModel.activeTabIndex == 2}
+                    onTab={() => {
+                      viewModel.activeTabIndex = 2;
+                      setUrl({ activeTabIndex: "2" });
+                    }}
+                  >
+                    {() => (
+                      <>
+                        <span>Followup</span>
                       </>
                     )}
                   </TabItem>
@@ -161,8 +202,16 @@ const Case = (props: { id: string }) => {
                     <div className="">
                       <p className="text-md dark:text-gray-400">Form Data</p>
                     </div>
-                    <RenderData data={viewModel.data.data} />
+                    <RenderData
+                      data={viewModel.data.data}
+                      definition={viewModel.data.reportTypeDefinition}
+                    />
                   </>
+                )}
+                {viewModel.activeTabIndex == 2 && viewModel.reportId && (
+                  <div className="">
+                    <FollowupList incidentId={viewModel.reportId} />
+                  </div>
                 )}
               </div>
 
