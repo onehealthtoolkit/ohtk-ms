@@ -143,7 +143,7 @@ const UserList = () => {
                       value: qrValue,
                     });
                   }}
-                  className={`cursor-pointer w-5 h-5 mx-auto ${
+                  className={`cursor-pointer w-5 h-5 mx-auto hover:text-slate-600 ${
                     record.role === AccountsAuthorityUserRoleChoices.Rep
                       ? "visible"
                       : "invisible"

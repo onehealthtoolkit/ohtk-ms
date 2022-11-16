@@ -8,6 +8,7 @@ const BackButton = tw.button`
   border-gray-300
   bg-gray-100 
   hover:border-gray-400
+  hover:bg-gray-200
   rounded
   w-24
   h-12

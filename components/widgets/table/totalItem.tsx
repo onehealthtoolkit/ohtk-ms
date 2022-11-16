@@ -21,7 +21,7 @@ const TotalItem: React.FC<TotalItemProps> = ({ totalCount, onRefresh }) => {
       <div className="flex-grow"></div>
       <button
         type="button"
-        className="text-black  px-1.5"
+        className="text-black  px-1.5 hover:text-blue-700"
         onClick={() => onRefresh()}
       >
         <RefreshIcon className="h-5 w-5" aria-hidden="true" />

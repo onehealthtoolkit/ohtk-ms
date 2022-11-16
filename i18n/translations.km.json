@@ -139,10 +139,12 @@
   },
   "dialog": {
     "title": {
-      "confirmDelete": "បញ្ជាក់ការលុប"
+      "confirmDelete": "បញ្ជាក់ការលុប",
+      "confirmTransition": "បញ្ជាក់ការផ្លាស់ប្តូរ"
     },
     "content": {
-      "confirmDelete": "បញ្ជាក់ការលុប"
+      "confirmDelete": "បញ្ជាក់ការលុប",
+      "confirmTransition": "តើអ្នកចង់ផ្លាស់ប្តូរស្ថានភាពទៅជា {{stepName}} ទេ?"
     }
   },
   "title": {

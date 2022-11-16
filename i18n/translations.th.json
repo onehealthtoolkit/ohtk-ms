@@ -142,10 +142,12 @@
   },
   "dialog": {
     "title": {
-      "confirmDelete": "ยืนยันการลบ"
+      "confirmDelete": "ยืนยันการลบ",
+      "confirmTransition": "ยืนยันเปลี่ยนสถานะ"
     },
     "content": {
-      "confirmDelete": "คุณแน่ใจหรือ ?"
+      "confirmDelete": "คุณแน่ใจหรือ ?",
+      "confirmTransition": "ต้องการเปลี่ยนสถานะเป็น  {{stepName}} ?"
     }
   },
   "title": {

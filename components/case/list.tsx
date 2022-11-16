@@ -48,8 +48,8 @@ const SwitchViewButton = tw.button`
   flex items-center justify-center  
   ${(p: { active: number }) => {
     return p.active
-      ? "text-white bg-blue-500"
-      : "bg-white text-gray-500 border-gray-500 border";
+      ? `text-white bg-blue-500 hover:bg-blue-600`
+      : `bg-white text-gray-500 border-gray-500 border hover:bg-gray-100`;
   }}
 `;
 

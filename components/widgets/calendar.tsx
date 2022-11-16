@@ -36,7 +36,7 @@ const Calendar = <T extends CalendarEvent>({
         </h1>
         <button
           className="rounded-md bg-white border border-gray-300 
-                p-2 flex flex-row items-center
+                p-2 flex flex-row items-center hover:bg-gray-100
               "
         >
           <ChevronLeftIcon
