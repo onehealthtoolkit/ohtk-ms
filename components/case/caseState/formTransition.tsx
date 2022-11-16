@@ -5,6 +5,7 @@ import BaseModalDialog from "components/widgets/dialogs/baseModalDialog";
 import Spinner from "components/widgets/spinner";
 import { Observer, observer } from "mobx-react";
 import { useRef } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import tw from "tailwind-styled-components";
 
 type FormTransitionProps = {
@@ -17,6 +18,8 @@ const FormTransition = ({
   onTransitionComplete,
 }: FormTransitionProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
+
   return (
     <BaseModalDialog
       store={form}
@@ -27,7 +30,9 @@ const FormTransition = ({
           <div className={`flex flex-col relative w-full h-full`}>
             <Stepper viewModel={form} />
             <h3 className="text-center bg-gray-100 p-4 font-medium">
-              {form.currentSection ? form.currentSection?.label : "Blank Form"}
+              {form.currentSection
+                ? form.currentSection?.label
+                : t("dialog.title.confirmTransition", "Confirm transition")}
             </h3>
             <div
               ref={contentRef}
@@ -73,7 +78,11 @@ const FormInput = ({
             ))
           ) : (
             <div className="text-center text-lg text-gray-500 p-4">
-              No questions
+              <Trans
+                i18nKey="dialog.content.confirmTransition"
+                defaults={`Are you want to change status to ${form.transition.toStep?.name} ?`}
+                values={{ stepName: form.transition.toStep?.name }}
+              />
             </div>
           )}
         </>
@@ -133,7 +142,7 @@ const Footer = ({
               }}
             >
               {!form.isSubmitting ? (
-                <span>{form.currentSection ? "Submit" : "Skip"}</span>
+                <span>{form.currentSection ? "Submit" : "Confirm"}</span>
               ) : (
                 <Spinner />
               )}

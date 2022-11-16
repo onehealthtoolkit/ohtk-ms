@@ -139,10 +139,12 @@
   },
   "dialog": {
     "title": {
-      "confirmDelete": "Confirm Delete"
+      "confirmDelete": "Confirm Delete",
+      "confirmTransition": "Confirm transition"
     },
     "content": {
-      "confirmDelete": "Are you sure?"
+      "confirmDelete": "Are you sure?",
+      "confirmTransition": "Are you want to change status to  {{stepName}} ?"
     }
   },
   "title": {

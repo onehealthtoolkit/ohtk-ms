@@ -38,7 +38,15 @@ export default class LocationField extends PrimitiveField<string> {
 
   get renderedValue(): string {
     return this.value !== null && typeof this.value !== "undefined"
-      ? String(toJS(this.value)) + " (Lng,Lat)"
+      ? String(toJS(this.format(this.value))) + " (Lng,Lat)"
       : "";
+  }
+
+  format(value: string) {
+    return value
+      .split(",")
+      .map(Number)
+      .map(n => ~~(Math.pow(10, 5) * n) / Math.pow(10, 5))
+      .join(", ");
   }
 }

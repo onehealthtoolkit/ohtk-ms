@@ -12,6 +12,7 @@ export const SearchButton = tw.button`
   bg-blue-500
   border-blue-300
   hover:border-blue-500
+  hover:bg-blue-600
   rounded
   border-l
   mr-1
@@ -32,6 +33,7 @@ export const ResetButton = forwardRef(function ResetButton(
       text-black
       bg-slate-50
       hover:border-gray-800
+      hover:bg-gray-100
       border-slate-700
       rounded
       items-center
@@ -57,6 +59,7 @@ export const FilterButton = tw.button`
   bg-blue-500
   border-blue-300
   hover:border-blue-500
+  hover:bg-blue-600
   flex items-center justify-center  
   rounded
   border-l
@@ -104,7 +107,7 @@ const Filter: React.FC<FilterProps> = ({
                     Filter
                   </div>
                   <button type="button" onClick={() => close()}>
-                    <XIcon className="w-5 h-5" />
+                    <XIcon className="w-5 h-5 hover:bg-gray-100" />
                   </button>
                 </div>
                 <div className="p-6 space-y-3">{children}</div>
@@ -113,7 +116,7 @@ const Filter: React.FC<FilterProps> = ({
                     <div></div>
                     <div className="flex flex-row">
                       <SearchButton
-                        className="mr-4"
+                        className="mr-2"
                         onClick={() => {
                           onSearch();
                           close();
@@ -123,7 +126,7 @@ const Filter: React.FC<FilterProps> = ({
                       </SearchButton>
                       <button
                         type="button"
-                        className="text-link underline"
+                        className="text-link underline px-2 py-2 hover:bg-gray-100"
                         onClick={() => {
                           onReset();
                           close();

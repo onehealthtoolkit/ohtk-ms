@@ -12,7 +12,7 @@ const styles = {
   disabledButton:
     "text-sm text-white bg-blue-400 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg inline-flex",
   deleteButton:
-    "text-sm text-white bg-red-500 font-medium rounded-lg inline-flex",
+    "text-sm text-white bg-red-500 hover:bg-red-600 font-medium rounded-lg inline-flex",
 };
 type SaveResult = {
   success: boolean;

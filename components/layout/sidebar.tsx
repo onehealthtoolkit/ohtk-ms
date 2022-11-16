@@ -147,7 +147,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   <Menu
                     href="/admin/invitation_codes/"
                     pathname={pathname}
-                    label={t("breadcrumb.tnvitationCodes", "Invitation Codes")}
+                    label={t("breadcrumb.invitationCodes", "Invitation Codes")}
                     collapsed={store.menu.collapsed}
                     display={
                       store.isSuperUser ||

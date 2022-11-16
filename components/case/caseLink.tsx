@@ -10,7 +10,7 @@ const CaseLink: React.FC<CaseLinkProps> = ({ caseId }) => {
   }
   return (
     <Link href={`/cases/${caseId}`}>
-      <div className="bg-red-500 text-white text-center rounded cursor-pointer px-2">
+      <div className="bg-red-500 text-white text-center rounded cursor-pointer px-2 hover:bg-red-600">
         Case
       </div>
     </Link>

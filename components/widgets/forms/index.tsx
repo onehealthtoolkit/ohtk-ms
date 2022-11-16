@@ -30,7 +30,8 @@ export const AddButton = forwardRef(function AddButton(
       text-white
       bg-[#67C687] 
       border-blue-300
-      hover:border-blue-500
+      hover:border-green-500
+      hover:bg-green-500
         rounded
         flex 
         justify-center 
