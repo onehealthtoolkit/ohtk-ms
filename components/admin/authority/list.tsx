@@ -98,6 +98,7 @@ const AuthorityList = () => {
                 get: record => record.name,
               },
             ]}
+            onLoading={viewModel.isLoading}
             data={viewModel.data || []}
             onEdit={record =>
               router.push(`/admin/authorities/${record.id}/update`)
