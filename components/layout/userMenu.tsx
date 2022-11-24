@@ -65,7 +65,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ className }) => {
               >
                 <Menu.Items
                   className={`${
-                    store.menu.collapsed ? "left-14 -mt-16" : "right-0"
+                    store.menu.collapsed ? "left-14 -mt-[48px]" : "right-0"
                   } absolute z-10  -mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
                 >
                   <div className="px-1 py-1 ">
