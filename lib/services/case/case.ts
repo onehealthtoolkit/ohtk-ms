@@ -30,6 +30,7 @@ export type CaseDetail = Case & {
   images?: Array<Image>;
   stateDefinition?: DeepStateDefinition | null;
   states?: Array<CaseState | null> | null;
+  outbreakInfo?: string | null;
 };
 
 export type CaseState = {

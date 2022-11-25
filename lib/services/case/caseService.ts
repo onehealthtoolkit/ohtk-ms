@@ -138,7 +138,7 @@ export class CaseService implements ICaseService {
       fetchPolicy,
     });
 
-    let data;
+    let data: CaseDetail | undefined;
     const incidentCase = getResult.data.caseGet;
     if (incidentCase) {
       data = {
@@ -159,6 +159,7 @@ export class CaseService implements ICaseService {
         gpsLocation: incidentCase.report?.gpsLocation,
         stateDefinition: incidentCase.stateDefinition,
         states: incidentCase.states,
+        outbreakInfo: incidentCase.outbreakPlanInfo,
       };
     }
     return {

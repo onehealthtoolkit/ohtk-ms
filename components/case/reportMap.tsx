@@ -1,8 +1,10 @@
+import { OutbreakZone } from "components/case/caseViewModel";
 import L, { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { observer } from "mobx-react";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
+  Circle,
+  FeatureGroup,
   MapContainer,
   Marker,
   Popup,
@@ -16,7 +18,15 @@ const bounds: LatLngTuple[] = [
   [0.4061088354351594, 90.58203125000001],
 ];
 
-export default observer(({ lnglat }: { lnglat?: string | null }) => {
+export default function Map({
+  lnglat,
+  zones,
+  showZones = true,
+}: {
+  lnglat?: string | null;
+  zones?: OutbreakZone[];
+  showZones?: boolean;
+}) {
   // center map to Thailand
   let latitude: number = 15.87;
   let longitude: number = 100.9925;
@@ -51,11 +61,27 @@ export default observer(({ lnglat }: { lnglat?: string | null }) => {
       />
 
       {isValidLocation ? (
-        <Marker position={[latitude, longitude]} icon={icon}>
-          <Popup>
-            Latitude: {latitude}, longitude: {longitude}
-          </Popup>
-        </Marker>
+        <FeatureGroup>
+          <Marker position={[latitude, longitude]} icon={icon}>
+            <Popup>
+              Latitude: {latitude}, longitude: {longitude}
+            </Popup>
+          </Marker>
+          {showZones &&
+            zones &&
+            zones.map((zone, idx) => {
+              return (
+                <Circle
+                  key={idx + zone.color}
+                  center={{ lat: latitude, lng: longitude }}
+                  fillColor={zone.color}
+                  fillOpacity={0.1}
+                  color={zone.color}
+                  radius={zone.radius}
+                />
+              );
+            })}
+        </FeatureGroup>
       ) : (
         <SVGOverlay attributes={{ stroke: "red" }} bounds={bounds}>
           <rect x="0" y="0" width="100%" height="100%" fill="transparent" />
@@ -66,8 +92,7 @@ export default observer(({ lnglat }: { lnglat?: string | null }) => {
       )}
     </MapContainer>
   );
-});
-
+}
 const MarkerIcon = () => {
   return (
     <div className="w-[36px] h-[36px] relative top-[-30px] left-[-5px]">

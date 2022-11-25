@@ -13,6 +13,12 @@ import { Me } from "lib/services/profile/me";
 import { FetchPolicy } from "@apollo/client";
 import { GalleryDialogViewModel } from "components/widgets/dialogs/galleryDialogViewModel";
 import { ICommentService } from "lib/services/comment/commentService";
+import { ReportMapDialogViewModel } from "components/case/reportMapDialogViewModel";
+
+export type OutbreakZone = {
+  color: string;
+  radius: number;
+};
 
 export class CaseViewModel extends BaseViewModel {
   data: CaseDetail = {} as CaseDetail;
@@ -20,6 +26,7 @@ export class CaseViewModel extends BaseViewModel {
   _activeTabIndex: number = 0;
   stateViewViewModel: CaseStateViewViewModel;
   galleryViewModel?: GalleryDialogViewModel = undefined;
+  reportMapViewModel?: ReportMapDialogViewModel = undefined;
 
   constructor(
     id: string,
@@ -30,11 +37,14 @@ export class CaseViewModel extends BaseViewModel {
     super();
     makeObservable(this, {
       data: observable,
+      outbreakInfo: computed,
       fetch: action,
       _activeTabIndex: observable,
       activeTabIndex: computed,
       galleryViewModel: observable,
       openGallery: action,
+      reportMapViewModel: observable,
+      openReportMap: action,
     });
     this.id = id;
     this.stateViewViewModel = observable(
@@ -73,6 +83,18 @@ export class CaseViewModel extends BaseViewModel {
     this.isLoading = false;
   }
 
+  get outbreakInfo(): OutbreakZone[] | undefined {
+    let zones: OutbreakZone[] | undefined;
+    if (this.data.outbreakInfo) {
+      try {
+        zones = JSON.parse(this.data.outbreakInfo).zones;
+      } catch (_) {
+        console.log("Error parsing outbreak plan info");
+      }
+    }
+    return zones;
+  }
+
   openGallery(imageId: string) {
     const images =
       this.data.images?.map(image => ({
@@ -84,5 +106,11 @@ export class CaseViewModel extends BaseViewModel {
 
     this.galleryViewModel = new GalleryDialogViewModel(images, selectedIdx);
     this.galleryViewModel.open(null);
+  }
+
+  openReportMap(caseId: string) {
+    console.log(caseId);
+    this.reportMapViewModel = new ReportMapDialogViewModel();
+    this.reportMapViewModel.open(null);
   }
 }

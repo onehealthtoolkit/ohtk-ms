@@ -7,6 +7,7 @@ import React, {
   ReactNode,
   useCallback,
   useEffect,
+  useState,
 } from "react";
 import ReactDOM from "react-dom";
 
@@ -23,6 +24,7 @@ type Props = {
     data: any
   ) => ReactElement | null;
   onClose?: (data?: unknown) => void;
+  onOpen?: (data?: unknown) => void;
 };
 
 const BaseModalDialog: React.FC<Props> = ({
@@ -33,7 +35,10 @@ const BaseModalDialog: React.FC<Props> = ({
   renderContent,
   renderAction,
   onClose,
+  onOpen,
 }: Props) => {
+  const [hidden, setHidden] = useState("hidden");
+
   const escFunction = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -41,6 +46,7 @@ const BaseModalDialog: React.FC<Props> = ({
           console.log("close dialog");
           onClose && onClose();
           store?.close();
+          setHidden("hidden");
         }
       }
     },
@@ -61,7 +67,11 @@ const BaseModalDialog: React.FC<Props> = ({
   return (
     <Observer>
       {() => {
-        const hidden = !store.isOpen ? "hidden" : "";
+        if (hidden.length && store.isOpen) {
+          console.log("open dialog");
+          onOpen && onOpen();
+          setHidden("");
+        }
 
         return ReactDOM.createPortal(
           <Fragment>
@@ -70,6 +80,7 @@ const BaseModalDialog: React.FC<Props> = ({
               onClick={() => {
                 onClose && onClose();
                 store.close();
+                setHidden("hidden");
               }}
             ></div>
             <div
@@ -78,7 +89,7 @@ const BaseModalDialog: React.FC<Props> = ({
                     widthClassName ||
                     "sm:w-[385px] sm:min-w-[30vw] min-w-[80vw]"
                   }
-                  flex flex-col items-stretch justify-items-stretch gap-2 -translate-y-1/2 p-6 bg-white 
+                  flex flex-col items-stretch justify-items-stretch gap-2 -translate-y-1/2 p-3 md:p-6 bg-white 
                   rounded-md top-1/2 left-1/2 -translate-x-1/2 absolute ${hidden}
                 `}
             >
@@ -89,10 +100,11 @@ const BaseModalDialog: React.FC<Props> = ({
                 {renderContent(store.data)}
               </div>
               <button
-                className="absolute right-4 top-4 z-10"
+                className="absolute right-4 top-4 z-[1001]"
                 onClick={() => {
                   onClose && onClose();
                   store.close();
+                  setHidden("hidden");
                 }}
               >
                 <XCircleIcon className="w-8 h-8 fill-red-400" />

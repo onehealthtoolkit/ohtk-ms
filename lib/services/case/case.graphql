@@ -43,6 +43,7 @@ query GetCase($id: UUID!) {
     description
     isFinished
     threadId
+    outbreakPlanInfo
     authorities {
       id
       name
