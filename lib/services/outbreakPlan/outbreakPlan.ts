@@ -1,0 +1,21 @@
+export type OutbreakPlan = {
+  id: string;
+  name: string;
+  description: string;
+  reportTypeId: string;
+  stateStepId: number;
+  zone1Color?: string;
+  zone1MessageBody?: string;
+  zone1MessageTitle?: string;
+  zone1Radius?: number;
+  zone2Color?: string;
+  zone2MessageBody?: string;
+  zone2MessageTitle?: string;
+  zone2Radius?: number;
+  zone3Color?: string;
+  zone3MessageBody?: string;
+  zone3MessageTitle?: string;
+  zone3Radius?: number;
+  reportTypeName?: string;
+  stateStepName?: string;
+};

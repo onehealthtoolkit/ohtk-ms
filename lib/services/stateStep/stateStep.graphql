@@ -7,6 +7,15 @@ query StateSteps($definitionId: ID!) {
   }
 }
 
+query StateStepsByReportType($reportTypeId: ID!) {
+  stateStepListByReportType(reportTypeId: $reportTypeId) {
+    id
+    name
+    isStartState
+    isStopState
+  }
+}
+
 mutation StateStepCreate(
   $name: String!
   $isStartState: Boolean!

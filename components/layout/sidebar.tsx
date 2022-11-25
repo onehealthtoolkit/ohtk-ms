@@ -13,6 +13,9 @@ import {
   LightBulbIcon,
   CollectionIcon,
   SpeakerphoneIcon,
+  CalendarIcon,
+  MapIcon,
+  CogIcon,
 } from "@heroicons/react/outline";
 import useStore from "lib/store";
 import CollapsIcon from "components/layout/CollapsIcon";
@@ -223,6 +226,30 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     collapsed={store.menu.collapsed}
                     display={store.isRoleOfficer || store.isRoleAdmin}
                     icon={<BellIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/outbreak_plans/"
+                    pathname={pathname}
+                    label={t("breadcrumb.outbreakPlans", "Outbreak Plans")}
+                    collapsed={store.menu.collapsed}
+                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    icon={<CalendarIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/places/"
+                    pathname={pathname}
+                    label={t("breadcrumb.places", "Places")}
+                    collapsed={store.menu.collapsed}
+                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    icon={<MapIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/configurations/"
+                    pathname={pathname}
+                    label={t("breadcrumb.configurations", "Configurations")}
+                    collapsed={store.menu.collapsed}
+                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    icon={<CogIcon className={iconClassName} />}
                   />
                 </ul>
               </div>

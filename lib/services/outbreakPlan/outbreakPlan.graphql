@@ -1,0 +1,191 @@
+query outbreakPlans(
+  $limit: Int!
+  $offset: Int!
+  $q: String
+  $ordering: String
+) {
+  adminOutbreakPlanQuery(
+    limit: $limit
+    offset: $offset
+    q: $q
+    ordering: $ordering
+  ) {
+    totalCount
+    results {
+      id
+      name
+      description
+      reportType {
+        name
+      }
+    }
+  }
+}
+
+mutation OutbreakPlanCreate(
+  $name: String!
+  $description: String!
+  $reportTypeId: UUID!
+  $stateStepId: Int!
+  $zone1Color: String = ""
+  $zone1MessageBody: String = ""
+  $zone1MessageTitle: String = ""
+  $zone1Radius: Float = null
+  $zone2Color: String = ""
+  $zone2MessageBody: String = ""
+  $zone2MessageTitle: String = ""
+  $zone2Radius: Float = null
+  $zone3Color: String = ""
+  $zone3MessageBody: String = ""
+  $zone3MessageTitle: String = ""
+  $zone3Radius: Float = null
+) {
+  adminOutbreakPlanCreate(
+    name: $name
+    description: $description
+    reportTypeId: $reportTypeId
+    stateStepId: $stateStepId
+    zone1Color: $zone1Color
+    zone1MessageBody: $zone1MessageBody
+    zone1MessageTitle: $zone1MessageTitle
+    zone1Radius: $zone1Radius
+    zone2Color: $zone2Color
+    zone2MessageBody: $zone2MessageBody
+    zone2MessageTitle: $zone2MessageTitle
+    zone2Radius: $zone2Radius
+    zone3Color: $zone3Color
+    zone3MessageBody: $zone3MessageBody
+    zone3MessageTitle: $zone3MessageTitle
+    zone3Radius: $zone3Radius
+  ) {
+    result {
+      __typename
+      ... on AdminOutbreakPlanCreateSuccess {
+        id
+        name
+        description
+        reportType {
+          id
+          name
+        }
+      }
+      ... on AdminOutbreakPlanCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation OutbreakPlanUpdate(
+  $id: Int!
+  $name: String!
+  $description: String!
+  $reportTypeId: UUID!
+  $stateStepId: Int!
+  $zone1Color: String = ""
+  $zone1MessageBody: String = ""
+  $zone1MessageTitle: String = ""
+  $zone1Radius: Float = null
+  $zone2Color: String = ""
+  $zone2MessageBody: String = ""
+  $zone2MessageTitle: String = ""
+  $zone2Radius: Float = null
+  $zone3Color: String = ""
+  $zone3MessageBody: String = ""
+  $zone3MessageTitle: String = ""
+  $zone3Radius: Float = null
+) {
+  adminOutbreakPlanUpdate(
+    id: $id
+    name: $name
+    description: $description
+    reportTypeId: $reportTypeId
+    stateStepId: $stateStepId
+    zone1Color: $zone1Color
+    zone1MessageBody: $zone1MessageBody
+    zone1MessageTitle: $zone1MessageTitle
+    zone1Radius: $zone1Radius
+    zone2Color: $zone2Color
+    zone2MessageBody: $zone2MessageBody
+    zone2MessageTitle: $zone2MessageTitle
+    zone2Radius: $zone2Radius
+    zone3Color: $zone3Color
+    zone3MessageBody: $zone3MessageBody
+    zone3MessageTitle: $zone3MessageTitle
+    zone3Radius: $zone3Radius
+  ) {
+    result {
+      __typename
+      ... on AdminOutbreakPlanUpdateSuccess {
+        id
+        name
+        description
+        reportType {
+          id
+          name
+        }
+        stateStep {
+          id
+          name
+        }
+        zone1Color
+        zone1MessageBody
+        zone1MessageTitle
+        zone1Radius
+        zone2Color
+        zone2MessageBody
+        zone2MessageTitle
+        zone2Radius
+        zone3Color
+        zone3MessageBody
+        zone3MessageTitle
+        zone3Radius
+      }
+      ... on AdminOutbreakPlanUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation OutbreakPlanDelete($id: Int!) {
+  adminOutbreakPlanDelete(id: $id) {
+    success
+  }
+}
+
+query GetOutbreakPlan($id: Int!) {
+  outbreakPlanGet(id: $id) {
+    id
+    name
+    description
+    reportType {
+      id
+      name
+    }
+    stateStep {
+      id
+      name
+    }
+    zone1Color
+    zone1MessageBody
+    zone1MessageTitle
+    zone1Radius
+    zone2Color
+    zone2MessageBody
+    zone2MessageTitle
+    zone2Radius
+    zone3Color
+    zone3MessageBody
+    zone3MessageTitle
+    zone3Radius
+  }
+}

@@ -94,6 +94,7 @@ export type AdminAuthorityCreateSuccess = {
   inherits: Array<AdminAuthorityCreateSuccess>;
   invitations: Array<AdminInvitationCodeCreateSuccess>;
   name: Scalars["String"];
+  places: Array<AdminPlaceUpdateSuccess>;
   reportTypes: Array<AdminReportTypeCreateSuccess>;
   updatedAt: Scalars["DateTime"];
   users: Array<AdminAuthorityUserCreateSuccess>;
@@ -207,6 +208,7 @@ export type AdminAuthorityUserCreateSuccess = {
   authority: AdminAuthorityCreateSuccess;
   avatar?: Maybe<Scalars["String"]>;
   avatarUrl?: Maybe<Scalars["String"]>;
+  consent: Scalars["Boolean"];
   dateJoined: Scalars["DateTime"];
   email: Scalars["String"];
   fcmToken: Scalars["String"];
@@ -575,6 +577,182 @@ export type AdminNotificationTemplateUpdateSuccess = {
   notificationTemplate?: Maybe<NotificationTemplateType>;
 };
 
+export type AdminOutbreakPlanCreateMutation = {
+  __typename?: "AdminOutbreakPlanCreateMutation";
+  result?: Maybe<AdminOutbreakPlanCreateResult>;
+};
+
+export type AdminOutbreakPlanCreateProblem = {
+  __typename?: "AdminOutbreakPlanCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminOutbreakPlanCreateResult =
+  | AdminOutbreakPlanCreateProblem
+  | AdminOutbreakPlanCreateSuccess;
+
+export type AdminOutbreakPlanCreateSuccess = {
+  __typename?: "AdminOutbreakPlanCreateSuccess";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  reportType: AdminReportTypeCreateSuccess;
+  stateStep: DeepStateStepType;
+  updatedAt: Scalars["DateTime"];
+  zone1Color: Scalars["String"];
+  zone1MessageBody: Scalars["String"];
+  zone1MessageTitle: Scalars["String"];
+  zone1Radius?: Maybe<Scalars["Float"]>;
+  zone2Color: Scalars["String"];
+  zone2MessageBody: Scalars["String"];
+  zone2MessageTitle: Scalars["String"];
+  zone2Radius?: Maybe<Scalars["Float"]>;
+  zone3Color: Scalars["String"];
+  zone3MessageBody: Scalars["String"];
+  zone3MessageTitle: Scalars["String"];
+  zone3Radius?: Maybe<Scalars["Float"]>;
+};
+
+export type AdminOutbreakPlanDeleteMutation = {
+  __typename?: "AdminOutbreakPlanDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type AdminOutbreakPlanQueryType = {
+  __typename?: "AdminOutbreakPlanQueryType";
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  reportType: AdminReportTypeCreateSuccess;
+};
+
+export type AdminOutbreakPlanQueryTypeNodeConnection = {
+  __typename?: "AdminOutbreakPlanQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminOutbreakPlanQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
+export type AdminOutbreakPlanUpdateMutation = {
+  __typename?: "AdminOutbreakPlanUpdateMutation";
+  result?: Maybe<AdminOutbreakPlanUpdateResult>;
+};
+
+export type AdminOutbreakPlanUpdateProblem = {
+  __typename?: "AdminOutbreakPlanUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminOutbreakPlanUpdateResult =
+  | AdminOutbreakPlanUpdateProblem
+  | AdminOutbreakPlanUpdateSuccess;
+
+export type AdminOutbreakPlanUpdateSuccess = {
+  __typename?: "AdminOutbreakPlanUpdateSuccess";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  reportType: AdminReportTypeCreateSuccess;
+  stateStep: DeepStateStepType;
+  updatedAt: Scalars["DateTime"];
+  zone1Color: Scalars["String"];
+  zone1MessageBody: Scalars["String"];
+  zone1MessageTitle: Scalars["String"];
+  zone1Radius?: Maybe<Scalars["Float"]>;
+  zone2Color: Scalars["String"];
+  zone2MessageBody: Scalars["String"];
+  zone2MessageTitle: Scalars["String"];
+  zone2Radius?: Maybe<Scalars["Float"]>;
+  zone3Color: Scalars["String"];
+  zone3MessageBody: Scalars["String"];
+  zone3MessageTitle: Scalars["String"];
+  zone3Radius?: Maybe<Scalars["Float"]>;
+};
+
+export type AdminPlaceCreateMutation = {
+  __typename?: "AdminPlaceCreateMutation";
+  result?: Maybe<AdminPlaceCreateResult>;
+};
+
+export type AdminPlaceCreateProblem = {
+  __typename?: "AdminPlaceCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminPlaceCreateResult =
+  | AdminPlaceCreateProblem
+  | AdminPlaceCreateSuccess;
+
+export type AdminPlaceCreateSuccess = {
+  __typename?: "AdminPlaceCreateSuccess";
+  authority: AdminAuthorityCreateSuccess;
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  id: Scalars["ID"];
+  location?: Maybe<Scalars["GeoJSON"]>;
+  name: Scalars["String"];
+  notificationTo: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type AdminPlaceDeleteMutation = {
+  __typename?: "AdminPlaceDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type AdminPlaceQueryType = {
+  __typename?: "AdminPlaceQueryType";
+  authority: AdminAuthorityCreateSuccess;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  notificationTo: Scalars["String"];
+};
+
+export type AdminPlaceQueryTypeNodeConnection = {
+  __typename?: "AdminPlaceQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminPlaceQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
+export type AdminPlaceUpdateMutation = {
+  __typename?: "AdminPlaceUpdateMutation";
+  result?: Maybe<AdminPlaceUpdateResult>;
+};
+
+export type AdminPlaceUpdateProblem = {
+  __typename?: "AdminPlaceUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminPlaceUpdateResult =
+  | AdminPlaceUpdateProblem
+  | AdminPlaceUpdateSuccess;
+
+export type AdminPlaceUpdateSuccess = {
+  __typename?: "AdminPlaceUpdateSuccess";
+  authority: AdminAuthorityCreateSuccess;
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  id: Scalars["ID"];
+  location?: Maybe<Scalars["GeoJSON"]>;
+  name: Scalars["String"];
+  notificationTo: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
 export type AdminReportTypeCreateMutation = {
   __typename?: "AdminReportTypeCreateMutation";
   result?: Maybe<AdminReportTypeCreateResult>;
@@ -605,6 +783,7 @@ export type AdminReportTypeCreateSuccess = {
   name: Scalars["String"];
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   ordering: Scalars["Int"];
+  planSet: Array<AdminOutbreakPlanUpdateSuccess>;
   rendererDataTemplate?: Maybe<Scalars["String"]>;
   rendererFollowupDataTemplate?: Maybe<Scalars["String"]>;
   reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
@@ -824,6 +1003,7 @@ export type AdminStateStepCreateSuccess = {
   isStartState: Scalars["Boolean"];
   isStopState: Scalars["Boolean"];
   name: Scalars["String"];
+  planSet: Array<AdminOutbreakPlanUpdateSuccess>;
   stateDefinition: DeepStateDefinitionType;
   toTransitions: Array<DeepStateTransitionType>;
   updatedAt: Scalars["DateTime"];
@@ -1110,6 +1290,20 @@ export type CommentUpdateSuccess = {
   threadId?: Maybe<Scalars["Int"]>;
 };
 
+export type ConfigurationType = {
+  __typename?: "ConfigurationType";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  key: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+  value: Scalars["String"];
+};
+
+export type ConfirmConsentMutation = {
+  __typename?: "ConfirmConsentMutation";
+  ok?: Maybe<Scalars["Boolean"]>;
+};
+
 export type DeepStateDefinitionType = {
   __typename?: "DeepStateDefinitionType";
   id: Scalars["ID"];
@@ -1283,6 +1477,12 @@ export type Mutation = {
   adminNotificationTemplateCreate?: Maybe<AdminNotificationTemplateCreateMutation>;
   adminNotificationTemplateDelete?: Maybe<AdminNotificationTemplateDeleteMutation>;
   adminNotificationTemplateUpdate?: Maybe<AdminNotificationTemplateUpdateMutation>;
+  adminOutbreakPlanCreate?: Maybe<AdminOutbreakPlanCreateMutation>;
+  adminOutbreakPlanDelete?: Maybe<AdminOutbreakPlanDeleteMutation>;
+  adminOutbreakPlanUpdate?: Maybe<AdminOutbreakPlanUpdateMutation>;
+  adminPlaceCreate?: Maybe<AdminPlaceCreateMutation>;
+  adminPlaceDelete?: Maybe<AdminPlaceDeleteMutation>;
+  adminPlaceUpdate?: Maybe<AdminPlaceUpdateMutation>;
   adminReportTypeCreate?: Maybe<AdminReportTypeCreateMutation>;
   adminReportTypeDelete?: Maybe<AdminReportTypeDeleteMutation>;
   adminReportTypeUpdate?: Maybe<AdminReportTypeUpdateMutation>;
@@ -1305,6 +1505,7 @@ export type Mutation = {
   commentCreate?: Maybe<CommentCreateMutation>;
   commentDelete?: Maybe<CommentDeleteMutation>;
   commentUpdate?: Maybe<CommentUpdateMutation>;
+  confirmConsent?: Maybe<ConfirmConsentMutation>;
   deleteRefreshTokenCookie?: Maybe<DeleteRefreshTokenCookie>;
   deleteTokenCookie?: Maybe<DeleteJsonWebTokenCookie>;
   forwardState?: Maybe<ForwardStateMutation>;
@@ -1465,6 +1666,70 @@ export type MutationAdminNotificationTemplateUpdateArgs = {
   stateTransitionId?: InputMaybe<Scalars["Int"]>;
   titleTemplate: Scalars["String"];
   type: Scalars["String"];
+};
+
+export type MutationAdminOutbreakPlanCreateArgs = {
+  description: Scalars["String"];
+  name: Scalars["String"];
+  reportTypeId: Scalars["UUID"];
+  stateStepId: Scalars["Int"];
+  zone1Color?: InputMaybe<Scalars["String"]>;
+  zone1MessageBody?: InputMaybe<Scalars["String"]>;
+  zone1MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone1Radius?: InputMaybe<Scalars["Float"]>;
+  zone2Color?: InputMaybe<Scalars["String"]>;
+  zone2MessageBody?: InputMaybe<Scalars["String"]>;
+  zone2MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone2Radius?: InputMaybe<Scalars["Float"]>;
+  zone3Color?: InputMaybe<Scalars["String"]>;
+  zone3MessageBody?: InputMaybe<Scalars["String"]>;
+  zone3MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone3Radius?: InputMaybe<Scalars["Float"]>;
+};
+
+export type MutationAdminOutbreakPlanDeleteArgs = {
+  id: Scalars["Int"];
+};
+
+export type MutationAdminOutbreakPlanUpdateArgs = {
+  description: Scalars["String"];
+  id: Scalars["Int"];
+  name: Scalars["String"];
+  reportTypeId: Scalars["UUID"];
+  stateStepId: Scalars["Int"];
+  zone1Color?: InputMaybe<Scalars["String"]>;
+  zone1MessageBody?: InputMaybe<Scalars["String"]>;
+  zone1MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone1Radius?: InputMaybe<Scalars["Float"]>;
+  zone2Color?: InputMaybe<Scalars["String"]>;
+  zone2MessageBody?: InputMaybe<Scalars["String"]>;
+  zone2MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone2Radius?: InputMaybe<Scalars["Float"]>;
+  zone3Color?: InputMaybe<Scalars["String"]>;
+  zone3MessageBody?: InputMaybe<Scalars["String"]>;
+  zone3MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone3Radius?: InputMaybe<Scalars["Float"]>;
+};
+
+export type MutationAdminPlaceCreateArgs = {
+  authorityId: Scalars["Int"];
+  latitude: Scalars["Float"];
+  longitude: Scalars["Float"];
+  name: Scalars["String"];
+  notificationTo?: InputMaybe<Scalars["String"]>;
+};
+
+export type MutationAdminPlaceDeleteArgs = {
+  id: Scalars["Int"];
+};
+
+export type MutationAdminPlaceUpdateArgs = {
+  authorityId: Scalars["Int"];
+  id: Scalars["Int"];
+  latitude: Scalars["Float"];
+  longitude: Scalars["Float"];
+  name: Scalars["String"];
+  notificationTo?: InputMaybe<Scalars["String"]>;
 };
 
 export type MutationAdminReportTypeCreateArgs = {
@@ -1699,6 +1964,30 @@ export type ObtainJsonWebToken = {
   token: Scalars["String"];
 };
 
+export type OutbreakPlanType = {
+  __typename?: "OutbreakPlanType";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  reportType: AdminReportTypeCreateSuccess;
+  stateStep: DeepStateStepType;
+  updatedAt: Scalars["DateTime"];
+  zone1Color: Scalars["String"];
+  zone1MessageBody: Scalars["String"];
+  zone1MessageTitle: Scalars["String"];
+  zone1Radius?: Maybe<Scalars["Float"]>;
+  zone2Color: Scalars["String"];
+  zone2MessageBody: Scalars["String"];
+  zone2MessageTitle: Scalars["String"];
+  zone2Radius?: Maybe<Scalars["Float"]>;
+  zone3Color: Scalars["String"];
+  zone3MessageBody: Scalars["String"];
+  zone3MessageTitle: Scalars["String"];
+  zone3Radius?: Maybe<Scalars["Float"]>;
+};
+
 export type PageInfoExtra = {
   __typename?: "PageInfoExtra";
   /** When paginating forwards, are there more items? */
@@ -1726,6 +2015,8 @@ export type Query = {
     Array<Maybe<AdminNotificationTemplateAuthorityType>>
   >;
   adminNotificationTemplateQuery?: Maybe<AdminNotificationTemplateQueryTypeNodeConnection>;
+  adminOutbreakPlanQuery?: Maybe<AdminOutbreakPlanQueryTypeNodeConnection>;
+  adminPlaceQuery?: Maybe<AdminPlaceQueryTypeNodeConnection>;
   adminReportTypeQuery?: Maybe<AdminReportTypeQueryTypeNodeConnection>;
   adminReporterNotificationQuery?: Maybe<AdminReporterNotificationQueryTypeNodeConnection>;
   adminStateDefinitionQuery?: Maybe<AdminStateDefinitionQueryTypeNodeConnection>;
@@ -1741,6 +2032,7 @@ export type Query = {
   category?: Maybe<CategoryType>;
   checkInvitationCode?: Maybe<CheckInvitationCodeType>;
   comments?: Maybe<Array<Maybe<CommentType>>>;
+  configurations?: Maybe<Array<Maybe<ConfigurationType>>>;
   deepStateDefinitionGet?: Maybe<DeepStateDefinitionType>;
   eventsQuery?: Maybe<EventType>;
   features?: Maybe<Array<Maybe<FeatureType>>>;
@@ -1757,11 +2049,13 @@ export type Query = {
   myMessages?: Maybe<UserMessageTypeNodeConnection>;
   myReportTypes?: Maybe<Array<Maybe<ReportTypeType>>>;
   notificationTemplateGet?: Maybe<NotificationTemplateType>;
+  outbreakPlanGet?: Maybe<OutbreakPlanType>;
   reportType?: Maybe<ReportTypeType>;
   reporterNotification?: Maybe<ReporterNotificationType>;
   statQuery?: Maybe<StatType>;
   stateDefinitionGet?: Maybe<StateDefinitionType>;
   stateStepGet?: Maybe<StateStepType>;
+  stateStepListByReportType?: Maybe<Array<StateStepType>>;
   stateTransitionGet?: Maybe<StateTransitionType>;
   summaryCaseByCategoryQuery?: Maybe<Array<SummaryByCategoryType>>;
   summaryReportByCategoryQuery?: Maybe<Array<SummaryByCategoryType>>;
@@ -1850,6 +2144,28 @@ export type QueryAdminNotificationTemplateAuthorityQueryArgs = {
 };
 
 export type QueryAdminNotificationTemplateQueryArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
+};
+
+export type QueryAdminOutbreakPlanQueryArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
+};
+
+export type QueryAdminPlaceQueryArgs = {
   after?: InputMaybe<Scalars["String"]>;
   before?: InputMaybe<Scalars["String"]>;
   first?: InputMaybe<Scalars["Int"]>;
@@ -2047,6 +2363,10 @@ export type QueryNotificationTemplateGetArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryOutbreakPlanGetArgs = {
+  id: Scalars["Int"];
+};
+
 export type QueryReportTypeArgs = {
   id: Scalars["ID"];
 };
@@ -2065,6 +2385,10 @@ export type QueryStateDefinitionGetArgs = {
 
 export type QueryStateStepGetArgs = {
   id: Scalars["ID"];
+};
+
+export type QueryStateStepListByReportTypeArgs = {
+  reportTypeId: Scalars["ID"];
 };
 
 export type QueryStateTransitionGetArgs = {
@@ -2131,6 +2455,7 @@ export type ReportTypeType = {
   name: Scalars["String"];
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   ordering: Scalars["Int"];
+  planSet: Array<AdminOutbreakPlanUpdateSuccess>;
   rendererDataTemplate?: Maybe<Scalars["String"]>;
   rendererFollowupDataTemplate?: Maybe<Scalars["String"]>;
   reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
@@ -2257,6 +2582,7 @@ export type UserProfileType = {
   authorityId?: Maybe<Scalars["Int"]>;
   authorityName?: Maybe<Scalars["String"]>;
   avatarUrl?: Maybe<Scalars["String"]>;
+  consent?: Maybe<Scalars["Boolean"]>;
   email?: Maybe<Scalars["String"]>;
   firstName: Scalars["String"];
   id: Scalars["Int"];
@@ -3470,6 +3796,186 @@ export type GetNotificationTemplateQuery = {
   } | null;
 };
 
+export type OutbreakPlansQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+  q?: InputMaybe<Scalars["String"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type OutbreakPlansQuery = {
+  __typename?: "Query";
+  adminOutbreakPlanQuery?: {
+    __typename?: "AdminOutbreakPlanQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminOutbreakPlanQueryType";
+      id: string;
+      name: string;
+      description: string;
+      reportType: { __typename?: "AdminReportTypeCreateSuccess"; name: string };
+    } | null>;
+  } | null;
+};
+
+export type OutbreakPlanCreateMutationVariables = Exact<{
+  name: Scalars["String"];
+  description: Scalars["String"];
+  reportTypeId: Scalars["UUID"];
+  stateStepId: Scalars["Int"];
+  zone1Color?: InputMaybe<Scalars["String"]>;
+  zone1MessageBody?: InputMaybe<Scalars["String"]>;
+  zone1MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone1Radius?: InputMaybe<Scalars["Float"]>;
+  zone2Color?: InputMaybe<Scalars["String"]>;
+  zone2MessageBody?: InputMaybe<Scalars["String"]>;
+  zone2MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone2Radius?: InputMaybe<Scalars["Float"]>;
+  zone3Color?: InputMaybe<Scalars["String"]>;
+  zone3MessageBody?: InputMaybe<Scalars["String"]>;
+  zone3MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone3Radius?: InputMaybe<Scalars["Float"]>;
+}>;
+
+export type OutbreakPlanCreateMutation = {
+  __typename?: "Mutation";
+  adminOutbreakPlanCreate?: {
+    __typename?: "AdminOutbreakPlanCreateMutation";
+    result?:
+      | {
+          __typename: "AdminOutbreakPlanCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminOutbreakPlanCreateSuccess";
+          id: string;
+          name: string;
+          description: string;
+          reportType: {
+            __typename?: "AdminReportTypeCreateSuccess";
+            id: any;
+            name: string;
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type OutbreakPlanUpdateMutationVariables = Exact<{
+  id: Scalars["Int"];
+  name: Scalars["String"];
+  description: Scalars["String"];
+  reportTypeId: Scalars["UUID"];
+  stateStepId: Scalars["Int"];
+  zone1Color?: InputMaybe<Scalars["String"]>;
+  zone1MessageBody?: InputMaybe<Scalars["String"]>;
+  zone1MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone1Radius?: InputMaybe<Scalars["Float"]>;
+  zone2Color?: InputMaybe<Scalars["String"]>;
+  zone2MessageBody?: InputMaybe<Scalars["String"]>;
+  zone2MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone2Radius?: InputMaybe<Scalars["Float"]>;
+  zone3Color?: InputMaybe<Scalars["String"]>;
+  zone3MessageBody?: InputMaybe<Scalars["String"]>;
+  zone3MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone3Radius?: InputMaybe<Scalars["Float"]>;
+}>;
+
+export type OutbreakPlanUpdateMutation = {
+  __typename?: "Mutation";
+  adminOutbreakPlanUpdate?: {
+    __typename?: "AdminOutbreakPlanUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminOutbreakPlanUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminOutbreakPlanUpdateSuccess";
+          id: string;
+          name: string;
+          description: string;
+          zone1Color: string;
+          zone1MessageBody: string;
+          zone1MessageTitle: string;
+          zone1Radius?: number | null;
+          zone2Color: string;
+          zone2MessageBody: string;
+          zone2MessageTitle: string;
+          zone2Radius?: number | null;
+          zone3Color: string;
+          zone3MessageBody: string;
+          zone3MessageTitle: string;
+          zone3Radius?: number | null;
+          reportType: {
+            __typename?: "AdminReportTypeCreateSuccess";
+            id: any;
+            name: string;
+          };
+          stateStep: {
+            __typename?: "DeepStateStepType";
+            id: string;
+            name: string;
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type OutbreakPlanDeleteMutationVariables = Exact<{
+  id: Scalars["Int"];
+}>;
+
+export type OutbreakPlanDeleteMutation = {
+  __typename?: "Mutation";
+  adminOutbreakPlanDelete?: {
+    __typename?: "AdminOutbreakPlanDeleteMutation";
+    success?: boolean | null;
+  } | null;
+};
+
+export type GetOutbreakPlanQueryVariables = Exact<{
+  id: Scalars["Int"];
+}>;
+
+export type GetOutbreakPlanQuery = {
+  __typename?: "Query";
+  outbreakPlanGet?: {
+    __typename?: "OutbreakPlanType";
+    id: string;
+    name: string;
+    description: string;
+    zone1Color: string;
+    zone1MessageBody: string;
+    zone1MessageTitle: string;
+    zone1Radius?: number | null;
+    zone2Color: string;
+    zone2MessageBody: string;
+    zone2MessageTitle: string;
+    zone2Radius?: number | null;
+    zone3Color: string;
+    zone3MessageBody: string;
+    zone3MessageTitle: string;
+    zone3Radius?: number | null;
+    reportType: {
+      __typename?: "AdminReportTypeCreateSuccess";
+      id: any;
+      name: string;
+    };
+    stateStep: { __typename?: "DeepStateStepType"; id: string; name: string };
+  } | null;
+};
+
 export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MeQuery = {
@@ -4261,6 +4767,21 @@ export type StateStepsQuery = {
     isStartState: boolean;
     isStopState: boolean;
   } | null> | null;
+};
+
+export type StateStepsByReportTypeQueryVariables = Exact<{
+  reportTypeId: Scalars["ID"];
+}>;
+
+export type StateStepsByReportTypeQuery = {
+  __typename?: "Query";
+  stateStepListByReportType?: Array<{
+    __typename?: "StateStepType";
+    id: string;
+    name: string;
+    isStartState: boolean;
+    isStopState: boolean;
+  }> | null;
 };
 
 export type StateStepCreateMutationVariables = Exact<{
@@ -10181,6 +10702,1181 @@ export const GetNotificationTemplateDocument = {
   GetNotificationTemplateQuery,
   GetNotificationTemplateQueryVariables
 >;
+export const OutbreakPlansDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "outbreakPlans" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminOutbreakPlanQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "reportType" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<OutbreakPlansQuery, OutbreakPlansQueryVariables>;
+export const OutbreakPlanCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "OutbreakPlanCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "description" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "stateStepId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone1Color" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone1MessageBody" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone1MessageTitle" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone1Radius" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          defaultValue: { kind: "NullValue" },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone2Color" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone2MessageBody" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone2MessageTitle" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone2Radius" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          defaultValue: { kind: "NullValue" },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone3Color" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone3MessageBody" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone3MessageTitle" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone3Radius" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          defaultValue: { kind: "NullValue" },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminOutbreakPlanCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "description" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "stateStepId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "stateStepId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone1Color" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone1Color" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone1MessageBody" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone1MessageBody" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone1MessageTitle" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone1MessageTitle" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone1Radius" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone1Radius" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone2Color" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone2Color" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone2MessageBody" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone2MessageBody" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone2MessageTitle" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone2MessageTitle" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone2Radius" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone2Radius" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone3Color" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone3Color" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone3MessageBody" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone3MessageBody" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone3MessageTitle" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone3MessageTitle" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone3Radius" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone3Radius" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminOutbreakPlanCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "description" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "reportType" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminOutbreakPlanCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  OutbreakPlanCreateMutation,
+  OutbreakPlanCreateMutationVariables
+>;
+export const OutbreakPlanUpdateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "OutbreakPlanUpdate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "description" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "stateStepId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone1Color" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone1MessageBody" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone1MessageTitle" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone1Radius" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          defaultValue: { kind: "NullValue" },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone2Color" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone2MessageBody" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone2MessageTitle" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone2Radius" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          defaultValue: { kind: "NullValue" },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone3Color" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone3MessageBody" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone3MessageTitle" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zone3Radius" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          defaultValue: { kind: "NullValue" },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminOutbreakPlanUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "description" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "stateStepId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "stateStepId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone1Color" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone1Color" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone1MessageBody" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone1MessageBody" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone1MessageTitle" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone1MessageTitle" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone1Radius" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone1Radius" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone2Color" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone2Color" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone2MessageBody" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone2MessageBody" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone2MessageTitle" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone2MessageTitle" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone2Radius" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone2Radius" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone3Color" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone3Color" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone3MessageBody" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone3MessageBody" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone3MessageTitle" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone3MessageTitle" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zone3Radius" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zone3Radius" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminOutbreakPlanUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "description" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "reportType" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "stateStep" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "zone1Color" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "zone1MessageBody" },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "zone1MessageTitle",
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "zone1Radius" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "zone2Color" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "zone2MessageBody" },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "zone2MessageTitle",
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "zone2Radius" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "zone3Color" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "zone3MessageBody" },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "zone3MessageTitle",
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "zone3Radius" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminOutbreakPlanUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  OutbreakPlanUpdateMutation,
+  OutbreakPlanUpdateMutationVariables
+>;
+export const OutbreakPlanDeleteDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "OutbreakPlanDelete" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminOutbreakPlanDelete" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  OutbreakPlanDeleteMutation,
+  OutbreakPlanDeleteMutationVariables
+>;
+export const GetOutbreakPlanDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetOutbreakPlan" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "outbreakPlanGet" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reportType" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "stateStep" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "zone1Color" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "zone1MessageBody" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "zone1MessageTitle" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "zone1Radius" } },
+                { kind: "Field", name: { kind: "Name", value: "zone2Color" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "zone2MessageBody" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "zone2MessageTitle" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "zone2Radius" } },
+                { kind: "Field", name: { kind: "Name", value: "zone3Color" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "zone3MessageBody" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "zone3MessageTitle" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "zone3Radius" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetOutbreakPlanQuery,
+  GetOutbreakPlanQueryVariables
+>;
 export const MeDocument = {
   kind: "Document",
   definitions: [
@@ -14116,6 +15812,63 @@ export const StateStepsDocument = {
     },
   ],
 } as unknown as DocumentNode<StateStepsQuery, StateStepsQueryVariables>;
+export const StateStepsByReportTypeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "StateStepsByReportType" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "stateStepListByReportType" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "isStartState" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "isStopState" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  StateStepsByReportTypeQuery,
+  StateStepsByReportTypeQueryVariables
+>;
 export const StateStepCreateDocument = {
   kind: "Document",
   definitions: [

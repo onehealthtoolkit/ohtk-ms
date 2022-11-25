@@ -18,7 +18,10 @@
     "create": "បង្កើត",
     "update": "ធ្វើបច្ចុប្បន្នភាព",
     "updatePassword": "ផ្លាស់ប្តូរពាក្យសម្ងាត់",
-    "view": "មើល"
+    "view": "មើល",
+    "outbreakPlans": "ផែនការផ្ទុះ",
+    "places": "កន្លែង",
+    "configurations": "ការកំណត់រចនាសម្ព័ន្ធ"
   },
   "filter": {
     "searchButton": "ស្វែងរក",
@@ -68,6 +71,7 @@
       "descriptionFollowupTemplate": "ធ្វើតាមគំរូពិពណ៌នា",
       "stateDefinition": "stateDefinition",
       "default": "លំនាំដើម",
+      "stateStep": "ជំហានស្ថានភាព",
       "isStartState": "គឺជារដ្ឋចាប់ផ្តើម",
       "isStopState": "គឺជារដ្ឋបញ្ឈប់",
       "fromStep": "ពីជំហាន",
@@ -86,7 +90,9 @@
       "invitationCode": "លេខ​កូដ​ការ​អញ្ជើញ",
       "language": "ភាសា",
       "server": "ម៉ាស៊ីនមេ",
-      "forgotPassword": "បញ្ចូលអាសយដ្ឋានអ៊ីមែលដែលអ្នកធ្លាប់បង្កើតគណនីរបស់អ្នក ហើយចុច \"កំណត់ពាក្យសម្ងាត់ឡើងវិញ\""
+      "forgotPassword": "បញ្ចូលអាសយដ្ឋានអ៊ីមែលដែលអ្នកធ្លាប់បង្កើតគណនីរបស់អ្នក ហើយចុច \"កំណត់ពាក្យសម្ងាត់ឡើងវិញ\"",
+      "zoneRadius": "កាំ",
+      "zonecolor": "ពណ៌"
     },
     "placeholder": {
       "code": "កូដ",
@@ -123,7 +129,12 @@
       "selectReportType": "ជ្រើសរើសប្រភេទរបាយការណ៍",
       "invitationCode": "លេខ​កូដ​ការ​អញ្ជើញ",
       "language": "ភាសា",
-      "server": "ម៉ាស៊ីនមេ"
+      "server": "ម៉ាស៊ីនមេ",
+      "zone1": "តំបន់ 1",
+      "zone2": "តំបន់ 2",
+      "zone3": "តំបន់ 3",
+      "zoneRadius": "កាំ (m)",
+      "zoneColor": "ពណ៌"
     },
     "button": {
       "signin": "ចូល",
