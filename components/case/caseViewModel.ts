@@ -14,6 +14,7 @@ import { FetchPolicy } from "@apollo/client";
 import { GalleryDialogViewModel } from "components/widgets/dialogs/galleryDialogViewModel";
 import { ICommentService } from "lib/services/comment/commentService";
 import { ReportMapDialogViewModel } from "components/case/reportMapDialogViewModel";
+import { IOutbreakService } from "lib/services/outbreak/outbreakService";
 
 export type OutbreakZone = {
   color: string;
@@ -32,7 +33,8 @@ export class CaseViewModel extends BaseViewModel {
     id: string,
     readonly me: Me,
     readonly caseService: ICaseService,
-    readonly commentService: ICommentService
+    readonly commentService: ICommentService,
+    readonly outbreakService: IOutbreakService
   ) {
     super();
     makeObservable(this, {
@@ -110,7 +112,10 @@ export class CaseViewModel extends BaseViewModel {
 
   openReportMap(caseId: string) {
     console.log(caseId);
-    this.reportMapViewModel = new ReportMapDialogViewModel();
+    this.reportMapViewModel = new ReportMapDialogViewModel(
+      this.outbreakService,
+      caseId
+    );
     this.reportMapViewModel.open(null);
   }
 }

@@ -3796,6 +3796,25 @@ export type GetNotificationTemplateQuery = {
   } | null;
 };
 
+export type OutbreakPlacesQueryVariables = Exact<{
+  caseId: Scalars["UUID"];
+}>;
+
+export type OutbreakPlacesQuery = {
+  __typename?: "Query";
+  outbreakPlaces?: Array<{
+    __typename?: "OutbreakPlaceType";
+    zone?: number | null;
+    color: string;
+    place?: {
+      __typename?: "PlaceType";
+      name: string;
+      latitude?: number | null;
+      longitude?: number | null;
+    } | null;
+  } | null> | null;
+};
+
 export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MeQuery = {
@@ -10511,6 +10530,73 @@ export const GetNotificationTemplateDocument = {
   GetNotificationTemplateQuery,
   GetNotificationTemplateQueryVariables
 >;
+export const OutbreakPlacesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "OutbreakPlaces" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "caseId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "outbreakPlaces" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "caseId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "caseId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "place" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "latitude" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "longitude" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "zone" } },
+                { kind: "Field", name: { kind: "Name", value: "color" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<OutbreakPlacesQuery, OutbreakPlacesQueryVariables>;
 export const MeDocument = {
   kind: "Document",
   definitions: [

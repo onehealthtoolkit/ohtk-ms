@@ -91,9 +91,15 @@ const Case = (props: { id: string }) => {
   const { id } = props;
   const router = useRouter();
   const { me } = useStore();
-  const { caseService, commentService } = useServices();
+  const { caseService, commentService, outbreakService } = useServices();
   const [viewModel] = useState(
-    new CaseViewModel(id as string, me!, caseService, commentService)
+    new CaseViewModel(
+      id as string,
+      me!,
+      caseService,
+      commentService,
+      outbreakService
+    )
   );
 
   const setUrl = useCallback(

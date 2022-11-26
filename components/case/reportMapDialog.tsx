@@ -1,6 +1,7 @@
 import { OutbreakZone } from "components/case/caseViewModel";
 import { ReportMapDialogViewModel } from "components/case/reportMapDialogViewModel";
 import BaseModalDialog from "components/widgets/dialogs/baseModalDialog";
+import Spinner from "components/widgets/spinner";
 import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import dynamic from "next/dynamic";
@@ -73,32 +74,45 @@ const ReportMapDialog: React.FC<PropsWithChildren<ReportMapDialogProps>> = ({
       renderContent={() => (
         <div className="w-full h-full relative">
           {/* a map */}
-          {screen && (
-            <ReportMap
-              lnglat={lnglat}
-              zones={zones}
-              showZones={toJS(viewModel.showZones)}
-            />
+          {screen ? (
+            <>
+              <ReportMap
+                lnglat={lnglat}
+                zones={zones}
+                showZones={toJS(viewModel.showZones)}
+                places={toJS(viewModel.places)}
+              />
+
+              <div
+                className="absolute top-4 right-4 z-[1001] flex flex-row gap-2 
+                  border-2 border-gray-300 rounded-md bg-white
+                "
+              >
+                {zones && zones.length > 0 && (
+                  <>
+                    <Switch
+                      label="Outbreak zones"
+                      active={viewModel.showZones}
+                      onChange={() => {
+                        viewModel.toggleZonesView();
+                      }}
+                    />
+                    <div className="h-auto my-2 w-[1px] border-l-2 border-gray-200"></div>
+                  </>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col justify-center items-center h-full">
+              <div
+                className="flex flex-col justify-center items-center
+                bg-gray-50 border-2 border-gray-200 rounded-md p-4"
+              >
+                <p>Loading map</p>
+                <Spinner />
+              </div>
+            </div>
           )}
-          {/* controls */}
-          <div
-            className="absolute top-4 right-4 z-[1001] flex flex-row gap-2 
-            border-2 border-gray-300 rounded-md bg-white
-          "
-          >
-            {zones && zones.length > 0 && (
-              <>
-                <Switch
-                  label="Outbreak zones"
-                  active={viewModel.showZones}
-                  onChange={() => {
-                    viewModel.toggleZonesView();
-                  }}
-                />
-                <div className="h-auto my-2 w-[1px] border-l-2 border-gray-200"></div>
-              </>
-            )}
-          </div>
         </div>
       )}
       renderAction={() => null}
