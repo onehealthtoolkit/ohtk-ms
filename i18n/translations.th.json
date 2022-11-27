@@ -95,7 +95,12 @@
       "zone2": "โซน 2",
       "zone3": "โซน 3",
       "zoneRadius": "รัศมี",
-      "zoneColor": "สี"
+      "zoneColor": "สี",
+      "key": "คีย์",
+      "value": "ค่า",
+      "latitude": "ละติจูด",
+      "longitude": "ลองจิจูด",
+      "notificationTo": "แจ้งเตือนถึง"
     },
     "placeholder": {
       "code": "รหัส",
@@ -137,7 +142,12 @@
       "language": "ภาษา",
       "server": "เซริฟเวอร์",
       "zoneRadius": "รัศมี (ม)",
-      "zoneZolor": "สี"
+      "zoneZolor": "สี",
+      "key": "คีย์",
+      "value": "ค่า",
+      "latitude": "ละติจูด",
+      "longitude": "ลองจิจูด",
+      "notificationTo": "email:john@gmail.com, user:pphetra"
     },
     "button": {
       "signin": "เข้าสู่ระบบ",

@@ -22,6 +22,8 @@ import { RegisterService } from "./register/registerService";
 import { FollowupService } from "./followup/followupService";
 import { ForgotPasswordService } from "./forgotPassword/forgotPasswordService";
 import { OutbreakPlanService } from "./outbreakPlan";
+import { PlaceService } from "./place";
+import { ConfigurationService } from "./configuration";
 
 export interface IServiceProvider {
   get authService(): IAuthService;
@@ -46,6 +48,8 @@ export interface IServiceProvider {
   get forgotPasswordService(): ForgotPasswordService;
   get followupService(): FollowupService;
   get outbreakPlanService(): OutbreakPlanService;
+  get placeService(): PlaceService;
+  get configurationService(): ConfigurationService;
 }
 
 export class ServicesProvider implements IServiceProvider {
@@ -73,6 +77,8 @@ export class ServicesProvider implements IServiceProvider {
   forgotPasswordService: ForgotPasswordService;
   followupService: FollowupService;
   outbreakPlanService: OutbreakPlanService;
+  placeService: PlaceService;
+  configurationService: ConfigurationService;
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
@@ -98,6 +104,8 @@ export class ServicesProvider implements IServiceProvider {
     this.forgotPasswordService = new ForgotPasswordService(client);
     this.followupService = new FollowupService(client);
     this.outbreakPlanService = new OutbreakPlanService(client);
+    this.placeService = new PlaceService(client);
+    this.configurationService = new ConfigurationService(client);
   }
 }
 

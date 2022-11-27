@@ -240,7 +240,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     pathname={pathname}
                     label={t("breadcrumb.places", "Places")}
                     collapsed={store.menu.collapsed}
-                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    display={store.isSuperUser || store.isRoleAdmin}
                     icon={<MapIcon className={iconClassName} />}
                   />
                   <Menu

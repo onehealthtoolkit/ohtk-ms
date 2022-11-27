@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import useServices from "lib/services/provider";
 import { styledReactSelect } from "./styledReactSelect";
+import useStore from "lib/store";
+import { Authority } from "lib/services/authority";
 
 type AuthorityFilterProps = {
   onChange: (value: AuthorityOption) => void;
   value?: number;
+  roleRequired?: boolean;
 };
 
 type AuthorityOption = {
@@ -16,16 +19,30 @@ type AuthorityOption = {
 const AuthroitySelect: React.FC<AuthorityFilterProps> = ({
   value,
   onChange,
+  roleRequired,
 }) => {
+  const store = useStore();
   const { authorityService } = useServices();
   const [authorities, setAuthorities] = useState<AuthorityOption[]>();
 
   useEffect(() => {
     async function loadOptions() {
-      const authorities = await (
-        await authorityService.lookupAuthorities(100, 0, "")
-      ).items;
-
+      let authorities: Authority[] = [];
+      if (roleRequired) {
+        if (store.isSuperUser)
+          authorities = await (
+            await authorityService.lookupAuthorities(100, 0, "")
+          ).items!;
+        else if (store.isRoleAdmin)
+          authorities =
+            await await authorityService.lookupAuthorityInheritsDown(
+              store.authorityId!.toString()
+            );
+      } else {
+        authorities = await (
+          await authorityService.lookupAuthorities(100, 0, "")
+        ).items!;
+      }
       setAuthorities(
         authorities?.map(item => {
           return {
@@ -36,7 +53,7 @@ const AuthroitySelect: React.FC<AuthorityFilterProps> = ({
       );
     }
     loadOptions();
-  }, [authorityService]);
+  }, [authorityService, roleRequired, store]);
 
   return (
     <Select<AuthorityOption>

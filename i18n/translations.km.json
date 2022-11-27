@@ -92,7 +92,12 @@
       "server": "ម៉ាស៊ីនមេ",
       "forgotPassword": "បញ្ចូលអាសយដ្ឋានអ៊ីមែលដែលអ្នកធ្លាប់បង្កើតគណនីរបស់អ្នក ហើយចុច \"កំណត់ពាក្យសម្ងាត់ឡើងវិញ\"",
       "zoneRadius": "កាំ",
-      "zonecolor": "ពណ៌"
+      "zonecolor": "ពណ៌",
+      "key": "គន្លឹះ",
+      "value": "តម្លៃ",
+      "latitude": "រយៈទទឹង",
+      "longitude": "បណ្តោយ",
+      "notificationTo": "ការជូនដំណឹងទៅ"
     },
     "placeholder": {
       "code": "កូដ",
@@ -125,7 +130,7 @@
       "password": "ពាក្យសម្ងាត់",
       "newPassword": "ពាក្យសម្ងាត់",
       "confirmPassword": "បញ្ជាក់ពាក្យសម្ងាត់",
-      "to": "ទៅ",
+      "to": "email:john@gmail.com, user:pphetra",
       "selectReportType": "ជ្រើសរើសប្រភេទរបាយការណ៍",
       "invitationCode": "លេខ​កូដ​ការ​អញ្ជើញ",
       "language": "ភាសា",
@@ -134,7 +139,12 @@
       "zone2": "តំបន់ 2",
       "zone3": "តំបន់ 3",
       "zoneRadius": "កាំ (m)",
-      "zoneColor": "ពណ៌"
+      "zoneColor": "ពណ៌",
+      "key": "គន្លឹះ",
+      "value": "តម្លៃ",
+      "latitude": "រយៈទទឹង",
+      "longitude": "បណ្តោយ",
+      "notificationTo": "email:john@gmail.com, user:pphetra"
     },
     "button": {
       "signin": "ចូល",

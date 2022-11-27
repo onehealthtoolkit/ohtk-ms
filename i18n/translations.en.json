@@ -95,7 +95,12 @@
       "zone2": "Zone 2",
       "zone3": "Zone 3",
       "zoneRadius": "Radius",
-      "zoneColor": "Color"
+      "zoneColor": "Color",
+      "key": "Key",
+      "value": "Value",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "notificationTo": "Contact"
     },
     "placeholder": {
       "code": "Code",
@@ -134,7 +139,12 @@
       "language": "Language",
       "server": "Server",
       "zoneRadius": "Radius (m)",
-      "zoneColor": "Color"
+      "zoneColor": "Color",
+      "key": "Key",
+      "value": "Value",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "notificationTo": "email:john@gmail.com, user:pphetra"
     },
     "button": {
       "signin": "Sign In",

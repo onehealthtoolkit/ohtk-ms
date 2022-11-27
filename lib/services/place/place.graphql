@@ -1,0 +1,107 @@
+query places($limit: Int!, $offset: Int!, $q: String, $ordering: String) {
+  adminPlaceQuery(limit: $limit, offset: $offset, q: $q, ordering: $ordering) {
+    totalCount
+    results {
+      id
+      name
+      authority {
+        name
+      }
+    }
+  }
+}
+
+mutation PlaceCreate(
+  $name: String!
+  $authorityId: Int!
+  $latitude: Float!
+  $longitude: Float!
+  $notificationTo: String = ""
+) {
+  adminPlaceCreate(
+    name: $name
+    authorityId: $authorityId
+    latitude: $latitude
+    longitude: $longitude
+    notificationTo: $notificationTo
+  ) {
+    result {
+      __typename
+      ... on AdminPlaceCreateSuccess {
+        id
+        name
+        authority {
+          id
+          name
+        }
+        notificationTo
+        location
+      }
+      ... on AdminPlaceCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation PlaceUpdate(
+  $id: Int!
+  $name: String!
+  $authorityId: Int!
+  $latitude: Float!
+  $longitude: Float!
+  $notificationTo: String = ""
+) {
+  adminPlaceUpdate(
+    id: $id
+    name: $name
+    authorityId: $authorityId
+    latitude: $latitude
+    longitude: $longitude
+    notificationTo: $notificationTo
+  ) {
+    result {
+      __typename
+      ... on AdminPlaceUpdateSuccess {
+        id
+        name
+        authority {
+          id
+          name
+        }
+        notificationTo
+        location
+      }
+      ... on AdminPlaceUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation PlaceDelete($id: Int!) {
+  adminPlaceDelete(id: $id) {
+    success
+  }
+}
+
+query GetPlace($id: Int!) {
+  placeGet(id: $id) {
+    id
+    name
+    authority {
+      id
+      name
+    }
+    notificationTo
+    location
+  }
+}

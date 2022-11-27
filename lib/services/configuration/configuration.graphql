@@ -1,0 +1,70 @@
+query configurations(
+  $limit: Int!
+  $offset: Int!
+  $q: String
+  $ordering: String
+) {
+  adminConfigurationQuery(
+    limit: $limit
+    offset: $offset
+    q: $q
+    ordering: $ordering
+  ) {
+    totalCount
+    results {
+      key
+      value
+    }
+  }
+}
+
+mutation ConfigurationCreate($key: String!, $value: String!) {
+  adminConfigurationCreate(key: $key, value: $value) {
+    result {
+      __typename
+      ... on AdminConfigurationCreateSuccess {
+        key
+        value
+      }
+      ... on AdminConfigurationCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation ConfigurationUpdate($id: String!, $key: String!, $value: String!) {
+  adminConfigurationUpdate(id: $id, key: $key, value: $value) {
+    result {
+      __typename
+      ... on AdminConfigurationUpdateSuccess {
+        key
+        value
+      }
+      ... on AdminConfigurationUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation ConfigurationDelete($id: String!) {
+  adminConfigurationDelete(id: $id) {
+    success
+  }
+}
+
+query GetConfiguration($key: String!) {
+  configurationGet(key: $key) {
+    key
+    value
+  }
+}

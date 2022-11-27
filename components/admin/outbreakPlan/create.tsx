@@ -148,7 +148,6 @@ const OutbreakPlanCreate = () => {
               type="number"
               placeholder={t("form.placeholder.zoneRadius", "radius (m)")}
               onChange={evt => (viewModel.zone1Radius = +evt.target.value)}
-              value={viewModel.zone1Radius == 0 ? "" : viewModel.zone1Radius}
               disabled={isSubmitting}
             />
             <ErrorText>{errors.zone1Radius}</ErrorText>
@@ -163,7 +162,6 @@ const OutbreakPlanCreate = () => {
               style={{ padding: 0, width: "inherit" }}
               placeholder={t("form.placeholder.zoneColor", "color picker")}
               onChange={evt => (viewModel.zone1Color = evt.target.value)}
-              value={viewModel.zone1Color}
               disabled={isSubmitting}
             />
             <ErrorText>{errors.zone1Color}</ErrorText>
@@ -212,7 +210,6 @@ const OutbreakPlanCreate = () => {
               type="number"
               placeholder={t("form.placeholder.zoneRadius", "radius (m)")}
               onChange={evt => (viewModel.zone2Radius = +evt.target.value)}
-              value={viewModel.zone2Radius == 0 ? "" : viewModel.zone2Radius}
               disabled={isSubmitting}
             />
             <ErrorText>{errors.zone2Radius}</ErrorText>
@@ -227,7 +224,6 @@ const OutbreakPlanCreate = () => {
               style={{ padding: 0, width: "inherit" }}
               placeholder={t("form.placeholder.zoneColor", "color picker")}
               onChange={evt => (viewModel.zone2Color = evt.target.value)}
-              value={viewModel.zone2Color}
               disabled={isSubmitting}
             />
             <ErrorText>{errors.zone2Color}</ErrorText>
@@ -276,7 +272,6 @@ const OutbreakPlanCreate = () => {
               type="number"
               placeholder={t("form.placeholder.zoneRadius", "radius (m)")}
               onChange={evt => (viewModel.zone3Radius = +evt.target.value)}
-              value={viewModel.zone3Radius == 0 ? "" : viewModel.zone3Radius}
               disabled={isSubmitting}
             />
             <ErrorText>{errors.zone3Radius}</ErrorText>
@@ -291,7 +286,6 @@ const OutbreakPlanCreate = () => {
               style={{ padding: 0, width: "inherit" }}
               placeholder={t("form.placeholder.zoneColor", "color picker")}
               onChange={evt => (viewModel.zone3Color = evt.target.value)}
-              value={viewModel.zone3Color}
               disabled={isSubmitting}
             />
             <ErrorText>{errors.zone3Color}</ErrorText>
