@@ -111,8 +111,8 @@ export class PlaceService implements IPlaceService {
       data = {
         id: place.id.toString(),
         name: place.name,
-        latitude: parseFloat(place.location["coordinates"][1]),
-        longitude: parseFloat(place.location["coordinates"][0]),
+        latitude: place.latitude || 0,
+        longitude: place.longitude || 0,
         notificationTo: place.notificationTo,
         authorityId: parseInt(place.authority.id),
         authorityName: place.authority.name,

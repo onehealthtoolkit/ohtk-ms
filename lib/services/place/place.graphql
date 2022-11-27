@@ -74,7 +74,8 @@ mutation PlaceUpdate(
           name
         }
         notificationTo
-        location
+        latitude
+        longitude
       }
       ... on AdminPlaceUpdateProblem {
         fields {
@@ -102,6 +103,7 @@ query GetPlace($id: Int!) {
       name
     }
     notificationTo
-    location
+    latitude
+    longitude
   }
 }

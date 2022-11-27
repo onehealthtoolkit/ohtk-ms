@@ -667,6 +667,7 @@ export type AdminOutbreakPlanCreateSuccess = {
   description: Scalars["String"];
   id: Scalars["ID"];
   name: Scalars["String"];
+  places: Array<OutbreakPlaceType>;
   reportType: AdminReportTypeCreateSuccess;
   stateStep: DeepStateStepType;
   updatedAt: Scalars["DateTime"];
@@ -728,6 +729,7 @@ export type AdminOutbreakPlanUpdateSuccess = {
   description: Scalars["String"];
   id: Scalars["ID"];
   name: Scalars["String"];
+  places: Array<OutbreakPlaceType>;
   reportType: AdminReportTypeCreateSuccess;
   stateStep: DeepStateStepType;
   updatedAt: Scalars["DateTime"];
@@ -769,6 +771,7 @@ export type AdminPlaceCreateSuccess = {
   location?: Maybe<Scalars["GeoJSON"]>;
   name: Scalars["String"];
   notificationTo: Scalars["String"];
+  outbreakPlaces: Array<OutbreakPlaceType>;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -815,9 +818,12 @@ export type AdminPlaceUpdateSuccess = {
   createdAt: Scalars["DateTime"];
   deletedAt?: Maybe<Scalars["DateTime"]>;
   id: Scalars["ID"];
+  latitude?: Maybe<Scalars["Float"]>;
   location?: Maybe<Scalars["GeoJSON"]>;
+  longitude?: Maybe<Scalars["Float"]>;
   name: Scalars["String"];
   notificationTo: Scalars["String"];
+  outbreakPlaces: Array<OutbreakPlaceType>;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -1247,6 +1253,7 @@ export type CaseType = {
   description: Scalars["String"];
   id: Scalars["UUID"];
   isFinished: Scalars["Boolean"];
+  outbreakPlanInfo?: Maybe<Scalars["JSONString"]>;
   report?: Maybe<IncidentReportType>;
   stateDefinition?: Maybe<DeepStateDefinitionType>;
   states?: Maybe<Array<Maybe<CaseStateType>>>;
@@ -2050,6 +2057,19 @@ export type ObtainJsonWebToken = {
   token: Scalars["String"];
 };
 
+export type OutbreakPlaceType = {
+  __typename?: "OutbreakPlaceType";
+  case: CaseType;
+  color: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  id: Scalars["ID"];
+  place?: Maybe<PlaceType>;
+  plan: AdminOutbreakPlanUpdateSuccess;
+  updatedAt: Scalars["DateTime"];
+  zone?: Maybe<Scalars["Int"]>;
+};
+
 export type OutbreakPlanType = {
   __typename?: "OutbreakPlanType";
   createdAt: Scalars["DateTime"];
@@ -2057,6 +2077,7 @@ export type OutbreakPlanType = {
   description: Scalars["String"];
   id: Scalars["ID"];
   name: Scalars["String"];
+  places: Array<OutbreakPlaceType>;
   reportType: AdminReportTypeCreateSuccess;
   stateStep: DeepStateStepType;
   updatedAt: Scalars["DateTime"];
@@ -2085,13 +2106,12 @@ export type PageInfoExtra = {
 export type PlaceType = {
   __typename?: "PlaceType";
   authority: AdminAuthorityCreateSuccess;
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
   id: Scalars["ID"];
+  latitude?: Maybe<Scalars["Float"]>;
   location?: Maybe<Scalars["GeoJSON"]>;
+  longitude?: Maybe<Scalars["Float"]>;
   name: Scalars["String"];
   notificationTo: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
 };
 
 export type PromoteToCaseMutation = {
@@ -2149,6 +2169,7 @@ export type Query = {
   myMessages?: Maybe<UserMessageTypeNodeConnection>;
   myReportTypes?: Maybe<Array<Maybe<ReportTypeType>>>;
   notificationTemplateGet?: Maybe<NotificationTemplateType>;
+  outbreakPlaces?: Maybe<Array<Maybe<OutbreakPlaceType>>>;
   outbreakPlanGet?: Maybe<OutbreakPlanType>;
   placeGet?: Maybe<PlaceType>;
   reportType?: Maybe<ReportTypeType>;
@@ -2477,6 +2498,10 @@ export type QueryMyMessagesArgs = {
 
 export type QueryNotificationTemplateGetArgs = {
   id: Scalars["ID"];
+};
+
+export type QueryOutbreakPlacesArgs = {
+  caseId: Scalars["UUID"];
 };
 
 export type QueryOutbreakPlanGetArgs = {
@@ -4285,7 +4310,8 @@ export type PlaceUpdateMutation = {
           id: string;
           name: string;
           notificationTo: string;
-          location?: any | null;
+          latitude?: number | null;
+          longitude?: number | null;
           authority: {
             __typename?: "AdminAuthorityCreateSuccess";
             id: string;
@@ -4319,7 +4345,8 @@ export type GetPlaceQuery = {
     id: string;
     name: string;
     notificationTo: string;
-    location?: any | null;
+    latitude?: number | null;
+    longitude?: number | null;
     authority: {
       __typename?: "AdminAuthorityCreateSuccess";
       id: string;
@@ -13260,7 +13287,11 @@ export const PlaceUpdateDocument = {
                             },
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "location" },
+                              name: { kind: "Name", value: "latitude" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "longitude" },
                             },
                           ],
                         },
@@ -13410,7 +13441,8 @@ export const GetPlaceDocument = {
                   kind: "Field",
                   name: { kind: "Name", value: "notificationTo" },
                 },
-                { kind: "Field", name: { kind: "Name", value: "location" } },
+                { kind: "Field", name: { kind: "Name", value: "latitude" } },
+                { kind: "Field", name: { kind: "Name", value: "longitude" } },
               ],
             },
           },
