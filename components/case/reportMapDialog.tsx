@@ -118,8 +118,10 @@ const ReportMapDialog: React.FC<PropsWithChildren<ReportMapDialogProps>> = ({
       renderAction={() => null}
       onClose={onClose}
       onOpen={() => {
-        // Fix issue when leaflet map is inside dialog, map renders partially.
-        setScreen(true);
+        setTimeout(() => {
+          // Fix issue when leaflet map is inside dialog, map renders partially.
+          setScreen(true);
+        }, 100);
       }}
     />
   );

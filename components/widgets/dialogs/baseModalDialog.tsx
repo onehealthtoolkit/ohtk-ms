@@ -10,6 +10,7 @@ import React, {
   useState,
 } from "react";
 import ReactDOM from "react-dom";
+import { setTimeout } from "timers";
 
 type Props = {
   store: ModalDialogViewModel | undefined;
@@ -64,13 +65,19 @@ const BaseModalDialog: React.FC<Props> = ({
   if (!store) {
     return null;
   }
+
   return (
     <Observer>
       {() => {
         if (hidden.length && store.isOpen) {
           console.log("open dialog");
           onOpen && onOpen();
-          setHidden("");
+          // Fix warning,
+          // react cannot update a component (`BaseModalDialog`)
+          // while rendering a different component (`Observer`).
+          setTimeout(() => {
+            setHidden("");
+          }, 100);
         }
 
         return ReactDOM.createPortal(

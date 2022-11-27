@@ -30,7 +30,7 @@ const Advance: FC<AdvanceProps> = ({ viewModel }) => {
       return (
         <>
           <h3 className="text-blue-500">{title}</h3>
-          <div className="w-full mt-4 flex flex-col ">
+          <div className="w-full mt-4 flex flex-col mb-6">
             <div className="flex text-sm w-full">
               <div className="w-1/3 flex flex-col items-stretch">
                 <label>Name</label>

@@ -9,6 +9,7 @@ type Props = {
   renderContent: (data: any) => ReactElement;
   renderAction?: (store: FormBuilderDialogViewModel, data: any) => ReactElement;
   container?: Element | DocumentFragment | null;
+  centerContent?: boolean;
 };
 
 export const BaseDialog: React.FC<Props> = ({
@@ -17,6 +18,7 @@ export const BaseDialog: React.FC<Props> = ({
   renderContent,
   renderAction,
   container,
+  centerContent = true,
 }: Props) => {
   if (!store) {
     return null;
@@ -33,9 +35,10 @@ export const BaseDialog: React.FC<Props> = ({
               onClick={() => store.close()}
             ></div>
             <div
-              className={`z-30 min-w-[20vw] min-h-[5vh]
-                  flex flex-col items-stretch justify-items-stretch gap-2 -translate-y-1/2 p-6 bg-white 
-                  rounded-md top-1/2 left-1/2 -translate-x-1/2 absolute ${hidden}
+              className={`z-30 md:min-w-[20vw] md:min-h-[5vh] min-w-[80vw] 
+                  flex flex-col items-stretch justify-items-stretch gap-2  p-6 bg-white 
+                  rounded-md left-1/2 -translate-x-1/2 absolute ${hidden}
+                  ${centerContent ? "-translate-y-1/2 top-1/2" : "top-8"}
                 `}
             >
               {title && (

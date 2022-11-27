@@ -39,7 +39,7 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
 
   addSection() {
     const id = uuidv4();
-    const section = new SectionViewModel(id, "Section ...");
+    const section = new SectionViewModel(this, id, "Section ...");
     this.sections.push(section);
     this.selectSection(id);
   }
@@ -77,7 +77,7 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
 
         definition.sections.forEach(sectionDefinition => {
           const id = uuidv4();
-          const sectionViewModel = new SectionViewModel(id, "Section");
+          const sectionViewModel = new SectionViewModel(this, id, "Section");
           sectionViewModel.parse(sectionDefinition);
           sections.push(sectionViewModel);
         });

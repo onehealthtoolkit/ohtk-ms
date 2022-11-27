@@ -2,6 +2,7 @@ import {
   FieldViewModel,
   TFieldValueType,
 } from "components/admin/formBuilder/field";
+import { SectionViewModel } from "components/admin/formBuilder/section";
 import {
   ComparableOperatorViewModel,
   ConditionDefinition,
@@ -15,13 +16,15 @@ import { v4 as uuidv4 } from "uuid";
 
 export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
   isCurrent = false;
+  isMenusOpen = false;
   isFieldMenusOpen = false;
   fields = Array<FieldViewModel>();
   currentField: FieldViewModel | undefined = undefined;
   isAdvanceOn = false;
   _condition: OperatorViewModel = new ComparableOperatorViewModel("=", "", "");
+  _section: SectionViewModel;
 
-  constructor(id: string, name: string) {
+  constructor(section: SectionViewModel, id: string, name: string) {
     super(id, name);
     makeObservable(this, {
       isCurrent: observable,
@@ -29,6 +32,8 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
       unsetCurrent: action,
       currentField: observable,
       selectField: action,
+      isMenusOpen: observable,
+      toggleMenus: action,
       isFieldMenusOpen: observable,
       toggleFieldMenus: action,
       fields: observable,
@@ -39,6 +44,7 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
       _condition: observable,
       condition: computed,
     });
+    this._section = section;
   }
 
   get movableItems() {
@@ -50,6 +56,13 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
   }
   set condition(condition: OperatorViewModel) {
     this._condition = condition;
+  }
+
+  get section(): SectionViewModel {
+    return this._section;
+  }
+  set section(section: SectionViewModel) {
+    this._section = section;
   }
 
   toggleAdvanceOn() {
@@ -74,6 +87,10 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
       this.currentField = field;
       field.setCurrent();
     }
+  }
+
+  toggleMenus() {
+    this.isMenusOpen = !this.isMenusOpen;
   }
 
   toggleFieldMenus() {
