@@ -1,12 +1,14 @@
-import { action, makeObservable, observable, runInAction } from "mobx";
+import { FormSimulationViewModel } from "components/admin/formBuilder/simulator/formSimulationViewModel";
 import { BaseViewModel } from "lib/baseViewModel";
 import { ReportType } from "lib/services/reportType";
 import { IReportTypeService } from "lib/services/reportType/reportTypeService";
+import { action, makeObservable, observable, runInAction } from "mobx";
 
 export class AdminReportTypeListViewModel extends BaseViewModel {
   data: ReportType[] = [];
-
   nameSearch: string = "";
+
+  formSimulationViewModel?: FormSimulationViewModel = undefined;
 
   constructor(readonly reportTypeService: IReportTypeService) {
     super();
@@ -16,6 +18,8 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
       setSearchValue: action,
       clearNameSearch: action,
       fetch: action,
+      formSimulationViewModel: observable,
+      openFormSimulationDialog: action,
     });
   }
 
@@ -52,5 +56,10 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
     } else {
       this.fetch();
     }
+  }
+
+  openFormSimulationDialog(definition: string) {
+    this.formSimulationViewModel = new FormSimulationViewModel(definition);
+    this.dialog("formSimulation")?.open(null);
   }
 }
