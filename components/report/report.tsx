@@ -17,7 +17,7 @@ import { RenderData, TR } from "components/widgets/renderData";
 import dynamic from "next/dynamic";
 import Comments from "components/widgets/comments";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
-import Back from "components/widgets/back";
+import Back from "components/widgets/viewActionsButtons";
 import FollowupList from "./followup/list";
 import { formatYmdt } from "lib/datetime";
 

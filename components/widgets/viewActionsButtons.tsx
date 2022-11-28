@@ -32,11 +32,11 @@ border
   ml-4
 `;
 
-type BackProps = {
+type ViewActionButtonsProps = {
   editUrl?: string;
 };
 
-const Back: React.FC<BackProps> = ({ editUrl }) => {
+const ViewActionButtons: React.FC<ViewActionButtonsProps> = ({ editUrl }) => {
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -59,4 +59,4 @@ const Back: React.FC<BackProps> = ({ editUrl }) => {
   );
 };
 
-export default Back;
+export default ViewActionButtons;

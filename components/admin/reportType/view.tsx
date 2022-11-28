@@ -5,7 +5,7 @@ import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ReportTypeViewViewModel } from "./viewViewModel";
 import { useTranslation } from "react-i18next";
-import Back from "components/widgets/back";
+import ViewActionButtons from "components/widgets/viewActionsButtons";
 
 const ReportTypeView = () => {
   const router = useRouter();
@@ -75,7 +75,9 @@ const ReportTypeView = () => {
             </tbody>
           </table>
         </div>
-        <Back editUrl={`/admin/report_types/${viewModel.data.id}/update`} />
+        <ViewActionButtons
+          editUrl={`/admin/report_types/${viewModel.data.id}/update`}
+        />
       </div>
     </MaskingLoader>
   );

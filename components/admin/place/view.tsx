@@ -5,7 +5,7 @@ import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { PlaceViewViewModel } from "./viewViewModel";
 import { useTranslation } from "react-i18next";
-import Back from "components/widgets/back";
+import ViewActionButtons from "components/widgets/viewActionsButtons";
 
 const PlaceView = () => {
   const router = useRouter();
@@ -82,7 +82,9 @@ const PlaceView = () => {
             </tbody>
           </table>
         </div>
-        <Back editUrl={`/admin/places/${viewModel.data.id}/update`} />
+        <ViewActionButtons
+          editUrl={`/admin/places/${viewModel.data.id}/update`}
+        />
       </div>
     </MaskingLoader>
   );

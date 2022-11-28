@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Breadcrumb from "components/layout/breadcrumb";
-import Back from "components/widgets/back";
+import Back from "components/widgets/viewActionsButtons";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 import { Divide, MaskingLoader } from "components/widgets/forms";
 import { formatDateTime } from "lib/datetime";

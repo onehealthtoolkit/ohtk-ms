@@ -5,7 +5,7 @@ import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { NotificationTemplateViewViewModel } from "./viewViewModel";
 import { useTranslation } from "react-i18next";
-import Back from "components/widgets/back";
+import ViewActionButtons from "components/widgets/viewActionsButtons";
 import { CasesNotificationTemplateTypeChoices } from "lib/generated/graphql";
 
 const NotificationTemplateView = () => {
@@ -107,7 +107,7 @@ const NotificationTemplateView = () => {
             </tbody>
           </table>
         </div>
-        <Back
+        <ViewActionButtons
           editUrl={`/admin/notification_templates/${viewModel.data.id}/update`}
         />
       </div>
