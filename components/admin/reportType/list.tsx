@@ -16,6 +16,9 @@ import TotalItem from "components/widgets/table/totalItem";
 import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { useTranslation } from "react-i18next";
+import FormSimulationDialog from "components/admin/reportType/formSimulationDialog";
+import FormSimulation from "components/admin/formBuilder/simulator/formSimulation";
+import { TableIcon } from "@heroicons/react/solid";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -33,6 +36,7 @@ const ReportTypeList = () => {
   const [viewModel] = useState<AdminReportTypeListViewModel>(() => {
     const model = new AdminReportTypeListViewModel(reportTypeService);
     model.registerDialog("confirmDelete");
+    model.registerDialog("formSimulation");
     return model;
   });
 
@@ -109,6 +113,16 @@ const ReportTypeList = () => {
               router.push(`/admin/report_types/${record.id}/view`)
             }
             onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
+            actions={record => {
+              return (
+                <TableIcon
+                  className="mx-1 w-8 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+                  onClick={() => {
+                    viewModel.openFormSimulationDialog(record.definition);
+                  }}
+                />
+              );
+            }}
           />
           <ErrorDisplay message={viewModel?.errorMessage} />
           <Paginate
@@ -127,6 +141,10 @@ const ReportTypeList = () => {
             onYes={(record: ReportType) => viewModel.delete(record.id)}
             onNo={() => viewModel.dialog("confirmDelete")?.close()}
           />
+
+          <FormSimulationDialog viewModel={viewModel.dialog("formSimulation")}>
+            <FormSimulation viewModel={viewModel.formSimulationViewModel} />
+          </FormSimulationDialog>
         </div>
       )}
     </Observer>

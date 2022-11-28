@@ -94,6 +94,7 @@ export type AdminAuthorityCreateSuccess = {
   inherits: Array<AdminAuthorityCreateSuccess>;
   invitations: Array<AdminInvitationCodeCreateSuccess>;
   name: Scalars["String"];
+  places: Array<PlaceType>;
   reportTypes: Array<AdminReportTypeCreateSuccess>;
   updatedAt: Scalars["DateTime"];
   users: Array<AdminAuthorityUserCreateSuccess>;
@@ -207,6 +208,7 @@ export type AdminAuthorityUserCreateSuccess = {
   authority: AdminAuthorityCreateSuccess;
   avatar?: Maybe<Scalars["String"]>;
   avatarUrl?: Maybe<Scalars["String"]>;
+  consent: Scalars["Boolean"];
   dateJoined: Scalars["DateTime"];
   email: Scalars["String"];
   fcmToken: Scalars["String"];
@@ -575,6 +577,185 @@ export type AdminNotificationTemplateUpdateSuccess = {
   notificationTemplate?: Maybe<NotificationTemplateType>;
 };
 
+export type AdminOutbreakPlanCreateMutation = {
+  __typename?: "AdminOutbreakPlanCreateMutation";
+  result?: Maybe<AdminOutbreakPlanCreateResult>;
+};
+
+export type AdminOutbreakPlanCreateProblem = {
+  __typename?: "AdminOutbreakPlanCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminOutbreakPlanCreateResult =
+  | AdminOutbreakPlanCreateProblem
+  | AdminOutbreakPlanCreateSuccess;
+
+export type AdminOutbreakPlanCreateSuccess = {
+  __typename?: "AdminOutbreakPlanCreateSuccess";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  places: Array<OutbreakPlaceType>;
+  reportType: AdminReportTypeCreateSuccess;
+  stateStep: DeepStateStepType;
+  updatedAt: Scalars["DateTime"];
+  zone1Color: Scalars["String"];
+  zone1MessageBody: Scalars["String"];
+  zone1MessageTitle: Scalars["String"];
+  zone1Radius?: Maybe<Scalars["Float"]>;
+  zone2Color: Scalars["String"];
+  zone2MessageBody: Scalars["String"];
+  zone2MessageTitle: Scalars["String"];
+  zone2Radius?: Maybe<Scalars["Float"]>;
+  zone3Color: Scalars["String"];
+  zone3MessageBody: Scalars["String"];
+  zone3MessageTitle: Scalars["String"];
+  zone3Radius?: Maybe<Scalars["Float"]>;
+};
+
+export type AdminOutbreakPlanDeleteMutation = {
+  __typename?: "AdminOutbreakPlanDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type AdminOutbreakPlanQueryType = {
+  __typename?: "AdminOutbreakPlanQueryType";
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type AdminOutbreakPlanQueryTypeNodeConnection = {
+  __typename?: "AdminOutbreakPlanQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminOutbreakPlanQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
+export type AdminOutbreakPlanUpateResult =
+  | AdminOutbreakPlanUpdateProblem
+  | AdminOutbreakPlanUpdateSuccess;
+
+export type AdminOutbreakPlanUpdateMutation = {
+  __typename?: "AdminOutbreakPlanUpdateMutation";
+  result?: Maybe<AdminOutbreakPlanUpateResult>;
+};
+
+export type AdminOutbreakPlanUpdateProblem = {
+  __typename?: "AdminOutbreakPlanUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminOutbreakPlanUpdateSuccess = {
+  __typename?: "AdminOutbreakPlanUpdateSuccess";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  places: Array<OutbreakPlaceType>;
+  reportType: AdminReportTypeCreateSuccess;
+  stateStep: DeepStateStepType;
+  updatedAt: Scalars["DateTime"];
+  zone1Color: Scalars["String"];
+  zone1MessageBody: Scalars["String"];
+  zone1MessageTitle: Scalars["String"];
+  zone1Radius?: Maybe<Scalars["Float"]>;
+  zone2Color: Scalars["String"];
+  zone2MessageBody: Scalars["String"];
+  zone2MessageTitle: Scalars["String"];
+  zone2Radius?: Maybe<Scalars["Float"]>;
+  zone3Color: Scalars["String"];
+  zone3MessageBody: Scalars["String"];
+  zone3MessageTitle: Scalars["String"];
+  zone3Radius?: Maybe<Scalars["Float"]>;
+};
+
+export type AdminPlaceCreateMutation = {
+  __typename?: "AdminPlaceCreateMutation";
+  result?: Maybe<AdminPlaceCreateResult>;
+};
+
+export type AdminPlaceCreateProblem = {
+  __typename?: "AdminPlaceCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminPlaceCreateResult =
+  | AdminPlaceCreateProblem
+  | AdminPlaceCreateSuccess;
+
+export type AdminPlaceCreateSuccess = {
+  __typename?: "AdminPlaceCreateSuccess";
+  authority: AdminAuthorityCreateSuccess;
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  id: Scalars["ID"];
+  location?: Maybe<Scalars["GeoJSON"]>;
+  name: Scalars["String"];
+  notificationTo: Scalars["String"];
+  outbreakPlaces: Array<OutbreakPlaceType>;
+  updatedAt: Scalars["DateTime"];
+};
+
+export type AdminPlaceDeleteMutation = {
+  __typename?: "AdminPlaceDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type AdminPlaceQueryType = {
+  __typename?: "AdminPlaceQueryType";
+  authority: AdminAuthorityCreateSuccess;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  notificationTo: Scalars["String"];
+};
+
+export type AdminPlaceQueryTypeNodeConnection = {
+  __typename?: "AdminPlaceQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminPlaceQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
+export type AdminPlaceUpdateMutation = {
+  __typename?: "AdminPlaceUpdateMutation";
+  result?: Maybe<AdminPlaceUpdateResult>;
+};
+
+export type AdminPlaceUpdateProblem = {
+  __typename?: "AdminPlaceUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminPlaceUpdateResult =
+  | AdminPlaceUpdateProblem
+  | AdminPlaceUpdateSuccess;
+
+export type AdminPlaceUpdateSuccess = {
+  __typename?: "AdminPlaceUpdateSuccess";
+  authority: AdminAuthorityCreateSuccess;
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  id: Scalars["ID"];
+  location?: Maybe<Scalars["GeoJSON"]>;
+  name: Scalars["String"];
+  notificationTo: Scalars["String"];
+  outbreakPlaces: Array<OutbreakPlaceType>;
+  updatedAt: Scalars["DateTime"];
+};
+
 export type AdminReportTypeCreateMutation = {
   __typename?: "AdminReportTypeCreateMutation";
   result?: Maybe<AdminReportTypeCreateResult>;
@@ -605,6 +786,7 @@ export type AdminReportTypeCreateSuccess = {
   name: Scalars["String"];
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   ordering: Scalars["Int"];
+  planSet: Array<AdminOutbreakPlanUpdateSuccess>;
   rendererDataTemplate?: Maybe<Scalars["String"]>;
   rendererFollowupDataTemplate?: Maybe<Scalars["String"]>;
   reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
@@ -824,6 +1006,7 @@ export type AdminStateStepCreateSuccess = {
   isStartState: Scalars["Boolean"];
   isStopState: Scalars["Boolean"];
   name: Scalars["String"];
+  planSet: Array<AdminOutbreakPlanUpdateSuccess>;
   stateDefinition: DeepStateDefinitionType;
   toTransitions: Array<DeepStateTransitionType>;
   updatedAt: Scalars["DateTime"];
@@ -999,6 +1182,7 @@ export type CaseType = {
   description: Scalars["String"];
   id: Scalars["UUID"];
   isFinished: Scalars["Boolean"];
+  outbreakPlanInfo?: Maybe<Scalars["JSONString"]>;
   report?: Maybe<IncidentReportType>;
   stateDefinition?: Maybe<DeepStateDefinitionType>;
   states?: Maybe<Array<Maybe<CaseStateType>>>;
@@ -1108,6 +1292,20 @@ export type CommentUpdateSuccess = {
   createdBy: UserType;
   id: Scalars["ID"];
   threadId?: Maybe<Scalars["Int"]>;
+};
+
+export type ConfigurationType = {
+  __typename?: "ConfigurationType";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  key: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+  value: Scalars["String"];
+};
+
+export type ConfirmConsentMutation = {
+  __typename?: "ConfirmConsentMutation";
+  ok?: Maybe<Scalars["Boolean"]>;
 };
 
 export type DeepStateDefinitionType = {
@@ -1283,6 +1481,12 @@ export type Mutation = {
   adminNotificationTemplateCreate?: Maybe<AdminNotificationTemplateCreateMutation>;
   adminNotificationTemplateDelete?: Maybe<AdminNotificationTemplateDeleteMutation>;
   adminNotificationTemplateUpdate?: Maybe<AdminNotificationTemplateUpdateMutation>;
+  adminOutbreakPlanCreate?: Maybe<AdminOutbreakPlanCreateMutation>;
+  adminOutbreakPlanDelete?: Maybe<AdminOutbreakPlanDeleteMutation>;
+  adminOutbreakPlanUpdate?: Maybe<AdminOutbreakPlanUpdateMutation>;
+  adminPlaceCreate?: Maybe<AdminPlaceCreateMutation>;
+  adminPlaceDelete?: Maybe<AdminPlaceDeleteMutation>;
+  adminPlaceUpdate?: Maybe<AdminPlaceUpdateMutation>;
   adminReportTypeCreate?: Maybe<AdminReportTypeCreateMutation>;
   adminReportTypeDelete?: Maybe<AdminReportTypeDeleteMutation>;
   adminReportTypeUpdate?: Maybe<AdminReportTypeUpdateMutation>;
@@ -1305,6 +1509,7 @@ export type Mutation = {
   commentCreate?: Maybe<CommentCreateMutation>;
   commentDelete?: Maybe<CommentDeleteMutation>;
   commentUpdate?: Maybe<CommentUpdateMutation>;
+  confirmConsent?: Maybe<ConfirmConsentMutation>;
   deleteRefreshTokenCookie?: Maybe<DeleteRefreshTokenCookie>;
   deleteTokenCookie?: Maybe<DeleteJsonWebTokenCookie>;
   forwardState?: Maybe<ForwardStateMutation>;
@@ -1465,6 +1670,70 @@ export type MutationAdminNotificationTemplateUpdateArgs = {
   stateTransitionId?: InputMaybe<Scalars["Int"]>;
   titleTemplate: Scalars["String"];
   type: Scalars["String"];
+};
+
+export type MutationAdminOutbreakPlanCreateArgs = {
+  description: Scalars["String"];
+  name: Scalars["String"];
+  reportTypeId: Scalars["UUID"];
+  stateStepId: Scalars["Int"];
+  zone1Color?: InputMaybe<Scalars["String"]>;
+  zone1MessageBody?: InputMaybe<Scalars["String"]>;
+  zone1MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone1Radius?: InputMaybe<Scalars["Float"]>;
+  zone2Color?: InputMaybe<Scalars["String"]>;
+  zone2MessageBody?: InputMaybe<Scalars["String"]>;
+  zone2MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone2Radius?: InputMaybe<Scalars["Float"]>;
+  zone3Color?: InputMaybe<Scalars["String"]>;
+  zone3MessageBody?: InputMaybe<Scalars["String"]>;
+  zone3MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone3Radius?: InputMaybe<Scalars["Float"]>;
+};
+
+export type MutationAdminOutbreakPlanDeleteArgs = {
+  id: Scalars["Int"];
+};
+
+export type MutationAdminOutbreakPlanUpdateArgs = {
+  description: Scalars["String"];
+  id: Scalars["Int"];
+  name: Scalars["String"];
+  reportTypeId: Scalars["UUID"];
+  stateStepId: Scalars["Int"];
+  zone1Color?: InputMaybe<Scalars["String"]>;
+  zone1MessageBody?: InputMaybe<Scalars["String"]>;
+  zone1MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone1Radius?: InputMaybe<Scalars["Float"]>;
+  zone2Color?: InputMaybe<Scalars["String"]>;
+  zone2MessageBody?: InputMaybe<Scalars["String"]>;
+  zone2MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone2Radius?: InputMaybe<Scalars["Float"]>;
+  zone3Color?: InputMaybe<Scalars["String"]>;
+  zone3MessageBody?: InputMaybe<Scalars["String"]>;
+  zone3MessageTitle?: InputMaybe<Scalars["String"]>;
+  zone3Radius?: InputMaybe<Scalars["Float"]>;
+};
+
+export type MutationAdminPlaceCreateArgs = {
+  authorityId: Scalars["Int"];
+  latitude: Scalars["Float"];
+  longitude: Scalars["Float"];
+  name: Scalars["String"];
+  notificationTo?: InputMaybe<Scalars["String"]>;
+};
+
+export type MutationAdminPlaceDeleteArgs = {
+  id: Scalars["Int"];
+};
+
+export type MutationAdminPlaceUpdateArgs = {
+  authorityId: Scalars["Int"];
+  id: Scalars["Int"];
+  latitude: Scalars["Float"];
+  longitude: Scalars["Float"];
+  name: Scalars["String"];
+  notificationTo?: InputMaybe<Scalars["String"]>;
 };
 
 export type MutationAdminReportTypeCreateArgs = {
@@ -1699,12 +1968,36 @@ export type ObtainJsonWebToken = {
   token: Scalars["String"];
 };
 
+export type OutbreakPlaceType = {
+  __typename?: "OutbreakPlaceType";
+  case: CaseType;
+  color: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  id: Scalars["ID"];
+  place?: Maybe<PlaceType>;
+  plan: AdminOutbreakPlanUpdateSuccess;
+  updatedAt: Scalars["DateTime"];
+  zone?: Maybe<Scalars["Int"]>;
+};
+
 export type PageInfoExtra = {
   __typename?: "PageInfoExtra";
   /** When paginating forwards, are there more items? */
   hasNextPage: Scalars["Boolean"];
   /** When paginating backwards, are there more items? */
   hasPreviousPage: Scalars["Boolean"];
+};
+
+export type PlaceType = {
+  __typename?: "PlaceType";
+  authority: AdminAuthorityCreateSuccess;
+  id: Scalars["ID"];
+  latitude?: Maybe<Scalars["Float"]>;
+  location?: Maybe<Scalars["GeoJSON"]>;
+  longitude?: Maybe<Scalars["Float"]>;
+  name: Scalars["String"];
+  notificationTo: Scalars["String"];
 };
 
 export type PromoteToCaseMutation = {
@@ -1726,6 +2019,8 @@ export type Query = {
     Array<Maybe<AdminNotificationTemplateAuthorityType>>
   >;
   adminNotificationTemplateQuery?: Maybe<AdminNotificationTemplateQueryTypeNodeConnection>;
+  adminOutbreakPlanQuery?: Maybe<AdminOutbreakPlanQueryTypeNodeConnection>;
+  adminPlaceQuery?: Maybe<AdminPlaceQueryTypeNodeConnection>;
   adminReportTypeQuery?: Maybe<AdminReportTypeQueryTypeNodeConnection>;
   adminReporterNotificationQuery?: Maybe<AdminReporterNotificationQueryTypeNodeConnection>;
   adminStateDefinitionQuery?: Maybe<AdminStateDefinitionQueryTypeNodeConnection>;
@@ -1741,6 +2036,7 @@ export type Query = {
   category?: Maybe<CategoryType>;
   checkInvitationCode?: Maybe<CheckInvitationCodeType>;
   comments?: Maybe<Array<Maybe<CommentType>>>;
+  configurations?: Maybe<Array<Maybe<ConfigurationType>>>;
   deepStateDefinitionGet?: Maybe<DeepStateDefinitionType>;
   eventsQuery?: Maybe<EventType>;
   features?: Maybe<Array<Maybe<FeatureType>>>;
@@ -1757,6 +2053,7 @@ export type Query = {
   myMessages?: Maybe<UserMessageTypeNodeConnection>;
   myReportTypes?: Maybe<Array<Maybe<ReportTypeType>>>;
   notificationTemplateGet?: Maybe<NotificationTemplateType>;
+  outbreakPlaces?: Maybe<Array<Maybe<OutbreakPlaceType>>>;
   reportType?: Maybe<ReportTypeType>;
   reporterNotification?: Maybe<ReporterNotificationType>;
   statQuery?: Maybe<StatType>;
@@ -1850,6 +2147,28 @@ export type QueryAdminNotificationTemplateAuthorityQueryArgs = {
 };
 
 export type QueryAdminNotificationTemplateQueryArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
+};
+
+export type QueryAdminOutbreakPlanQueryArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
+};
+
+export type QueryAdminPlaceQueryArgs = {
   after?: InputMaybe<Scalars["String"]>;
   before?: InputMaybe<Scalars["String"]>;
   first?: InputMaybe<Scalars["Int"]>;
@@ -2047,6 +2366,10 @@ export type QueryNotificationTemplateGetArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryOutbreakPlacesArgs = {
+  caseId: Scalars["UUID"];
+};
+
 export type QueryReportTypeArgs = {
   id: Scalars["ID"];
 };
@@ -2131,6 +2454,7 @@ export type ReportTypeType = {
   name: Scalars["String"];
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   ordering: Scalars["Int"];
+  planSet: Array<AdminOutbreakPlanUpdateSuccess>;
   rendererDataTemplate?: Maybe<Scalars["String"]>;
   rendererFollowupDataTemplate?: Maybe<Scalars["String"]>;
   reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
@@ -2257,6 +2581,7 @@ export type UserProfileType = {
   authorityId?: Maybe<Scalars["Int"]>;
   authorityName?: Maybe<Scalars["String"]>;
   avatarUrl?: Maybe<Scalars["String"]>;
+  consent?: Maybe<Scalars["Boolean"]>;
   email?: Maybe<Scalars["String"]>;
   firstName: Scalars["String"];
   id: Scalars["Int"];
@@ -2566,6 +2891,7 @@ export type GetCaseQuery = {
     description: string;
     isFinished: boolean;
     threadId?: number | null;
+    outbreakPlanInfo?: any | null;
     authorities?: Array<{
       __typename?: "AuthorityType";
       id: string;
@@ -3468,6 +3794,25 @@ export type GetNotificationTemplateQuery = {
       } | null;
     } | null;
   } | null;
+};
+
+export type OutbreakPlacesQueryVariables = Exact<{
+  caseId: Scalars["UUID"];
+}>;
+
+export type OutbreakPlacesQuery = {
+  __typename?: "Query";
+  outbreakPlaces?: Array<{
+    __typename?: "OutbreakPlaceType";
+    zone?: number | null;
+    color: string;
+    place?: {
+      __typename?: "PlaceType";
+      name: string;
+      latitude?: number | null;
+      longitude?: number | null;
+    } | null;
+  } | null> | null;
 };
 
 export type MeQueryVariables = Exact<{ [key: string]: never }>;
@@ -5998,6 +6343,10 @@ export const GetCaseDocument = {
                 { kind: "Field", name: { kind: "Name", value: "description" } },
                 { kind: "Field", name: { kind: "Name", value: "isFinished" } },
                 { kind: "Field", name: { kind: "Name", value: "threadId" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "outbreakPlanInfo" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "authorities" },
@@ -10181,6 +10530,73 @@ export const GetNotificationTemplateDocument = {
   GetNotificationTemplateQuery,
   GetNotificationTemplateQueryVariables
 >;
+export const OutbreakPlacesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "OutbreakPlaces" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "caseId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "outbreakPlaces" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "caseId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "caseId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "place" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "latitude" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "longitude" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "zone" } },
+                { kind: "Field", name: { kind: "Name", value: "color" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<OutbreakPlacesQuery, OutbreakPlacesQueryVariables>;
 export const MeDocument = {
   kind: "Document",
   definitions: [

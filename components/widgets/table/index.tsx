@@ -68,7 +68,7 @@ const Table = <T extends ItemWithId | null>({
   actions,
 }: TableProps<T>) => {
   const actionVisible =
-    onEdit || (onView && !viewOnRowClick) || onEdit || actions;
+    onEdit || (onView && !viewOnRowClick) || onDelete || actions;
 
   const rows = data.map(record => (
     <tr

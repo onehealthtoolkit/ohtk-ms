@@ -7,10 +7,14 @@ import { useEffect, useRef } from "react";
 import tw from "tailwind-styled-components";
 
 type FormSimulationProps = {
-  viewModel: FormSimulationViewModel;
+  viewModel?: FormSimulationViewModel;
 };
 
 const FormSimulation = ({ viewModel: form }: FormSimulationProps) => {
+  if (!form) {
+    return null;
+  }
+
   return !form.errorRendering ? (
     <div className={`flex flex-col relative w-full`}>
       <Stepper viewModel={form} />

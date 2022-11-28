@@ -10,7 +10,11 @@ import {
 import useServices from "lib/services/provider";
 import { CaseViewModel } from "./caseViewModel";
 import CaseStateView from "components/case/caseState/view";
-import { AdjustmentsIcon, CollectionIcon } from "@heroicons/react/solid";
+import {
+  AdjustmentsIcon,
+  ArrowsExpandIcon,
+  CollectionIcon,
+} from "@heroicons/react/solid";
 import useStore from "lib/store";
 import CaseStatus from "./caseStatus";
 import { RenderData, TR } from "components/widgets/renderData";
@@ -21,8 +25,9 @@ import Back from "components/widgets/back";
 import { formatYmdt } from "lib/datetime";
 import FollowupList from "components/report/followup/list";
 import { useRouter } from "next/router";
+import ReportLocationMapDialog from "components/case/reportMapDialog";
 
-const ReportLocation = dynamic(() => import("./reportLocationMap"), {
+const ReportMap = dynamic(() => import("./reportMap"), {
   loading: () => <p>A map is loading</p>,
   ssr: false,
 });
@@ -86,9 +91,15 @@ const Case = (props: { id: string }) => {
   const { id } = props;
   const router = useRouter();
   const { me } = useStore();
-  const { caseService, commentService } = useServices();
+  const { caseService, commentService, outbreakService } = useServices();
   const [viewModel] = useState(
-    new CaseViewModel(id as string, me!, caseService, commentService)
+    new CaseViewModel(
+      id as string,
+      me!,
+      caseService,
+      commentService,
+      outbreakService
+    )
   );
 
   const setUrl = useCallback(
@@ -130,8 +141,19 @@ const Case = (props: { id: string }) => {
 
               <div className="flex flex-row gap-2 md:flex-nowrap flex-wrap ">
                 <ReportInformation viewModel={viewModel} />
-                <div className="md:w-1/2 w-full h-[300px] md:h-auto">
-                  <ReportLocation lnglat={viewModel.data.gpsLocation} />
+                <div className="md:w-1/2 w-full h-[300px] md:h-auto relative">
+                  <ReportMap
+                    lnglat={viewModel.data.gpsLocation}
+                    zones={viewModel.outbreakInfo}
+                  />
+                  <div
+                    className={`bg-red absolute top-3 right-3 p-2 z-[1001] hover:bg-gray-50
+                      border border-gray-400 rounded bg-white cursor-pointer
+                    `}
+                    onClick={() => viewModel.openReportMap(viewModel.data.id)}
+                  >
+                    <ArrowsExpandIcon className="w-5 h-5 " />
+                  </div>
                 </div>
               </div>
 
@@ -220,6 +242,12 @@ const Case = (props: { id: string }) => {
               <Comments threadId={viewModel.data.threadId} />
 
               <GalleryDialog viewModel={viewModel.galleryViewModel} />
+
+              <ReportLocationMapDialog
+                viewModel={viewModel.reportMapViewModel}
+                lnglat={viewModel.data.gpsLocation}
+                zones={viewModel.outbreakInfo}
+              />
 
               <Back />
             </>

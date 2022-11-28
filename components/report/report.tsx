@@ -35,7 +35,7 @@ export const PromoteToCaseButton = tw.button`
   items-center
 `;
 
-const ReportLocation = dynamic(() => import("../case/reportLocationMap"), {
+const ReportLocation = dynamic(() => import("../case/reportMap"), {
   loading: () => <p>A map is loading</p>,
   ssr: false,
 });

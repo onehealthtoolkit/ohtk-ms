@@ -1,3 +1,4 @@
+import { FormViewModel } from "components/admin/formBuilder/formViewModel";
 import { QuestionViewModel } from "components/admin/formBuilder/question";
 import {
   Definition,
@@ -11,8 +12,9 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
   isCurrent = false;
   questions = Array<QuestionViewModel>();
   currentQuestion: QuestionViewModel | undefined = undefined;
+  _form: FormViewModel;
 
-  constructor(id: string, label: string) {
+  constructor(form: FormViewModel, id: string, label: string) {
     super(id, label);
     makeObservable(this, {
       isCurrent: observable,
@@ -23,10 +25,18 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
       selectQuestion: action,
       addQuestion: action,
     });
+    this._form = form;
   }
 
   get movableItems() {
     return this.questions;
+  }
+
+  get form(): FormViewModel {
+    return this._form;
+  }
+  set form(form: FormViewModel) {
+    this._form = form;
   }
 
   setCurrent() {
@@ -52,7 +62,7 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
 
   addQuestion() {
     const id = uuidv4();
-    this.questions.push(new QuestionViewModel(id, "Question"));
+    this.questions.push(new QuestionViewModel(this, id, "Question"));
     this.selectQuestion(id);
   }
 
@@ -76,7 +86,7 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
 
         definition.questions.forEach(questionDefinition => {
           const id = uuidv4();
-          const questionViewModel = new QuestionViewModel(id, "Question");
+          const questionViewModel = new QuestionViewModel(this, id, "Question");
           questionViewModel.parse(questionDefinition);
           questions.push(questionViewModel);
         });
