@@ -19,17 +19,15 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ENV NODE_ENV production
+ENV tenantsApiEndpoint https://backend.ohtk.org/api/servers
+ENV serverDomain backend.ohtk.org
 
 RUN yarn build
 
 # Production image, copy all the files and run next
 FROM node:16-alpine AS runner
 WORKDIR /app
-
-
-ENV NODE_ENV production
-ENV tenantsApiEndpoint https://backend.ohtk.org/api/servers
-ENV serverDomain backend.ohtk.org
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
