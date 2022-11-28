@@ -5,7 +5,7 @@ import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ConfigurationViewViewModel } from "./viewViewModel";
 import { useTranslation } from "react-i18next";
-import Back from "components/widgets/back";
+import ViewActionButtons from "components/widgets/viewActionButtons";
 
 const ConfigurationView = () => {
   const router = useRouter();
@@ -46,7 +46,9 @@ const ConfigurationView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <ViewActionButtons
+          editUrl={`/admin/configurations/${viewModel.data.id}/update`}
+        />
       </div>
     </MaskingLoader>
   );

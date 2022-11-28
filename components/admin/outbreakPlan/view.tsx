@@ -5,7 +5,7 @@ import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { OutbreakPlanViewViewModel } from "./viewViewModel";
 import { useTranslation } from "react-i18next";
-import Back from "components/widgets/back";
+import ViewActionButtons from "components/widgets/viewActionButtons";
 
 const OutbreakPlanView = () => {
   const router = useRouter();
@@ -217,7 +217,9 @@ const OutbreakPlanView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <ViewActionButtons
+          editUrl={`/admin/outbreak_plans/${viewModel.data.id}/update`}
+        />
       </div>
     </MaskingLoader>
   );

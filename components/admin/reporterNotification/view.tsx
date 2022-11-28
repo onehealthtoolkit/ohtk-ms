@@ -5,7 +5,7 @@ import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ReporterNotificationViewViewModel } from "./viewViewModel";
 import { useTranslation } from "react-i18next";
-import Back from "components/widgets/back";
+import ViewActionButtons from "components/widgets/viewActionButtons";
 
 const ReporterNotificationView = () => {
   const router = useRouter();
@@ -64,7 +64,9 @@ const ReporterNotificationView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <ViewActionButtons
+          editUrl={`/admin/reporter_notifications/${viewModel.data.id}/update`}
+        />
       </div>
     </MaskingLoader>
   );

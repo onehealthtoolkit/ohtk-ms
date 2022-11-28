@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Breadcrumb from "components/layout/breadcrumb";
-import Back from "components/widgets/back";
+import ViewActionButtons from "components/widgets/viewActionButtons";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 import { Divide, MaskingLoader } from "components/widgets/forms";
 import { formatDateTime } from "lib/datetime";
@@ -85,7 +85,7 @@ const Followup = (props: { id: string }) => {
 
               <GalleryDialog viewModel={viewModel.galleryViewModel} />
 
-              <Back />
+              <ViewActionButtons />
             </>
           </MaskingLoader>
         );

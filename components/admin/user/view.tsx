@@ -5,7 +5,7 @@ import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { UserViewViewModel } from "./viewViewModel";
 import { useTranslation } from "react-i18next";
-import Back from "components/widgets/back";
+import ViewActionButtons from "components/widgets/viewActionButtons";
 
 const UserView = () => {
   const router = useRouter();
@@ -78,7 +78,9 @@ const UserView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <ViewActionButtons
+          editUrl={`/admin/users/${viewModel.data.id}/update`}
+        />
       </div>
     </MaskingLoader>
   );

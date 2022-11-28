@@ -5,7 +5,7 @@ import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { CaseDefinitionViewViewModel } from "./viewViewModel";
 import { useTranslation } from "react-i18next";
-import Back from "components/widgets/back";
+import ViewActionButtons from "components/widgets/viewActionButtons";
 
 const CaseDefinitionView = () => {
   const router = useRouter();
@@ -66,7 +66,9 @@ const CaseDefinitionView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <ViewActionButtons
+          editUrl={`/admin/case_definitions/${viewModel.data.id}/update`}
+        />
       </div>
     </MaskingLoader>
   );

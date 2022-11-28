@@ -6,7 +6,7 @@ import useServices from "lib/services/provider";
 import { InvitationCodeViewViewModel } from "./viewViewModel";
 import { formatDate } from "lib/datetime";
 import { useTranslation } from "react-i18next";
-import Back from "components/widgets/back";
+import ViewActionButtons from "components/widgets/viewActionButtons";
 
 const InvitationCodeView = () => {
   const router = useRouter();
@@ -88,7 +88,9 @@ const InvitationCodeView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <ViewActionButtons
+          editUrl={`/admin/invitation_codes/${viewModel.data.id}/update`}
+        />
       </div>
     </MaskingLoader>
   );
