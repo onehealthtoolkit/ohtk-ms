@@ -28,6 +28,8 @@ WORKDIR /app
 
 
 ENV NODE_ENV production
+ENV tenantsApiEndpoint https://backend.ohtk.org/api/servers
+ENV serverDomain backend.ohtk.org
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs

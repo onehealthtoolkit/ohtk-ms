@@ -15,7 +15,7 @@ const LOCAL_STORGAGE_BACKEND_URL_KEY = "backendUrl";
 const LOCAL_STORGAGE_SUB_DOMAIN = "subdomain";
 
 export function graphqlEndpoint(domain: string) {
-  return `https://${domain}/graphql`;
+  return `https://${domain}/graphql/`;
 }
 
 export function websocketEndpoint(domain: string) {
