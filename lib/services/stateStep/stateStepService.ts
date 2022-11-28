@@ -6,6 +6,7 @@ import {
   GetStateDefinitionDocument,
   StateStepsDocument,
   StateStepDeleteDocument,
+  StateStepsByReportTypeDocument,
 } from "lib/generated/graphql";
 import { StateStep } from "lib/services/stateStep/stateStep";
 import {
@@ -17,6 +18,8 @@ import {
 
 export interface IStateStepService extends IService {
   fetchStateSteps(stateDefinitionId: string): Promise<StateStep[]>;
+
+  fetchStateStepsByReportType(reportTypeId: string): Promise<StateStep[]>;
 
   getStateStep(id: string): Promise<GetResult<StateStep>>;
 
@@ -56,6 +59,29 @@ export class StateStepService implements IStateStepService {
 
     const items = Array<StateStep>();
     fetchResult.data.adminStateStepQuery?.forEach(item => {
+      if (item) {
+        items.push({
+          id: item.id,
+          name: item.name,
+          isStartState: item.isStartState,
+          isStopState: item.isStopState,
+        });
+      }
+    });
+    return items;
+  }
+
+  async fetchStateStepsByReportType(reportTypeId: string) {
+    const fetchResult = await this.client.query({
+      query: StateStepsByReportTypeDocument,
+      variables: {
+        reportTypeId,
+      },
+      fetchPolicy: "network-only",
+    });
+
+    const items = Array<StateStep>();
+    fetchResult.data.stateStepListByReportType?.forEach(item => {
       if (item) {
         items.push({
           id: item.id,

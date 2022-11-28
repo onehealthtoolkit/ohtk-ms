@@ -18,7 +18,10 @@
     "create": "สร้าง",
     "update": "แก้ไข",
     "updatePassword": "เปลี่ยนรหัสผ่าน",
-    "view": "ดู"
+    "view": "ดู",
+    "outbreakPlans": "แผนการระบาด",
+    "places": "สถานที่",
+    "configurations": "การกำหนดค่า"
   },
   "filter": {
     "searchButton": "ค้นหา",
@@ -68,6 +71,7 @@
       "descriptionFollowupTemplate": "รายละเอียดแม่แบบ Follow Up",
       "stateDefinition": "stateDefinition",
       "default": "ค่าเริ่มต้น",
+      "stateStep": "ขั้นตอนสถานะ",
       "isStartState": "เป็นสถานะเริ่มต้น",
       "isStopState": "เป็นสถานะหยุด",
       "fromStep": "จากขั้นตอน",
@@ -86,7 +90,17 @@
       "invitationCode": "รหัสลงทะเบียน",
       "language": "ภาษา",
       "server": "เซริฟเวอร์",
-      "forgotPassword": "ป้อนที่อยู่อีเมลที่คุณใช้สร้างบัญชี แล้วคลิก \"รีเซ็ตรหัสผ่าน\""
+      "forgotPassword": "ป้อนที่อยู่อีเมลที่คุณใช้สร้างบัญชี แล้วคลิก \"รีเซ็ตรหัสผ่าน\"",
+      "zone1": "โซน 1",
+      "zone2": "โซน 2",
+      "zone3": "โซน 3",
+      "zoneRadius": "รัศมี",
+      "zoneColor": "สี",
+      "key": "คีย์",
+      "value": "ค่า",
+      "latitude": "ละติจูด",
+      "longitude": "ลองจิจูด",
+      "notificationTo": "แจ้งเตือนถึง"
     },
     "placeholder": {
       "code": "รหัส",
@@ -126,7 +140,14 @@
       "selectReportType": "เลือกประเภทรายงาน",
       "invitationCode": "รหัสลงทะเบียน",
       "language": "ภาษา",
-      "server": "เซริฟเวอร์"
+      "server": "เซริฟเวอร์",
+      "zoneRadius": "รัศมี (ม)",
+      "zoneZolor": "สี",
+      "key": "คีย์",
+      "value": "ค่า",
+      "latitude": "ละติจูด",
+      "longitude": "ลองจิจูด",
+      "notificationTo": "email:john@gmail.com, user:pphetra"
     },
     "button": {
       "signin": "เข้าสู่ระบบ",

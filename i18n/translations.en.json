@@ -18,7 +18,10 @@
     "create": "Create",
     "update": "Update",
     "updatePassword": "Update password",
-    "view": "View"
+    "view": "View",
+    "outbreakPlans": "Outbreak Plans",
+    "places": "Places",
+    "configurations": "Configurations"
   },
   "filter": {
     "searchButton": "Search",
@@ -68,6 +71,7 @@
       "descriptionFollowupTemplate": "Follow Up Description Template",
       "stateDefinition": "stateDefinition",
       "default": "Default",
+      "stateStep": "State Step",
       "isStartState": "Is Start State",
       "isStopState": "Is Stop State",
       "fromStep": "From Step",
@@ -86,7 +90,17 @@
       "invitationCode": "Invitation Code",
       "language": "Language",
       "server": "Server",
-      "forgotPassword": "Enter the email address you used to create your account, and click \"Reset Password\""
+      "forgotPassword": "Enter the email address you used to create your account, and click \"Reset Password\"",
+      "zone1": "Zone 1",
+      "zone2": "Zone 2",
+      "zone3": "Zone 3",
+      "zoneRadius": "Radius",
+      "zoneColor": "Color",
+      "key": "Key",
+      "value": "Value",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "notificationTo": "Contact"
     },
     "placeholder": {
       "code": "Code",
@@ -123,7 +137,14 @@
       "selectReportType": "Select Report Type",
       "invitationCode": "Invitation Code",
       "language": "Language",
-      "server": "Server"
+      "server": "Server",
+      "zoneRadius": "Radius (m)",
+      "zoneColor": "Color",
+      "key": "Key",
+      "value": "Value",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "notificationTo": "email:john@gmail.com, user:pphetra"
     },
     "button": {
       "signin": "Sign In",
