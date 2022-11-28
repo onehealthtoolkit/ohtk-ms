@@ -293,7 +293,16 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
             </button>
           )}
           <div className="flex w-full items-center justify-center sticky mt-8 top-0 z-10">
-            <img src="/logo.png" width={120} alt="Open surveillance" />
+            {store.menu.collapsed ? (
+              <img
+                src="/logo_collapse.png"
+                width={40}
+                height={40}
+                alt="Onehealt toolkit logo"
+              />
+            ) : (
+              <img src="/logo.png" width={120} alt="Onehealt toolkit logo" />
+            )}
           </div>
         </div>
 
