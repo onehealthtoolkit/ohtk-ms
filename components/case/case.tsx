@@ -21,7 +21,7 @@ import { RenderData, TR } from "components/widgets/renderData";
 import Comments from "components/widgets/comments";
 import dynamic from "next/dynamic";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
-import Back from "components/widgets/viewActionsButtons";
+import ViewActionButtons from "components/widgets/viewActionButtons";
 import { formatYmdt } from "lib/datetime";
 import FollowupList from "components/report/followup/list";
 import { useRouter } from "next/router";
@@ -249,7 +249,7 @@ const Case = (props: { id: string }) => {
                 zones={viewModel.outbreakInfo}
               />
 
-              <Back />
+              <ViewActionButtons />
             </>
           </MaskingLoader>
         );

@@ -6,7 +6,7 @@ import useServices from "lib/services/provider";
 import { InvitationCodeViewViewModel } from "./viewViewModel";
 import { formatDate } from "lib/datetime";
 import { useTranslation } from "react-i18next";
-import ViewActionButtons from "components/widgets/viewActionsButtons";
+import ViewActionButtons from "components/widgets/viewActionButtons";
 
 const InvitationCodeView = () => {
   const router = useRouter();

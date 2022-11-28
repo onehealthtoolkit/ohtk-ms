@@ -7,7 +7,7 @@ import { StateDefinitionViewViewModel } from "./viewViewModel";
 import CheckIcon from "@heroicons/react/solid/CheckIcon";
 import Table from "components/widgets/table";
 import { useTranslation } from "react-i18next";
-import ViewActionButtons from "components/widgets/viewActionsButtons";
+import ViewActionButtons from "components/widgets/viewActionButtons";
 
 const StateDefinitionView = () => {
   const router = useRouter();
