@@ -64,7 +64,9 @@ const ReporterNotificationView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <Back
+          editUrl={`/admin/reporter_notifications/${viewModel.data.id}/update`}
+        />
       </div>
     </MaskingLoader>
   );

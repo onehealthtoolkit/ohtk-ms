@@ -88,7 +88,7 @@ const InvitationCodeView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <Back editUrl={`/admin/invitation_codes/${viewModel.data.id}/update`} />
       </div>
     </MaskingLoader>
   );

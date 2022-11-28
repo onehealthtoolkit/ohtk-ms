@@ -217,7 +217,7 @@ const OutbreakPlanView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <Back editUrl={`/admin/outbreak_plans/${viewModel.data.id}/update`} />
       </div>
     </MaskingLoader>
   );

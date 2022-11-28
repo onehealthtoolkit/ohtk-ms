@@ -66,7 +66,7 @@ const CaseDefinitionView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <Back editUrl={`/admin/case_definitions/${viewModel.data.id}/update`} />
       </div>
     </MaskingLoader>
   );

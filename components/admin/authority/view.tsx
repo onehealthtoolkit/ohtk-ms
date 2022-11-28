@@ -55,7 +55,7 @@ const AuthorityView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <Back editUrl={`/admin/authorities/${viewModel.data.id}/update`} />
       </div>
     </MaskingLoader>
   );

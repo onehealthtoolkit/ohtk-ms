@@ -122,7 +122,9 @@ const StateDefinitionView = () => {
           ]}
           data={viewModel?.data.stateTransitions || []}
         />
-        <Back />
+        <Back
+          editUrl={`/admin/state_definitions/${viewModel.data.id}/update`}
+        />
       </div>
     </MaskingLoader>
   );

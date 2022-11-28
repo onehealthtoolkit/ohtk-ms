@@ -78,7 +78,7 @@ const UserView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <Back editUrl={`/admin/users/${viewModel.data.id}/update`} />
       </div>
     </MaskingLoader>
   );

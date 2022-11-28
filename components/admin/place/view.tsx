@@ -82,7 +82,7 @@ const PlaceView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <Back editUrl={`/admin/places/${viewModel.data.id}/update`} />
       </div>
     </MaskingLoader>
   );

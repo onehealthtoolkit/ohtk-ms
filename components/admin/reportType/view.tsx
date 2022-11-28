@@ -75,7 +75,7 @@ const ReportTypeView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <Back editUrl={`/admin/report_types/${viewModel.data.id}/update`} />
       </div>
     </MaskingLoader>
   );

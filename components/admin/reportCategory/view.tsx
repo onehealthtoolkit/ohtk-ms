@@ -74,7 +74,9 @@ const ReportCategoryView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <Back
+          editUrl={`/admin/report_categories/${viewModel.data.id}/update`}
+        />
       </div>
     </MaskingLoader>
   );

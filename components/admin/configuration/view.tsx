@@ -46,7 +46,7 @@ const ConfigurationView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <Back editUrl={`/admin/configurations/${viewModel.data.id}/update`} />
       </div>
     </MaskingLoader>
   );

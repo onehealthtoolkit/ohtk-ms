@@ -107,7 +107,9 @@ const NotificationTemplateView = () => {
             </tbody>
           </table>
         </div>
-        <Back />
+        <Back
+          editUrl={`/admin/notification_templates/${viewModel.data.id}/update`}
+        />
       </div>
     </MaskingLoader>
   );
