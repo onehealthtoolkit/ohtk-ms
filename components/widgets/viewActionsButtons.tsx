@@ -46,15 +46,17 @@ const ViewActionButtons: React.FC<ViewActionButtonsProps> = ({ editUrl }) => {
         <ChevronLeftIcon className="mr-2 -ml-1 w-5 h-5" />
         {t("form.button.back", "Back")}
       </BackButton>
-      <EditButton
-        type="button"
-        onClick={() => {
-          if (editUrl) router.push(editUrl);
-        }}
-      >
-        <PencilAltIcon className="mr-2 -ml-1 w-5 h-5" />
-        {t("form.button.edit", "Edit")}
-      </EditButton>
+      {editUrl && (
+        <EditButton
+          type="button"
+          onClick={() => {
+            if (editUrl) router.push(editUrl);
+          }}
+        >
+          <PencilAltIcon className="mr-2 -ml-1 w-5 h-5" />
+          {t("form.button.edit", "Edit")}
+        </EditButton>
+      )}
     </div>
   );
 };
