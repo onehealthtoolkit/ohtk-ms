@@ -1,0 +1,11 @@
+query OutbreakPlaces($caseId: UUID!) {
+  outbreakPlaces(caseId: $caseId) {
+    place {
+      name
+      latitude
+      longitude
+    }
+    zone
+    color
+  }
+}
