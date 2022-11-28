@@ -232,7 +232,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     pathname={pathname}
                     label={t("breadcrumb.outbreakPlans", "Outbreak Plans")}
                     collapsed={store.menu.collapsed}
-                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    display={store.isSuperUser}
                     icon={<CalendarIcon className={iconClassName} />}
                   />
                   <Menu
@@ -240,7 +240,11 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     pathname={pathname}
                     label={t("breadcrumb.places", "Places")}
                     collapsed={store.menu.collapsed}
-                    display={store.isSuperUser || store.isRoleAdmin}
+                    display={
+                      store.isSuperUser ||
+                      store.isRoleOfficer ||
+                      store.isRoleAdmin
+                    }
                     icon={<MapIcon className={iconClassName} />}
                   />
                   <Menu
@@ -248,7 +252,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     pathname={pathname}
                     label={t("breadcrumb.configurations", "Configurations")}
                     collapsed={store.menu.collapsed}
-                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    display={store.isSuperUser}
                     icon={<CogIcon className={iconClassName} />}
                   />
                 </ul>

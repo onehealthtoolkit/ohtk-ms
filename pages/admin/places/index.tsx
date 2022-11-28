@@ -10,7 +10,11 @@ const AdminPlacesPage: NextPage = () => {
   const { t } = useTranslation();
 
   return (
-    <Protect guard={(store: Store) => store.isSuperUser}>
+    <Protect
+      guard={(store: Store) =>
+        store.isRoleOfficer || store.isRoleAdmin || store.isSuperUser
+      }
+    >
       <Layout>
         <Breadcrumb crumbs={[{ text: t("breadcrumb.places", "Places") }]} />
         <PlaceList />
