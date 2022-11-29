@@ -127,11 +127,11 @@ const Table = <T extends ItemWithId | null>({
           <tbody className="bg-white">{!onLoading && rows}</tbody>
         </table>
         {onLoading && (
-          <tr className="flex justify-center min-h-12 h-12">
+          <div className="flex justify-center min-h-12 h-12">
             <div className="m-auto">
               <Spinner />
             </div>
-          </tr>
+          </div>
         )}
         {!data.length && (
           <div className="text-center py-6">

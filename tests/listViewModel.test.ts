@@ -23,6 +23,12 @@ export const data: Array<Authority> = [
 
 describe("Authority ListViewModel", () => {
   class AuthorityService implements IAuthorityService {
+    lookupAuthorityInheritsDownFirst(
+      authorityId: string
+    ): Promise<Authority[]> {
+      console.log(authorityId);
+      throw new Error("Method not implemented.");
+    }
     lookupAuthorityInheritsDown(authorityId: string): Promise<Authority[]> {
       console.log(authorityId);
       throw new Error("Method not implemented.");

@@ -2144,6 +2144,7 @@ export type Query = {
   authorities?: Maybe<AuthorityTypeNodeConnection>;
   authority?: Maybe<AuthorityType>;
   authorityInheritsDown?: Maybe<Array<AuthorityType>>;
+  authorityInheritsDownFirst?: Maybe<Array<AuthorityType>>;
   authorityUser?: Maybe<AuthorityUserType>;
   caseDefinitionGet?: Maybe<CaseDefinitionType>;
   caseGet?: Maybe<CaseType>;
@@ -2371,6 +2372,10 @@ export type QueryAuthorityArgs = {
 };
 
 export type QueryAuthorityInheritsDownArgs = {
+  authorityId: Scalars["ID"];
+};
+
+export type QueryAuthorityInheritsDownFirstArgs = {
   authorityId: Scalars["ID"];
 };
 
@@ -2869,6 +2874,20 @@ export type AuthorityInheritsDownLookupQueryVariables = Exact<{
 export type AuthorityInheritsDownLookupQuery = {
   __typename?: "Query";
   authorityInheritsDown?: Array<{
+    __typename?: "AuthorityType";
+    id: string;
+    name: string;
+    code: string;
+  }> | null;
+};
+
+export type AuthorityInheritsDownFirstQueryVariables = Exact<{
+  authorityId: Scalars["ID"];
+}>;
+
+export type AuthorityInheritsDownFirstQuery = {
+  __typename?: "Query";
+  authorityInheritsDownFirst?: Array<{
     __typename?: "AuthorityType";
     id: string;
     name: string;
@@ -6137,6 +6156,59 @@ export const AuthorityInheritsDownLookupDocument = {
 } as unknown as DocumentNode<
   AuthorityInheritsDownLookupQuery,
   AuthorityInheritsDownLookupQueryVariables
+>;
+export const AuthorityInheritsDownFirstDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AuthorityInheritsDownFirst" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorityId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "authorityInheritsDownFirst" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "authorityId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorityId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AuthorityInheritsDownFirstQuery,
+  AuthorityInheritsDownFirstQueryVariables
 >;
 export const AuthorityCreateDocument = {
   kind: "Document",
