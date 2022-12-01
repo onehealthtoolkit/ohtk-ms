@@ -59,6 +59,13 @@ query AuthorityInheritsDownLookup($authorityId: ID!) {
   }
 }
 
+query AuthorityInheritsDownFirst($authorityId: ID!) {
+  authorityInheritsDownFirst(authorityId: $authorityId) {
+    id
+    name
+    code
+  }
+}
 mutation AuthorityCreate(
   $code: String!
   $name: String!
