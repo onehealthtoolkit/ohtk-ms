@@ -59,8 +59,8 @@ query AuthorityInheritsDownLookup($authorityId: ID!) {
   }
 }
 
-query AuthorityInheritsDownFirst($authorityId: ID!) {
-  authorityInheritsDownFirst(authorityId: $authorityId) {
+query AuthorityInheritsDownShallow($authorityId: ID!) {
+  authorityInheritsDownShallow(authorityId: $authorityId) {
     id
     name
     code

@@ -50,7 +50,7 @@ export class AuthorityViewViewModel extends BaseViewModel {
     }
 
     this.inheritsDown =
-      await this.authorityService.lookupAuthorityInheritsDownFirst(this.id);
+      await this.authorityService.lookupAuthorityInheritsDownShallow(this.id);
     this.isLoading = false;
   }
 }

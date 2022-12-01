@@ -19165,7 +19165,7 @@
             "deprecationReason": null
           },
           {
-            "name": "authorityInheritsDownFirst",
+            "name": "authorityInheritsDownShallow",
             "description": null,
             "args": [
               {

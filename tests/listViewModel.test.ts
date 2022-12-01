@@ -23,7 +23,7 @@ export const data: Array<Authority> = [
 
 describe("Authority ListViewModel", () => {
   class AuthorityService implements IAuthorityService {
-    lookupAuthorityInheritsDownFirst(
+    lookupAuthorityInheritsDownShallow(
       authorityId: string
     ): Promise<Authority[]> {
       console.log(authorityId);

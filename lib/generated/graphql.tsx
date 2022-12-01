@@ -2144,7 +2144,7 @@ export type Query = {
   authorities?: Maybe<AuthorityTypeNodeConnection>;
   authority?: Maybe<AuthorityType>;
   authorityInheritsDown?: Maybe<Array<AuthorityType>>;
-  authorityInheritsDownFirst?: Maybe<Array<AuthorityType>>;
+  authorityInheritsDownShallow?: Maybe<Array<AuthorityType>>;
   authorityUser?: Maybe<AuthorityUserType>;
   caseDefinitionGet?: Maybe<CaseDefinitionType>;
   caseGet?: Maybe<CaseType>;
@@ -2375,7 +2375,7 @@ export type QueryAuthorityInheritsDownArgs = {
   authorityId: Scalars["ID"];
 };
 
-export type QueryAuthorityInheritsDownFirstArgs = {
+export type QueryAuthorityInheritsDownShallowArgs = {
   authorityId: Scalars["ID"];
 };
 
@@ -2881,13 +2881,13 @@ export type AuthorityInheritsDownLookupQuery = {
   }> | null;
 };
 
-export type AuthorityInheritsDownFirstQueryVariables = Exact<{
+export type AuthorityInheritsDownShallowQueryVariables = Exact<{
   authorityId: Scalars["ID"];
 }>;
 
-export type AuthorityInheritsDownFirstQuery = {
+export type AuthorityInheritsDownShallowQuery = {
   __typename?: "Query";
-  authorityInheritsDownFirst?: Array<{
+  authorityInheritsDownShallow?: Array<{
     __typename?: "AuthorityType";
     id: string;
     name: string;
@@ -6157,13 +6157,13 @@ export const AuthorityInheritsDownLookupDocument = {
   AuthorityInheritsDownLookupQuery,
   AuthorityInheritsDownLookupQueryVariables
 >;
-export const AuthorityInheritsDownFirstDocument = {
+export const AuthorityInheritsDownShallowDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "AuthorityInheritsDownFirst" },
+      name: { kind: "Name", value: "AuthorityInheritsDownShallow" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -6182,7 +6182,7 @@ export const AuthorityInheritsDownFirstDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "authorityInheritsDownFirst" },
+            name: { kind: "Name", value: "authorityInheritsDownShallow" },
             arguments: [
               {
                 kind: "Argument",
@@ -6207,8 +6207,8 @@ export const AuthorityInheritsDownFirstDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  AuthorityInheritsDownFirstQuery,
-  AuthorityInheritsDownFirstQueryVariables
+  AuthorityInheritsDownShallowQuery,
+  AuthorityInheritsDownShallowQueryVariables
 >;
 export const AuthorityCreateDocument = {
   kind: "Document",
