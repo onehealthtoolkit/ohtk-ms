@@ -149,3 +149,18 @@ query LoginQrToken($userId: ID!) {
     token
   }
 }
+
+query SummaryContributionQuery(
+  $userId: Int!
+  $fromDate: DateTime
+  $toDate: DateTime
+) {
+  summaryContributionQuery(
+    userId: $userId
+    fromDate: $fromDate
+    toDate: $toDate
+  ) {
+    day
+    total
+  }
+}
