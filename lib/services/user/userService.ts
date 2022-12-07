@@ -8,6 +8,7 @@ import {
   UserDeleteDocument,
   LoginQrTokenDocument,
   UserUpdatePasswordDocument,
+  SummaryContributionQueryDocument,
 } from "lib/generated/graphql";
 import { User } from "lib/services/user/user";
 import {
@@ -17,6 +18,7 @@ import {
   QueryResult,
   SaveResult,
 } from "lib/services/interface";
+import { Contribution } from ".";
 
 export interface IUserService extends IService {
   fetchUsers(
@@ -55,6 +57,12 @@ export interface IUserService extends IService {
   deleteUser(id: string): Promise<DeleteResult>;
 
   getLoginQrToken(userId: string): Promise<GetResult<string>>;
+
+  fetchContribution(
+    userId: number,
+    fromDate?: Date,
+    toDate?: Date
+  ): Promise<Contribution[]>;
 }
 
 export class UserService implements IUserService {
@@ -376,5 +384,31 @@ export class UserService implements IUserService {
       data: result?.token,
       error: getResult.errors?.map(o => o.message).join(","),
     };
+  }
+
+  async fetchContribution(
+    userId: number,
+    fromDate: Date,
+    toDate: Date
+  ): Promise<Contribution[]> {
+    const fetchResult = await this.client.query({
+      query: SummaryContributionQueryDocument,
+      variables: {
+        userId,
+        fromDate,
+        toDate,
+      },
+      fetchPolicy: "network-only",
+    });
+
+    const items: Contribution[] = [];
+    fetchResult.data.summaryContributionQuery?.forEach(item => {
+      items.push({
+        day: item.day,
+        total: item.total,
+      });
+    });
+
+    return items;
   }
 }

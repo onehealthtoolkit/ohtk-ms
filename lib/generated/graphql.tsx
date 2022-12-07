@@ -2181,6 +2181,7 @@ export type Query = {
   stateStepListByReportType?: Maybe<Array<StateStepType>>;
   stateTransitionGet?: Maybe<StateTransitionType>;
   summaryCaseByCategoryQuery?: Maybe<Array<SummaryByCategoryType>>;
+  summaryContributionQuery?: Maybe<Array<SummaryContributionType>>;
   summaryReportByCategoryQuery?: Maybe<Array<SummaryByCategoryType>>;
   syncReportTypes?: Maybe<ReportTypeSyncOutputType>;
   transitionListByReportType?: Maybe<Array<StateTransitionType>>;
@@ -2551,6 +2552,12 @@ export type QuerySummaryCaseByCategoryQueryArgs = {
   toDate?: InputMaybe<Scalars["DateTime"]>;
 };
 
+export type QuerySummaryContributionQueryArgs = {
+  fromDate?: InputMaybe<Scalars["DateTime"]>;
+  toDate?: InputMaybe<Scalars["DateTime"]>;
+  userId: Scalars["Int"];
+};
+
 export type QuerySummaryReportByCategoryQueryArgs = {
   authorityId: Scalars["Int"];
   fromDate?: InputMaybe<Scalars["DateTime"]>;
@@ -2706,6 +2713,12 @@ export type SummaryByCategoryType = {
   category: Scalars["String"];
   day: Scalars["Date"];
   ordering?: Maybe<Scalars["Int"]>;
+  total: Scalars["Int"];
+};
+
+export type SummaryContributionType = {
+  __typename?: "SummaryContributionType";
+  day: Scalars["Date"];
   total: Scalars["Int"];
 };
 
@@ -5644,6 +5657,21 @@ export type LoginQrTokenQueryVariables = Exact<{
 export type LoginQrTokenQuery = {
   __typename?: "Query";
   getLoginQrToken?: { __typename?: "LoginQrTokenType"; token: string } | null;
+};
+
+export type SummaryContributionQueryQueryVariables = Exact<{
+  userId: Scalars["Int"];
+  fromDate?: InputMaybe<Scalars["DateTime"]>;
+  toDate?: InputMaybe<Scalars["DateTime"]>;
+}>;
+
+export type SummaryContributionQueryQuery = {
+  __typename?: "Query";
+  summaryContributionQuery?: Array<{
+    __typename?: "SummaryContributionType";
+    day: any;
+    total: number;
+  }> | null;
 };
 
 export const DeleteTokenCookieDocument = {
@@ -19864,3 +19892,93 @@ export const LoginQrTokenDocument = {
     },
   ],
 } as unknown as DocumentNode<LoginQrTokenQuery, LoginQrTokenQueryVariables>;
+export const SummaryContributionQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "SummaryContributionQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "userId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "fromDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "toDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "summaryContributionQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "userId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "userId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "fromDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "fromDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "toDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "toDate" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "day" } },
+                { kind: "Field", name: { kind: "Name", value: "total" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SummaryContributionQueryQuery,
+  SummaryContributionQueryQueryVariables
+>;

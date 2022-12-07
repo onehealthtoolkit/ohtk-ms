@@ -6,6 +6,7 @@ import useServices from "lib/services/provider";
 import { UserViewViewModel } from "./viewViewModel";
 import { useTranslation } from "react-i18next";
 import ViewActionButtons from "components/widgets/viewActionButtons";
+import Calendar from "react-github-contribution-calendar";
 
 const UserView = () => {
   const router = useRouter();
@@ -14,6 +15,12 @@ const UserView = () => {
   const [viewModel] = useState(
     () => new UserViewViewModel(router.query.id as string, services.userService)
   );
+
+  const monthNames = t("months", { joinArrays: "," }).split(",");
+  const weekNames = t("days", { joinArrays: "," }).split(",");
+  const until = new Date().toISOString().split("T")[0];
+  var panelColors = ["#EEEEEE", "#F78A23", "#F87D09", "#AC5808", "#7B3F06"];
+  var panelAttributes = { rx: 6, ry: 6 };
 
   return (
     <MaskingLoader loading={viewModel.isLoading}>
@@ -78,6 +85,21 @@ const UserView = () => {
             </tbody>
           </table>
         </div>
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+          {viewModel.contribution && (
+            <Calendar
+              values={viewModel.contribution}
+              until={until}
+              weekNames={weekNames}
+              monthNames={monthNames}
+              weekLabelAttributes={undefined}
+              monthLabelAttributes={undefined}
+              panelAttributes={panelAttributes}
+              panelColors={panelColors}
+            />
+          )}
+        </div>
+
         <ViewActionButtons
           editUrl={`/admin/users/${viewModel.data.id}/update`}
         />
