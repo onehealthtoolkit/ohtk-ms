@@ -1,6 +1,6 @@
 import { OutbreakZone } from "components/case/caseViewModel";
 import { ReportMapDialogViewModel } from "components/case/reportMapDialogViewModel";
-import BaseModalDialog from "components/widgets/dialogs/baseModalDialog";
+import BaseMapModalDialog from "components/widgets/dialogs/baseMapModalDialog";
 import Spinner from "components/widgets/spinner";
 import { toJS } from "mobx";
 import { observer } from "mobx-react";
@@ -67,10 +67,8 @@ const ReportMapDialog: React.FC<PropsWithChildren<ReportMapDialogProps>> = ({
   }
 
   return (
-    <BaseModalDialog
+    <BaseMapModalDialog
       store={viewModel}
-      heightClassName={`h-screen`}
-      widthClassName={`w-screen`}
       renderContent={() => (
         <div className="w-full h-full relative">
           {/* a map */}

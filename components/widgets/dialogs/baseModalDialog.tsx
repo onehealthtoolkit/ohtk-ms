@@ -7,10 +7,8 @@ import React, {
   ReactNode,
   useCallback,
   useEffect,
-  useState,
 } from "react";
 import ReactDOM from "react-dom";
-import { setTimeout } from "timers";
 
 type Props = {
   store: ModalDialogViewModel | undefined;
@@ -25,7 +23,6 @@ type Props = {
     data: any
   ) => ReactElement | null;
   onClose?: (data?: unknown) => void;
-  onOpen?: (data?: unknown) => void;
 };
 
 const BaseModalDialog: React.FC<Props> = ({
@@ -36,10 +33,7 @@ const BaseModalDialog: React.FC<Props> = ({
   renderContent,
   renderAction,
   onClose,
-  onOpen,
 }: Props) => {
-  const [hidden, setHidden] = useState("hidden");
-
   const escFunction = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -47,7 +41,6 @@ const BaseModalDialog: React.FC<Props> = ({
           console.log("close dialog");
           onClose && onClose();
           store?.close();
-          setHidden("hidden");
         }
       }
     },
@@ -69,58 +62,49 @@ const BaseModalDialog: React.FC<Props> = ({
   return (
     <Observer>
       {() => {
-        if (hidden.length && store.isOpen) {
-          console.log("open dialog");
-          onOpen && onOpen();
-          // Fix warning,
-          // react cannot update a component (`BaseModalDialog`)
-          // while rendering a different component (`Observer`).
-          setTimeout(() => {
-            setHidden("");
-          }, 100);
-        }
-
-        return ReactDOM.createPortal(
-          <Fragment>
-            <div
-              className={`z-[1001] w-screen h-screen bg-[#848A97] opacity-90 top-0 absolute ${hidden}`}
-              onClick={() => {
-                onClose && onClose();
-                store.close();
-                setHidden("hidden");
-              }}
-            ></div>
-            <div
-              className={`z-[1001] ${heightClassName || "min-h-[30vh]"}      
+        return store.isOpen
+          ? ReactDOM.createPortal(
+              <Fragment>
+                <div
+                  className={`z-[1001] w-screen h-screen bg-[#848A97] opacity-90 top-0 absolute`}
+                  onClick={() => {
+                    onClose && onClose();
+                    store.close();
+                  }}
+                ></div>
+                <div
+                  className={`z-[1001] ${
+                    heightClassName || "min-h-[30vh]"
+                  }      
                   ${
                     widthClassName ||
                     "sm:w-[385px] sm:min-w-[30vw] min-w-[80vw]"
                   }
                   flex flex-col items-stretch justify-items-stretch gap-2 -translate-y-1/2 p-3 md:p-6 bg-white 
-                  rounded-md top-1/2 left-1/2 -translate-x-1/2 absolute ${hidden}
+                  rounded-md top-1/2 left-1/2 -translate-x-1/2 absolute
                 `}
-            >
-              {title && (
-                <h1 className="text-center text-xl font-medium">{title}</h1>
-              )}
-              <div className="h-full text-center">
-                {renderContent(store.data)}
-              </div>
-              <button
-                className="absolute right-4 top-4 z-[1001]"
-                onClick={() => {
-                  onClose && onClose();
-                  store.close();
-                  setHidden("hidden");
-                }}
-              >
-                <XCircleIcon className="w-8 h-8 fill-red-400" />
-              </button>
-              <div>{renderAction && renderAction(store, store.data)}</div>
-            </div>
-          </Fragment>,
-          document.body
-        );
+                >
+                  {title && (
+                    <h1 className="text-center text-xl font-medium">{title}</h1>
+                  )}
+                  <div className="h-full text-center">
+                    {renderContent(store.data)}
+                  </div>
+                  <button
+                    className="absolute right-4 top-4 z-[1001]"
+                    onClick={() => {
+                      onClose && onClose();
+                      store.close();
+                    }}
+                  >
+                    <XCircleIcon className="w-8 h-8 fill-red-400" />
+                  </button>
+                  <div>{renderAction && renderAction(store, store.data)}</div>
+                </div>
+              </Fragment>,
+              document.body
+            )
+          : null;
       }}
     </Observer>
   );
