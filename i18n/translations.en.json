@@ -100,7 +100,8 @@
       "value": "Value",
       "latitude": "Latitude",
       "longitude": "Longitude",
-      "notificationTo": "Contact"
+      "notificationTo": "Contact",
+      "contributions": "Contributions"
     },
     "placeholder": {
       "code": "Code",
@@ -178,20 +179,20 @@
     "resetPasswordRequestSuccess": "We received a request to reset your password."
   },
   "months": [
-    "January",
-    "February",
-    "March",
-    "April",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
     "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
   ],
-  "days": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  "days": ["s", "m", "t", "w", "t", "f", "s"],
   "qr": {
     "login": "Login QR Code"
   }

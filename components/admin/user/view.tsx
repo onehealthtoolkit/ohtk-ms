@@ -20,7 +20,7 @@ const UserView = () => {
   const weekNames = t("days", { joinArrays: "," }).split(",");
   const until = new Date().toISOString().split("T")[0];
   var panelColors = ["#EEEEEE", "#F78A23", "#F87D09", "#AC5808", "#7B3F06"];
-  var panelAttributes = { rx: 6, ry: 6 };
+  var panelAttributes = {};
 
   return (
     <MaskingLoader loading={viewModel.isLoading}>
@@ -82,23 +82,32 @@ const UserView = () => {
                 </th>
                 <td className="px-6 py-4">{viewModel.data.telephone}</td>
               </tr>
+              <tr>
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                >
+                  {t("form.label.contributions", "Contributions")}
+                </th>
+                <td className="px-6 py-4">
+                  {viewModel.contribution && (
+                    <Calendar
+                      values={viewModel.contribution}
+                      until={until}
+                      weekNames={weekNames}
+                      monthNames={monthNames}
+                      weekLabelAttributes={undefined}
+                      monthLabelAttributes={undefined}
+                      panelAttributes={panelAttributes}
+                      panelColors={panelColors}
+                    />
+                  )}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
-          {viewModel.contribution && (
-            <Calendar
-              values={viewModel.contribution}
-              until={until}
-              weekNames={weekNames}
-              monthNames={monthNames}
-              weekLabelAttributes={undefined}
-              monthLabelAttributes={undefined}
-              panelAttributes={panelAttributes}
-              panelColors={panelColors}
-            />
-          )}
-        </div>
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4"></div>
 
         <ViewActionButtons
           editUrl={`/admin/users/${viewModel.data.id}/update`}
