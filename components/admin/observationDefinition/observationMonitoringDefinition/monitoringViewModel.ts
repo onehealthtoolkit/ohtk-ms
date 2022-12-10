@@ -9,7 +9,6 @@ import { action, computed, makeObservable, observable } from "mobx";
 export abstract class ObservationMonitoringDefinitionViewModel extends BaseFormViewModel {
   monitoringDefinitionService: IObservationMonitoringDefinitionService;
 
-  stateSteps: ObservationMonitoringDefinition[] = [];
   _name: string = "";
   _description: string = "";
   _formDefinition: string = "{}";
@@ -24,7 +23,6 @@ export abstract class ObservationMonitoringDefinitionViewModel extends BaseFormV
   ) {
     super();
     makeObservable(this, {
-      stateSteps: observable,
       _name: observable,
       name: computed,
       _description: observable,

@@ -10,7 +10,7 @@ export class ObservationMonitoringDefinitionViewViewModel extends BaseViewModel 
 
   constructor(
     id: string,
-    readonly stateDefinitionService: IObservationMonitoringDefinitionService
+    readonly observationMonitoringDefinitionService: IObservationMonitoringDefinitionService
   ) {
     super();
     makeObservable(this, {
@@ -31,7 +31,7 @@ export class ObservationMonitoringDefinitionViewViewModel extends BaseViewModel 
   async fetch() {
     this.isLoading = true;
     const data = await (
-      await this.stateDefinitionService.getObservationMonitoringDefinition(
+      await this.observationMonitoringDefinitionService.getObservationMonitoringDefinition(
         this.id
       )
     ).data;
