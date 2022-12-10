@@ -13,6 +13,7 @@ import {
   Label,
   SaveButton,
   TextInput,
+  TextArea,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
@@ -56,9 +57,9 @@ const ConfigurationCreate = () => {
         </Field>
         <Field $size="half">
           <Label htmlFor="value">{t("form.label.value", "Value")}</Label>
-          <TextInput
+          <TextArea
             id="value"
-            type="text"
+            rows={10}
             placeholder={t("form.placeholder.value", "Value")}
             onChange={evt => (viewModel.value = evt.target.value)}
             disabled={isSubmitting}
