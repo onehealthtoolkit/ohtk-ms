@@ -93,7 +93,7 @@ const ObservationMonitoringDefinitionsUpdateForm = () => {
               htmlFor="definition"
               className="flex flex-row justify-between items-end"
             >
-              <span>{t("form.label.definition", "Definition")}</span>
+              <span>{t("form.label.formDefinition", "Form Definition")}</span>
               <button
                 type="button"
                 onClick={e => {
@@ -119,7 +119,7 @@ const ObservationMonitoringDefinitionsUpdateForm = () => {
             </Label>
             <TextArea
               id="definition"
-              placeholder={t("form.placeholder.definition", "Definition")}
+              placeholder={t("form.placeholder.formDefinition", "Definition")}
               rows={30}
               onChange={evt => (viewModel.formDefinition = evt.target.value)}
               disabled={viewModel.isSubmitting}
@@ -195,7 +195,10 @@ const ObservationMonitoringDefinitionsUpdateForm = () => {
         <Breadcrumb
           crumbs={[
             {
-              text: "State Definitions",
+              text: t(
+                "breadcrumb.observationDefinitions",
+                "Observation Definitions"
+              ),
               href: "/admin/observation_definitions",
             },
             {

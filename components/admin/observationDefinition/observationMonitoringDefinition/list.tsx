@@ -19,7 +19,14 @@ export const ObservationMonitoringDefinitionList = ({
   return (
     <div>
       <div className="flex items-center flex-wrap mb-4">
-        <p></p>
+        <div className="flex items-center flex-wrap mb-4 mt-4">
+          <p>
+            {t(
+              "breadcrumb.observationMonitoringDefinitions",
+              "Monitoring Definitions"
+            )}
+          </p>
+        </div>
         <div className="flex-grow"></div>
         <Link
           href={{

@@ -25,7 +25,10 @@ const ObservationMonitoringDefinitionView = () => {
         <Breadcrumb
           crumbs={[
             {
-              text: "State Definitions",
+              text: t(
+                "breadcrumb.observationDefinitions",
+                "Observation Definitions"
+              ),
               href: "/admin/observation_definitions",
             },
             {

@@ -22,7 +22,9 @@
     "outbreakPlans": "แผนการระบาด",
     "places": "สถานที่",
     "configurations": "การกำหนดค่า",
-    "contributions": "ประวัติการรายงาน"
+    "contributions": "ประวัติการรายงาน",
+    "observationDefinitions": "นิยามการสังเกต",
+    "observationMonitoringDefinitions": "คำจำกัดความการติดตามการสังเกต"
   },
   "filter": {
     "searchButton": "ค้นหา",
@@ -101,7 +103,9 @@
       "value": "ค่า",
       "latitude": "ละติจูด",
       "longitude": "ลองจิจูด",
-      "notificationTo": "แจ้งเตือนถึง"
+      "notificationTo": "แจ้งเตือนถึง",
+      "registerFormDefinition": "ฟอร์มการลงทะเบียน",
+      "identityTemplate": "แม่แบบเอกลักษณ์"
     },
     "placeholder": {
       "code": "รหัส",
@@ -148,7 +152,9 @@
       "value": "ค่า",
       "latitude": "ละติจูด",
       "longitude": "ลองจิจูด",
-      "notificationTo": "email:john@gmail.com, user:pphetra"
+      "notificationTo": "email:john@gmail.com, user:pphetra",
+      "registerFormDefinition": "ฟอร์มการลงทะเบียน",
+      "identityTemplate": "แม่แบบเอกลักษณ์"
     },
     "button": {
       "signin": "เข้าสู่ระบบ",

@@ -24,7 +24,9 @@ const ObservationDefinitionView = () => {
     <MaskingLoader loading={viewModel.isLoading}>
       <div>
         <div className="flex items-center flex-wrap mb-4 mt-4">
-          <p>Definition</p>
+          <p>
+            {t("breadcrumb.observationDefinitions", "Observation Definitions")}
+          </p>
         </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="table-fixed w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -90,7 +92,12 @@ const ObservationDefinitionView = () => {
         </div>
 
         <div className="flex items-center flex-wrap mb-4 mt-4">
-          <p>Monitoring Definition</p>
+          <p>
+            {t(
+              "breadcrumb.observationMonitoringDefinitions",
+              "Observation Monitoring Definitions"
+            )}
+          </p>
         </div>
         <Table
           columns={[

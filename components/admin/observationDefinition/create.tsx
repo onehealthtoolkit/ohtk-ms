@@ -77,7 +77,12 @@ const ObservationDefinitionCreate = () => {
               htmlFor="definition"
               className="flex flex-row justify-between items-end"
             >
-              <span>{t("form.label.definition", "Definition")}</span>
+              <span>
+                {t(
+                  "form.label.registerFormDefinition",
+                  "RegisterForm Definition"
+                )}
+              </span>
               <button
                 type="button"
                 onClick={e => {
@@ -104,7 +109,10 @@ const ObservationDefinitionCreate = () => {
             <TextArea
               id="definition"
               rows={30}
-              placeholder="Definition"
+              placeholder={t(
+                "form.placeholder.registerFormDefinition",
+                "RegisterForm Definition"
+              )}
               value={viewModel.registerFormDefinition}
               onChange={evt =>
                 (viewModel.registerFormDefinition = evt.target.value)
