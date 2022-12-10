@@ -1,0 +1,96 @@
+mutation ObservationMonitoringDefinitionCreate(
+  $definitionId: ID!
+  $name: String!
+  $description: String!
+  $formDefinition: JSONString!
+  $titleTemplate: String!
+  $descriptionTemplate: String!
+) {
+  adminObservationMonitoringDefinitionCreate(
+    definitionId: $definitionId
+    name: $name
+    description: $description
+    formDefinition: $formDefinition
+    titleTemplate: $titleTemplate
+    descriptionTemplate: $descriptionTemplate
+  ) {
+    result {
+      __typename
+      ... on AdminObservationMonitoringDefinitionCreateSuccess {
+        id
+        name
+      }
+      ... on AdminObservationMonitoringDefinitionCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation ObservationMonitoringDefinitionUpdate(
+  $id: ID!
+  $definitionId: ID!
+  $name: String!
+  $description: String!
+  $formDefinition: JSONString!
+  $titleTemplate: String!
+  $descriptionTemplate: String!
+) {
+  adminObservationMonitoringDefinitionUpdate(
+    id: $id
+    definitionId: $definitionId
+    name: $name
+    description: $description
+    formDefinition: $formDefinition
+    titleTemplate: $titleTemplate
+    descriptionTemplate: $descriptionTemplate
+  ) {
+    result {
+      __typename
+      ... on AdminObservationMonitoringDefinitionUpdateSuccess {
+        monitoringDefinition {
+          id
+          name
+          description
+          formDefinition
+          titleTemplate
+          descriptionTemplate
+          definition {
+            id
+          }
+        }
+      }
+      ... on AdminObservationMonitoringDefinitionUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation ObservationMonitoringDefinitionDelete($id: ID!) {
+  adminObservationMonitoringDefinitionDelete(id: $id) {
+    success
+  }
+}
+
+query GetObservationMonitoringDefinition($id: ID!) {
+  observationMonitoringDefinitionGet(id: $id) {
+    id
+    name
+    description
+    formDefinition
+    titleTemplate
+    descriptionTemplate
+    definition {
+      id
+    }
+  }
+}

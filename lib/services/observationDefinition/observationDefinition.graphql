@@ -1,0 +1,118 @@
+query ObservationDefinitions(
+  $limit: Int!
+  $offset: Int!
+  $q: String
+  $ordering: String
+) {
+  adminObservationDefinitionQuery(
+    limit: $limit
+    offset: $offset
+    q: $q
+    ordering: $ordering
+  ) {
+    totalCount
+    results {
+      id
+      name
+      description
+    }
+  }
+}
+
+mutation ObservationDefinitionCreate(
+  $name: String!
+  $description: String
+  $registerFormDefinition: JSONString!
+  $titleTemplate: String!
+  $descriptionTemplate: String!
+  $identityTemplate: String!
+) {
+  adminObservationDefinitionCreate(
+    name: $name
+    description: $description
+    registerFormDefinition: $registerFormDefinition
+    titleTemplate: $titleTemplate
+    descriptionTemplate: $descriptionTemplate
+    identityTemplate: $identityTemplate
+  ) {
+    result {
+      __typename
+      ... on AdminObservationDefinitionCreateSuccess {
+        id
+        name
+      }
+      ... on AdminObservationDefinitionCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation ObservationDefinitionUpdate(
+  $id: ID!
+  $name: String!
+  $description: String
+  $registerFormDefinition: JSONString!
+  $titleTemplate: String!
+  $descriptionTemplate: String!
+  $identityTemplate: String!
+) {
+  adminObservationDefinitionUpdate(
+    id: $id
+    name: $name
+    description: $description
+    registerFormDefinition: $registerFormDefinition
+    titleTemplate: $titleTemplate
+    descriptionTemplate: $descriptionTemplate
+    identityTemplate: $identityTemplate
+  ) {
+    result {
+      __typename
+      ... on AdminObservationDefinitionUpdateSuccess {
+        definition {
+          id
+          name
+          description
+          registerFormDefinition
+          titleTemplate
+          descriptionTemplate
+          identityTemplate
+        }
+      }
+      ... on AdminObservationDefinitionUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation ObservationDefinitionDelete($id: ID!) {
+  adminObservationDefinitionDelete(id: $id) {
+    success
+  }
+}
+
+query GetObservationDefinition($id: ID!) {
+  observationDefinitionGet(id: $id) {
+    id
+    name
+    description
+    registerFormDefinition
+    titleTemplate
+    descriptionTemplate
+    identityTemplate
+  }
+  adminObservationMonitoringDefinitionQuery(definitionId: $id) {
+    id
+    name
+    description
+  }
+}
