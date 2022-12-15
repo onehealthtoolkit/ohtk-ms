@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { observer } from "mobx-react";
+import { Observer, observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { ObservationDefinitionCreateViewModel } from "./createViewModel";
 import {
@@ -126,48 +126,60 @@ const ObservationDefinitionCreate = () => {
             <Label htmlFor="titleTemplate">
               {t("form.label.titleTemplate", "Title Template")}
             </Label>
-            <DataTemplateField
-              placeholder={t(
-                "form.placeholder.titleTemplate",
-                "Title Template"
+            <Observer>
+              {() => (
+                <DataTemplateField
+                  placeholder={t(
+                    "form.placeholder.titleTemplate",
+                    "Title Template"
+                  )}
+                  className="bg-[#fcfbe7]"
+                  value={null}
+                  onChange={value => (viewModel.titleTemplate = value)}
+                  variableList={viewModel.definitionFormViewModel.variableList}
+                />
               )}
-              className="bg-[#fcfbe7]"
-              value={null}
-              onChange={value => (viewModel.titleTemplate = value)}
-              variableList={viewModel.definitionFormViewModel.variableList}
-            />
+            </Observer>
             <ErrorText>{errors.titleTemplate}</ErrorText>
           </Field>
           <Field $size="half">
             <Label htmlFor="descriptionTemplate">
               {t("form.label.descriptionTemplate", "Description Template")}
             </Label>
-            <DataTemplateField
-              placeholder={t(
-                "form.placeholder.descriptionTemplate",
-                "Description Template"
+            <Observer>
+              {() => (
+                <DataTemplateField
+                  placeholder={t(
+                    "form.placeholder.descriptionTemplate",
+                    "Description Template"
+                  )}
+                  className="bg-[#fcfbe7]"
+                  value={null}
+                  onChange={value => (viewModel.descriptionTemplate = value)}
+                  variableList={viewModel.definitionFormViewModel.variableList}
+                />
               )}
-              className="bg-[#fcfbe7]"
-              value={null}
-              onChange={value => (viewModel.descriptionTemplate = value)}
-              variableList={viewModel.definitionFormViewModel.variableList}
-            />
+            </Observer>
             <ErrorText>{errors.descriptionTemplate}</ErrorText>
           </Field>
           <Field $size="half">
             <Label htmlFor="identityTemplate">
               {t("form.label.identityTemplate", "Identity Template")}
             </Label>
-            <DataTemplateField
-              placeholder={t(
-                "form.placeholder.identityTemplate",
-                "Identity Template"
+            <Observer>
+              {() => (
+                <DataTemplateField
+                  placeholder={t(
+                    "form.placeholder.identityTemplate",
+                    "Identity Template"
+                  )}
+                  value={null}
+                  className="bg-[#fcfbe7]"
+                  onChange={value => (viewModel.identityTemplate = value)}
+                  variableList={viewModel.definitionFormViewModel.variableList}
+                />
               )}
-              value={null}
-              className="bg-[#fcfbe7]"
-              onChange={value => (viewModel.identityTemplate = value)}
-              variableList={viewModel.definitionFormViewModel.variableList}
-            />
+            </Observer>
             <ErrorText>{errors.identityTemplate}</ErrorText>
           </Field>
         </FieldGroup>
