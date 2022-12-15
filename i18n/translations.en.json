@@ -21,7 +21,9 @@
     "view": "View",
     "outbreakPlans": "Outbreak Plans",
     "places": "Places",
-    "configurations": "Configurations"
+    "configurations": "Configurations",
+    "observationDefinitions": "Observation Definitions",
+    "observationMonitoringDefinitions": "Observation Monitoring Definition"
   },
   "filter": {
     "searchButton": "Search",
@@ -101,7 +103,9 @@
       "latitude": "Latitude",
       "longitude": "Longitude",
       "notificationTo": "Contact",
-      "contributions": "Contributions"
+      "contributions": "Contributions",
+      "registerFormDefinition": "RegisterForm Definition",
+      "identityTemplate": "Identity Template"
     },
     "placeholder": {
       "code": "Code",
@@ -145,7 +149,9 @@
       "value": "Value",
       "latitude": "Latitude",
       "longitude": "Longitude",
-      "notificationTo": "email:john@gmail.com, user:pphetra"
+      "notificationTo": "email:john@gmail.com, user:pphetra",
+      "registerFormDefinition": "RegisterForm Definition",
+      "identityTemplate": "Identity Template"
     },
     "button": {
       "signin": "Sign In",

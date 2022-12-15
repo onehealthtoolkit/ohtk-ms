@@ -21,7 +21,9 @@
     "view": "មើល",
     "outbreakPlans": "ផែនការផ្ទុះ",
     "places": "កន្លែង",
-    "configurations": "ការកំណត់រចនាសម្ព័ន្ធ"
+    "configurations": "ការកំណត់រចនាសម្ព័ន្ធ",
+    "observationDefinitions": "និយមន័យនៃការសង្កេត",
+    "observationMonitoringDefinitions": "និយមន័យនៃការត្រួតពិនិត្យការសង្កេត"
   },
   "filter": {
     "searchButton": "ស្វែងរក",
@@ -97,7 +99,9 @@
       "value": "តម្លៃ",
       "latitude": "រយៈទទឹង",
       "longitude": "បណ្តោយ",
-      "notificationTo": "ការជូនដំណឹងទៅ"
+      "notificationTo": "ការជូនដំណឹងទៅ",
+      "registerFormDefinition": "ចុះឈ្មោះនិយមន័យទម្រង់",
+      "identityTemplate": "គំរូអត្តសញ្ញាណ"
     },
     "placeholder": {
       "code": "កូដ",
@@ -144,7 +148,9 @@
       "value": "តម្លៃ",
       "latitude": "រយៈទទឹង",
       "longitude": "បណ្តោយ",
-      "notificationTo": "email:john@gmail.com, user:pphetra"
+      "notificationTo": "email:john@gmail.com, user:pphetra",
+      "registerFormDefinition": "ចុះឈ្មោះនិយមន័យទម្រង់",
+      "identityTemplate": "គំរូអត្តសញ្ញាណ"
     },
     "button": {
       "signin": "ចូល",

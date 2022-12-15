@@ -22,7 +22,7 @@ import CollapsIcon from "components/layout/CollapsIcon";
 import { Observer, observer } from "mobx-react";
 import { Menu } from "./menu";
 import UserMenu from "./userMenu";
-import { LocationMarkerIcon } from "@heroicons/react/solid";
+import { ColorSwatchIcon, LocationMarkerIcon } from "@heroicons/react/solid";
 import { useTranslation } from "react-i18next";
 
 const iconClassName = "h-5 w-5 text-gray-300";
@@ -254,6 +254,17 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
                     icon={<CogIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/observation_definitions/"
+                    pathname={pathname}
+                    label={t(
+                      "breadcrumb.observationDefinitions",
+                      "Observation Definitions"
+                    )}
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser}
+                    icon={<ColorSwatchIcon className={iconClassName} />}
                   />
                 </ul>
               </div>

@@ -84,6 +84,7 @@ type DataTemplateFieldProps = {
   onChange: (value: string) => void;
   variableList: Array<FormVariableItem>;
   placeholder: string;
+  className?: string;
 };
 
 const DataTemplateField = ({
@@ -91,6 +92,7 @@ const DataTemplateField = ({
   onChange,
   variableList,
   placeholder,
+  className,
 }: DataTemplateFieldProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [target, setTarget] = useState<Range | undefined | null>();
@@ -201,7 +203,7 @@ const DataTemplateField = ({
       }}
     >
       <Editable
-        className="
+        className={`
           shadow
           appearance-none
           border
@@ -213,7 +215,8 @@ const DataTemplateField = ({
           h-[150px]
           overflow-y-auto
           text-[10.5pt]
-        "
+          ${className}
+        `}
         renderElement={renderElement}
         onKeyDown={onKeyDown}
         placeholder={placeholder || "Enter some text..."}

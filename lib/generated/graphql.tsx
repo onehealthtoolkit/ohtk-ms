@@ -487,6 +487,23 @@ export type AdminConfigurationUpdateSuccess = {
   value: Scalars["String"];
 };
 
+export type AdminDefinitionQueryType = {
+  __typename?: "AdminDefinitionQueryType";
+  description?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  isActive: Scalars["Boolean"];
+  name: Scalars["String"];
+};
+
+export type AdminDefinitionQueryTypeNodeConnection = {
+  __typename?: "AdminDefinitionQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminDefinitionQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
 export type AdminFieldValidationProblem = {
   __typename?: "AdminFieldValidationProblem";
   message: Scalars["String"];
@@ -563,6 +580,14 @@ export type AdminInvitationCodeUpdateResult =
 export type AdminInvitationCodeUpdateSuccess = {
   __typename?: "AdminInvitationCodeUpdateSuccess";
   invitationCode?: Maybe<InvitationCodeType>;
+};
+
+export type AdminMonitoringDefinitionQueryType = {
+  __typename?: "AdminMonitoringDefinitionQueryType";
+  description?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  isActive: Scalars["Boolean"];
+  name: Scalars["String"];
 };
 
 export type AdminNotificationTemplateAuthorityType = {
@@ -643,6 +668,118 @@ export type AdminNotificationTemplateUpdateResult =
 export type AdminNotificationTemplateUpdateSuccess = {
   __typename?: "AdminNotificationTemplateUpdateSuccess";
   notificationTemplate?: Maybe<NotificationTemplateType>;
+};
+
+/** use to create a new observation definition */
+export type AdminObservationDefinitionCreateMutation = {
+  __typename?: "AdminObservationDefinitionCreateMutation";
+  result?: Maybe<AdminObservationDefinitionCreateResult>;
+};
+
+export type AdminObservationDefinitionCreateProblem = {
+  __typename?: "AdminObservationDefinitionCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminObservationDefinitionCreateResult =
+  | AdminObservationDefinitionCreateProblem
+  | AdminObservationDefinitionCreateSuccess;
+
+export type AdminObservationDefinitionCreateSuccess = {
+  __typename?: "AdminObservationDefinitionCreateSuccess";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  description?: Maybe<Scalars["String"]>;
+  descriptionTemplate: Scalars["String"];
+  id: Scalars["ID"];
+  identityTemplate: Scalars["String"];
+  isActive: Scalars["Boolean"];
+  monitoringdefinitionSet: Array<AdminObservationMonitoringDefinitionCreateSuccess>;
+  name: Scalars["String"];
+  registerFormDefinition: Scalars["JSONString"];
+  titleTemplate: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type AdminObservationDefinitionDeleteMutation = {
+  __typename?: "AdminObservationDefinitionDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type AdminObservationDefinitionUpdateMutation = {
+  __typename?: "AdminObservationDefinitionUpdateMutation";
+  result?: Maybe<AdminObservationDefinitionUpdateResult>;
+};
+
+export type AdminObservationDefinitionUpdateProblem = {
+  __typename?: "AdminObservationDefinitionUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminObservationDefinitionUpdateResult =
+  | AdminObservationDefinitionUpdateProblem
+  | AdminObservationDefinitionUpdateSuccess;
+
+export type AdminObservationDefinitionUpdateSuccess = {
+  __typename?: "AdminObservationDefinitionUpdateSuccess";
+  definition?: Maybe<ObservationDefinitionType>;
+};
+
+export type AdminObservationMonitoringDefinitionCreateMutation = {
+  __typename?: "AdminObservationMonitoringDefinitionCreateMutation";
+  result?: Maybe<AdminObservationMonitoringDefinitionCreateResult>;
+};
+
+export type AdminObservationMonitoringDefinitionCreateProblem = {
+  __typename?: "AdminObservationMonitoringDefinitionCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminObservationMonitoringDefinitionCreateResult =
+  | AdminObservationMonitoringDefinitionCreateProblem
+  | AdminObservationMonitoringDefinitionCreateSuccess;
+
+export type AdminObservationMonitoringDefinitionCreateSuccess = {
+  __typename?: "AdminObservationMonitoringDefinitionCreateSuccess";
+  createdAt: Scalars["DateTime"];
+  definition: AdminObservationDefinitionCreateSuccess;
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  description?: Maybe<Scalars["String"]>;
+  descriptionTemplate: Scalars["String"];
+  formDefinition: Scalars["JSONString"];
+  id: Scalars["ID"];
+  isActive: Scalars["Boolean"];
+  name: Scalars["String"];
+  titleTemplate: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type AdminObservationMonitoringDefinitionDeleteMutation = {
+  __typename?: "AdminObservationMonitoringDefinitionDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type AdminObservationMonitoringDefinitionUpdateMutation = {
+  __typename?: "AdminObservationMonitoringDefinitionUpdateMutation";
+  result?: Maybe<AdminObservationMonitoringDefinitionUpdateResult>;
+};
+
+export type AdminObservationMonitoringDefinitionUpdateProblem = {
+  __typename?: "AdminObservationMonitoringDefinitionUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminObservationMonitoringDefinitionUpdateResult =
+  | AdminObservationMonitoringDefinitionUpdateProblem
+  | AdminObservationMonitoringDefinitionUpdateSuccess;
+
+export type AdminObservationMonitoringDefinitionUpdateSuccess = {
+  __typename?: "AdminObservationMonitoringDefinitionUpdateSuccess";
+  monitoringDefinition?: Maybe<ObservationMonitoringDefinitionDefinitionType>;
 };
 
 export type AdminOutbreakPlanCreateMutation = {
@@ -1555,6 +1692,13 @@ export type Mutation = {
   adminNotificationTemplateCreate?: Maybe<AdminNotificationTemplateCreateMutation>;
   adminNotificationTemplateDelete?: Maybe<AdminNotificationTemplateDeleteMutation>;
   adminNotificationTemplateUpdate?: Maybe<AdminNotificationTemplateUpdateMutation>;
+  /** use to create a new observation definition */
+  adminObservationDefinitionCreate?: Maybe<AdminObservationDefinitionCreateMutation>;
+  adminObservationDefinitionDelete?: Maybe<AdminObservationDefinitionDeleteMutation>;
+  adminObservationDefinitionUpdate?: Maybe<AdminObservationDefinitionUpdateMutation>;
+  adminObservationMonitoringDefinitionCreate?: Maybe<AdminObservationMonitoringDefinitionCreateMutation>;
+  adminObservationMonitoringDefinitionDelete?: Maybe<AdminObservationMonitoringDefinitionDeleteMutation>;
+  adminObservationMonitoringDefinitionUpdate?: Maybe<AdminObservationMonitoringDefinitionUpdateMutation>;
   adminOutbreakPlanCreate?: Maybe<AdminOutbreakPlanCreateMutation>;
   adminOutbreakPlanDelete?: Maybe<AdminOutbreakPlanDeleteMutation>;
   adminOutbreakPlanUpdate?: Maybe<AdminOutbreakPlanUpdateMutation>;
@@ -1759,6 +1903,52 @@ export type MutationAdminNotificationTemplateUpdateArgs = {
   stateTransitionId?: InputMaybe<Scalars["Int"]>;
   titleTemplate: Scalars["String"];
   type: Scalars["String"];
+};
+
+export type MutationAdminObservationDefinitionCreateArgs = {
+  description?: InputMaybe<Scalars["String"]>;
+  descriptionTemplate: Scalars["String"];
+  identityTemplate: Scalars["String"];
+  name: Scalars["String"];
+  registerFormDefinition: Scalars["JSONString"];
+  titleTemplate: Scalars["String"];
+};
+
+export type MutationAdminObservationDefinitionDeleteArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationAdminObservationDefinitionUpdateArgs = {
+  description?: InputMaybe<Scalars["String"]>;
+  descriptionTemplate: Scalars["String"];
+  id: Scalars["ID"];
+  identityTemplate: Scalars["String"];
+  name: Scalars["String"];
+  registerFormDefinition: Scalars["JSONString"];
+  titleTemplate: Scalars["String"];
+};
+
+export type MutationAdminObservationMonitoringDefinitionCreateArgs = {
+  definitionId: Scalars["ID"];
+  description: Scalars["String"];
+  descriptionTemplate: Scalars["String"];
+  formDefinition: Scalars["JSONString"];
+  name: Scalars["String"];
+  titleTemplate: Scalars["String"];
+};
+
+export type MutationAdminObservationMonitoringDefinitionDeleteArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationAdminObservationMonitoringDefinitionUpdateArgs = {
+  definitionId: Scalars["ID"];
+  description: Scalars["String"];
+  descriptionTemplate: Scalars["String"];
+  formDefinition: Scalars["JSONString"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  titleTemplate: Scalars["String"];
 };
 
 export type MutationAdminOutbreakPlanCreateArgs = {
@@ -2048,6 +2238,37 @@ export type NotificationTemplateType = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type ObservationDefinitionType = {
+  __typename?: "ObservationDefinitionType";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  description?: Maybe<Scalars["String"]>;
+  descriptionTemplate: Scalars["String"];
+  id: Scalars["ID"];
+  identityTemplate: Scalars["String"];
+  isActive: Scalars["Boolean"];
+  monitoringdefinitionSet: Array<AdminObservationMonitoringDefinitionCreateSuccess>;
+  name: Scalars["String"];
+  registerFormDefinition: Scalars["JSONString"];
+  titleTemplate: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type ObservationMonitoringDefinitionDefinitionType = {
+  __typename?: "ObservationMonitoringDefinitionDefinitionType";
+  createdAt: Scalars["DateTime"];
+  definition: AdminObservationDefinitionCreateSuccess;
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  description?: Maybe<Scalars["String"]>;
+  descriptionTemplate: Scalars["String"];
+  formDefinition: Scalars["JSONString"];
+  id: Scalars["ID"];
+  isActive: Scalars["Boolean"];
+  name: Scalars["String"];
+  titleTemplate: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
 /** Obtain JSON Web Token mutation */
 export type ObtainJsonWebToken = {
   __typename?: "ObtainJSONWebToken";
@@ -2134,6 +2355,10 @@ export type Query = {
     Array<Maybe<AdminNotificationTemplateAuthorityType>>
   >;
   adminNotificationTemplateQuery?: Maybe<AdminNotificationTemplateQueryTypeNodeConnection>;
+  adminObservationDefinitionQuery?: Maybe<AdminDefinitionQueryTypeNodeConnection>;
+  adminObservationMonitoringDefinitionQuery?: Maybe<
+    Array<Maybe<AdminMonitoringDefinitionQueryType>>
+  >;
   adminOutbreakPlanQuery?: Maybe<AdminOutbreakPlanQueryTypeNodeConnection>;
   adminPlaceQuery?: Maybe<AdminPlaceQueryTypeNodeConnection>;
   adminReportTypeQuery?: Maybe<AdminReportTypeQueryTypeNodeConnection>;
@@ -2170,6 +2395,8 @@ export type Query = {
   myMessages?: Maybe<UserMessageTypeNodeConnection>;
   myReportTypes?: Maybe<Array<Maybe<ReportTypeType>>>;
   notificationTemplateGet?: Maybe<NotificationTemplateType>;
+  observationDefinitionGet?: Maybe<ObservationDefinitionType>;
+  observationMonitoringDefinitionGet?: Maybe<ObservationMonitoringDefinitionDefinitionType>;
   outbreakPlaces?: Maybe<Array<Maybe<OutbreakPlaceType>>>;
   outbreakPlanGet?: Maybe<OutbreakPlanType>;
   placeGet?: Maybe<PlaceType>;
@@ -2287,6 +2514,21 @@ export type QueryAdminNotificationTemplateQueryArgs = {
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
   q?: InputMaybe<Scalars["String"]>;
+};
+
+export type QueryAdminObservationDefinitionQueryArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
+};
+
+export type QueryAdminObservationMonitoringDefinitionQueryArgs = {
+  definitionId: Scalars["ID"];
 };
 
 export type QueryAdminOutbreakPlanQueryArgs = {
@@ -2503,6 +2745,14 @@ export type QueryMyMessagesArgs = {
 };
 
 export type QueryNotificationTemplateGetArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryObservationDefinitionGetArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryObservationMonitoringDefinitionGetArgs = {
   id: Scalars["ID"];
 };
 
@@ -4073,6 +4323,245 @@ export type GetNotificationTemplateQuery = {
         name: string;
       } | null;
     } | null;
+  } | null;
+};
+
+export type ObservationDefinitionsQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+  q?: InputMaybe<Scalars["String"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type ObservationDefinitionsQuery = {
+  __typename?: "Query";
+  adminObservationDefinitionQuery?: {
+    __typename?: "AdminDefinitionQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminDefinitionQueryType";
+      id: string;
+      name: string;
+      description?: string | null;
+    } | null>;
+  } | null;
+};
+
+export type ObservationDefinitionCreateMutationVariables = Exact<{
+  name: Scalars["String"];
+  description?: InputMaybe<Scalars["String"]>;
+  registerFormDefinition: Scalars["JSONString"];
+  titleTemplate: Scalars["String"];
+  descriptionTemplate: Scalars["String"];
+  identityTemplate: Scalars["String"];
+}>;
+
+export type ObservationDefinitionCreateMutation = {
+  __typename?: "Mutation";
+  adminObservationDefinitionCreate?: {
+    __typename?: "AdminObservationDefinitionCreateMutation";
+    result?:
+      | {
+          __typename: "AdminObservationDefinitionCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminObservationDefinitionCreateSuccess";
+          id: string;
+          name: string;
+        }
+      | null;
+  } | null;
+};
+
+export type ObservationDefinitionUpdateMutationVariables = Exact<{
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  description?: InputMaybe<Scalars["String"]>;
+  registerFormDefinition: Scalars["JSONString"];
+  titleTemplate: Scalars["String"];
+  descriptionTemplate: Scalars["String"];
+  identityTemplate: Scalars["String"];
+}>;
+
+export type ObservationDefinitionUpdateMutation = {
+  __typename?: "Mutation";
+  adminObservationDefinitionUpdate?: {
+    __typename?: "AdminObservationDefinitionUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminObservationDefinitionUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminObservationDefinitionUpdateSuccess";
+          definition?: {
+            __typename?: "ObservationDefinitionType";
+            id: string;
+            name: string;
+            description?: string | null;
+            registerFormDefinition: any;
+            titleTemplate: string;
+            descriptionTemplate: string;
+            identityTemplate: string;
+          } | null;
+        }
+      | null;
+  } | null;
+};
+
+export type ObservationDefinitionDeleteMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type ObservationDefinitionDeleteMutation = {
+  __typename?: "Mutation";
+  adminObservationDefinitionDelete?: {
+    __typename?: "AdminObservationDefinitionDeleteMutation";
+    success?: boolean | null;
+  } | null;
+};
+
+export type GetObservationDefinitionQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type GetObservationDefinitionQuery = {
+  __typename?: "Query";
+  observationDefinitionGet?: {
+    __typename?: "ObservationDefinitionType";
+    id: string;
+    name: string;
+    description?: string | null;
+    registerFormDefinition: any;
+    titleTemplate: string;
+    descriptionTemplate: string;
+    identityTemplate: string;
+  } | null;
+  adminObservationMonitoringDefinitionQuery?: Array<{
+    __typename?: "AdminMonitoringDefinitionQueryType";
+    id: string;
+    name: string;
+    description?: string | null;
+  } | null> | null;
+};
+
+export type ObservationMonitoringDefinitionCreateMutationVariables = Exact<{
+  definitionId: Scalars["ID"];
+  name: Scalars["String"];
+  description: Scalars["String"];
+  formDefinition: Scalars["JSONString"];
+  titleTemplate: Scalars["String"];
+  descriptionTemplate: Scalars["String"];
+}>;
+
+export type ObservationMonitoringDefinitionCreateMutation = {
+  __typename?: "Mutation";
+  adminObservationMonitoringDefinitionCreate?: {
+    __typename?: "AdminObservationMonitoringDefinitionCreateMutation";
+    result?:
+      | {
+          __typename: "AdminObservationMonitoringDefinitionCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminObservationMonitoringDefinitionCreateSuccess";
+          id: string;
+          name: string;
+        }
+      | null;
+  } | null;
+};
+
+export type ObservationMonitoringDefinitionUpdateMutationVariables = Exact<{
+  id: Scalars["ID"];
+  definitionId: Scalars["ID"];
+  name: Scalars["String"];
+  description: Scalars["String"];
+  formDefinition: Scalars["JSONString"];
+  titleTemplate: Scalars["String"];
+  descriptionTemplate: Scalars["String"];
+}>;
+
+export type ObservationMonitoringDefinitionUpdateMutation = {
+  __typename?: "Mutation";
+  adminObservationMonitoringDefinitionUpdate?: {
+    __typename?: "AdminObservationMonitoringDefinitionUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminObservationMonitoringDefinitionUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminObservationMonitoringDefinitionUpdateSuccess";
+          monitoringDefinition?: {
+            __typename?: "ObservationMonitoringDefinitionDefinitionType";
+            id: string;
+            name: string;
+            description?: string | null;
+            formDefinition: any;
+            titleTemplate: string;
+            descriptionTemplate: string;
+            definition: {
+              __typename?: "AdminObservationDefinitionCreateSuccess";
+              id: string;
+            };
+          } | null;
+        }
+      | null;
+  } | null;
+};
+
+export type ObservationMonitoringDefinitionDeleteMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type ObservationMonitoringDefinitionDeleteMutation = {
+  __typename?: "Mutation";
+  adminObservationMonitoringDefinitionDelete?: {
+    __typename?: "AdminObservationMonitoringDefinitionDeleteMutation";
+    success?: boolean | null;
+  } | null;
+};
+
+export type GetObservationMonitoringDefinitionQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type GetObservationMonitoringDefinitionQuery = {
+  __typename?: "Query";
+  observationMonitoringDefinitionGet?: {
+    __typename?: "ObservationMonitoringDefinitionDefinitionType";
+    id: string;
+    name: string;
+    description?: string | null;
+    formDefinition: any;
+    titleTemplate: string;
+    descriptionTemplate: string;
+    definition: {
+      __typename?: "AdminObservationDefinitionCreateSuccess";
+      id: string;
+    };
   } | null;
 };
 
@@ -11718,6 +12207,1428 @@ export const GetNotificationTemplateDocument = {
 } as unknown as DocumentNode<
   GetNotificationTemplateQuery,
   GetNotificationTemplateQueryVariables
+>;
+export const ObservationDefinitionsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ObservationDefinitions" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminObservationDefinitionQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ObservationDefinitionsQuery,
+  ObservationDefinitionsQueryVariables
+>;
+export const ObservationDefinitionCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ObservationDefinitionCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "description" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "registerFormDefinition" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "JSONString" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "titleTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "descriptionTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "identityTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminObservationDefinitionCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "description" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "registerFormDefinition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "registerFormDefinition" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "titleTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "titleTemplate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "descriptionTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "descriptionTemplate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "identityTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "identityTemplate" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminObservationDefinitionCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminObservationDefinitionCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ObservationDefinitionCreateMutation,
+  ObservationDefinitionCreateMutationVariables
+>;
+export const ObservationDefinitionUpdateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ObservationDefinitionUpdate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "description" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "registerFormDefinition" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "JSONString" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "titleTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "descriptionTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "identityTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminObservationDefinitionUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "description" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "registerFormDefinition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "registerFormDefinition" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "titleTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "titleTemplate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "descriptionTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "descriptionTemplate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "identityTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "identityTemplate" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminObservationDefinitionUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "definition" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "description",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "registerFormDefinition",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "titleTemplate",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "descriptionTemplate",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "identityTemplate",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminObservationDefinitionUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ObservationDefinitionUpdateMutation,
+  ObservationDefinitionUpdateMutationVariables
+>;
+export const ObservationDefinitionDeleteDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ObservationDefinitionDelete" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminObservationDefinitionDelete" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ObservationDefinitionDeleteMutation,
+  ObservationDefinitionDeleteMutationVariables
+>;
+export const GetObservationDefinitionDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetObservationDefinition" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "observationDefinitionGet" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "registerFormDefinition" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "titleTemplate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "descriptionTemplate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "identityTemplate" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: {
+              kind: "Name",
+              value: "adminObservationMonitoringDefinitionQuery",
+            },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "definitionId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetObservationDefinitionQuery,
+  GetObservationDefinitionQueryVariables
+>;
+export const ObservationMonitoringDefinitionCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ObservationMonitoringDefinitionCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "definitionId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "description" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "formDefinition" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "JSONString" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "titleTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "descriptionTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: {
+              kind: "Name",
+              value: "adminObservationMonitoringDefinitionCreate",
+            },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "definitionId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "definitionId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "description" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "formDefinition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "formDefinition" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "titleTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "titleTemplate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "descriptionTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "descriptionTemplate" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value:
+                              "AdminObservationMonitoringDefinitionCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value:
+                              "AdminObservationMonitoringDefinitionCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ObservationMonitoringDefinitionCreateMutation,
+  ObservationMonitoringDefinitionCreateMutationVariables
+>;
+export const ObservationMonitoringDefinitionUpdateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ObservationMonitoringDefinitionUpdate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "definitionId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "description" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "formDefinition" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "JSONString" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "titleTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "descriptionTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: {
+              kind: "Name",
+              value: "adminObservationMonitoringDefinitionUpdate",
+            },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "definitionId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "definitionId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "description" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "formDefinition" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "formDefinition" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "titleTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "titleTemplate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "descriptionTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "descriptionTemplate" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value:
+                              "AdminObservationMonitoringDefinitionUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "monitoringDefinition",
+                              },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "description",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "formDefinition",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "titleTemplate",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "descriptionTemplate",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "definition" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value:
+                              "AdminObservationMonitoringDefinitionUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ObservationMonitoringDefinitionUpdateMutation,
+  ObservationMonitoringDefinitionUpdateMutationVariables
+>;
+export const ObservationMonitoringDefinitionDeleteDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ObservationMonitoringDefinitionDelete" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: {
+              kind: "Name",
+              value: "adminObservationMonitoringDefinitionDelete",
+            },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ObservationMonitoringDefinitionDeleteMutation,
+  ObservationMonitoringDefinitionDeleteMutationVariables
+>;
+export const GetObservationMonitoringDefinitionDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetObservationMonitoringDefinition" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "observationMonitoringDefinitionGet" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "formDefinition" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "titleTemplate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "descriptionTemplate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "definition" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetObservationMonitoringDefinitionQuery,
+  GetObservationMonitoringDefinitionQueryVariables
 >;
 export const OutbreakPlacesDocument = {
   kind: "Document",
