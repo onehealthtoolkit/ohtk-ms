@@ -492,7 +492,9 @@ export type AdminDefinitionQueryType = {
   description?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
   isActive: Scalars["Boolean"];
+  monitoringDefinitions?: Maybe<Array<Maybe<AdminMonitoringDefinitionType>>>;
   name: Scalars["String"];
+  registerFormDefinition: Scalars["JSONString"];
 };
 
 export type AdminDefinitionQueryTypeNodeConnection = {
@@ -585,6 +587,15 @@ export type AdminInvitationCodeUpdateSuccess = {
 export type AdminMonitoringDefinitionQueryType = {
   __typename?: "AdminMonitoringDefinitionQueryType";
   description?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  isActive: Scalars["Boolean"];
+  name: Scalars["String"];
+};
+
+export type AdminMonitoringDefinitionType = {
+  __typename?: "AdminMonitoringDefinitionType";
+  description?: Maybe<Scalars["String"]>;
+  formDefinition: Scalars["JSONString"];
   id: Scalars["ID"];
   isActive: Scalars["Boolean"];
   name: Scalars["String"];
@@ -698,6 +709,7 @@ export type AdminObservationDefinitionCreateSuccess = {
   monitoringdefinitionSet: Array<AdminObservationMonitoringDefinitionCreateSuccess>;
   name: Scalars["String"];
   registerFormDefinition: Scalars["JSONString"];
+  subjectSet: Array<ObservationSubjectType>;
   titleTemplate: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
@@ -753,6 +765,7 @@ export type AdminObservationMonitoringDefinitionCreateSuccess = {
   id: Scalars["ID"];
   isActive: Scalars["Boolean"];
   name: Scalars["String"];
+  subjectmonitoringrecordSet: Array<ObservationSubjectMonitoringRecordType>;
   titleTemplate: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
@@ -1740,6 +1753,8 @@ export type Mutation = {
   submitFollowupReport?: Maybe<SubmitFollowupReport>;
   submitImage?: Maybe<SubmitImage>;
   submitIncidentReport?: Maybe<SubmitIncidentReport>;
+  submitObservationSubject?: Maybe<SubmitObservationSubject>;
+  submitObservationSubjectMonitoring?: Maybe<SubmitObservationSubjectMonitoringRecord>;
   submitZeroReport?: Maybe<SubmitZeroReportMutation>;
   /** Obtain JSON Web Token mutation */
   tokenAuth?: Maybe<ObtainJsonWebToken>;
@@ -2208,6 +2223,18 @@ export type MutationSubmitIncidentReportArgs = {
   reportTypeId: Scalars["UUID"];
 };
 
+export type MutationSubmitObservationSubjectArgs = {
+  data: Scalars["GenericScalar"];
+  definitionId: Scalars["Int"];
+  gpsLocation?: InputMaybe<Scalars["String"]>;
+};
+
+export type MutationSubmitObservationSubjectMonitoringArgs = {
+  data: Scalars["GenericScalar"];
+  monitoringDefinitionId: Scalars["Int"];
+  subjectId: Scalars["Int"];
+};
+
 export type MutationTokenAuthArgs = {
   password: Scalars["String"];
   username: Scalars["String"];
@@ -2249,7 +2276,8 @@ export type ObservationDefinitionType = {
   isActive: Scalars["Boolean"];
   monitoringdefinitionSet: Array<AdminObservationMonitoringDefinitionCreateSuccess>;
   name: Scalars["String"];
-  registerFormDefinition: Scalars["JSONString"];
+  registerFormDefinition?: Maybe<Scalars["GenericScalar"]>;
+  subjectSet: Array<ObservationSubjectType>;
   titleTemplate: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
@@ -2265,8 +2293,59 @@ export type ObservationMonitoringDefinitionDefinitionType = {
   id: Scalars["ID"];
   isActive: Scalars["Boolean"];
   name: Scalars["String"];
+  subjectmonitoringrecordSet: Array<ObservationSubjectMonitoringRecordType>;
   titleTemplate: Scalars["String"];
   updatedAt: Scalars["DateTime"];
+};
+
+export type ObservationSubjectMonitoringRecordType = {
+  __typename?: "ObservationSubjectMonitoringRecordType";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  description: Scalars["String"];
+  formData?: Maybe<Scalars["GenericScalar"]>;
+  id: Scalars["ID"];
+  isActive: Scalars["Boolean"];
+  monitoringDefinition: AdminObservationMonitoringDefinitionCreateSuccess;
+  monitoringDefinitionId?: Maybe<Scalars["Int"]>;
+  subject: ObservationSubjectType;
+  subjectId?: Maybe<Scalars["Int"]>;
+  title: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type ObservationSubjectMonitoringRecordTypeNodeConnection = {
+  __typename?: "ObservationSubjectMonitoringRecordTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<ObservationSubjectMonitoringRecordType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
+export type ObservationSubjectType = {
+  __typename?: "ObservationSubjectType";
+  createdAt: Scalars["DateTime"];
+  definition?: Maybe<ObservationDefinitionType>;
+  definitionId?: Maybe<Scalars["Int"]>;
+  description: Scalars["String"];
+  formData?: Maybe<Scalars["GenericScalar"]>;
+  id: Scalars["ID"];
+  identity: Scalars["String"];
+  isActive: Scalars["Boolean"];
+  monitoringRecords?: Maybe<
+    Array<Maybe<ObservationSubjectMonitoringRecordType>>
+  >;
+  title: Scalars["String"];
+};
+
+export type ObservationSubjectTypeNodeConnection = {
+  __typename?: "ObservationSubjectTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<ObservationSubjectType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
 };
 
 /** Obtain JSON Web Token mutation */
@@ -2397,6 +2476,10 @@ export type Query = {
   notificationTemplateGet?: Maybe<NotificationTemplateType>;
   observationDefinitionGet?: Maybe<ObservationDefinitionType>;
   observationMonitoringDefinitionGet?: Maybe<ObservationMonitoringDefinitionDefinitionType>;
+  observationSubject?: Maybe<ObservationSubjectType>;
+  observationSubjectMonitoringRecord?: Maybe<ObservationSubjectMonitoringRecordType>;
+  observationSubjectMonitoringRecords?: Maybe<ObservationSubjectMonitoringRecordTypeNodeConnection>;
+  observationSubjects?: Maybe<ObservationSubjectTypeNodeConnection>;
   outbreakPlaces?: Maybe<Array<Maybe<OutbreakPlaceType>>>;
   outbreakPlanGet?: Maybe<OutbreakPlanType>;
   placeGet?: Maybe<PlaceType>;
@@ -2756,6 +2839,41 @@ export type QueryObservationMonitoringDefinitionGetArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryObservationSubjectArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryObservationSubjectMonitoringRecordArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryObservationSubjectMonitoringRecordsArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  createdAt_Gte?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_Lte?: InputMaybe<Scalars["DateTime"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+  subject_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+};
+
+export type QueryObservationSubjectsArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  createdAt_Gte?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_Lte?: InputMaybe<Scalars["DateTime"]>;
+  definition_Id?: InputMaybe<Scalars["Float"]>;
+  definition_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+};
+
 export type QueryOutbreakPlacesArgs = {
   caseId: Scalars["UUID"];
 };
@@ -2951,6 +3069,16 @@ export type SubmitImage = {
 export type SubmitIncidentReport = {
   __typename?: "SubmitIncidentReport";
   result?: Maybe<IncidentReportType>;
+};
+
+export type SubmitObservationSubject = {
+  __typename?: "SubmitObservationSubject";
+  result?: Maybe<ObservationSubjectType>;
+};
+
+export type SubmitObservationSubjectMonitoringRecord = {
+  __typename?: "SubmitObservationSubjectMonitoringRecord";
+  result?: Maybe<ObservationSubjectMonitoringRecordType>;
 };
 
 export type SubmitZeroReportMutation = {
@@ -4326,6 +4454,59 @@ export type GetNotificationTemplateQuery = {
   } | null;
 };
 
+export type ObservationSubjectsQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+  definitionId?: InputMaybe<Scalars["Float"]>;
+  fromDate?: InputMaybe<Scalars["DateTime"]>;
+  throughDate?: InputMaybe<Scalars["DateTime"]>;
+}>;
+
+export type ObservationSubjectsQuery = {
+  __typename?: "Query";
+  observationSubjects?: {
+    __typename?: "ObservationSubjectTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "ObservationSubjectType";
+      id: string;
+      identity: string;
+      title: string;
+      description: string;
+      createdAt: any;
+    } | null>;
+  } | null;
+};
+
+export type GetObservationSubjestQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type GetObservationSubjestQuery = {
+  __typename?: "Query";
+  observationSubject?: {
+    __typename?: "ObservationSubjectType";
+    id: string;
+    title: string;
+    description: string;
+    identity: string;
+    formData?: any | null;
+    createdAt: any;
+    definition?: {
+      __typename?: "ObservationDefinitionType";
+      name: string;
+      description?: string | null;
+      registerFormDefinition?: any | null;
+    } | null;
+    monitoringRecords?: Array<{
+      __typename?: "ObservationSubjectMonitoringRecordType";
+      id: string;
+      title: string;
+      description: string;
+    } | null> | null;
+  } | null;
+};
+
 export type ObservationDefinitionsQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
@@ -4410,7 +4591,7 @@ export type ObservationDefinitionUpdateMutation = {
             id: string;
             name: string;
             description?: string | null;
-            registerFormDefinition: any;
+            registerFormDefinition?: any | null;
             titleTemplate: string;
             descriptionTemplate: string;
             identityTemplate: string;
@@ -4443,7 +4624,7 @@ export type GetObservationDefinitionQuery = {
     id: string;
     name: string;
     description?: string | null;
-    registerFormDefinition: any;
+    registerFormDefinition?: any | null;
     titleTemplate: string;
     descriptionTemplate: string;
     identityTemplate: string;
@@ -12207,6 +12388,239 @@ export const GetNotificationTemplateDocument = {
 } as unknown as DocumentNode<
   GetNotificationTemplateQuery,
   GetNotificationTemplateQueryVariables
+>;
+export const ObservationSubjectsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ObservationSubjects" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "definitionId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "fromDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "throughDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "observationSubjects" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "createdAt_Gte" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "fromDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "createdAt_Lte" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "throughDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "definition_Id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "definitionId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "identity" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "title" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ObservationSubjectsQuery,
+  ObservationSubjectsQueryVariables
+>;
+export const GetObservationSubjestDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetObservationSubjest" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "observationSubject" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+                { kind: "Field", name: { kind: "Name", value: "identity" } },
+                { kind: "Field", name: { kind: "Name", value: "formData" } },
+                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "definition" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "registerFormDefinition" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "monitoringRecords" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "title" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetObservationSubjestQuery,
+  GetObservationSubjestQueryVariables
 >;
 export const ObservationDefinitionsDocument = {
   kind: "Document",

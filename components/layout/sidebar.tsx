@@ -24,6 +24,7 @@ import { Menu } from "./menu";
 import UserMenu from "./userMenu";
 import { ColorSwatchIcon, LocationMarkerIcon } from "@heroicons/react/solid";
 import { useTranslation } from "react-i18next";
+import ObservationMenu from "./observationMenu";
 
 const iconClassName = "h-5 w-5 text-gray-300";
 
@@ -111,6 +112,14 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     collapsed={store.menu.collapsed}
                     display={store.isRoleOfficer || store.isRoleAdmin}
                     icon={<LocationMarkerIcon className={iconClassName} />}
+                  />
+                  <ObservationMenu
+                    icon={
+                      <ColorSwatchIcon
+                        className={`${iconClassName} -rotate-90`}
+                      />
+                    }
+                    label={t("breadcrumb.observation", "Observation")}
                   />
                 </ul>
               </div>

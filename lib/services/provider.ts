@@ -27,6 +27,7 @@ import { ConfigurationService } from "./configuration";
 import { OutbreakService } from "./outbreak/outbreakService";
 import { ObservationDefinitionService } from "./observationDefinition/observationDefinitionService";
 import { ObservationMonitoringDefinitionService } from "./observationMonitoringDefinition";
+import { ObservationService } from "./observation";
 
 export interface IServiceProvider {
   get authService(): IAuthService;
@@ -56,6 +57,7 @@ export interface IServiceProvider {
   get outbreakService(): OutbreakService;
   get observationDefinitionService(): ObservationDefinitionService;
   get observationMonitoringDefinitionService(): ObservationMonitoringDefinitionService;
+  get observationService(): ObservationService;
 }
 
 export class ServicesProvider implements IServiceProvider {
@@ -88,6 +90,7 @@ export class ServicesProvider implements IServiceProvider {
   outbreakService: OutbreakService;
   observationDefinitionService: ObservationDefinitionService;
   observationMonitoringDefinitionService: ObservationMonitoringDefinitionService;
+  observationService: ObservationService;
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
     this.client = client;
@@ -121,6 +124,10 @@ export class ServicesProvider implements IServiceProvider {
     );
     this.observationMonitoringDefinitionService =
       new ObservationMonitoringDefinitionService(client);
+    this.observationDefinitionService = new ObservationDefinitionService(
+      client
+    );
+    this.observationService = new ObservationService(client);
   }
 }
 
