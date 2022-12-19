@@ -70,7 +70,7 @@ export class ObservationMonitoringDefinitionService
         definitionId: observationDefinition.definition.id,
         name: observationDefinition.name,
         description: observationDefinition.description || "",
-        formDefinition: observationDefinition.formDefinition,
+        formDefinition: JSON.stringify(observationDefinition.formDefinition),
         titleTemplate: observationDefinition.titleTemplate,
         descriptionTemplate: observationDefinition.descriptionTemplate,
       };
