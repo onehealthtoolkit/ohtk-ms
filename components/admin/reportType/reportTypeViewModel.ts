@@ -17,7 +17,44 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   _followupDefinition: string = "{}";
   _rendererFollowupDataTemplate: string = "";
 
-  definitionFormViewModel = new FormViewModel();
+  definitionFormViewModel = new FormViewModel([
+    {
+      label: "reportDate",
+      value: "report_date",
+      type: "Report",
+    },
+    {
+      label: "incidentDate",
+      value: "incident_date",
+      type: "Report",
+    },
+    {
+      label: "gpsLocation",
+      value: "gps_location",
+      type: "Report",
+    },
+    {
+      label: "reportId",
+      value: "report_id",
+      type: "Report",
+    },
+    {
+      label: "reportTypeId",
+      value: "report_type.id",
+      type: "Report type",
+    },
+    {
+      label: "reportTypeName",
+      value: "report_type.name",
+      type: "Report type",
+    },
+    {
+      label: "reportCategory",
+      value: "report_type.category",
+      type: "Report category",
+    },
+  ]);
+
   followupDefinitionFormViewModel = new FormViewModel();
 
   constructor(reportTypeService: IReportTypeService) {
