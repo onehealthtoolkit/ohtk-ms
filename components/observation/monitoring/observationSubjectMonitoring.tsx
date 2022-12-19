@@ -3,16 +3,13 @@ import { Fragment, useEffect, useState } from "react";
 import { observer, Observer } from "mobx-react";
 import { Divide, MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
-import { ObservationSubjectViewModel } from "./observationSubjectViewModel";
+import { ObservationSubjectMonitoringViewModel } from "./observationSubjectMonitoringViewModel";
 import tw from "tailwind-styled-components";
 import { useRouter } from "next/router";
 import { RenderData, TR } from "components/widgets/renderData";
-import dynamic from "next/dynamic";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 import ViewActionButtons from "components/widgets/viewActionButtons";
-import { formatDateTime, formatYmdt } from "lib/datetime";
-import { EyeIcon } from "@heroicons/react/solid";
-import Table from "components/widgets/table";
+import { formatYmdt } from "lib/datetime";
 
 export const PromoteToCaseButton = tw.button`
   px-4 
@@ -28,24 +25,22 @@ export const PromoteToCaseButton = tw.button`
   items-center
 `;
 
-const SubjectLocation = dynamic(() => import("../case/reportMap"), {
-  loading: () => <p>A map is loading</p>,
-  ssr: false,
-});
-
-const SubjectInformation = observer(
-  ({ viewModel }: { viewModel: ObservationSubjectViewModel }) => {
+const SubjectMonitoringInformation = observer(
+  ({ viewModel }: { viewModel: ObservationSubjectMonitoringViewModel }) => {
     return (
-      <div className="relative overflow-x-auto md:w-1/2 w-full">
+      <div className="relative overflow-x-auto w-full">
         <table className="table-fixed border w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <tbody>
             <TR
               label="Created at"
               value={formatYmdt(viewModel.data.createdAt)}
             />
-            <TR label="Definition name" value={viewModel.data.definitionName} />
-            <TR label="Identity" value={viewModel.data.identity} />
 
+            <TR label="Subject Title" value={viewModel.data.subjectTitle} />
+            <TR
+              label="Subject Description"
+              value={viewModel.data.subjectDescription}
+            />
             <TR label="Title" value={viewModel.data.title} />
 
             <TR label="Description" value={viewModel.data.description} />
@@ -56,8 +51,8 @@ const SubjectInformation = observer(
   }
 );
 
-const SubjectImage = observer(
-  ({ viewModel }: { viewModel: ObservationSubjectViewModel }) => {
+const SubjectMonitoringImage = observer(
+  ({ viewModel }: { viewModel: ObservationSubjectMonitoringViewModel }) => {
     return (
       <Fragment>
         <div className="flex flex-wrap  gap-4">
@@ -84,17 +79,20 @@ const SubjectImage = observer(
   }
 );
 
-const ObservationSubject = (props: { id: string }) => {
+const ObservationSubjectMonitoring = (props: { id: string }) => {
   const { id } = props;
   const router = useRouter();
   const services = useServices();
   const [viewModel, setViewModel] = useState<
-    ObservationSubjectViewModel | undefined
+    ObservationSubjectMonitoringViewModel | undefined
   >();
 
   useEffect(() => {
     setViewModel(
-      new ObservationSubjectViewModel(id as string, services.observationService)
+      new ObservationSubjectMonitoringViewModel(
+        id as string,
+        services.observationService
+      )
     );
   }, [setViewModel, id, services]);
 
@@ -115,64 +113,31 @@ const ObservationSubject = (props: { id: string }) => {
               <div>
                 <div className="flex gap-2">
                   <p className="text-md dark:text-gray-400 ">
-                    Identity: {viewModel.data.identity}
+                    Title: {viewModel.data.title}
                   </p>
                 </div>
                 <p className="text-sm pt-1 font-bold">
-                  Title: {viewModel.data.title}
+                  {viewModel.data.description}
                 </p>
               </div>
               <Divide hilight />
 
               <div className="flex flex-row gap-2 md:flex-nowrap flex-wrap ">
-                <SubjectInformation viewModel={viewModel} />
-                <div className="md:w-1/2 w-full h-[300px] md:h-auto">
-                  <SubjectLocation lnglat={viewModel.data.gpsLocation} />
-                </div>
+                <SubjectMonitoringInformation viewModel={viewModel} />
               </div>
 
-              <SubjectImage viewModel={viewModel} />
+              <SubjectMonitoringImage viewModel={viewModel} />
 
               <Divide />
 
               <div className="mb-4">
                 <RenderData
                   data={viewModel.data.formData}
-                  definition={viewModel.data.registerFormDefinition}
+                  definition={viewModel.data.formDefinition}
                 />
               </div>
 
               <Divide />
-              <label className="mt-4 px-4 text-gray-700 text-sm font-bold flex gap-1">
-                <EyeIcon className="w-5 h-5" />
-                <span>Monitoring</span>
-              </label>
-              <div className="gap-2">
-                <Table
-                  columns={[
-                    {
-                      label: "Created At",
-                      get: record =>
-                        formatDateTime(record.createdAt, router.locale),
-                    },
-                    {
-                      label: "Title",
-                      get: record => record.title,
-                    },
-                    {
-                      label: "Description",
-                      get: record => record.description,
-                    },
-                  ]}
-                  data={viewModel.data.subjectMonitorings || []}
-                  onView={record =>
-                    router.push({
-                      pathname: `/observations/monitorings/${record.id}`,
-                      query: router.query,
-                    })
-                  }
-                />
-              </div>
               <GalleryDialog viewModel={viewModel.galleryViewModel} />
 
               <ViewActionButtons />
@@ -184,4 +149,4 @@ const ObservationSubject = (props: { id: string }) => {
   );
 };
 
-export default ObservationSubject;
+export default ObservationSubjectMonitoring;

@@ -23,7 +23,7 @@ query ObservationSubjects(
   }
 }
 
-query GetObservationSubjest($id: ID!) {
+query GetObservationSubject($id: ID!) {
   observationSubject(id: $id) {
     id
     title
@@ -31,6 +31,7 @@ query GetObservationSubjest($id: ID!) {
     identity
     formData
     createdAt
+    gpsLocation
     definition {
       name
       description
@@ -40,6 +41,26 @@ query GetObservationSubjest($id: ID!) {
       id
       title
       description
+      createdAt
+    }
+  }
+}
+
+query GetObservationSubjectMonitoring($id: ID!) {
+  observationSubjectMonitoringRecord(id: $id) {
+    id
+    title
+    description
+    formData
+    createdAt
+    subject {
+      title
+      description
+    }
+    monitoringDefinition {
+      name
+      description
+      formDefinition
     }
   }
 }

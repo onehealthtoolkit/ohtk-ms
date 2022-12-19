@@ -1,10 +1,17 @@
 import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
-import { ObservationSubject, ObservationSubjectDetail } from "./observation";
 import {
-  GetObservationSubjestDocument,
+  ObservationSubject,
+  ObservationSubjectDetail,
+  ObservationSubjectMonitoring,
+  ObservationSubjectMonitoringDetail,
+} from "./observation";
+import {
+  GetObservationSubjectDocument,
+  GetObservationSubjectMonitoringDocument,
   ObservationSubjectsDocument,
 } from "lib/generated/graphql";
+import { Image } from "../report/report";
 
 export type ObservationFilterData = {
   definitionId?: number;
@@ -28,6 +35,10 @@ export interface IObservationService extends IService {
   getObservationSubject(
     id: string
   ): Promise<GetResult<ObservationSubjectDetail>>;
+
+  getObservationSubjectMonitoring(
+    id: string
+  ): Promise<GetResult<ObservationSubjectMonitoringDetail>>;
 }
 
 export class ObservationService implements IObservationService {
@@ -77,7 +88,7 @@ export class ObservationService implements IObservationService {
     id: string
   ): Promise<GetResult<ObservationSubjectDetail>> {
     const getResult = await this.client.query({
-      query: GetObservationSubjestDocument,
+      query: GetObservationSubjectDocument,
       variables: {
         id,
       },
@@ -94,10 +105,45 @@ export class ObservationService implements IObservationService {
         createdAt: observationSubject.createdAt,
         title: observationSubject.title,
         description: observationSubject.description,
-        images: [],
+        images: [] as Image[],
         registerFormDefinition:
           observationSubject.definition?.registerFormDefinition,
         formData: observationSubject.formData,
+        gpsLocation: observationSubject.gpsLocation,
+        subjectMonitorings:
+          observationSubject.monitoringRecords as ObservationSubjectMonitoring[],
+      };
+    }
+    return {
+      data,
+    };
+  }
+
+  async getObservationSubjectMonitoring(
+    id: string
+  ): Promise<GetResult<ObservationSubjectMonitoringDetail>> {
+    const getResult = await this.client.query({
+      query: GetObservationSubjectMonitoringDocument,
+      variables: {
+        id,
+      },
+    });
+
+    let data;
+    const observationSubjectMonitoring =
+      getResult.data.observationSubjectMonitoringRecord;
+    if (observationSubjectMonitoring) {
+      data = {
+        id: observationSubjectMonitoring.id,
+        createdAt: observationSubjectMonitoring.createdAt,
+        subjectTitle: observationSubjectMonitoring.subject.title,
+        subjectDescription: observationSubjectMonitoring.subject.description,
+        title: observationSubjectMonitoring.title,
+        description: observationSubjectMonitoring.description,
+        images: [] as Image[],
+        formDefinition:
+          observationSubjectMonitoring.monitoringDefinition?.formDefinition,
+        formData: observationSubjectMonitoring.formData,
       };
     }
     return {
