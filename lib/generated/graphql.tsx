@@ -1753,6 +1753,7 @@ export type Mutation = {
   submitFollowupReport?: Maybe<SubmitFollowupReport>;
   submitImage?: Maybe<SubmitImage>;
   submitIncidentReport?: Maybe<SubmitIncidentReport>;
+  submitObservationImage?: Maybe<SubmitObservationImage>;
   submitObservationSubject?: Maybe<SubmitObservationSubject>;
   submitObservationSubjectMonitoring?: Maybe<SubmitObservationSubjectMonitoringRecord>;
   submitZeroReport?: Maybe<SubmitZeroReportMutation>;
@@ -2223,6 +2224,13 @@ export type MutationSubmitIncidentReportArgs = {
   reportTypeId: Scalars["UUID"];
 };
 
+export type MutationSubmitObservationImageArgs = {
+  image: Scalars["Upload"];
+  imageId?: InputMaybe<Scalars["UUID"]>;
+  isCover?: InputMaybe<Scalars["Boolean"]>;
+  reportId: Scalars["ID"];
+};
+
 export type MutationSubmitObservationSubjectArgs = {
   data: Scalars["GenericScalar"];
   definitionId: Scalars["Int"];
@@ -2282,6 +2290,20 @@ export type ObservationDefinitionType = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type ObservationImageType = {
+  __typename?: "ObservationImageType";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  file: Scalars["String"];
+  id: Scalars["UUID"];
+  imageUrl?: Maybe<Scalars["String"]>;
+  reportId: Scalars["Int"];
+  subjectSet: Array<ObservationSubjectType>;
+  subjectmonitoringrecordSet: Array<ObservationSubjectMonitoringRecordType>;
+  thumbnail?: Maybe<Scalars["String"]>;
+  updatedAt: Scalars["DateTime"];
+};
+
 export type ObservationMonitoringDefinitionType = {
   __typename?: "ObservationMonitoringDefinitionType";
   createdAt: Scalars["DateTime"];
@@ -2301,17 +2323,17 @@ export type ObservationMonitoringDefinitionType = {
 export type ObservationSubjectMonitoringRecordType = {
   __typename?: "ObservationSubjectMonitoringRecordType";
   createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
   description: Scalars["String"];
   formData?: Maybe<Scalars["GenericScalar"]>;
   id: Scalars["ID"];
+  images?: Maybe<Array<Maybe<ObservationImageType>>>;
   isActive: Scalars["Boolean"];
   monitoringDefinition?: Maybe<ObservationMonitoringDefinitionType>;
   monitoringDefinitionId?: Maybe<Scalars["Int"]>;
+  reportedBy?: Maybe<UserType>;
   subject: ObservationSubjectType;
   subjectId?: Maybe<Scalars["Int"]>;
   title: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
 };
 
 export type ObservationSubjectMonitoringRecordTypeNodeConnection = {
@@ -2333,10 +2355,12 @@ export type ObservationSubjectType = {
   gpsLocation?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
   identity: Scalars["String"];
+  images?: Maybe<Array<Maybe<ObservationImageType>>>;
   isActive: Scalars["Boolean"];
   monitoringRecords?: Maybe<
     Array<Maybe<ObservationSubjectMonitoringRecordType>>
   >;
+  reportedBy?: Maybe<UserType>;
   title: Scalars["String"];
 };
 
@@ -2481,6 +2505,7 @@ export type Query = {
   observationSubjectMonitoringRecord?: Maybe<ObservationSubjectMonitoringRecordType>;
   observationSubjectMonitoringRecords?: Maybe<ObservationSubjectMonitoringRecordTypeNodeConnection>;
   observationSubjects?: Maybe<ObservationSubjectTypeNodeConnection>;
+  observationSubjectsInBounded?: Maybe<Array<Maybe<ObservationSubjectType>>>;
   outbreakPlaces?: Maybe<Array<Maybe<OutbreakPlaceType>>>;
   outbreakPlanGet?: Maybe<OutbreakPlanType>;
   placeGet?: Maybe<PlaceType>;
@@ -2875,6 +2900,14 @@ export type QueryObservationSubjectsArgs = {
   ordering?: InputMaybe<Scalars["String"]>;
 };
 
+export type QueryObservationSubjectsInBoundedArgs = {
+  bottomRightX: Scalars["Float"];
+  bottomRightY: Scalars["Float"];
+  definitionId: Scalars["Int"];
+  topLeftX: Scalars["Float"];
+  topLeftY: Scalars["Float"];
+};
+
 export type QueryOutbreakPlacesArgs = {
   caseId: Scalars["UUID"];
 };
@@ -3070,6 +3103,14 @@ export type SubmitImage = {
 export type SubmitIncidentReport = {
   __typename?: "SubmitIncidentReport";
   result?: Maybe<IncidentReportType>;
+};
+
+export type SubmitObservationImage = {
+  __typename?: "SubmitObservationImage";
+  file?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["UUID"]>;
+  imageUrl?: Maybe<Scalars["String"]>;
+  thumbnail?: Maybe<Scalars["String"]>;
 };
 
 export type SubmitObservationSubject = {
@@ -4507,6 +4548,13 @@ export type GetObservationSubjectQuery = {
       description: string;
       createdAt: any;
     } | null> | null;
+    images?: Array<{
+      __typename?: "ObservationImageType";
+      id: any;
+      file: string;
+      thumbnail?: string | null;
+      imageUrl?: string | null;
+    } | null> | null;
   } | null;
 };
 
@@ -4534,6 +4582,13 @@ export type GetObservationSubjectMonitoringQuery = {
       description?: string | null;
       formDefinition?: any | null;
     } | null;
+    images?: Array<{
+      __typename?: "ObservationImageType";
+      id: any;
+      file: string;
+      thumbnail?: string | null;
+      imageUrl?: string | null;
+    } | null> | null;
   } | null;
 };
 
@@ -12646,6 +12701,25 @@ export const GetObservationSubjectDocument = {
                     ],
                   },
                 },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "images" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "file" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "thumbnail" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "imageUrl" },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -12726,6 +12800,25 @@ export const GetObservationSubjectMonitoringDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "formDefinition" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "images" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "file" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "thumbnail" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "imageUrl" },
                       },
                     ],
                   },

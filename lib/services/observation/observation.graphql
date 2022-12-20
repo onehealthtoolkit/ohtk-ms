@@ -43,6 +43,12 @@ query GetObservationSubject($id: ID!) {
       description
       createdAt
     }
+    images {
+      id
+      file
+      thumbnail
+      imageUrl
+    }
   }
 }
 
@@ -61,6 +67,12 @@ query GetObservationSubjectMonitoring($id: ID!) {
       name
       description
       formDefinition
+    }
+    images {
+      id
+      file
+      thumbnail
+      imageUrl
     }
   }
 }

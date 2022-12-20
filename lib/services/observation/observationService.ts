@@ -105,7 +105,7 @@ export class ObservationService implements IObservationService {
         createdAt: observationSubject.createdAt,
         title: observationSubject.title,
         description: observationSubject.description,
-        images: [] as Image[],
+        images: observationSubject.images as Image[],
         registerFormDefinition:
           observationSubject.definition?.registerFormDefinition,
         formData: observationSubject.formData,
@@ -140,7 +140,7 @@ export class ObservationService implements IObservationService {
         subjectDescription: observationSubjectMonitoring.subject.description,
         title: observationSubjectMonitoring.title,
         description: observationSubjectMonitoring.description,
-        images: [] as Image[],
+        images: observationSubjectMonitoring.images as Image[],
         formDefinition:
           observationSubjectMonitoring.monitoringDefinition?.formDefinition,
         formData: observationSubjectMonitoring.formData,
