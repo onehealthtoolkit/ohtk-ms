@@ -18,7 +18,13 @@ query ObservationSubjects(
       identity
       title
       description
+      gpsLocation
       createdAt
+      images {
+        id
+        file
+        thumbnail
+      }
     }
   }
 }

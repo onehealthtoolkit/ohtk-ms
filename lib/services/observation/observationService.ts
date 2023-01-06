@@ -75,6 +75,11 @@ export class ObservationService implements IObservationService {
           createdAt: item.createdAt,
           title: item.title,
           description: item.description,
+          gpsLocation: item.gpsLocation,
+          imageUrl:
+            item.images && item.images.length
+              ? item.images[0]!.thumbnail
+              : undefined,
         });
       }
     });

@@ -2228,6 +2228,7 @@ export type MutationSubmitObservationImageArgs = {
   image: Scalars["Upload"];
   imageId?: InputMaybe<Scalars["UUID"]>;
   isCover?: InputMaybe<Scalars["Boolean"]>;
+  observationType: ObservationSubmitImageType;
   reportId: Scalars["ID"];
 };
 
@@ -2372,6 +2373,11 @@ export type ObservationSubjectTypeNodeConnection = {
   results: Array<Maybe<ObservationSubjectType>>;
   totalCount?: Maybe<Scalars["Int"]>;
 };
+
+export enum ObservationSubmitImageType {
+  Monitoring = "monitoring",
+  Subject = "subject",
+}
 
 /** Obtain JSON Web Token mutation */
 export type ObtainJsonWebToken = {
@@ -4515,7 +4521,14 @@ export type ObservationSubjectsQuery = {
       identity: string;
       title: string;
       description: string;
+      gpsLocation?: string | null;
       createdAt: any;
+      images?: Array<{
+        __typename?: "ObservationImageType";
+        id: any;
+        file: string;
+        thumbnail?: string | null;
+      } | null> | null;
     } | null>;
   } | null;
 };
@@ -12605,7 +12618,32 @@ export const ObservationSubjectsDocument = {
                       },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "gpsLocation" },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "createdAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "images" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "file" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "thumbnail" },
+                            },
+                          ],
+                        },
                       },
                     ],
                   },

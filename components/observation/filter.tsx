@@ -3,7 +3,7 @@ import React from "react";
 import { Field, Label } from "components/widgets/forms";
 import DatePicker from "components/widgets/datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ObservationListViewModel } from "./listViewModel";
+import { ObservationListViewModel, ObservationViewMode } from "./listViewModel";
 import { Authority } from "lib/services/authority";
 
 export const defaultOptions: Authority[] = [];
@@ -15,7 +15,7 @@ const ObservationFilter = ({
 }) => {
   return (
     <div className="w-full">
-      {!viewModel.isCalendarView && (
+      {viewModel.viewMode != ObservationViewMode.calendar && (
         <>
           <Field $size="full">
             <Label htmlFor="fromDate">From Date</Label>
