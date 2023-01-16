@@ -419,6 +419,74 @@ export type AdminCategoryUpdateSuccess = {
   category?: Maybe<CategoryType>;
 };
 
+export type AdminClientCreateMutation = {
+  __typename?: "AdminClientCreateMutation";
+  result?: Maybe<AdminClientCreateResult>;
+};
+
+export type AdminClientCreateProblem = {
+  __typename?: "AdminClientCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminClientCreateResult =
+  | AdminClientCreateProblem
+  | AdminClientCreateSuccess;
+
+export type AdminClientCreateSuccess = {
+  __typename?: "AdminClientCreateSuccess";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  domains: Array<AdminDomainUpdateSuccess>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  schemaName: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type AdminClientQueryType = {
+  __typename?: "AdminClientQueryType";
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  schemaName: Scalars["String"];
+};
+
+export type AdminClientQueryTypeNodeConnection = {
+  __typename?: "AdminClientQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminClientQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]>;
+};
+
+export type AdminClientUpdateMutation = {
+  __typename?: "AdminClientUpdateMutation";
+  result?: Maybe<AdminClientUpdateResult>;
+};
+
+export type AdminClientUpdateProblem = {
+  __typename?: "AdminClientUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminClientUpdateResult =
+  | AdminClientUpdateProblem
+  | AdminClientUpdateSuccess;
+
+export type AdminClientUpdateSuccess = {
+  __typename?: "AdminClientUpdateSuccess";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  domains: Array<AdminDomainUpdateSuccess>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  schemaName: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
 export type AdminConfigurationCreateMutation = {
   __typename?: "AdminConfigurationCreateMutation";
   result?: Maybe<AdminConfigurationCreateResult>;
@@ -504,6 +572,57 @@ export type AdminDefinitionQueryTypeNodeConnection = {
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminDefinitionQueryType>>;
   totalCount?: Maybe<Scalars["Int"]>;
+};
+
+export type AdminDomainCreateMutation = {
+  __typename?: "AdminDomainCreateMutation";
+  result?: Maybe<AdminDomainCreateResult>;
+};
+
+export type AdminDomainCreateProblem = {
+  __typename?: "AdminDomainCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminDomainCreateResult =
+  | AdminDomainCreateProblem
+  | AdminDomainCreateSuccess;
+
+export type AdminDomainCreateSuccess = {
+  __typename?: "AdminDomainCreateSuccess";
+  domain: Scalars["String"];
+  id: Scalars["ID"];
+  isPrimary: Scalars["Boolean"];
+  tenant: AdminClientUpdateSuccess;
+};
+
+export type AdminDomainDeleteMutation = {
+  __typename?: "AdminDomainDeleteMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type AdminDomainUpdateMutation = {
+  __typename?: "AdminDomainUpdateMutation";
+  result?: Maybe<AdminDomainUpdateResult>;
+};
+
+export type AdminDomainUpdateProblem = {
+  __typename?: "AdminDomainUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type AdminDomainUpdateResult =
+  | AdminDomainUpdateProblem
+  | AdminDomainUpdateSuccess;
+
+export type AdminDomainUpdateSuccess = {
+  __typename?: "AdminDomainUpdateSuccess";
+  domain: Scalars["String"];
+  id: Scalars["ID"];
+  isPrimary: Scalars["Boolean"];
+  tenant: AdminClientUpdateSuccess;
 };
 
 export type AdminFieldValidationProblem = {
@@ -709,7 +828,7 @@ export type AdminObservationDefinitionCreateSuccess = {
   monitoringdefinitionSet: Array<AdminObservationMonitoringDefinitionCreateSuccess>;
   name: Scalars["String"];
   registerFormDefinition: Scalars["JSONString"];
-  subjectSet: Array<ObservationSubjectType>;
+  subjectrecordSet: Array<ObservationSubjectType>;
   titleTemplate: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
@@ -764,8 +883,8 @@ export type AdminObservationMonitoringDefinitionCreateSuccess = {
   formDefinition: Scalars["JSONString"];
   id: Scalars["ID"];
   isActive: Scalars["Boolean"];
+  monitoringrecordSet: Array<ObservationSubjectMonitoringRecordType>;
   name: Scalars["String"];
-  subjectmonitoringrecordSet: Array<ObservationSubjectMonitoringRecordType>;
   titleTemplate: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
@@ -1443,6 +1562,14 @@ export type CheckInvitationCodeType = {
   code: Scalars["String"];
 };
 
+export type ClientType = {
+  __typename?: "ClientType";
+  domains?: Maybe<Array<Maybe<DomainType>>>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  schemaName: Scalars["String"];
+};
+
 export type CommentAttachmentType = {
   __typename?: "CommentAttachmentType";
   comment: CommentUpdateSuccess;
@@ -1562,6 +1689,13 @@ export type DeleteJsonWebTokenCookie = {
 export type DeleteRefreshTokenCookie = {
   __typename?: "DeleteRefreshTokenCookie";
   deleted: Scalars["Boolean"];
+};
+
+export type DomainType = {
+  __typename?: "DomainType";
+  domain: Scalars["String"];
+  id: Scalars["ID"];
+  isPrimary: Scalars["Boolean"];
 };
 
 export type EventType = {
@@ -1696,9 +1830,14 @@ export type Mutation = {
   adminCategoryCreate?: Maybe<AdminCategoryCreateMutation>;
   adminCategoryDelete?: Maybe<AdminCategoryDeleteMutation>;
   adminCategoryUpdate?: Maybe<AdminCategoryUpdateMutation>;
+  adminClientCreate?: Maybe<AdminClientCreateMutation>;
+  adminClientUpdate?: Maybe<AdminClientUpdateMutation>;
   adminConfigurationCreate?: Maybe<AdminConfigurationCreateMutation>;
   adminConfigurationDelete?: Maybe<AdminConfigurationDeleteMutation>;
   adminConfigurationUpdate?: Maybe<AdminConfigurationUpdateMutation>;
+  adminDomainCreate?: Maybe<AdminDomainCreateMutation>;
+  adminDomainDelete?: Maybe<AdminDomainDeleteMutation>;
+  adminDomainUpdate?: Maybe<AdminDomainUpdateMutation>;
   adminInvitationCodeCreate?: Maybe<AdminInvitationCodeCreateMutation>;
   adminInvitationCodeDelete?: Maybe<AdminInvitationCodeDeleteMutation>;
   adminInvitationCodeUpdate?: Maybe<AdminInvitationCodeUpdateMutation>;
@@ -1753,9 +1892,9 @@ export type Mutation = {
   submitFollowupReport?: Maybe<SubmitFollowupReport>;
   submitImage?: Maybe<SubmitImage>;
   submitIncidentReport?: Maybe<SubmitIncidentReport>;
-  submitObservationImage?: Maybe<SubmitObservationImage>;
   submitObservationSubject?: Maybe<SubmitObservationSubject>;
   submitObservationSubjectMonitoring?: Maybe<SubmitObservationSubjectMonitoringRecord>;
+  submitRecordImage?: Maybe<SubmitRecordImage>;
   submitZeroReport?: Maybe<SubmitZeroReportMutation>;
   /** Obtain JSON Web Token mutation */
   tokenAuth?: Maybe<ObtainJsonWebToken>;
@@ -1859,6 +1998,16 @@ export type MutationAdminCategoryUpdateArgs = {
   ordering: Scalars["Int"];
 };
 
+export type MutationAdminClientCreateArgs = {
+  name: Scalars["String"];
+  schemaName: Scalars["String"];
+};
+
+export type MutationAdminClientUpdateArgs = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
 export type MutationAdminConfigurationCreateArgs = {
   key: Scalars["String"];
   value: Scalars["String"];
@@ -1872,6 +2021,22 @@ export type MutationAdminConfigurationUpdateArgs = {
   id: Scalars["String"];
   key: Scalars["String"];
   value: Scalars["String"];
+};
+
+export type MutationAdminDomainCreateArgs = {
+  clientId: Scalars["ID"];
+  domain: Scalars["String"];
+  isPrimary: Scalars["Boolean"];
+};
+
+export type MutationAdminDomainDeleteArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationAdminDomainUpdateArgs = {
+  domain: Scalars["String"];
+  id: Scalars["ID"];
+  isPrimary: Scalars["Boolean"];
 };
 
 export type MutationAdminInvitationCodeCreateArgs = {
@@ -2224,14 +2389,6 @@ export type MutationSubmitIncidentReportArgs = {
   reportTypeId: Scalars["UUID"];
 };
 
-export type MutationSubmitObservationImageArgs = {
-  image: Scalars["Upload"];
-  imageId?: InputMaybe<Scalars["UUID"]>;
-  isCover?: InputMaybe<Scalars["Boolean"]>;
-  observationType: ObservationSubmitImageType;
-  reportId: Scalars["ID"];
-};
-
 export type MutationSubmitObservationSubjectArgs = {
   data: Scalars["GenericScalar"];
   definitionId: Scalars["Int"];
@@ -2241,7 +2398,15 @@ export type MutationSubmitObservationSubjectArgs = {
 export type MutationSubmitObservationSubjectMonitoringArgs = {
   data: Scalars["GenericScalar"];
   monitoringDefinitionId: Scalars["Int"];
-  subjectId: Scalars["Int"];
+  subjectId: Scalars["UUID"];
+};
+
+export type MutationSubmitRecordImageArgs = {
+  image: Scalars["Upload"];
+  imageId?: InputMaybe<Scalars["UUID"]>;
+  isCover?: InputMaybe<Scalars["Boolean"]>;
+  recordId: Scalars["UUID"];
+  recordType: RecordType;
 };
 
 export type MutationTokenAuthArgs = {
@@ -2274,6 +2439,22 @@ export type NotificationTemplateType = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type ObservationDefinitionId = {
+  __typename?: "ObservationDefinitionId";
+  id: Scalars["ID"];
+};
+
+export type ObservationDefinitionSyncInputType = {
+  id: Scalars["ID"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type ObservationDefinitionSyncOutputType = {
+  __typename?: "ObservationDefinitionSyncOutputType";
+  removedList?: Maybe<Array<Maybe<ObservationDefinitionId>>>;
+  updatedList?: Maybe<Array<Maybe<ObservationDefinitionType>>>;
+};
+
 export type ObservationDefinitionType = {
   __typename?: "ObservationDefinitionType";
   createdAt: Scalars["DateTime"];
@@ -2283,10 +2464,13 @@ export type ObservationDefinitionType = {
   id: Scalars["ID"];
   identityTemplate: Scalars["String"];
   isActive: Scalars["Boolean"];
+  monitoringDefinitions?: Maybe<
+    Array<Maybe<ObservationMonitoringDefinitionType>>
+  >;
   monitoringdefinitionSet: Array<AdminObservationMonitoringDefinitionCreateSuccess>;
   name: Scalars["String"];
   registerFormDefinition?: Maybe<Scalars["GenericScalar"]>;
-  subjectSet: Array<ObservationSubjectType>;
+  subjectrecordSet: Array<ObservationSubjectType>;
   titleTemplate: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
@@ -2298,9 +2482,9 @@ export type ObservationImageType = {
   file: Scalars["String"];
   id: Scalars["UUID"];
   imageUrl?: Maybe<Scalars["String"]>;
-  reportId: Scalars["Int"];
-  subjectSet: Array<ObservationSubjectType>;
-  subjectmonitoringrecordSet: Array<ObservationSubjectMonitoringRecordType>;
+  monitoringrecordSet: Array<ObservationSubjectMonitoringRecordType>;
+  recordId: Scalars["UUID"];
+  subjectrecordSet: Array<ObservationSubjectType>;
   thumbnail?: Maybe<Scalars["String"]>;
   updatedAt: Scalars["DateTime"];
 };
@@ -2309,14 +2493,15 @@ export type ObservationMonitoringDefinitionType = {
   __typename?: "ObservationMonitoringDefinitionType";
   createdAt: Scalars["DateTime"];
   definition: AdminObservationDefinitionCreateSuccess;
+  definitionId?: Maybe<Scalars["Int"]>;
   deletedAt?: Maybe<Scalars["DateTime"]>;
   description?: Maybe<Scalars["String"]>;
   descriptionTemplate: Scalars["String"];
   formDefinition?: Maybe<Scalars["GenericScalar"]>;
   id: Scalars["ID"];
   isActive: Scalars["Boolean"];
+  monitoringrecordSet: Array<ObservationSubjectMonitoringRecordType>;
   name: Scalars["String"];
-  subjectmonitoringrecordSet: Array<ObservationSubjectMonitoringRecordType>;
   titleTemplate: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
@@ -2326,14 +2511,14 @@ export type ObservationSubjectMonitoringRecordType = {
   createdAt: Scalars["DateTime"];
   description: Scalars["String"];
   formData?: Maybe<Scalars["GenericScalar"]>;
-  id: Scalars["ID"];
+  id: Scalars["UUID"];
   images?: Maybe<Array<Maybe<ObservationImageType>>>;
   isActive: Scalars["Boolean"];
   monitoringDefinition?: Maybe<ObservationMonitoringDefinitionType>;
   monitoringDefinitionId?: Maybe<Scalars["Int"]>;
   reportedBy?: Maybe<UserType>;
   subject: ObservationSubjectType;
-  subjectId?: Maybe<Scalars["Int"]>;
+  subjectId?: Maybe<Scalars["UUID"]>;
   title: Scalars["String"];
 };
 
@@ -2354,7 +2539,7 @@ export type ObservationSubjectType = {
   description: Scalars["String"];
   formData?: Maybe<Scalars["GenericScalar"]>;
   gpsLocation?: Maybe<Scalars["String"]>;
-  id: Scalars["ID"];
+  id: Scalars["UUID"];
   identity: Scalars["String"];
   images?: Maybe<Array<Maybe<ObservationImageType>>>;
   isActive: Scalars["Boolean"];
@@ -2373,11 +2558,6 @@ export type ObservationSubjectTypeNodeConnection = {
   results: Array<Maybe<ObservationSubjectType>>;
   totalCount?: Maybe<Scalars["Int"]>;
 };
-
-export enum ObservationSubmitImageType {
-  Monitoring = "monitoring",
-  Subject = "subject",
-}
 
 /** Obtain JSON Web Token mutation */
 export type ObtainJsonWebToken = {
@@ -2459,7 +2639,10 @@ export type Query = {
   adminAuthorityUserQuery?: Maybe<AdminAuthorityUserQueryTypeNodeConnection>;
   adminCaseDefinitionQuery?: Maybe<AdminCaseDefinitionQueryTypeNodeConnection>;
   adminCategoryQuery?: Maybe<AdminCategoryQueryTypeNodeConnection>;
+  adminClientGet?: Maybe<ClientType>;
+  adminClientQuery?: Maybe<AdminClientQueryTypeNodeConnection>;
   adminConfigurationQuery?: Maybe<AdminConfigurationQueryTypeNodeConnection>;
+  adminDomainGet?: Maybe<DomainType>;
   adminInvitationCodeQuery?: Maybe<AdminInvitationCodeQueryTypeNodeConnection>;
   adminNotificationTemplateAuthorityQuery?: Maybe<
     Array<Maybe<AdminNotificationTemplateAuthorityType>>
@@ -2525,6 +2708,7 @@ export type Query = {
   summaryCaseByCategoryQuery?: Maybe<Array<SummaryByCategoryType>>;
   summaryContributionQuery?: Maybe<Array<SummaryContributionType>>;
   summaryReportByCategoryQuery?: Maybe<Array<SummaryByCategoryType>>;
+  syncObservationDefinitions?: Maybe<ObservationDefinitionSyncOutputType>;
   syncReportTypes?: Maybe<ReportTypeSyncOutputType>;
   transitionListByReportType?: Maybe<Array<StateTransitionType>>;
 };
@@ -2592,6 +2776,21 @@ export type QueryAdminCategoryQueryArgs = {
   ordering?: InputMaybe<Scalars["String"]>;
 };
 
+export type QueryAdminClientGetArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryAdminClientQueryArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
+};
+
 export type QueryAdminConfigurationQueryArgs = {
   after?: InputMaybe<Scalars["String"]>;
   before?: InputMaybe<Scalars["String"]>;
@@ -2601,6 +2800,10 @@ export type QueryAdminConfigurationQueryArgs = {
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
   q?: InputMaybe<Scalars["String"]>;
+};
+
+export type QueryAdminDomainGetArgs = {
+  id: Scalars["ID"];
 };
 
 export type QueryAdminInvitationCodeQueryArgs = {
@@ -2889,7 +3092,7 @@ export type QueryObservationSubjectMonitoringRecordsArgs = {
   limit?: InputMaybe<Scalars["Int"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
-  subject_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  subject_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
 };
 
 export type QueryObservationSubjectsArgs = {
@@ -2972,6 +3175,10 @@ export type QuerySummaryReportByCategoryQueryArgs = {
   toDate?: InputMaybe<Scalars["DateTime"]>;
 };
 
+export type QuerySyncObservationDefinitionsArgs = {
+  data: Array<ObservationDefinitionSyncInputType>;
+};
+
 export type QuerySyncReportTypesArgs = {
   data: Array<ReportTypeSyncInputType>;
 };
@@ -2979,6 +3186,11 @@ export type QuerySyncReportTypesArgs = {
 export type QueryTransitionListByReportTypeArgs = {
   reportTypeId: Scalars["ID"];
 };
+
+export enum RecordType {
+  Monitoring = "monitoring",
+  Subject = "subject",
+}
 
 export type Refresh = {
   __typename?: "Refresh";
@@ -2993,6 +3205,11 @@ export type RegisterFcmTokenMutation = {
   success?: Maybe<Scalars["Boolean"]>;
 };
 
+export type ReportTypeId = {
+  __typename?: "ReportTypeId";
+  id: Scalars["UUID"];
+};
+
 export type ReportTypeSyncInputType = {
   id: Scalars["UUID"];
   updatedAt: Scalars["DateTime"];
@@ -3001,7 +3218,7 @@ export type ReportTypeSyncInputType = {
 export type ReportTypeSyncOutputType = {
   __typename?: "ReportTypeSyncOutputType";
   categoryList?: Maybe<Array<Maybe<CategoryType>>>;
-  removedList: Array<Maybe<ReportTypeType>>;
+  removedList: Array<Maybe<ReportTypeId>>;
   updatedList: Array<Maybe<ReportTypeType>>;
 };
 
@@ -3111,14 +3328,6 @@ export type SubmitIncidentReport = {
   result?: Maybe<IncidentReportType>;
 };
 
-export type SubmitObservationImage = {
-  __typename?: "SubmitObservationImage";
-  file?: Maybe<Scalars["String"]>;
-  id?: Maybe<Scalars["UUID"]>;
-  imageUrl?: Maybe<Scalars["String"]>;
-  thumbnail?: Maybe<Scalars["String"]>;
-};
-
 export type SubmitObservationSubject = {
   __typename?: "SubmitObservationSubject";
   result?: Maybe<ObservationSubjectType>;
@@ -3127,6 +3336,14 @@ export type SubmitObservationSubject = {
 export type SubmitObservationSubjectMonitoringRecord = {
   __typename?: "SubmitObservationSubjectMonitoringRecord";
   result?: Maybe<ObservationSubjectMonitoringRecordType>;
+};
+
+export type SubmitRecordImage = {
+  __typename?: "SubmitRecordImage";
+  file?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["UUID"]>;
+  imageUrl?: Maybe<Scalars["String"]>;
+  thumbnail?: Maybe<Scalars["String"]>;
 };
 
 export type SubmitZeroReportMutation = {
@@ -3173,6 +3390,7 @@ export type UserProfileType = {
   avatarUrl?: Maybe<Scalars["String"]>;
   consent?: Maybe<Scalars["Boolean"]>;
   email?: Maybe<Scalars["String"]>;
+  features?: Maybe<Array<Maybe<Scalars["String"]>>>;
   firstName: Scalars["String"];
   id: Scalars["Int"];
   isStaff?: Maybe<Scalars["Boolean"]>;
@@ -4517,7 +4735,7 @@ export type ObservationSubjectsQuery = {
     totalCount?: number | null;
     results: Array<{
       __typename?: "ObservationSubjectType";
-      id: string;
+      id: any;
       identity: string;
       title: string;
       description: string;
@@ -4541,7 +4759,7 @@ export type GetObservationSubjectQuery = {
   __typename?: "Query";
   observationSubject?: {
     __typename?: "ObservationSubjectType";
-    id: string;
+    id: any;
     title: string;
     description: string;
     identity: string;
@@ -4556,7 +4774,7 @@ export type GetObservationSubjectQuery = {
     } | null;
     monitoringRecords?: Array<{
       __typename?: "ObservationSubjectMonitoringRecordType";
-      id: string;
+      id: any;
       title: string;
       description: string;
       createdAt: any;
@@ -4579,7 +4797,7 @@ export type GetObservationSubjectMonitoringQuery = {
   __typename?: "Query";
   observationSubjectMonitoringRecord?: {
     __typename?: "ObservationSubjectMonitoringRecordType";
-    id: string;
+    id: any;
     title: string;
     description: string;
     formData?: any | null;
@@ -5193,6 +5411,7 @@ export type MeQuery = {
     role?: string | null;
     email?: string | null;
     telephone?: string | null;
+    features?: Array<string | null> | null;
   } | null;
 };
 
@@ -5282,6 +5501,7 @@ export type UserRegisterMutation = {
       isSuperuser?: boolean | null;
       email?: string | null;
       telephone?: string | null;
+      features?: Array<string | null> | null;
     } | null;
   } | null;
 };
@@ -16248,6 +16468,7 @@ export const MeDocument = {
                 { kind: "Field", name: { kind: "Name", value: "role" } },
                 { kind: "Field", name: { kind: "Name", value: "email" } },
                 { kind: "Field", name: { kind: "Name", value: "telephone" } },
+                { kind: "Field", name: { kind: "Name", value: "features" } },
               ],
             },
           },
@@ -16708,6 +16929,10 @@ export const UserRegisterDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "telephone" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "features" },
                       },
                     ],
                   },

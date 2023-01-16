@@ -113,14 +113,16 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     display={store.isRoleOfficer || store.isRoleAdmin}
                     icon={<LocationMarkerIcon className={iconClassName} />}
                   />
-                  <ObservationMenu
-                    icon={
-                      <ColorSwatchIcon
-                        className={`${iconClassName} -rotate-90`}
-                      />
-                    }
-                    label={t("breadcrumb.observation", "Observation")}
-                  />
+                  {store.isFeatureEnable("observation") && (
+                    <ObservationMenu
+                      icon={
+                        <ColorSwatchIcon
+                          className={`${iconClassName} -rotate-90`}
+                        />
+                      }
+                      label={t("breadcrumb.observation", "Observation")}
+                    />
+                  )}
                 </ul>
               </div>
 
