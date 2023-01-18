@@ -51,6 +51,7 @@ export class ProfileService implements IProfileService {
         isSuperUser: me.isSuperuser || false,
         email: me.email || "",
         telephone: me.telephone || "",
+        features: me.features as Array<string>,
       };
     } else {
       throw new Error("Method not implemented.");

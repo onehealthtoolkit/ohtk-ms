@@ -137,6 +137,10 @@ export class Store {
   get authorityId() {
     return this.me?.authorityId;
   }
+
+  isFeatureEnable(name: string) {
+    return this.me?.features.findIndex(item => item.includes(name)) != -1;
+  }
 }
 
 export const StoreContext = createContext<Store | null>(null);

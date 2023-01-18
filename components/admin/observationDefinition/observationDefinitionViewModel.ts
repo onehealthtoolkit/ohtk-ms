@@ -21,7 +21,33 @@ export abstract class ObservationDefinitionViewModel extends BaseFormViewModel {
   _monitoringDefinitions: ObservationMonitoringDefinition[] = [];
   resultId: string = "";
 
-  definitionFormViewModel = new FormViewModel();
+  definitionFormViewModel = new FormViewModel([
+    {
+      label: "reportDate",
+      value: "report_date",
+      type: "Report",
+    },
+    {
+      label: "reportDateString",
+      value: "report_date_str",
+      type: "Report",
+    },
+    {
+      label: "reportDateNoTimeString",
+      value: "report_date_no_time_str",
+      type: "Report",
+    },
+    {
+      label: "gpsLocation",
+      value: "gps_location",
+      type: "Report",
+    },
+    {
+      label: "reportId",
+      value: "report_id",
+      type: "Report",
+    },
+  ]);
 
   constructor(observationDefinitionService: IObservationDefinitionService) {
     super();

@@ -96,6 +96,7 @@ export class RegisterService implements IRegisterService {
         isSuperUser: me.isSuperuser || false,
         email: me.email || "",
         telephone: me.telephone || "",
+        features: me.features as Array<string>,
       },
       tokenAuth: {
         token: result?.token!,

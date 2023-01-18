@@ -12,6 +12,7 @@ export type Me = {
   isSuperUser: boolean;
   email: string;
   telephone: string;
+  features: Array<string>;
 };
 
 export type ProfileUpdate = {

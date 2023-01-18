@@ -100,7 +100,7 @@ const Table = <T extends ItemWithId | null>({
                 }}
               />
             )}
-            {onEdit && (
+            {onDelete && (
               <DeleteAction
                 onClick={() => {
                   onDelete && onDelete(record);

@@ -16,7 +16,7 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   _isSimulationMode = false;
   formSimulation?: FormSimulationViewModel = undefined;
 
-  constructor() {
+  constructor(public builtinVariables: FormVariableItem[] = []) {
     super("", "");
     makeObservable(this, {
       sections: observable,
@@ -141,44 +141,10 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
         });
       });
     });
-    // fix variables from report
-    vars = vars.concat(
-      {
-        label: "reportDate",
-        value: "report_date",
-        type: "Report",
-      },
-      {
-        label: "incidentDate",
-        value: "incident_date",
-        type: "Report",
-      },
-      {
-        label: "gpsLocation",
-        value: "gps_location",
-        type: "Report",
-      },
-      {
-        label: "reportId",
-        value: "report_id",
-        type: "Report",
-      },
-      {
-        label: "reportTypeId",
-        value: "report_type.id",
-        type: "Report type",
-      },
-      {
-        label: "reportTypeName",
-        value: "report_type.name",
-        type: "Report type",
-      },
-      {
-        label: "reportCategory",
-        value: "report_type.category",
-        type: "Report category",
-      }
-    );
+
+    // add built-in variables
+    vars = vars.concat(this.builtinVariables);
+
     return vars;
   }
 

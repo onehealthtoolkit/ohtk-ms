@@ -12,6 +12,7 @@ query me {
     role
     email
     telephone
+    features
   }
 }
 

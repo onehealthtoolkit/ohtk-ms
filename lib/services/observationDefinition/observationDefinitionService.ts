@@ -118,7 +118,9 @@ export class ObservationDefinitionService
         id: observationDefinition.id,
         name: observationDefinition.name,
         description: observationDefinition.description || "",
-        registerFormDefinition: observationDefinition.registerFormDefinition,
+        registerFormDefinition: JSON.stringify(
+          observationDefinition.registerFormDefinition
+        ),
         titleTemplate: observationDefinition.titleTemplate,
         descriptionTemplate: observationDefinition.descriptionTemplate,
         identityTemplate: observationDefinition.identityTemplate,

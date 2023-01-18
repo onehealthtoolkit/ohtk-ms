@@ -38,6 +38,7 @@ mutation UserRegister(
       isSuperuser
       email
       telephone
+      features
     }
     refreshToken
     token

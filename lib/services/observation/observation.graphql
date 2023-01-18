@@ -1,0 +1,84 @@
+query ObservationSubjects(
+  $limit: Int!
+  $offset: Int!
+  $definitionId: Float
+  $fromDate: DateTime
+  $throughDate: DateTime
+) {
+  observationSubjects(
+    createdAt_Gte: $fromDate
+    createdAt_Lte: $throughDate
+    definition_Id: $definitionId
+    limit: $limit
+    offset: $offset
+  ) {
+    totalCount
+    results {
+      id
+      identity
+      title
+      description
+      gpsLocation
+      createdAt
+      images {
+        id
+        file
+        thumbnail
+      }
+    }
+  }
+}
+
+query GetObservationSubject($id: ID!) {
+  observationSubject(id: $id) {
+    id
+    title
+    description
+    identity
+    formData
+    createdAt
+    gpsLocation
+    definition {
+      name
+      description
+      registerFormDefinition
+    }
+    monitoringRecords {
+      id
+      title
+      description
+      createdAt
+    }
+    images {
+      id
+      file
+      thumbnail
+      imageUrl
+    }
+  }
+}
+
+query GetObservationSubjectMonitoring($id: ID!) {
+  observationSubjectMonitoringRecord(id: $id) {
+    id
+    title
+    description
+    formData
+    createdAt
+    subject {
+      title
+      description
+    }
+    monitoringDefinition {
+      name
+      description
+      formDefinition
+    }
+    images {
+      id
+      file
+      thumbnail
+      imageUrl
+    }
+  }
+}
