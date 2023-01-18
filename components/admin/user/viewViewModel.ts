@@ -43,8 +43,14 @@ export class UserViewViewModel extends BaseViewModel {
     }
 
     const today = new Date();
-    const fromDate = new Date(today.getFullYear(), 0, 1);
-    const toDate = new Date();
+    // calculate date range lastest 1 year ago
+    const fromDate = new Date(
+      today.getFullYear() - 1,
+      today.getMonth(),
+      today.getDate()
+    );
+    const toDate = today;
+
     const contributionData = await this.userService.fetchContribution(
       +this.id,
       fromDate,
