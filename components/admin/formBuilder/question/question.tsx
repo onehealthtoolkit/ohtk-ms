@@ -20,53 +20,76 @@ type Props = {
   onDelete: (id: string) => void;
 };
 
-const Menus: FC<{ value: QuestionViewModel }> = observer(
-  ({ value: question }) => {
+const Menus: FC<{ value: QuestionViewModel; onSelect: (id: string) => void }> =
+  observer(({ value: question, onSelect }) => {
     return (
-      <div className="py-4 flex flex-col items-end z-10 right-3 top-0 absolute">
-        <button
-          type="button"
-          className="hover:bg-blue-300 hover:text-white rounded-full w-8 h-8 flex justify-center items-center"
-          onClick={() => question.toggleMenus()}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
+      <div className="">
+        <div className="py-4 flex flex-col z-10 right-10 top-0 absolute">
+          <button
+            type="button"
+            className="hover:bg-blue-300 hover:text-white rounded-full w-8 h-8 flex justify-center items-center"
+            onClick={() => onSelect("-----")}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-            />
-          </svg>
-        </button>
-        {question.isMenusOpen && (
-          <div className=" bg-white divide-y divide-gray-100 rounded shadow-md w-auto">
-            <ul className="py-1 text-sm text-gray-700 ">
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={e => {
-                    e.preventDefault();
-                    question.toggleMenus();
-                    question.registerDialog("moveQuestion")?.open(question);
-                  }}
-                >
-                  Move
-                </a>
-              </li>
-            </ul>
-          </div>
-        )}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4.5 12.75l7.5-7.5 7.5 7.5m-15 6l7.5-7.5 7.5 7.5"
+              />
+            </svg>
+          </button>
+        </div>
+        <div className="py-4 flex flex-col items-end z-10 right-3 top-0 absolute">
+          <button
+            type="button"
+            className="hover:bg-blue-300 hover:text-white rounded-full w-8 h-8 flex justify-center items-center"
+            onClick={() => question.toggleMenus()}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
+            </svg>
+          </button>
+          {question.isMenusOpen && (
+            <div className=" bg-white divide-y divide-gray-100 rounded shadow-md w-auto">
+              <ul className="py-1 text-sm text-gray-700 ">
+                <li>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                    onClick={e => {
+                      e.preventDefault();
+                      question.toggleMenus();
+                      question.registerDialog("moveQuestion")?.open(question);
+                    }}
+                  >
+                    Move
+                  </a>
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
     );
-  }
-);
+  });
 
 const Question: FC<Props> = ({ value: question, onSelect, onDelete }) => {
   const elementRef = useRef<HTMLDivElement>(null);
@@ -86,7 +109,7 @@ const Question: FC<Props> = ({ value: question, onSelect, onDelete }) => {
 
   return question.isCurrent ? (
     <div className="pt-4 pr-4 flex-col flex gap-2 w-full" ref={elementRef}>
-      <Menus value={question} />
+      <Menus value={question} onSelect={onSelect} />
       <h4 className="text-xs text-gray-600">Question label</h4>
       {question.isLabelEditing ? (
         <input
@@ -109,7 +132,10 @@ const Question: FC<Props> = ({ value: question, onSelect, onDelete }) => {
           value={question.label}
           placeholder="Question Label"
           readOnly
-          onClick={() => question.setIsLabelEditing(true)}
+          onClick={e => {
+            e.preventDefault();
+            return question.setIsLabelEditing(true);
+          }}
         />
       )}
       <h4 className="text-xs text-gray-600">Question description</h4>
@@ -176,7 +202,12 @@ const Question: FC<Props> = ({ value: question, onSelect, onDelete }) => {
     </div>
   ) : (
     <div className="p-4 flex-grow" onClick={() => onSelect(question.id)}>
-      {question.label || <span className="text-gray-400">Question</span>}
+      <div>
+        {question.label || <span className="text-gray-400">Question</span>}
+      </div>
+      <div className="text-xs font-thin text-gray-600 italic">
+        {question.description}
+      </div>
     </div>
   );
 };

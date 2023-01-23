@@ -109,6 +109,8 @@ export default class SingleChoicesField extends Field {
     switch (operator) {
       case "=":
         return this.value == value;
+      case "!=":
+        return this.value != value;
       default:
         return this.value!.indexOf(value) >= 0;
     }

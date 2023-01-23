@@ -82,6 +82,8 @@ export default class TextField extends PrimitiveField<string> {
       switch (operator) {
         case "=":
           return this._value == value;
+        case "!=":
+          return this._value != value;
         default:
           return this._value.indexOf(value) >= 0;
       }

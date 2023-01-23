@@ -284,7 +284,10 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
   ) : (
     <div className="pt-4 pr-4 pb-4 w-full" onClick={() => onSelect(field.id)}>
       <label className="p-2">
-        {field.label || <span className="text-gray-400">Field Label</span>}
+        {field.label && <span>{field.label}</span>}
+        {field.name && (
+          <span className="text-gray-400 text-xs italic"> [{field.name}]</span>
+        )}
       </label>
       {renderDisplayFieldTypeComponent(field.fieldType)}
     </div>
