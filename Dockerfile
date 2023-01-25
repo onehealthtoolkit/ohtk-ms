@@ -20,7 +20,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV NODE_ENV production
-ENV tenantsApiEndpoint https://admin.ohtk.org/api/servers
+ENV tenantsApiEndpoint https://admin.ohtk.org/api/servers/
 ENV serverDomain backend.ohtk.org
 
 RUN yarn build
@@ -31,6 +31,7 @@ WORKDIR /app
 
 ENV NODE_ENV production
 
+RUN apk add --no-cache bash
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
@@ -38,6 +39,11 @@ COPY --from=builder /app/public ./public
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY entrypoint.sh .
+COPY .env.production .
+
+RUN ["chmod", "+x", "entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
 
 USER nextjs
 
