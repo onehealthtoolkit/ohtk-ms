@@ -18,7 +18,8 @@ import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { useTranslation } from "react-i18next";
 import FormSimulationDialog from "components/admin/reportType/formSimulationDialog";
 import FormSimulation from "components/admin/formBuilder/simulator/formSimulation";
-import { TableIcon } from "@heroicons/react/solid";
+import { QrcodeIcon, TableIcon } from "@heroicons/react/solid";
+import QrcodeDialog from "components/admin/reportType/qrcodeDialog";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -37,6 +38,7 @@ const ReportTypeList = () => {
     const model = new AdminReportTypeListViewModel(reportTypeService);
     model.registerDialog("confirmDelete");
     model.registerDialog("formSimulation");
+    model.registerDialog("definitionQrcode");
     return model;
   });
 
@@ -115,12 +117,20 @@ const ReportTypeList = () => {
             onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
             actions={record => {
               return (
-                <TableIcon
-                  className="mx-1 w-8 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
-                  onClick={() => {
-                    viewModel.openFormSimulationDialog(record.definition);
-                  }}
-                />
+                <>
+                  <QrcodeIcon
+                    onClick={() => {
+                      viewModel.dialog("definitionQrcode")?.open({ record });
+                    }}
+                    className={`cursor-pointer w-5 h-5 mx-1 hover:text-slate-600 `}
+                  />
+                  <TableIcon
+                    className="mx-1 w-8 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+                    onClick={() => {
+                      viewModel.openFormSimulationDialog(record.definition);
+                    }}
+                  />
+                </>
               );
             }}
           />
@@ -145,6 +155,16 @@ const ReportTypeList = () => {
           <FormSimulationDialog viewModel={viewModel.dialog("formSimulation")}>
             <FormSimulation viewModel={viewModel.formSimulationViewModel} />
           </FormSimulationDialog>
+
+          <QrcodeDialog
+            store={viewModel.dialog("definitionQrcode")}
+            title={t("qr.reportTypeFormDefinition", "Form Definition QR code")}
+            content={data => (
+              <p className="py-5">
+                {data && data.record ? (data.record as ReportType).name : ""}
+              </p>
+            )}
+          />
         </div>
       )}
     </Observer>

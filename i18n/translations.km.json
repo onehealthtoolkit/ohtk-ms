@@ -198,6 +198,7 @@
     "ខែធ្នូ"
   ],
   "qr": {
-    "login": "ចូល QR Code"
+    "login": "ចូល QR Code",
+    "reportTypeFormDefinition": "Form Definitiion QR Code"
   }
 }
