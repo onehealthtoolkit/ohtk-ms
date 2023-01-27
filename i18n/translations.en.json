@@ -200,6 +200,7 @@
   ],
   "days": ["s", "m", "t", "w", "t", "f", "s"],
   "qr": {
-    "login": "Login QR Code"
+    "login": "Login QR Code",
+    "reportTypeFormDefinition": "Form Definitiion QR Code"
   }
 }

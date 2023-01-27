@@ -211,6 +211,7 @@
     "ວັນເສົາ"
   ],
   "qr": {
-    "login": "ເຂົ້າສູ່ລະບົບດ້ວຍລະຫັດ qr"
+    "login": "ເຂົ້າສູ່ລະບົບດ້ວຍລະຫັດ qr",
+    "reportTypeFormDefinition": "Form Definitiion QR Code"
   }
 }
