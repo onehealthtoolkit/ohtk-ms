@@ -68,6 +68,7 @@ export class CaseListViewModel extends BaseViewModel {
   }
 
   async fetch(force?: boolean): Promise<void> {
+    this.isLoading = true;
     const result = await this.caseService.fetchCases(
       this.limit,
       this.offset,
@@ -78,10 +79,12 @@ export class CaseListViewModel extends BaseViewModel {
       this.data = result.items || [];
       this.totalCount = result.totalCount || 0;
       this.calendarViewModel.updateCaseEvents(this.data);
+      this.isLoading = false;
+
+      if (result.error) {
+        this.setErrorMessage(result.error);
+      }
     });
-    if (result.error) {
-      this.setErrorMessage(result.error);
-    }
   }
 
   filterReset() {

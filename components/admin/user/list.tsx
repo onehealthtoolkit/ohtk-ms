@@ -127,6 +127,7 @@ const UserList = () => {
                 get: record => getRoleName(record.role || ""),
               },
             ]}
+            onLoading={viewModel.isLoading}
             data={viewModel?.data || []}
             onEdit={record => router.push(`/admin/users/${record.id}/update`)}
             onView={record => router.push(`/admin/users/${record.id}/view`)}

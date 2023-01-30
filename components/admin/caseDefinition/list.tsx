@@ -97,6 +97,7 @@ const CaseDefinitionList = () => {
                 get: record => record.description,
               },
             ]}
+            onLoading={viewModel.isLoading}
             data={viewModel?.data || []}
             onEdit={record =>
               router.push(`/admin/case_definitions/${record.id}/update`)

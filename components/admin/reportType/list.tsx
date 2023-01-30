@@ -107,6 +107,7 @@ const ReportTypeList = () => {
                 get: record => record.ordering.toString(),
               },
             ]}
+            onLoading={viewModel.isLoading}
             data={viewModel?.data || []}
             onEdit={record =>
               router.push(`/admin/report_types/${record.id}/update`)

@@ -99,6 +99,7 @@ const ReporterNotificationList = () => {
                 get: record => record.description,
               },
             ]}
+            onLoading={viewModel.isLoading}
             data={viewModel?.data || []}
             onEdit={record =>
               router.push(`/admin/reporter_notifications/${record.id}/update`)

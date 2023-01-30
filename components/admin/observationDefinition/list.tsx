@@ -99,6 +99,7 @@ const ObservationDefinitionList = () => {
                 get: record => record.description,
               },
             ]}
+            onLoading={viewModel.isLoading}
             data={viewModel?.data || []}
             onEdit={record =>
               router.push(`/admin/observation_definitions/${record.id}/update`)

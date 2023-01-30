@@ -97,6 +97,7 @@ const PlaceList = () => {
                 get: record => record.authorityName,
               },
             ]}
+            onLoading={viewModel.isLoading}
             data={viewModel?.data || []}
             onEdit={record => router.push(`/admin/places/${record.id}/update`)}
             onView={record => router.push(`/admin/places/${record.id}/view`)}

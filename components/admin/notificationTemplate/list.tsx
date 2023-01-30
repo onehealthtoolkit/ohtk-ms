@@ -101,6 +101,7 @@ const NotificationTemplateList = () => {
                 get: record => record.reportTypeName,
               },
             ]}
+            onLoading={viewModel.isLoading}
             data={viewModel?.data || []}
             onEdit={record =>
               router.push(`/admin/notification_templates/${record.id}/update`)

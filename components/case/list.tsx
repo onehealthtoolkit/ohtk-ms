@@ -178,6 +178,7 @@ const CaseList = () => {
                       ),
                     },
                   ]}
+                  onLoading={viewModel.isLoading}
                   data={viewModel.data || []}
                   onView={record => router.push(`/cases/${record.id}`)}
                 />

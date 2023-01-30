@@ -93,6 +93,7 @@ const ConfigurationList = () => {
                 get: record => record.value,
               },
             ]}
+            onLoading={viewModel.isLoading}
             data={viewModel?.data || []}
             onEdit={record =>
               router.push(`/admin/configurations/${record.id}/update`)

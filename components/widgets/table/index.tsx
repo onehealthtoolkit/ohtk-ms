@@ -127,13 +127,13 @@ const Table = <T extends ItemWithId | null>({
           <tbody className="bg-white">{!onLoading && rows}</tbody>
         </table>
         {onLoading && (
-          <div className="flex justify-center min-h-12 h-12">
+          <div className="flex justify-center min-h-24 h-24">
             <div className="m-auto">
               <Spinner />
             </div>
           </div>
         )}
-        {!data.length && (
+        {!onLoading && !data.length && (
           <div className="text-center py-6">
             <Trans i18nKey="table.notFound">
               <span className="text-sm ">Not found</span>
