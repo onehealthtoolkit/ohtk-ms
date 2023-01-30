@@ -144,7 +144,7 @@ const UserList = () => {
                       value: qrValue,
                     });
                   }}
-                  className={`cursor-pointer w-5 h-5 mx-auto hover:text-slate-600 ${
+                  className={`cursor-pointer w-5 h-5 hover:text-slate-600 ${
                     record.role === AccountsAuthorityUserRoleChoices.Rep
                       ? "visible"
                       : "invisible"
@@ -154,7 +154,7 @@ const UserList = () => {
                   onClick={() => {
                     router.push(`/admin/users/${record.id}/updatePassword`);
                   }}
-                  className={`cursor-pointer w-5 h-5 mx-auto  text-[#ADC7FF] hover:text-indigo-900`}
+                  className={`cursor-pointer w-5 h-5 text-[#ADC7FF] hover:text-indigo-900`}
                 />
               </>
             )}

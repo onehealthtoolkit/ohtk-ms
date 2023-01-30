@@ -20,21 +20,21 @@ interface ActionHandlerProps {
 export const EditAction = (props: ActionHandlerProps) => (
   <PencilAltIcon
     type="edit"
-    className="mx-1 w-8 h-5 text-[#ADC7FF] hover:text-indigo-900 cursor-pointer"
+    className="w-5 h-5 text-[#ADC7FF] hover:text-indigo-900 cursor-pointer"
     {...props}
   />
 );
 
 const ClickAction = (props: ActionHandlerProps) => (
   <EyeIcon
-    className="mx-1 w-8 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+    className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
     {...props}
   />
 );
 
 const DeleteAction = (props: ActionHandlerProps) => (
   <TrashIcon
-    className="mx-1 w-8 h-5 text-[#DA3535] hover:text-red-800 cursor-pointer"
+    className="w-5 h-5 text-[#DA3535] hover:text-red-800 cursor-pointer"
     {...props}
   />
 );
@@ -84,7 +84,7 @@ const Table = <T extends ItemWithId | null>({
       ))}
       {actionVisible && (
         <TableCell>
-          <div className="flex">
+          <div className="flex gap-2 justify-center">
             {onEdit && (
               <EditAction
                 onClick={() => {
