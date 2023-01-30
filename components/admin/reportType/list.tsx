@@ -188,7 +188,7 @@ const ReportTypeList = () => {
                     }}
                   />
                   <DownloadIcon
-                    className="mx-1 w-8 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+                    className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
                     onClick={() => viewModel.exportReportType(record.id)}
                   />
                 </>
