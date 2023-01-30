@@ -96,6 +96,7 @@ const ReportCategoryList = () => {
                 get: record => record.ordering.toString(),
               },
             ]}
+            onLoading={viewModel.isLoading}
             data={viewModel?.data || []}
             onEdit={record =>
               router.push(`/admin/report_categories/${record.id}/update`)

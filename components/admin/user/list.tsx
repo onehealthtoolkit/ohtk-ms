@@ -127,6 +127,7 @@ const UserList = () => {
                 get: record => getRoleName(record.role || ""),
               },
             ]}
+            onLoading={viewModel.isLoading}
             data={viewModel?.data || []}
             onEdit={record => router.push(`/admin/users/${record.id}/update`)}
             onView={record => router.push(`/admin/users/${record.id}/view`)}
@@ -143,7 +144,7 @@ const UserList = () => {
                       value: qrValue,
                     });
                   }}
-                  className={`cursor-pointer w-5 h-5 mx-auto hover:text-slate-600 ${
+                  className={`cursor-pointer w-5 h-5 hover:text-slate-600 ${
                     record.role === AccountsAuthorityUserRoleChoices.Rep
                       ? "visible"
                       : "invisible"
@@ -153,7 +154,7 @@ const UserList = () => {
                   onClick={() => {
                     router.push(`/admin/users/${record.id}/updatePassword`);
                   }}
-                  className={`cursor-pointer w-5 h-5 mx-auto  text-[#ADC7FF] hover:text-indigo-900`}
+                  className={`cursor-pointer w-5 h-5 text-[#ADC7FF] hover:text-indigo-900`}
                 />
               </>
             )}

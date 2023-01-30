@@ -103,6 +103,7 @@ const OutbreakPlanList = () => {
                 get: record => record.reportTypeName,
               },
             ]}
+            onLoading={viewModel.isLoading}
             data={viewModel?.data || []}
             onEdit={record =>
               router.push(`/admin/outbreak_plans/${record.id}/update`)

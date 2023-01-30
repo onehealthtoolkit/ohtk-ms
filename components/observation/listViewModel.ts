@@ -85,6 +85,7 @@ export class ObservationListViewModel extends BaseViewModel {
   }
 
   async fetch(force?: boolean): Promise<void> {
+    this.isLoading = true;
     const result = await this.observationService.fetchObservationSubjects(
       this.limit,
       this.offset,
@@ -95,6 +96,7 @@ export class ObservationListViewModel extends BaseViewModel {
       this.data = result.items || [];
       this.totalCount = result.totalCount || 0;
       this.calendarViewModel.updateObservationEvents(this.data);
+      this.isLoading = false;
 
       if (this.viewMode == ObservationViewMode.map) {
         const events = Array<ObservationEventItem>();

@@ -165,6 +165,7 @@ const ObservationList = () => {
                   get: record => record.description,
                 },
               ]}
+              onLoading={viewModel.isLoading}
               data={viewModel.data || []}
               onView={record =>
                 router.push({

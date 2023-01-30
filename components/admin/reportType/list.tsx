@@ -163,6 +163,7 @@ const ReportTypeList = () => {
                 get: record => record.ordering.toString(),
               },
             ]}
+            onLoading={viewModel.isLoading}
             data={viewModel?.data || []}
             onEdit={record =>
               router.push(`/admin/report_types/${record.id}/update`)
@@ -178,10 +179,10 @@ const ReportTypeList = () => {
                     onClick={() => {
                       viewModel.dialog("definitionQrcode")?.open({ record });
                     }}
-                    className={`cursor-pointer w-5 h-5 mx-1 hover:text-slate-600 `}
+                    className={`cursor-pointer w-5 h-5 hover:text-slate-600 `}
                   />
                   <TableIcon
-                    className="mx-1 w-8 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+                    className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
                     onClick={() => {
                       viewModel.openFormSimulationDialog(record.definition);
                     }}

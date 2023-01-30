@@ -104,6 +104,7 @@ const StateDefinitionList = () => {
                 },
               },
             ]}
+            onLoading={viewModel.isLoading}
             data={viewModel?.data || []}
             onEdit={record =>
               router.push(`/admin/state_definitions/${record.id}/update`)

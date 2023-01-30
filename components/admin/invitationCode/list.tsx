@@ -113,6 +113,7 @@ const InvitaionCodeList = () => {
                 get: record => record.authorityName,
               },
             ]}
+            onLoading={viewModel.isLoading}
             data={viewModel?.data || []}
             onEdit={record =>
               router.push(`/admin/invitation_codes/${record.id}/update`)

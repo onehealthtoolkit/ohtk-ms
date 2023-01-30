@@ -180,6 +180,7 @@ const ReportList = () => {
                       get: record => <CaseLink caseId={record.caseId} />,
                     },
                   ]}
+                  onLoading={viewModel.isLoading}
                   data={viewModel.data || []}
                   onView={record => router.push(`/reports/${record.id}`)}
                 />
