@@ -41,6 +41,7 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
     calendarYear: query.calendarYear
       ? parseInt(query.calendarYear as string)
       : undefined,
+    testFlag: query.testFlag ? query.testFlag === "true" : undefined,
   };
 };
 
@@ -107,6 +108,7 @@ const ReportList = () => {
       isCalendar: viewModel.isCalendarView ? 1 : 0,
       calendarMonth: viewModel.calendarViewModel.month,
       calendarYear: viewModel.calendarViewModel.year,
+      testFlag: viewModel.filter.testFlag,
     });
   };
 

@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { Field, Label } from "components/widgets/forms";
+import { Checkbox, Field, Label } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import AsyncSelect from "react-select/async";
 import DatePicker from "components/widgets/datepicker";
@@ -71,6 +71,16 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
               viewModel.filter.reportTypes = [...values];
             });
           }}
+        />
+      </Field>
+      <Field $size="half">
+        <Checkbox
+          id="testing"
+          value="True"
+          checked={viewModel.filter.testFlag}
+          onChange={evt => (viewModel.filter.testFlag = evt.target.checked)}
+          label="Show test report"
+          disabled={false}
         />
       </Field>
     </div>

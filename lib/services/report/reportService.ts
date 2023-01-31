@@ -10,6 +10,7 @@ export type ReportFilterData = {
   throughDate?: Date;
   authorities?: Pick<Authority, "id" | "code" | "name">[];
   reportTypes?: Pick<ReportType, "id" | "name">[];
+  testFlag?: boolean;
 };
 
 export type ReportFilter = ReportFilterData & {
@@ -50,6 +51,7 @@ export class ReportService implements IReportService {
         throughDate: filter.throughDate,
         authorities: filter.authorities?.map(a => a.id),
         reportTypes: filter.reportTypes?.map(a => a.id),
+        testFlag: filter.testFlag,
       },
       fetchPolicy: force ? "network-only" : "cache-first",
     });

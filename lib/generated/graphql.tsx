@@ -2387,6 +2387,7 @@ export type MutationSubmitIncidentReportArgs = {
   incidentInAuthority?: InputMaybe<Scalars["Boolean"]>;
   reportId?: InputMaybe<Scalars["UUID"]>;
   reportTypeId: Scalars["UUID"];
+  testFlag?: InputMaybe<Scalars["Boolean"]>;
 };
 
 export type MutationSubmitObservationSubjectArgs = {
@@ -3024,6 +3025,7 @@ export type QueryIncidentReportsArgs = {
   relevantAuthorities_Name?: InputMaybe<Scalars["String"]>;
   relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]>;
   reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
+  testFlag?: InputMaybe<Scalars["Boolean"]>;
 };
 
 export type QueryInvitationCodeArgs = {
@@ -3046,6 +3048,7 @@ export type QueryMyIncidentReportsArgs = {
   relevantAuthorities_Name?: InputMaybe<Scalars["String"]>;
   relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]>;
   reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
+  testFlag?: InputMaybe<Scalars["Boolean"]>;
 };
 
 export type QueryMyMessageArgs = {
@@ -5517,6 +5520,7 @@ export type ReportsQueryVariables = Exact<{
   reportTypes?: InputMaybe<
     Array<InputMaybe<Scalars["UUID"]>> | InputMaybe<Scalars["UUID"]>
   >;
+  testFlag?: InputMaybe<Scalars["Boolean"]>;
 }>;
 
 export type ReportsQuery = {
@@ -17066,6 +17070,14 @@ export const ReportsDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "testFlag" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -17104,6 +17116,14 @@ export const ReportsDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "reportTypes" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "testFlag" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "testFlag" },
                 },
               },
               {
