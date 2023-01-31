@@ -5536,6 +5536,7 @@ export type ReportsQuery = {
       rendererData: string;
       caseId?: any | null;
       gpsLocation?: string | null;
+      testFlag: boolean;
       reportType?: {
         __typename?: "ReportTypeType";
         id: any;
@@ -5580,6 +5581,7 @@ export type GetReportQuery = {
     threadId?: number | null;
     data?: any | null;
     platform?: string | null;
+    testFlag: boolean;
     reportType?: {
       __typename?: "ReportTypeType";
       id: any;
@@ -17250,6 +17252,10 @@ export const ReportsDocument = {
                           ],
                         },
                       },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "testFlag" },
+                      },
                     ],
                   },
                 },
@@ -17385,6 +17391,7 @@ export const GetReportDocument = {
                     ],
                   },
                 },
+                { kind: "Field", name: { kind: "Name", value: "testFlag" } },
               ],
             },
           },

@@ -12,6 +12,7 @@ export type ReportEvent = {
   id: string;
   name: string;
   caseId?: string;
+  testFlag: boolean;
   day: number;
   month: number;
   year: number;
@@ -42,6 +43,7 @@ export class ReportCalendarViewModel extends CalendarViewModel<ReportEvent> {
         id: report.id,
         name: report.reportTypeName,
         caseId: report.caseId,
+        testFlag: report.testFlag,
         day,
         month,
         year,

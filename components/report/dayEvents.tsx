@@ -29,6 +29,15 @@ export const ReportDayEvents = observer(
                 case
               </span>
             )}
+            {event.testFlag && (
+              <span
+                className="float-right bg-yellow-400 text-white
+                    font-normal rounded px-1
+                  "
+              >
+                Test
+              </span>
+            )}
           </p>
         ))}
       </div>

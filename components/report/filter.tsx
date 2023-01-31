@@ -77,8 +77,8 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
         <Checkbox
           id="testing"
           value="True"
-          checked={viewModel.filter.testFlag}
-          onChange={evt => (viewModel.filter.testFlag = evt.target.checked)}
+          checked={viewModel.filter.includeTest}
+          onChange={evt => (viewModel.filter.includeTest = evt.target.checked)}
           label="Show test report"
           disabled={false}
         />

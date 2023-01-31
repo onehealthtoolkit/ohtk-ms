@@ -42,6 +42,7 @@ query Reports(
       images {
         thumbnail
       }
+      testFlag
     }
   }
 }
@@ -81,6 +82,7 @@ query GetReport($id: ID!) {
       id
       telephone
     }
+    testFlag
   }
 }
 
