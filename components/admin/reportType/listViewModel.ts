@@ -1,8 +1,10 @@
 import { FormSimulationViewModel } from "components/admin/formBuilder/simulator/formSimulationViewModel";
 import { BaseViewModel } from "lib/baseViewModel";
 import { SaveResult } from "lib/services/interface";
+import { IReportCategoryService } from "lib/services/reportCategory";
 import { ReportType } from "lib/services/reportType";
 import { IReportTypeService } from "lib/services/reportType/reportTypeService";
+import { IStateDefinitionService } from "lib/services/stateDefinition";
 import {
   action,
   computed,
@@ -20,7 +22,11 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
   _submitError: string = "";
   _isSubmitting: boolean = false;
 
-  constructor(readonly reportTypeService: IReportTypeService) {
+  constructor(
+    readonly reportTypeService: IReportTypeService,
+    readonly reportCategoryService: IReportCategoryService,
+    readonly stateDefinitionService: IStateDefinitionService
+  ) {
     super();
     makeObservable(this, {
       data: observable,
@@ -106,8 +112,8 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
                 id: data.id,
                 name: data.name,
                 definition: JSON.parse(data.definition || "{}"),
-                categoryId: data.categoryId,
-                stateDefinitionId: data.stateDefinitionId || 0,
+                categoryName: data.categoryName,
+                stateDefinitionName: data.stateDefinitionName,
                 ordering: data.ordering,
                 rendererDataTemplate: data.rendererDataTemplate || "",
                 followupDefinition: JSON.parse(data.followupDefinition || "{}"),
@@ -132,8 +138,27 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
     this.isSubmitting = true;
     this.submitError = "";
     const data = (await this.readAsync(file)) as ReportType;
+    const reportCategory = await this.reportCategoryService.findByName(
+      data.categoryName
+    );
+    if (!reportCategory) {
+      this.submitError = "Import errors : report category not found.";
+      this.isSubmitting = false;
+      return false;
+    }
+
+    const reportType = await (
+      await this.reportTypeService.getReportType(data.id)
+    ).data;
+    data.categoryId = +reportCategory.id;
+    if (data.stateDefinitionName) {
+      const stateDefinition = await this.stateDefinitionService.findByName(
+        data.stateDefinitionName
+      );
+      if (stateDefinition) data.stateDefinitionId = +stateDefinition.id;
+    }
     var result;
-    if (data.id) {
+    if (reportType) {
       result = await this._updateReportType(data);
     } else {
       result = await this._createReportType(data);

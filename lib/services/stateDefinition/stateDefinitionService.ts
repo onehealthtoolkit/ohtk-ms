@@ -5,6 +5,7 @@ import {
   StateDefinitionUpdateDocument,
   GetStateDefinitionDocument,
   StateDefinitionDeleteDocument,
+  StateDefinitionsByNameDocument,
 } from "lib/generated/graphql";
 import { StateDefinition } from "lib/services/stateDefinition/stateDefinition";
 import {
@@ -24,6 +25,8 @@ export interface IStateDefinitionService extends IService {
     searchText: string,
     force?: boolean
   ): Promise<QueryResult<StateDefinition[]>>;
+
+  findByName(name: string): Promise<StateDefinition | undefined>;
 
   getStateDefinition(id: string): Promise<GetResult<StateDefinition>>;
 
@@ -86,6 +89,19 @@ export class StateDefinitionService implements IStateDefinitionService {
       items,
       totalCount: fetchResult.data.adminStateDefinitionQuery?.totalCount,
     };
+  }
+
+  async findByName(name: string) {
+    const fetchResult = await this.client.query({
+      query: StateDefinitionsByNameDocument,
+      variables: { name },
+    });
+    var item;
+    if (fetchResult.data.adminStateDefinitionQuery?.results.length)
+      item = fetchResult.data.adminStateDefinitionQuery?.results[0];
+    return item
+      ? { id: item.id, name: item.name, isDefault: item.isDefault }
+      : undefined;
   }
 
   async getStateDefinition(id: string) {

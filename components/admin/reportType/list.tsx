@@ -36,11 +36,16 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
 const ReportTypeList = () => {
   const router = useRouter();
   const { t } = useTranslation();
-  const { reportTypeService } = useServices();
+  const { reportTypeService, reportCategoryService, stateDefinitionService } =
+    useServices();
   const { setUrl, query, resetUrl } = useUrlParams();
 
   const [viewModel] = useState<AdminReportTypeListViewModel>(() => {
-    const model = new AdminReportTypeListViewModel(reportTypeService);
+    const model = new AdminReportTypeListViewModel(
+      reportTypeService,
+      reportCategoryService,
+      stateDefinitionService
+    );
     model.registerDialog("confirmDelete");
     model.registerDialog("formSimulation");
     model.registerDialog("definitionQrcode");

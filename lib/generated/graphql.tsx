@@ -5639,6 +5639,24 @@ export type ReportCategoriesQuery = {
   } | null;
 };
 
+export type ReportCategoriesByNameQueryVariables = Exact<{
+  name?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type ReportCategoriesByNameQuery = {
+  __typename?: "Query";
+  adminCategoryQuery?: {
+    __typename?: "AdminCategoryQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminCategoryQueryType";
+      id: string;
+      name: string;
+      ordering: number;
+    } | null>;
+  } | null;
+};
+
 export type ReportCategoryCreateMutationVariables = Exact<{
   name: Scalars["String"];
   ordering: Scalars["Int"];
@@ -6046,6 +6064,24 @@ export type StateDefinitionsQueryVariables = Exact<{
 }>;
 
 export type StateDefinitionsQuery = {
+  __typename?: "Query";
+  adminStateDefinitionQuery?: {
+    __typename?: "AdminStateDefinitionQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminStateDefinitionQueryType";
+      id: string;
+      name: string;
+      isDefault: boolean;
+    } | null>;
+  } | null;
+};
+
+export type StateDefinitionsByNameQueryVariables = Exact<{
+  name?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type StateDefinitionsByNameQuery = {
   __typename?: "Query";
   adminStateDefinitionQuery?: {
     __typename?: "AdminStateDefinitionQueryTypeNodeConnection";
@@ -17515,6 +17551,66 @@ export const ReportCategoriesDocument = {
   ReportCategoriesQuery,
   ReportCategoriesQueryVariables
 >;
+export const ReportCategoriesByNameDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ReportCategoriesByName" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminCategoryQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "ordering" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ReportCategoriesByNameQuery,
+  ReportCategoriesByNameQueryVariables
+>;
 export const ReportCategoryCreateDocument = {
   kind: "Document",
   definitions: [
@@ -19815,6 +19911,66 @@ export const StateDefinitionsDocument = {
 } as unknown as DocumentNode<
   StateDefinitionsQuery,
   StateDefinitionsQueryVariables
+>;
+export const StateDefinitionsByNameDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "StateDefinitionsByName" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminStateDefinitionQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isDefault" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  StateDefinitionsByNameQuery,
+  StateDefinitionsByNameQueryVariables
 >;
 export const StateDefinitionCreateDocument = {
   kind: "Document",
