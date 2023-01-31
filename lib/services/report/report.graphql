@@ -5,12 +5,14 @@ query Reports(
   $throughDate: DateTime
   $authorities: [String]
   $reportTypes: [UUID]
+  $testFlag: Boolean
 ) {
   incidentReports(
     createdAt_Gte: $fromDate
     createdAt_Lte: $throughDate
     relevantAuthorities_Id_In: $authorities
     reportType_Id_In: $reportTypes
+    testFlag: $testFlag
     limit: $limit
     offset: $offset
   ) {
@@ -40,6 +42,7 @@ query Reports(
       images {
         thumbnail
       }
+      testFlag
     }
   }
 }
@@ -79,6 +82,7 @@ query GetReport($id: ID!) {
       id
       telephone
     }
+    testFlag
   }
 }
 

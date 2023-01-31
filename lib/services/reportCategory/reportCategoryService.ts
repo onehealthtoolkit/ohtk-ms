@@ -5,6 +5,7 @@ import {
   ReportCategoryUpdateDocument,
   GetReportCategoryDocument,
   ReportCategoryDeleteDocument,
+  ReportCategoriesByNameDocument,
 } from "lib/generated/graphql";
 import { ReportCategory } from "lib/services/reportCategory/reportCategory";
 import {
@@ -22,6 +23,8 @@ export interface IReportCategoryService extends IService {
     searchText: string,
     force?: boolean
   ): Promise<QueryResult<ReportCategory[]>>;
+
+  findByName(name: string): Promise<ReportCategory | undefined>;
 
   getReportCategory(id: string): Promise<GetResult<ReportCategory>>;
 
@@ -87,6 +90,19 @@ export class ReportCategoryService implements IReportCategoryService {
       items,
       totalCount: fetchResult.data.adminCategoryQuery?.totalCount,
     };
+  }
+
+  async findByName(name: string) {
+    const fetchResult = await this.client.query({
+      query: ReportCategoriesByNameDocument,
+      variables: { name },
+    });
+    var item;
+    if (fetchResult.data.adminCategoryQuery?.results.length)
+      item = fetchResult.data.adminCategoryQuery?.results[0];
+    return item
+      ? { id: item.id, name: item.name, ordering: item.ordering }
+      : undefined;
   }
 
   async getReportCategory(id: string) {

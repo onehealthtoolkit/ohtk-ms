@@ -10,6 +10,7 @@ export type ReportFilterData = {
   throughDate?: Date;
   authorities?: Pick<Authority, "id" | "code" | "name">[];
   reportTypes?: Pick<ReportType, "id" | "name">[];
+  includeTest?: boolean;
 };
 
 export type ReportFilter = ReportFilterData & {
@@ -50,6 +51,7 @@ export class ReportService implements IReportService {
         throughDate: filter.throughDate,
         authorities: filter.authorities?.map(a => a.id),
         reportTypes: filter.reportTypes?.map(a => a.id),
+        testFlag: filter.includeTest ? undefined : false,
       },
       fetchPolicy: force ? "network-only" : "cache-first",
     });
@@ -71,6 +73,7 @@ export class ReportService implements IReportService {
             item.images && item.images.length > 0
               ? item.images[0]?.thumbnail
               : null,
+          testFlag: item.testFlag,
         });
       }
     });
@@ -105,6 +108,7 @@ export class ReportService implements IReportService {
         threadId: incidentReport.threadId,
         reportByName: `${incidentReport.reportedBy?.firstName} ${incidentReport.reportedBy?.lastName}`,
         reportByTelephone: incidentReport.reportedBy?.telephone || "",
+        testFlag: incidentReport.testFlag,
       };
     }
     return {

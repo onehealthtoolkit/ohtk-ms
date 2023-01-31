@@ -20,6 +20,7 @@ import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 import ViewActionButtons from "components/widgets/viewActionButtons";
 import FollowupList from "./followup/list";
 import { formatYmdt } from "lib/datetime";
+import TestLabel from "./testLabel";
 
 export const PromoteToCaseButton = tw.button`
   px-4 
@@ -135,17 +136,27 @@ const Report = (props: { id: string }) => {
               {viewModel.data.caseId == undefined && (
                 <div className="flex items-center flex-wrap absolute right-0 top-12">
                   <div className="flex-grow"></div>
-                  <PromoteToCaseButton
-                    disabled={viewModel.isLoading}
-                    type="button"
-                    onClick={async () => {
-                      const caseId = await viewModel.promoteToCase();
-                      if (caseId) router.push(`/cases/${caseId}`);
-                    }}
-                  >
-                    {viewModel.isLoading && <Spinner />}
-                    &nbsp;Promote To Case
-                  </PromoteToCaseButton>
+                  {!viewModel.data.testFlag && (
+                    <PromoteToCaseButton
+                      disabled={viewModel.isLoading}
+                      type="button"
+                      onClick={async () => {
+                        const caseId = await viewModel.promoteToCase();
+                        if (caseId) router.push(`/cases/${caseId}`);
+                      }}
+                    >
+                      {viewModel.isLoading && <Spinner />}
+                      &nbsp;Promote To Case
+                    </PromoteToCaseButton>
+                  )}
+                </div>
+              )}
+
+              {viewModel.data.testFlag && (
+                <div className="flex fixed w-full h-full top-0 left-0 z-[999] pointer-events-none">
+                  <div className="absolute top-[20%] sm:left-[20%] md:left-[40%] translate-y-[50%] text-center text-[6em] opacity-20 origin-center -rotate-[25deg]">
+                    Test Report
+                  </div>
                 </div>
               )}
 
@@ -155,6 +166,7 @@ const Report = (props: { id: string }) => {
                     Report type: {viewModel.data.reportTypeName}
                   </p>
                   <CaseLink caseId={viewModel.data.caseId} />
+                  <TestLabel isTest={viewModel.data.testFlag} />
                 </div>
                 <p className="text-sm pt-1 font-bold">
                   {viewModel.data.rendererData}

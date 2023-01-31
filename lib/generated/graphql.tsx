@@ -2387,6 +2387,7 @@ export type MutationSubmitIncidentReportArgs = {
   incidentInAuthority?: InputMaybe<Scalars["Boolean"]>;
   reportId?: InputMaybe<Scalars["UUID"]>;
   reportTypeId: Scalars["UUID"];
+  testFlag?: InputMaybe<Scalars["Boolean"]>;
 };
 
 export type MutationSubmitObservationSubjectArgs = {
@@ -3024,6 +3025,7 @@ export type QueryIncidentReportsArgs = {
   relevantAuthorities_Name?: InputMaybe<Scalars["String"]>;
   relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]>;
   reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
+  testFlag?: InputMaybe<Scalars["Boolean"]>;
 };
 
 export type QueryInvitationCodeArgs = {
@@ -3046,6 +3048,7 @@ export type QueryMyIncidentReportsArgs = {
   relevantAuthorities_Name?: InputMaybe<Scalars["String"]>;
   relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]>;
   reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
+  testFlag?: InputMaybe<Scalars["Boolean"]>;
 };
 
 export type QueryMyMessageArgs = {
@@ -5517,6 +5520,7 @@ export type ReportsQueryVariables = Exact<{
   reportTypes?: InputMaybe<
     Array<InputMaybe<Scalars["UUID"]>> | InputMaybe<Scalars["UUID"]>
   >;
+  testFlag?: InputMaybe<Scalars["Boolean"]>;
 }>;
 
 export type ReportsQuery = {
@@ -5532,6 +5536,7 @@ export type ReportsQuery = {
       rendererData: string;
       caseId?: any | null;
       gpsLocation?: string | null;
+      testFlag: boolean;
       reportType?: {
         __typename?: "ReportTypeType";
         id: any;
@@ -5576,6 +5581,7 @@ export type GetReportQuery = {
     threadId?: number | null;
     data?: any | null;
     platform?: string | null;
+    testFlag: boolean;
     reportType?: {
       __typename?: "ReportTypeType";
       id: any;
@@ -5634,6 +5640,24 @@ export type ReportCategoriesQuery = {
       id: string;
       name: string;
       icon?: string | null;
+      ordering: number;
+    } | null>;
+  } | null;
+};
+
+export type ReportCategoriesByNameQueryVariables = Exact<{
+  name?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type ReportCategoriesByNameQuery = {
+  __typename?: "Query";
+  adminCategoryQuery?: {
+    __typename?: "AdminCategoryQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminCategoryQueryType";
+      id: string;
+      name: string;
       ordering: number;
     } | null>;
   } | null;
@@ -6046,6 +6070,24 @@ export type StateDefinitionsQueryVariables = Exact<{
 }>;
 
 export type StateDefinitionsQuery = {
+  __typename?: "Query";
+  adminStateDefinitionQuery?: {
+    __typename?: "AdminStateDefinitionQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminStateDefinitionQueryType";
+      id: string;
+      name: string;
+      isDefault: boolean;
+    } | null>;
+  } | null;
+};
+
+export type StateDefinitionsByNameQueryVariables = Exact<{
+  name?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type StateDefinitionsByNameQuery = {
   __typename?: "Query";
   adminStateDefinitionQuery?: {
     __typename?: "AdminStateDefinitionQueryTypeNodeConnection";
@@ -17030,6 +17072,14 @@ export const ReportsDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "testFlag" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -17068,6 +17118,14 @@ export const ReportsDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "reportTypes" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "testFlag" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "testFlag" },
                 },
               },
               {
@@ -17193,6 +17251,10 @@ export const ReportsDocument = {
                             },
                           ],
                         },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "testFlag" },
                       },
                     ],
                   },
@@ -17329,6 +17391,7 @@ export const GetReportDocument = {
                     ],
                   },
                 },
+                { kind: "Field", name: { kind: "Name", value: "testFlag" } },
               ],
             },
           },
@@ -17514,6 +17577,66 @@ export const ReportCategoriesDocument = {
 } as unknown as DocumentNode<
   ReportCategoriesQuery,
   ReportCategoriesQueryVariables
+>;
+export const ReportCategoriesByNameDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ReportCategoriesByName" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminCategoryQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "ordering" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ReportCategoriesByNameQuery,
+  ReportCategoriesByNameQueryVariables
 >;
 export const ReportCategoryCreateDocument = {
   kind: "Document",
@@ -19815,6 +19938,66 @@ export const StateDefinitionsDocument = {
 } as unknown as DocumentNode<
   StateDefinitionsQuery,
   StateDefinitionsQueryVariables
+>;
+export const StateDefinitionsByNameDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "StateDefinitionsByName" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminStateDefinitionQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isDefault" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  StateDefinitionsByNameQuery,
+  StateDefinitionsByNameQueryVariables
 >;
 export const StateDefinitionCreateDocument = {
   kind: "Document",

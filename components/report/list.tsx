@@ -20,6 +20,7 @@ import Calendar from "components/widgets/calendar";
 import { ReportDayEvents } from "components/report/dayEvents";
 import { useTranslation } from "react-i18next";
 import TotalItem from "components/widgets/table/totalItem";
+import TestLabel from "./testLabel";
 
 const JSURL = require("jsurl");
 
@@ -41,6 +42,7 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
     calendarYear: query.calendarYear
       ? parseInt(query.calendarYear as string)
       : undefined,
+    includeTest: query.includeTest ? query.includeTest === "true" : undefined,
   };
 };
 
@@ -107,6 +109,7 @@ const ReportList = () => {
       isCalendar: viewModel.isCalendarView ? 1 : 0,
       calendarMonth: viewModel.calendarViewModel.month,
       calendarYear: viewModel.calendarViewModel.year,
+      includeTest: viewModel.filter.includeTest,
     });
   };
 
@@ -177,7 +180,12 @@ const ReportList = () => {
                     },
                     {
                       label: "",
-                      get: record => <CaseLink caseId={record.caseId} />,
+                      get: record => (
+                        <div className="flex flex-row">
+                          <CaseLink caseId={record.caseId} />
+                          <TestLabel isTest={record.testFlag || false} />
+                        </div>
+                      ),
                     },
                   ]}
                   onLoading={viewModel.isLoading}

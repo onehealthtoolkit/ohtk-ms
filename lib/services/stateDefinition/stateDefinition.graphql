@@ -19,6 +19,17 @@ query StateDefinitions(
   }
 }
 
+query StateDefinitionsByName($name: String) {
+  adminStateDefinitionQuery(name: $name) {
+    totalCount
+    results {
+      id
+      name
+      isDefault
+    }
+  }
+}
+
 mutation StateDefinitionCreate($name: String!, $isDefault: Boolean!) {
   adminStateDefinitionCreate(name: $name, isDefault: $isDefault) {
     result {

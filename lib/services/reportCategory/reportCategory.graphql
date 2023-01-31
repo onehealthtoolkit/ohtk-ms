@@ -20,6 +20,17 @@ query ReportCategories(
   }
 }
 
+query ReportCategoriesByName($name: String) {
+  adminCategoryQuery(name: $name) {
+    totalCount
+    results {
+      id
+      name
+      ordering
+    }
+  }
+}
+
 mutation ReportCategoryCreate($name: String!, $ordering: Int!, $icon: Upload) {
   adminCategoryCreate(name: $name, ordering: $ordering, icon: $icon) {
     result {
