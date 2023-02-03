@@ -34,8 +34,7 @@ ChartJS.register(
 export const options = {
   responsive: true,
   interaction: {
-    mode: "index" as const,
-    intersect: false,
+    mode: "x" as const,
   },
   plugins: {
     datalabels: {
