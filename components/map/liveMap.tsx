@@ -134,7 +134,7 @@ const LiveMapView: React.FC<LiveMapViewProps> = ({ data, authorityId }) => {
   return (
     <MapContainer
       zoom={12}
-      scrollWheelZoom={false}
+      scrollWheelZoom={true}
       style={{ height: "100%", width: "100%" }}
       bounds={bounds}
     >
