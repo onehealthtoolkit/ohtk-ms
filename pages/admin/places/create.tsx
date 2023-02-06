@@ -10,7 +10,7 @@ const AdminPlaceCreatePage: NextPage = () => {
   const { t } = useTranslation();
 
   return (
-    <Protect guard={(store: Store) => store.isSuperUser}>
+    <Protect guard={(store: Store) => store.isSuperUser || store.isRoleAdmin}>
       <Layout>
         <Breadcrumb
           crumbs={[

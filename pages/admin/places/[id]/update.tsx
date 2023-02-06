@@ -16,7 +16,11 @@ const AdminPlaceUpdatePage: NextPage = () => {
   }
 
   return (
-    <Protect guard={(store: Store) => store.isSuperUser}>
+    <Protect
+      guard={(store: Store) =>
+        store.isSuperUser || store.isRoleAdmin || store.isRoleOfficer
+      }
+    >
       <Layout>
         <Breadcrumb
           crumbs={[

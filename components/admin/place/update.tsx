@@ -19,9 +19,11 @@ import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import { useTranslation } from "react-i18next";
 import AuthroitySelect from "components/widgets/authoritySelect";
+import useStore from "lib/store";
 
 const PlaceUpdate = () => {
   const router = useRouter();
+  const store = useStore();
   const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
@@ -134,21 +136,26 @@ const PlaceUpdate = () => {
   const authorityField = useMemo(
     () => (
       <Observer>
-        {() => (
-          <Field $size="half">
-            <Label htmlFor="authority">
-              {t("form.label.authority", "Authority")}
-            </Label>
-            <AuthroitySelect
-              roleRequired={true}
-              value={viewModel.authorityId}
-              onChange={value => (viewModel.authorityId = parseInt(value.id))}
-            />
-          </Field>
-        )}
+        {() => {
+          if (store.isRoleOfficer) {
+            return null;
+          }
+          return (
+            <Field $size="half">
+              <Label htmlFor="authority">
+                {t("form.label.authority", "Authority")}
+              </Label>
+              <AuthroitySelect
+                roleRequired={true}
+                value={viewModel.authorityId}
+                onChange={value => (viewModel.authorityId = parseInt(value.id))}
+              />
+            </Field>
+          );
+        }}
       </Observer>
     ),
-    [t, viewModel]
+    [t, viewModel, store]
   );
 
   const onSubmit = useCallback(async () => {
