@@ -62,9 +62,11 @@ const ReportTypeSelect: React.FC<ReportTypeSelectProps> = ({
       const groupedOptions: GroupedOption[] = categories.map(category => {
         return {
           label: category.name,
-          options: reportTypes.filter(
-            reportType => reportType.categoryId == parseInt(category.id)
-          ),
+          options: reportTypes
+            .filter(
+              reportType => reportType.categoryId == parseInt(category.id)
+            )
+            .sort((a, b) => (a.ordering < b.ordering ? -1 : 1)),
         };
       });
       setGroupedOptions(groupedOptions);
