@@ -60,7 +60,7 @@ const CaseDefinitionView = () => {
                   {t("form.label.condition", "Condition")}
                 </th>
                 <td className="px-6 py-4">
-                  <pre>{viewModel.data.condition}</pre>
+                  <div className="">{viewModel.data.condition}</div>
                 </td>
               </tr>
             </tbody>

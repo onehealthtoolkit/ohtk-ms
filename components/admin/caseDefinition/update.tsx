@@ -14,7 +14,7 @@ import {
   MaskingLoader,
   SaveButton,
   Select,
-  TextInput,
+  TextArea,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
@@ -85,9 +85,9 @@ const CaseDefinitionUpdateForm = () => {
             <Label htmlFor="description">
               {t("form.label.description", "Description")}
             </Label>
-            <TextInput
+            <TextArea
               id="description"
-              type="text"
+              rows={3}
               placeholder={t("form.placeholder.description", "Description")}
               onChange={evt => (viewModel.description = evt.target.value)}
               disabled={viewModel.isSubmitting}
