@@ -78,49 +78,13 @@ const AuthorityView = () => {
             </tbody>
           </table>
         </div>
-        {viewModel.data.inherits?.length == 0 && (
-          <Tree
-            lineWidth={"2px"}
-            lineColor={"green"}
-            lineBorderRadius={"10px"}
-            label={<StyledCurrentNode>{viewModel.data.name}</StyledCurrentNode>}
-          >
-            {viewModel.inheritsDown?.map(item => (
-              <TreeNode
-                key={item.id}
-                label={
-                  <StyledNode
-                    onClick={() =>
-                      router.push(`/admin/authorities/${item.id}/view`)
-                    }
-                  >
-                    {item.name}
-                  </StyledNode>
-                }
-              ></TreeNode>
-            ))}
-          </Tree>
-        )}
 
-        {viewModel.data.inherits?.length == 1 && (
-          <Tree
-            lineWidth={"2px"}
-            lineColor={"green"}
-            lineBorderRadius={"10px"}
-            label={
-              <StyledNode
-                onClick={() =>
-                  router.push(
-                    `/admin/authorities/${viewModel.data.inherits![0].id}/view`
-                  )
-                }
-              >
-                {viewModel.data.inherits[0].name}
-              </StyledNode>
-            }
-          >
-            <TreeNode
-              key={viewModel.data.id}
+        <div className="overflow-x-scroll py-8">
+          {viewModel.data.inherits?.length == 0 && (
+            <Tree
+              lineWidth={"2px"}
+              lineColor={"green"}
+              lineBorderRadius={"10px"}
               label={
                 <StyledCurrentNode>{viewModel.data.name}</StyledCurrentNode>
               }
@@ -139,55 +103,104 @@ const AuthorityView = () => {
                   }
                 ></TreeNode>
               ))}
-            </TreeNode>
-          </Tree>
-        )}
+            </Tree>
+          )}
 
-        {viewModel.data.inherits && viewModel.data.inherits?.length > 1 && (
-          <Tree
-            lineWidth={"2px"}
-            lineColor={"green"}
-            lineBorderRadius={"10px"}
-            label={""}
-          >
-            {viewModel.data.inherits?.map(item => (
-              <TreeNode
-                key={item.id}
-                label={
-                  <StyledNode
-                    onClick={() =>
-                      router.push(`/admin/authorities/${item.id}/view`)
-                    }
-                  >
-                    {item.name}
-                  </StyledNode>
-                }
-              >
-                <TreeNode
-                  key={viewModel.data.id}
-                  label={
-                    <StyledCurrentNode>{viewModel.data.name}</StyledCurrentNode>
+          {viewModel.data.inherits?.length == 1 && (
+            <Tree
+              lineWidth={"2px"}
+              lineColor={"green"}
+              lineBorderRadius={"10px"}
+              label={
+                <StyledNode
+                  onClick={() =>
+                    router.push(
+                      `/admin/authorities/${
+                        viewModel.data.inherits![0].id
+                      }/view`
+                    )
                   }
                 >
-                  {viewModel.inheritsDown?.map(item => (
-                    <TreeNode
-                      key={item.id}
-                      label={
-                        <StyledNode
-                          onClick={() =>
-                            router.push(`/admin/authorities/${item.id}/view`)
-                          }
-                        >
-                          {item.name}
-                        </StyledNode>
-                      }
-                    ></TreeNode>
-                  ))}
-                </TreeNode>
+                  {viewModel.data.inherits[0].name}
+                </StyledNode>
+              }
+            >
+              <TreeNode
+                key={viewModel.data.id}
+                label={
+                  <StyledCurrentNode>{viewModel.data.name}</StyledCurrentNode>
+                }
+              >
+                {viewModel.inheritsDown?.map(item => (
+                  <TreeNode
+                    key={item.id}
+                    label={
+                      <StyledNode
+                        onClick={() =>
+                          router.push(`/admin/authorities/${item.id}/view`)
+                        }
+                      >
+                        {item.name}
+                      </StyledNode>
+                    }
+                  ></TreeNode>
+                ))}
               </TreeNode>
-            ))}
-          </Tree>
-        )}
+            </Tree>
+          )}
+
+          {viewModel.data.inherits && viewModel.data.inherits?.length > 1 && (
+            <Tree
+              lineWidth={"2px"}
+              lineColor={"green"}
+              lineBorderRadius={"10px"}
+              label={""}
+            >
+              {viewModel.data.inherits?.map(item => (
+                <TreeNode
+                  key={item.id}
+                  label={
+                    <StyledNode
+                      onClick={() =>
+                        router.push(`/admin/authorities/${item.id}/view`)
+                      }
+                    >
+                      {item.name}
+                    </StyledNode>
+                  }
+                >
+                  <TreeNode
+                    key={viewModel.data.id}
+                    label={
+                      <StyledCurrentNode>
+                        {viewModel.data.name}
+                      </StyledCurrentNode>
+                    }
+                  >
+                    {viewModel.inheritsDown?.map(item => (
+                      <TreeNode
+                        key={item.id}
+                        label={
+                          <StyledNode
+                            onClick={() =>
+                              router.push(`/admin/authorities/${item.id}/view`)
+                            }
+                          >
+                            {item.name}
+                          </StyledNode>
+                        }
+                      ></TreeNode>
+                    ))}
+                  </TreeNode>
+                </TreeNode>
+              ))}
+            </Tree>
+          )}
+          <div className="text-center pt-8 text-xs italic">
+            click on the diagram and use left arrow or right arrow to scoll left
+            or right
+          </div>
+        </div>
 
         <ViewActionButtons
           editUrl={`/admin/authorities/${viewModel.data.id}/update`}
