@@ -47,7 +47,8 @@ export class CaseDefinitionService implements ICaseDefinitionService {
     limit: 20,
     offset: 0,
     descriptionContains: "",
-    ordering: "reportType__name,asc",
+    ordering:
+      "reportType__category__ordering reportType__ordering,asc description,asc",
   };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
