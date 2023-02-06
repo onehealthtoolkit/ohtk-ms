@@ -15,6 +15,7 @@ import { GalleryDialogViewModel } from "components/widgets/dialogs/galleryDialog
 import { ICommentService } from "lib/services/comment/commentService";
 import { ReportMapDialogViewModel } from "components/case/reportMapDialogViewModel";
 import { IOutbreakService } from "lib/services/outbreak/outbreakService";
+import { OutbreakPlace } from "lib/services/outbreak/outbreak";
 
 export type OutbreakZone = {
   color: string;
@@ -28,6 +29,7 @@ export class CaseViewModel extends BaseViewModel {
   stateViewViewModel: CaseStateViewViewModel;
   galleryViewModel?: GalleryDialogViewModel = undefined;
   reportMapViewModel?: ReportMapDialogViewModel = undefined;
+  outbreakPlaces: OutbreakPlace[] = [];
 
   constructor(
     id: string,
@@ -47,6 +49,7 @@ export class CaseViewModel extends BaseViewModel {
       openGallery: action,
       reportMapViewModel: observable,
       openReportMap: action,
+      outbreakPlaces: observable,
     });
     this.id = id;
     this.stateViewViewModel = observable(
@@ -81,8 +84,21 @@ export class CaseViewModel extends BaseViewModel {
           );
         }
       });
+
+      this.fetchOutbreakPlaces();
     }
     this.isLoading = false;
+  }
+
+  async fetchOutbreakPlaces() {
+    if (this.data.outbreakInfo) {
+      const result = await this.outbreakService.fecthOutbreakPlaces(
+        this.data.id
+      );
+      if (result.items) {
+        this.outbreakPlaces = result.items;
+      }
+    }
   }
 
   get outbreakInfo(): OutbreakZone[] | undefined {
@@ -114,7 +130,8 @@ export class CaseViewModel extends BaseViewModel {
     console.log(caseId);
     this.reportMapViewModel = new ReportMapDialogViewModel(
       this.outbreakService,
-      caseId
+      caseId,
+      this.outbreakPlaces
     );
     this.reportMapViewModel.open(null);
   }

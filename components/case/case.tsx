@@ -26,6 +26,7 @@ import { formatYmdt } from "lib/datetime";
 import FollowupList from "components/report/followup/list";
 import { useRouter } from "next/router";
 import ReportLocationMapDialog from "components/case/reportMapDialog";
+import { toJS } from "mobx";
 
 const ReportMap = dynamic(() => import("./reportMap"), {
   loading: () => <p>A map is loading</p>,
@@ -145,6 +146,7 @@ const Case = (props: { id: string }) => {
                   <ReportMap
                     lnglat={viewModel.data.gpsLocation}
                     zones={viewModel.outbreakInfo}
+                    places={toJS(viewModel.outbreakPlaces)}
                   />
                   <div
                     className={`bg-red absolute top-3 right-3 p-2 z-[1001] hover:bg-gray-50
