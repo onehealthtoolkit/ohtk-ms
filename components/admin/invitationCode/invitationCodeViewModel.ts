@@ -131,6 +131,18 @@ export abstract class InvitationCodeViewModel extends BaseFormViewModel {
       this.fieldErrors["throughDate"] = "this field is required";
     }
 
+    // from date must be before through date
+    if (this.fromDate && this.throughDate) {
+      const fromDate = new Date(this.fromDate);
+      const throughDate = new Date(this.throughDate);
+      if (fromDate > throughDate) {
+        isValid = false;
+        this.fieldErrors["fromDate"] = "from date must be before through date";
+        this.fieldErrors["throughDate"] =
+          "through date must be after from date";
+      }
+    }
+
     return isValid;
   }
 }
