@@ -1,5 +1,5 @@
 import { CheckIcon, XIcon } from "@heroicons/react/solid";
-import { ErrorText, TextInput } from "components/widgets/forms";
+import { ErrorText, TextArea } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -50,8 +50,8 @@ const NotificationEdit = ({
         {title}
       </div>
       <div>
-        <TextInput
-          type="text"
+        <TextArea
+          rows={5}
           placeholder={t("form.placeholder.to", "To")}
           className=""
           onChange={evt => {
