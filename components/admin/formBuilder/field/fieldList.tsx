@@ -25,7 +25,7 @@ const List: FC<Props> = ({
           {fields.map(field => (
             <li
               key={field.id}
-              className={`m-2 relative flex items-stretch border-2 border-gray-100 hover:border-blue-200
+              className={`m-2 relative flex items-stretch border-2 border-gray-100 hover:border-blue-200 rounded
               ${
                 field.isCurrent ? "border-l-4 border-l-blue-400 bg-gray-50" : ""
               }`}

@@ -29,7 +29,7 @@ const Section: FC<Props> = ({ value: section, onDelete }) => {
         <h4 className="text-xs text-gray-600">Section</h4>
         <div className="flex flex-row w-full">
           <input
-            className="bg-blue-50 py-2 px-4 flex flex-1"
+            className="bg-blue-50 py-2 px-4 flex flex-1 rounded"
             type="text"
             autoFocus
             value={section.label}
@@ -47,7 +47,7 @@ const Section: FC<Props> = ({ value: section, onDelete }) => {
         </div>
 
         <h4 className="text-xs text-gray-600">Questions</h4>
-        <div className="p-4 border-dotted border-2">
+        <div className="p-4 border-dotted border-2 rounded">
           <QuestionList
             values={section.questions}
             onMoveDown={questionId => section.moveItemDown(questionId)}
@@ -59,7 +59,7 @@ const Section: FC<Props> = ({ value: section, onDelete }) => {
           <div className="p-4 flex justify-end ">
             <button
               type="button"
-              className="flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-800 focus:z-10 focus:ring-2 focus:ring-blue-200 "
+              className="flex justify-center rounded px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-800 focus:z-10 focus:ring-2 focus:ring-blue-200 "
             >
               <span onClick={() => section.addQuestion()}>Add Question</span>
             </button>

@@ -12,7 +12,7 @@ const Menus: FC<FieldMenusProps> = ({ value: question }) => {
     <div className="py-4 flex justify-end relative">
       <button
         type="button"
-        className="flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 
+        className="flex items-center rounded px-4 py-2 text-sm font-medium text-white bg-blue-600 
             hover:bg-blue-800 focus:z-10 focus:ring-2 focus:ring-blue-200 
         "
         onClick={() => question.toggleFieldMenus()}

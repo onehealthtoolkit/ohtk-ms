@@ -64,7 +64,7 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
         return (
           <input
             type="text"
-            className="mt-2 border border-gray-200 py-2 px-4 w-full rounded-sm bg-gray-50"
+            className="mt-2 border border-gray-200 py-2 px-4 w-full rounded bg-gray-50"
             placeholder="Text answer"
             value=""
             readOnly
@@ -74,7 +74,7 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
         return (
           <input
             type="number"
-            className="mt-2 border border-gray-200 py-2 px-4 w-full rounded-sm bg-gray-50"
+            className="mt-2 border border-gray-200 py-2 px-4 w-full rounded bg-gray-50"
             placeholder="Integer answer"
             value=""
             readOnly
@@ -84,7 +84,7 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
         return (
           <input
             type="number"
-            className="mt-2 border border-gray-200 py-2 px-4 w-full rounded-sm bg-gray-50"
+            className="mt-2 border border-gray-200 py-2 px-4 w-full rounded bg-gray-50"
             placeholder="Decimal answer"
             value=""
             readOnly
@@ -95,21 +95,21 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
           <div className="flex mt-2 ">
             <input
               type="number"
-              className="border border-gray-200 py-2 px-4 w-1/3 mr-2 rounded-sm bg-gray-50"
+              className="border border-gray-200 py-2 px-4 w-1/3 mr-2 rounded bg-gray-50"
               placeholder="Day"
               value=""
               readOnly
             />
             <input
               type="number"
-              className="border border-gray-200 py-2 px-4 w-1/3 mr-2 rounded-sm bg-gray-50"
+              className="border border-gray-200 py-2 px-4 w-1/3 mr-2 rounded bg-gray-50"
               placeholder="Month"
               value=""
               readOnly
             />
             <input
               type="number"
-              className="border border-gray-200 py-2 px-4 w-1/3 rounded-sm bg-gray-50"
+              className="border border-gray-200 py-2 px-4 w-1/3 rounded bg-gray-50"
               placeholder="Year"
               value=""
               readOnly
@@ -119,13 +119,13 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
       case "images":
         return (
           <div className="flex flex-wrap mt-2">
-            <div className="w-20 h-20 border rounded-sm border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
+            <div className="w-20 h-20 border rounded border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
               <PhotographIcon className="w-8 h-8 text-gray-300" />
             </div>
-            <div className="w-20 h-20 border rounded-sm border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
+            <div className="w-20 h-20 border rounded border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
               <PhotographIcon className="w-8 h-8 text-gray-300" />
             </div>
-            <div className="w-20 h-20 border rounded-sm border-gray-200 bg-gray-50 flex items-center justify-center">
+            <div className="w-20 h-20 border rounded border-gray-200 bg-gray-50 flex items-center justify-center">
               <PlusIcon className="w-8 h-8 text-gray-300" />
             </div>
           </div>

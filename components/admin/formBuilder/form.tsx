@@ -13,7 +13,7 @@ const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
   return (
     <div>
       <div className="flex flex-row justify-between">
-        <h3 className="font-bold text-gray-500 ">{form.label}</h3>
+        <h3 className="font-bold text-black text-xl ">{form.label}</h3>
         <button
           type="button"
           className="flex flex-row items-center justify-center

@@ -168,7 +168,7 @@ const Question: FC<Props> = ({ value: question, onSelect, onDelete }) => {
       </QuestionActionBar>
 
       <h4 className="text-xs text-gray-600">Fields</h4>
-      <div className="p-2 mb-4 border-dotted border-2">
+      <div className="p-2 mb-4 border-dotted border-2 rounded">
         <FieldList
           values={question.fields}
           onMoveDown={fieldId => question.moveItemDown(fieldId)}

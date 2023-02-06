@@ -19,13 +19,13 @@ const List: FC<Props> = ({
   onAdd,
 }) => {
   return (
-    <div className="bg-white border p-4 border-gray-200 w-full md:w-1/4">
+    <div className="bg-white border p-4 border-gray-200 w-full md:w-1/4 rounded">
       <div className={"flex flex-col md:min-h-[400px]"}>
         {sections.map(section => {
           return (
             <div
               key={section.id}
-              className={`flex items-center text-sm font-medium border-b border-gray-200
+              className={`flex items-center text-sm font-medium border-b border-gray-200 rounded
                  ${
                    section.isCurrent
                      ? "bg-blue-600 text-white"
@@ -55,7 +55,7 @@ const List: FC<Props> = ({
       <button
         type="button"
         onClick={() => onAdd()}
-        className="flex flex-shrink justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-800 focus:z-10 focus:ring-2 focus:ring-blue-200 "
+        className="flex flex-shrink justify-center w-full px-4 py-2 text-sm rounded font-medium text-white bg-blue-600 hover:bg-blue-800 focus:z-10 focus:ring-2 focus:ring-blue-200 "
       >
         <span>Add Section</span>
       </button>

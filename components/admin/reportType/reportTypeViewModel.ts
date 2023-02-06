@@ -116,7 +116,7 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   public parseDefinition(value: string): boolean {
     try {
       this.definitionFormViewModel.parse(JSON.parse(value));
-      this.definitionFormViewModel.setLabel(this.name + " Definition");
+      this.definitionFormViewModel.setLabel(this.name);
       this.definition = this.definitionFormViewModel.jsonString;
       return true;
     } catch (e) {
