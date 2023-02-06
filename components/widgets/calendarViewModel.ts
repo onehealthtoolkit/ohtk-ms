@@ -55,12 +55,15 @@ export abstract class CalendarViewModel<TEventModel extends CalendarEvent> {
 
   abstract get events(): Array<TEventModel>;
 
-  isToday(day: number | null): boolean {
-    return (
-      this.now.getDate() === day &&
-      this.month === this.now.getMonth() &&
-      this.year === this.now.getFullYear()
-    );
+  isToday(date: CalendarDate): boolean {
+    if (date.day === this.now.getDate()) {
+      if (date.month === this.now.getMonth()) {
+        if (date.year === this.now.getFullYear()) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   today() {

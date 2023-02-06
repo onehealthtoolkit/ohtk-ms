@@ -95,7 +95,7 @@ const Calendar = <T extends CalendarEvent>({
                       <div className="h-24 flex flex-col">
                         <span
                           className={`rounded-full block w-6 p-1 text-center mb-2 ${
-                            d && viewModel.isToday(d.day)
+                            d && viewModel.isToday(d)
                               ? "bg-blue-500 text-white"
                               : ""
                           }`}
