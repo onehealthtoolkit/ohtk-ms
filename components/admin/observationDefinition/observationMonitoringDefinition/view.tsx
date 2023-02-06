@@ -6,6 +6,7 @@ import useServices from "lib/services/provider";
 import { ObservationMonitoringDefinitionViewViewModel } from "./viewViewModel";
 import Breadcrumb from "components/layout/breadcrumb";
 import { useTranslation } from "react-i18next";
+import ViewActionButtons from "components/widgets/viewActionButtons";
 
 const ObservationMonitoringDefinitionView = () => {
   const router = useRouter();
@@ -18,6 +19,8 @@ const ObservationMonitoringDefinitionView = () => {
         services.observationMonitoringDefinitionService
       )
   );
+  const observationId = router.query.id as string;
+  const observationName = router.query.definition_name as string;
 
   return (
     <MaskingLoader loading={viewModel.isLoading}>
@@ -92,6 +95,9 @@ const ObservationMonitoringDefinitionView = () => {
             </tbody>
           </table>
         </div>
+        <ViewActionButtons
+          editUrl={`/admin/observation_definitions/${observationId}/observation_monitoring_definitions/${viewModel.data.id}/update?definition_name=${observationName}`}
+        />
       </div>
     </MaskingLoader>
   );
