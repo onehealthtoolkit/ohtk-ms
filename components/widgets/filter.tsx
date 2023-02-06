@@ -101,7 +101,7 @@ const Filter: React.FC<FilterProps> = ({
             <Popover.Panel
               className={`${popPositionClass} absolute top-full  z-[60000] mt-2 px-4 sm:px-0 min-w-[400px]`}
             >
-              <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white">
+              <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white">
                 <div className="px-6 py-4 flex items-center justify-between border-b-2 border-gray-300">
                   <div className="text-2xl font-display font-semibold">
                     Filter
