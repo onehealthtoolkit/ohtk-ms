@@ -74,9 +74,9 @@ const ReporterNotificationsUpdateForm = () => {
         {() => (
           <Field $size="half">
             <Label htmlFor="description">{t("form.label.name", "Name")}</Label>
-            <TextInput
+            <TextArea
               id="description"
-              type="text"
+              rows={2}
               placeholder={t("form.placeholder.name", "Name")}
               onChange={evt => (viewModel.description = evt.target.value)}
               disabled={viewModel.isSubmitting}

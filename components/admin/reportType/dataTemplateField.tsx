@@ -212,7 +212,7 @@ const DataTemplateField = ({
           py-2
           px-3
           text-grey-darker
-          h-[150px]
+          h-[250px]
           overflow-y-auto
           text-[10.5pt]
           ${className}
