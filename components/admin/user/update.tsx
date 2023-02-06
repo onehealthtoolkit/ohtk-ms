@@ -25,7 +25,8 @@ import useStore from "lib/store";
 
 const UserUpdate = () => {
   const router = useRouter();
-  const { me } = useStore();
+  const store = useStore();
+  const me = store.me;
   const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
@@ -193,16 +194,18 @@ const UserUpdate = () => {
               <option value={AccountsAuthorityUserRoleChoices.Ofc}>
                 Officer
               </option>
-              <option value={AccountsAuthorityUserRoleChoices.Adm}>
-                Admin
-              </option>
+              {(store.isRoleAdmin || store.isSuperUser) && (
+                <option value={AccountsAuthorityUserRoleChoices.Adm}>
+                  Admin
+                </option>
+              )}
             </Select>
             <ErrorText>{viewModel.fieldErrors.role}</ErrorText>
           </Field>
         )}
       </Observer>
     ),
-    [t, viewModel]
+    [t, viewModel, store]
   );
 
   const onSubmit = useCallback(async () => {

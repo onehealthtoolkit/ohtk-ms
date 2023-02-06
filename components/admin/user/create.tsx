@@ -24,7 +24,8 @@ import AuthroitySelect from "components/widgets/authoritySelect";
 
 const UserCreate = () => {
   const router = useRouter();
-  const { me } = useStore();
+  const store = useStore();
+  const me = store.me;
   const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
@@ -140,7 +141,11 @@ const UserCreate = () => {
             <option value={AccountsAuthorityUserRoleChoices.Ofc}>
               Officer
             </option>
-            <option value={AccountsAuthorityUserRoleChoices.Adm}>Admin</option>
+            {(store.isRoleAdmin || store.isSuperUser) && (
+              <option value={AccountsAuthorityUserRoleChoices.Adm}>
+                Admin
+              </option>
+            )}
           </Select>
           <ErrorText>{errors.role}</ErrorText>
         </Field>
