@@ -13,6 +13,7 @@ import {
   Label,
   SaveButton,
   TextInput,
+  TextArea,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
@@ -87,13 +88,12 @@ const PlaceCreate = () => {
           <Label htmlFor="notificationTo">
             {t("form.label.notificationTo", "Contact")}
           </Label>
-          <TextInput
+          <TextArea
             id="notificationTo"
-            type="text"
+            rows={3}
             placeholder={t("form.placeholder.notificationTo", "Contact")}
             onChange={evt => (viewModel.notificationTo = evt.target.value)}
             disabled={isSubmitting}
-            required
           />
           <ErrorText>{errors.notificationTo}</ErrorText>
         </Field>

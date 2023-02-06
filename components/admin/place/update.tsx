@@ -13,6 +13,7 @@ import {
   Label,
   MaskingLoader,
   SaveButton,
+  TextArea,
   TextInput,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
@@ -116,16 +117,15 @@ const PlaceUpdate = () => {
             <Label htmlFor="notificationTo">
               {t("form.label.notificationTo", "Contact")}
             </Label>
-            <TextInput
+            <TextArea
               id="notificationTo"
-              type="text"
+              rows={3}
               placeholder={t("form.placeholder.notificationTo", "Contact")}
               onChange={evt => (viewModel.notificationTo = evt.target.value)}
               disabled={viewModel.isSubmitting}
               value={viewModel.notificationTo}
-              required
             />
-            <ErrorText>{viewModel.fieldErrors.longitude}</ErrorText>
+            <ErrorText>{viewModel.fieldErrors.notificationTo}</ErrorText>
           </Field>
         )}
       </Observer>
@@ -137,7 +137,7 @@ const PlaceUpdate = () => {
     () => (
       <Observer>
         {() => {
-          if (store.isRoleOfficer) {
+          if (!store.isSuperUser && store.isRoleOfficer) {
             return null;
           }
           return (

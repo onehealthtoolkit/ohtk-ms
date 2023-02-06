@@ -121,11 +121,6 @@ export abstract class PlaceViewModel extends BaseFormViewModel {
       this.fieldErrors["name"] = "this field is required";
     }
 
-    if (this.notificationTo.length === 0) {
-      isValid = false;
-      this.fieldErrors["notificationTo"] = "this field is required";
-    }
-
     if (this.latitude === 0) {
       isValid = false;
       this.fieldErrors["latitude"] = "this field is required";
