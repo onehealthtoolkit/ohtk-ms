@@ -266,17 +266,19 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     display={store.isSuperUser}
                     icon={<CogIcon className={iconClassName} />}
                   />
-                  <Menu
-                    href="/admin/observation_definitions/"
-                    pathname={pathname}
-                    label={t(
-                      "breadcrumb.observationDefinitions",
-                      "Observation Definitions"
-                    )}
-                    collapsed={store.menu.collapsed}
-                    display={store.isSuperUser}
-                    icon={<ColorSwatchIcon className={iconClassName} />}
-                  />
+                  {store.isFeatureEnable("observation") && (
+                    <Menu
+                      href="/admin/observation_definitions/"
+                      pathname={pathname}
+                      label={t(
+                        "breadcrumb.observationDefinitions",
+                        "Observation Definitions"
+                      )}
+                      collapsed={store.menu.collapsed}
+                      display={store.isSuperUser}
+                      icon={<ColorSwatchIcon className={iconClassName} />}
+                    />
+                  )}
                 </ul>
               </div>
             </div>
