@@ -56,7 +56,7 @@ const MapView: React.FC<MapViewProps> = ({ authorityId, filter }) => {
           <div className="rounded-lg border border-gray-200 shadow-md  w-full">
             <MapContainer
               zoom={12}
-              scrollWheelZoom={false}
+              scrollWheelZoom={true}
               style={{ height: 300, width: "100%" }}
               bounds={bounds}
             >

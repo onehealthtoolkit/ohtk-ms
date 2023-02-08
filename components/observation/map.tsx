@@ -66,7 +66,7 @@ const MapView: React.FC<MapViewProps> = ({ data }) => {
     <div className="relative w-full h-[80vh]">
       <MapContainer
         zoom={12}
-        scrollWheelZoom={false}
+        scrollWheelZoom={true}
         center={center}
         style={{ height: "100%", width: "100%" }}
       >
