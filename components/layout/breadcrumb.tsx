@@ -11,7 +11,7 @@ export type CrumbProps = {
 const Breadcrumb = ({ crumbs }: { crumbs: Array<CrumbProps> }) => {
   return (
     <nav
-      className="flex mb-3 py-3  text-white rounded-t-lg dark:bg-gray-800 dark:border-gray-700 bg-[#5E7284]"
+      className="flex mb-3 py-3  text-white rounded-t-lg dark:bg-gray-800 dark:border-gray-700 bg-[color:var(--breadcrumb-bg-color)]"
       aria-label="Breadcrumb"
     >
       <ol className="inline-flex items-center space-x-1 md:space-x-3">

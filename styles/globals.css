@@ -1,6 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --breadcrumb-bg-color: #393e46;
+  --button-bg-color: #00adb5;
+  --button-border-color: #00adb5;
+  --button-hover-color: #00ad98;
+  --button-border-hover-color: #00ad98;
+  --icon-color: #00adb5;
+  --icon-hover-color: #00ad98;
+}
+
 .main > div {
   @apply pt-4 pb-4;
   padding-left: 28px;

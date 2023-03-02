@@ -18,11 +18,12 @@ const BackButton = tw.button`
 `;
 
 const EditButton = tw.button`
-border
+  border
   text-white
-  bg-[#4C81F1] 
-  border-blue-300
-  hover:border-blue-500
+  bg-[color:var(--button-bg-color)]
+  border-[color:var(--button-border-color)]
+  hover:border-[color:var(--button-border-hover-color)]
+  hover:bg-[color:var(--button-hover-color)]
   rounded
   w-24
   h-12

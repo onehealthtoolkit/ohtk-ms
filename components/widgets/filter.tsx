@@ -9,10 +9,10 @@ export const SearchButton = tw.button`
   px-4
   py-2
   text-white
-  bg-blue-500
-  border-blue-300
-  hover:border-blue-500
-  hover:bg-blue-600
+  bg-[color:var(--button-bg-color)]
+  border-[color:var(--button-border-color)]
+  hover:border-[color:var(--button-border-hover-color)]
+  hover:bg-[color:var(--button-hover-color)]
   rounded
   border-l
   mr-1
@@ -56,10 +56,10 @@ export const FilterButton = tw.button`
   px-4
   py-2
   text-white
-  bg-blue-500
-  border-blue-300
-  hover:border-blue-500
-  hover:bg-blue-600
+  bg-[color:var(--button-bg-color)]
+  border-[color:var(--button-border-color)]
+  hover:border-[color:var(--button-border-hover-color)]
+  hover:bg-[color:var(--button-hover-color)]
   flex items-center justify-center  
   rounded
   border-l
