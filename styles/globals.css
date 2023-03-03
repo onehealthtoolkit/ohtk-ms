@@ -6,10 +6,14 @@
   --breadcrumb-bg-color: #393e46;
   --button-bg-color: #00adb5;
   --button-border-color: #00adb5;
-  --button-hover-color: #00ad98;
-  --button-border-hover-color: #00ad98;
+  --button-hover-color: #267478;
+  --button-border-hover-color: #267478;
+  --button-bg-active-color: #d0f2ee;
+  --button-border-active-color: #d0f2ee;
+  --button-text-active-color: #2bbac1;
   --icon-color: #00adb5;
-  --icon-hover-color: #00ad98;
+  --icon-hover-color: #267478;
+  --icon-active-color: #2bbac1;
 }
 
 .main > div {

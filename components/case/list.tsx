@@ -48,7 +48,11 @@ const SwitchViewButton = tw.button`
   flex items-center justify-center  
   ${(p: { active: number }) => {
     return p.active
-      ? `text-white bg-[color:var(--button-bg-color)] hover:bg-[color:var(--button-hover-color)]`
+      ? `text-white bg-[color:var(--button-bg-color)] hover:bg-[color:var(--button-hover-color)]   
+        active:bg-[color:var(--button-bg-active-color)]
+        active:border-[color:var(--button-border-active-color)]
+        active:text-[color:var(--button-text-active-color)]
+      `
       : `bg-white text-gray-500 border-gray-500 border hover:bg-gray-100`;
   }}
 `;

@@ -172,7 +172,7 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
           {viewModel.authorityName}
           <button
             type="button"
-            className="text-[color:var(--icon-color)] hover:text-[color:var(--icon-hover-color)] focus:outline-none font-medium rounded-full text-sm p-1.5 text-center inline-flex items-center"
+            className="text-[color:var(--icon-color)] hover:text-[color:var(--icon-hover-color)] active:text-[color:var(--icon-active-color)] focus:outline-none font-medium rounded-full text-sm p-1.5 text-center inline-flex items-center"
             onClick={() => onRefresh()}
           >
             <RefreshIcon className="h-5 w-5" aria-hidden="true" />

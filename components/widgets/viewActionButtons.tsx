@@ -24,6 +24,9 @@ const EditButton = tw.button`
   border-[color:var(--button-border-color)]
   hover:border-[color:var(--button-border-hover-color)]
   hover:bg-[color:var(--button-hover-color)]
+  active:bg-[color:var(--button-bg-active-color)]
+  active:border-[color:var(--button-border-active-color)]
+  active:text-[color:var(--button-text-active-color)]
   rounded
   w-24
   h-12
