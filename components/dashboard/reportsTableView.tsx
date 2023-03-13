@@ -34,7 +34,7 @@ const ReportsTableView: React.FC<ReportsTableViewProps> = ({
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <DashboardCard
-        titleClass="bg-[#DA3535]"
+        titleClass="bg-[color:var(--breadcrumb-bg-color)]"
         title={`Reports [${viewModel?.totalCount}]`}
         action={
           <button

@@ -34,7 +34,7 @@ const CasesTableView: React.FC<CasesTableViewProps> = ({
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <DashboardCard
-        titleClass="bg-[#5E7284]"
+        titleClass="bg-[#DA3535]"
         title={`Cases [${viewModel?.totalCount}]`}
         action={
           <button

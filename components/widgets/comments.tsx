@@ -128,9 +128,9 @@ const CommentForm = observer(
             className="border
                       text-white
                       text-sm
-                      bg-[#4C81F1] 
-                      border-blue-300
-                      hover:border-blue-500
+                      bg-[color:var(--button-bg-color)] 
+                      border:[color:var(--button-border-color)]
+                      hover:bg-[color:var(--button-hover-color)]
                       rounded
                       px-4
                       py-2

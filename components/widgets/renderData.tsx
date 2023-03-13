@@ -33,7 +33,7 @@ const ViewTypeSwitch = ({ active, onChange }: ViewTypeSwitchProps) => {
         peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full 
         peer-checked:after:border-white after:content-[''] after:absolute after:top-[10px] 
         after:left-[45px] after:bg-white after:border-gray-300 after:border 
-        after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600
+        after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[color:var(--primary-color)]
         "
       ></div>
       <span className="mx-2 text-sm font-medium text-gray-900">Definition</span>

@@ -79,7 +79,7 @@ const SummaryByCategoryPieView: React.FC<SummaryByCategoryPieViewProps> = ({
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <DashboardCard
-        titleClass="bg-[#5E7284]"
+        titleClass="bg-[color:var(--breadcrumb-bg-color)]"
         title="Total reports"
         action={
           <Menu as="div" className="relative inline-block text-left">

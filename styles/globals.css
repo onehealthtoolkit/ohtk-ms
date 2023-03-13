@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  --primary-color: #00adb5;
   --breadcrumb-bg-color: #393e46;
   --button-bg-color: #00adb5;
   --button-border-color: #00adb5;
@@ -14,6 +15,11 @@
   --icon-color: #00adb5;
   --icon-hover-color: #267478;
   --icon-active-color: #2bbac1;
+  --add-button-bg-color: #f3955f;
+  --add-button-border-color: #f3955f;
+  --add-button-hover-color: #b35f2c;
+  --add-button-border-hover-color: #b35f2c;
+  --add-button-text-color: #fff;
 }
 
 .main > div {

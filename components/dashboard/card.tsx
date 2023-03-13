@@ -13,7 +13,7 @@ const DashboardCard: React.FC<DashboardCardProp> = ({
   action,
 }) => {
   return (
-    <div className="relative flex flex-col min-w-0 break-words w-full h-full mb-6 shadow-lg ">
+    <div className="relative flex flex-col min-w-0 break-words w-full h-full mb-6 shadow-lg  ">
       <div className={`rounded-t-lg mb-0 px-4 py-2 h-[45px] ${titleClass}`}>
         <div className="flex flex-wrap items-center">
           <div className="relative w-full max-w-full flex-grow flex-1">

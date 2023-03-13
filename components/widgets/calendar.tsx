@@ -96,7 +96,7 @@ const Calendar = <T extends CalendarEvent>({
                         <span
                           className={`rounded-full block w-6 p-1 text-center mb-2 ${
                             d && viewModel.isToday(d)
-                              ? "bg-blue-500 text-white"
+                              ? "bg-[color:var(--primary-color)] text-white"
                               : ""
                           }`}
                         >

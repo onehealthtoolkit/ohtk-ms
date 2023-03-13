@@ -27,11 +27,11 @@ export const AddButton = forwardRef(function AddButton(
         px-4 
         py-2 
         border
-      text-white
-      bg-[#67C687] 
-      border-blue-300
-      hover:border-green-500
-      hover:bg-green-500
+        text-[color:var(--add-button-text-color)]
+        bg-[color:var(--add-button-bg-color)]
+        hover:bg-[color:var(--add-button-hover-color)]
+        border-[color:var(--add-button-border-color)]
+        hover:border-[color:var(--add-button-border-hover-color)]
         rounded
         flex 
         justify-center 
