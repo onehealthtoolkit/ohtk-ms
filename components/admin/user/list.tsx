@@ -111,12 +111,12 @@ const UserList = () => {
                 get: record => record.username,
               },
               {
-                label: t("form.label.firstName", "First Name"),
-                get: record => record.firstName,
+                label: t("form.label.name", "Name"),
+                get: record => `${record.firstName} ${record.lastName}`,
               },
               {
-                label: t("form.label.lastName", "Last Name"),
-                get: record => record.lastName,
+                label: t("form.label.authority", "Authority"),
+                get: record => record.authorityName,
               },
               {
                 label: t("form.label.email", "Email"),

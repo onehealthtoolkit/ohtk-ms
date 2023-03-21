@@ -14,6 +14,9 @@ query Users($limit: Int!, $offset: Int!, $q: String, $ordering: String) {
       lastName
       username
       role
+      authority {
+        name
+      }
     }
   }
 }

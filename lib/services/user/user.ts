@@ -8,4 +8,5 @@ export type User = {
   avatarUrl?: string;
   role?: string | null;
   authorityId?: number;
+  authorityName?: string;
 };

@@ -36,6 +36,21 @@ export const PromoteToCaseButton = tw.button`
   items-center
 `;
 
+export const ConvertToTestReportButton = tw.button`
+  px-4 
+  py-2 
+  border 
+  text-blue-500 
+  border-blue-700 
+  hover:border-blue-500
+  focus:ring-4 
+  focus:outline-none 
+  focus:ring-blue-300 
+  font-medium rounded-lg 
+  text-center 
+  ml-1
+`;
+
 const ReportLocation = dynamic(() => import("../case/reportMap"), {
   loading: () => <p>A map is loading</p>,
   ssr: false,
@@ -133,10 +148,10 @@ const Report = (props: { id: string }) => {
         return (
           <MaskingLoader loading={viewModel.isLoading}>
             <>
-              {viewModel.data.caseId == undefined && (
-                <div className="flex items-center flex-wrap absolute right-0 top-12">
-                  <div className="flex-grow"></div>
-                  {!viewModel.data.testFlag && (
+              <div className="flex items-center flex-wrap absolute right-0 top-12">
+                <div className="flex-grow"></div>
+                {viewModel.data.caseId == undefined &&
+                  !viewModel.data.testFlag && (
                     <PromoteToCaseButton
                       disabled={viewModel.isLoading}
                       type="button"
@@ -149,8 +164,19 @@ const Report = (props: { id: string }) => {
                       &nbsp;Promote To Case
                     </PromoteToCaseButton>
                   )}
-                </div>
-              )}
+                {!viewModel.data.testFlag && (
+                  <ConvertToTestReportButton
+                    disabled={viewModel.converting}
+                    type="button"
+                    onClick={async () => {
+                      await viewModel.convertToTestReport();
+                    }}
+                  >
+                    {viewModel.converting && <Spinner />}
+                    &nbsp;Convert to Test Report
+                  </ConvertToTestReportButton>
+                )}
+              </div>
 
               {viewModel.data.testFlag && (
                 <div className="flex fixed w-full h-full top-0 left-0 z-[999] pointer-events-none">

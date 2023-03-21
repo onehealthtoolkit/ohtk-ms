@@ -17,6 +17,7 @@ export class ReportViewModel extends BaseViewModel {
   galleryViewModel?: GalleryDialogViewModel = undefined;
 
   _activeTabIndex: number = 0;
+  _converting: boolean = false;
 
   constructor(
     id: string,
@@ -32,6 +33,8 @@ export class ReportViewModel extends BaseViewModel {
       openGallery: action,
       _activeTabIndex: observable,
       activeTabIndex: computed,
+      _converting: observable,
+      converting: computed,
     });
     this.id = id;
     this.fetch();
@@ -42,6 +45,13 @@ export class ReportViewModel extends BaseViewModel {
   }
   public set activeTabIndex(value: number) {
     this._activeTabIndex = value;
+  }
+
+  public get converting(): boolean {
+    return this._converting;
+  }
+  public set converting(value: boolean) {
+    this._converting = value;
   }
 
   async fetch() {
@@ -59,6 +69,14 @@ export class ReportViewModel extends BaseViewModel {
     this.isLoading = true;
     const result = await this.caseService.promoteToCase(this.id);
     this.isLoading = false;
+    return result;
+  }
+
+  public async convertToTestReport(): Promise<String> {
+    this.converting = true;
+    const result = await this.reportService.convertToTestReport(this.id);
+    if (result) this.data.testFlag = true;
+    this.converting = false;
     return result;
   }
 
