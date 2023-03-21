@@ -10,4 +10,5 @@ export type ReportType = {
   rendererDataTemplate?: string;
   followupDefinition?: string;
   rendererFollowupDataTemplate?: string;
+  published?: boolean;
 };

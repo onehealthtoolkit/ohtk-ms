@@ -15,6 +15,7 @@ query ReportTypes($limit: Int!, $offset: Int!, $q: String, $ordering: String) {
       }
       definition
       ordering
+      published
     }
   }
 }
@@ -147,6 +148,23 @@ mutation ReportTypeDelete($id: ID!) {
     success
   }
 }
+
+mutation publicReportType($reportTypeId: UUID!) {
+  publishReportType(reportTypeId: $reportTypeId) {
+    reportType {
+      id
+    }
+  }
+}
+
+mutation unpublicReportType($reportTypeId: UUID!) {
+  unpublishReportType(reportTypeId: $reportTypeId) {
+    reportType {
+      id
+    }
+  }
+}
+
 query GetReportType($id: ID!) {
   reportType(id: $id) {
     id

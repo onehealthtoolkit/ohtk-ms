@@ -171,10 +171,14 @@
   "dialog": {
     "title": {
       "confirmDelete": "ยืนยันการลบ",
+      "confirmPublishReportType": "ยืนยันเผยแพร่ประเภทรายงาน",
+      "confirmUnpublishReportType": "ยืนยันยกเลิกเผยแพร่ประเภทรายงาน",
       "confirmTransition": "ยืนยันเปลี่ยนสถานะ"
     },
     "content": {
       "confirmDelete": "คุณแน่ใจหรือ ?",
+      "confirmPublishReportType": "คุณแน่ใจเผยแพร่ประเภทรายงานหรือ?",
+      "confirmUnpublishReportType": "คุณแน่ใจยกเลิกเผยแพร่ประเภทรายงานหรือ?",
       "confirmTransition": "ต้องการเปลี่ยนสถานะเป็น  {{stepName}} ?"
     }
   },

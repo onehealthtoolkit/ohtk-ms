@@ -47,6 +47,8 @@ const ReportTypeList = () => {
       stateDefinitionService
     );
     model.registerDialog("confirmDelete");
+    model.registerDialog("confirmPublishReportType");
+    model.registerDialog("confirmUnpublishReportType");
     model.registerDialog("formSimulation");
     model.registerDialog("definitionQrcode");
     return model;
@@ -196,6 +198,42 @@ const ReportTypeList = () => {
                     className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
                     onClick={() => viewModel.exportReportType(record.id)}
                   />
+                  {!record.published && (
+                    <button
+                      title="publish"
+                      type="button"
+                      onClick={() =>
+                        viewModel
+                          .dialog("confirmPublishReportType")
+                          ?.open(record)
+                      }
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+                      >
+                        <path d="M9.125 16.312v-7.02l-2.146 2.146-1.208-1.209L10 6l4.229 4.229-1.208 1.209-2.146-2.146v7.02ZM3.667 6.062V4.271q0-.729.51-1.229.511-.5 1.219-.5h9.208q.708 0 1.208.5t.5 1.229v1.791h-1.729V4.271H5.396v1.791Z" />
+                      </svg>
+                    </button>
+                  )}
+                  {record.published && (
+                    <button
+                      title="unpublish"
+                      type="button"
+                      onClick={() =>
+                        viewModel
+                          .dialog("confirmUnpublishReportType")
+                          ?.open(record)
+                      }
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+                      >
+                        <path d="m16.083 18.229-1.479-1.479q-1.042.688-2.208 1.052-1.167.365-2.396.365-1.688 0-3.177-.636-1.49-.635-2.604-1.75-1.115-1.114-1.75-2.604-.636-1.489-.636-3.177 0-1.229.365-2.396.364-1.166 1.052-2.208L1.854 4l1.104-1.104 14.23 14.229ZM10 16.438q.896 0 1.74-.261.843-.26 1.614-.677l-3.416-3.417-1.021 1.021-2.896-2.916 1.125-1.126 1.708 1.709-.104.104L4.5 6.646q-.417.771-.677 1.614-.261.844-.261 1.74 0 2.688 1.886 4.562Q7.333 16.438 10 16.438Zm6.812-1.917-1.27-1.25q.416-.771.656-1.583.24-.813.24-1.688 0-2.688-1.886-4.562Q12.667 3.562 10 3.562q-.875 0-1.688.24-.812.24-1.583.656l-1.25-1.27q1-.667 2.156-1.011Q8.792 1.833 10 1.833q1.688 0 3.177.636 1.49.635 2.604 1.75 1.115 1.114 1.75 2.604.636 1.489.636 3.177 0 1.208-.344 2.365-.344 1.156-1.011 2.156Zm-4.666-4.646-1.167-1.208 1.771-1.792 1.208 1.187Zm-1.084-1.104Zm-2.333 2.5Z" />
+                      </svg>{" "}
+                    </button>
+                  )}
                 </>
               );
             }}
@@ -216,6 +254,38 @@ const ReportTypeList = () => {
             content={t("dialog.content.confirmDelete", "Are you sure?")}
             onYes={(record: ReportType) => viewModel.delete(record.id)}
             onNo={() => viewModel.dialog("confirmDelete")?.close()}
+          />
+
+          <ConfirmDialog
+            store={viewModel.dialog("confirmPublishReportType")}
+            title={t(
+              "dialog.title.confirmPublishReportType",
+              "Confirm publish report type"
+            )}
+            content={t(
+              "dialog.content.confirmPublishReportType",
+              "Are you sure?"
+            )}
+            onYes={(record: ReportType) =>
+              viewModel.publishReportType(record.id)
+            }
+            onNo={() => viewModel.dialog("confirmPublishReportType")?.close()}
+          />
+
+          <ConfirmDialog
+            store={viewModel.dialog("confirmUnpublishReportType")}
+            title={t(
+              "dialog.title.confirmUnpublishReportType",
+              "Confirm unpublish report type"
+            )}
+            content={t(
+              "dialog.content.confirmUnpublishReportType",
+              "Are you sure?"
+            )}
+            onYes={(record: ReportType) =>
+              viewModel.unpublishReportType(record.id)
+            }
+            onNo={() => viewModel.dialog("confirmUnpublishReportType")?.close()}
           />
 
           <FormSimulationDialog viewModel={viewModel.dialog("formSimulation")}>

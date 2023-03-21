@@ -171,10 +171,14 @@
   "dialog": {
     "title": {
       "confirmDelete": "ຢືນຢັນການລຶບ",
+      "confirmPublishReportType": "ຢືນຢັນການເຜີຍແຜ່ປະເພດບົດລາຍງານ",
+      "confirmUnpublishReportType": "ຢືນຢັນການຍົກເລີກການເຜີຍແຜ່ປະເພດບົດລາຍງານ",
       "confirmTransition": "ຢືນຢັນການຫັນປ່ຽນ"
     },
     "content": {
       "confirmDelete": "ຢືນຢັນການລຶບ ?",
+      "confirmPublishReportType": "ທ່ານແນ່ໃຈບໍ່ວ່າຢືນຢັນການເຜີຍແຜ່ປະເພດລາຍງານ ?",
+      "confirmUnpublishReportType": "ທ່ານແນ່ໃຈບໍ່ວ່າຢືນຢັນປະເພດລາຍງານທີ່ບໍ່ໄດ້ເຜີຍແຜ່ ?",
       "confirmTransition": "ທ່ານຕ້ອງການປ່ຽນສະຖານະເປັນ  {{stepName}} ?"
     }
   },

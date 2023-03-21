@@ -5818,6 +5818,7 @@ export type ReportTypesQuery = {
       name: string;
       definition: any;
       ordering: number;
+      published: boolean;
       category: {
         __typename?: "AdminCategoryCreateSuccess";
         id: string;
@@ -5953,6 +5954,30 @@ export type ReportTypeDeleteMutation = {
   adminReportTypeDelete?: {
     __typename?: "AdminReportTypeDeleteMutation";
     success?: boolean | null;
+  } | null;
+};
+
+export type PublicReportTypeMutationVariables = Exact<{
+  reportTypeId: Scalars["UUID"];
+}>;
+
+export type PublicReportTypeMutation = {
+  __typename?: "Mutation";
+  publishReportType?: {
+    __typename?: "PublishReportTypeMutation";
+    reportType?: { __typename?: "ReportTypeType"; id: any } | null;
+  } | null;
+};
+
+export type UnpublicReportTypeMutationVariables = Exact<{
+  reportTypeId: Scalars["UUID"];
+}>;
+
+export type UnpublicReportTypeMutation = {
+  __typename?: "Mutation";
+  unpublishReportType?: {
+    __typename?: "UnPublishReportTypeMutation";
+    reportType?: { __typename?: "ReportTypeType"; id: any } | null;
   } | null;
 };
 
@@ -18322,6 +18347,10 @@ export const ReportTypesDocument = {
                         kind: "Field",
                         name: { kind: "Name", value: "ordering" },
                       },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "published" },
+                      },
                     ],
                   },
                 },
@@ -19111,6 +19140,126 @@ export const ReportTypeDeleteDocument = {
 } as unknown as DocumentNode<
   ReportTypeDeleteMutation,
   ReportTypeDeleteMutationVariables
+>;
+export const PublicReportTypeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "publicReportType" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "publishReportType" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reportType" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  PublicReportTypeMutation,
+  PublicReportTypeMutationVariables
+>;
+export const UnpublicReportTypeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "unpublicReportType" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "unpublishReportType" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reportType" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UnpublicReportTypeMutation,
+  UnpublicReportTypeMutationVariables
 >;
 export const GetReportTypeDocument = {
   kind: "Document",
