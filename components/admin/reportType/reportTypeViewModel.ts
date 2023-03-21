@@ -14,8 +14,9 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   _stateDefinitionId: number = 0;
   _ordering: number = 0;
   _rendererDataTemplate: string = "";
-  _followupDefinition: string = "{}";
+  _followupDefinition: string = "";
   _rendererFollowupDataTemplate: string = "";
+  _isFollowable: boolean = false;
 
   definitionFormViewModel = new FormViewModel([
     {
@@ -76,6 +77,8 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
       followupDefinition: computed,
       _rendererFollowupDataTemplate: observable,
       rendererFollowupDataTemplate: computed,
+      _isFollowable: observable,
+      isFollowable: computed,
       save: action,
       validate: action,
       definitionFormViewModel: observable,
@@ -129,12 +132,11 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
     }
   }
 
-  public get followupDefinition(): string {
-    return this._followupDefinition;
+  public get isFollowable(): boolean {
+    return this._isFollowable;
   }
-  public set followupDefinition(value: string) {
-    this._followupDefinition = value;
-    this.clearError("followupDefinition");
+  public set isFollowable(value: boolean) {
+    this._isFollowable = value;
   }
 
   public parseFollowupDefinition(value: string): boolean {
@@ -187,6 +189,14 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   public set ordering(value: number) {
     this._ordering = value;
     this.clearError("ordering");
+  }
+
+  public get followupDefinition(): string {
+    return this._followupDefinition;
+  }
+  public set followupDefinition(value: string) {
+    this._followupDefinition = value;
+    this.clearError("followupDefinition");
   }
 
   public abstract _save(): Promise<SaveResult<ReportType>>;

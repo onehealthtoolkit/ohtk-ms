@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { ReportTypeCreateViewModel } from "./createViewModel";
 import {
   CancelButton,
+  Checkbox,
   ErrorText,
   Field,
   FieldGroup,
@@ -199,27 +200,38 @@ const ReportTypeCreate = () => {
             <ErrorText>{errors.definition}</ErrorText>
           </Field>
           <Field $size="half">
-            <Label
-              htmlFor="followupDefinition"
-              className="flex flex-row justify-between items-end"
-            >
-              <span>
-                {t("form.label.followupDefinition", "Followup Definition")}
-              </span>
-              <button
-                type="button"
-                onClick={e => {
-                  e.preventDefault();
-                  const valid = viewModel.parseFollowupDefinition(
-                    viewModel.followupDefinition
-                  );
-                  if (valid) {
-                    viewModel
-                      .dialog("followupDefinitionFormBuilder")
-                      ?.open(null);
-                  }
-                }}
-                className="border
+            <Checkbox
+              id="isDefault"
+              value="True"
+              onChange={evt => (viewModel.isFollowable = evt.target.checked)}
+              disabled={isSubmitting}
+              label={t("form.label.isFollowable", "Followable")}
+            />
+          </Field>
+          <>
+            {viewModel.isFollowable && (
+              <Field $size="half">
+                <Label
+                  htmlFor="followupDefinition"
+                  className="flex flex-row justify-between items-end"
+                >
+                  <span>
+                    {t("form.label.followupDefinition", "Followup Definition")}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={e => {
+                      e.preventDefault();
+                      const valid = viewModel.parseFollowupDefinition(
+                        viewModel.followupDefinition
+                      );
+                      if (valid) {
+                        viewModel
+                          .dialog("followupDefinitionFormBuilder")
+                          ?.open(null);
+                      }
+                    }}
+                    className="border
                     text-white
                     bg-[#4C81F1] 
                     border-blue-300
@@ -227,28 +239,32 @@ const ReportTypeCreate = () => {
                     rounded
                     p-1
                   "
-              >
-                Form builder
-              </button>
-            </Label>
-            <TextArea
-              id="followupDefinition"
-              placeholder={t(
-                "form.placeholder.followupDefinition",
-                "Followup Definition"
-              )}
-              rows={30}
-              onChange={evt =>
-                (viewModel.followupDefinition = evt.target.value)
-              }
-              disabled={viewModel.isSubmitting}
-              value={viewModel.followupDefinition}
-              required
-            />
-            <ErrorText>{viewModel.fieldErrors.followupDefinition}</ErrorText>
-          </Field>
+                  >
+                    Form builder
+                  </button>
+                </Label>
+                <TextArea
+                  id="followupDefinition"
+                  placeholder={t(
+                    "form.placeholder.followupDefinition",
+                    "Followup Definition"
+                  )}
+                  rows={30}
+                  onChange={evt =>
+                    (viewModel.followupDefinition = evt.target.value)
+                  }
+                  disabled={viewModel.isSubmitting}
+                  value={viewModel.followupDefinition}
+                  required
+                />
+                <ErrorText>
+                  {viewModel.fieldErrors.followupDefinition}
+                </ErrorText>
+              </Field>
+            )}
+          </>
           {rendererDataTemplateField}
-          {rendererFollowupDataTemplateField}
+          <>{viewModel.isFollowable && rendererFollowupDataTemplateField}</>
           <Field $size="half">
             <Label htmlFor="stateDefinitionId">State definition</Label>
             <Select

@@ -61,6 +61,7 @@ mutation ReportTypeCreate(
   $rendererDataTemplate: String
   $followupDefinition: String
   $rendererFollowupDataTemplate: String
+  $isFollowable: Boolean
 ) {
   adminReportTypeCreate(
     categoryId: $categoryId
@@ -71,6 +72,7 @@ mutation ReportTypeCreate(
     rendererDataTemplate: $rendererDataTemplate
     followupDefinition: $followupDefinition
     rendererFollowupDataTemplate: $rendererFollowupDataTemplate
+    isFollowable: $isFollowable
   ) {
     result {
       __typename
@@ -99,6 +101,7 @@ mutation ReportTypeUpdate(
   $rendererDataTemplate: String
   $followupDefinition: String
   $rendererFollowupDataTemplate: String
+  $isFollowable: Boolean
 ) {
   adminReportTypeUpdate(
     id: $id
@@ -110,6 +113,7 @@ mutation ReportTypeUpdate(
     rendererDataTemplate: $rendererDataTemplate
     followupDefinition: $followupDefinition
     rendererFollowupDataTemplate: $rendererFollowupDataTemplate
+    isFollowable: $isFollowable
   ) {
     result {
       __typename
@@ -129,6 +133,7 @@ mutation ReportTypeUpdate(
           rendererDataTemplate
           followupDefinition
           rendererFollowupDataTemplate
+          isFollowable
           ordering
         }
       }
@@ -181,6 +186,7 @@ query GetReportType($id: ID!) {
     rendererDataTemplate
     followupDefinition
     rendererFollowupDataTemplate
+    isFollowable
     ordering
   }
 }

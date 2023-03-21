@@ -11,4 +11,5 @@ export type ReportType = {
   followupDefinition?: string;
   rendererFollowupDataTemplate?: string;
   published?: boolean;
+  isFollowable?: boolean;
 };

@@ -2213,6 +2213,7 @@ export type MutationAdminReportTypeCreateArgs = {
   categoryId: Scalars["Int"];
   definition: Scalars["String"];
   followupDefinition?: InputMaybe<Scalars["String"]>;
+  isFollowable?: InputMaybe<Scalars["Boolean"]>;
   name: Scalars["String"];
   ordering: Scalars["Int"];
   rendererDataTemplate?: InputMaybe<Scalars["String"]>;
@@ -2229,6 +2230,7 @@ export type MutationAdminReportTypeUpdateArgs = {
   definition: Scalars["String"];
   followupDefinition?: InputMaybe<Scalars["String"]>;
   id: Scalars["ID"];
+  isFollowable?: InputMaybe<Scalars["Boolean"]>;
   name: Scalars["String"];
   ordering: Scalars["Int"];
   rendererDataTemplate?: InputMaybe<Scalars["String"]>;
@@ -5871,6 +5873,7 @@ export type ReportTypeCreateMutationVariables = Exact<{
   rendererDataTemplate?: InputMaybe<Scalars["String"]>;
   followupDefinition?: InputMaybe<Scalars["String"]>;
   rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]>;
+  isFollowable?: InputMaybe<Scalars["Boolean"]>;
 }>;
 
 export type ReportTypeCreateMutation = {
@@ -5902,6 +5905,7 @@ export type ReportTypeUpdateMutationVariables = Exact<{
   rendererDataTemplate?: InputMaybe<Scalars["String"]>;
   followupDefinition?: InputMaybe<Scalars["String"]>;
   rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]>;
+  isFollowable?: InputMaybe<Scalars["Boolean"]>;
 }>;
 
 export type ReportTypeUpdateMutation = {
@@ -5928,6 +5932,7 @@ export type ReportTypeUpdateMutation = {
             rendererDataTemplate?: string | null;
             followupDefinition?: any | null;
             rendererFollowupDataTemplate?: string | null;
+            isFollowable: boolean;
             ordering: number;
             category?: {
               __typename?: "CategoryType";
@@ -5995,6 +6000,7 @@ export type GetReportTypeQuery = {
     rendererDataTemplate?: string | null;
     followupDefinition?: any | null;
     rendererFollowupDataTemplate?: string | null;
+    isFollowable: boolean;
     ordering: number;
     category?: { __typename?: "CategoryType"; id: string; name: string } | null;
     stateDefinition?: {
@@ -18597,6 +18603,14 @@ export const ReportTypeCreateDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "isFollowable" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -18667,6 +18681,14 @@ export const ReportTypeCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "rendererFollowupDataTemplate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "isFollowable" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "isFollowable" },
                 },
               },
             ],
@@ -18851,6 +18873,14 @@ export const ReportTypeUpdateDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "isFollowable" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -18929,6 +18959,14 @@ export const ReportTypeUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "rendererFollowupDataTemplate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "isFollowable" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "isFollowable" },
                 },
               },
             ],
@@ -19031,6 +19069,13 @@ export const ReportTypeUpdateDocument = {
                                     name: {
                                       kind: "Name",
                                       value: "rendererFollowupDataTemplate",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "isFollowable",
                                     },
                                   },
                                   {
@@ -19333,6 +19378,10 @@ export const GetReportTypeDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "rendererFollowupDataTemplate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "isFollowable" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "ordering" } },
               ],

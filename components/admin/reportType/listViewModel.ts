@@ -41,6 +41,8 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
       _isSubmitting: observable,
       submitError: computed,
       isSubmitting: computed,
+      publishReportType: action,
+      unpublishReportType: action,
     });
   }
 

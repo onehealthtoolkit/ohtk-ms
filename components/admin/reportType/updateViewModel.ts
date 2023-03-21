@@ -28,11 +28,13 @@ export class ReportTypeUpdateViewModel extends ReportTypeViewModel {
         this.parseFollowupDefinition(data.followupDefinition);
       this.rendererFollowupDataTemplate =
         data.rendererFollowupDataTemplate || "";
+      this.isFollowable = data.isFollowable || false;
     }
     this.isLoading = false;
   }
 
   public _save(): Promise<SaveResult<ReportType>> {
+    console.log("update report type");
     return this.reportTypeService.updateReportType(
       this.id,
       this.name,
@@ -42,7 +44,8 @@ export class ReportTypeUpdateViewModel extends ReportTypeViewModel {
       this.stateDefinitionId,
       this.rendererDataTemplate,
       this.followupDefinition,
-      this.rendererFollowupDataTemplate
+      this.rendererFollowupDataTemplate,
+      this.isFollowable
     );
   }
 }

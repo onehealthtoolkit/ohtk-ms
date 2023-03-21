@@ -45,7 +45,8 @@ export interface IReportTypeService extends IService {
     stateDefinitionId?: number,
     rendererDataTemplate?: string,
     followupDefinition?: string,
-    rendererFollowupDataTemplate?: string
+    rendererFollowupDataTemplate?: string,
+    isFollowable?: boolean
   ): Promise<SaveResult<ReportType>>;
 
   updateReportType(
@@ -57,7 +58,8 @@ export interface IReportTypeService extends IService {
     stateDefinitionId?: number,
     rendererDataTemplate?: string,
     followupDefinition?: string,
-    rendererFollowupDataTemplate?: string
+    rendererFollowupDataTemplate?: string,
+    isFollowable?: boolean
   ): Promise<SaveResult<ReportType>>;
 
   deleteReportType(id: string): Promise<DeleteResult>;
@@ -204,6 +206,7 @@ export class ReportTypeService implements IReportTypeService {
           : "",
         rendererFollowupDataTemplate:
           reportType.rendererFollowupDataTemplate || undefined,
+        isFollowable: reportType.isFollowable,
       };
     }
     return {
@@ -219,7 +222,8 @@ export class ReportTypeService implements IReportTypeService {
     stateDefinitionId?: number,
     rendererDataTemplate?: string,
     followupDefinition?: string,
-    rendererFollowupDataTemplate?: string
+    rendererFollowupDataTemplate?: string,
+    isFollowable?: boolean
   ): Promise<SaveResult<ReportType>> {
     const createResult = await this.client.mutate({
       mutation: ReportTypeCreateDocument,
@@ -232,6 +236,7 @@ export class ReportTypeService implements IReportTypeService {
         rendererDataTemplate: rendererDataTemplate,
         followupDefinition,
         rendererFollowupDataTemplate,
+        isFollowable,
       },
       refetchQueries: [
         {
@@ -284,7 +289,8 @@ export class ReportTypeService implements IReportTypeService {
     stateDefinitionId?: number,
     rendererDataTemplate?: string,
     followupDefinition?: string,
-    rendererFollowupDataTemplate?: string
+    rendererFollowupDataTemplate?: string,
+    isFollowable?: boolean
   ): Promise<SaveResult<ReportType>> {
     const updateResult = await this.client.mutate({
       mutation: ReportTypeUpdateDocument,
@@ -298,6 +304,7 @@ export class ReportTypeService implements IReportTypeService {
         rendererDataTemplate,
         followupDefinition,
         rendererFollowupDataTemplate,
+        isFollowable,
       },
       refetchQueries: [
         {
