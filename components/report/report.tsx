@@ -31,9 +31,6 @@ export const PromoteToCaseButton = tw.button`
   border-blue-300
   hover:border-blue-500
   rounded
-  flex 
-  justify-center 
-  items-center
 `;
 
 export const ConvertToTestReportButton = tw.button`
@@ -46,9 +43,7 @@ export const ConvertToTestReportButton = tw.button`
   focus:ring-4 
   focus:outline-none 
   focus:ring-blue-300 
-  font-medium rounded-lg 
-  text-center 
-  ml-1
+  rounded
 `;
 
 const ReportLocation = dynamic(() => import("../case/reportMap"), {
@@ -148,10 +143,10 @@ const Report = (props: { id: string }) => {
         return (
           <MaskingLoader loading={viewModel.isLoading}>
             <>
-              <div className="flex items-center flex-wrap absolute right-0 top-12">
-                <div className="flex-grow"></div>
-                {viewModel.data.caseId == undefined &&
-                  !viewModel.data.testFlag && (
+              {viewModel.shouldDisplayActions && (
+                <div className="flex items-center flex-wrap gap-1">
+                  <div className="flex-grow"></div>
+                  {viewModel.shouldDisplayPromoteToCase && (
                     <PromoteToCaseButton
                       disabled={viewModel.isLoading}
                       type="button"
@@ -164,19 +159,20 @@ const Report = (props: { id: string }) => {
                       &nbsp;Promote To Case
                     </PromoteToCaseButton>
                   )}
-                {!viewModel.data.testFlag && (
-                  <ConvertToTestReportButton
-                    disabled={viewModel.converting}
-                    type="button"
-                    onClick={async () => {
-                      await viewModel.convertToTestReport();
-                    }}
-                  >
-                    {viewModel.converting && <Spinner />}
-                    &nbsp;Convert to Test Report
-                  </ConvertToTestReportButton>
-                )}
-              </div>
+                  {viewModel.shouldDisplayConvertToTestReport && (
+                    <ConvertToTestReportButton
+                      disabled={viewModel.converting}
+                      type="button"
+                      onClick={async () => {
+                        await viewModel.convertToTestReport();
+                      }}
+                    >
+                      {viewModel.converting && <Spinner />}
+                      &nbsp;Convert to Test Report
+                    </ConvertToTestReportButton>
+                  )}
+                </div>
+              )}
 
               {viewModel.data.testFlag && (
                 <div className="flex fixed w-full h-full top-0 left-0 z-[999] pointer-events-none">

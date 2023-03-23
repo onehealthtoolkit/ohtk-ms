@@ -35,6 +35,9 @@ export class ReportViewModel extends BaseViewModel {
       activeTabIndex: computed,
       _converting: observable,
       converting: computed,
+      shouldDisplayActions: computed,
+      shouldDisplayConvertToTestReport: computed,
+      shouldDisplayPromoteToCase: computed,
     });
     this.id = id;
     this.fetch();
@@ -91,5 +94,19 @@ export class ReportViewModel extends BaseViewModel {
 
     this.galleryViewModel = new GalleryDialogViewModel(images, selectedIdx);
     this.galleryViewModel.open(null);
+  }
+
+  get shouldDisplayActions() {
+    return (
+      this.shouldDisplayConvertToTestReport || this.shouldDisplayPromoteToCase
+    );
+  }
+
+  get shouldDisplayConvertToTestReport() {
+    return this.data.testFlag == false && this.data.caseId == null;
+  }
+
+  get shouldDisplayPromoteToCase() {
+    return !this.data.caseId && this.data.testFlag == false;
   }
 }
