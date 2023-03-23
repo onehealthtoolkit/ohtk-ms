@@ -174,8 +174,8 @@
     },
     "content": {
       "confirmDelete": "Are you sure?",
-      "confirmPublishReportType": "Are you sure confirm publish report type?",
-      "confirmUnpublishReportType": "Are you sure confirm unpublish report type?",
+      "confirmPublishReportType": "Press ok button to publish this report type?",
+      "confirmUnpublishReportType": "Press ok button to unpublish this report type?",
       "confirmTransition": "Are you want to change status to  {{stepName}} ?"
     }
   },
