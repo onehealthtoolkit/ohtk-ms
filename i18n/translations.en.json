@@ -168,10 +168,14 @@
   "dialog": {
     "title": {
       "confirmDelete": "Confirm Delete",
+      "confirmPublishReportType": "Confirm publish report type",
+      "confirmUnpublishReportType": "Confirm unpublish report type",
       "confirmTransition": "Confirm transition"
     },
     "content": {
       "confirmDelete": "Are you sure?",
+      "confirmPublishReportType": "Press ok button to publish this report type?",
+      "confirmUnpublishReportType": "Press ok button to unpublish this report type?",
       "confirmTransition": "Are you want to change status to  {{stepName}} ?"
     }
   },

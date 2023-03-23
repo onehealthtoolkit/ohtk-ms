@@ -15,6 +15,7 @@ query ReportTypes($limit: Int!, $offset: Int!, $q: String, $ordering: String) {
       }
       definition
       ordering
+      published
     }
   }
 }
@@ -60,6 +61,7 @@ mutation ReportTypeCreate(
   $rendererDataTemplate: String
   $followupDefinition: String
   $rendererFollowupDataTemplate: String
+  $isFollowable: Boolean
 ) {
   adminReportTypeCreate(
     categoryId: $categoryId
@@ -70,6 +72,7 @@ mutation ReportTypeCreate(
     rendererDataTemplate: $rendererDataTemplate
     followupDefinition: $followupDefinition
     rendererFollowupDataTemplate: $rendererFollowupDataTemplate
+    isFollowable: $isFollowable
   ) {
     result {
       __typename
@@ -98,6 +101,7 @@ mutation ReportTypeUpdate(
   $rendererDataTemplate: String
   $followupDefinition: String
   $rendererFollowupDataTemplate: String
+  $isFollowable: Boolean
 ) {
   adminReportTypeUpdate(
     id: $id
@@ -109,6 +113,7 @@ mutation ReportTypeUpdate(
     rendererDataTemplate: $rendererDataTemplate
     followupDefinition: $followupDefinition
     rendererFollowupDataTemplate: $rendererFollowupDataTemplate
+    isFollowable: $isFollowable
   ) {
     result {
       __typename
@@ -128,6 +133,7 @@ mutation ReportTypeUpdate(
           rendererDataTemplate
           followupDefinition
           rendererFollowupDataTemplate
+          isFollowable
           ordering
         }
       }
@@ -147,6 +153,23 @@ mutation ReportTypeDelete($id: ID!) {
     success
   }
 }
+
+mutation publicReportType($reportTypeId: UUID!) {
+  publishReportType(reportTypeId: $reportTypeId) {
+    reportType {
+      id
+    }
+  }
+}
+
+mutation unpublicReportType($reportTypeId: UUID!) {
+  unpublishReportType(reportTypeId: $reportTypeId) {
+    reportType {
+      id
+    }
+  }
+}
+
 query GetReportType($id: ID!) {
   reportType(id: $id) {
     id
@@ -163,6 +186,7 @@ query GetReportType($id: ID!) {
     rendererDataTemplate
     followupDefinition
     rendererFollowupDataTemplate
+    isFollowable
     ordering
   }
 }

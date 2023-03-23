@@ -167,10 +167,14 @@
   "dialog": {
     "title": {
       "confirmDelete": "បញ្ជាក់ការលុប",
+      "confirmPublishReportType": "បញ្ជាក់ប្រភេទរបាយការណ៍បោះពុម្ព",
+      "confirmUnpublishReportType": "បញ្ជាក់ប្រភេទរបាយការណ៍ដែលមិនចេញផ្សាយ",
       "confirmTransition": "បញ្ជាក់ការផ្លាស់ប្តូរ"
     },
     "content": {
       "confirmDelete": "បញ្ជាក់ការលុប",
+      "confirmPublishReportType": "តើ​អ្នក​ប្រាកដ​ជា​បញ្ជាក់​ប្រភេទ​របាយការណ៍​បោះពុម្ព​ឬ ?",
+      "confirmUnpublishReportType": "តើ​អ្នក​ប្រាកដ​ជា​បញ្ជាក់​ប្រភេទ​របាយការណ៍​ដែល​មិន​បាន​បោះផ្សាយ​ឬ ?",
       "confirmTransition": "តើអ្នកចង់ផ្លាស់ប្តូរស្ថានភាពទៅជា {{stepName}} ទេ?"
     }
   },

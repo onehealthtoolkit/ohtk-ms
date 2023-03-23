@@ -85,7 +85,7 @@ const BaseModalDialog: React.FC<Props> = ({
                 `}
                 >
                   {title && (
-                    <h1 className="text-center text-xl font-medium">{title}</h1>
+                    <h1 className="text-left text-base font-medium">{title}</h1>
                   )}
                   <div className="h-full text-center">
                     {renderContent(store.data)}

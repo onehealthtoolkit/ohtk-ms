@@ -106,6 +106,7 @@ export class UserService implements IUserService {
           lastName: item.lastName,
           email: item.email,
           role: item.role,
+          authorityName: item.authority.name,
         });
       }
     });

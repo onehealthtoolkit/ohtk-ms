@@ -31,9 +31,19 @@ export const PromoteToCaseButton = tw.button`
   border-blue-300
   hover:border-blue-500
   rounded
-  flex 
-  justify-center 
-  items-center
+`;
+
+export const ConvertToTestReportButton = tw.button`
+  px-4 
+  py-2 
+  border 
+  text-blue-500 
+  border-blue-700 
+  hover:border-blue-500
+  focus:ring-4 
+  focus:outline-none 
+  focus:ring-blue-300 
+  rounded
 `;
 
 const ReportLocation = dynamic(() => import("../case/reportMap"), {
@@ -133,10 +143,10 @@ const Report = (props: { id: string }) => {
         return (
           <MaskingLoader loading={viewModel.isLoading}>
             <>
-              {viewModel.data.caseId == undefined && (
-                <div className="flex items-center flex-wrap absolute right-0 top-12">
+              {viewModel.shouldDisplayActions && (
+                <div className="flex items-center flex-wrap gap-1">
                   <div className="flex-grow"></div>
-                  {!viewModel.data.testFlag && (
+                  {viewModel.shouldDisplayPromoteToCase && (
                     <PromoteToCaseButton
                       disabled={viewModel.isLoading}
                       type="button"
@@ -148,6 +158,18 @@ const Report = (props: { id: string }) => {
                       {viewModel.isLoading && <Spinner />}
                       &nbsp;Promote To Case
                     </PromoteToCaseButton>
+                  )}
+                  {viewModel.shouldDisplayConvertToTestReport && (
+                    <ConvertToTestReportButton
+                      disabled={viewModel.converting}
+                      type="button"
+                      onClick={async () => {
+                        await viewModel.convertToTestReport();
+                      }}
+                    >
+                      {viewModel.converting && <Spinner />}
+                      &nbsp;Convert to Test Report
+                    </ConvertToTestReportButton>
                   )}
                 </div>
               )}

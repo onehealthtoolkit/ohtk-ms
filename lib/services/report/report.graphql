@@ -93,3 +93,11 @@ mutation PromoteReportToCase($reportId: UUID!) {
     }
   }
 }
+
+mutation ConvertReportToTestReport($reportId: UUID!) {
+  convertToTestReport(reportId: $reportId) {
+    report {
+      id
+    }
+  }
+}

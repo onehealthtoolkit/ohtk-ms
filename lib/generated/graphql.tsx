@@ -238,6 +238,7 @@ export type AdminAuthorityUserDeleteMutation = {
 
 export type AdminAuthorityUserQueryType = {
   __typename?: "AdminAuthorityUserQueryType";
+  authority: AdminAuthorityCreateSuccess;
   email: Scalars["String"];
   firstName: Scalars["String"];
   id: Scalars["ID"];
@@ -1123,10 +1124,12 @@ export type AdminReportTypeCreateSuccess = {
   followupreports: Array<FollowupReportType>;
   id: Scalars["UUID"];
   incidentreports: Array<IncidentReportType>;
+  isFollowable: Scalars["Boolean"];
   name: Scalars["String"];
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   ordering: Scalars["Int"];
   planSet: Array<AdminOutbreakPlanUpdateSuccess>;
+  published: Scalars["Boolean"];
   rendererDataTemplate?: Maybe<Scalars["String"]>;
   rendererFollowupDataTemplate?: Maybe<Scalars["String"]>;
   reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
@@ -1145,8 +1148,10 @@ export type AdminReportTypeQueryType = {
   category: AdminCategoryCreateSuccess;
   definition: Scalars["JSONString"];
   id: Scalars["UUID"];
+  isFollowable: Scalars["Boolean"];
   name: Scalars["String"];
   ordering: Scalars["Int"];
+  published: Scalars["Boolean"];
   rendererDataTemplate?: Maybe<Scalars["String"]>;
 };
 
@@ -1656,6 +1661,11 @@ export type ConfirmConsentMutation = {
   ok?: Maybe<Scalars["Boolean"]>;
 };
 
+export type ConvertToTestReportMutation = {
+  __typename?: "ConvertToTestReportMutation";
+  report?: Maybe<IncidentReportType>;
+};
+
 export type DeepStateDefinitionType = {
   __typename?: "DeepStateDefinitionType";
   id: Scalars["ID"];
@@ -1880,10 +1890,12 @@ export type Mutation = {
   commentDelete?: Maybe<CommentDeleteMutation>;
   commentUpdate?: Maybe<CommentUpdateMutation>;
   confirmConsent?: Maybe<ConfirmConsentMutation>;
+  convertToTestReport?: Maybe<ConvertToTestReportMutation>;
   deleteRefreshTokenCookie?: Maybe<DeleteRefreshTokenCookie>;
   deleteTokenCookie?: Maybe<DeleteJsonWebTokenCookie>;
   forwardState?: Maybe<ForwardStateMutation>;
   promoteToCase?: Maybe<PromoteToCaseMutation>;
+  publishReportType?: Maybe<PublishReportTypeMutation>;
   refreshToken?: Maybe<Refresh>;
   registerFcmToken?: Maybe<RegisterFcmTokenMutation>;
   resetPassword?: Maybe<ResetPasswordMutation>;
@@ -1898,6 +1910,7 @@ export type Mutation = {
   submitZeroReport?: Maybe<SubmitZeroReportMutation>;
   /** Obtain JSON Web Token mutation */
   tokenAuth?: Maybe<ObtainJsonWebToken>;
+  unpublishReportType?: Maybe<UnPublishReportTypeMutation>;
   verifyLoginQrToken?: Maybe<VerifyLoginQrTokenMutation>;
   verifyToken?: Maybe<Verify>;
 };
@@ -2200,6 +2213,7 @@ export type MutationAdminReportTypeCreateArgs = {
   categoryId: Scalars["Int"];
   definition: Scalars["String"];
   followupDefinition?: InputMaybe<Scalars["String"]>;
+  isFollowable?: InputMaybe<Scalars["Boolean"]>;
   name: Scalars["String"];
   ordering: Scalars["Int"];
   rendererDataTemplate?: InputMaybe<Scalars["String"]>;
@@ -2216,6 +2230,7 @@ export type MutationAdminReportTypeUpdateArgs = {
   definition: Scalars["String"];
   followupDefinition?: InputMaybe<Scalars["String"]>;
   id: Scalars["ID"];
+  isFollowable?: InputMaybe<Scalars["Boolean"]>;
   name: Scalars["String"];
   ordering: Scalars["Int"];
   rendererDataTemplate?: InputMaybe<Scalars["String"]>;
@@ -2335,6 +2350,10 @@ export type MutationCommentUpdateArgs = {
   commentId: Scalars["Int"];
 };
 
+export type MutationConvertToTestReportArgs = {
+  reportId: Scalars["UUID"];
+};
+
 export type MutationForwardStateArgs = {
   caseId: Scalars["ID"];
   formData?: InputMaybe<Scalars["GenericScalar"]>;
@@ -2343,6 +2362,10 @@ export type MutationForwardStateArgs = {
 
 export type MutationPromoteToCaseArgs = {
   reportId: Scalars["UUID"];
+};
+
+export type MutationPublishReportTypeArgs = {
+  reportTypeId: Scalars["UUID"];
 };
 
 export type MutationRefreshTokenArgs = {
@@ -2413,6 +2436,10 @@ export type MutationSubmitRecordImageArgs = {
 export type MutationTokenAuthArgs = {
   password: Scalars["String"];
   username: Scalars["String"];
+};
+
+export type MutationUnpublishReportTypeArgs = {
+  reportTypeId: Scalars["UUID"];
 };
 
 export type MutationVerifyLoginQrTokenArgs = {
@@ -2630,6 +2657,11 @@ export type PromoteToCaseMutation = {
   __typename?: "PromoteToCaseMutation";
   case?: Maybe<CaseType>;
   report?: Maybe<IncidentReportType>;
+};
+
+export type PublishReportTypeMutation = {
+  __typename?: "PublishReportTypeMutation";
+  reportType?: Maybe<ReportTypeType>;
 };
 
 export type Query = {
@@ -3237,10 +3269,12 @@ export type ReportTypeType = {
   followupreports: Array<FollowupReportType>;
   id: Scalars["UUID"];
   incidentreports: Array<IncidentReportType>;
+  isFollowable: Scalars["Boolean"];
   name: Scalars["String"];
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   ordering: Scalars["Int"];
   planSet: Array<AdminOutbreakPlanUpdateSuccess>;
+  published: Scalars["Boolean"];
   rendererDataTemplate?: Maybe<Scalars["String"]>;
   rendererFollowupDataTemplate?: Maybe<Scalars["String"]>;
   reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
@@ -3366,6 +3400,11 @@ export type SummaryContributionType = {
   __typename?: "SummaryContributionType";
   day: Scalars["Date"];
   total: Scalars["Int"];
+};
+
+export type UnPublishReportTypeMutation = {
+  __typename?: "UnPublishReportTypeMutation";
+  reportType?: Maybe<ReportTypeType>;
 };
 
 export type UserMessageType = {
@@ -5623,6 +5662,18 @@ export type PromoteReportToCaseMutation = {
   } | null;
 };
 
+export type ConvertReportToTestReportMutationVariables = Exact<{
+  reportId: Scalars["UUID"];
+}>;
+
+export type ConvertReportToTestReportMutation = {
+  __typename?: "Mutation";
+  convertToTestReport?: {
+    __typename?: "ConvertToTestReportMutation";
+    report?: { __typename?: "IncidentReportType"; id: any } | null;
+  } | null;
+};
+
 export type ReportCategoriesQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
@@ -5769,6 +5820,7 @@ export type ReportTypesQuery = {
       name: string;
       definition: any;
       ordering: number;
+      published: boolean;
       category: {
         __typename?: "AdminCategoryCreateSuccess";
         id: string;
@@ -5821,6 +5873,7 @@ export type ReportTypeCreateMutationVariables = Exact<{
   rendererDataTemplate?: InputMaybe<Scalars["String"]>;
   followupDefinition?: InputMaybe<Scalars["String"]>;
   rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]>;
+  isFollowable?: InputMaybe<Scalars["Boolean"]>;
 }>;
 
 export type ReportTypeCreateMutation = {
@@ -5852,6 +5905,7 @@ export type ReportTypeUpdateMutationVariables = Exact<{
   rendererDataTemplate?: InputMaybe<Scalars["String"]>;
   followupDefinition?: InputMaybe<Scalars["String"]>;
   rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]>;
+  isFollowable?: InputMaybe<Scalars["Boolean"]>;
 }>;
 
 export type ReportTypeUpdateMutation = {
@@ -5878,6 +5932,7 @@ export type ReportTypeUpdateMutation = {
             rendererDataTemplate?: string | null;
             followupDefinition?: any | null;
             rendererFollowupDataTemplate?: string | null;
+            isFollowable: boolean;
             ordering: number;
             category?: {
               __typename?: "CategoryType";
@@ -5907,6 +5962,30 @@ export type ReportTypeDeleteMutation = {
   } | null;
 };
 
+export type PublicReportTypeMutationVariables = Exact<{
+  reportTypeId: Scalars["UUID"];
+}>;
+
+export type PublicReportTypeMutation = {
+  __typename?: "Mutation";
+  publishReportType?: {
+    __typename?: "PublishReportTypeMutation";
+    reportType?: { __typename?: "ReportTypeType"; id: any } | null;
+  } | null;
+};
+
+export type UnpublicReportTypeMutationVariables = Exact<{
+  reportTypeId: Scalars["UUID"];
+}>;
+
+export type UnpublicReportTypeMutation = {
+  __typename?: "Mutation";
+  unpublishReportType?: {
+    __typename?: "UnPublishReportTypeMutation";
+    reportType?: { __typename?: "ReportTypeType"; id: any } | null;
+  } | null;
+};
+
 export type GetReportTypeQueryVariables = Exact<{
   id: Scalars["ID"];
 }>;
@@ -5921,6 +6000,7 @@ export type GetReportTypeQuery = {
     rendererDataTemplate?: string | null;
     followupDefinition?: any | null;
     rendererFollowupDataTemplate?: string | null;
+    isFollowable: boolean;
     ordering: number;
     category?: { __typename?: "CategoryType"; id: string; name: string } | null;
     stateDefinition?: {
@@ -6534,6 +6614,7 @@ export type UsersQuery = {
       firstName: string;
       lastName: string;
       role?: AccountsAuthorityUserRoleChoices | null;
+      authority: { __typename?: "AdminAuthorityCreateSuccess"; name: string };
     } | null>;
   } | null;
 };
@@ -17460,6 +17541,66 @@ export const PromoteReportToCaseDocument = {
   PromoteReportToCaseMutation,
   PromoteReportToCaseMutationVariables
 >;
+export const ConvertReportToTestReportDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ConvertReportToTestReport" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "convertToTestReport" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "report" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ConvertReportToTestReportMutation,
+  ConvertReportToTestReportMutationVariables
+>;
 export const ReportCategoriesDocument = {
   kind: "Document",
   definitions: [
@@ -18212,6 +18353,10 @@ export const ReportTypesDocument = {
                         kind: "Field",
                         name: { kind: "Name", value: "ordering" },
                       },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "published" },
+                      },
                     ],
                   },
                 },
@@ -18458,6 +18603,14 @@ export const ReportTypeCreateDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "isFollowable" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -18528,6 +18681,14 @@ export const ReportTypeCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "rendererFollowupDataTemplate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "isFollowable" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "isFollowable" },
                 },
               },
             ],
@@ -18712,6 +18873,14 @@ export const ReportTypeUpdateDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "isFollowable" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -18790,6 +18959,14 @@ export const ReportTypeUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "rendererFollowupDataTemplate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "isFollowable" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "isFollowable" },
                 },
               },
             ],
@@ -18892,6 +19069,13 @@ export const ReportTypeUpdateDocument = {
                                     name: {
                                       kind: "Name",
                                       value: "rendererFollowupDataTemplate",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "isFollowable",
                                     },
                                   },
                                   {
@@ -19002,6 +19186,126 @@ export const ReportTypeDeleteDocument = {
   ReportTypeDeleteMutation,
   ReportTypeDeleteMutationVariables
 >;
+export const PublicReportTypeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "publicReportType" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "publishReportType" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reportType" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  PublicReportTypeMutation,
+  PublicReportTypeMutationVariables
+>;
+export const UnpublicReportTypeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "unpublicReportType" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "unpublishReportType" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reportType" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UnpublicReportTypeMutation,
+  UnpublicReportTypeMutationVariables
+>;
 export const GetReportTypeDocument = {
   kind: "Document",
   definitions: [
@@ -19074,6 +19378,10 @@ export const GetReportTypeDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "rendererFollowupDataTemplate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "isFollowable" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "ordering" } },
               ],
@@ -22006,6 +22314,19 @@ export const UsersDocument = {
                         name: { kind: "Name", value: "username" },
                       },
                       { kind: "Field", name: { kind: "Name", value: "role" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "authority" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
                     ],
                   },
                 },

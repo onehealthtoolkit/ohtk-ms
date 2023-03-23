@@ -41,6 +41,8 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
       _isSubmitting: observable,
       submitError: computed,
       isSubmitting: computed,
+      publishReportType: action,
+      unpublishReportType: action,
     });
   }
 
@@ -221,5 +223,23 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
       };
       reader.readAsText(file);
     });
+  }
+
+  async publishReportType(id: string) {
+    this.isLoading = true;
+    const data = await await this.reportTypeService.publishReportType(id);
+    if (data) {
+      this.fetch();
+    }
+    this.isLoading = false;
+  }
+
+  async unpublishReportType(id: string) {
+    this.isLoading = true;
+    const data = await await this.reportTypeService.unpublishReportType(id);
+    if (data) {
+      this.fetch();
+    }
+    this.isLoading = false;
   }
 }

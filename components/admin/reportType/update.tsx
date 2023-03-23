@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { ReportTypeUpdateViewModel } from "./updateViewModel";
 import {
   CancelButton,
+  Checkbox,
   ErrorText,
   Field,
   FieldGroup,
@@ -147,6 +148,26 @@ const ReportTypeUpdateForm = () => {
               required
             />
             <ErrorText>{viewModel.fieldErrors.definition}</ErrorText>
+          </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const isFollowableField = useMemo(
+    () => (
+      <Observer>
+        {() => (
+          <Field $size="half">
+            <Checkbox
+              id="isDefault"
+              value="True"
+              checked={viewModel.isFollowable}
+              onChange={evt => (viewModel.isFollowable = evt.target.checked)}
+              disabled={viewModel.isSubmitting}
+              label={t("form.label.isFollowable", "Followable")}
+            />
           </Field>
         )}
       </Observer>
@@ -335,9 +356,10 @@ const ReportTypeUpdateForm = () => {
             {categoryField}
             {nameField}
             {definitionField}
-            {followupDefinitionField}
+            {isFollowableField}
+            <>{viewModel.isFollowable && followupDefinitionField}</>
             {rendererDataTemplateField}
-            {rendererFollowupDataTemplateField}
+            <>{viewModel.isFollowable && rendererFollowupDataTemplateField}</>
             {stateDefinitionIdField}
             {orderingField}
           </FieldGroup>

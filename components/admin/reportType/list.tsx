@@ -20,6 +20,8 @@ import FormSimulationDialog from "components/admin/reportType/formSimulationDial
 import FormSimulation from "components/admin/formBuilder/simulator/formSimulation";
 import {
   DownloadIcon,
+  EyeIcon,
+  EyeOffIcon,
   QrcodeIcon,
   TableIcon,
   UploadIcon,
@@ -47,6 +49,8 @@ const ReportTypeList = () => {
       stateDefinitionService
     );
     model.registerDialog("confirmDelete");
+    model.registerDialog("confirmPublishReportType");
+    model.registerDialog("confirmUnpublishReportType");
     model.registerDialog("formSimulation");
     model.registerDialog("definitionQrcode");
     return model;
@@ -196,6 +200,27 @@ const ReportTypeList = () => {
                     className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
                     onClick={() => viewModel.exportReportType(record.id)}
                   />
+
+                  {!record.published && (
+                    <EyeOffIcon
+                      className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+                      onClick={() =>
+                        viewModel
+                          .dialog("confirmPublishReportType")
+                          ?.open(record)
+                      }
+                    />
+                  )}
+                  {record.published && (
+                    <EyeIcon
+                      className="w-5 h-5 text-green-600 hover:text-green-900 cursor-pointer"
+                      onClick={() =>
+                        viewModel
+                          .dialog("confirmUnpublishReportType")
+                          ?.open(record)
+                      }
+                    />
+                  )}
                 </>
               );
             }}
@@ -216,6 +241,38 @@ const ReportTypeList = () => {
             content={t("dialog.content.confirmDelete", "Are you sure?")}
             onYes={(record: ReportType) => viewModel.delete(record.id)}
             onNo={() => viewModel.dialog("confirmDelete")?.close()}
+          />
+
+          <ConfirmDialog
+            store={viewModel.dialog("confirmPublishReportType")}
+            title={t(
+              "dialog.title.confirmPublishReportType",
+              "Confirm publish report type"
+            )}
+            content={t(
+              "dialog.content.confirmPublishReportType",
+              "Are you sure?"
+            )}
+            onYes={(record: ReportType) =>
+              viewModel.publishReportType(record.id)
+            }
+            onNo={() => viewModel.dialog("confirmPublishReportType")?.close()}
+          />
+
+          <ConfirmDialog
+            store={viewModel.dialog("confirmUnpublishReportType")}
+            title={t(
+              "dialog.title.confirmUnpublishReportType",
+              "Confirm unpublish report type"
+            )}
+            content={t(
+              "dialog.content.confirmUnpublishReportType",
+              "Are you sure?"
+            )}
+            onYes={(record: ReportType) =>
+              viewModel.unpublishReportType(record.id)
+            }
+            onNo={() => viewModel.dialog("confirmUnpublishReportType")?.close()}
           />
 
           <FormSimulationDialog viewModel={viewModel.dialog("formSimulation")}>

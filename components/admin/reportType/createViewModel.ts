@@ -12,7 +12,8 @@ export class ReportTypeCreateViewModel extends ReportTypeViewModel {
       this.stateDefinitionId,
       this.rendererDataTemplate,
       this.followupDefinition,
-      this.rendererFollowupDataTemplate
+      this.rendererFollowupDataTemplate,
+      this.isFollowable
     );
   }
 }

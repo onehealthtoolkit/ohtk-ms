@@ -7,6 +7,8 @@ import {
   MyReportTypesDocument,
   ReportTypeSelectionsDocument,
   ReportTypeDeleteDocument,
+  PublicReportTypeDocument,
+  UnpublicReportTypeDocument,
 } from "lib/generated/graphql";
 import { ReportType } from "lib/services/reportType/reportType";
 import {
@@ -43,7 +45,8 @@ export interface IReportTypeService extends IService {
     stateDefinitionId?: number,
     rendererDataTemplate?: string,
     followupDefinition?: string,
-    rendererFollowupDataTemplate?: string
+    rendererFollowupDataTemplate?: string,
+    isFollowable?: boolean
   ): Promise<SaveResult<ReportType>>;
 
   updateReportType(
@@ -55,10 +58,15 @@ export interface IReportTypeService extends IService {
     stateDefinitionId?: number,
     rendererDataTemplate?: string,
     followupDefinition?: string,
-    rendererFollowupDataTemplate?: string
+    rendererFollowupDataTemplate?: string,
+    isFollowable?: boolean
   ): Promise<SaveResult<ReportType>>;
 
   deleteReportType(id: string): Promise<DeleteResult>;
+
+  publishReportType(id: string): Promise<String>;
+
+  unpublishReportType(id: string): Promise<String>;
 }
 
 export class ReportTypeService implements IReportTypeService {
@@ -102,6 +110,7 @@ export class ReportTypeService implements IReportTypeService {
           categoryId: +item.category.id,
           categoryName: item.category.name,
           ordering: item.ordering,
+          published: item.published,
         });
       }
     });
@@ -197,6 +206,7 @@ export class ReportTypeService implements IReportTypeService {
           : "",
         rendererFollowupDataTemplate:
           reportType.rendererFollowupDataTemplate || undefined,
+        isFollowable: reportType.isFollowable,
       };
     }
     return {
@@ -212,7 +222,8 @@ export class ReportTypeService implements IReportTypeService {
     stateDefinitionId?: number,
     rendererDataTemplate?: string,
     followupDefinition?: string,
-    rendererFollowupDataTemplate?: string
+    rendererFollowupDataTemplate?: string,
+    isFollowable?: boolean
   ): Promise<SaveResult<ReportType>> {
     const createResult = await this.client.mutate({
       mutation: ReportTypeCreateDocument,
@@ -225,6 +236,7 @@ export class ReportTypeService implements IReportTypeService {
         rendererDataTemplate: rendererDataTemplate,
         followupDefinition,
         rendererFollowupDataTemplate,
+        isFollowable,
       },
       refetchQueries: [
         {
@@ -277,7 +289,8 @@ export class ReportTypeService implements IReportTypeService {
     stateDefinitionId?: number,
     rendererDataTemplate?: string,
     followupDefinition?: string,
-    rendererFollowupDataTemplate?: string
+    rendererFollowupDataTemplate?: string,
+    isFollowable?: boolean
   ): Promise<SaveResult<ReportType>> {
     const updateResult = await this.client.mutate({
       mutation: ReportTypeUpdateDocument,
@@ -291,6 +304,7 @@ export class ReportTypeService implements IReportTypeService {
         rendererDataTemplate,
         followupDefinition,
         rendererFollowupDataTemplate,
+        isFollowable,
       },
       refetchQueries: [
         {
@@ -387,5 +401,53 @@ export class ReportTypeService implements IReportTypeService {
     });
 
     return { error: deleteResult.errors?.map(o => o.message).join(",") };
+  }
+
+  async publishReportType(reportTypeId: string) {
+    const result = await this.client.mutate({
+      mutation: PublicReportTypeDocument,
+      variables: {
+        reportTypeId,
+      },
+      refetchQueries: [
+        {
+          query: ReportTypesDocument,
+          variables: this.fetchReportTypesQuery,
+          fetchPolicy: "network-only",
+        },
+        {
+          query: GetReportTypeDocument,
+          variables: { id: reportTypeId },
+          fetchPolicy: "network-only",
+        },
+      ],
+      awaitRefetchQueries: true,
+    });
+
+    return result.data?.publishReportType?.reportType?.id;
+  }
+
+  async unpublishReportType(reportTypeId: string) {
+    const result = await this.client.mutate({
+      mutation: UnpublicReportTypeDocument,
+      variables: {
+        reportTypeId,
+      },
+      refetchQueries: [
+        {
+          query: ReportTypesDocument,
+          variables: this.fetchReportTypesQuery,
+          fetchPolicy: "network-only",
+        },
+        {
+          query: GetReportTypeDocument,
+          variables: { id: reportTypeId },
+          fetchPolicy: "network-only",
+        },
+      ],
+      awaitRefetchQueries: true,
+    });
+
+    return result.data?.unpublishReportType?.reportType?.id;
   }
 }
