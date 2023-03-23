@@ -121,7 +121,6 @@ const ReporterNotificationList = () => {
 
           <ConfirmDialog
             store={viewModel.dialog("confirmDelete")}
-            title={t("dialog.title.confirmDelete", "Confirm delete")}
             content={t("dialog.content.confirmDelete", "Are you sure?")}
             onYes={(record: ReporterNotification) =>
               viewModel.delete(record.id)

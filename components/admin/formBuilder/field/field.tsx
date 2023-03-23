@@ -274,7 +274,6 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
       {renderEditingFieldTypeComponent(field.fieldType)}
       <ConfirmDialog
         viewModel={field.dialog("confirmDelete")}
-        title={t("dialog.title.confirmDelete", "Confirm delete")}
         content={t("dialog.content.confirmDelete", "Are you sure?")}
         onYes={(field: FieldViewModel) => onDelete(field.id)}
         onNo={() => field.dialog("confirmDelete")?.close()}

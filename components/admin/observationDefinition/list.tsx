@@ -121,7 +121,6 @@ const ObservationDefinitionList = () => {
 
           <ConfirmDialog
             store={viewModel.dialog("confirmDelete")}
-            title={t("dialog.title.confirmDelete", "Confirm delete")}
             content={t("dialog.content.confirmDelete", "Are you sure?")}
             onYes={(record: ObservationDefinition) =>
               viewModel.delete(record.id)

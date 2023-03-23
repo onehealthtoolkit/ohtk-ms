@@ -115,7 +115,6 @@ const ConfigurationList = () => {
 
           <ConfirmDialog
             store={viewModel.dialog("confirmDelete")}
-            title={t("dialog.title.confirmDelete", "Confirm delete")}
             content={t("dialog.content.confirmDelete", "Are you sure?")}
             onYes={(record: Configuration) => viewModel.delete(record.id)}
             onNo={() => viewModel.dialog("confirmDelete")?.close()}

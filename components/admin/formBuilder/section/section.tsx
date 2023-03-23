@@ -69,7 +69,6 @@ const Section: FC<Props> = ({ value: section, onDelete }) => {
 
       <ConfirmDialog
         viewModel={section.dialog("confirmDelete")}
-        title={t("dialog.title.confirmDelete", "Confirm delete")}
         content={t("dialog.content.confirmDelete", "Are you sure?")}
         onYes={(section: SectionViewModel) => onDelete(section.id)}
         onNo={() => section.dialog("confirmDelete")?.close()}
