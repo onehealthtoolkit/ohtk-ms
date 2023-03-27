@@ -31,8 +31,8 @@ export class MapViewModel extends BaseViewModel {
     const data = await this.dashboardService.fetchEvent(this.authorityId);
     if (data) {
       runInAction(() => {
-        data.cases.forEach(it => this.data.push(it));
         data.reports.forEach(it => this.data.push(it));
+        data.cases.forEach(it => this.data.push(it));
       });
     }
     this.isLoading = false;

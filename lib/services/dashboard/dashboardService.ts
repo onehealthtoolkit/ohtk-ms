@@ -59,11 +59,16 @@ export class DashboardService implements IDashboardService {
           };
           data.reports.push({
             id: item.id,
+            createdAt: item.createdAt,
             type: "report",
             location: latlng,
             data: item.rendererData,
             categoryName: item.reportType?.category?.name || "",
             categoryIcon: item.reportType?.category?.icon,
+            imageUrl:
+              item.images && item.images.length > 0
+                ? item.images[0]?.thumbnail
+                : null,
           });
         }
       }
@@ -80,11 +85,16 @@ export class DashboardService implements IDashboardService {
 
           data.cases.push({
             id: item.id,
+            createdAt: item.report?.createdAt,
             type: "case",
             location: latlng,
             data: item.report?.rendererData || "",
             categoryName: item.report?.reportType?.category?.name || "",
             categoryIcon: item.report?.reportType?.category?.icon,
+            imageUrl:
+              item.report?.images && item.report?.images.length > 0
+                ? item.report?.images[0]?.thumbnail
+                : null,
           });
         }
       }

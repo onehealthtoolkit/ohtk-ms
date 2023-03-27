@@ -4269,6 +4269,8 @@ export type EventsQueryQuery = {
       id: any;
       report?: {
         __typename?: "IncidentReportType";
+        id: any;
+        createdAt: any;
         gpsLocation?: string | null;
         rendererData: string;
         reportType?: {
@@ -4279,11 +4281,16 @@ export type EventsQueryQuery = {
             icon?: string | null;
           } | null;
         } | null;
+        images?: Array<{
+          __typename?: "ImageType";
+          thumbnail?: string | null;
+        } | null> | null;
       } | null;
     } | null> | null;
     reports?: Array<{
       __typename?: "IncidentReportType";
       id: any;
+      createdAt: any;
       gpsLocation?: string | null;
       rendererData: string;
       reportType?: {
@@ -4294,6 +4301,10 @@ export type EventsQueryQuery = {
           icon?: string | null;
         } | null;
       } | null;
+      images?: Array<{
+        __typename?: "ImageType";
+        thumbnail?: string | null;
+      } | null> | null;
     } | null> | null;
   } | null;
 };
@@ -10416,6 +10427,14 @@ export const EventsQueryDocument = {
                           selections: [
                             {
                               kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "createdAt" },
+                            },
+                            {
+                              kind: "Field",
                               name: { kind: "Name", value: "gpsLocation" },
                             },
                             {
@@ -10448,6 +10467,19 @@ export const EventsQueryDocument = {
                               kind: "Field",
                               name: { kind: "Name", value: "rendererData" },
                             },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "images" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "thumbnail" },
+                                  },
+                                ],
+                              },
+                            },
                           ],
                         },
                       },
@@ -10461,6 +10493,10 @@ export const EventsQueryDocument = {
                     kind: "SelectionSet",
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
+                      },
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "gpsLocation" },
@@ -10494,6 +10530,19 @@ export const EventsQueryDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "rendererData" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "images" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "thumbnail" },
+                            },
+                          ],
+                        },
                       },
                     ],
                   },

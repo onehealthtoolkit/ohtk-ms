@@ -89,7 +89,7 @@ export const MarkerIcon = ({ categoryIcon, type }: MarkerIconProps) => {
 
 type EventMarkerProps = {
   event: EventItem;
-  onPopupClick?: (eventId: string) => void;
+  onPopupClick?: (eventId: string, type: string) => void;
 };
 
 export const EventMarker = ({ event, onPopupClick }: EventMarkerProps) => {
@@ -119,7 +119,7 @@ export const MarkerPopup = ({ event, onPopupClick }: EventMarkerProps) => {
       className="flex items-start gap-2 cursor-pointer"
       onClick={e => {
         e.preventDefault();
-        onPopupClick && onPopupClick(event.id);
+        onPopupClick && onPopupClick(event.id, event.type);
       }}
     >
       <div className="flex-none overflow-hidden relative w-10  bg-gray-200 rounded-md">
