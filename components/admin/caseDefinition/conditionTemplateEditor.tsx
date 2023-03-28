@@ -1,17 +1,11 @@
 import { FormVariableItem } from "components/admin/formBuilder";
-import AceEditor from "react-ace";
 
-import { Ace } from "ace-builds";
-import "ace-builds/src-noconflict/ext-language_tools";
-import "ace-builds/src-noconflict/mode-python";
-import "ace-builds/src-noconflict/theme-github";
-import "ace-builds/webpack-resolver";
-import { useEffect, useRef } from "react";
-import ReactAce from "react-ace/lib/ace";
+import { useEffect } from "react";
+import Editor, { useMonaco } from "@monaco-editor/react";
 
 type ConditionTemplateEditorProps = {
   value?: string;
-  onChange: (value: string) => void;
+  onChange: (value?: string) => void;
   variableList: Array<FormVariableItem>;
   placeholder?: string;
 };
@@ -20,66 +14,72 @@ const ConditionTemplateEditor = ({
   value,
   onChange,
   variableList,
-  placeholder,
 }: ConditionTemplateEditorProps) => {
-  const aceRef = useRef<ReactAce>(null);
+  const monaco = useMonaco();
 
   useEffect(() => {
-    if (aceRef.current) {
-      const idx = aceRef.current.editor.completers.findIndex(
-        completer =>
-          completer.identifierRegexps &&
-          completer.identifierRegexps[0].test("formvariables")
-      );
-
-      if (idx !== -1) {
-        aceRef.current.editor.completers.splice(idx, 1);
-      }
-
-      aceRef.current.editor.completers.push({
-        identifierRegexps: [new RegExp("formvariables")],
-        getCompletions: function (
-          _editor: any,
-          _session: any,
-          _pos: any,
-          _prefix: any,
-          callback: Ace.CompleterCallback
-        ) {
-          var completions: Ace.Completion[] = [];
-          // we can use session and pos here to decide what we are going to show
-          variableList.forEach(function (variable) {
-            completions.push({
-              value: variable.value,
-              meta: variable.type,
-              score: 1,
-            });
+    let editor: any;
+    if (monaco) {
+      editor = monaco.languages.registerCompletionItemProvider("python", {
+        triggerCharacters: ["."],
+        provideCompletionItems: (model: any, position: any) => {
+          const wordAtPosition = model.getWordAtPosition({
+            lineNumber: position.lineNumber,
+            column: Math.max(position.column - 1, 0),
           });
-          callback(null, completions);
+          if (wordAtPosition?.word == "data") {
+            return {
+              suggestions: variableList.map(item => {
+                return {
+                  label: item.label,
+                  kind: monaco.languages.CompletionItemKind.Property,
+                  insertText: item.label,
+                };
+              }),
+            };
+          }
+          return {
+            suggestions: variableList.map(item => {
+              return {
+                label: item.value,
+                kind: monaco.languages.CompletionItemKind.Property,
+                insertText: item.value,
+              };
+            }),
+          };
         },
       });
     }
-  }, [variableList]);
+
+    return () => {
+      if (editor) editor.dispose();
+    };
+  }, [monaco, variableList]);
 
   return (
-    <AceEditor
-      mode="python"
-      theme="github"
-      onChange={onChange}
-      name="UNIQUE_ID_OF_DIV"
-      defaultValue={value}
-      placeholder={placeholder}
-      editorProps={{ $blockScrolling: true }}
-      setOptions={{
-        enableBasicAutocompletion: true,
-        enableLiveAutocompletion: true,
-        enableSnippets: true,
-        minLines: 10,
-        maxLines: 10,
-        showLineNumbers: false,
-        showGutter: false,
-      }}
+    <Editor
+      height="150px"
       className="border border-gray-300 rounded"
-      ref={aceRef}
+      theme="vs"
+      defaultLanguage="python"
+      onChange={onChange}
+      defaultValue={value}
+      options={{
+        glyphMargin: false,
+        folding: false,
+        lineNumbers: "off",
+        lineDecorationsWidth: 5,
+        lineNumbersMinChars: 5,
+        minimap: {
+          enabled: false,
+        },
+        scrollbar: {
+          vertical: "auto",
+          horizontal: "auto",
+          verticalScrollbarSize: 0,
+          verticalSliderSize: 20,
+        },
+      }}
     />
   );
 };

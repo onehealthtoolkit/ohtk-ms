@@ -20,16 +20,8 @@ import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import useReportTypes from "lib/hooks/reportTypes";
 import { useTranslation } from "react-i18next";
-import dynamic from "next/dynamic";
 import { toJS } from "mobx";
-
-export const ConditionField = dynamic(
-  () => import("./conditionTemplateEditor"),
-  {
-    loading: () => <p>A condition field is loading</p>,
-    ssr: false,
-  }
-);
+import ConditionTemplateEditor from "./conditionTemplateEditor";
 
 const CaseDefinitionUpdateForm = () => {
   const router = useRouter();
@@ -110,9 +102,9 @@ const CaseDefinitionUpdateForm = () => {
             <Label htmlFor="condition">
               {t("form.label.condition", "Condition")}
             </Label>
-            <ConditionField
+            <ConditionTemplateEditor
               value={viewModel.condition}
-              onChange={value => (viewModel.condition = value)}
+              onChange={value => (viewModel.condition = value || "")}
               placeholder={t("form.placeholder.condition", "Condition")}
               variableList={toJS(viewModel.conditionVariables)}
             />
