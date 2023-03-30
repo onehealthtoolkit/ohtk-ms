@@ -12,6 +12,7 @@ export type Case = {
   reportByName?: string;
   reportByTelephone?: string;
   isFinished: boolean;
+  statusLabel: string;
   threadId?: number | null;
   gpsLocation?: string | null;
   reportId?: number;

@@ -174,7 +174,10 @@ const CaseList = () => {
                     {
                       label: "",
                       get: record => (
-                        <CaseStatus isFinished={record.isFinished} />
+                        <CaseStatus
+                          isFinished={record.isFinished}
+                          statusLabel={record.statusLabel}
+                        />
                       ),
                     },
                   ]}

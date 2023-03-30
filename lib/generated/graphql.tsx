@@ -1531,6 +1531,7 @@ export type CaseType = {
   report?: Maybe<IncidentReportType>;
   stateDefinition?: Maybe<DeepStateDefinitionType>;
   states?: Maybe<Array<Maybe<CaseStateType>>>;
+  statusLabel?: Maybe<Scalars["String"]>;
   threadId?: Maybe<Scalars["Int"]>;
 };
 
@@ -3721,6 +3722,7 @@ export type CasesQuery = {
       __typename?: "CaseType";
       id: any;
       isFinished: boolean;
+      statusLabel?: string | null;
       report?: {
         __typename?: "IncidentReportType";
         createdAt: any;
@@ -3754,6 +3756,7 @@ export type GetCaseQuery = {
     id: any;
     description: string;
     isFinished: boolean;
+    statusLabel?: string | null;
     threadId?: number | null;
     outbreakPlanInfo?: any | null;
     authorities?: Array<{
@@ -8028,6 +8031,10 @@ export const CasesDocument = {
                       },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "statusLabel" },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "report" },
                         selectionSet: {
                           kind: "SelectionSet",
@@ -8139,6 +8146,7 @@ export const GetCaseDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "description" } },
                 { kind: "Field", name: { kind: "Name", value: "isFinished" } },
+                { kind: "Field", name: { kind: "Name", value: "statusLabel" } },
                 { kind: "Field", name: { kind: "Name", value: "threadId" } },
                 {
                   kind: "Field",

@@ -18,6 +18,7 @@ query Cases(
     results {
       id
       isFinished
+      statusLabel
       report {
         createdAt
         incidentDate
@@ -42,6 +43,7 @@ query GetCase($id: UUID!) {
     id
     description
     isFinished
+    statusLabel
     threadId
     outbreakPlanInfo
     authorities {

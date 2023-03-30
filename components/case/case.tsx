@@ -132,7 +132,10 @@ const Case = (props: { id: string }) => {
                   <p className="text-md dark:text-gray-400 ">
                     Report type: {viewModel.data.reportTypeName}
                   </p>
-                  <CaseStatus isFinished={viewModel.data.isFinished} />
+                  <CaseStatus
+                    isFinished={viewModel.data.isFinished}
+                    statusLabel={viewModel.data.statusLabel}
+                  />
                 </div>
                 <p className="text-sm pt-1 font-bold">
                   {viewModel.data.description}
