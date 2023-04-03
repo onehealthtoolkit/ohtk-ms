@@ -1531,6 +1531,7 @@ export type CaseType = {
   report?: Maybe<IncidentReportType>;
   stateDefinition?: Maybe<DeepStateDefinitionType>;
   states?: Maybe<Array<Maybe<CaseStateType>>>;
+  statusLabel?: Maybe<Scalars["String"]>;
   threadId?: Maybe<Scalars["Int"]>;
 };
 
@@ -3721,6 +3722,7 @@ export type CasesQuery = {
       __typename?: "CaseType";
       id: any;
       isFinished: boolean;
+      statusLabel?: string | null;
       report?: {
         __typename?: "IncidentReportType";
         createdAt: any;
@@ -3754,6 +3756,7 @@ export type GetCaseQuery = {
     id: any;
     description: string;
     isFinished: boolean;
+    statusLabel?: string | null;
     threadId?: number | null;
     outbreakPlanInfo?: any | null;
     authorities?: Array<{
@@ -4269,6 +4272,8 @@ export type EventsQueryQuery = {
       id: any;
       report?: {
         __typename?: "IncidentReportType";
+        id: any;
+        createdAt: any;
         gpsLocation?: string | null;
         rendererData: string;
         reportType?: {
@@ -4279,11 +4284,16 @@ export type EventsQueryQuery = {
             icon?: string | null;
           } | null;
         } | null;
+        images?: Array<{
+          __typename?: "ImageType";
+          thumbnail?: string | null;
+        } | null> | null;
       } | null;
     } | null> | null;
     reports?: Array<{
       __typename?: "IncidentReportType";
       id: any;
+      createdAt: any;
       gpsLocation?: string | null;
       rendererData: string;
       reportType?: {
@@ -4294,6 +4304,10 @@ export type EventsQueryQuery = {
           icon?: string | null;
         } | null;
       } | null;
+      images?: Array<{
+        __typename?: "ImageType";
+        thumbnail?: string | null;
+      } | null> | null;
     } | null> | null;
   } | null;
 };
@@ -8017,6 +8031,10 @@ export const CasesDocument = {
                       },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "statusLabel" },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "report" },
                         selectionSet: {
                           kind: "SelectionSet",
@@ -8128,6 +8146,7 @@ export const GetCaseDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "description" } },
                 { kind: "Field", name: { kind: "Name", value: "isFinished" } },
+                { kind: "Field", name: { kind: "Name", value: "statusLabel" } },
                 { kind: "Field", name: { kind: "Name", value: "threadId" } },
                 {
                   kind: "Field",
@@ -10416,6 +10435,14 @@ export const EventsQueryDocument = {
                           selections: [
                             {
                               kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "createdAt" },
+                            },
+                            {
+                              kind: "Field",
                               name: { kind: "Name", value: "gpsLocation" },
                             },
                             {
@@ -10448,6 +10475,19 @@ export const EventsQueryDocument = {
                               kind: "Field",
                               name: { kind: "Name", value: "rendererData" },
                             },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "images" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "thumbnail" },
+                                  },
+                                ],
+                              },
+                            },
                           ],
                         },
                       },
@@ -10461,6 +10501,10 @@ export const EventsQueryDocument = {
                     kind: "SelectionSet",
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
+                      },
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "gpsLocation" },
@@ -10494,6 +10538,19 @@ export const EventsQueryDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "rendererData" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "images" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "thumbnail" },
+                            },
+                          ],
+                        },
                       },
                     ],
                   },

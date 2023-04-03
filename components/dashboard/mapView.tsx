@@ -13,6 +13,8 @@ import turfBbox from "@turf/bbox";
 import { points as turfPoints } from "@turf/helpers";
 import { EventItemType } from "lib/services/dashboard/event";
 import { DashBoardFilterData } from "./dashboardViewModel";
+import { MarkerPopup } from "components/map/markerIcon";
+import { useRouter } from "next/router";
 
 type MapViewProps = {
   authorityId: number;
@@ -20,6 +22,7 @@ type MapViewProps = {
 };
 
 const MapView: React.FC<MapViewProps> = ({ authorityId, filter }) => {
+  const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
     () => new MapViewModel(services.dashboardService)
@@ -82,7 +85,16 @@ const MapView: React.FC<MapViewProps> = ({ authorityId, filter }) => {
                     position={[item.location.lat, item.location.lng]}
                     icon={icon}
                   >
-                    <Popup>{item.data || "No data reported"}</Popup>
+                    <Popup>
+                      <MarkerPopup
+                        event={item}
+                        onPopupClick={(id, type) =>
+                          router.push(
+                            `${type == "report" ? "reports" : "cases"}/${id}`
+                          )
+                        }
+                      />
+                    </Popup>
                   </Marker>
                 );
               })}

@@ -21,6 +21,7 @@ import useReportTypes from "lib/hooks/reportTypes";
 import { useTranslation } from "react-i18next";
 import { toJS } from "mobx";
 import dynamic from "next/dynamic";
+import ConditionTemplateEditor from "./conditionTemplateEditor";
 
 export const ConditionField = dynamic(
   () => import("./conditionTemplateEditor"),
@@ -110,9 +111,9 @@ const CaseDefinitionCreate = () => {
           <Label htmlFor="condition">
             {t("form.label.condition", "Condition")}
           </Label>
-          <ConditionField
+          <ConditionTemplateEditor
             value={viewModel.condition}
-            onChange={value => (viewModel.condition = value)}
+            onChange={value => (viewModel.condition = value || "")}
             placeholder={t("form.placeholder.condition", "Condition")}
             variableList={toJS(viewModel.conditionVariables)}
           />

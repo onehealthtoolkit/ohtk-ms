@@ -98,6 +98,7 @@ export class CaseService implements ICaseService {
           rendererData: item.report?.rendererData as string,
           reportTypeName: item.report?.reportType?.name,
           isFinished: item.isFinished,
+          statusLabel: item.statusLabel || "",
         });
       }
     });
@@ -160,6 +161,7 @@ export class CaseService implements ICaseService {
         stateDefinition: incidentCase.stateDefinition,
         states: incidentCase.states,
         outbreakInfo: incidentCase.outbreakPlanInfo,
+        statusLabel: incidentCase.statusLabel || "",
       };
     }
     return {

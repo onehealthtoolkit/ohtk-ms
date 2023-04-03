@@ -106,7 +106,7 @@ export const MarkerPopup = ({ event, onPopupClick }: EventMarkerProps) => {
         onPopupClick && onPopupClick(event.id);
       }}
     >
-      <div className="overflow-hidden relative w-10  bg-gray-200 rounded-full">
+      <div className="flex-none overflow-hidden relative w-10  bg-gray-200 rounded-full">
         {event.imageUrl ? (
           <img
             src={event.imageUrl}
