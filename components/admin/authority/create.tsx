@@ -78,7 +78,7 @@ const AuthorityCreate = () => {
           <ErrorText>{viewModel.fieldErrors.inherits}</ErrorText>
         </Field>
         <Field $size="full">
-          <Label htmlFor="area">Area</Label>
+          <Label htmlFor="area">{t("form.label.area", "Area")}</Label>
           <AreaFieldNoSSR
             value={toJS(viewModel.area)}
             onChange={data => (viewModel.area = data)}

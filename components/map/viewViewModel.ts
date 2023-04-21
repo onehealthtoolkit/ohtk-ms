@@ -21,6 +21,7 @@ export default class MapViewViewModel {
   _reportTypes?: MapViewFilterData["reportTypes"] = undefined;
   _fromDate: Date | undefined = undefined;
   _toDate: Date | undefined = undefined;
+  _periodText: string = "";
 
   data = Array<EventItem>();
   isLive: boolean = false;
@@ -36,6 +37,8 @@ export default class MapViewViewModel {
       fromDate: computed,
       _toDate: observable,
       toDate: computed,
+      _periodText: observable,
+      periodText: computed,
       data: observable,
       fetch: action,
       isLive: observable,
@@ -74,6 +77,14 @@ export default class MapViewViewModel {
   set toDate(value: Date | undefined) {
     if (value) value.setHours(23, 59, 59, 999);
     this._toDate = value;
+  }
+
+  get periodText() {
+    return this._periodText;
+  }
+
+  set periodText(value: string) {
+    this._periodText = value;
   }
 
   setSearchValue(

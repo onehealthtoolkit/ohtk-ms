@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { Field, Label } from "components/widgets/forms";
 import DatePicker from "components/widgets/datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -9,21 +9,19 @@ import MapViewViewModel from "components/map/viewViewModel";
 import ReportTypeSelect from "components/report/reportTypeSelect";
 
 const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
-  const [periodText, setPeriodText] = useState<String>();
-
   const setThisWeek = () => {
     const curr = new Date();
     const first = curr.getDate() - curr.getDay();
     viewModel.fromDate = new Date(curr.setDate(first));
     viewModel.toDate = new Date();
-    setPeriodText("This week");
+    viewModel.periodText = "This week";
   };
 
   const setThisMonth = () => {
     const curr = new Date();
     viewModel.fromDate = new Date(curr.setDate(1));
     viewModel.toDate = new Date();
-    setPeriodText("This month");
+    viewModel.periodText = "This month";
   };
 
   const setThisYear = () => {
@@ -31,7 +29,7 @@ const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
     curr.setMonth(0);
     viewModel.fromDate = new Date(curr.setDate(1));
     viewModel.toDate = new Date();
-    setPeriodText("This year");
+    viewModel.periodText = "This year";
   };
 
   return (
@@ -41,10 +39,10 @@ const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
           <div>
             <Menu.Button
               className={`${
-                periodText ? "text-black" : "text-gray-400"
+                viewModel.periodText ? "text-black" : "text-gray-400"
               } inline-flex w-full justify-center rounded-md px-4 py-0 text-sm font-medium  underline hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
             >
-              {periodText || "Select ..."}
+              {viewModel.periodText || "Select ..."}
               <ChevronDownIcon
                 className="ml-2 -mr-1 h-5 w-5 text-black"
                 aria-hidden="true"

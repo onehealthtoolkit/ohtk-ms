@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Field, Label } from "components/widgets/forms";
 import DatePicker from "components/widgets/datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -61,6 +61,11 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
       toDate: toDate?.toISOString(),
     });
   };
+
+  useEffect(() => {
+    setFromDate(viewModel.fromDate);
+    setToDate(viewModel.toDate);
+  }, [viewModel.fromDate, viewModel.toDate]);
 
   const filterFields = (
     <>
@@ -185,6 +190,7 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
           onReset={() => {
             setFromDate(undefined);
             setToDate(undefined);
+            setPeriodText(undefined);
             resetUrl();
           }}
           popPositionClass="right-0"

@@ -183,7 +183,8 @@
     "changePassword": "Change password"
   },
   "message": {
-    "resetPasswordRequestSuccess": "We received a request to reset your password."
+    "resetPasswordRequestSuccess": "We received a request to reset your password.",
+    "passwordMissmatch": "The password and confirm password you entered don’t match."
   },
   "months": [
     "Jan",

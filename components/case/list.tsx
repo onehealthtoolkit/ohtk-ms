@@ -19,6 +19,7 @@ import { CalendarIcon, TableIcon } from "@heroicons/react/solid";
 import { CaseDayEvents } from "components/case/dayEvents";
 import Calendar from "components/widgets/calendar";
 import TotalItem from "components/widgets/table/totalItem";
+import { useTranslation } from "react-i18next";
 
 const JSURL = require("jsurl");
 
@@ -60,6 +61,8 @@ const ViewSwitch = ({
   isCalendarView: boolean;
   onSwitchView: (isCalendarView: boolean) => void;
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex space-x-2">
       <SwitchViewButton
@@ -67,14 +70,14 @@ const ViewSwitch = ({
         onClick={() => onSwitchView(false)}
       >
         <TableIcon className="w-5 h-5 mr-2" />
-        <span>ตาราง</span>
+        <span>{t("filter.listView", "List")}</span>
       </SwitchViewButton>
       <SwitchViewButton
         active={isCalendarView ? 1 : 0}
         onClick={() => onSwitchView(true)}
       >
         <CalendarIcon className="w-5 h-5 mr-2" />
-        <span>ดูปฏิทินงาน</span>
+        <span>{t("filter.calendarView", "Calendar")}</span>
       </SwitchViewButton>
     </div>
   );

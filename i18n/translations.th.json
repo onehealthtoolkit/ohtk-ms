@@ -189,7 +189,8 @@
     "changePassword": "เปลี่ยนรหัสผ่าน"
   },
   "message": {
-    "resetPasswordRequestSuccess": "ระบบได้รับคำขอให้รีเซ็ตรหัสผ่านของคุณเรียบร้อย"
+    "resetPasswordRequestSuccess": "ระบบได้รับคำขอให้รีเซ็ตรหัสผ่านของคุณเรียบร้อย",
+    "passwordMissmatch": "รหัสผ่านและยืนยันรหัสผ่านที่คุณป้อนไม่ตรงกัน"
   },
   "months": [
     "ม.ค.",

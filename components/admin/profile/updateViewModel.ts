@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import { BaseFormViewModel } from "lib/baseFormViewModel";
 import { IProfileService } from "lib/services/profile";
 import { action, computed, makeObservable, observable } from "mobx";
@@ -106,7 +107,11 @@ export class ProfileUpdateViewModel extends BaseFormViewModel {
     let isValid = true;
     if (this.password !== this.confirmPassword) {
       isValid = false;
-      this.fieldErrors["password"] = "Password does not match confirm password";
+      const t = i18next.getFixedT(null, null);
+      this.fieldErrors["password"] = t(
+        "message.passwordMissmatch",
+        "The password and confirm password you entered don’t match."
+      );
     }
     return isValid;
   }

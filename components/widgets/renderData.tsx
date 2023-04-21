@@ -178,7 +178,7 @@ const renderItem = (data: Record<string, any>) => {
         >
           <th
             scope="row"
-            className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white"
+            className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white break-words"
           >
             {key}
           </th>
