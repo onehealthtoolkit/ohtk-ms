@@ -24,7 +24,9 @@
     "configurations": "ການຕັ້ງຄ່າ",
     "contributions": "ລາຍ​ງານ​ປະ​ຫວັດ​ສາດ​",
     "observationDefinitions": "ຄໍາ​ນິ​ຍາມ​ການ​ສັງ​ເກດ​ການ",
-    "observationMonitoringDefinitions": "ຄໍານິຍາມການຕິດຕາມການສັງເກດ"
+    "observationMonitoringDefinitions": "ຄໍານິຍາມການຕິດຕາມການສັງເກດ",
+    "inactiveReporter": "ນັກຂ່າວທີ່ບໍ່ເຄື່ອນໄຫວ",
+    "reporterPerformance": "ຜົນງານຂອງນັກຂ່າວ"
   },
   "filter": {
     "searchButton": "ປຸ່ມຊອກຫາ",
@@ -165,7 +167,8 @@
       "add": "ເພີ່ມ",
       "save": "ບັນທຶກ",
       "cancel": "ຍົກເລີກ",
-      "next": "ຕໍ່ໄປ"
+      "next": "ຕໍ່ໄປ",
+      "downloadExcel": "ດາວໂຫລດ Excel"
     }
   },
   "dialog": {

@@ -16,6 +16,7 @@ import {
   CalendarIcon,
   MapIcon,
   CogIcon,
+  DocumentIcon,
 } from "@heroicons/react/outline";
 import useStore from "lib/store";
 import CollapsIcon from "components/layout/CollapsIcon";
@@ -123,6 +124,42 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                       label={t("breadcrumb.observation", "Observation")}
                     />
                   )}
+                </ul>
+              </div>
+
+              <div>
+                <h3
+                  className={`text-xs uppercase text-slate-500 font-semibold pl-3 ${
+                    store.menu.collapsed ? "hidden" : ""
+                  }`}
+                >
+                  <span className="md:sidebar-expanded:block 2xl:block">
+                    Reports
+                  </span>
+                </h3>
+                <ul className="mt-3">
+                  <Menu
+                    href="/excels/inactive_reporter"
+                    pathname={pathname}
+                    label={t(
+                      "breadcrumb.inactiveReporter",
+                      "Inactive Reporter"
+                    )}
+                    collapsed={store.menu.collapsed}
+                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    icon={<DocumentIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/excels/reporter_performance"
+                    pathname={pathname}
+                    label={t(
+                      "breadcrumb.reporterPerformance",
+                      "Reporter performance"
+                    )}
+                    collapsed={store.menu.collapsed}
+                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    icon={<DocumentIcon className={iconClassName} />}
+                  />
                 </ul>
               </div>
 

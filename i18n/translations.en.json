@@ -23,7 +23,9 @@
     "places": "Places",
     "configurations": "Configurations",
     "observationDefinitions": "Observation Definitions",
-    "observationMonitoringDefinitions": "Observation Monitoring Definition"
+    "observationMonitoringDefinitions": "Observation Monitoring Definition",
+    "inactiveReporter": "Inactive reporter",
+    "reporterPerformance": "Reporter performance"
   },
   "filter": {
     "searchButton": "Search",
@@ -162,7 +164,8 @@
       "add": "Add",
       "save": "Save",
       "cancel": "Cancel",
-      "next": "Next"
+      "next": "Next",
+      "downloadExcel": "Download Excel"
     }
   },
   "dialog": {

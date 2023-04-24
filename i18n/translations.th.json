@@ -24,7 +24,9 @@
     "configurations": "การกำหนดค่า",
     "contributions": "ประวัติการรายงาน",
     "observationDefinitions": "นิยามการสังเกต",
-    "observationMonitoringDefinitions": "คำจำกัดความการติดตามการสังเกต"
+    "observationMonitoringDefinitions": "คำจำกัดความการติดตามการสังเกต",
+    "inactiveReporter": "รีพอร์เตอร์ที่ไม่ใช้งาน",
+    "reporterPerformance": "ประสิทธิภาพของรีพอร์เตอร์"
   },
   "filter": {
     "searchButton": "ค้นหา",
@@ -165,7 +167,8 @@
       "add": "เพิ่ม",
       "save": "บันทึก",
       "cancel": "ยกเลิก",
-      "next": "ไปขั้นตอนต่อไป"
+      "next": "ไปขั้นตอนต่อไป",
+      "downloadExcel": "ดาวน์โหลดข้อมูลไฟล์ Excel "
     }
   },
   "dialog": {
