@@ -160,6 +160,14 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     display={store.isRoleOfficer || store.isRoleAdmin}
                     icon={<DocumentIcon className={iconClassName} />}
                   />
+                  <Menu
+                    href="/excels/reports"
+                    pathname={pathname}
+                    label={t("breadcrumb.reports", "Reports")}
+                    collapsed={store.menu.collapsed}
+                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    icon={<DocumentIcon className={iconClassName} />}
+                  />
                 </ul>
               </div>
 

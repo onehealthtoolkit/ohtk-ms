@@ -3,9 +3,7 @@ import ExcelFilter from "components/excel/filter";
 
 const InactiveReporter: React.FC = () => {
   return (
-    <Observer>
-      {() => <ExcelFilter action="inactive_reporter" onRefresh={() => {}} />}
-    </Observer>
+    <Observer>{() => <ExcelFilter action="inactive_reporter" />}</Observer>
   );
 };
 

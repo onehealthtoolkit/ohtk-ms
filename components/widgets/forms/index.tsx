@@ -149,6 +149,7 @@ const CheckboxInput = (
     checked?: boolean;
     defaultChecked?: boolean;
     disabled: boolean;
+    name?: string;
     onChange?: ChangeEventHandler<HTMLInputElement>;
   },
   ref: React.Ref<HTMLInputElement>
