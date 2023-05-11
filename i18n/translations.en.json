@@ -23,7 +23,9 @@
     "places": "Places",
     "configurations": "Configurations",
     "observationDefinitions": "Observation Definitions",
-    "observationMonitoringDefinitions": "Observation Monitoring Definition"
+    "observationMonitoringDefinitions": "Observation Monitoring Definition",
+    "inactiveReporter": "Inactive reporter",
+    "reporterPerformance": "Reporter performance"
   },
   "filter": {
     "searchButton": "Search",
@@ -162,20 +164,18 @@
       "add": "Add",
       "save": "Save",
       "cancel": "Cancel",
-      "next": "Next"
+      "next": "Next",
+      "downloadExcel": "Download Excel"
     }
   },
   "dialog": {
     "title": {
-      "confirmDelete": "Confirm Delete",
-      "confirmPublishReportType": "Confirm publish report type",
-      "confirmUnpublishReportType": "Confirm unpublish report type",
       "confirmTransition": "Confirm transition"
     },
     "content": {
-      "confirmDelete": "Are you sure?",
-      "confirmPublishReportType": "Press ok button to publish this report type?",
-      "confirmUnpublishReportType": "Press ok button to unpublish this report type?",
+      "confirmDelete": "Confirm Delete",
+      "confirmPublishReportType": "Publish this report to mobile application.",
+      "confirmUnpublishReportType": "Unpublish this report from moible application.",
       "confirmTransition": "Are you want to change status to  {{stepName}} ?"
     }
   },
@@ -186,7 +186,8 @@
     "changePassword": "Change password"
   },
   "message": {
-    "resetPasswordRequestSuccess": "We received a request to reset your password."
+    "resetPasswordRequestSuccess": "We received a request to reset your password.",
+    "passwordMissmatch": "The password and confirm password you entered don’t match."
   },
   "months": [
     "Jan",

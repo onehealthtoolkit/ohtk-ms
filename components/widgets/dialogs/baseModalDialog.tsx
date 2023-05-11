@@ -87,8 +87,8 @@ const BaseModalDialog: React.FC<Props> = ({
                   {title && (
                     <h1 className="text-left text-base font-medium">{title}</h1>
                   )}
-                  <div className="h-full text-center">
-                    {renderContent(store.data)}
+                  <div className="flex min-h-[20vh]">
+                    <div className="m-auto">{renderContent(store.data)}</div>
                   </div>
                   <button
                     className="absolute right-4 top-4 z-[1001]"
@@ -99,7 +99,9 @@ const BaseModalDialog: React.FC<Props> = ({
                   >
                     <XCircleIcon className="w-8 h-8 fill-red-400" />
                   </button>
-                  <div>{renderAction && renderAction(store, store.data)}</div>
+                  <div className="absolute bottom-0 left-0 right-0 px-4 py-2">
+                    {renderAction && renderAction(store, store.data)}
+                  </div>
                 </div>
               </Fragment>,
               document.body

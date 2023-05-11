@@ -4,7 +4,7 @@ import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import useServices from "lib/services/provider";
 import useStore from "lib/store";
 import { isoStringToDate } from "lib/utils";
-import { toJS } from "mobx";
+import { runInAction, toJS } from "mobx";
 import { observer } from "mobx-react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
@@ -133,7 +133,10 @@ const MapView: React.FC = () => {
           <Filter
             onSearch={applySearch}
             onReset={() => {
-              resetUrl();
+              runInAction(() => {
+                viewModel.periodText = "";
+                resetUrl();
+              });
             }}
             popPositionClass="right-0"
           >

@@ -237,7 +237,6 @@ const ReportTypeList = () => {
 
           <ConfirmDialog
             store={viewModel.dialog("confirmDelete")}
-            title={t("dialog.title.confirmDelete", "Confirm delete")}
             content={t("dialog.content.confirmDelete", "Are you sure?")}
             onYes={(record: ReportType) => viewModel.delete(record.id)}
             onNo={() => viewModel.dialog("confirmDelete")?.close()}
@@ -245,10 +244,6 @@ const ReportTypeList = () => {
 
           <ConfirmDialog
             store={viewModel.dialog("confirmPublishReportType")}
-            title={t(
-              "dialog.title.confirmPublishReportType",
-              "Confirm publish report type"
-            )}
             content={t(
               "dialog.content.confirmPublishReportType",
               "Are you sure?"
@@ -261,10 +256,6 @@ const ReportTypeList = () => {
 
           <ConfirmDialog
             store={viewModel.dialog("confirmUnpublishReportType")}
-            title={t(
-              "dialog.title.confirmUnpublishReportType",
-              "Confirm unpublish report type"
-            )}
             content={t(
               "dialog.content.confirmUnpublishReportType",
               "Are you sure?"

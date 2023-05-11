@@ -180,7 +180,6 @@ const Question: FC<Props> = ({ value: question, onSelect, onDelete }) => {
       </div>
       <ConfirmDialog
         viewModel={question.dialog("confirmDelete")}
-        title={t("dialog.title.confirmDelete", "Confirm delete")}
         content={t("dialog.content.confirmDelete", "Are you sure?")}
         onYes={(question: QuestionViewModel) => onDelete(question.id)}
         onNo={() => question.dialog("confirmDelete")?.close()}

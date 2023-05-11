@@ -23,7 +23,9 @@
     "places": "កន្លែង",
     "configurations": "ការកំណត់រចនាសម្ព័ន្ធ",
     "observationDefinitions": "និយមន័យនៃការសង្កេត",
-    "observationMonitoringDefinitions": "និយមន័យនៃការត្រួតពិនិត្យការសង្កេត"
+    "observationMonitoringDefinitions": "និយមន័យនៃការត្រួតពិនិត្យការសង្កេត",
+    "inactiveReporter": "អ្នករាយការណ៍អសកម្ម",
+    "reporterPerformance": "ការសម្តែងអ្នកសារព័ត៌មាន"
   },
   "filter": {
     "searchButton": "ស្វែងរក",
@@ -161,7 +163,8 @@
       "add": "បន្ថែម",
       "save": "រក្សាទុក",
       "cancel": "បោះបង់",
-      "next": "បន្ទាប់"
+      "next": "បន្ទាប់",
+      "downloadExcel": "ទាញយក Excel"
     }
   },
   "dialog": {
@@ -185,7 +188,8 @@
     "changePassword": "ផ្លាស់ប្តូរពាក្យសម្ងាត់"
   },
   "message": {
-    "resetPasswordRequestSuccess": "យើងបានទទួលសំណើសុំកំណត់ពាក្យសម្ងាត់របស់អ្នកឡើងវិញ។"
+    "resetPasswordRequestSuccess": "យើងបានទទួលសំណើសុំកំណត់ពាក្យសម្ងាត់របស់អ្នកឡើងវិញ។",
+    "passwordMissmatch": "ពាក្យសម្ងាត់ និងបញ្ជាក់ពាក្យសម្ងាត់ដែលអ្នកបានបញ្ចូលមិនត្រូវគ្នាទេ។"
   },
   "months": [
     "មករា",

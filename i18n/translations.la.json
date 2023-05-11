@@ -24,7 +24,9 @@
     "configurations": "ການຕັ້ງຄ່າ",
     "contributions": "ລາຍ​ງານ​ປະ​ຫວັດ​ສາດ​",
     "observationDefinitions": "ຄໍາ​ນິ​ຍາມ​ການ​ສັງ​ເກດ​ການ",
-    "observationMonitoringDefinitions": "ຄໍານິຍາມການຕິດຕາມການສັງເກດ"
+    "observationMonitoringDefinitions": "ຄໍານິຍາມການຕິດຕາມການສັງເກດ",
+    "inactiveReporter": "ນັກຂ່າວທີ່ບໍ່ເຄື່ອນໄຫວ",
+    "reporterPerformance": "ຜົນງານຂອງນັກຂ່າວ"
   },
   "filter": {
     "searchButton": "ປຸ່ມຊອກຫາ",
@@ -165,7 +167,8 @@
       "add": "ເພີ່ມ",
       "save": "ບັນທຶກ",
       "cancel": "ຍົກເລີກ",
-      "next": "ຕໍ່ໄປ"
+      "next": "ຕໍ່ໄປ",
+      "downloadExcel": "ດາວໂຫລດ Excel"
     }
   },
   "dialog": {
@@ -189,7 +192,8 @@
     "changePassword": "ປ່ຽນ​ລະ​ຫັດ​ຜ່ານ"
   },
   "message": {
-    "resetPasswordRequestSuccess": "ລະບົບໄດ້ຮັບການຮ້ອງຂໍໃຫ້ຣີເຊັດລະຫັດຜ່ານຂອງທ່ານແລ້ວ."
+    "resetPasswordRequestSuccess": "ລະບົບໄດ້ຮັບການຮ້ອງຂໍໃຫ້ຣີເຊັດລະຫັດຜ່ານຂອງທ່ານແລ້ວ.",
+    "passwordMissmatch": "ລະຫັດຜ່ານ ແລະຢືນຢັນລະຫັດຜ່ານທີ່ທ່ານໃສ່ນັ້ນບໍ່ກົງກັນ."
   },
   "months": [
     "ມັງກອນ",

@@ -7,6 +7,7 @@ import { styledReactSelect } from "components/widgets/styledReactSelect";
 type AuthorityFilterProps = {
   value: AuthorityOption;
   onChange: (value: AuthorityOption) => void;
+  name?: string;
 };
 
 type AuthorityOption = {
@@ -16,6 +17,7 @@ type AuthorityOption = {
 
 const AuthroityFilter: React.FC<AuthorityFilterProps> = ({
   value,
+  name,
   onChange,
 }) => {
   const services = useServices();
@@ -43,6 +45,7 @@ const AuthroityFilter: React.FC<AuthorityFilterProps> = ({
 
   return (
     <Select<AuthorityOption>
+      name={name}
       defaultValue={value}
       isMulti={false}
       options={authorities}

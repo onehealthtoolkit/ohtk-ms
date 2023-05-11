@@ -45,6 +45,21 @@ export const AddButton = forwardRef(function AddButton(
   );
 });
 
+export const DownloadButton = tw.button`
+  border
+  text-white
+  bg-[#4C81F1] 
+  border-blue-300
+  hover:border-blue-500
+  rounded
+  h-12
+  flex
+  justify-center
+  items-center
+  mr-4
+  px-5
+`;
+
 const Input = (
   props: React.DetailedHTMLProps<
     React.InputHTMLAttributes<HTMLInputElement>,
@@ -134,6 +149,7 @@ const CheckboxInput = (
     checked?: boolean;
     defaultChecked?: boolean;
     disabled: boolean;
+    name?: string;
     onChange?: ChangeEventHandler<HTMLInputElement>;
   },
   ref: React.Ref<HTMLInputElement>
