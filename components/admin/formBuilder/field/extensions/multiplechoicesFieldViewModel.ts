@@ -37,7 +37,7 @@ export class MultiplechoicesFieldViewModel extends AbstractDefinitionViewModel {
       definition.options.forEach(choiceDefinition => {
         const id = uuidv4();
         const choiceViewModel = new ChoiceViewModel(id, "Choice");
-        choiceViewModel.parse(choiceDefinition);
+        choiceViewModel.parse(choiceDefinition as Definition);
         choices.push(choiceViewModel);
       });
       this.choices.splice(0, this.choices.length, ...choices);

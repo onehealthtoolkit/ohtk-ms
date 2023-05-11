@@ -87,7 +87,7 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
         definition.questions.forEach(questionDefinition => {
           const id = uuidv4();
           const questionViewModel = new QuestionViewModel(this, id, "Question");
-          questionViewModel.parse(questionDefinition);
+          questionViewModel.parse(questionDefinition as Definition);
           questions.push(questionViewModel);
         });
         this.questions.splice(0, this.questions.length, ...questions);

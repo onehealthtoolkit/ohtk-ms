@@ -78,7 +78,7 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
         definition.sections.forEach(sectionDefinition => {
           const id = uuidv4();
           const sectionViewModel = new SectionViewModel(this, id, "Section");
-          sectionViewModel.parse(sectionDefinition);
+          sectionViewModel.parse(sectionDefinition as Definition);
           sections.push(sectionViewModel);
         });
         this.sections.splice(0, this.sections.length, ...sections);
