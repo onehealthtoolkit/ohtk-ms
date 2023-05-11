@@ -1,6 +1,7 @@
 import {
   DateFieldViewModel,
   DecimalFieldViewModel,
+  FilesFieldViewModel,
   ImagesFieldViewModel,
   IntegerFieldViewModel,
   LocationFieldViewModel,
@@ -27,12 +28,13 @@ export const FIELD_TYPES = [
   "decimal",
   "date",
   "images",
+  "files",
   "location",
   "singlechoices",
   "multiplechoices",
 ] as const;
 
-export type TFieldValueType = typeof FIELD_TYPES[number];
+export type TFieldValueType = (typeof FIELD_TYPES)[number];
 export type TFieldExtensionType<T> = T extends "text"
   ? TextFieldViewModel
   : T extends "integer"
@@ -43,6 +45,8 @@ export type TFieldExtensionType<T> = T extends "text"
   ? DateFieldViewModel
   : T extends "images"
   ? ImagesFieldViewModel
+  : T extends "files"
+  ? FilesFieldViewModel
   : T extends "location"
   ? LocationFieldViewModel
   : T extends "singlechoices"
@@ -101,6 +105,8 @@ export class FieldViewModel extends BaseViewModel {
         return new DateFieldViewModel();
       case "images":
         return new ImagesFieldViewModel();
+      case "files":
+        return new FilesFieldViewModel();
       case "location":
         return new LocationFieldViewModel();
       case "singlechoices":
@@ -131,6 +137,8 @@ export class FieldViewModel extends BaseViewModel {
         return "Date";
       case "images":
         return "Images";
+      case "files":
+        return "Files";
       case "location":
         return "Location";
       case "singlechoices":

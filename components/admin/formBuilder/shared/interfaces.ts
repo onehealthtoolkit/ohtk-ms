@@ -5,5 +5,5 @@ export type Definition = {
     | boolean
     | Date
     | Definition
-    | Array<Definition>;
+    | Array<Definition | string>;
 };

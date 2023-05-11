@@ -8,6 +8,8 @@ export * from "./dateField";
 export * from "./dateFieldViewModel";
 export * from "./imagesField";
 export * from "./imagesFieldViewModel";
+export * from "./filesField";
+export * from "./filesFieldViewModel";
 export * from "./locationField";
 export * from "./locationFieldViewModel";
 export * from "./singlechoicesField";

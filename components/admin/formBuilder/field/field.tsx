@@ -1,8 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
-import { PhotographIcon, PlusIcon } from "@heroicons/react/solid";
+import {
+  DocumentTextIcon,
+  PhotographIcon,
+  PlusIcon,
+  VideoCameraIcon,
+  VolumeUpIcon,
+} from "@heroicons/react/solid";
 import {
   DateField,
   DecimalField,
+  FilesField,
   ImagesField,
   IntegerField,
   LocationField,
@@ -45,6 +52,8 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
         return <DateField value={field} onDelete={onDeleteConfirm} />;
       case "images":
         return <ImagesField value={field} onDelete={onDeleteConfirm} />;
+      case "files":
+        return <FilesField value={field} onDelete={onDeleteConfirm} />;
       case "location":
         return <LocationField value={field} onDelete={onDeleteConfirm} />;
       case "singlechoices":
@@ -124,6 +133,23 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
             </div>
             <div className="w-20 h-20 border rounded border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
               <PhotographIcon className="w-8 h-8 text-gray-300" />
+            </div>
+            <div className="w-20 h-20 border rounded border-gray-200 bg-gray-50 flex items-center justify-center">
+              <PlusIcon className="w-8 h-8 text-gray-300" />
+            </div>
+          </div>
+        );
+      case "files":
+        return (
+          <div className="flex flex-wrap mt-2">
+            <div className="w-20 h-20 border rounded border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
+              <VolumeUpIcon className="w-8 h-8 text-gray-300" />
+            </div>
+            <div className="w-20 h-20 border rounded border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
+              <VideoCameraIcon className="w-8 h-8 text-gray-300" />
+            </div>
+            <div className="w-20 h-20 border rounded border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
+              <DocumentTextIcon className="w-8 h-8 text-gray-300" />
             </div>
             <div className="w-20 h-20 border rounded border-gray-200 bg-gray-50 flex items-center justify-center">
               <PlusIcon className="w-8 h-8 text-gray-300" />

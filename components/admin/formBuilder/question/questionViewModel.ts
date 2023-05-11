@@ -131,9 +131,9 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
           const fieldViewModel = new FieldViewModel(
             id,
             "Field",
-            fieldDefinition.type as TFieldValueType
+            (fieldDefinition as Definition).type as TFieldValueType
           );
-          fieldViewModel.parse(fieldDefinition);
+          fieldViewModel.parse(fieldDefinition as Definition);
           fields.push(fieldViewModel);
         });
         this.fields.splice(0, this.fields.length, ...fields);
