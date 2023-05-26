@@ -2,13 +2,13 @@ import Spinner from "components/widgets/spinner";
 import Table from "components/widgets/table";
 import { Observer } from "mobx-react";
 import { useRouter } from "next/router";
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Filter from "./filter";
 import { AdminReportTypeListViewModel } from "./listViewModel";
 import ErrorDisplay from "components/widgets/errorDisplay";
 import useServices from "lib/services/provider";
 import Link from "next/link";
-import { AddButton } from "components/widgets/forms";
+import { AddButton, UploadButton } from "components/widgets/forms";
 import Paginate from "components/widgets/table/paginate";
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 import { ReportType } from "lib/services/reportType";
@@ -24,7 +24,6 @@ import {
   EyeOffIcon,
   QrcodeIcon,
   TableIcon,
-  UploadIcon,
 } from "@heroicons/react/solid";
 import QrcodeDialog from "components/admin/reportType/qrcodeDialog";
 
@@ -74,39 +73,6 @@ const ReportTypeList = () => {
     setUrl(filter);
   };
 
-  const UploadButton = forwardRef(function UploadButton(
-    props: React.ComponentPropsWithoutRef<"button">,
-    ref: React.Ref<HTMLButtonElement>
-  ) {
-    const { t } = useTranslation();
-
-    return (
-      <button
-        ref={ref}
-        type="button"
-        {...props}
-        className="
-        px-4
-        py-2
-        text-black
-        bg-slate-50
-        hover:border-gray-800
-        hover:bg-gray-100
-        border-slate-700
-        rounded
-        items-center
-        inline-flex
-        justify-center
-        border
-        "
-      >
-        {viewModel.isSubmitting === true && <Spinner />}
-        <UploadIcon className="h-5 w-5 text-gray-500 mr-2" />
-        <span>{t("form.button.import", "Import")}</span>
-      </button>
-    );
-  });
-
   if (viewModel === null) {
     return <Spinner />;
   }
@@ -134,7 +100,7 @@ const ReportTypeList = () => {
               <AddButton />
             </Link>
             <div className="relative cursor-pointer inline-block overflow-hidden">
-              <UploadButton disabled={viewModel.isSubmitting} />
+              <UploadButton isSubmitting={viewModel.isSubmitting} />
               <input
                 type="file"
                 name="file"

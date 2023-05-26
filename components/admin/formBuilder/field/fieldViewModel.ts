@@ -34,7 +34,7 @@ export const FIELD_TYPES = [
   "multiplechoices",
 ] as const;
 
-export type TFieldValueType = (typeof FIELD_TYPES)[number];
+export type TFieldValueType = typeof FIELD_TYPES[number];
 export type TFieldExtensionType<T> = T extends "text"
   ? TextFieldViewModel
   : T extends "integer"
