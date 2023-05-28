@@ -8,7 +8,7 @@ import { AdminCaseDefinitionListViewModel } from "./listViewModel";
 import ErrorDisplay from "components/widgets/errorDisplay";
 import useServices from "lib/services/provider";
 import Link from "next/link";
-import { AddButton } from "components/widgets/forms";
+import { AddButton, UploadButton } from "components/widgets/forms";
 import Paginate from "components/widgets/table/paginate";
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 import { CaseDefinition } from "lib/services/caseDefinition";
@@ -16,6 +16,7 @@ import TotalItem from "components/widgets/table/totalItem";
 import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { useTranslation } from "react-i18next";
+import { DownloadIcon } from "@heroicons/react/solid";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -80,7 +81,28 @@ const CaseDefinitionList = () => {
             <Link href={"/admin/case_definitions/create"} passHref>
               <AddButton />
             </Link>
+            <div className="relative cursor-pointer inline-block overflow-hidden">
+              <UploadButton isSubmitting={viewModel.isSubmitting} />
+              <input
+                type="file"
+                name="file"
+                className="absolute top-0 right-0 opacity-0 cursor-pointer h-full block"
+                onChange={async event => {
+                  if (event.target.files && event.target.files[0]) {
+                    if (
+                      await viewModel.importCaseDefinition(
+                        event.target.files[0]
+                      )
+                    ) {
+                      viewModel.fetch();
+                    }
+                    event.target.value = "";
+                  }
+                }}
+              />
+            </div>
           </div>
+          <ErrorDisplay message={viewModel?.submitError} />
 
           <Table
             columns={[
@@ -106,6 +128,16 @@ const CaseDefinitionList = () => {
               router.push(`/admin/case_definitions/${record.id}/view`)
             }
             onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
+            actions={record => {
+              return (
+                <>
+                  <DownloadIcon
+                    className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+                    onClick={() => viewModel.exportCaseDefinition(record.id)}
+                  />
+                </>
+              );
+            }}
           />
           <ErrorDisplay message={viewModel?.errorMessage} />
           <Paginate
