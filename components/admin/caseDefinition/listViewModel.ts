@@ -1,10 +1,4 @@
-import {
-  action,
-  computed,
-  makeObservable,
-  observable,
-  runInAction,
-} from "mobx";
+import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
 import { CaseDefinition } from "lib/services/caseDefinition";
 import { ICaseDefinitionService } from "lib/services/caseDefinition/caseDefinitionService";
@@ -15,9 +9,6 @@ export class AdminCaseDefinitionListViewModel extends BaseViewModel {
 
   nameSearch: string = "";
 
-  _submitError: string = "";
-  _isSubmitting: boolean = false;
-
   constructor(readonly caseDefinitionService: ICaseDefinitionService) {
     super();
     makeObservable(this, {
@@ -26,27 +17,7 @@ export class AdminCaseDefinitionListViewModel extends BaseViewModel {
       setSearchValue: action,
       clearNameSearch: action,
       fetch: action,
-      _submitError: observable,
-      _isSubmitting: observable,
-      submitError: computed,
-      isSubmitting: computed,
     });
-  }
-
-  public get submitError(): string {
-    return this._submitError;
-  }
-
-  public set submitError(value: string) {
-    this._submitError = value;
-  }
-
-  public get isSubmitting(): boolean {
-    return this._isSubmitting;
-  }
-
-  public set isSubmitting(value: boolean) {
-    this._isSubmitting = value;
   }
 
   setSearchValue(nameSearch: string = "", offset: number = 0) {
@@ -99,7 +70,10 @@ export class AdminCaseDefinitionListViewModel extends BaseViewModel {
         "data:text/plain;charset=utf-8," +
           encodeURIComponent(JSON.stringify(data, null, 2))
       );
-      element.setAttribute("download", `report-${data.description}.json`);
+      element.setAttribute(
+        "download",
+        `case-definition--${data.description}.json`
+      );
       element.style.display = "none";
       document.body.appendChild(element);
       element.click();
@@ -156,18 +130,5 @@ export class AdminCaseDefinitionListViewModel extends BaseViewModel {
       data.description,
       data.condition
     );
-  }
-
-  readAsync(file: File) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        resolve(JSON.parse(reader.result as string));
-      };
-      reader.onerror = () => {
-        reject(new Error("Unable to read.."));
-      };
-      reader.readAsText(file);
-    });
   }
 }

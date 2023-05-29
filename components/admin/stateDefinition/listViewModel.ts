@@ -1,10 +1,4 @@
-import {
-  action,
-  computed,
-  makeObservable,
-  observable,
-  runInAction,
-} from "mobx";
+import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
 import { StateDefinition } from "lib/services/stateDefinition";
 import { IStateDefinitionService } from "lib/services/stateDefinition/stateDefinitionService";
@@ -20,9 +14,6 @@ export class AdminStateDefinitionListViewModel extends BaseViewModel {
 
   nameSearch: string = "";
 
-  _submitError: string = "";
-  _isSubmitting: boolean = false;
-
   constructor(
     readonly stateDefinitionService: IStateDefinitionService,
     readonly stateStepService: IStateStepService,
@@ -35,28 +26,9 @@ export class AdminStateDefinitionListViewModel extends BaseViewModel {
       setSearchValue: action,
       clearNameSearch: action,
       fetch: action,
-      _submitError: observable,
-      _isSubmitting: observable,
-      submitError: computed,
-      isSubmitting: computed,
     });
   }
 
-  public get submitError(): string {
-    return this._submitError;
-  }
-
-  public set submitError(value: string) {
-    this._submitError = value;
-  }
-
-  public get isSubmitting(): boolean {
-    return this._isSubmitting;
-  }
-
-  public set isSubmitting(value: boolean) {
-    this._isSubmitting = value;
-  }
   setSearchValue(nameSearch: string = "", offset: number = 0) {
     this.nameSearch = nameSearch;
     this.offset = offset;
@@ -360,18 +332,5 @@ export class AdminStateDefinitionListViewModel extends BaseViewModel {
       const msg = Object.values(result.fields).join(",");
       if (msg) errors.push(msg);
     }
-  }
-
-  readAsync(file: File) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        resolve(JSON.parse(reader.result as string));
-      };
-      reader.onerror = () => {
-        reject(new Error("Unable to read.."));
-      };
-      reader.readAsText(file);
-    });
   }
 }
