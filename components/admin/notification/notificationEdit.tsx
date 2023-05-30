@@ -1,7 +1,7 @@
 import { CheckIcon, XIcon } from "@heroicons/react/solid";
 import { ErrorText, TextArea } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const styles = {
@@ -43,6 +43,10 @@ const NotificationEdit = ({
   const [oldValue, setOldValue] = useState<string | undefined>(defaultValue);
   const [value, setValue] = useState<string>(defaultValue || "");
   const [errorText, serErrorText] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (defaultValue) setValue(defaultValue);
+  }, [defaultValue]);
 
   return (
     <div className="w-full md:w-auto grid gap-6 mb-2 grid-cols-3">

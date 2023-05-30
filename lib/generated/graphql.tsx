@@ -1736,6 +1736,7 @@ export type FollowupReportType = {
   reportType?: Maybe<ReportTypeType>;
   reportedBy?: Maybe<UserType>;
   testFlag: Scalars["Boolean"];
+  uploadFiles?: Maybe<Array<Maybe<UploadFileType>>>;
 };
 
 export type FollowupType = {
@@ -1790,6 +1791,7 @@ export type IncidentReportType = {
   testFlag: Scalars["Boolean"];
   threadId?: Maybe<Scalars["Int"]>;
   updatedAt: Scalars["DateTime"];
+  uploadFiles?: Maybe<Array<Maybe<UploadFileType>>>;
 };
 
 export type IncidentReportTypeNodeConnection = {
@@ -1908,6 +1910,8 @@ export type Mutation = {
   submitObservationSubject?: Maybe<SubmitObservationSubject>;
   submitObservationSubjectMonitoring?: Maybe<SubmitObservationSubjectMonitoringRecord>;
   submitRecordImage?: Maybe<SubmitRecordImage>;
+  submitRecordUploadFile?: Maybe<SubmitRecordUploadFile>;
+  submitUploadFile?: Maybe<SubmitUploadFile>;
   submitZeroReport?: Maybe<SubmitZeroReportMutation>;
   /** Obtain JSON Web Token mutation */
   tokenAuth?: Maybe<ObtainJsonWebToken>;
@@ -2434,6 +2438,18 @@ export type MutationSubmitRecordImageArgs = {
   recordType: RecordType;
 };
 
+export type MutationSubmitRecordUploadFileArgs = {
+  file: Scalars["Upload"];
+  fileId?: InputMaybe<Scalars["UUID"]>;
+  recordId: Scalars["UUID"];
+};
+
+export type MutationSubmitUploadFileArgs = {
+  file: Scalars["Upload"];
+  fileId?: InputMaybe<Scalars["UUID"]>;
+  reportId: Scalars["UUID"];
+};
+
 export type MutationTokenAuthArgs = {
   password: Scalars["String"];
   username: Scalars["String"];
@@ -2549,6 +2565,7 @@ export type ObservationSubjectMonitoringRecordType = {
   subject: ObservationSubjectType;
   subjectId?: Maybe<Scalars["UUID"]>;
   title: Scalars["String"];
+  uploadFiles?: Maybe<Array<Maybe<ObservationUploadFileType>>>;
 };
 
 export type ObservationSubjectMonitoringRecordTypeNodeConnection = {
@@ -2577,6 +2594,7 @@ export type ObservationSubjectType = {
   >;
   reportedBy?: Maybe<UserType>;
   title: Scalars["String"];
+  uploadFiles?: Maybe<Array<Maybe<ObservationUploadFileType>>>;
 };
 
 export type ObservationSubjectTypeNodeConnection = {
@@ -2586,6 +2604,18 @@ export type ObservationSubjectTypeNodeConnection = {
   /** Contains the nodes in this connection. */
   results: Array<Maybe<ObservationSubjectType>>;
   totalCount?: Maybe<Scalars["Int"]>;
+};
+
+export type ObservationUploadFileType = {
+  __typename?: "ObservationUploadFileType";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  file: Scalars["String"];
+  fileType: Scalars["String"];
+  fileUrl?: Maybe<Scalars["String"]>;
+  id: Scalars["UUID"];
+  recordId: Scalars["UUID"];
+  updatedAt: Scalars["DateTime"];
 };
 
 /** Obtain JSON Web Token mutation */
@@ -2733,6 +2763,7 @@ export type Query = {
   outbreakPlanGet?: Maybe<OutbreakPlanType>;
   placeGet?: Maybe<PlaceType>;
   reportType?: Maybe<ReportTypeType>;
+  reportTypeByName?: Maybe<ReportTypeType>;
   reporterNotification?: Maybe<ReporterNotificationType>;
   statQuery?: Maybe<StatType>;
   stateDefinitionGet?: Maybe<StateDefinitionType>;
@@ -2742,6 +2773,8 @@ export type Query = {
   summaryCaseByCategoryQuery?: Maybe<Array<SummaryByCategoryType>>;
   summaryContributionQuery?: Maybe<Array<SummaryContributionType>>;
   summaryReportByCategoryQuery?: Maybe<Array<SummaryByCategoryType>>;
+  summaryReporterNoReport?: Maybe<Array<Maybe<ReporterNoReport>>>;
+  summaryReporterReportByDay?: Maybe<Array<Maybe<ReporterReportByDate>>>;
   syncObservationDefinitions?: Maybe<ObservationDefinitionSyncOutputType>;
   syncReportTypes?: Maybe<ReportTypeSyncOutputType>;
   transitionListByReportType?: Maybe<Array<StateTransitionType>>;
@@ -3169,6 +3202,10 @@ export type QueryReportTypeArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryReportTypeByNameArgs = {
+  name: Scalars["String"];
+};
+
 export type QueryReporterNotificationArgs = {
   id: Scalars["ID"];
 };
@@ -3209,6 +3246,18 @@ export type QuerySummaryReportByCategoryQueryArgs = {
   authorityId: Scalars["Int"];
   fromDate?: InputMaybe<Scalars["DateTime"]>;
   toDate?: InputMaybe<Scalars["DateTime"]>;
+};
+
+export type QuerySummaryReporterNoReportArgs = {
+  authorityId: Scalars["Int"];
+  fromDate: Scalars["Date"];
+  toDate: Scalars["Date"];
+};
+
+export type QuerySummaryReporterReportByDayArgs = {
+  authorityId: Scalars["Int"];
+  fromDate: Scalars["Date"];
+  toDate: Scalars["Date"];
 };
 
 export type QuerySyncObservationDefinitionsArgs = {
@@ -3283,6 +3332,13 @@ export type ReportTypeType = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type ReporterNoReport = {
+  __typename?: "ReporterNoReport";
+  authorityName?: Maybe<Scalars["String"]>;
+  reporterId?: Maybe<Scalars["Int"]>;
+  reporterName?: Maybe<Scalars["String"]>;
+};
+
 export type ReporterNotificationType = {
   __typename?: "ReporterNotificationType";
   condition: Scalars["String"];
@@ -3295,6 +3351,17 @@ export type ReporterNotificationType = {
   template: Scalars["String"];
   titleTemplate: Scalars["String"];
   updatedAt: Scalars["DateTime"];
+};
+
+export type ReporterReportByDate = {
+  __typename?: "ReporterReportByDate";
+  authorityName?: Maybe<Scalars["String"]>;
+  date?: Maybe<Scalars["Date"]>;
+  reportCount?: Maybe<Scalars["Int"]>;
+  reporterName?: Maybe<Scalars["String"]>;
+  week?: Maybe<Scalars["Int"]>;
+  year?: Maybe<Scalars["Int"]>;
+  yearWeek?: Maybe<Scalars["String"]>;
 };
 
 export type ResetPasswordMutation = {
@@ -3384,6 +3451,22 @@ export type SubmitRecordImage = {
   thumbnail?: Maybe<Scalars["String"]>;
 };
 
+export type SubmitRecordUploadFile = {
+  __typename?: "SubmitRecordUploadFile";
+  file?: Maybe<Scalars["String"]>;
+  fileType?: Maybe<Scalars["String"]>;
+  fileUrl?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["UUID"]>;
+};
+
+export type SubmitUploadFile = {
+  __typename?: "SubmitUploadFile";
+  file?: Maybe<Scalars["String"]>;
+  fileType?: Maybe<Scalars["String"]>;
+  fileUrl?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["UUID"]>;
+};
+
 export type SubmitZeroReportMutation = {
   __typename?: "SubmitZeroReportMutation";
   id?: Maybe<Scalars["UUID"]>;
@@ -3406,6 +3489,18 @@ export type SummaryContributionType = {
 export type UnPublishReportTypeMutation = {
   __typename?: "UnPublishReportTypeMutation";
   reportType?: Maybe<ReportTypeType>;
+};
+
+export type UploadFileType = {
+  __typename?: "UploadFileType";
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  file: Scalars["String"];
+  fileType: Scalars["String"];
+  fileUrl?: Maybe<Scalars["String"]>;
+  id: Scalars["UUID"];
+  reportId: Scalars["UUID"];
+  updatedAt: Scalars["DateTime"];
 };
 
 export type UserMessageType = {
@@ -5841,6 +5936,21 @@ export type ReportTypesQuery = {
         name: string;
       };
     } | null>;
+  } | null;
+};
+
+export type ReportTypeByNameQueryVariables = Exact<{
+  name: Scalars["String"];
+}>;
+
+export type ReportTypeByNameQuery = {
+  __typename?: "Query";
+  reportTypeByName?: {
+    __typename?: "ReportTypeType";
+    id: any;
+    name: string;
+    ordering: number;
+    category?: { __typename?: "CategoryType"; id: string; name: string } | null;
   } | null;
 };
 
@@ -18425,6 +18535,70 @@ export const ReportTypesDocument = {
     },
   ],
 } as unknown as DocumentNode<ReportTypesQuery, ReportTypesQueryVariables>;
+export const ReportTypeByNameDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ReportTypeByName" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "reportTypeByName" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "ordering" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ReportTypeByNameQuery,
+  ReportTypeByNameQueryVariables
+>;
 export const ReportTypeSelectionsDocument = {
   kind: "Document",
   definitions: [

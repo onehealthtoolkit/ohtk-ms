@@ -9,6 +9,7 @@ import {
   ReportTypeDeleteDocument,
   PublicReportTypeDocument,
   UnpublicReportTypeDocument,
+  ReportTypeByNameDocument,
 } from "lib/generated/graphql";
 import { ReportType } from "lib/services/reportType/reportType";
 import {
@@ -36,6 +37,8 @@ export interface IReportTypeService extends IService {
   fetchMyReportTypes(): Promise<ReportType[]>;
 
   getReportType(id: string): Promise<GetResult<ReportType>>;
+
+  findByName(name: string): Promise<ReportType | undefined>;
 
   createReportType(
     name: string,
@@ -212,6 +215,26 @@ export class ReportTypeService implements IReportTypeService {
     return {
       data,
     };
+  }
+
+  async findByName(name: string) {
+    const fetchResult = await this.client.query({
+      query: ReportTypeByNameDocument,
+      variables: { name },
+    });
+    const reportType = fetchResult.data.reportTypeByName;
+    return reportType
+      ? {
+          id: reportType.id,
+          name: reportType.name,
+          definition: "",
+          categoryId: reportType.category
+            ? parseInt(reportType.category.id)
+            : 0,
+          categoryName: reportType.category ? reportType.category.name : "",
+          ordering: reportType.ordering,
+        }
+      : undefined;
   }
 
   async createReportType(
