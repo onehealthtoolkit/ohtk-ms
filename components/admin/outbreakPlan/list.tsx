@@ -7,7 +7,7 @@ import Filter from "./filter";
 import ErrorDisplay from "components/widgets/errorDisplay";
 import useServices from "lib/services/provider";
 import Link from "next/link";
-import { AddButton } from "components/widgets/forms";
+import { AddButton, UploadButton } from "components/widgets/forms";
 import Paginate from "components/widgets/table/paginate";
 
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
@@ -17,6 +17,7 @@ import TotalItem from "components/widgets/table/totalItem";
 import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { useTranslation } from "react-i18next";
+import { DownloadIcon } from "@heroicons/react/solid";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -28,11 +29,16 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
 const OutbreakPlanList = () => {
   const router = useRouter();
   const { t } = useTranslation();
-  const { outbreakPlanService } = useServices();
+  const { outbreakPlanService, reportTypeService, stateStepService } =
+    useServices();
   const { setUrl, query, resetUrl } = useUrlParams();
 
   const [viewModel] = useState<OutbreakPlanListViewModel>(() => {
-    const model = new OutbreakPlanListViewModel(outbreakPlanService);
+    const model = new OutbreakPlanListViewModel(
+      outbreakPlanService,
+      reportTypeService,
+      stateStepService
+    );
     model.registerDialog("confirmDelete");
     return model;
   });
@@ -80,8 +86,26 @@ const OutbreakPlanList = () => {
             <Link href={"/admin/outbreak_plans/create"} passHref>
               <AddButton />
             </Link>
+            <div className="relative cursor-pointer inline-block overflow-hidden">
+              <UploadButton isSubmitting={viewModel.isSubmitting} />
+              <input
+                type="file"
+                name="file"
+                className="absolute top-0 right-0 opacity-0 cursor-pointer h-full block"
+                onChange={async event => {
+                  if (event.target.files && event.target.files[0]) {
+                    if (
+                      await viewModel.importOutbreakPlan(event.target.files[0])
+                    ) {
+                      viewModel.fetch();
+                    }
+                    event.target.value = "";
+                  }
+                }}
+              />
+            </div>
           </div>
-
+          <ErrorDisplay message={viewModel?.submitError} />
           <Table
             columns={[
               {
@@ -112,6 +136,14 @@ const OutbreakPlanList = () => {
               router.push(`/admin/outbreak_plans/${record.id}/view`)
             }
             onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
+            actions={record => {
+              return (
+                <DownloadIcon
+                  className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+                  onClick={() => viewModel.exportOutbreakPlan(+record.id)}
+                />
+              );
+            }}
           />
           <ErrorDisplay message={viewModel?.errorMessage} />
           <Paginate
