@@ -28,11 +28,14 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
 const CaseDefinitionList = () => {
   const router = useRouter();
   const { t } = useTranslation();
-  const { caseDefinitionService } = useServices();
+  const { caseDefinitionService, reportTypeService } = useServices();
   const { setUrl, query, resetUrl } = useUrlParams();
 
   const [viewModel] = useState<AdminCaseDefinitionListViewModel>(() => {
-    const model = new AdminCaseDefinitionListViewModel(caseDefinitionService);
+    const model = new AdminCaseDefinitionListViewModel(
+      caseDefinitionService,
+      reportTypeService
+    );
     model.registerDialog("confirmDelete");
     return model;
   });

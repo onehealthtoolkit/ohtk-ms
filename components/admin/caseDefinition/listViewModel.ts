@@ -3,13 +3,17 @@ import { BaseViewModel } from "lib/baseViewModel";
 import { CaseDefinition } from "lib/services/caseDefinition";
 import { ICaseDefinitionService } from "lib/services/caseDefinition/caseDefinitionService";
 import { SaveResult } from "lib/services/interface";
+import { IReportTypeService } from "lib/services/reportType";
 
 export class AdminCaseDefinitionListViewModel extends BaseViewModel {
   data: CaseDefinition[] = [];
 
   nameSearch: string = "";
 
-  constructor(readonly caseDefinitionService: ICaseDefinitionService) {
+  constructor(
+    readonly caseDefinitionService: ICaseDefinitionService,
+    readonly reportTypeService: IReportTypeService
+  ) {
     super();
     makeObservable(this, {
       data: observable,
@@ -86,6 +90,23 @@ export class AdminCaseDefinitionListViewModel extends BaseViewModel {
     this.isSubmitting = true;
     this.submitError = "";
     const data = (await this.readAsync(file)) as CaseDefinition;
+
+    var reportType;
+    if (data.reportTypeId) {
+      reportType = await (
+        await this.reportTypeService.getReportType(data.reportTypeId)
+      ).data;
+    }
+
+    if (!reportType && data.reportTypeName) {
+      reportType = await this.reportTypeService.findByName(data.reportTypeName);
+    }
+    if (!reportType) {
+      this.submitError = `Import errors : report type ${data.reportTypeName} not found.`;
+      this.isSubmitting = false;
+      return false;
+    }
+    data.reportTypeId = reportType.id;
 
     const caseDefinition = await (
       await this.caseDefinitionService.getCaseDefinition(data.id)
