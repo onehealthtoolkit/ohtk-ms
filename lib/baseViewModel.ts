@@ -16,6 +16,9 @@ export class BaseViewModel {
   _offset = 0;
   _isLoading: boolean = false;
 
+  _submitError: string = "";
+  _isSubmitting: boolean = false;
+
   errors: Errors = observable.map({});
   dialogs: DialogMap = observable.map({});
 
@@ -33,9 +36,28 @@ export class BaseViewModel {
       setErrorMessage: action,
       error: computed,
       setError: action,
+      _submitError: observable,
+      _isSubmitting: observable,
+      submitError: computed,
+      isSubmitting: computed,
     });
   }
 
+  public get submitError(): string {
+    return this._submitError;
+  }
+
+  public set submitError(value: string) {
+    this._submitError = value;
+  }
+
+  public get isSubmitting(): boolean {
+    return this._isSubmitting;
+  }
+
+  public set isSubmitting(value: boolean) {
+    this._isSubmitting = value;
+  }
   public get isLoading(): boolean {
     return this._isLoading;
   }
@@ -113,5 +135,18 @@ export class BaseViewModel {
 
   closeAllDialogs() {
     this.dialogs.forEach(store => store.close());
+  }
+
+  readAsync(file: File) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        resolve(JSON.parse(reader.result as string));
+      };
+      reader.onerror = () => {
+        reject(new Error("Unable to read.."));
+      };
+      reader.readAsText(file);
+    });
   }
 }

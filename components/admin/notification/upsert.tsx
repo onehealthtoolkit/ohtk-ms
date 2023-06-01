@@ -1,4 +1,4 @@
-import { Field, MaskingLoader } from "components/widgets/forms";
+import { Field, MaskingLoader, UploadButton } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import { observer } from "mobx-react";
@@ -11,6 +11,8 @@ import { ReportType } from "lib/services/reportType";
 import { ReportCategory } from "lib/services/reportCategory";
 import { styledReactSelect } from "components/widgets/styledReactSelect";
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
+import { DownloadIcon } from "@heroicons/react/solid";
+import ErrorDisplay from "components/widgets/errorDisplay";
 
 const groupStyles = {
   display: "flex",
@@ -48,9 +50,10 @@ const NotificationUpsert = () => {
   const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(() =>
-    new NotificationViewModel(services.notificationService).registerDialog(
-      "confirmDelete"
-    )
+    new NotificationViewModel(
+      services.notificationService,
+      services.reportTypeService
+    ).registerDialog("confirmDelete")
   );
   const [categories, setCategories] = useState<ReportCategory[]>();
   const [reportTypes, setReportTypes] = useState<ReportType[]>();
@@ -97,32 +100,68 @@ const NotificationUpsert = () => {
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <>
-        <Field className="mb-0" $size="half">
-          <AsyncSelect<ReportCategory | ReportType, false, GroupedOption>
-            cacheOptions
-            loadOptions={loadOptions}
-            placeholder={t(
-              "form.placeholder.selectReportType",
-              "Select report type"
-            )}
-            getOptionValue={item => item.id}
-            getOptionLabel={item => item.name}
-            defaultOptions
-            formatGroupLabel={formatGroupLabel}
-            styles={{
-              ...styledReactSelect,
-              option: styles => {
-                return {
-                  ...styles,
-                  paddingLeft: "30px",
-                };
-              },
-            }}
-            onChange={values => {
-              if (values) viewModel.fetch(values.id);
-            }}
-          />
-        </Field>
+        <div className="flex items-center flex-wrap mb-4 gap-2">
+          <Field className="mb-0" $size="half">
+            <AsyncSelect<ReportCategory | ReportType, false, GroupedOption>
+              cacheOptions
+              loadOptions={loadOptions}
+              placeholder={t(
+                "form.placeholder.selectReportType",
+                "Select report type"
+              )}
+              getOptionValue={item => item.id}
+              getOptionLabel={item => item.name}
+              defaultOptions
+              formatGroupLabel={formatGroupLabel}
+              styles={{
+                ...styledReactSelect,
+                option: styles => {
+                  return {
+                    ...styles,
+                    paddingLeft: "30px",
+                  };
+                },
+              }}
+              onChange={values => {
+                if (values) {
+                  viewModel.reportTypeId = values.id;
+                  viewModel.reportTypeName = values.name;
+                  viewModel.fetch();
+                }
+              }}
+            />
+          </Field>
+          {viewModel.reportTypeId && (
+            <DownloadIcon
+              className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+              onClick={() => {
+                viewModel.exportNotification();
+              }}
+            />
+          )}
+          <div className="flex-grow"></div>
+
+          <div className="relative cursor-pointer inline-block overflow-hidden">
+            <UploadButton isSubmitting={viewModel.isSubmitting} />
+            <input
+              type="file"
+              name="file"
+              className="absolute top-0 right-0 opacity-0 cursor-pointer h-full block"
+              onChange={async event => {
+                if (event.target.files && event.target.files[0]) {
+                  if (
+                    await viewModel.importNotification(event.target.files[0])
+                  ) {
+                    viewModel.data = [];
+                    viewModel.fetch();
+                  }
+                  event.target.value = "";
+                }
+              }}
+            />
+          </div>
+        </div>
+        <ErrorDisplay message={viewModel?.submitError} />
         <div className="flex">
           <div className="flex-1">
             <div className="overflow-x-auto relative shadow-md sm:rounded-lg">

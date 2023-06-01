@@ -4,6 +4,7 @@ import {
   INotificationTemplateService,
   NotificationTemplate,
 } from "lib/services/notificationTemplate";
+import { SaveResult } from "lib/services/interface";
 
 export class NotificationTemplateListViewModel extends BaseViewModel {
   data: NotificationTemplate[] = [];
@@ -61,5 +62,87 @@ export class NotificationTemplateListViewModel extends BaseViewModel {
     } else {
       this.fetch();
     }
+  }
+
+  async exportNotificationTemplate(id: string) {
+    this.isLoading = true;
+    const data = await (
+      await this.notificationTemplateService.getNotificationTemplate(id)
+    ).data;
+    if (data) {
+      var element = document.createElement("a");
+      element.setAttribute(
+        "href",
+        "data:text/plain;charset=utf-8," +
+          encodeURIComponent(JSON.stringify(data, null, 2))
+      );
+      element.setAttribute(
+        "download",
+        `notification-template-${data.name}.json`
+      );
+      element.style.display = "none";
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    }
+    this.isLoading = false;
+  }
+
+  public async importNotificationTemplate(file: File): Promise<boolean> {
+    this.isSubmitting = true;
+    this.submitError = "";
+    const data = (await this.readAsync(file)) as NotificationTemplate;
+
+    const notificationTemplate = await (
+      await this.notificationTemplateService.getNotificationTemplate(data.id)
+    ).data;
+    var result;
+    if (notificationTemplate) {
+      result = await this._updateNotificationTemplate(data);
+    } else {
+      result = await this._createNotificationTemplate(data);
+    }
+
+    this.isSubmitting = false;
+
+    if (!result.success) {
+      if (result.message) {
+        this.submitError = "Import errors : " + result.message;
+      }
+      if (result.fields) {
+        this.submitError =
+          "Import errors : " + Object.values(result.fields).join(",");
+      }
+    }
+    return result.success;
+  }
+
+  _createNotificationTemplate(
+    data: NotificationTemplate
+  ): Promise<SaveResult<NotificationTemplate>> {
+    return this.notificationTemplateService.createNotificationTemplate(
+      data.name,
+      data.type,
+      data.reportTypeId,
+      data.titleTemplate,
+      data.bodyTemplate,
+      data.condition,
+      data.stateTransitionId || undefined
+    );
+  }
+
+  _updateNotificationTemplate(
+    data: NotificationTemplate
+  ): Promise<SaveResult<NotificationTemplate>> {
+    return this.notificationTemplateService.updateNotificationTemplate(
+      data.id,
+      data.name,
+      data.type,
+      data.reportTypeId,
+      data.titleTemplate,
+      data.bodyTemplate,
+      data.condition,
+      data.stateTransitionId || undefined
+    );
   }
 }

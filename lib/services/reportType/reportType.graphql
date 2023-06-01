@@ -20,6 +20,18 @@ query ReportTypes($limit: Int!, $offset: Int!, $q: String, $ordering: String) {
   }
 }
 
+query ReportTypeByName($name: String!) {
+  reportTypeByName(name: $name) {
+    id
+    name
+    category {
+      id
+      name
+    }
+    ordering
+  }
+}
+
 query ReportTypeSelections(
   $limit: Int!
   $offset: Int!

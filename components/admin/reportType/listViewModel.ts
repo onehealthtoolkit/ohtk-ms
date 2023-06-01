@@ -5,22 +5,13 @@ import { IReportCategoryService } from "lib/services/reportCategory";
 import { ReportType } from "lib/services/reportType";
 import { IReportTypeService } from "lib/services/reportType/reportTypeService";
 import { IStateDefinitionService } from "lib/services/stateDefinition";
-import {
-  action,
-  computed,
-  makeObservable,
-  observable,
-  runInAction,
-} from "mobx";
+import { action, makeObservable, observable, runInAction } from "mobx";
 
 export class AdminReportTypeListViewModel extends BaseViewModel {
   data: ReportType[] = [];
   nameSearch: string = "";
 
   formSimulationViewModel?: FormSimulationViewModel = undefined;
-
-  _submitError: string = "";
-  _isSubmitting: boolean = false;
 
   constructor(
     readonly reportTypeService: IReportTypeService,
@@ -37,29 +28,9 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
       formSimulationViewModel: observable,
       openFormSimulationDialog: action,
       exportReportType: action,
-      _submitError: observable,
-      _isSubmitting: observable,
-      submitError: computed,
-      isSubmitting: computed,
       publishReportType: action,
       unpublishReportType: action,
     });
-  }
-
-  public get submitError(): string {
-    return this._submitError;
-  }
-
-  public set submitError(value: string) {
-    this._submitError = value;
-  }
-
-  public get isSubmitting(): boolean {
-    return this._isSubmitting;
-  }
-
-  public set isSubmitting(value: boolean) {
-    this._isSubmitting = value;
   }
 
   setSearchValue(nameSearch: string = "", offset: number = 0) {
@@ -210,19 +181,6 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
   openFormSimulationDialog(definition: string) {
     this.formSimulationViewModel = new FormSimulationViewModel(definition);
     this.dialog("formSimulation")?.open(null);
-  }
-
-  readAsync(file: File) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        resolve(JSON.parse(reader.result as string));
-      };
-      reader.onerror = () => {
-        reject(new Error("Unable to read.."));
-      };
-      reader.readAsText(file);
-    });
   }
 
   async publishReportType(id: string) {
