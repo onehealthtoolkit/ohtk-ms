@@ -4,7 +4,12 @@ import {
   GetReportDocument,
   ReportsDocument,
 } from "lib/generated/graphql";
-import { Image, Report, ReportDetail } from "lib/services/report/report";
+import {
+  Image,
+  Report,
+  ReportDetail,
+  UploadFile,
+} from "lib/services/report/report";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
 import { Authority } from "lib/services/authority";
 import { ReportType } from "../reportType";
@@ -125,6 +130,7 @@ export class ReportService implements IReportService {
         rendererData: incidentReport.rendererData,
         data: incidentReport.data,
         images: incidentReport.images as Image[],
+        files: incidentReport.uploadFiles as UploadFile[],
         caseId: incidentReport.caseId,
         gpsLocation: incidentReport.gpsLocation,
         threadId: incidentReport.threadId,

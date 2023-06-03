@@ -9,10 +9,11 @@ import {
   PromoteReportToCaseDocument,
   StateForwardDocument,
 } from "lib/generated/graphql";
-import { Image, Case, CaseDetail, CaseState } from "lib/services/case/case";
+import { Case, CaseDetail, CaseState } from "lib/services/case/case";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
 import { Authority } from "../authority";
 import { ReportType } from "../reportType";
+import { Image, UploadFile } from "lib/services/report/report";
 
 export type CaseFilterData = {
   fromDate?: Date;
@@ -155,6 +156,7 @@ export class CaseService implements ICaseService {
         rendererData: incidentCase.report?.rendererData,
         data: incidentCase.report?.data,
         images: incidentCase.report?.images as Image[],
+        files: incidentCase.report?.uploadFiles as UploadFile[],
         reportByName: `${incidentCase.report?.reportedBy?.firstName} ${incidentCase.report?.reportedBy?.lastName}`,
         reportByTelephone: incidentCase.report?.reportedBy?.telephone || "",
         gpsLocation: incidentCase.report?.gpsLocation,

@@ -27,6 +27,8 @@ export class ObservationSubjectMonitoringViewModel extends BaseViewModel {
       openGallery: action,
       _activeTabIndex: observable,
       activeTabIndex: computed,
+      imageUrlMap: computed,
+      fileUrlMap: computed,
     });
     this.id = id;
     this.fetch();
@@ -37,6 +39,26 @@ export class ObservationSubjectMonitoringViewModel extends BaseViewModel {
   }
   public set activeTabIndex(value: number) {
     this._activeTabIndex = value;
+  }
+
+  get imageUrlMap(): Record<string, string> {
+    const m = {} as Record<string, string>;
+    if (this.data.images) {
+      this.data.images.forEach(image => {
+        m[image.id] = image.imageUrl;
+      });
+    }
+    return m;
+  }
+
+  get fileUrlMap(): Record<string, string> {
+    const m = {} as Record<string, string>;
+    if (this.data.files) {
+      this.data.files.forEach(file => {
+        m[file.id] = file.fileUrl;
+      });
+    }
+    return m;
   }
 
   async fetch() {

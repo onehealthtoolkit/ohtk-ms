@@ -4,7 +4,6 @@ import { observer, Observer } from "mobx-react";
 import { Divide, MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ObservationSubjectViewModel } from "./observationSubjectViewModel";
-import tw from "tailwind-styled-components";
 import { useRouter } from "next/router";
 import { RenderData, TR } from "components/widgets/renderData";
 import dynamic from "next/dynamic";
@@ -13,20 +12,6 @@ import ViewActionButtons from "components/widgets/viewActionButtons";
 import { formatDateTime, formatYmdt } from "lib/datetime";
 import { EyeIcon } from "@heroicons/react/solid";
 import Table from "components/widgets/table";
-
-export const PromoteToCaseButton = tw.button`
-  px-4 
-  py-2 
-  border
-  text-white
-  bg-blue-500 
-  border-blue-300
-  hover:border-blue-500
-  rounded
-  flex 
-  justify-center 
-  items-center
-`;
 
 const SubjectLocation = dynamic(() => import("../case/reportMap"), {
   loading: () => <p>A map is loading</p>,
@@ -139,6 +124,8 @@ const ObservationSubject = (props: { id: string }) => {
                 <RenderData
                   data={viewModel.data.formData}
                   definition={viewModel.data.registerFormDefinition}
+                  imageUrlMap={viewModel.imageUrlMap}
+                  fileUrlMap={viewModel.fileUrlMap}
                 />
               </div>
 

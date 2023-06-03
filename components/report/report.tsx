@@ -256,6 +256,8 @@ const Report = (props: { id: string }) => {
                   <RenderData
                     data={viewModel.data.data}
                     definition={viewModel.data.reportTypeDefinition}
+                    imageUrlMap={viewModel.imageUrlMap}
+                    fileUrlMap={viewModel.fileUrlMap}
                   />
                 )}
                 {viewModel.activeTabIndex == 1 && (
