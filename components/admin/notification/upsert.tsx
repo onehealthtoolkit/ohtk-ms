@@ -141,7 +141,7 @@ const NotificationUpsert = () => {
           )}
           <div className="flex-grow"></div>
 
-          <div className="relative cursor-pointer inline-block overflow-hidden">
+          <div className="relative cursor-pointer inline-block overflow-visible">
             <UploadButton isSubmitting={viewModel.isSubmitting} />
             <input
               type="file"

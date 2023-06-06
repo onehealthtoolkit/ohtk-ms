@@ -83,7 +83,7 @@ const NotificationTemplateList = () => {
             <Link href={"/admin/notification_templates/create"} passHref>
               <AddButton />
             </Link>
-            <div className="relative cursor-pointer inline-block overflow-hidden">
+            <div className="relative cursor-pointer inline-block overflow-visible">
               <UploadButton isSubmitting={viewModel.isSubmitting} />
               <input
                 type="file"
