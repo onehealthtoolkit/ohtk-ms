@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { AccountsAuthorityUserRoleChoices } from "lib/generated/graphql";
 import { KeyIcon, QrcodeIcon } from "@heroicons/react/solid";
 import QrcodeDialog from "components/admin/user/qrcodeDialog";
+import Tooltip from "components/widgets/tooltip";
 
 export const getRoleName = (role: string) => {
   switch (role) {
@@ -134,28 +135,36 @@ const UserList = () => {
             onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
             actions={record => (
               <>
-                <QrcodeIcon
-                  onClick={async () => {
-                    const qrValue = await viewModel.getLoginQrcodeToken(
-                      record.id
-                    );
-                    viewModel.dialog("userQrcode")?.open({
-                      record,
-                      value: qrValue,
-                    });
-                  }}
-                  className={`cursor-pointer w-5 h-5 hover:text-slate-600 ${
-                    record.role === AccountsAuthorityUserRoleChoices.Rep
-                      ? "visible"
-                      : "invisible"
-                  }`}
-                />
-                <KeyIcon
-                  onClick={() => {
-                    router.push(`/admin/users/${record.id}/updatePassword`);
-                  }}
-                  className={`cursor-pointer w-5 h-5 text-[#ADC7FF] hover:text-indigo-900`}
-                />
+                <Tooltip
+                  text={`${t("form.button.qrcodeLogin", "Login QR Code")}`}
+                >
+                  <QrcodeIcon
+                    onClick={async () => {
+                      const qrValue = await viewModel.getLoginQrcodeToken(
+                        record.id
+                      );
+                      viewModel.dialog("userQrcode")?.open({
+                        record,
+                        value: qrValue,
+                      });
+                    }}
+                    className={`cursor-pointer w-5 h-5 hover:text-slate-600 ${
+                      record.role === AccountsAuthorityUserRoleChoices.Rep
+                        ? "visible"
+                        : "invisible"
+                    }`}
+                  />
+                </Tooltip>
+                <Tooltip
+                  text={`${t("form.button.updatePassWord", "Update password")}`}
+                >
+                  <KeyIcon
+                    onClick={() => {
+                      router.push(`/admin/users/${record.id}/updatePassword`);
+                    }}
+                    className={`cursor-pointer w-5 h-5 text-[#ADC7FF] hover:text-indigo-900`}
+                  />
+                </Tooltip>
               </>
             )}
           />

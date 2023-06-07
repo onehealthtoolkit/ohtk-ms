@@ -168,7 +168,15 @@
       "save": "ບັນທຶກ",
       "cancel": "ຍົກເລີກ",
       "next": "ຕໍ່ໄປ",
-      "downloadExcel": "ດາວໂຫລດ Excel"
+      "downloadExcel": "ດາວໂຫລດ Excel",
+      "updatePassWord": "ອັບເດດລະຫັດຜ່ານ",
+      "edit": "ແກ້ໄຂ",
+      "exportToJson": "ສົ່ງອອກ",
+      "qrcodeLogin": "ເຂົ້າສູ່ລະບົບ QR Code",
+      "formDefinitionQrcode": "ຄຳນິຍາມແບບຟອມ QR Code",
+      "formSimulation": "ການຈຳລອງແບບຟອມ",
+      "publishReportType": "PublishTyp",
+      "unPublishReportType": "ຍົກເລີກການເຜີຍແຜ່ປະເພດລາຍງານ"
     }
   },
   "dialog": {

@@ -26,6 +26,7 @@ import {
   TableIcon,
 } from "@heroicons/react/solid";
 import QrcodeDialog from "components/admin/reportType/qrcodeDialog";
+import Tooltip from "components/widgets/tooltip";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -150,42 +151,71 @@ const ReportTypeList = () => {
             actions={record => {
               return (
                 <>
-                  <QrcodeIcon
-                    onClick={() => {
-                      viewModel.dialog("definitionQrcode")?.open({ record });
-                    }}
-                    className={`cursor-pointer w-5 h-5 hover:text-slate-600 `}
-                  />
-                  <TableIcon
-                    className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
-                    onClick={() => {
-                      viewModel.openFormSimulationDialog(record.definition);
-                    }}
-                  />
-                  <DownloadIcon
-                    className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
-                    onClick={() => viewModel.exportReportType(record.id)}
-                  />
-
-                  {!record.published && (
-                    <EyeOffIcon
-                      className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
-                      onClick={() =>
-                        viewModel
-                          .dialog("confirmPublishReportType")
-                          ?.open(record)
-                      }
+                  <Tooltip
+                    text={`${t(
+                      "form.button.formDefinitionQrcode",
+                      "Form Definitiion QR Code"
+                    )}`}
+                  >
+                    <QrcodeIcon
+                      onClick={() => {
+                        viewModel.dialog("definitionQrcode")?.open({ record });
+                      }}
+                      className={`cursor-pointer w-5 h-5 hover:text-slate-600 `}
                     />
+                  </Tooltip>
+                  <Tooltip
+                    text={`${t(
+                      "form.button.formSimulation",
+                      "Form simulation"
+                    )}`}
+                  >
+                    <TableIcon
+                      className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+                      onClick={() => {
+                        viewModel.openFormSimulationDialog(record.definition);
+                      }}
+                    />
+                  </Tooltip>
+                  <Tooltip text={`${t("form.button.exportToJson", "Export")}`}>
+                    <DownloadIcon
+                      className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+                      onClick={() => viewModel.exportReportType(record.id)}
+                    />
+                  </Tooltip>
+                  {!record.published && (
+                    <Tooltip
+                      text={`${t(
+                        "form.button.publishReportType",
+                        "Publish ReportType"
+                      )}`}
+                    >
+                      <EyeOffIcon
+                        className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+                        onClick={() =>
+                          viewModel
+                            .dialog("confirmPublishReportType")
+                            ?.open(record)
+                        }
+                      />
+                    </Tooltip>
                   )}
                   {record.published && (
-                    <EyeIcon
-                      className="w-5 h-5 text-green-600 hover:text-green-900 cursor-pointer"
-                      onClick={() =>
-                        viewModel
-                          .dialog("confirmUnpublishReportType")
-                          ?.open(record)
-                      }
-                    />
+                    <Tooltip
+                      text={`${t(
+                        "form.button.unPublishReportType",
+                        "Un publish ReportType"
+                      )}`}
+                    >
+                      <EyeIcon
+                        className="w-5 h-5 text-green-600 hover:text-green-900 cursor-pointer"
+                        onClick={() =>
+                          viewModel
+                            .dialog("confirmUnpublishReportType")
+                            ?.open(record)
+                        }
+                      />
+                    </Tooltip>
                   )}
                 </>
               );

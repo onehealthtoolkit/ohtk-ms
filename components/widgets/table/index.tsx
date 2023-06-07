@@ -4,6 +4,9 @@ import { PencilAltIcon, TrashIcon, EyeIcon } from "@heroicons/react/solid";
 import { observer } from "mobx-react";
 import { Trans } from "react-i18next";
 import Spinner from "../spinner";
+import Tooltip from "../tooltip";
+import i18next from "i18next";
+const t = i18next.getFixedT(null, null);
 
 export const TableHeader = tw.th`
   px-6 py-3 text-xs font-medium leading-4 tracking-wider text-center text-gray-500 uppercase border-b border-gray-200 bg-[#E0E5EB]
@@ -18,25 +21,31 @@ interface ActionHandlerProps {
 }
 
 export const EditAction = (props: ActionHandlerProps) => (
-  <PencilAltIcon
-    type="edit"
-    className="w-5 h-5 text-[#ADC7FF] hover:text-indigo-900 cursor-pointer"
-    {...props}
-  />
+  <Tooltip text={`${t("form.button.edit", "Edit.")}`}>
+    <PencilAltIcon
+      type="edit"
+      className="w-5 h-5 text-[#ADC7FF] hover:text-indigo-900 cursor-pointer"
+      {...props}
+    />
+  </Tooltip>
 );
 
 const ClickAction = (props: ActionHandlerProps) => (
-  <EyeIcon
-    className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
-    {...props}
-  />
+  <Tooltip text={`${t("form.button.view", "View.")}`}>
+    <EyeIcon
+      className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
+      {...props}
+    />
+  </Tooltip>
 );
 
 const DeleteAction = (props: ActionHandlerProps) => (
-  <TrashIcon
-    className="w-5 h-5 text-[#DA3535] hover:text-red-800 cursor-pointer"
-    {...props}
-  />
+  <Tooltip text={`${t("form.button.delete", "Delete.")}`}>
+    <TrashIcon
+      className="w-5 h-5 text-[#DA3535] hover:text-red-800 cursor-pointer"
+      {...props}
+    />
+  </Tooltip>
 );
 
 type ItemWithId = {

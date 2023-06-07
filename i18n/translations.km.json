@@ -164,7 +164,15 @@
       "save": "រក្សាទុក",
       "cancel": "បោះបង់",
       "next": "បន្ទាប់",
-      "downloadExcel": "ទាញយក Excel"
+      "downloadExcel": "ទាញយក Excel",
+      "updatePassWord": "ធ្វើបច្ចុប្បន្នភាពពាក្យសម្ងាត់",
+      "edit": "កែសម្រួល",
+      "exportToJson": "នាំចេញ",
+      "qrcodeLogin": "ចូល QR Code",
+      "formDefinitionQrcode": "និយមន័យទម្រង់បែបបទ QR Code",
+      "formSimulation": "ការក្លែងធ្វើទម្រង់",
+      "publishReportType": "បោះពុម្ពរបាយការណ៍ប្រភេទ",
+      "unPublishReportType": "មិនបោះពុម្ពប្រភេទរបាយការណ៍"
     }
   },
   "dialog": {
