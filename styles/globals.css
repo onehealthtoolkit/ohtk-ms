@@ -44,6 +44,10 @@ input[disabled] {
   visibility: hidden;
 }
 
+.tooltip[data-popper-placement^="top"] > .tooltip-arrow {
+  bottom: -4px;
+}
+
 .tooltip[data-popper-placement^="bottom"] > .tooltip-arrow {
   top: -4px;
 }
