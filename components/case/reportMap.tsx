@@ -93,7 +93,7 @@ export default function Map({
               const icon2 = L.divIcon({
                 className: "my-div-icon2",
                 html: renderToStaticMarkup(
-                  <MarkerIcon color={place.color} key={idx} />
+                  <MarkerIcon color={place.color || "red"} key={idx} />
                 ),
               });
 
