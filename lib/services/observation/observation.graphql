@@ -55,6 +55,12 @@ query GetObservationSubject($id: ID!) {
       thumbnail
       imageUrl
     }
+    uploadFiles {
+      id
+      file
+      fileType
+      fileUrl
+    }
   }
 }
 
@@ -79,6 +85,12 @@ query GetObservationSubjectMonitoring($id: ID!) {
       file
       thumbnail
       imageUrl
+    }
+    uploadFiles {
+      id
+      file
+      fileType
+      fileUrl
     }
   }
 }

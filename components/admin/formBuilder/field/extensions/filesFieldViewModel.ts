@@ -12,8 +12,28 @@ export class FilesFieldViewModel extends AbstractDefinitionViewModel {
   allowVideoFiles = false;
   allowDocumentFiles = false;
 
-  audioTypes = ["audio/mpeg", "audio/mp4", "audio/ogg", "audio/x-wav"];
-  videoTypes = ["video/mp4", "video/webm", "video/x-m4v", "video/quicktime"];
+  audioTypes = [
+    "audio/mid",
+    "audio/mpeg",
+    "audio/mp4",
+    "audio/ogg",
+    "audio/webm",
+    "audio/x-wav",
+    "audio/x-ms-wma",
+  ];
+  videoTypes = [
+    "video/mpeg",
+    "video/x-mpeg",
+    "video/mp4",
+    "video/ogg",
+    "video/webm",
+    "video/quicktime",
+    "video/x-quicktime",
+    "video/avi",
+    "video/x-m4v",
+    "video/x-ms-wmv",
+    "video/x-ms-asf",
+  ];
   documentTypes = [
     "text/plain",
     "application/pdf",
@@ -23,6 +43,7 @@ export class FilesFieldViewModel extends AbstractDefinitionViewModel {
     "application/vnd.ms-excel",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     "application/vnd.ms-powerpoint",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
   ];
 
   constructor() {

@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
+import { DownloadIcon } from "@heroicons/react/solid";
 import Field from "lib/opsvForm/models/fields";
+import FilesField from "lib/opsvForm/models/fields/filesField";
 import ImagesField from "lib/opsvForm/models/fields/imagesField";
 import MultipleChoicesField from "lib/opsvForm/models/fields/multipleChoicesField";
 import Form from "lib/opsvForm/models/form";
@@ -41,13 +43,19 @@ const ViewTypeSwitch = ({ active, onChange }: ViewTypeSwitchProps) => {
   );
 };
 
+type RenderDataType = {
+  data?: Record<string, any>;
+  definition?: any;
+  imageUrlMap?: Record<string, string>; // {uuid: url}
+  fileUrlMap?: Record<string, string>; // {uuid: url}
+};
+
 export const RenderData = ({
   data,
   definition,
-}: {
-  data?: Record<string, any>;
-  definition?: any;
-}) => {
+  imageUrlMap,
+  fileUrlMap,
+}: RenderDataType) => {
   const [isDefinitionView, setIsDefinitionView] = useState(true);
 
   if (!data) {
@@ -67,7 +75,9 @@ export const RenderData = ({
               onChange={setIsDefinitionView}
             />
           </div>
-          {isDefinitionView ? renderDefinitionData(form) : renderRawData(data)}
+          {isDefinitionView
+            ? renderDefinitionData(form, imageUrlMap, fileUrlMap)
+            : renderRawData(data)}
         </>
       );
     } catch (e) {
@@ -84,7 +94,11 @@ export const RenderData = ({
  * @param form
  * @returns <table /> or null if form data is undefined
  */
-const renderDefinitionData = (form: Form) => {
+const renderDefinitionData = (
+  form: Form,
+  imageUrlMap?: Record<string, string>,
+  fileUrlMap?: Record<string, string>
+) => {
   return form.sections.length > 0 ? (
     <table className="table-fixed border text-sm text-left text-gray-500 w-full">
       <tbody>
@@ -110,6 +124,8 @@ const renderDefinitionData = (form: Form) => {
                       return field.display ? (
                         <RowDefinedFieldValue
                           field={field}
+                          imageUrlMap={imageUrlMap}
+                          fileUrlMap={fileUrlMap}
                           key={`s-${idx}-q-${qidx}-f${fidx}`}
                         />
                       ) : null;
@@ -123,11 +139,31 @@ const renderDefinitionData = (form: Form) => {
   ) : null;
 };
 
-const RowDefinedFieldValue = ({ field }: { field: Field }) => {
+const RowDefinedFieldValue = ({
+  field,
+  imageUrlMap,
+  fileUrlMap,
+}: {
+  field: Field;
+  imageUrlMap?: Record<string, string>;
+  fileUrlMap?: Record<string, string>;
+}) => {
   let valueList: string[] = [];
 
-  if (field instanceof MultipleChoicesField || field instanceof ImagesField) {
+  if (field instanceof MultipleChoicesField) {
     valueList = field.renderedValue.split(",");
+  } else if (field instanceof ImagesField) {
+    valueList = field.renderedValue.split(",").map(value => {
+      const url = imageUrlMap && imageUrlMap[value.trim()];
+      return url ? url : value;
+    });
+  } else if (field instanceof FilesField) {
+    valueList = field.renderedValue.split(",").map(value => {
+      // each value in FilesField contains uuid and file extension, eg. 1234abc.mp3
+      const id = value.trim().split(".")[0];
+      const url = fileUrlMap && fileUrlMap[id];
+      return url ? url : value;
+    });
   } else {
     valueList = [field.renderedValue];
   }
@@ -166,10 +202,7 @@ const renderRawData = (data: Record<string, any>) => {
 const renderItem = (data: Record<string, any>) => {
   return Object.keys(data)
     .sort()
-    .filter(
-      key =>
-        key != "images" && data[key] != null && key.indexOf("__value") === -1
-    )
+    .filter(key => data[key] != null && key.indexOf("__value") === -1)
     .map((key: string) => {
       return (
         <tr
@@ -194,16 +227,22 @@ const displayValue = (value: any) => {
       return "";
     }
     const val: string = value.toString();
-    // Could be an image url
-    if (val.match(/\.(png|jpg|jpeg|gif|tif|bmp)$/i)) {
+    // Could be an url
+    if (val.match(/^http/i)) {
+      const arr = val.split("/");
+      const id = arr[arr.length - 1];
       return (
-        <div className="h-14 w-14 border rounded bg-gray-300 relative">
-          <img
-            src={val}
-            alt="attachment"
-            className="w-full h-full object-contain"
-          />
-        </div>
+        <p className="flex">
+          <DownloadIcon className="w-5 text-blue-500" />
+          <a
+            href={val}
+            target="_blank"
+            rel="noreferrer"
+            className="underline hover:bg-blue-100"
+          >
+            {id}
+          </a>
+        </p>
       );
     } else {
       return <p>{val}</p>;

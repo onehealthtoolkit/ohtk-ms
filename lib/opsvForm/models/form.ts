@@ -8,10 +8,15 @@ export type FormImageMap = {
   [id: string]: string; // uuid : base64-encoded image
 };
 
+export type FormFileMap = {
+  [id: string]: File; // uuid : file object
+};
+
 export default class Form {
   sections: Section[] = [];
   values: Values = new Values();
   images: { [fieldName: string]: FormImageMap } = {};
+  files: { [fieldName: string]: FormFileMap } = {};
 
   _currentSectionIdx: number = 0;
 
@@ -27,6 +32,9 @@ export default class Form {
       images: observable,
       addImage: action,
       removeImage: action,
+      files: observable,
+      addFile: action,
+      removeFile: action,
     });
   }
 
@@ -105,6 +113,21 @@ export default class Form {
   removeImage(fieldName: string, id: string) {
     if (this.images[fieldName]) {
       delete this.images[fieldName][id];
+    }
+  }
+
+  addFile(fieldName: string, file: File): string {
+    const id = uuidv4();
+    if (!this.files[fieldName]) {
+      this.files[fieldName] = {};
+    }
+    this.files[fieldName][id] = file;
+    return id;
+  }
+
+  removeFile(fieldName: string, id: string) {
+    if (this.files[fieldName]) {
+      delete this.files[fieldName][id];
     }
   }
 }

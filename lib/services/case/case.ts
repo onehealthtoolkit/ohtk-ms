@@ -1,3 +1,4 @@
+import { Image, UploadFile } from "lib/services/report/report";
 import { DeepStateDefinition } from "lib/services/stateDefinition/stateDefinition";
 import { DeepStateStep } from "lib/services/stateStep/stateStep";
 import { StateTransitionRef } from "lib/services/stateTransition/stateTransition";
@@ -18,17 +19,11 @@ export type Case = {
   reportId?: number;
 };
 
-export type Image = {
-  id: any;
-  file: string;
-  thumbnail: string;
-  imageUrl: string;
-};
-
 export type CaseDetail = Case & {
   reportTypeDefinition?: string;
   data?: Record<string, string> | Record<string, Record<string, string>>;
   images?: Array<Image>;
+  files: Array<UploadFile>;
   stateDefinition?: DeepStateDefinition | null;
   states?: Array<CaseState | null> | null;
   outbreakInfo?: string | null;

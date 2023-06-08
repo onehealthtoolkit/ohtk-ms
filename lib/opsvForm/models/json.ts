@@ -12,6 +12,7 @@ import Form from "./form";
 import Question from "./question";
 import Section from "./section";
 import { ChoiceOption } from "./fields/singleChoicesField";
+import FilesField from "lib/opsvForm/models/fields/filesField";
 
 export type FormType = {
   id: string;
@@ -50,7 +51,8 @@ export type FieldType =
   | LocationFieldType
   | SingleChoicesFieldType
   | MultipleChoicesFieldType
-  | ImagesFieldType;
+  | ImagesFieldType
+  | FilesFieldType;
 
 export type BaseFieldType = {
   id: string;
@@ -111,6 +113,17 @@ export type ImagesFieldType = {
   max?: number;
   minMessage?: string;
   maxMessage?: string;
+} & BaseFieldType;
+
+export type FilesFieldType = {
+  type: "files";
+  min?: number;
+  max?: number;
+  maxSize?: number;
+  audio?: boolean;
+  video?: boolean;
+  document?: boolean;
+  supports: string[];
 } & BaseFieldType;
 
 export function parseForm(json: FormType): Form {
@@ -199,6 +212,17 @@ export function parseField(json: FieldType): Field {
         minMessage: json["minMessage"],
         max: json["max"],
         maxMessage: json["maxMessage"],
+      });
+    case "files":
+      return new FilesField(json["id"], json["name"], {
+        ...commonParams,
+        min: json["min"],
+        max: json["max"],
+        maxSize: json["maxSize"],
+        audio: json["audio"],
+        video: json["video"],
+        document: json["document"],
+        supportTypes: json["supports"],
       });
     default:
       return new TextField("unknown", "unknown", {});

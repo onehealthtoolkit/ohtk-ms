@@ -19,7 +19,11 @@ const GalleryDialog: React.FC<GalleryDialogProps> = ({ viewModel }) => {
       widthClassName="w-[96vw]"
       renderContent={() => (
         <div className="flex flex-col items-center h-full">
-          <div className="flex-grow h-[calc(100%-6rem)]">
+          <div
+            className={`flex-grow ${
+              viewModel.hasMultipleItems ? "h-[calc(100%-6rem)]" : "h-full"
+            }`}
+          >
             {viewModel.currentImage ? (
               <img
                 src={viewModel.currentImage.imageUrl}

@@ -232,6 +232,8 @@ const Case = (props: { id: string }) => {
                     <RenderData
                       data={viewModel.data.data}
                       definition={viewModel.data.reportTypeDefinition}
+                      imageUrlMap={viewModel.imageUrlMap}
+                      fileUrlMap={viewModel.fileUrlMap}
                     />
                   </>
                 )}

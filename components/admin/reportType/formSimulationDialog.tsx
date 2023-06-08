@@ -16,7 +16,9 @@ const FormSimulationDialog: React.FC<
       store={viewModel}
       heightClassName="h-[96vh] overflow-y-auto"
       widthClassName="w-[96vw]"
-      renderContent={() => <div className="text-left">{children}</div>}
+      renderContent={() => (
+        <div className="text-left min-w-[80vw]">{children}</div>
+      )}
       renderAction={() => null}
       onClose={onClose}
     />

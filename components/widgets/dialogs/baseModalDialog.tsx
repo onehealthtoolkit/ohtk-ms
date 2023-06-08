@@ -87,8 +87,10 @@ const BaseModalDialog: React.FC<Props> = ({
                   {title && (
                     <h1 className="text-left text-base font-medium">{title}</h1>
                   )}
-                  <div className="flex min-h-[20vh]">
-                    <div className="m-auto">{renderContent(store.data)}</div>
+                  <div className="flex h-full">
+                    <div className="m-auto h-full">
+                      {renderContent(store.data)}
+                    </div>
                   </div>
                   <button
                     className="absolute right-4 top-4 z-[1001]"
