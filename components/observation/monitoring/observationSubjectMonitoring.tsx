@@ -4,26 +4,11 @@ import { observer, Observer } from "mobx-react";
 import { Divide, MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ObservationSubjectMonitoringViewModel } from "./observationSubjectMonitoringViewModel";
-import tw from "tailwind-styled-components";
 import { useRouter } from "next/router";
 import { RenderData, TR } from "components/widgets/renderData";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 import ViewActionButtons from "components/widgets/viewActionButtons";
 import { formatYmdt } from "lib/datetime";
-
-export const PromoteToCaseButton = tw.button`
-  px-4 
-  py-2 
-  border
-  text-white
-  bg-blue-500 
-  border-blue-300
-  hover:border-blue-500
-  rounded
-  flex 
-  justify-center 
-  items-center
-`;
 
 const SubjectMonitoringInformation = observer(
   ({ viewModel }: { viewModel: ObservationSubjectMonitoringViewModel }) => {
@@ -134,6 +119,8 @@ const ObservationSubjectMonitoring = (props: { id: string }) => {
                 <RenderData
                   data={viewModel.data.formData}
                   definition={viewModel.data.formDefinition}
+                  imageUrlMap={viewModel.imageUrlMap}
+                  fileUrlMap={viewModel.fileUrlMap}
                 />
               </div>
 

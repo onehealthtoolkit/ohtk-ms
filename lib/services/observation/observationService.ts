@@ -11,7 +11,7 @@ import {
   GetObservationSubjectMonitoringDocument,
   ObservationSubjectsDocument,
 } from "lib/generated/graphql";
-import { Image } from "../report/report";
+import { Image, UploadFile } from "../report/report";
 
 export type ObservationFilterData = {
   definitionId?: number;
@@ -111,6 +111,7 @@ export class ObservationService implements IObservationService {
         title: observationSubject.title,
         description: observationSubject.description,
         images: observationSubject.images as Image[],
+        files: observationSubject.uploadFiles as UploadFile[],
         registerFormDefinition:
           observationSubject.definition?.registerFormDefinition,
         formData: observationSubject.formData,
@@ -146,6 +147,7 @@ export class ObservationService implements IObservationService {
         title: observationSubjectMonitoring.title,
         description: observationSubjectMonitoring.description,
         images: observationSubjectMonitoring.images as Image[],
+        files: observationSubjectMonitoring.uploadFiles as UploadFile[],
         formDefinition:
           observationSubjectMonitoring.monitoringDefinition?.formDefinition,
         formData: observationSubjectMonitoring.formData,

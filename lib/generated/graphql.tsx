@@ -3888,6 +3888,13 @@ export type GetCaseQuery = {
         thumbnail?: string | null;
         imageUrl?: string | null;
       } | null> | null;
+      uploadFiles?: Array<{
+        __typename?: "UploadFileType";
+        id: any;
+        file: string;
+        fileType: string;
+        fileUrl?: string | null;
+      } | null> | null;
       reportedBy?: {
         __typename?: "UserType";
         firstName: string;
@@ -4937,6 +4944,13 @@ export type GetObservationSubjectQuery = {
       thumbnail?: string | null;
       imageUrl?: string | null;
     } | null> | null;
+    uploadFiles?: Array<{
+      __typename?: "ObservationUploadFileType";
+      id: any;
+      file: string;
+      fileType: string;
+      fileUrl?: string | null;
+    } | null> | null;
   } | null;
 };
 
@@ -4970,6 +4984,13 @@ export type GetObservationSubjectMonitoringQuery = {
       file: string;
       thumbnail?: string | null;
       imageUrl?: string | null;
+    } | null> | null;
+    uploadFiles?: Array<{
+      __typename?: "ObservationUploadFileType";
+      id: any;
+      file: string;
+      fileType: string;
+      fileUrl?: string | null;
     } | null> | null;
   } | null;
 };
@@ -5748,6 +5769,13 @@ export type GetReportQuery = {
       file: string;
       thumbnail?: string | null;
       imageUrl?: string | null;
+    } | null> | null;
+    uploadFiles?: Array<{
+      __typename?: "UploadFileType";
+      id: any;
+      file: string;
+      fileType: string;
+      fileUrl?: string | null;
     } | null> | null;
     reportedBy?: {
       __typename?: "UserType";
@@ -8368,6 +8396,31 @@ export const GetCaseDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "imageUrl" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "uploadFiles" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "file" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fileType" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fileUrl" },
                             },
                           ],
                         },
@@ -13268,6 +13321,25 @@ export const GetObservationSubjectDocument = {
                     ],
                   },
                 },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "uploadFiles" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "file" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "fileType" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "fileUrl" },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -13367,6 +13439,25 @@ export const GetObservationSubjectMonitoringDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "imageUrl" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "uploadFiles" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "file" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "fileType" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "fileUrl" },
                       },
                     ],
                   },
@@ -17613,6 +17704,25 @@ export const GetReportDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "imageUrl" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "uploadFiles" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "file" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "fileType" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "fileUrl" },
                       },
                     ],
                   },

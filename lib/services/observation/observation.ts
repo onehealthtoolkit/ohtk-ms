@@ -1,4 +1,4 @@
-import { Image } from "../report/report";
+import { Image, UploadFile } from "../report/report";
 
 export type ObservationSubject = {
   id: string;
@@ -15,6 +15,7 @@ export type ObservationSubjectDetail = ObservationSubject & {
   definitionDescription: string;
   formData: Record<string, string> | Record<string, Record<string, string>>;
   images: Array<Image>;
+  files: Array<UploadFile>;
   registerFormDefinition?: Record<string, any>;
   subjectMonitorings: Array<ObservationSubjectMonitoring>;
 };
@@ -33,4 +34,5 @@ export type ObservationSubjectMonitoringDetail =
     formData: Record<string, string> | Record<string, Record<string, string>>;
     formDefinition?: Record<string, any>;
     images: Array<Image>;
+    files: Array<UploadFile>;
   };

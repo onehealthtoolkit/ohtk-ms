@@ -38,6 +38,8 @@ export class ReportViewModel extends BaseViewModel {
       shouldDisplayActions: computed,
       shouldDisplayConvertToTestReport: computed,
       shouldDisplayPromoteToCase: computed,
+      imageUrlMap: computed,
+      fileUrlMap: computed,
     });
     this.id = id;
     this.fetch();
@@ -55,6 +57,26 @@ export class ReportViewModel extends BaseViewModel {
   }
   public set converting(value: boolean) {
     this._converting = value;
+  }
+
+  get imageUrlMap(): Record<string, string> {
+    const m = {} as Record<string, string>;
+    if (this.data.images) {
+      this.data.images.forEach(image => {
+        m[image.id] = image.imageUrl;
+      });
+    }
+    return m;
+  }
+
+  get fileUrlMap(): Record<string, string> {
+    const m = {} as Record<string, string>;
+    if (this.data.files) {
+      this.data.files.forEach(file => {
+        m[file.id] = file.fileUrl;
+      });
+    }
+    return m;
   }
 
   async fetch() {

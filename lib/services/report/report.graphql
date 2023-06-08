@@ -76,6 +76,12 @@ query GetReport($id: ID!) {
       thumbnail
       imageUrl
     }
+    uploadFiles {
+      id
+      file
+      fileType
+      fileUrl
+    }
     reportedBy {
       firstName
       lastName

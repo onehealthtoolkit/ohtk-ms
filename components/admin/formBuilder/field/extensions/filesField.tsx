@@ -73,6 +73,7 @@ const Field: FC<Props> = ({ value: field, onDelete }) => {
             className="w-4 h-4"
             type={"checkbox"}
             checked={fieldExtension.allowVideoFiles}
+            disabled
             onChange={event =>
               fieldExtension.setAllowVideoFiles(event.target.checked)
             }
@@ -80,6 +81,7 @@ const Field: FC<Props> = ({ value: field, onDelete }) => {
           <span className="pl-2">Allow video files</span>
         </label>
         <p className="pl-8 text-gray-400 text-xs italic">
+          Not supported yet <br />
           {fieldExtension.videoTypes.join(", ")}
         </p>
       </div>
@@ -93,6 +95,7 @@ const Field: FC<Props> = ({ value: field, onDelete }) => {
             className="w-4 h-4"
             type={"checkbox"}
             checked={fieldExtension.allowDocumentFiles}
+            disabled
             onChange={event =>
               fieldExtension.setAllowDocumentFiles(event.target.checked)
             }
@@ -100,7 +103,7 @@ const Field: FC<Props> = ({ value: field, onDelete }) => {
           <span className="pl-2">Allow document files</span>
         </label>
         <p className="pl-8 text-gray-400 text-xs italic">
-          {fieldExtension.documentTypes.join(", ")}
+          Not supported yet <br />({fieldExtension.documentTypes.join(", ")})
         </p>
       </div>
       <FieldActionBar value={field} onDelete={onDelete}>
