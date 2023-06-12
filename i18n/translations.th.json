@@ -168,7 +168,15 @@
       "save": "บันทึก",
       "cancel": "ยกเลิก",
       "next": "ไปขั้นตอนต่อไป",
-      "downloadExcel": "ดาวน์โหลดข้อมูลไฟล์ Excel "
+      "downloadExcel": "ดาวน์โหลดข้อมูลไฟล์ Excel ",
+      "updatePassWord": "แก้ไขรหัสผ่าน",
+      "edit": "แก้ไข",
+      "exportToJson": "ดาวน์โหลดข้อมูลไฟล์",
+      "qrcodeLogin": "เข้าสู่ระบบด้วย QR Code",
+      "formDefinitionQrcode": "แบบฟอร์มกำหนดด้วย QR Code",
+      "formSimulation": "การจำลองแบบฟอร์ม",
+      "publishReportType": "เผยแพร่รายงาน",
+      "unPublishReportType": "ยกเลิกการเผยแพร่รายงาน"
     }
   },
   "dialog": {

@@ -24,8 +24,8 @@
     "configurations": "Configurations",
     "observationDefinitions": "Observation Definitions",
     "observationMonitoringDefinitions": "Observation Monitoring Definition",
-    "inactiveReporter": "Inactive reporter",
-    "reporterPerformance": "Reporter performance"
+    "inactiveReporter": "Inactive Reporter",
+    "reporterPerformance": "Reporter Performance"
   },
   "filter": {
     "searchButton": "Search",
@@ -165,7 +165,15 @@
       "save": "Save",
       "cancel": "Cancel",
       "next": "Next",
-      "downloadExcel": "Download Excel"
+      "downloadExcel": "Download Excel",
+      "updatePassWord": "Update Password",
+      "edit": "Edit",
+      "exportToJson": "Export",
+      "qrcodeLogin": "Login QR Code",
+      "formDefinitionQrcode": "Form Definitiion QR Code",
+      "formSimulation": "Form Simulation",
+      "publishReportType": "Publish ReportTyp",
+      "unPublishReportType": "Un publish ReportType"
     }
   },
   "dialog": {

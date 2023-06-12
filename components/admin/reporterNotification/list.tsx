@@ -17,6 +17,7 @@ import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { useTranslation } from "react-i18next";
 import { DownloadIcon } from "@heroicons/react/solid";
+import Tooltip from "components/widgets/tooltip";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
@@ -83,7 +84,7 @@ const ReporterNotificationList = () => {
             <Link href={"/admin/reporter_notifications/create"} passHref>
               <AddButton />
             </Link>
-            <div className="relative cursor-pointer inline-block overflow-hidden">
+            <div className="relative cursor-pointer inline-block overflow-visible">
               <UploadButton isSubmitting={viewModel.isSubmitting} />
               <input
                 type="file"
@@ -132,14 +133,14 @@ const ReporterNotificationList = () => {
             onDelete={record => viewModel.dialog("confirmDelete")?.open(record)}
             actions={record => {
               return (
-                <>
+                <Tooltip text={`${t("form.button.exportToJson", "Export")}`}>
                   <DownloadIcon
                     className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
                     onClick={() =>
                       viewModel.exportReporterNotification(record.id)
                     }
                   />
-                </>
+                </Tooltip>
               );
             }}
           />

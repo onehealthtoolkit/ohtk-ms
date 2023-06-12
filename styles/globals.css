@@ -39,6 +39,46 @@ input[disabled] {
   animation-iteration-count: infinite;
 }
 
+[role="tooltip"].invisible > [data-popper-arrow]:after,
+[role="tooltip"].invisible > [data-popper-arrow]:before {
+  visibility: hidden;
+}
+
+.tooltip[data-popper-placement^="top"] > .tooltip-arrow {
+  bottom: -4px;
+}
+
+.tooltip[data-popper-placement^="bottom"] > .tooltip-arrow {
+  top: -4px;
+}
+
+[data-popper-arrow] {
+  visibility: hidden;
+}
+
+[data-popper-arrow],
+[data-popper-arrow]:before {
+  background: inherit;
+  height: 8px;
+  position: absolute;
+  width: 8px;
+}
+
+[data-popper-arrow]:after,
+[data-popper-arrow]:before {
+  @apply delay-500;
+  content: "";
+  transform: rotate(45deg);
+  visibility: visible;
+}
+
+[data-popper-arrow]:after {
+  background: inherit;
+  height: 9px;
+  position: absolute;
+  width: 9px;
+}
+
 @keyframes wink {
   from {
     opacity: 0.5;
