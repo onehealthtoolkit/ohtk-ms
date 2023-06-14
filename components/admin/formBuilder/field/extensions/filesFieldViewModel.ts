@@ -16,9 +16,12 @@ export class FilesFieldViewModel extends AbstractDefinitionViewModel {
     "audio/mid",
     "audio/mpeg",
     "audio/mp4",
+    "audio/m4a",
     "audio/ogg",
     "audio/webm",
+    "audio/wav",
     "audio/x-wav",
+    "audio/x-m4a",
     "audio/x-ms-wma",
   ];
   videoTypes = [
@@ -33,17 +36,29 @@ export class FilesFieldViewModel extends AbstractDefinitionViewModel {
     "video/x-m4v",
     "video/x-ms-wmv",
     "video/x-ms-asf",
+    "video/msvideo",
+    "video/x-msvideo",
   ];
   documentTypes = [
     "text/plain",
+    "application/rtf",
     "application/pdf",
     "application/msword",
     "application/vnd.openxmlformats",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/excel",
     "application/vnd.ms-excel",
+    "application/x-excel",
+    "application/x-msexcel",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/powerpoint",
+    "application/mspowerpoint",
+    "application/x-mspowerpoint",
     "application/vnd.ms-powerpoint",
     "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "application/vnd.oasis.opendocument.text",
+    "application/vnd.oasis.opendocument.presentation",
+    "application/vnd.oasis.opendocument.spreadsheet",
   ];
 
   constructor() {

@@ -201,4 +201,17 @@ export default class FilesField extends PrimitiveField<Array<string>> {
       }
     }
   }
+
+  loadJsonValue(json: Record<string, any>): void {
+    var values = json[this.name];
+    if (values) {
+      const fieldValue = Array<string>();
+
+      for (const key of Object.keys(values)) {
+        const value = `${key} (${values[key]})`;
+        fieldValue.push(value);
+      }
+      this.value = fieldValue;
+    }
+  }
 }

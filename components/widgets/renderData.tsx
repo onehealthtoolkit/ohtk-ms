@@ -139,6 +139,8 @@ const renderDefinitionData = (
   ) : null;
 };
 
+const re = new RegExp(/\((.*)\.(.*)\)/);
+
 const RowDefinedFieldValue = ({
   field,
   imageUrlMap,
@@ -153,16 +155,24 @@ const RowDefinedFieldValue = ({
   if (field instanceof MultipleChoicesField) {
     valueList = field.renderedValue.split(",");
   } else if (field instanceof ImagesField) {
+    // images renderedValue eg.
+    // "7e5db5d9-3260-4a80-a629-5b305ff7ecec, 90915bee-858c-49a0-97df-09337342f6e9"
     valueList = field.renderedValue.split(",").map(value => {
       const url = imageUrlMap && imageUrlMap[value.trim()];
       return url ? url : value;
     });
   } else if (field instanceof FilesField) {
+    // files renderedValue eg.
+    // "sample-5.m4a (90915bee-858c-49a0-97df-09337342f6e9.m4a), sample-3.mp3 (04dfd7af-fa95-4280-983f-9877ec3ffcca.mp3)"
     valueList = field.renderedValue.split(",").map(value => {
-      // each value in FilesField contains uuid and file extension, eg. 1234abc.mp3
-      const id = value.trim().split(".")[0];
-      const url = fileUrlMap && fileUrlMap[id];
-      return url ? url : value;
+      // each value in FilesField contains filename, uuid and file extension
+      const match = re.exec(value.trim());
+      if (match) {
+        const id = match[1];
+        const url = fileUrlMap && fileUrlMap[id];
+        return url ? url : value;
+      }
+      return value;
     });
   } else {
     valueList = [field.renderedValue];
