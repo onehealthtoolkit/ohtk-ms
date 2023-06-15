@@ -3,6 +3,7 @@ import { Observer } from "mobx-react";
 import useStore, { Store } from "lib/store";
 import Spinner from "components/widgets/spinner";
 import NotAllow from "./notAllow";
+import Signin from "./signin";
 
 type Props = {
   children: React.ReactNode;
@@ -27,7 +28,7 @@ const Protect = ({ children, guard }: Props) => {
           return loading;
         }
         if (!store.isLogin) {
-          return loading;
+          return <Signin />;
         }
         if (!store.me) {
           return loading;
