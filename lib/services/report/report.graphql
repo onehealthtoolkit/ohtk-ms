@@ -89,6 +89,7 @@ query GetReport($id: ID!) {
       telephone
     }
     testFlag
+    definition
   }
 }
 

@@ -1776,6 +1776,7 @@ export type IncidentReportType = {
   coverImage?: Maybe<ImageType>;
   createdAt: Scalars["DateTime"];
   data?: Maybe<Scalars["GenericScalar"]>;
+  definition?: Maybe<Scalars["GenericScalar"]>;
   followups?: Maybe<Array<Maybe<FollowupType>>>;
   gpsLocation?: Maybe<Scalars["String"]>;
   id: Scalars["UUID"];
@@ -5751,6 +5752,7 @@ export type GetReportQuery = {
     data?: any | null;
     platform?: string | null;
     testFlag: boolean;
+    definition?: any | null;
     reportType?: {
       __typename?: "ReportTypeType";
       id: any;
@@ -17750,6 +17752,7 @@ export const GetReportDocument = {
                   },
                 },
                 { kind: "Field", name: { kind: "Name", value: "testFlag" } },
+                { kind: "Field", name: { kind: "Name", value: "definition" } },
               ],
             },
           },
