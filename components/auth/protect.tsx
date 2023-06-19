@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Observer } from "mobx-react";
 import useStore, { Store } from "lib/store";
-import SignIn from "components/auth/signin";
 import Spinner from "components/widgets/spinner";
 import NotAllow from "./notAllow";
+import Signin from "./signin";
 
 type Props = {
   children: React.ReactNode;
@@ -16,18 +16,22 @@ const Protect = ({ children, guard }: Props) => {
   useEffect(() => {
     setIsSSR(false);
   }, []);
-
+  const loading = (
+    <div className="flex flex-col h-screen justify-center items-center">
+      <Spinner size={10} />
+    </div>
+  );
   return !isSSR ? (
     <Observer>
       {() => {
         if (store.initTokenPending) {
-          return <Spinner />;
+          return loading;
         }
         if (!store.isLogin) {
-          return <SignIn />;
+          return <Signin />;
         }
         if (!store.me) {
-          return <Spinner />;
+          return loading;
         }
 
         if (guard != undefined) {
