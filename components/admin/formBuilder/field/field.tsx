@@ -16,6 +16,7 @@ import {
   MultiplechoicesField,
   SinglechoicesField,
   TextField,
+  TextAreaField,
 } from "components/admin/formBuilder/field/extensions";
 import {
   FieldViewModel,
@@ -62,6 +63,8 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
         return (
           <MultiplechoicesField value={field} onDelete={onDeleteConfirm} />
         );
+      case "textarea":
+        return <TextAreaField value={field} onDelete={onDeleteConfirm} />;
       default:
         return "Undefined field type component: " + field.fieldType;
     }
@@ -224,6 +227,16 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
           </ul>
         );
       }
+      case "textarea":
+        return (
+          <textarea
+            className="mt-2 border border-gray-200 py-2 px-4 w-full rounded bg-gray-50"
+            placeholder="Text answer"
+            value=""
+            readOnly
+          />
+        );
+
       default:
         return "Undefined " + field.fieldType;
     }
