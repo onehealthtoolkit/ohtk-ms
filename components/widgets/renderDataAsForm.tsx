@@ -137,7 +137,7 @@ export const renderDefinitionDataAsForm = (
   fileUrlMap?: Record<string, string>
 ) => {
   return form.sections.length > 0 ? (
-    <>
+    <div className="max-h-[32rem] inline-block overflow-scroll">
       {form.sections.map((section, idx) => {
         return (
           <div className="m-4" key={`section-${idx}`}>
@@ -195,7 +195,7 @@ export const renderDefinitionDataAsForm = (
           </div>
         );
       })}
-    </>
+    </div>
   ) : null;
 };
 
