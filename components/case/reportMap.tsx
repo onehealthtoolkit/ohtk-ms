@@ -2,6 +2,7 @@ import { OutbreakZone } from "components/case/caseViewModel";
 import L, { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { OutbreakPlace } from "lib/services/outbreak/outbreak";
+import { useEffect, useRef } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
   Circle,
@@ -11,6 +12,7 @@ import {
   Popup,
   SVGOverlay,
   TileLayer,
+  useMap,
 } from "react-leaflet";
 
 // boundary for no-location warning
@@ -51,6 +53,72 @@ export default function Map({
     html: renderToStaticMarkup(<MarkerIcon />),
   });
 
+  const Zones = () => {
+    const map = useMap();
+    const featureGroupRef = useRef(null);
+    useEffect(() => {
+      if (!map) return;
+      if (featureGroupRef.current) {
+        map.fitBounds((featureGroupRef.current as L.FeatureGroup).getBounds());
+      }
+    }, [map, featureGroupRef]);
+
+    return (
+      <FeatureGroup ref={featureGroupRef}>
+        <Marker position={[latitude, longitude]} icon={icon}>
+          <Popup>
+            Latitude: {latitude}, longitude: {longitude}
+          </Popup>
+        </Marker>
+        {showZones &&
+          zones &&
+          zones.map((zone, idx) => {
+            return (
+              <Circle
+                key={idx + zone.color}
+                center={{ lat: latitude, lng: longitude }}
+                fillColor={zone.color}
+                fillOpacity={0.1}
+                color={zone.color}
+                radius={zone.radius}
+              />
+            );
+          })}
+        {showZones &&
+          places &&
+          places.map((place, idx) => {
+            const lat = place.place?.latitude;
+            const lng = place.place?.longitude;
+
+            const icon2 = L.divIcon({
+              className: "my-div-icon2",
+              html: renderToStaticMarkup(
+                <MarkerIcon color={place.color} key={idx} />
+              ),
+            });
+
+            return (
+              lat &&
+              lng && (
+                <Marker
+                  key={(place.zone || 0) + idx}
+                  position={[lat, lng]}
+                  icon={icon2}
+                >
+                  <Popup>
+                    <p>Name: {place.place?.name}</p>
+                    <p>
+                      Latitude: {lat}, longitude: {lng}
+                    </p>
+                  </Popup>
+                </Marker>
+              )
+            );
+          })}
+      </FeatureGroup>
+    );
+  };
+
   return (
     <MapContainer
       center={[latitude, longitude]}
@@ -64,58 +132,7 @@ export default function Map({
       />
 
       {isValidLocation ? (
-        <FeatureGroup>
-          <Marker position={[latitude, longitude]} icon={icon}>
-            <Popup>
-              Latitude: {latitude}, longitude: {longitude}
-            </Popup>
-          </Marker>
-          {showZones &&
-            zones &&
-            zones.map((zone, idx) => {
-              return (
-                <Circle
-                  key={idx + zone.color}
-                  center={{ lat: latitude, lng: longitude }}
-                  fillColor={zone.color}
-                  fillOpacity={0.1}
-                  color={zone.color}
-                  radius={zone.radius}
-                />
-              );
-            })}
-          {showZones &&
-            places &&
-            places.map((place, idx) => {
-              const lat = place.place?.latitude;
-              const lng = place.place?.longitude;
-
-              const icon2 = L.divIcon({
-                className: "my-div-icon2",
-                html: renderToStaticMarkup(
-                  <MarkerIcon color={place.color} key={idx} />
-                ),
-              });
-
-              return (
-                lat &&
-                lng && (
-                  <Marker
-                    key={(place.zone || 0) + idx}
-                    position={[lat, lng]}
-                    icon={icon2}
-                  >
-                    <Popup>
-                      <p>Name: {place.place?.name}</p>
-                      <p>
-                        Latitude: {lat}, longitude: {lng}
-                      </p>
-                    </Popup>
-                  </Marker>
-                )
-              );
-            })}
-        </FeatureGroup>
+        <Zones />
       ) : (
         <SVGOverlay attributes={{ stroke: "red" }} bounds={bounds}>
           <rect x="0" y="0" width="100%" height="100%" fill="transparent" />
