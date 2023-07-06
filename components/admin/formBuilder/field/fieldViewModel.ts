@@ -21,6 +21,7 @@ import {
   OperatorViewModel,
 } from "components/admin/formBuilder/shared/operatorViewModel";
 import { action, computed, makeObservable, observable } from "mobx";
+import { TextAreaFieldViewModel } from "./extensions/textareaFieldViewModel";
 
 export const FIELD_TYPES = [
   "text",
@@ -32,6 +33,7 @@ export const FIELD_TYPES = [
   "location",
   "singlechoices",
   "multiplechoices",
+  "textarea",
 ] as const;
 
 export type TFieldValueType = typeof FIELD_TYPES[number];
@@ -53,6 +55,8 @@ export type TFieldExtensionType<T> = T extends "text"
   ? SinglechoicesFieldViewModel
   : T extends "multiplechoices"
   ? MultiplechoicesFieldViewModel
+  : T extends "textarea"
+  ? TextAreaFieldViewModel
   : never;
 
 export class FieldViewModel extends BaseViewModel {
@@ -113,6 +117,8 @@ export class FieldViewModel extends BaseViewModel {
         return new SinglechoicesFieldViewModel();
       case "multiplechoices":
         return new MultiplechoicesFieldViewModel();
+      case "textarea":
+        return new TextAreaFieldViewModel();
       default:
         return new TextFieldViewModel();
     }
@@ -145,6 +151,8 @@ export class FieldViewModel extends BaseViewModel {
         return "Single choice";
       case "multiplechoices":
         return "Multiple choices";
+      case "textarea":
+        return "TextArea";
       default:
         return "Unknown";
     }

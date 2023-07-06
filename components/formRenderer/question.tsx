@@ -16,10 +16,12 @@ import LocationField from "lib/opsvForm/models/fields/locationField";
 import MultipleChoicesField from "lib/opsvForm/models/fields/multipleChoicesField";
 import SingleChoicesField from "lib/opsvForm/models/fields/singleChoicesField";
 import TextField from "lib/opsvForm/models/fields/textField";
+import TextAreaField from "lib/opsvForm/models/fields/textareaField";
 import Question from "lib/opsvForm/models/question";
 import { observer } from "mobx-react";
 import dynamic from "next/dynamic";
 import { FC } from "react";
+import { FormTextAreaField } from "./textareaField";
 
 const FormLocationField = dynamic(
   () => import("components/formRenderer/locationField"),
@@ -53,6 +55,8 @@ const Component: FC<FormQuestionProps> = ({ question }) => {
       return <FormImagesField field={field} />;
     } else if (field instanceof FilesField) {
       return <FormFilesField field={field} />;
+    } else if (field instanceof TextAreaField) {
+      return <FormTextAreaField field={field} />;
     }
     return <div>Unknown Field</div>;
   };

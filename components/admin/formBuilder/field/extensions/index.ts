@@ -16,3 +16,5 @@ export * from "./singlechoicesField";
 export * from "./singlechoicesFieldViewModel";
 export * from "./multiplechoicesField";
 export * from "./multiplechoicesFieldViewModel";
+export * from "./textareaField";
+export * from "./textareaFieldViewModel";

@@ -13,6 +13,7 @@ import Question from "./question";
 import Section from "./section";
 import { ChoiceOption } from "./fields/singleChoicesField";
 import FilesField from "lib/opsvForm/models/fields/filesField";
+import TextAreaField from "./fields/textareaField";
 
 export type FormType = {
   id: string;
@@ -52,7 +53,8 @@ export type FieldType =
   | SingleChoicesFieldType
   | MultipleChoicesFieldType
   | ImagesFieldType
-  | FilesFieldType;
+  | FilesFieldType
+  | TextAreaFieldType;
 
 export type BaseFieldType = {
   id: string;
@@ -124,6 +126,15 @@ export type FilesFieldType = {
   video?: boolean;
   document?: boolean;
   supports: string[];
+} & BaseFieldType;
+
+export type TextAreaFieldType = {
+  type: "textarea";
+  minLength?: number;
+  maxLength?: number;
+  rows?: number;
+  minLengthMessage?: string;
+  maxLengthMessage?: string;
 } & BaseFieldType;
 
 export function parseForm(json: FormType): Form {
@@ -223,6 +234,15 @@ export function parseField(json: FieldType): Field {
         video: json["video"],
         document: json["document"],
         supportTypes: json["supports"],
+      });
+    case "textarea":
+      return new TextAreaField(json["id"], json["name"], {
+        ...commonParams,
+        rows: json["rows"],
+        minLength: json["minLength"],
+        minLengthMessage: json["minLengthMessage"],
+        maxLength: json["maxLength"],
+        maxLengthMessage: json["maxLengthMessage"],
       });
     default:
       return new TextField("unknown", "unknown", {});

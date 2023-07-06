@@ -7,6 +7,7 @@ import MultipleChoicesField from "lib/opsvForm/models/fields/multipleChoicesFiel
 import Form from "lib/opsvForm/models/form";
 import { parseForm } from "lib/opsvForm/models/json";
 import { Fragment, useState } from "react";
+import { renderDefinitionDataAsForm } from "./renderDataAsForm";
 
 type ViewTypeSwitchProps = {
   active: boolean;
@@ -57,7 +58,7 @@ export const RenderData = ({
   fileUrlMap,
 }: RenderDataType) => {
   const [isDefinitionView, setIsDefinitionView] = useState(true);
-
+  const renderAsForm = true;
   if (!data) {
     return null;
   }
@@ -76,7 +77,9 @@ export const RenderData = ({
             />
           </div>
           {isDefinitionView
-            ? renderDefinitionData(form, imageUrlMap, fileUrlMap)
+            ? renderAsForm
+              ? renderDefinitionDataAsForm(form, imageUrlMap, fileUrlMap)
+              : renderDefinitionData(form, imageUrlMap, fileUrlMap)
             : renderRawData(data)}
         </>
       );
