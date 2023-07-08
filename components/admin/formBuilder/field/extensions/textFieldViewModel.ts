@@ -27,13 +27,13 @@ export class TextFieldViewModel extends AbstractDefinitionViewModel {
   }
 
   parse(definition: Definition) {
-    if (definition.min !== undefined) {
-      this.minLength = String(definition.min);
+    if (definition.minLength !== undefined) {
+      this.minLength = String(definition.minLength);
     } else {
       this.minLength = "";
     }
-    if (definition.max !== undefined) {
-      this.maxLength = String(definition.max);
+    if (definition.maxLength !== undefined) {
+      this.maxLength = String(definition.maxLength);
     } else {
       this.maxLength = "";
     }
@@ -43,11 +43,11 @@ export class TextFieldViewModel extends AbstractDefinitionViewModel {
     const json: Definition = {};
     const minNum = parseInt(this.minLength || "");
     if (minNum >= 0) {
-      json.min = minNum;
+      json.minLength = minNum;
     }
     const maxNum = parseInt(this.maxLength || "");
     if (maxNum >= 0) {
-      json.max = maxNum;
+      json.maxLength = maxNum;
     }
     return json;
   }
