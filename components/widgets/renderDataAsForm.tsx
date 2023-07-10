@@ -110,12 +110,8 @@ const RowDefinedQuestionFieldValue = ({
       </div>
     );
   }
-
   return (
     <div className="flex gap-2 m-2">
-      <label className="flex-none font-bold">
-        {field.label || field.name}:
-      </label>
       <div className="flex-1">
         {valueList.map((value, idx) => (
           <Fragment key={idx}>{displayValue(value)}</Fragment>
@@ -174,16 +170,47 @@ export const renderDefinitionDataAsForm = (
                             </div>
                           </th>
                           <td className="px-6 py-4">
-                            {question.fields.map((field, fidx) => {
-                              return field.display ? (
-                                <RowDefinedQuestionFieldValue
-                                  field={field}
-                                  imageUrlMap={imageUrlMap}
-                                  fileUrlMap={fileUrlMap}
-                                  key={`s-${idx}-q-${qidx}-f${fidx}`}
-                                />
-                              ) : null;
-                            })}
+                            {question.fields.length == 1 &&
+                              question.fields.map((field, fidx) => {
+                                return field.display ? (
+                                  <RowDefinedQuestionFieldValue
+                                    field={field}
+                                    imageUrlMap={imageUrlMap}
+                                    fileUrlMap={fileUrlMap}
+                                    key={`s-${idx}-q-${qidx}-f${fidx}`}
+                                  />
+                                ) : null;
+                              })}
+                            {question.fields.length > 1 && (
+                              <div className="relative overflow-x-auto">
+                                <table className="border-collapse border border-slate-100 w-full text-sm text-left text-gray-500">
+                                  <tbody>
+                                    {question.fields.map((field, fidx) => {
+                                      return field.display ? (
+                                        <tr
+                                          key={`s-${idx}-q-${qidx}-f${fidx}`}
+                                          className="bg-white border-b"
+                                        >
+                                          <th
+                                            scope="row"
+                                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                                          >
+                                            {field.label || field.name}
+                                          </th>
+                                          <td className="px-2">
+                                            <RowDefinedQuestionFieldValue
+                                              field={field}
+                                              imageUrlMap={imageUrlMap}
+                                              fileUrlMap={fileUrlMap}
+                                            />
+                                          </td>
+                                        </tr>
+                                      ) : null;
+                                    })}
+                                  </tbody>
+                                </table>
+                              </div>
+                            )}
                           </td>
                         </tr>
                       )}
@@ -212,7 +239,8 @@ const Radio = ({
         className="mr-2"
         type={"radio"}
         value={option.value}
-        defaultChecked={option.value === field.value}
+        onChange={() => false}
+        checked={option.value === field.value}
       />
       {option.label}
       {option.textInput && option.value === field.value && (
@@ -242,8 +270,10 @@ const Option = ({
         <input
           className="mr-2"
           type={"checkbox"}
+          readOnly={true}
           value={option.value}
-          defaultChecked={checkValue}
+          onChange={() => false}
+          checked={checkValue}
         />
         {option.label}
         {option.textInput && checkValue && (
