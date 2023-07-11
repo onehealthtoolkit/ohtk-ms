@@ -87,7 +87,7 @@ const OutbreakPlanList = () => {
             <Link href={"/admin/outbreak_plans/create"} passHref>
               <AddButton />
             </Link>
-            <div className="relative cursor-pointer inline-block overflow-visible">
+            <div className="relative cursor-pointer inline-block overflow-hidden">
               <UploadButton isSubmitting={viewModel.isSubmitting} />
               <input
                 type="file"

@@ -85,7 +85,7 @@ const CaseDefinitionList = () => {
             <Link href={"/admin/case_definitions/create"} passHref>
               <AddButton />
             </Link>
-            <div className="relative cursor-pointer inline-block overflow-visible">
+            <div className="relative cursor-pointer inline-block overflow-hidden">
               <UploadButton isSubmitting={viewModel.isSubmitting} />
               <input
                 type="file"
