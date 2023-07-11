@@ -14,7 +14,7 @@ const FormBuilderDialog: React.FC<
   return (
     <BaseModalDialog
       store={viewModel}
-      heightClassName="h-[96vh] overflow-y-auto"
+      heightClassName="h-[96vh] overflow-y-auto overflow-x-hidden"
       widthClassName="w-[96vw]"
       renderContent={() => <div className="text-left">{children}</div>}
       renderAction={() => null}

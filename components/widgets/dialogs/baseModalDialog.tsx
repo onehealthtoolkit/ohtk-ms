@@ -88,7 +88,7 @@ const BaseModalDialog: React.FC<Props> = ({
                     <h1 className="text-left text-base font-medium">{title}</h1>
                   )}
                   <div className="flex h-full">
-                    <div className="m-auto h-full">
+                    <div className="m-auto h-full w-full">
                       {renderContent(store.data)}
                     </div>
                   </div>
