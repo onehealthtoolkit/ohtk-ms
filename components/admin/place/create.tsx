@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { PlaceCreateViewModel } from "./createViewModel";
@@ -20,6 +20,13 @@ import useServices from "lib/services/provider";
 import { useTranslation } from "react-i18next";
 import AuthroitySelect from "components/widgets/authoritySelect";
 
+import dynamic from "next/dynamic";
+
+const PlaceMap = dynamic(() => import("./placeMap"), {
+  loading: () => <p>A map is loading</p>,
+  ssr: false,
+});
+
 const PlaceCreate = () => {
   const router = useRouter();
   const { t } = useTranslation();
@@ -31,6 +38,12 @@ const PlaceCreate = () => {
         services.reportTypeService
       )
   );
+
+  useEffect(() => {
+    // center map to Thailand
+    if (!viewModel.latitude) viewModel.latitude = 15.87;
+    if (!viewModel.longitude) viewModel.longitude = 100.9925;
+  }, [viewModel]);
 
   const onSubmit = useCallback(async () => {
     if (await viewModel.save()) {
@@ -65,6 +78,7 @@ const PlaceCreate = () => {
             type="number"
             placeholder={t("form.placeholder.latitude", "Latitude")}
             onChange={evt => (viewModel.latitude = +evt.target.value)}
+            value={viewModel.latitude}
             disabled={isSubmitting}
             required
           />
@@ -79,10 +93,21 @@ const PlaceCreate = () => {
             type="number"
             placeholder={t("form.placeholder.longitude", "Longitude")}
             onChange={evt => (viewModel.longitude = +evt.target.value)}
+            value={viewModel.longitude}
             disabled={isSubmitting}
             required
           />
           <ErrorText>{errors.longitude}</ErrorText>
+        </Field>
+        <Field $size="half">
+          <PlaceMap
+            lat={viewModel.latitude}
+            lng={viewModel.longitude}
+            onMarkerChange={value => {
+              viewModel.latitude = value.lat;
+              viewModel.longitude = value.lng;
+            }}
+          />
         </Field>
         <Field $size="half">
           <Label htmlFor="notificationTo">
@@ -105,6 +130,7 @@ const PlaceCreate = () => {
             roleRequired={true}
             onChange={value => (viewModel.authorityId = parseInt(value.id))}
           />
+          <ErrorText>{errors.authorityId}</ErrorText>
         </Field>
       </FieldGroup>
 

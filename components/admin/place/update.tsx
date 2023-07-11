@@ -21,6 +21,12 @@ import useServices from "lib/services/provider";
 import { useTranslation } from "react-i18next";
 import AuthroitySelect from "components/widgets/authoritySelect";
 import useStore from "lib/store";
+import dynamic from "next/dynamic";
+
+const PlaceMap = dynamic(() => import("./placeMap"), {
+  loading: () => <p>A map is loading</p>,
+  ssr: false,
+});
 
 const PlaceUpdate = () => {
   const router = useRouter();
@@ -109,6 +115,26 @@ const PlaceUpdate = () => {
     [t, viewModel]
   );
 
+  const placeMap = useMemo(
+    () => (
+      <Observer>
+        {() => (
+          <Field $size="half">
+            <PlaceMap
+              lat={viewModel.latitude}
+              lng={viewModel.longitude}
+              onMarkerChange={value => {
+                viewModel.latitude = value.lat;
+                viewModel.longitude = value.lng;
+              }}
+            />
+          </Field>
+        )}
+      </Observer>
+    ),
+    [viewModel]
+  );
+
   const notificationToField = useMemo(
     () => (
       <Observer>
@@ -150,6 +176,7 @@ const PlaceUpdate = () => {
                 value={viewModel.authorityId}
                 onChange={value => (viewModel.authorityId = parseInt(value.id))}
               />
+              <ErrorText>{viewModel.fieldErrors.authorityId}</ErrorText>
             </Field>
           );
         }}
@@ -171,6 +198,7 @@ const PlaceUpdate = () => {
           {nameField}
           {latitudeField}
           {longitudeField}
+          {placeMap}
           {notificationToField}
           {authorityField}
         </FieldGroup>
