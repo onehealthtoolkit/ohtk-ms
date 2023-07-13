@@ -84,7 +84,7 @@ const ReporterNotificationList = () => {
             <Link href={"/admin/reporter_notifications/create"} passHref>
               <AddButton />
             </Link>
-            <div className="relative cursor-pointer inline-block overflow-visible">
+            <div className="relative cursor-pointer inline-block overflow-hidden">
               <UploadButton isSubmitting={viewModel.isSubmitting} />
               <input
                 type="file"
