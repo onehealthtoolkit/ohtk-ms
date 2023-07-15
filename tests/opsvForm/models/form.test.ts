@@ -67,6 +67,7 @@ const testForm: FormType = {
       ],
     },
   ],
+  subforms: [],
 };
 
 describe("Form", () => {
@@ -191,6 +192,7 @@ describe("Form", () => {
             ],
           },
         ],
+        subforms: [],
       });
       const field1 = form.values.getDelegate("firstname").getField();
       expect(field1).toBeDefined();
@@ -226,6 +228,7 @@ describe("Form", () => {
             ],
           },
         ],
+        subforms: [],
       });
       const field1 = form.values.getDelegate("info.firstname").getField();
       expect(field1).toBeDefined();

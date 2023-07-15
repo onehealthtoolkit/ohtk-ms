@@ -22,6 +22,8 @@ import {
 } from "components/admin/formBuilder/shared/operatorViewModel";
 import { action, computed, makeObservable, observable } from "mobx";
 import { TextAreaFieldViewModel } from "./extensions/textareaFieldViewModel";
+import { SubformFieldViewModel } from "./extensions/subformFieldViewModel";
+import { QuestionViewModel } from "../question";
 
 export const FIELD_TYPES = [
   "text",
@@ -34,6 +36,7 @@ export const FIELD_TYPES = [
   "singlechoices",
   "multiplechoices",
   "textarea",
+  "subform",
 ] as const;
 
 export type TFieldValueType = typeof FIELD_TYPES[number];
@@ -57,6 +60,8 @@ export type TFieldExtensionType<T> = T extends "text"
   ? MultiplechoicesFieldViewModel
   : T extends "textarea"
   ? TextAreaFieldViewModel
+  : T extends "subform"
+  ? SubformFieldViewModel
   : never;
 
 export class FieldViewModel extends BaseViewModel {
@@ -69,8 +74,14 @@ export class FieldViewModel extends BaseViewModel {
   _extension: unknown = undefined;
   _condition: OperatorViewModel = new ComparableOperatorViewModel("=", "", "");
   _tags = "";
+  _question: QuestionViewModel;
 
-  constructor(id: string, label: string, type: TFieldValueType = "text") {
+  constructor(
+    question: QuestionViewModel,
+    id: string,
+    label: string,
+    type: TFieldValueType = "text"
+  ) {
     super(id, label);
     makeObservable(this, {
       name: observable,
@@ -95,6 +106,7 @@ export class FieldViewModel extends BaseViewModel {
     this.fieldType = type;
     this.name = "";
     this._extension = this.constructExtension(type);
+    this._question = question;
   }
 
   constructExtension(type: string): TFieldExtensionType<TFieldValueType> {
@@ -119,9 +131,18 @@ export class FieldViewModel extends BaseViewModel {
         return new MultiplechoicesFieldViewModel();
       case "textarea":
         return new TextAreaFieldViewModel();
+      case "subform":
+        return new SubformFieldViewModel();
       default:
         return new TextFieldViewModel();
     }
+  }
+
+  get question(): QuestionViewModel {
+    return this._question;
+  }
+  set question(question: QuestionViewModel) {
+    this._question = question;
   }
 
   get condition(): OperatorViewModel {
@@ -153,6 +174,8 @@ export class FieldViewModel extends BaseViewModel {
         return "Multiple choices";
       case "textarea":
         return "TextArea";
+      case "subform":
+        return "Subform";
       default:
         return "Unknown";
     }

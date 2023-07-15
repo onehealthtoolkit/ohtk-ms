@@ -1,7 +1,8 @@
-import { TableIcon, TemplateIcon } from "@heroicons/react/solid";
+import { PlusIcon, TableIcon, TemplateIcon } from "@heroicons/react/solid";
 import { FormViewModel } from "components/admin/formBuilder/formViewModel";
 import Section, { SectionList } from "components/admin/formBuilder/section";
 import FormSimulation from "components/admin/formBuilder/simulator/formSimulation";
+import { TabBar, TabItem } from "components/widgets/forms";
 import { observer } from "mobx-react";
 import { FC } from "react";
 
@@ -38,16 +39,61 @@ const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
       </div>
       {!form.isSimulationMode ? (
         <div className="flex relative w-full flex-wrap">
+          <div className="bg-white  w-full">
+            <TabBar>
+              <TabItem
+                id="masterform"
+                active={form.isCurrent}
+                onTab={() => form.selectForm(form.id)}
+              >
+                {() => (
+                  <>
+                    <span>form</span>
+                  </>
+                )}
+              </TabItem>
+              <>
+                {form.subforms.map(subform => (
+                  <TabItem
+                    id={"sumform-" + subform.id}
+                    key={"sumform-" + subform.id}
+                    active={subform.isCurrent}
+                    onTab={() => form.selectForm(subform.id)}
+                  >
+                    {() => (
+                      <>
+                        <span>{subform.id}</span>
+                      </>
+                    )}
+                  </TabItem>
+                ))}
+              </>
+
+              <TabItem id="transition" active={false} onTab={() => {}}>
+                {({ activeCss }) => (
+                  <>
+                    <PlusIcon
+                      onClick={() => {
+                        form.addSubform();
+                      }}
+                      className={`mr-2 w-5 h-5 ${activeCss}`}
+                    />
+                  </>
+                )}
+              </TabItem>
+            </TabBar>
+          </div>
+
           <SectionList
-            values={form.sections}
-            onAdd={() => form.addSection()}
-            onSelect={id => form.selectSection(id)}
-            onMoveDown={id => form.moveItemDown(id)}
-            onMoveUp={id => form.moveItemUp(id)}
+            values={form.currentForm.sections}
+            onAdd={() => form.currentForm.addSection()}
+            onSelect={id => form.currentForm.selectSection(id)}
+            onMoveDown={id => form.currentForm.moveItemDown(id)}
+            onMoveUp={id => form.currentForm.moveItemUp(id)}
           />
           <Section
-            value={form.currentSection}
-            onDelete={sectionId => form.deleteSection(sectionId)}
+            value={form.currentForm.currentSection}
+            onDelete={sectionId => form.currentForm.deleteSection(sectionId)}
           />
         </div>
       ) : (

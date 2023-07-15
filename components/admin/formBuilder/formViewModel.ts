@@ -11,14 +11,25 @@ import { v4 as uuidv4 } from "uuid";
 export type FormVariableItem = { label: string; value: string; type: string };
 
 export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
+  subforms = Array<FormViewModel>();
+  _currentForm: FormViewModel = this;
   sections = Array<SectionViewModel>();
   currentSection: SectionViewModel | undefined = undefined;
   _isSimulationMode = false;
   formSimulation?: FormSimulationViewModel = undefined;
+  isCurrent = false;
 
-  constructor(public builtinVariables: FormVariableItem[] = []) {
-    super("", "");
+  constructor(
+    public builtinVariables: FormVariableItem[] = [],
+    id?: string,
+    label?: string
+  ) {
+    super(id || "", label || "");
     makeObservable(this, {
+      subforms: observable,
+      _currentForm: observable,
+      currentForm: computed,
+      addSubform: action,
       sections: observable,
       currentSection: observable,
       addSection: action,
@@ -30,11 +41,46 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
       formSimulation: observable,
       variableList: computed,
       conditionVariableList: computed,
+      isCurrent: observable,
+      setCurrent: action,
+      unsetCurrent: action,
     });
+    this.setCurrent();
   }
 
   get movableItems() {
     return this.sections;
+  }
+
+  addSubform() {
+    const id = "subform_" + (this.subforms.length + 1);
+    const subform = new FormViewModel([], id);
+    this.subforms.push(subform);
+    this.selectForm(id);
+  }
+
+  selectForm(id: string) {
+    this.currentForm?.unsetCurrent();
+    var form = this.subforms.find(subform => subform.id === id);
+    if (!form) form = this;
+    this.currentForm = form;
+    form.setCurrent();
+  }
+
+  setCurrent() {
+    this.isCurrent = true;
+  }
+
+  unsetCurrent() {
+    this.isCurrent = false;
+  }
+
+  get currentForm() {
+    return this._currentForm;
+  }
+
+  set currentForm(value) {
+    this._currentForm = value;
   }
 
   addSection() {
@@ -67,11 +113,29 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   }
 
   parse(definition: Definition) {
+    this.currentForm?.unsetCurrent();
+    this._currentForm = this;
     this.currentSection?.unsetCurrent();
     this.currentSection = undefined;
     this._isSimulationMode = false;
 
     try {
+      if (Array.isArray(definition.subforms)) {
+        const subforms = Array<FormViewModel>();
+
+        definition.subforms.forEach(formDefinition => {
+          Object.entries(formDefinition).forEach(entry => {
+            const [id, formDefinition] = entry;
+            const formViewModel = new FormViewModel([], id);
+            formViewModel.parse(formDefinition as Definition);
+            subforms.push(formViewModel);
+          });
+        });
+        this.subforms.splice(0, this.subforms.length, ...subforms);
+      } else {
+        this.subforms.splice(0, this.subforms.length);
+      }
+
       if (Array.isArray(definition.sections)) {
         const sections = Array<SectionViewModel>();
 
@@ -98,6 +162,14 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
 
   toJson() {
     const json: Definition = {};
+    const subforms = Array<Definition>();
+    this.subforms.forEach(subform => {
+      const value: Record<string, Definition> = {};
+      value[subform.id] = subform.toJson();
+      subforms.push(value);
+    });
+    json.subforms = subforms;
+
     const sections = Array<Definition>();
     this.sections.forEach(section => {
       sections.push(section.toJson());

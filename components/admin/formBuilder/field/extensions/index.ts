@@ -18,3 +18,5 @@ export * from "./multiplechoicesField";
 export * from "./multiplechoicesFieldViewModel";
 export * from "./textareaField";
 export * from "./textareaFieldViewModel";
+export * from "./subformField";
+export * from "./subformFieldViewModel";

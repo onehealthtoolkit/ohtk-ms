@@ -99,7 +99,7 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
 
   addField(type: TFieldValueType) {
     const id = uuidv4();
-    this.fields.push(new FieldViewModel(id, "", type));
+    this.fields.push(new FieldViewModel(this, id, "", type));
     this.selectField(id);
   }
 
@@ -129,6 +129,7 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
         definition.fields.forEach(fieldDefinition => {
           const id = uuidv4();
           const fieldViewModel = new FieldViewModel(
+            this,
             id,
             "Field",
             (fieldDefinition as Definition).type as TFieldValueType

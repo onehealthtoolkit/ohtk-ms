@@ -13,6 +13,7 @@ export type FormFileMap = {
 };
 
 export default class Form {
+  subforms: Form[] = [];
   sections: Section[] = [];
   values: Values = new Values();
   images: { [fieldName: string]: FormImageMap } = {};
@@ -54,11 +55,13 @@ export default class Form {
   }
 
   public loadJsonValue(json: Record<string, any>) {
+    this.subforms.forEach(subform => subform.loadJsonValue(json));
     this.sections.forEach(section => section.loadJsonValue(json));
   }
 
   public toJsonValue(): Record<string, any> {
     const json: Record<string, any> = {};
+    this.subforms.forEach(subform => subform.toJsonValue());
     this.sections.forEach(section => section.toJsonValue(json));
     return json;
   }

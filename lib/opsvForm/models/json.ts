@@ -14,9 +14,11 @@ import Section from "./section";
 import { ChoiceOption } from "./fields/singleChoicesField";
 import FilesField from "lib/opsvForm/models/fields/filesField";
 import TextAreaField from "./fields/textareaField";
+import SubformField from "./fields/subformField";
 
 export type FormType = {
   id: string;
+  subforms: FormType[];
   sections: SectionType[];
 };
 
@@ -54,7 +56,8 @@ export type FieldType =
   | MultipleChoicesFieldType
   | ImagesFieldType
   | FilesFieldType
-  | TextAreaFieldType;
+  | TextAreaFieldType
+  | SubformFieldType;
 
 export type BaseFieldType = {
   id: string;
@@ -137,9 +140,26 @@ export type TextAreaFieldType = {
   maxLengthMessage?: string;
 } & BaseFieldType;
 
+export type SubformFieldType = {
+  type: "subform";
+  formRef?: string;
+  titleTemplate?: string;
+  descriptionTemplate?: string;
+} & BaseFieldType;
+
 export function parseForm(json: FormType): Form {
   const form = new Form(json["id"]);
+  form.subforms = Object.entries(json["subforms"]).map(subform =>
+    parseSubform(subform)
+  );
   form.sections = json["sections"].map(section => parseSection(section));
+  form.registerValues();
+  return form;
+}
+
+export function parseSubform(json: [string, FormType]): Form {
+  const form = new Form(json[0]);
+  form.sections = json[1]["sections"].map(section => parseSection(section));
   form.registerValues();
   return form;
 }
@@ -243,6 +263,13 @@ export function parseField(json: FieldType): Field {
         minLengthMessage: json["minLengthMessage"],
         maxLength: json["maxLength"],
         maxLengthMessage: json["maxLengthMessage"],
+      });
+    case "subform":
+      return new SubformField(json["id"], json["name"], {
+        ...commonParams,
+        formRef: json["formRef"],
+        titleTemplate: json["titleTemplate"],
+        descriptionTemplate: json["descriptionTemplate"],
       });
     default:
       return new TextField("unknown", "unknown", {});
