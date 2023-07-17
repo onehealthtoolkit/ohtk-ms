@@ -149,19 +149,22 @@ export type SubformFieldType = {
 
 export function parseForm(json: FormType): Form {
   const form = new Form(json["id"]);
-  form.subforms = Object.entries(json["subforms"]).map(subform =>
-    parseSubform(subform)
-  );
+  form.subforms = json["subforms"].map(subform => parseSubform(subform));
   form.sections = json["sections"].map(section => parseSection(section));
   form.registerValues();
   return form;
 }
 
-export function parseSubform(json: [string, FormType]): Form {
-  const form = new Form(json[0]);
-  form.sections = json[1]["sections"].map(section => parseSection(section));
-  form.registerValues();
-  return form;
+export function parseSubform(json: any): Form {
+  return Object.entries(json).map(entry => {
+    const [id, formType] = entry;
+    const form = new Form(id);
+    form.sections = (formType as FormType)["sections"].map(section =>
+      parseSection(section)
+    );
+    form.registerValues();
+    return form;
+  })[0];
 }
 
 export function parseSection(json: SectionType): Section {
