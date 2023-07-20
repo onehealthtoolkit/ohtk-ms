@@ -5,6 +5,7 @@ import {
   FieldViewModel,
 } from "components/admin/formBuilder/field";
 import { AdvanceCondition } from "components/admin/formBuilder/shared";
+import DataTemplateField from "components/admin/reportType/dataTemplateField";
 import { observer } from "mobx-react";
 import { FC, Fragment } from "react";
 
@@ -15,6 +16,19 @@ type Props = {
 
 const Field: FC<Props> = ({ value: field, onDelete }) => {
   const fieldExtension = field.getExtension<"subform">();
+  const subforms = field.question.section.form.parent
+    ? field.question.section.form.parent.subforms.filter(
+        item => item.id != field.question.section.form.id
+      )
+    : field.question.section.form.subforms;
+
+  const getSubForm = () => {
+    if (fieldExtension.formRef) {
+      const subform = subforms.find(item => item.id == fieldExtension.formRef);
+      return subform;
+    }
+    return null;
+  };
   return (
     <div className="pt-4 pr-4 pb-4 w-full">
       <Menu as="div" className="relative inline-block text-left mb-2">
@@ -42,7 +56,7 @@ const Field: FC<Props> = ({ value: field, onDelete }) => {
         >
           <Menu.Items className="absolute right-0 mt-0 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="px-1 py-1 ">
-              {field.question.section.form.subforms.map(subform => (
+              {subforms.map(subform => (
                 <Menu.Item key={subform.id}>
                   {({ active }) => (
                     <button
@@ -60,13 +74,6 @@ const Field: FC<Props> = ({ value: field, onDelete }) => {
           </Menu.Items>
         </Transition>
       </Menu>
-
-      {/* <input
-        className="border border-gray-200 py-2 px-4 w-full rounded-sm"
-        type={"text"}
-        value={fieldExtension.formRef}
-        onChange={e => fieldExtension.setFormRef(e.target.value)}
-      /> */}
       <h4 className="text-sm text-gray-600">Title Template</h4>
       <input
         className="border border-gray-200 py-2 px-4 w-full rounded-sm"
@@ -75,11 +82,12 @@ const Field: FC<Props> = ({ value: field, onDelete }) => {
         onChange={e => fieldExtension.setTitleTemplate(e.target.value)}
       />
       <h4 className="text-sm text-gray-600">DescriptionTemplate</h4>
-      <input
-        className="border border-gray-200 py-2 px-4 w-full rounded-sm"
-        type={"text"}
-        value={fieldExtension.descriptionTemplate}
-        onChange={e => fieldExtension.setDescriptionTemplate(e.target.value)}
+      <DataTemplateField
+        className="h-[80px]"
+        placeholder="Description Template"
+        value={fieldExtension.descriptionTemplate || ""}
+        onChange={value => fieldExtension.setDescriptionTemplate(value)}
+        variableList={getSubForm()?.variableList || []}
       />
       <FieldActionBar value={field} onDelete={onDelete}>
         {field => <AdvanceCondition viewModel={field} />}

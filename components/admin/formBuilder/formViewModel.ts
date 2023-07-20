@@ -22,7 +22,8 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   constructor(
     public builtinVariables: FormVariableItem[] = [],
     id?: string,
-    label?: string
+    label?: string,
+    readonly parent?: FormViewModel
   ) {
     super(id || "", label || "");
     makeObservable(this, {
@@ -54,7 +55,7 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
 
   addSubform() {
     const id = "subform_" + (this.subforms.length + 1);
-    const subform = new FormViewModel([], id);
+    const subform = new FormViewModel([], id, "", this);
     this.subforms.push(subform);
     this.selectForm(id);
   }
@@ -126,7 +127,7 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
         definition.subforms.forEach(formDefinition => {
           Object.entries(formDefinition).forEach(entry => {
             const [id, formDefinition] = entry;
-            const formViewModel = new FormViewModel([], id);
+            const formViewModel = new FormViewModel([], id, "", this);
             formViewModel.parse(formDefinition as Definition);
             subforms.push(formViewModel);
           });

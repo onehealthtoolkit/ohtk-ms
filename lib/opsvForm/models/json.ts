@@ -149,7 +149,9 @@ export type SubformFieldType = {
 
 export function parseForm(json: FormType): Form {
   const form = new Form(json["id"]);
-  form.subforms = json["subforms"].map(subform => parseSubform(subform));
+  form.subforms = json["subforms"]
+    ? json["subforms"].map(subform => parseSubform(subform))
+    : [];
   form.sections = json["sections"].map(section => parseSection(section));
   form.registerValues();
   return form;

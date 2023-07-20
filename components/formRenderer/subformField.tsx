@@ -17,12 +17,33 @@ const Component: FC<FormSubformFieldProps> = ({ field, definition }) => {
     new SubformFieldViewModel(field).registerDialog("subformFieldDialog")
   );
 
+  const TR = (props: { label: string; value: string }) => {
+    const { label, value } = props;
+    return (
+      <tr className="flex bg-white border even:bg-slate-50 dark:bg-gray-800 dark:border-gray-700">
+        <th
+          scope="row"
+          className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white"
+        >
+          {label}
+        </th>
+        <td className="px-6 py-4">{value}</td>
+      </tr>
+    );
+  };
+
   return (
     <>
       <FormFieldValidation field={field}>
         <h4 className="text-sm text-gray-600">{field.label}</h4>
         <div className="flex items-center flex-wrap mb-4 gap-2">
-          <div className="flex-grow"></div>
+          <div className="flex-1">
+            <table className="table-fixed border w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <tbody>
+                <TR label={viewModel.title} value={viewModel.description} />
+              </tbody>
+            </table>
+          </div>
           <button
             type="button"
             className="flex flex-row items-center justify-center
@@ -40,7 +61,12 @@ const Component: FC<FormSubformFieldProps> = ({ field, definition }) => {
         </div>
       </FormFieldValidation>
 
-      <FormSimulationDialog viewModel={viewModel.dialog("subformFieldDialog")}>
+      <FormSimulationDialog
+        viewModel={viewModel.dialog("subformFieldDialog")}
+        onClose={() => {
+          viewModel.supplantValues();
+        }}
+      >
         <FormSimulation viewModel={viewModel.formSimulationViewModel} />
       </FormSimulationDialog>
     </>
