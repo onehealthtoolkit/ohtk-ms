@@ -83,6 +83,16 @@ export class ReportViewModel extends BaseViewModel {
     this.isLoading = true;
     const data = (await this.reportService.getReport(this.id)).data;
     if (data) {
+      // data.data.subform_var_sub1 = ;
+      data.data = {
+        ...data.data,
+        subform_var_sub1: {
+          f1: "FFFFFFFFFFFFFFFFF",
+          f2: "GGGGGGGGGGGGGGGGG",
+        },
+      };
+      console.log("report definition", data.reportTypeDefinition);
+      console.log("report data", data.data);
       runInAction(() => {
         this.data = data;
       });

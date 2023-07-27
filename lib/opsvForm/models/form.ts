@@ -55,7 +55,14 @@ export default class Form {
   }
 
   public loadJsonValue(json: Record<string, any>) {
-    this.subforms.forEach(subform => subform.loadJsonValue(json));
+    // this.subforms.forEach(subform => {
+    //   console.log(
+    //     "subform loadJsonValue",
+    //     subform,
+    //     json["subform_var_sub1"]["f1"]
+    //   );
+    //   subform.loadJsonValue(json["subform_var_sub1"]);
+    // });
     this.sections.forEach(section => section.loadJsonValue(json));
   }
 

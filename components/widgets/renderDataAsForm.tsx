@@ -7,8 +7,10 @@ import MultipleChoicesField from "lib/opsvForm/models/fields/multipleChoicesFiel
 import SingleChoicesField, {
   ChoiceOption,
 } from "lib/opsvForm/models/fields/singleChoicesField";
+import SubformField from "lib/opsvForm/models/fields/subformField";
 import Form from "lib/opsvForm/models/form";
 import { Fragment } from "react";
+import RenderSubformField from "./renderSubformField";
 
 const re = new RegExp(/\((.*)\.(.*)\)/);
 
@@ -129,9 +131,28 @@ const RowDefinedQuestionFieldValue = ({
  */
 export const renderDefinitionDataAsForm = (
   form: Form,
+  data: Record<string, any>,
   imageUrlMap?: Record<string, string>,
   fileUrlMap?: Record<string, string>
 ) => {
+  const renderSubformField = (field: SubformField) => {
+    console.log("renderSubformField", field, data);
+    const form = field.form?.id
+      ? field.form
+      : field.form?.subforms.find(item => item.id == field.formRef);
+    const subformData = data["subform_var_" + field.id || field.name];
+    if (subformData) form?.loadJsonValue(subformData);
+    return form ? (
+      <RenderSubformField
+        form={form}
+        data={subformData}
+        field={field}
+        imageUrlMap={imageUrlMap}
+        fileUrlMap={fileUrlMap}
+      />
+    ) : null;
+  };
+
   return form.sections.length > 0 ? (
     <div className="max-h-[32rem] inline-block overflow-scroll">
       {form.sections.map((section, idx) => {
@@ -185,8 +206,8 @@ export const renderDefinitionDataAsForm = (
                               <div className="relative overflow-x-auto">
                                 <table className="border-collapse border border-slate-100 w-full text-sm text-left text-gray-500">
                                   <tbody>
-                                    {question.fields.map((field, fidx) => {
-                                      return field.display ? (
+                                    {question.fields.map((field, fidx) =>
+                                      field.display ? (
                                         <tr
                                           key={`s-${idx}-q-${qidx}-f${fidx}`}
                                           className="bg-white border-b"
@@ -198,15 +219,19 @@ export const renderDefinitionDataAsForm = (
                                             {field.label || field.name}
                                           </th>
                                           <td className="px-2">
-                                            <RowDefinedQuestionFieldValue
-                                              field={field}
-                                              imageUrlMap={imageUrlMap}
-                                              fileUrlMap={fileUrlMap}
-                                            />
+                                            {field instanceof SubformField ? (
+                                              renderSubformField(field)
+                                            ) : (
+                                              <RowDefinedQuestionFieldValue
+                                                field={field}
+                                                imageUrlMap={imageUrlMap}
+                                                fileUrlMap={fileUrlMap}
+                                              />
+                                            )}
                                           </td>
                                         </tr>
-                                      ) : null;
-                                    })}
+                                      ) : null
+                                    )}
                                   </tbody>
                                 </table>
                               </div>

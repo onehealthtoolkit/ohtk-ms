@@ -34,11 +34,8 @@ export class FormSimulationViewModel {
   private _init() {
     try {
       var json = JSON.parse(this.definition);
-      if (this.formRef && Array.isArray(json.subforms)) {
-        const subform = (json.subforms as any[]).find(item =>
-          item.hasOwnProperty(this.formRef)
-        );
-        json = subform ? subform[this.formRef] : {};
+      if (this.formRef && json.hasOwnProperty("subforms")) {
+        json = json.subforms ? json.subforms[this.formRef] : {};
       }
       json.id = uuidv4();
       // json can be empty {}, to be able to run parseForm, then add sections

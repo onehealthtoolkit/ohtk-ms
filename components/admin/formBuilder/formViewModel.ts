@@ -121,16 +121,13 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
     this._isSimulationMode = false;
 
     try {
-      if (Array.isArray(definition.subforms)) {
+      if (definition.hasOwnProperty("subforms")) {
         const subforms = Array<FormViewModel>();
-
-        definition.subforms.forEach(formDefinition => {
-          Object.entries(formDefinition).forEach(entry => {
-            const [id, formDefinition] = entry;
-            const formViewModel = new FormViewModel([], id, "", this);
-            formViewModel.parse(formDefinition as Definition);
-            subforms.push(formViewModel);
-          });
+        Object.entries(definition.subforms as Definition).forEach(entry => {
+          const [id, formDefinition] = entry;
+          const formViewModel = new FormViewModel([], id, "", this);
+          formViewModel.parse(formDefinition as Definition);
+          subforms.push(formViewModel);
         });
         this.subforms.splice(0, this.subforms.length, ...subforms);
       } else {
@@ -163,11 +160,9 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
 
   toJson() {
     const json: Definition = {};
-    const subforms = Array<Definition>();
+    const subforms: Record<string, Definition> = {};
     this.subforms.forEach(subform => {
-      const value: Record<string, Definition> = {};
-      value[subform.id] = subform.toJson();
-      subforms.push(value);
+      subforms[subform.id] = subform.toJson();
     });
     json.subforms = subforms;
 
