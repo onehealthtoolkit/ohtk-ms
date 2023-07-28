@@ -136,20 +136,28 @@ export const renderDefinitionDataAsForm = (
   fileUrlMap?: Record<string, string>
 ) => {
   const renderSubformField = (field: SubformField) => {
-    console.log("renderSubformField", field, data);
     const form = field.form?.id
       ? field.form
       : field.form?.subforms.find(item => item.id == field.formRef);
-    const subformData = data["subform_var_" + field.id || field.name];
-    if (subformData) form?.loadJsonValue(subformData);
+    const subformData = data[field.id || field.name];
+    if (!subformData) {
+      return null;
+    }
     return form ? (
-      <RenderSubformField
-        form={form}
-        data={subformData}
-        field={field}
-        imageUrlMap={imageUrlMap}
-        fileUrlMap={fileUrlMap}
-      />
+      <>
+        {Object.entries(subformData).map(entry => {
+          const [, data] = entry;
+          return typeof data == "object" ? (
+            <RenderSubformField
+              form={form}
+              data={data as any}
+              field={field}
+              imageUrlMap={imageUrlMap}
+              fileUrlMap={fileUrlMap}
+            />
+          ) : null;
+        })}
+      </>
     ) : null;
   };
 
@@ -194,12 +202,16 @@ export const renderDefinitionDataAsForm = (
                             {question.fields.length == 1 &&
                               question.fields.map((field, fidx) => {
                                 return field.display ? (
-                                  <RowDefinedQuestionFieldValue
-                                    field={field}
-                                    imageUrlMap={imageUrlMap}
-                                    fileUrlMap={fileUrlMap}
-                                    key={`s-${idx}-q-${qidx}-f${fidx}`}
-                                  />
+                                  field instanceof SubformField ? (
+                                    renderSubformField(field)
+                                  ) : (
+                                    <RowDefinedQuestionFieldValue
+                                      field={field}
+                                      imageUrlMap={imageUrlMap}
+                                      fileUrlMap={fileUrlMap}
+                                      key={`s-${idx}-q-${qidx}-f${fidx}`}
+                                    />
+                                  )
                                 ) : null;
                               })}
                             {question.fields.length > 1 && (

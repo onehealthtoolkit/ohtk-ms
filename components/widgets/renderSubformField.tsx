@@ -41,7 +41,6 @@ type RenderSubformFieldProps = {
 const RenderSubformField: React.FC<RenderSubformFieldProps> = ({
   form,
   data,
-  field,
   imageUrlMap,
   fileUrlMap,
 }) => {
@@ -51,16 +50,17 @@ const RenderSubformField: React.FC<RenderSubformFieldProps> = ({
 
   return (
     <>
-      <div className="flex gap-2 ">
+      <div className="flex gap-2 m-2">
         <div className="flex-1 flex flex-col gap-2">
-          <div className="flex-1">{field.titleTemplate}</div>
-          <div className="flex-1">{field.descriptionTemplate}</div>
+          <div className="flex-1">{data.subformTitle}</div>
+          <div className="flex-1">{data.subformDescription}</div>
         </div>
         <div>
           <button
             className=" px-4 py-2 border text-blue-500 border-blue-700 hover:border-blue-500 rounded"
             onClick={e => {
               e.preventDefault();
+              form?.loadJsonValue(data);
               viewModel.dialog("formDataDialog")?.open(null);
             }}
           >
