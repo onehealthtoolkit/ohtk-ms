@@ -7,6 +7,7 @@ import {
 import { FormSimulationViewModel } from "components/admin/formBuilder/simulator/formSimulationViewModel";
 import { action, computed, makeObservable, observable } from "mobx";
 import { v4 as uuidv4 } from "uuid";
+import { SubformFieldViewModel } from "./field";
 
 export type FormVariableItem = { label: string; value: string; type: string };
 
@@ -16,6 +17,8 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   sections = Array<SectionViewModel>();
   currentSection: SectionViewModel | undefined = undefined;
   _isSimulationMode = false;
+  _isIdEditing = false;
+  _idEdit: string = "";
   formSimulation?: FormSimulationViewModel = undefined;
   isCurrent = false;
 
@@ -31,6 +34,7 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
       _currentForm: observable,
       currentForm: computed,
       addSubform: action,
+      removeSubform: action,
       sections: observable,
       currentSection: observable,
       addSection: action,
@@ -39,14 +43,27 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
       jsonString: computed,
       _isSimulationMode: observable,
       isSimulationMode: computed,
+      _isIdEditing: observable,
+      isIdEditing: computed,
+      _idEdit: observable,
+      idEdit: computed,
       formSimulation: observable,
       variableList: computed,
       conditionVariableList: computed,
       isCurrent: observable,
       setCurrent: action,
       unsetCurrent: action,
+      setChangeId: action,
     });
     this.setCurrent();
+  }
+
+  get idEdit(): string {
+    return this._idEdit;
+  }
+
+  set idEdit(value: string) {
+    this._idEdit = value;
   }
 
   get movableItems() {
@@ -58,6 +75,44 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
     const subform = new FormViewModel([], id, "", this);
     this.subforms.push(subform);
     this.selectForm(id);
+  }
+
+  removeSubform(subform: FormViewModel) {
+    this.sections.forEach(section => {
+      section.questions.forEach(question => {
+        question.fields.forEach(field => {
+          if (
+            field.fieldType == "subform" &&
+            (
+              field.getExtension<SubformFieldViewModel>() as SubformFieldViewModel
+            ).formRef == subform.id
+          ) {
+            question.deleteField(field.id);
+          }
+        });
+      });
+    });
+    const index = this.subforms.indexOf(subform);
+    if (index !== -1) {
+      this.subforms.splice(index, 1);
+      this.subforms.forEach(subform => {
+        subform.sections.forEach(section => {
+          section.questions.forEach(question => {
+            question.fields.forEach(field => {
+              if (
+                field.fieldType == "subform" &&
+                (
+                  field.getExtension<SubformFieldViewModel>() as SubformFieldViewModel
+                ).formRef == subform.id
+              ) {
+                question.deleteField(field.id);
+              }
+            });
+          });
+        });
+      });
+    }
+    this.selectForm(subform.parent?.id!);
   }
 
   selectForm(id: string) {
@@ -187,6 +242,49 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
     if (isSimulationMode) {
       this.formSimulation = new FormSimulationViewModel(this.jsonString);
     }
+  }
+
+  get isIdEditing() {
+    return this._isIdEditing;
+  }
+
+  set isIdEditing(isIdEditing: boolean) {
+    this._isIdEditing = isIdEditing;
+  }
+
+  setChangeId() {
+    if (!this.idEdit) return;
+    const parent = this.parent;
+    if (parent) {
+      parent.sections.forEach(section => {
+        section.questions.forEach(question => {
+          question.fields.forEach(field => {
+            if (field.fieldType == "subform") {
+              const fieldExt =
+                field.getExtension<SubformFieldViewModel>() as SubformFieldViewModel;
+              if (fieldExt.formRef == this.id) fieldExt.formRef = this.idEdit;
+            }
+          });
+        });
+      });
+
+      parent.subforms.forEach(subform => {
+        subform.sections.forEach(section => {
+          section.questions.forEach(question => {
+            question.fields.forEach(field => {
+              if (field.fieldType == "subform") {
+                const fieldExt =
+                  field.getExtension<SubformFieldViewModel>() as SubformFieldViewModel;
+                if (fieldExt.formRef == this.id) fieldExt.formRef = this.idEdit;
+              }
+            });
+          });
+        });
+      });
+    }
+    this.id = this.idEdit;
+    this.isIdEditing = false;
+    this.idEdit = "";
   }
 
   // Simplified form variables used in Description template / followup template
