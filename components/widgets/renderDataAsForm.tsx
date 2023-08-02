@@ -11,6 +11,7 @@ import SubformField from "lib/opsvForm/models/fields/subformField";
 import Form from "lib/opsvForm/models/form";
 import { Fragment } from "react";
 import RenderSubformField from "./renderSubformField";
+import { Definition } from "components/admin/formBuilder/shared";
 
 const re = new RegExp(/\((.*)\.(.*)\)/);
 
@@ -123,6 +124,43 @@ const RowDefinedQuestionFieldValue = ({
   );
 };
 
+const RenderSubformFields = ({
+  field,
+  data,
+  imageUrlMap,
+  fileUrlMap,
+}: {
+  field: SubformField;
+  data: Definition;
+  imageUrlMap?: Record<string, string>;
+  fileUrlMap?: Record<string, string>;
+}) => {
+  const form = field.form?.id
+    ? field.form
+    : field.form?.subforms.find(item => item.id == field.formRef);
+  const subformData = data[field.id || field.name];
+  if (!subformData) {
+    return null;
+  }
+  return form ? (
+    <>
+      {Object.entries(subformData).map(entry => {
+        const [id, data] = entry;
+        return typeof data == "object" ? (
+          <RenderSubformField
+            key={id}
+            form={form}
+            data={data as any}
+            field={field}
+            imageUrlMap={imageUrlMap}
+            fileUrlMap={fileUrlMap}
+          />
+        ) : null;
+      })}
+    </>
+  ) : null;
+};
+
 /**
  * New render form data using format in a form definition
  * Sort data in a sequence of sections, questions, and fields
@@ -135,32 +173,6 @@ export const renderDefinitionDataAsForm = (
   imageUrlMap?: Record<string, string>,
   fileUrlMap?: Record<string, string>
 ) => {
-  const renderSubformField = (field: SubformField) => {
-    const form = field.form?.id
-      ? field.form
-      : field.form?.subforms.find(item => item.id == field.formRef);
-    const subformData = data[field.id || field.name];
-    if (!subformData) {
-      return null;
-    }
-    return form ? (
-      <>
-        {Object.entries(subformData).map(entry => {
-          const [, data] = entry;
-          return typeof data == "object" ? (
-            <RenderSubformField
-              form={form}
-              data={data as any}
-              field={field}
-              imageUrlMap={imageUrlMap}
-              fileUrlMap={fileUrlMap}
-            />
-          ) : null;
-        })}
-      </>
-    ) : null;
-  };
-
   return form.sections.length > 0 ? (
     <div className="max-h-[32rem] inline-block overflow-scroll">
       {form.sections.map((section, idx) => {
@@ -203,7 +215,13 @@ export const renderDefinitionDataAsForm = (
                               question.fields.map((field, fidx) => {
                                 return field.display ? (
                                   field instanceof SubformField ? (
-                                    renderSubformField(field)
+                                    <RenderSubformFields
+                                      field={field}
+                                      data={data}
+                                      imageUrlMap={imageUrlMap}
+                                      fileUrlMap={fileUrlMap}
+                                      key={`s-${idx}-q-${qidx}-f${fidx}`}
+                                    ></RenderSubformFields>
                                   ) : (
                                     <RowDefinedQuestionFieldValue
                                       field={field}
@@ -232,7 +250,13 @@ export const renderDefinitionDataAsForm = (
                                           </th>
                                           <td className="px-2">
                                             {field instanceof SubformField ? (
-                                              renderSubformField(field)
+                                              <RenderSubformFields
+                                                field={field}
+                                                data={data}
+                                                imageUrlMap={imageUrlMap}
+                                                fileUrlMap={fileUrlMap}
+                                                key={`s-${idx}-q-${qidx}-f${fidx}`}
+                                              ></RenderSubformFields>
                                             ) : (
                                               <RowDefinedQuestionFieldValue
                                                 field={field}
