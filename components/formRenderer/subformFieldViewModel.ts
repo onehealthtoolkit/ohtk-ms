@@ -5,6 +5,7 @@ import { action, computed, makeObservable, observable } from "mobx";
 
 export class SubformFieldViewModel extends BaseFormViewModel {
   formSimulationViewModel?: FormSimulationViewModel = undefined;
+  _values: Array<Record<string, any>> = [];
   _title: string = "";
   _description: string = "";
 
@@ -12,6 +13,8 @@ export class SubformFieldViewModel extends BaseFormViewModel {
     super();
     makeObservable(this, {
       formSimulationViewModel: observable,
+      _values: observable,
+      values: computed,
       _title: observable,
       title: computed,
       _description: observable,
@@ -19,8 +22,6 @@ export class SubformFieldViewModel extends BaseFormViewModel {
       supplantValues: action,
       openFormSimulationDialog: action,
     });
-
-    this.supplantValues();
   }
 
   openFormSimulationDialog(definition: string) {
@@ -38,6 +39,10 @@ export class SubformFieldViewModel extends BaseFormViewModel {
     return this._title;
   }
 
+  get values() {
+    return this._values;
+  }
+
   set description(value: string) {
     this._description = value;
   }
@@ -46,12 +51,14 @@ export class SubformFieldViewModel extends BaseFormViewModel {
   }
 
   supplantValues() {
-    this.title = this.field.titleTemplate
+    const record: Record<string, any> = {};
+    record.title = this.field.titleTemplate
       ? this.supplant(this.field.titleTemplate)
       : "";
-    this.description = this.field.descriptionTemplate
+    record.description = this.field.descriptionTemplate
       ? this.supplant(this.field.descriptionTemplate)
       : "";
+    this._values.push(record);
   }
 
   supplant(strFormat: string) {

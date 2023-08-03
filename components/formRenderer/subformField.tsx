@@ -1,4 +1,4 @@
-import { TableIcon } from "@heroicons/react/solid";
+import { PlusCircleIcon } from "@heroicons/react/solid";
 import { FormFieldValidation } from "components/formRenderer/fieldValidation";
 import SubformField from "lib/opsvForm/models/fields/subformField";
 import { observer } from "mobx-react";
@@ -40,14 +40,20 @@ const Component: FC<FormSubformFieldProps> = ({ field, definition }) => {
           <div className="flex-1">
             <table className="table-fixed border w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <tbody>
-                <TR label={viewModel.title} value={viewModel.description} />
+                {viewModel.values.map((item, index) => (
+                  <TR
+                    key={`subfield-v-${index}`}
+                    label={item.title}
+                    value={item.description}
+                  />
+                ))}
               </tbody>
             </table>
           </div>
           <button
             type="button"
-            className="flex flex-row items-center justify-center
-            gap-2 rounded text-sm font-medium py-1 px-4 
+            className="self-start flex flex-row items-center justify-center
+            gap-2 rounded text-sm font-medium py-2 px-4 
            bg-gray-200 hover:bg-gray-300
            focus:z-10 focus:ring-2 focus:ring-gray-400 
           "
@@ -56,7 +62,7 @@ const Component: FC<FormSubformFieldProps> = ({ field, definition }) => {
               viewModel.openFormSimulationDialog(definition);
             }}
           >
-            <TableIcon className="w-5 h-5" />
+            <PlusCircleIcon className="w-5 h-5" /> Add
           </button>
         </div>
       </FormFieldValidation>
@@ -67,7 +73,13 @@ const Component: FC<FormSubformFieldProps> = ({ field, definition }) => {
           viewModel.supplantValues();
         }}
       >
-        <FormSimulation viewModel={viewModel.formSimulationViewModel} />
+        <FormSimulation
+          viewModel={viewModel.formSimulationViewModel}
+          onSubmit={() => {
+            viewModel.supplantValues();
+            viewModel.dialog("subformFieldDialog")?.close();
+          }}
+        />
       </FormSimulationDialog>
     </>
   );

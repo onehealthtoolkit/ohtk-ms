@@ -54,6 +54,7 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
       setCurrent: action,
       unsetCurrent: action,
       setChangeId: action,
+      cancelChangeId: action,
     });
     this.setCurrent();
   }
@@ -283,6 +284,11 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
       });
     }
     this.id = this.idEdit;
+    this.isIdEditing = false;
+    this.idEdit = "";
+  }
+
+  cancelChangeId() {
     this.isIdEditing = false;
     this.idEdit = "";
   }

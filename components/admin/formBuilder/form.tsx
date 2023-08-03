@@ -89,8 +89,11 @@ const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
                             autoFocus={true}
                             defaultValue={subform.id}
                             onKeyDown={e => {
+                              e.stopPropagation();
                               if (e.key === "Enter") {
                                 subform.setChangeId();
+                              } else if (e.key === "Escape") {
+                                subform.cancelChangeId();
                               }
                             }}
                           />
@@ -122,7 +125,8 @@ const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
               className="w-full p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300"
               role="alert"
             >
-              Change a few things up and try enter key for exit.
+              Change a few things up and try enter key for change name, esc for
+              cancel.
             </div>
           ) : null}
           <SectionList
