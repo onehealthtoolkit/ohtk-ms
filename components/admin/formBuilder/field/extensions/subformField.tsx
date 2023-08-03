@@ -87,6 +87,7 @@ const Field: FC<Props> = ({ value: field, onDelete }) => {
         placeholder="Description Template"
         value={fieldExtension.descriptionTemplate || ""}
         onChange={value => fieldExtension.setDescriptionTemplate(value)}
+        mentionType={"label"}
         variableList={getSubForm()?.variableList || []}
       />
       <FieldActionBar value={field} onDelete={onDelete}>

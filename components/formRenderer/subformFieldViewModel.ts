@@ -63,12 +63,20 @@ export class SubformFieldViewModel extends BaseFormViewModel {
 
   supplant(strFormat: string) {
     const values = this.formSimulationViewModel?.form?.toJsonValue();
-    if (values)
-      return strFormat.replace(/{{([^{}]*)}}/g, (a: any, b: string) => {
+    if (values) {
+      var value = strFormat.replace(/{{([^{}]*)}}/g, (a: any, b: string) => {
         b = b.trim();
         var r = values[b.substring(b.indexOf(".") + 1)];
         return typeof r === "string" || typeof r === "number" ? r : a;
       });
+
+      value = value.replace(/{([^{}]*)}/g, (a: any, b: string) => {
+        b = b.trim();
+        var r = values[b.substring(b.indexOf(".") + 1)];
+        return typeof r === "string" || typeof r === "number" ? r : a;
+      });
+      return value;
+    }
     return strFormat;
   }
 }

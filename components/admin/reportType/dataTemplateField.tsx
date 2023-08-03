@@ -85,6 +85,7 @@ type DataTemplateFieldProps = {
   variableList: Array<FormVariableItem>;
   placeholder: string;
   className?: string;
+  mentionType?: "label" | "value";
 };
 
 const DataTemplateField = ({
@@ -93,6 +94,7 @@ const DataTemplateField = ({
   variableList,
   placeholder,
   className,
+  mentionType,
 }: DataTemplateFieldProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [target, setTarget] = useState<Range | undefined | null>();
@@ -135,7 +137,9 @@ const DataTemplateField = ({
           case "Enter":
             event.preventDefault();
             Transforms.select(editor, target);
-            insertMention(editor, "{{ " + chars[index].value + " }}");
+            if (mentionType == "label")
+              insertMention(editor, "{" + chars[index].label + "}");
+            else insertMention(editor, "{{ " + chars[index].value + " }}");
             setTarget(null);
             break;
           case "Escape":
