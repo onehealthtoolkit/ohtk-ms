@@ -74,7 +74,11 @@ const FormInput = ({
         <>
           {form.currentSection?.questions?.length ? (
             form.currentSection?.questions.map((question, index) => (
-              <FormQuestion key={index + question.label} question={question} />
+              <FormQuestion
+                key={index + question.label}
+                question={question}
+                definition={form.definition}
+              />
             ))
           ) : (
             <div className="text-center text-lg text-gray-500 p-4">

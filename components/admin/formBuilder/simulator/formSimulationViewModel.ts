@@ -16,7 +16,7 @@ export class FormSimulationViewModel {
   isSubmitting = false;
   isSubmitted = false;
 
-  constructor(readonly definition: string) {
+  constructor(readonly definition: string, readonly formRef?: string) {
     makeObservable(this, {
       form: observable,
       errorRendering: observable,
@@ -33,9 +33,15 @@ export class FormSimulationViewModel {
 
   private _init() {
     try {
-      const json = JSON.parse(this.definition);
+      var json = JSON.parse(this.definition);
+      if (this.formRef && json.hasOwnProperty("subforms")) {
+        json = json.subforms ? json.subforms[this.formRef] : {};
+      }
       json.id = uuidv4();
       // json can be empty {}, to be able to run parseForm, then add sections
+      if (!json.subforms) {
+        json.subforms = [];
+      }
       if (!json.sections) {
         json.sections = [];
       }

@@ -27,6 +27,7 @@ import TagInputField from "components/widgets/forms/tagInputField";
 import { observer } from "mobx-react";
 import { FC, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { SubformField } from "./extensions/subformField";
 
 type Props = {
   value: FieldViewModel;
@@ -65,6 +66,8 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
         );
       case "textarea":
         return <TextAreaField value={field} onDelete={onDeleteConfirm} />;
+      case "subform":
+        return <SubformField value={field} onDelete={onDeleteConfirm} />;
       default:
         return "Undefined field type component: " + field.fieldType;
     }
@@ -237,6 +240,16 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
           />
         );
 
+      case "subform":
+        return (
+          <input
+            type="text"
+            className="mt-2 border border-gray-200 py-2 px-4 w-full rounded bg-gray-50"
+            placeholder="Subform"
+            value=""
+            readOnly
+          />
+        );
       default:
         return "Undefined " + field.fieldType;
     }

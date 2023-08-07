@@ -28,7 +28,7 @@ const PlaceMap: React.FC<MapViewProps> = ({ lat, lng, onMarkerChange }) => {
         }
       },
     }),
-    []
+    [onMarkerChange]
   );
 
   return (

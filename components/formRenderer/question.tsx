@@ -17,11 +17,13 @@ import MultipleChoicesField from "lib/opsvForm/models/fields/multipleChoicesFiel
 import SingleChoicesField from "lib/opsvForm/models/fields/singleChoicesField";
 import TextField from "lib/opsvForm/models/fields/textField";
 import TextAreaField from "lib/opsvForm/models/fields/textareaField";
+import SubformField from "lib/opsvForm/models/fields/subformField";
 import Question from "lib/opsvForm/models/question";
 import { observer } from "mobx-react";
 import dynamic from "next/dynamic";
 import { FC } from "react";
 import { FormTextAreaField } from "./textareaField";
+import { FormSubformField } from "./subformField";
 
 const FormLocationField = dynamic(
   () => import("components/formRenderer/locationField"),
@@ -33,9 +35,10 @@ const FormLocationField = dynamic(
 
 export type FormQuestionProps = {
   question: Question;
+  definition: string;
 };
 
-const Component: FC<FormQuestionProps> = ({ question }) => {
+const Component: FC<FormQuestionProps> = ({ question, definition }) => {
   const renderField = (field: Field) => {
     if (field instanceof TextField) {
       return <FormTextField field={field} />;
@@ -57,6 +60,8 @@ const Component: FC<FormQuestionProps> = ({ question }) => {
       return <FormFilesField field={field} />;
     } else if (field instanceof TextAreaField) {
       return <FormTextAreaField field={field} />;
+    } else if (field instanceof SubformField) {
+      return <FormSubformField field={field} definition={definition} />;
     }
     return <div>Unknown Field</div>;
   };

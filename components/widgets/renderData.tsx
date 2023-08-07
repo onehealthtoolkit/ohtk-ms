@@ -6,7 +6,7 @@ import ImagesField from "lib/opsvForm/models/fields/imagesField";
 import MultipleChoicesField from "lib/opsvForm/models/fields/multipleChoicesField";
 import Form from "lib/opsvForm/models/form";
 import { parseForm } from "lib/opsvForm/models/json";
-import { Fragment, useState } from "react";
+import { Fragment, useId, useState } from "react";
 import { renderDefinitionDataAsForm } from "./renderDataAsForm";
 
 type ViewTypeSwitchProps = {
@@ -15,16 +15,17 @@ type ViewTypeSwitchProps = {
 };
 
 const ViewTypeSwitch = ({ active, onChange }: ViewTypeSwitchProps) => {
+  const id = useId();
   return (
     <label
-      htmlFor="live-toggle"
+      htmlFor={id}
       className="inline-flex relative items-center cursor-pointer bg-white rounded-md h-10"
     >
       <span className="mx-2 text-sm font-medium text-gray-900">Raw</span>
       <input
         type="checkbox"
         value=""
-        id="live-toggle"
+        id={id}
         className="sr-only peer"
         checked={active}
         onChange={e => {
@@ -57,8 +58,6 @@ export const RenderData = ({
   imageUrlMap,
   fileUrlMap,
 }: RenderDataType) => {
-  const [isDefinitionView, setIsDefinitionView] = useState(true);
-  const renderAsForm = true;
   if (!data) {
     return null;
   }
@@ -69,19 +68,12 @@ export const RenderData = ({
       form.loadJsonValue(data);
 
       return (
-        <>
-          <div className="float-right">
-            <ViewTypeSwitch
-              active={isDefinitionView}
-              onChange={setIsDefinitionView}
-            />
-          </div>
-          {isDefinitionView
-            ? renderAsForm
-              ? renderDefinitionDataAsForm(form, imageUrlMap, fileUrlMap)
-              : renderDefinitionData(form, imageUrlMap, fileUrlMap)
-            : renderRawData(data)}
-        </>
+        <RenderFormData
+          form={form}
+          data={data}
+          imageUrlMap={imageUrlMap}
+          fileUrlMap={fileUrlMap}
+        ></RenderFormData>
       );
     } catch (e) {
       console.log(e);
@@ -89,6 +81,41 @@ export const RenderData = ({
     }
   }
   return renderRawData(data);
+};
+
+export const RenderFormData = ({
+  form,
+  data,
+  imageUrlMap,
+  fileUrlMap,
+}: {
+  form: Form;
+  data: Record<string, any>;
+  imageUrlMap?: Record<string, string>;
+  fileUrlMap?: Record<string, string>;
+}) => {
+  const [isDefinitionView, setIsDefinitionView] = useState(true);
+  const renderAsForm = true;
+  try {
+    return (
+      <>
+        <div className="float-right">
+          <ViewTypeSwitch
+            active={isDefinitionView}
+            onChange={setIsDefinitionView}
+          />
+        </div>
+        {isDefinitionView
+          ? renderAsForm
+            ? renderDefinitionDataAsForm(form, data, imageUrlMap, fileUrlMap)
+            : renderDefinitionData(form, imageUrlMap, fileUrlMap)
+          : renderRawData(data)}
+      </>
+    );
+  } catch (e) {
+    console.log(e);
+    return <p className="text-red-500">Cannot render data by definition</p>;
+  }
 };
 
 /**

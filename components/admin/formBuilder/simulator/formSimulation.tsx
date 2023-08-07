@@ -8,9 +8,10 @@ import tw from "tailwind-styled-components";
 
 type FormSimulationProps = {
   viewModel?: FormSimulationViewModel;
+  onSubmit?: () => void;
 };
 
-const FormSimulation = ({ viewModel: form }: FormSimulationProps) => {
+const FormSimulation = ({ viewModel: form, onSubmit }: FormSimulationProps) => {
   if (!form) {
     return null;
   }
@@ -28,7 +29,7 @@ const FormSimulation = ({ viewModel: form }: FormSimulationProps) => {
           Simulating submission is complete.
         </div>
       )}
-      <Footer viewModel={form} />
+      <Footer viewModel={form} onSubmit={onSubmit} />
     </div>
   ) : (
     <div className="text-red-500 text-lg text-center p-4">
@@ -59,7 +60,11 @@ const FormInput = ({
         >
           {form.currentSection?.questions?.length ? (
             form.currentSection?.questions.map((question, index) => (
-              <FormQuestion key={index + question.label} question={question} />
+              <FormQuestion
+                key={index + question.label}
+                question={question}
+                definition={form.definition}
+              />
             ))
           ) : (
             <div className="text-center text-lg text-gray-500 p-4">
@@ -80,8 +85,10 @@ const NavigateButton = tw.button`
 
 const Footer = ({
   viewModel: form,
+  onSubmit,
 }: {
   viewModel: FormSimulationViewModel;
+  onSubmit?: () => void;
 }) => {
   return (
     <Observer>
@@ -107,6 +114,9 @@ const Footer = ({
               onClick={(e: MouseEvent) => {
                 e.preventDefault();
                 form.next();
+                if (form.isSubmitting && onSubmit) {
+                  onSubmit();
+                }
               }}
             >
               {!form.isSubmitting ? (

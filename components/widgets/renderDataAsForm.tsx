@@ -7,8 +7,11 @@ import MultipleChoicesField from "lib/opsvForm/models/fields/multipleChoicesFiel
 import SingleChoicesField, {
   ChoiceOption,
 } from "lib/opsvForm/models/fields/singleChoicesField";
+import SubformField from "lib/opsvForm/models/fields/subformField";
 import Form from "lib/opsvForm/models/form";
 import { Fragment } from "react";
+import RenderSubformField from "./renderSubformField";
+import { Definition } from "components/admin/formBuilder/shared";
 
 const re = new RegExp(/\((.*)\.(.*)\)/);
 
@@ -121,6 +124,43 @@ const RowDefinedQuestionFieldValue = ({
   );
 };
 
+const RenderSubformFields = ({
+  field,
+  data,
+  imageUrlMap,
+  fileUrlMap,
+}: {
+  field: SubformField;
+  data: Definition;
+  imageUrlMap?: Record<string, string>;
+  fileUrlMap?: Record<string, string>;
+}) => {
+  const form = field.form?.id
+    ? field.form
+    : field.form?.subforms.find(item => item.id == field.formRef);
+  const subformData = data[field.id || field.name];
+  if (!subformData) {
+    return null;
+  }
+  return form ? (
+    <>
+      {Object.entries(subformData).map(entry => {
+        const [id, data] = entry;
+        return typeof data == "object" ? (
+          <RenderSubformField
+            key={id}
+            form={form}
+            data={data as any}
+            field={field}
+            imageUrlMap={imageUrlMap}
+            fileUrlMap={fileUrlMap}
+          />
+        ) : null;
+      })}
+    </>
+  ) : null;
+};
+
 /**
  * New render form data using format in a form definition
  * Sort data in a sequence of sections, questions, and fields
@@ -129,6 +169,7 @@ const RowDefinedQuestionFieldValue = ({
  */
 export const renderDefinitionDataAsForm = (
   form: Form,
+  data: Record<string, any>,
   imageUrlMap?: Record<string, string>,
   fileUrlMap?: Record<string, string>
 ) => {
@@ -173,20 +214,30 @@ export const renderDefinitionDataAsForm = (
                             {question.fields.length == 1 &&
                               question.fields.map((field, fidx) => {
                                 return field.display ? (
-                                  <RowDefinedQuestionFieldValue
-                                    field={field}
-                                    imageUrlMap={imageUrlMap}
-                                    fileUrlMap={fileUrlMap}
-                                    key={`s-${idx}-q-${qidx}-f${fidx}`}
-                                  />
+                                  field instanceof SubformField ? (
+                                    <RenderSubformFields
+                                      field={field}
+                                      data={data}
+                                      imageUrlMap={imageUrlMap}
+                                      fileUrlMap={fileUrlMap}
+                                      key={`s-${idx}-q-${qidx}-f${fidx}`}
+                                    ></RenderSubformFields>
+                                  ) : (
+                                    <RowDefinedQuestionFieldValue
+                                      field={field}
+                                      imageUrlMap={imageUrlMap}
+                                      fileUrlMap={fileUrlMap}
+                                      key={`s-${idx}-q-${qidx}-f${fidx}`}
+                                    />
+                                  )
                                 ) : null;
                               })}
                             {question.fields.length > 1 && (
                               <div className="relative overflow-x-auto">
                                 <table className="border-collapse border border-slate-100 w-full text-sm text-left text-gray-500">
                                   <tbody>
-                                    {question.fields.map((field, fidx) => {
-                                      return field.display ? (
+                                    {question.fields.map((field, fidx) =>
+                                      field.display ? (
                                         <tr
                                           key={`s-${idx}-q-${qidx}-f${fidx}`}
                                           className="bg-white border-b"
@@ -198,15 +249,25 @@ export const renderDefinitionDataAsForm = (
                                             {field.label || field.name}
                                           </th>
                                           <td className="px-2">
-                                            <RowDefinedQuestionFieldValue
-                                              field={field}
-                                              imageUrlMap={imageUrlMap}
-                                              fileUrlMap={fileUrlMap}
-                                            />
+                                            {field instanceof SubformField ? (
+                                              <RenderSubformFields
+                                                field={field}
+                                                data={data}
+                                                imageUrlMap={imageUrlMap}
+                                                fileUrlMap={fileUrlMap}
+                                                key={`s-${idx}-q-${qidx}-f${fidx}`}
+                                              ></RenderSubformFields>
+                                            ) : (
+                                              <RowDefinedQuestionFieldValue
+                                                field={field}
+                                                imageUrlMap={imageUrlMap}
+                                                fileUrlMap={fileUrlMap}
+                                              />
+                                            )}
                                           </td>
                                         </tr>
-                                      ) : null;
-                                    })}
+                                      ) : null
+                                    )}
                                   </tbody>
                                 </table>
                               </div>

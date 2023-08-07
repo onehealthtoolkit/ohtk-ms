@@ -14,9 +14,11 @@ import Section from "./section";
 import { ChoiceOption } from "./fields/singleChoicesField";
 import FilesField from "lib/opsvForm/models/fields/filesField";
 import TextAreaField from "./fields/textareaField";
+import SubformField from "./fields/subformField";
 
 export type FormType = {
   id: string;
+  subforms: FormType[];
   sections: SectionType[];
 };
 
@@ -54,7 +56,8 @@ export type FieldType =
   | MultipleChoicesFieldType
   | ImagesFieldType
   | FilesFieldType
-  | TextAreaFieldType;
+  | TextAreaFieldType
+  | SubformFieldType;
 
 export type BaseFieldType = {
   id: string;
@@ -137,11 +140,31 @@ export type TextAreaFieldType = {
   maxLengthMessage?: string;
 } & BaseFieldType;
 
+export type SubformFieldType = {
+  type: "subform";
+  formRef?: string;
+  titleTemplate?: string;
+  descriptionTemplate?: string;
+} & BaseFieldType;
+
 export function parseForm(json: FormType): Form {
   const form = new Form(json["id"]);
+  form.subforms = json["subforms"] ? parseSubform(json["subforms"]) : [];
   form.sections = json["sections"].map(section => parseSection(section));
   form.registerValues();
   return form;
+}
+
+export function parseSubform(json: any): Form[] {
+  return Object.entries(json).map(entry => {
+    const [id, formType] = entry;
+    const form = new Form(id);
+    form.sections = (formType as FormType)["sections"].map(section =>
+      parseSection(section)
+    );
+    form.registerValues();
+    return form;
+  });
 }
 
 export function parseSection(json: SectionType): Section {
@@ -243,6 +266,13 @@ export function parseField(json: FieldType): Field {
         minLengthMessage: json["minLengthMessage"],
         maxLength: json["maxLength"],
         maxLengthMessage: json["maxLengthMessage"],
+      });
+    case "subform":
+      return new SubformField(json["id"], json["name"], {
+        ...commonParams,
+        formRef: json["formRef"],
+        titleTemplate: json["titleTemplate"],
+        descriptionTemplate: json["descriptionTemplate"],
       });
     default:
       return new TextField("unknown", "unknown", {});

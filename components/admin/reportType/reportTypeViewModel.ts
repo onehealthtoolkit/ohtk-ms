@@ -103,7 +103,6 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
     return this._categoryId;
   }
   public set categoryId(value: number | undefined) {
-    console.log("who set this", value);
     this._categoryId = value;
     this.clearError("categoryId");
   }
