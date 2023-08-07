@@ -9,15 +9,20 @@ import Section, { SectionList } from "components/admin/formBuilder/section";
 import FormSimulation from "components/admin/formBuilder/simulator/formSimulation";
 import { TabBar, TabItem } from "components/widgets/forms";
 import { observer } from "mobx-react";
-import { FC } from "react";
+import { FC, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import { ConfirmDialog } from "components/admin/formBuilder/shared";
 
 export type FormBuilderProps = {
   viewModel: FormViewModel;
 };
 
 const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  const { t } = useTranslation();
   return (
-    <div className="w-full">
+    <div className="w-full" ref={elementRef}>
       <div className="flex flex-row justify-between">
         <h3 className="font-bold text-black text-xl ">{form.label}</h3>
         <button
@@ -80,8 +85,10 @@ const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
                     {() => (
                       <div className="group w-full flex flex-col relative">
                         <XCircleIcon
-                          onClick={() => {
-                            form.removeSubform(subform);
+                          onClick={e => {
+                            console.log("XCircleIcon");
+                            e.stopPropagation();
+                            form.registerDialog("confirmDelete")?.open(subform);
                           }}
                           className="absolute -right-2 -top-2 text-red-400 -mt-2 w-4 h-4 opacity-0 group-hover:opacity-100"
                         />
@@ -145,6 +152,14 @@ const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
           <FormSimulation viewModel={form.formSimulation} />
         )
       )}
+
+      <ConfirmDialog
+        viewModel={form.dialog("confirmDelete")}
+        content={t("dialog.content.confirmDelete", "Are you sure?")}
+        onYes={(subform: FormViewModel) => form.removeSubform(subform)}
+        onNo={() => form.dialog("confirmDelete")?.close()}
+        container={elementRef.current?.parentElement}
+      />
     </div>
   );
 };
