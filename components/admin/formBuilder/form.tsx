@@ -1,5 +1,4 @@
 import {
-  PencilIcon,
   PlusIcon,
   TableIcon,
   TemplateIcon,
@@ -50,7 +49,12 @@ const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
               <TabItem
                 id="masterform"
                 active={form.isCurrent}
-                onTab={() => form.selectForm(form.id)}
+                onTab={() => {
+                  if (form.currentForm.isIdEditing) {
+                    form.currentForm.setChangeId();
+                  }
+                  form.selectForm(form.id);
+                }}
               >
                 {() => (
                   <>
@@ -64,39 +68,43 @@ const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
                     id={"subform-" + subform.id}
                     key={"subform-" + subform.id}
                     active={subform.isCurrent}
-                    onTab={() => form.selectForm(subform.id)}
+                    className={`${subform.isIdEditing ? "p-2" : ""}`}
+                    onTab={() => {
+                      if (form.currentForm.isIdEditing) {
+                        form.currentForm.setChangeId();
+                      }
+                      form.selectForm(subform.id);
+                      form.currentForm.isIdEditing = true;
+                    }}
                   >
                     {() => (
-                      <div className="group w-full">
+                      <div className="group w-full flex flex-col relative">
                         <XCircleIcon
                           onClick={() => {
                             form.removeSubform(subform);
                           }}
-                          className="float-right text-red-400 -mt-2 w-4 h-4 opacity-0 group-hover:opacity-100"
-                        />
-                        <PencilIcon
-                          onClick={() => {
-                            subform.isIdEditing = true;
-                          }}
-                          className="float-right text-blue-500  -mt-2 w-4 h-4 opacity-0 group-hover:opacity-100"
+                          className="absolute -right-2 -top-2 text-red-400 -mt-2 w-4 h-4 opacity-0 group-hover:opacity-100"
                         />
                         {subform.isIdEditing ? (
-                          <input
-                            className="py-2 px-4 rounded w-full text-sm cursor-pointer"
-                            onChange={evt => {
-                              subform.idEdit = evt.target.value;
-                            }}
-                            autoFocus={true}
-                            defaultValue={subform.id}
-                            onKeyDown={e => {
-                              e.stopPropagation();
-                              if (e.key === "Enter") {
-                                subform.setChangeId();
-                              } else if (e.key === "Escape") {
-                                subform.cancelChangeId();
-                              }
-                            }}
-                          />
+                          <div className="">
+                            <input
+                              className="py-2 px-4 rounded text-sm cursor-pointer"
+                              size={subform.id.length}
+                              onChange={evt => {
+                                subform.idEdit = evt.target.value;
+                              }}
+                              autoFocus={true}
+                              defaultValue={subform.id}
+                              onKeyDown={e => {
+                                e.stopPropagation();
+                                if (e.key === "Enter") {
+                                  subform.setChangeId();
+                                } else if (e.key === "Escape") {
+                                  subform.cancelChangeId();
+                                }
+                              }}
+                            />
+                          </div>
                         ) : (
                           subform.id
                         )}
@@ -120,15 +128,6 @@ const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
               </TabItem>
             </TabBar>
           </div>
-          {form.currentForm.isIdEditing ? (
-            <div
-              className="w-full p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300"
-              role="alert"
-            >
-              Change a few things up and try enter key for change name, esc for
-              cancel.
-            </div>
-          ) : null}
           <SectionList
             values={form.currentForm.sections}
             onAdd={() => form.currentForm.addSection()}
