@@ -20,6 +20,7 @@ export type TabItemProps = {
     activeCss: string;
   }) => ReactElement | ReactElement[];
   onTab?: (id: string) => void;
+  className?: string;
 };
 
 export const TabItem: React.FC<TabItemProps> = ({
@@ -27,6 +28,7 @@ export const TabItem: React.FC<TabItemProps> = ({
   active,
   children,
   onTab,
+  className,
 }) => {
   const activeCss = active
     ? "text-blue-600 border-blue-600 active"
@@ -44,7 +46,7 @@ export const TabItem: React.FC<TabItemProps> = ({
           e.preventDefault();
           onTab && onTab(id);
         }}
-        className={`inline-flex p-4 rounded-t-lg border-b-2 group ${activeCss}`}
+        className={`inline-flex p-4 rounded-t-lg border-b-2 group ${activeCss} ${className}`}
         aria-current="page"
       >
         {children({ active, activeCss: childActiveCss })}

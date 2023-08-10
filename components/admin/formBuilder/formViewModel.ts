@@ -254,23 +254,10 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   }
 
   setChangeId() {
-    if (!this.idEdit) return;
-    const parent = this.parent;
-    if (parent) {
-      parent.sections.forEach(section => {
-        section.questions.forEach(question => {
-          question.fields.forEach(field => {
-            if (field.fieldType == "subform") {
-              const fieldExt =
-                field.getExtension<SubformFieldViewModel>() as SubformFieldViewModel;
-              if (fieldExt.formRef == this.id) fieldExt.formRef = this.idEdit;
-            }
-          });
-        });
-      });
-
-      parent.subforms.forEach(subform => {
-        subform.sections.forEach(section => {
+    if (this.idEdit) {
+      const parent = this.parent;
+      if (parent) {
+        parent.sections.forEach(section => {
           section.questions.forEach(question => {
             question.fields.forEach(field => {
               if (field.fieldType == "subform") {
@@ -281,9 +268,24 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
             });
           });
         });
-      });
+
+        parent.subforms.forEach(subform => {
+          subform.sections.forEach(section => {
+            section.questions.forEach(question => {
+              question.fields.forEach(field => {
+                if (field.fieldType == "subform") {
+                  const fieldExt =
+                    field.getExtension<SubformFieldViewModel>() as SubformFieldViewModel;
+                  if (fieldExt.formRef == this.id)
+                    fieldExt.formRef = this.idEdit;
+                }
+              });
+            });
+          });
+        });
+      }
+      this.id = this.idEdit;
     }
-    this.id = this.idEdit;
     this.isIdEditing = false;
     this.idEdit = "";
   }

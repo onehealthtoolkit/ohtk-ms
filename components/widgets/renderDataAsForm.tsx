@@ -144,17 +144,21 @@ const RenderSubformFields = ({
   }
   return form ? (
     <>
-      {Object.entries(subformData).map(entry => {
+      {Object.entries(subformData).map((entry, index, { length }) => {
         const [id, data] = entry;
         return typeof data == "object" ? (
-          <RenderSubformField
+          <div
             key={id}
-            form={form}
-            data={data as any}
-            field={field}
-            imageUrlMap={imageUrlMap}
-            fileUrlMap={fileUrlMap}
-          />
+            className={`${index != length - 1 ? "border-b" : undefined}`}
+          >
+            <RenderSubformField
+              form={form}
+              data={data as any}
+              field={field}
+              imageUrlMap={imageUrlMap}
+              fileUrlMap={fileUrlMap}
+            />
+          </div>
         ) : null;
       })}
     </>
