@@ -56,7 +56,7 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
       this.currentQuestion = question;
       question.setCurrent();
       // Reset currently selected field
-      question.selectField("");
+      question.selectField(question.fields.length ? question.fields[0].id : "");
     }
   }
 
