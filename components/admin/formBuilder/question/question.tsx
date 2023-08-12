@@ -1,5 +1,7 @@
+import { MenuAlt4Icon } from "@heroicons/react/solid";
 import { FieldList } from "components/admin/formBuilder/field";
 import {
+  DragItem,
   FieldMenus,
   QuestionViewModel,
 } from "components/admin/formBuilder/question";
@@ -11,13 +13,16 @@ import {
 } from "components/admin/formBuilder/shared";
 import { MoveQuestionDialog } from "components/admin/formBuilder/shared/dialog/moveQuestionDialog";
 import { observer } from "mobx-react";
-import { FC, useRef } from "react";
+import { FC, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 type Props = {
   value: QuestionViewModel;
   onSelect: (id: string) => void;
   onDelete: (id: string) => void;
+  dragItem: DragItem;
+  index: number;
+  onMoveQuestion: (fromIndex: number, toIndex: number) => void;
 };
 
 const Menus: FC<{ value: QuestionViewModel; onSelect: (id: string) => void }> =
@@ -91,9 +96,17 @@ const Menus: FC<{ value: QuestionViewModel; onSelect: (id: string) => void }> =
     );
   });
 
-const Question: FC<Props> = ({ value: question, onSelect, onDelete }) => {
+const Question: FC<Props> = ({
+  value: question,
+  onSelect,
+  onDelete,
+  dragItem,
+  index,
+  onMoveQuestion,
+}) => {
   const elementRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
+  const [opacity, setOpacity] = useState<number>(1);
 
   const onDeleteConfirm = () => {
     question.registerDialog("confirmDelete")?.open(question);
@@ -105,6 +118,31 @@ const Question: FC<Props> = ({ value: question, onSelect, onDelete }) => {
     to.addQuestion();
     to.currentQuestion?.parse(question.toJson());
     from.deleteQuestion(question.id);
+  };
+
+  const dragOverHandler = (ev: React.DragEvent<HTMLDivElement>) => {
+    ev.preventDefault();
+    // ev.dataTransfer.dropEffect = "none";
+    const dragIndex = dragItem.index;
+    const hoverIndex = index;
+
+    if (dragIndex === hoverIndex) {
+      return;
+    }
+
+    const hoverBoundingRect = ev.currentTarget.getBoundingClientRect();
+    const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+    const hoverClientY = ev.clientY - hoverBoundingRect.top;
+    if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      return;
+    }
+
+    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+      return;
+    }
+
+    onMoveQuestion(dragIndex, hoverIndex);
+    dragItem.index = hoverIndex;
   };
 
   return question.isCurrent ? (
@@ -200,7 +238,34 @@ const Question: FC<Props> = ({ value: question, onSelect, onDelete }) => {
       />
     </div>
   ) : (
-    <div className="p-4 flex-grow" onClick={() => onSelect(question.id)}>
+    <div
+      draggable="true"
+      onDragOver={dragOverHandler}
+      style={{
+        opacity: opacity,
+      }}
+      onDrag={() => {
+        dragItem.isDragging = true;
+        setOpacity(0);
+      }}
+      onDragEnd={() => {
+        dragItem.isDragging = false;
+        setOpacity(1);
+      }}
+      onDragStart={ev => {
+        dragItem.index = index;
+        ev.dataTransfer.effectAllowed = "move";
+      }}
+      className="p-4 flex-grow"
+      onClick={() => onSelect(question.id)}
+    >
+      <div
+        className={`flex justify-center -mt-[10px] ${
+          dragItem.isDragging ? "cursor-grabbing" : "cursor-grab"
+        }`}
+      >
+        <MenuAlt4Icon className="h-5 w-10 opacity-[0.4]" />
+      </div>
       <div>
         {question.label || <span className="text-gray-400">Question</span>}
       </div>
