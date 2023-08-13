@@ -239,6 +239,7 @@ const Question: FC<Props> = ({
     </div>
   ) : (
     <div
+      ref={elementRef}
       draggable="true"
       onDragOver={dragOverHandler}
       style={{
@@ -251,8 +252,31 @@ const Question: FC<Props> = ({
       onDragEnd={() => {
         dragItem.isDragging = false;
         setOpacity(1);
+        const ghost = document.getElementById("drag-ghost");
+        if (ghost && ghost.parentNode) {
+          ghost.parentNode.removeChild(ghost);
+        }
       }}
       onDragStart={ev => {
+        if (elementRef.current) {
+          const elem = elementRef.current.cloneNode(true) as HTMLElement;
+          elem.id = "drag-ghost";
+          elem.classList.add(
+            "border-dashed",
+            "border",
+            "absolute",
+            "bg-slate-100"
+          );
+          elem.style.top = "-1000px";
+          elem.style.width = `${elementRef.current.clientWidth}px`;
+          document.body.appendChild(elem);
+          ev.dataTransfer.setDragImage(
+            elem,
+            elementRef.current!.clientWidth / 2,
+            20
+          );
+        }
+
         dragItem.index = index;
         ev.dataTransfer.effectAllowed = "move";
       }}
