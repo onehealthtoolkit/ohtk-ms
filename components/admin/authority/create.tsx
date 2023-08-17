@@ -20,6 +20,7 @@ import useServices from "lib/services/provider";
 import AuthorityInherits from "components/admin/authority/authorityInherits";
 import { toJS } from "mobx";
 import { useTranslation } from "react-i18next";
+import AuthorityBoundaryConnects from "components/admin/authority/authorityBoundaryConnects";
 
 const AuthorityCreate = () => {
   const router = useRouter();
@@ -77,6 +78,7 @@ const AuthorityCreate = () => {
           />
           <ErrorText>{viewModel.fieldErrors.inherits}</ErrorText>
         </Field>
+
         <Field $size="full">
           <Label htmlFor="area">{t("form.label.area", "Area")}</Label>
           <AreaFieldNoSSR
@@ -84,6 +86,23 @@ const AuthorityCreate = () => {
             onChange={data => (viewModel.area = data)}
           />
           <ErrorText>{viewModel.fieldErrors.area}</ErrorText>
+        </Field>
+        <Field $size="half">
+          <Label htmlFor="boundaryConnects">
+            {t("form.label.boundaryConnects", "Boundary Connects")}
+          </Label>
+          <AuthorityBoundaryConnects
+            values={viewModel.authorityBoundaryConnects.slice()}
+            onAdd={authorityId =>
+              viewModel.addAuthorityBoundaryConnects(authorityId)
+            }
+            onDelete={authorityId =>
+              viewModel.removeAuthorityBoundaryConnects(authorityId)
+            }
+          />
+          <ErrorText>
+            {viewModel.fieldErrors.authorityBoundaryConnects}
+          </ErrorText>
         </Field>
       </FieldGroup>
       {viewModel.submitError.length > 0 && (

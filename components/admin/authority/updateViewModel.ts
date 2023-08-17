@@ -19,6 +19,8 @@ export class AuthorityUpdateViewModel extends AuthorityViewModel {
       this.name = data.name;
       this.area = data.area;
       this.authorityInherits = data.inherits?.map(it => it.id) || [];
+      this.authorityBoundaryConnects =
+        data.boundaryConnects?.map(it => it.id) || [];
     }
     this.isLoading = false;
   }
@@ -29,7 +31,8 @@ export class AuthorityUpdateViewModel extends AuthorityViewModel {
       this.code,
       this.name,
       this.area,
-      this.authorityInherits
+      this.authorityInherits,
+      this.authorityBoundaryConnects
     );
   }
 }

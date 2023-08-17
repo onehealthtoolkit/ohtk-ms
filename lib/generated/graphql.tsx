@@ -83,8 +83,10 @@ export type AdminAuthorityCreateResult =
 export type AdminAuthorityCreateSuccess = {
   __typename?: "AdminAuthorityCreateSuccess";
   area?: Maybe<Scalars["GeoJSON"]>;
+  authorityBoundaryConnects: Array<AdminAuthorityCreateSuccess>;
   authorityInherits: Array<AdminAuthorityCreateSuccess>;
   authoritynotificationSet: Array<AdminAuthorityNotificationUpsertSuccess>;
+  boundaryConnects: Array<AdminAuthorityCreateSuccess>;
   cases: Array<CaseType>;
   code: Scalars["String"];
   createdAt: Scalars["DateTime"];
@@ -1451,6 +1453,13 @@ export type AdminUserUploadAvatarMutation = {
   success?: Maybe<Scalars["Boolean"]>;
 };
 
+export type AuthorityBoundaryConnectType = {
+  __typename?: "AuthorityBoundaryConnectType";
+  code: Scalars["String"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
 export type AuthorityInheritType = {
   __typename?: "AuthorityInheritType";
   code: Scalars["String"];
@@ -1461,6 +1470,7 @@ export type AuthorityInheritType = {
 export type AuthorityType = {
   __typename?: "AuthorityType";
   area?: Maybe<Scalars["GeoJSON"]>;
+  boundaryConnects: Array<Maybe<AuthorityBoundaryConnectType>>;
   code: Scalars["String"];
   id: Scalars["ID"];
   inherits: Array<Maybe<AuthorityInheritType>>;
@@ -1923,6 +1933,7 @@ export type Mutation = {
 
 export type MutationAdminAuthorityCreateArgs = {
   area?: InputMaybe<Scalars["String"]>;
+  boundaryConnects?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   code: Scalars["String"];
   inherits?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   name: Scalars["String"];
@@ -1943,6 +1954,7 @@ export type MutationAdminAuthorityNotificationUpsertArgs = {
 
 export type MutationAdminAuthorityUpdateArgs = {
   area?: InputMaybe<Scalars["String"]>;
+  boundaryConnects?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   code: Scalars["String"];
   id: Scalars["ID"];
   inherits?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
@@ -2729,6 +2741,7 @@ export type Query = {
   authorityInheritsDown?: Maybe<Array<AuthorityType>>;
   authorityInheritsDownShallow?: Maybe<Array<AuthorityType>>;
   authorityUser?: Maybe<AuthorityUserType>;
+  boundaryConnectedIncidentReports?: Maybe<IncidentReportTypeNodeConnection>;
   caseDefinitionGet?: Maybe<CaseDefinitionType>;
   caseGet?: Maybe<CaseType>;
   casesQuery?: Maybe<CaseTypeNodeConnection>;
@@ -3010,6 +3023,25 @@ export type QueryAuthorityInheritsDownShallowArgs = {
 
 export type QueryAuthorityUserArgs = {
   id: Scalars["ID"];
+};
+
+export type QueryBoundaryConnectedIncidentReportsArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  createdAt_Gte?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_Lte?: InputMaybe<Scalars["DateTime"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  incidentDate_Gte?: InputMaybe<Scalars["Date"]>;
+  incidentDate_Lte?: InputMaybe<Scalars["Date"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+  relevantAuthorities_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  relevantAuthorities_Name?: InputMaybe<Scalars["String"]>;
+  relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]>;
+  reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
+  testFlag?: InputMaybe<Scalars["Boolean"]>;
 };
 
 export type QueryCaseDefinitionGetArgs = {
@@ -3698,6 +3730,9 @@ export type AuthorityCreateMutationVariables = Exact<{
   inherits?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
   >;
+  boundaryConnects?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
 }>;
 
 export type AuthorityCreateMutation = {
@@ -3727,6 +3762,9 @@ export type AuthorityUpdateMutationVariables = Exact<{
   inherits?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
   >;
+  boundaryConnects?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
 }>;
 
 export type AuthorityUpdateMutation = {
@@ -3753,6 +3791,12 @@ export type AuthorityUpdateMutation = {
             area?: any | null;
             inherits: Array<{
               __typename?: "AuthorityInheritType";
+              id: string;
+              code: string;
+              name: string;
+            } | null>;
+            boundaryConnects: Array<{
+              __typename?: "AuthorityBoundaryConnectType";
               id: string;
               code: string;
               name: string;
@@ -3789,6 +3833,12 @@ export type GetAuthorityQuery = {
     area?: any | null;
     inherits: Array<{
       __typename?: "AuthorityInheritType";
+      id: string;
+      code: string;
+      name: string;
+    } | null>;
+    boundaryConnects: Array<{
+      __typename?: "AuthorityBoundaryConnectType";
       id: string;
       code: string;
       name: string;
@@ -7552,6 +7602,20 @@ export const AuthorityCreateDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "boundaryConnects" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -7590,6 +7654,14 @@ export const AuthorityCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "inherits" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "boundaryConnects" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "boundaryConnects" },
                 },
               },
             ],
@@ -7736,6 +7808,20 @@ export const AuthorityUpdateDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "boundaryConnects" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -7782,6 +7868,14 @@ export const AuthorityUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "inherits" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "boundaryConnects" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "boundaryConnects" },
                 },
               },
             ],
@@ -7835,6 +7929,30 @@ export const AuthorityUpdateDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "inherits" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "code" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "boundaryConnects",
+                                    },
                                     selectionSet: {
                                       kind: "SelectionSet",
                                       selections: [
@@ -8000,6 +8118,18 @@ export const GetAuthorityDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "inherits" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "boundaryConnects" },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [

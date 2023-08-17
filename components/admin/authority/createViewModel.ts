@@ -8,7 +8,8 @@ export class AuthorityCreateViewModel extends AuthorityViewModel {
       this.code,
       this.name,
       this.area,
-      this.authorityInherits
+      this.authorityInherits,
+      this.authorityBoundaryConnects
     );
   }
 }
