@@ -54,6 +54,9 @@ const Section: FC<Props> = ({ value: section, onDelete }) => {
             onMoveUp={questionId => section.moveItemUp(questionId)}
             onSelect={questionId => section.selectQuestion(questionId)}
             onDelete={questionId => section.deleteQuestion(questionId)}
+            onMoveQuestion={(fromIndex: number, toIndex: number) => {
+              section.moveQuestion(fromIndex, toIndex);
+            }}
           />
 
           <div className="p-4 flex justify-end ">

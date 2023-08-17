@@ -80,29 +80,33 @@ const BaseModalDialog: React.FC<Props> = ({
                     widthClassName ||
                     "sm:w-[385px] sm:min-w-[30vw] min-w-[80vw]"
                   }
-                  flex flex-col items-stretch justify-items-stretch gap-2 -translate-y-1/2 p-3 md:p-6 bg-white 
-                  rounded-md top-1/2 left-1/2 -translate-x-1/2 absolute
-                `}
+                  flex justify-center items-center top-0 bottom-0 left-0 right-0 m-auto absolute`}
                 >
-                  {title && (
-                    <h1 className="text-left text-base font-medium">{title}</h1>
-                  )}
-                  <div className="flex h-full">
-                    <div className="m-auto h-full w-full">
-                      {renderContent(store.data)}
+                  <div className="w-full max-h-full">
+                    <div className="bg-white rounded-md  min-h-[30vh] flex flex-col gap-2 p-3 md:p-6  relative">
+                      {title && (
+                        <h1 className="text-left text-base font-medium">
+                          {title}
+                        </h1>
+                      )}
+                      <div className="flex">
+                        <div className="m-auto h-full w-full">
+                          {renderContent(store.data)}
+                        </div>
+                      </div>
+                      <button
+                        className="absolute right-4 top-4 z-[1001]"
+                        onClick={() => {
+                          onClose && onClose();
+                          store.close();
+                        }}
+                      >
+                        <XCircleIcon className="w-8 h-8 fill-red-400" />
+                      </button>
+                      <div className="absolute bottom-0 left-0 right-0 px-4 py-2">
+                        {renderAction && renderAction(store, store.data)}
+                      </div>
                     </div>
-                  </div>
-                  <button
-                    className="absolute right-4 top-4 z-[1001]"
-                    onClick={() => {
-                      onClose && onClose();
-                      store.close();
-                    }}
-                  >
-                    <XCircleIcon className="w-8 h-8 fill-red-400" />
-                  </button>
-                  <div className="absolute bottom-0 left-0 right-0 px-4 py-2">
-                    {renderAction && renderAction(store, store.data)}
                   </div>
                 </div>
               </Fragment>,

@@ -24,6 +24,7 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
       currentQuestion: observable,
       selectQuestion: action,
       addQuestion: action,
+      moveQuestion: action,
     });
     this._form = form;
   }
@@ -56,7 +57,7 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
       this.currentQuestion = question;
       question.setCurrent();
       // Reset currently selected field
-      question.selectField("");
+      question.selectField(question.fields.length ? question.fields[0].id : "");
     }
   }
 
@@ -71,6 +72,14 @@ export class SectionViewModel extends MovableItemsViewModel<QuestionViewModel> {
     if (index > -1) {
       this.questions.splice(index, 1);
     }
+  }
+
+  moveQuestion(fromIndex: number, toIndex: number) {
+    const copyListItems = [...this.questions];
+    const dragItemContent = copyListItems[fromIndex];
+    copyListItems.splice(fromIndex, 1);
+    copyListItems.splice(toIndex, 0, dragItemContent);
+    this.questions = copyListItems;
   }
 
   parse(definition: Definition) {
