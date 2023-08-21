@@ -1,7 +1,6 @@
 import Question, {
   QuestionViewModel,
 } from "components/admin/formBuilder/question";
-import { MovePositionBar } from "components/admin/formBuilder/shared";
 import { observer } from "mobx-react";
 import { FC, useState } from "react";
 
@@ -21,8 +20,6 @@ type Props = {
 
 const List: FC<Props> = ({
   values: questions,
-  onMoveDown,
-  onMoveUp,
   onSelect,
   onDelete,
   onMoveQuestion,
@@ -34,7 +31,7 @@ const List: FC<Props> = ({
       {questions.length > 0 ? (
         questions.map((question, i) => (
           <div
-            className={`mt-4 bg-white rounded-md flex items-stretch relative ${
+            className={`mt-4 pl-2 bg-white rounded-md flex items-stretch relative ${
               question.isCurrent
                 ? "border-2 border-blue-400"
                 : "border border-gray-200"
@@ -43,12 +40,6 @@ const List: FC<Props> = ({
             onMouseOver={() => (question.isHovered = true)}
             onMouseOut={() => (question.isHovered = false)}
           >
-            <MovePositionBar
-              targetId={question.id}
-              visible={question.isHovered}
-              onMoveDown={onMoveDown}
-              onMoveUp={onMoveUp}
-            />
             <Question
               value={question}
               onSelect={onSelect}

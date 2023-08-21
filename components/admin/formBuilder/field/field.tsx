@@ -33,9 +33,15 @@ type Props = {
   value: FieldViewModel;
   onSelect: (id: string) => void;
   onDelete: (id: string) => void;
+  displayOnly?: boolean;
 };
 
-const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
+const Field: FC<Props> = ({
+  value: field,
+  onSelect,
+  onDelete,
+  displayOnly,
+}) => {
   const elementRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const onDeleteConfirm = () => {
@@ -254,6 +260,15 @@ const Field: FC<Props> = ({ value: field, onSelect, onDelete }) => {
         return "Undefined " + field.fieldType;
     }
   }
+  if (displayOnly)
+    return (
+      <div className="pt-4 pr-4 pb-4 w-full">
+        <label className="p-2">
+          {field.label && <span>{field.label}</span>}
+        </label>
+        {renderDisplayFieldTypeComponent(field.fieldType)}
+      </div>
+    );
 
   return field.isCurrent ? (
     <div className="pt-4 pr-4 pb-4 w-full" ref={elementRef}>
