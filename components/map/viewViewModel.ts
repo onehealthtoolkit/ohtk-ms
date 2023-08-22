@@ -24,6 +24,7 @@ export default class MapViewViewModel {
   _periodText: string = "";
 
   data = Array<EventItem>();
+  boundaryConnectData = Array<EventItem>();
   isLive: boolean = false;
 
   constructor(readonly reportService: IReportService) {
@@ -128,33 +129,82 @@ export default class MapViewViewModel {
       },
       force
     );
-    runInAction(() => {
-      const events = Array<EventItem>();
 
-      result.items?.forEach(it => {
-        if (it.gpsLocation) {
-          const lnglat = it.gpsLocation.split(",");
+    const events = Array<EventItem>();
 
-          try {
-            events.push({
-              id: it.id,
-              type: "report",
-              data: it.rendererData,
-              location: {
-                lat: parseFloat(lnglat[1]),
-                lng: parseFloat(lnglat[0]),
-              },
-              categoryName: it.categoryName || "",
-              categoryIcon: it.categoryIcon,
-              imageUrl: it.imageUrl,
-              createdAt: it.createdAt,
-            });
-          } catch (e) {
-            console.log("Cannot parse (lat,lng) location: " + it.gpsLocation);
-          }
+    result.items?.forEach(it => {
+      if (it.gpsLocation) {
+        const lnglat = it.gpsLocation.split(",");
+
+        try {
+          events.push({
+            id: it.id,
+            type: "report",
+            data: it.rendererData,
+            location: {
+              lat: parseFloat(lnglat[1]),
+              lng: parseFloat(lnglat[0]),
+            },
+            categoryName: it.categoryName || "",
+            categoryIcon: it.categoryIcon,
+            imageUrl: it.imageUrl,
+            createdAt: it.createdAt,
+          });
+        } catch (e) {
+          console.log("Cannot parse (lat,lng) location: " + it.gpsLocation);
         }
-      });
+      }
+    });
+
+    const result2 = await this.reportService.fetchBoundaryConnectedReports(
+      1000,
+      0,
+      {
+        fromDate: this.fromDate,
+        throughDate: this.toDate,
+        reportTypes: this.reportTypes,
+      },
+      force
+    );
+
+    const events2 = Array<EventItem>();
+
+    result2.items?.forEach(it => {
+      if (it.gpsLocation) {
+        const lnglat = it.gpsLocation.split(",");
+
+        try {
+          events2.push({
+            id: it.id,
+            type: "report",
+            data: it.rendererData,
+            location: {
+              lat: parseFloat(lnglat[1]),
+              lng: parseFloat(lnglat[0]),
+            },
+            categoryName: it.categoryName || "",
+            categoryIcon: it.categoryIcon,
+            imageUrl: it.imageUrl,
+            createdAt: it.createdAt,
+            boundaryConnect: true,
+          });
+        } catch (e) {
+          console.log("Cannot parse (lat,lng) location: " + it.gpsLocation);
+        }
+      }
+    });
+
+    runInAction(() => {
       this.data = events;
+      this.boundaryConnectData = events2.filter(e2 => {
+        // filter out any boundary-connect authority reports
+        // that are already reported in user authority areas
+        return (
+          events.findIndex(e1 => {
+            e1.id === e2.id;
+          }) === -1
+        );
+      });
     });
   }
 

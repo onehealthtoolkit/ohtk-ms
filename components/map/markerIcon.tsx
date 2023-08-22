@@ -29,16 +29,21 @@ export function SetMapBounds({ bounds }: { bounds: LatLngTuple[] }) {
 type MarkerIconProps = {
   categoryIcon?: string | null;
   type: EventItemType;
+  boundaryConnect?: boolean;
 };
 
-export const MarkerIcon = ({ categoryIcon, type }: MarkerIconProps) => {
+export const MarkerIcon = ({
+  categoryIcon,
+  type,
+  boundaryConnect,
+}: MarkerIconProps) => {
   let color = "fill-black";
   switch (type) {
     case "report":
-      color = "fill-yellow-400";
+      color = !boundaryConnect ? "fill-yellow-400" : "fill-purple-600";
       break;
     case "case":
-      color = "fill-red-500";
+      color = !boundaryConnect ? "fill-red-500" : "fill-purple-600";
       break;
   }
 
@@ -99,6 +104,7 @@ export const EventMarker = ({ event, onPopupClick }: EventMarkerProps) => {
       MarkerIcon({
         categoryIcon: event.categoryIcon,
         type: event.type,
+        boundaryConnect: event.boundaryConnect,
       })
     ),
   });
@@ -116,7 +122,9 @@ export const MarkerPopup = ({ event, onPopupClick }: EventMarkerProps) => {
   const router = useRouter();
   return (
     <div
-      className="flex items-start gap-2 cursor-pointer"
+      className={`flex items-start gap-2 ${
+        event.boundaryConnect ? "cursor-not-allowed" : "cursor-pointer"
+      }`}
       onClick={e => {
         e.preventDefault();
         onPopupClick && onPopupClick(event.id, event.type);

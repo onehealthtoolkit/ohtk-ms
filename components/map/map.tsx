@@ -14,17 +14,17 @@ import { MapContainer, TileLayer } from "react-leaflet";
 
 type MapViewProps = {
   data: Array<EventItem>;
+  boundaryConnect: Array<EventItem>;
 };
 
-const MapView: React.FC<MapViewProps> = ({ data }) => {
+const MapView: React.FC<MapViewProps> = ({ data, boundaryConnect }) => {
   const router = useRouter();
   const [bounds, setBounds] = useState<LatLngTuple[]>(DEFAULT_BOUNDS);
 
   useEffect(() => {
-    const points: LatLngTuple[] = data.map(it => [
-      it.location.lng,
-      it.location.lat,
-    ]);
+    const points: LatLngTuple[] = data
+      .concat(...boundaryConnect)
+      .map(it => [it.location.lng, it.location.lat]);
     const collection = turfPoints(points);
 
     if (collection.features.length > 0) {
@@ -33,7 +33,7 @@ const MapView: React.FC<MapViewProps> = ({ data }) => {
       const corner2 = [bboxArray[3], bboxArray[2]] as LatLngTuple;
       setBounds([corner1, corner2]);
     }
-  }, [data]);
+  }, [data, boundaryConnect]);
 
   return (
     <MapContainer
@@ -56,6 +56,10 @@ const MapView: React.FC<MapViewProps> = ({ data }) => {
             onPopupClick={id => router.push(`/reports/${id}`)}
           />
         );
+      })}
+
+      {boundaryConnect.map(item => {
+        return <EventMarker event={item} key={`${item.type}_${item.id}`} />;
       })}
     </MapContainer>
   );

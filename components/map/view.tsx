@@ -119,7 +119,10 @@ const MapView: React.FC = () => {
           authorityId={store.me?.authorityId}
         />
       ) : (
-        <Map data={toJS(viewModel.data)} />
+        <Map
+          data={toJS(viewModel.data)}
+          boundaryConnect={toJS(viewModel.boundaryConnectData)}
+        />
       )}
       <div className="absolute top-8 right-14 z-[1001] flex flex-row gap-2">
         <MapSwitch

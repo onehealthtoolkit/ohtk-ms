@@ -18,4 +18,5 @@ export type EventItem = {
   categoryIcon?: string | null;
   createdAt?: string;
   imageUrl?: string | null;
+  boundaryConnect?: boolean;
 };

@@ -47,6 +47,55 @@ query Reports(
   }
 }
 
+query BoundaryConnectedReports(
+  $limit: Int!
+  $offset: Int!
+  $fromDate: DateTime
+  $throughDate: DateTime
+  $authorities: [String]
+  $reportTypes: [UUID]
+  $testFlag: Boolean
+) {
+  boundaryConnectedIncidentReports(
+    createdAt_Gte: $fromDate
+    createdAt_Lte: $throughDate
+    relevantAuthorities_Id_In: $authorities
+    reportType_Id_In: $reportTypes
+    testFlag: $testFlag
+    limit: $limit
+    offset: $offset
+  ) {
+    totalCount
+    results {
+      id
+      createdAt
+      incidentDate
+      rendererData
+      caseId
+      gpsLocation
+      reportType {
+        id
+        name
+        category {
+          id
+          name
+          icon
+        }
+      }
+      reportedBy {
+        username
+        firstName
+        lastName
+        telephone
+      }
+      images {
+        thumbnail
+      }
+      testFlag
+    }
+  }
+}
+
 query GetReport($id: ID!) {
   incidentReport(id: $id) {
     id
