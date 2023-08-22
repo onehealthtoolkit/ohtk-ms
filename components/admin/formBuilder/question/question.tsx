@@ -1,5 +1,5 @@
 import { MenuAlt4Icon } from "@heroicons/react/solid";
-import { FieldList } from "components/admin/formBuilder/field";
+import Field, { FieldList } from "components/admin/formBuilder/field";
 import {
   DragItem,
   FieldMenus,
@@ -244,6 +244,7 @@ const Question: FC<Props> = ({
       onDragOver={dragOverHandler}
       style={{
         opacity: opacity,
+        maxHeight: opacity ? undefined : "148px",
       }}
       onDrag={() => {
         dragItem.isDragging = true;
@@ -265,10 +266,15 @@ const Question: FC<Props> = ({
             "border-dashed",
             "border",
             "absolute",
-            "bg-slate-100"
+            "bg-slate-50",
+            "max-h-52",
+            "overflow-hidden"
           );
           elem.style.top = "-1000px";
           elem.style.width = `${elementRef.current.clientWidth}px`;
+
+          const bodyElem = elem.childNodes.item(3) as HTMLElement;
+          bodyElem.classList.add("max-h-20", "overflow-hidden");
           document.body.appendChild(elem);
           ev.dataTransfer.setDragImage(
             elem,
@@ -295,6 +301,17 @@ const Question: FC<Props> = ({
       </div>
       <div className="text-xs font-thin text-gray-600 italic">
         {question.description}
+      </div>
+      <div>
+        {question.fields.map(field => (
+          <Field
+            key={field.id}
+            value={field}
+            onSelect={onSelect}
+            onDelete={onDelete}
+            displayOnly={true}
+          />
+        ))}
       </div>
     </div>
   );
