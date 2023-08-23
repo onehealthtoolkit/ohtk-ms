@@ -68,6 +68,9 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
     toDate: query.toDate ? isoStringToDate(query.toDate as string) : undefined,
     reportTypes: query.reportTypes ? JSURL.parse(query.reportTypes) : [],
     isLive: query.isLive ? parseInt(query.isLive as string) === 1 : false,
+    includeBoundaryConnects: query.includeBoundaryConnects
+      ? parseInt(query.includeBoundaryConnects as string) === 1
+      : undefined,
   };
 };
 
@@ -95,7 +98,8 @@ const MapView: React.FC = () => {
         filter.authorityName as string,
         filter.fromDate,
         filter.toDate,
-        filter.reportTypes
+        filter.reportTypes,
+        filter.includeBoundaryConnects
       );
     }
   }, [viewModel, store.me, router.isReady, query]);
@@ -108,6 +112,7 @@ const MapView: React.FC = () => {
       toDate: viewModel.toDate?.toISOString(),
       reportTypes: JSURL.stringify(viewModel.reportTypes),
       isLive: viewModel.isLive ? 1 : 0,
+      includeBoundaryConnects: viewModel.includeBoundaryConnects ? 1 : 0,
     });
   };
 

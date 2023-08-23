@@ -26,6 +26,7 @@ export default class MapViewViewModel {
   data = Array<EventItem>();
   boundaryConnectData = Array<EventItem>();
   isLive: boolean = false;
+  includeBoundaryConnects = true;
 
   constructor(readonly reportService: IReportService) {
     makeObservable(this, {
@@ -94,7 +95,8 @@ export default class MapViewViewModel {
     authorityName: string,
     fromDate: Date | undefined,
     toDate: Date | undefined,
-    reportTypes?: MapViewFilterData["reportTypes"]
+    reportTypes?: MapViewFilterData["reportTypes"],
+    includeBoundaryConnects?: boolean
   ) {
     runInAction(() => {
       if (!fromDate && !toDate) {
@@ -107,6 +109,8 @@ export default class MapViewViewModel {
       this.authorityName = authorityName;
       this.reportTypes = reportTypes;
       this.isLive = isLive;
+      this.includeBoundaryConnects =
+        includeBoundaryConnects === undefined ? true : includeBoundaryConnects;
     });
 
     this.fetch();
@@ -156,43 +160,45 @@ export default class MapViewViewModel {
       }
     });
 
-    const result2 = await this.reportService.fetchBoundaryConnectedReports(
-      1000,
-      0,
-      {
-        fromDate: this.fromDate,
-        throughDate: this.toDate,
-        reportTypes: this.reportTypes,
-      },
-      force
-    );
-
     const events2 = Array<EventItem>();
 
-    result2.items?.forEach(it => {
-      if (it.gpsLocation) {
-        const lnglat = it.gpsLocation.split(",");
+    if (this.includeBoundaryConnects) {
+      const result2 = await this.reportService.fetchBoundaryConnectedReports(
+        1000,
+        0,
+        {
+          fromDate: this.fromDate,
+          throughDate: this.toDate,
+          reportTypes: this.reportTypes,
+        },
+        force
+      );
 
-        try {
-          events2.push({
-            id: it.id,
-            type: "report",
-            data: it.rendererData,
-            location: {
-              lat: parseFloat(lnglat[1]),
-              lng: parseFloat(lnglat[0]),
-            },
-            categoryName: it.categoryName || "",
-            categoryIcon: it.categoryIcon,
-            imageUrl: it.imageUrl,
-            createdAt: it.createdAt,
-            boundaryConnect: true,
-          });
-        } catch (e) {
-          console.log("Cannot parse (lat,lng) location: " + it.gpsLocation);
+      result2.items?.forEach(it => {
+        if (it.gpsLocation) {
+          const lnglat = it.gpsLocation.split(",");
+
+          try {
+            events2.push({
+              id: it.id,
+              type: "report",
+              data: it.rendererData,
+              location: {
+                lat: parseFloat(lnglat[1]),
+                lng: parseFloat(lnglat[0]),
+              },
+              categoryName: it.categoryName || "",
+              categoryIcon: it.categoryIcon,
+              imageUrl: it.imageUrl,
+              createdAt: it.createdAt,
+              boundaryConnect: true,
+            });
+          } catch (e) {
+            console.log("Cannot parse (lat,lng) location: " + it.gpsLocation);
+          }
         }
-      }
-    });
+      });
+    }
 
     runInAction(() => {
       this.data = events;
