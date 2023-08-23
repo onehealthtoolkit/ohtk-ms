@@ -22,7 +22,7 @@ const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
 
   const { t } = useTranslation();
   return (
-    <div className="w-full" ref={elementRef}>
+    <div className="w-full min-h-[90vh]" ref={elementRef}>
       <div className="flex flex-row justify-between">
         <h3 className="font-bold text-black text-xl ">{form.label}</h3>
         <button
