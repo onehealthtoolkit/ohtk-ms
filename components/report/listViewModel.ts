@@ -1,4 +1,10 @@
-import { action, makeObservable, observable, runInAction } from "mobx";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
 import { IReportService, Report } from "lib/services/report";
 import { ReportFilterData } from "lib/services/report/reportService";
@@ -29,10 +35,16 @@ export class ReportListViewModel extends BaseViewModel {
   filter: ReportFilterData = initialFilter;
   calendarViewModel = new ReportCalendarViewModel();
   isCalendarView = false;
+  _fromDate?: Date = undefined;
+  _throughDate?: Date = undefined;
 
   constructor(readonly reportService: IReportService) {
     super();
     makeObservable(this, {
+      _fromDate: observable,
+      _throughDate: observable,
+      fromDate: computed,
+      throughDate: computed,
       data: observable,
       filter: observable,
       setSearchValue: action,
@@ -42,6 +54,22 @@ export class ReportListViewModel extends BaseViewModel {
       isCalendarView: observable,
       switchView: action,
     });
+  }
+
+  public get fromDate() {
+    return this._fromDate;
+  }
+
+  public set fromDate(value: Date | undefined) {
+    this._fromDate = value;
+  }
+
+  public get throughDate() {
+    return this._throughDate;
+  }
+
+  public set throughDate(value: Date | undefined) {
+    this._throughDate = value;
   }
 
   setSearchValue(params: SearchParams) {
@@ -93,7 +121,9 @@ export class ReportListViewModel extends BaseViewModel {
 
   filterReset() {
     this.filter = initialFilter;
-    this.fetch();
+    this.fromDate = undefined;
+    this.throughDate = undefined;
+    this.calendarViewModel.today();
   }
 
   switchView(isCalendarView: boolean) {
