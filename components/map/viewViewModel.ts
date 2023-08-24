@@ -24,7 +24,9 @@ export default class MapViewViewModel {
   _periodText: string = "";
 
   data = Array<EventItem>();
+  boundaryConnectData = Array<EventItem>();
   isLive: boolean = false;
+  includeBoundaryConnects = true;
 
   constructor(readonly reportService: IReportService) {
     makeObservable(this, {
@@ -93,7 +95,8 @@ export default class MapViewViewModel {
     authorityName: string,
     fromDate: Date | undefined,
     toDate: Date | undefined,
-    reportTypes?: MapViewFilterData["reportTypes"]
+    reportTypes?: MapViewFilterData["reportTypes"],
+    includeBoundaryConnects?: boolean
   ) {
     runInAction(() => {
       if (!fromDate && !toDate) {
@@ -106,6 +109,8 @@ export default class MapViewViewModel {
       this.authorityName = authorityName;
       this.reportTypes = reportTypes;
       this.isLive = isLive;
+      this.includeBoundaryConnects =
+        includeBoundaryConnects === undefined ? true : includeBoundaryConnects;
     });
 
     this.fetch();
@@ -128,15 +133,53 @@ export default class MapViewViewModel {
       },
       force
     );
-    runInAction(() => {
-      const events = Array<EventItem>();
 
-      result.items?.forEach(it => {
+    const events = Array<EventItem>();
+
+    result.items?.forEach(it => {
+      if (it.gpsLocation) {
+        const lnglat = it.gpsLocation.split(",");
+
+        try {
+          events.push({
+            id: it.id,
+            type: "report",
+            data: it.rendererData,
+            location: {
+              lat: parseFloat(lnglat[1]),
+              lng: parseFloat(lnglat[0]),
+            },
+            categoryName: it.categoryName || "",
+            categoryIcon: it.categoryIcon,
+            imageUrl: it.imageUrl,
+            createdAt: it.createdAt,
+          });
+        } catch (e) {
+          console.log("Cannot parse (lat,lng) location: " + it.gpsLocation);
+        }
+      }
+    });
+
+    const events2 = Array<EventItem>();
+
+    if (this.includeBoundaryConnects) {
+      const result2 = await this.reportService.fetchBoundaryConnectedReports(
+        1000,
+        0,
+        {
+          fromDate: this.fromDate,
+          throughDate: this.toDate,
+          reportTypes: this.reportTypes,
+        },
+        force
+      );
+
+      result2.items?.forEach(it => {
         if (it.gpsLocation) {
           const lnglat = it.gpsLocation.split(",");
 
           try {
-            events.push({
+            events2.push({
               id: it.id,
               type: "report",
               data: it.rendererData,
@@ -148,13 +191,26 @@ export default class MapViewViewModel {
               categoryIcon: it.categoryIcon,
               imageUrl: it.imageUrl,
               createdAt: it.createdAt,
+              boundaryConnect: true,
             });
           } catch (e) {
             console.log("Cannot parse (lat,lng) location: " + it.gpsLocation);
           }
         }
       });
+    }
+
+    runInAction(() => {
       this.data = events;
+      this.boundaryConnectData = events2.filter(e2 => {
+        // filter out any boundary-connect authority reports
+        // that are already reported in user authority areas
+        return (
+          events.findIndex(e1 => {
+            e1.id === e2.id;
+          }) === -1
+        );
+      });
     });
   }
 

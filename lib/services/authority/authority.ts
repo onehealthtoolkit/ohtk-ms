@@ -4,6 +4,7 @@ export type Authority = {
   code: string;
   area?: PolygonData;
   inherits?: Authority[];
+  boundaryConnects?: Authority[];
 };
 
 export type PolygonData = GeoJSON.Polygon | GeoJSON.MultiPolygon;

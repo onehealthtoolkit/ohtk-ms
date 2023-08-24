@@ -1,5 +1,6 @@
 import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import {
+  BoundaryConnectedReportsDocument,
   ConvertReportToTestReportDocument,
   GetReportDocument,
   ReportsDocument,
@@ -34,6 +35,13 @@ export type ReportFilter = {
 
 export interface IReportService extends IService {
   fetchReports(
+    limit: number,
+    offset: number,
+    filter: ReportFilterData,
+    force?: boolean
+  ): Promise<QueryResult<Report[]>>;
+
+  fetchBoundaryConnectedReports(
     limit: number,
     offset: number,
     filter: ReportFilterData,
@@ -107,6 +115,55 @@ export class ReportService implements IReportService {
     return {
       items,
       totalCount: fetchResult.data.incidentReports?.totalCount,
+    };
+  }
+
+  async fetchBoundaryConnectedReports(
+    limit: number,
+    offset: number,
+    filter: ReportFilterData,
+    force?: boolean
+  ) {
+    this.fetchReportsQuery = {
+      ...this.fetchReportsQuery,
+      authorities: filter.authorities?.map(a => a.id),
+      reportTypes: filter.reportTypes?.map(a => a.id),
+      limit: limit,
+      offset: offset,
+      fromDate: filter.fromDate,
+      throughDate: filter.throughDate,
+      testFlag: filter.includeTest ? undefined : false,
+    };
+    const fetchResult = await this.client.query({
+      query: BoundaryConnectedReportsDocument,
+      variables: this.fetchReportsQuery,
+      fetchPolicy: force ? "network-only" : "cache-first",
+    });
+
+    const items = Array<Report>();
+    fetchResult.data.boundaryConnectedIncidentReports?.results.forEach(item => {
+      if (item) {
+        items.push({
+          id: item.id,
+          createdAt: item.createdAt,
+          incidentDate: item.incidentDate,
+          rendererData: item.rendererData,
+          reportTypeName: item.reportType?.name || "",
+          caseId: item.caseId,
+          gpsLocation: item.gpsLocation,
+          categoryName: item.reportType?.category?.name,
+          categoryIcon: item.reportType?.category?.icon,
+          imageUrl:
+            item.images && item.images.length > 0
+              ? item.images[0]?.thumbnail
+              : null,
+          testFlag: item.testFlag,
+        });
+      }
+    });
+    return {
+      items,
+      totalCount: fetchResult.data.boundaryConnectedIncidentReports?.totalCount,
     };
   }
 

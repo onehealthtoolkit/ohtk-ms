@@ -83,8 +83,10 @@ export type AdminAuthorityCreateResult =
 export type AdminAuthorityCreateSuccess = {
   __typename?: "AdminAuthorityCreateSuccess";
   area?: Maybe<Scalars["GeoJSON"]>;
+  authorityBoundaryConnects: Array<AdminAuthorityCreateSuccess>;
   authorityInherits: Array<AdminAuthorityCreateSuccess>;
   authoritynotificationSet: Array<AdminAuthorityNotificationUpsertSuccess>;
+  boundaryConnects: Array<AdminAuthorityCreateSuccess>;
   cases: Array<CaseType>;
   code: Scalars["String"];
   createdAt: Scalars["DateTime"];
@@ -1451,6 +1453,13 @@ export type AdminUserUploadAvatarMutation = {
   success?: Maybe<Scalars["Boolean"]>;
 };
 
+export type AuthorityBoundaryConnectType = {
+  __typename?: "AuthorityBoundaryConnectType";
+  code: Scalars["String"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
 export type AuthorityInheritType = {
   __typename?: "AuthorityInheritType";
   code: Scalars["String"];
@@ -1461,6 +1470,7 @@ export type AuthorityInheritType = {
 export type AuthorityType = {
   __typename?: "AuthorityType";
   area?: Maybe<Scalars["GeoJSON"]>;
+  boundaryConnects: Array<Maybe<AuthorityBoundaryConnectType>>;
   code: Scalars["String"];
   id: Scalars["ID"];
   inherits: Array<Maybe<AuthorityInheritType>>;
@@ -1923,6 +1933,7 @@ export type Mutation = {
 
 export type MutationAdminAuthorityCreateArgs = {
   area?: InputMaybe<Scalars["String"]>;
+  boundaryConnects?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   code: Scalars["String"];
   inherits?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   name: Scalars["String"];
@@ -1943,6 +1954,7 @@ export type MutationAdminAuthorityNotificationUpsertArgs = {
 
 export type MutationAdminAuthorityUpdateArgs = {
   area?: InputMaybe<Scalars["String"]>;
+  boundaryConnects?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   code: Scalars["String"];
   id: Scalars["ID"];
   inherits?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
@@ -2729,6 +2741,7 @@ export type Query = {
   authorityInheritsDown?: Maybe<Array<AuthorityType>>;
   authorityInheritsDownShallow?: Maybe<Array<AuthorityType>>;
   authorityUser?: Maybe<AuthorityUserType>;
+  boundaryConnectedIncidentReports?: Maybe<IncidentReportTypeNodeConnection>;
   caseDefinitionGet?: Maybe<CaseDefinitionType>;
   caseGet?: Maybe<CaseType>;
   casesQuery?: Maybe<CaseTypeNodeConnection>;
@@ -3010,6 +3023,25 @@ export type QueryAuthorityInheritsDownShallowArgs = {
 
 export type QueryAuthorityUserArgs = {
   id: Scalars["ID"];
+};
+
+export type QueryBoundaryConnectedIncidentReportsArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  before?: InputMaybe<Scalars["String"]>;
+  createdAt_Gte?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_Lte?: InputMaybe<Scalars["DateTime"]>;
+  first?: InputMaybe<Scalars["Int"]>;
+  incidentDate_Gte?: InputMaybe<Scalars["Date"]>;
+  incidentDate_Lte?: InputMaybe<Scalars["Date"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  ordering?: InputMaybe<Scalars["String"]>;
+  relevantAuthorities_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  relevantAuthorities_Name?: InputMaybe<Scalars["String"]>;
+  relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]>;
+  reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
+  testFlag?: InputMaybe<Scalars["Boolean"]>;
 };
 
 export type QueryCaseDefinitionGetArgs = {
@@ -3698,6 +3730,9 @@ export type AuthorityCreateMutationVariables = Exact<{
   inherits?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
   >;
+  boundaryConnects?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
 }>;
 
 export type AuthorityCreateMutation = {
@@ -3727,6 +3762,9 @@ export type AuthorityUpdateMutationVariables = Exact<{
   inherits?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
   >;
+  boundaryConnects?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
 }>;
 
 export type AuthorityUpdateMutation = {
@@ -3753,6 +3791,12 @@ export type AuthorityUpdateMutation = {
             area?: any | null;
             inherits: Array<{
               __typename?: "AuthorityInheritType";
+              id: string;
+              code: string;
+              name: string;
+            } | null>;
+            boundaryConnects: Array<{
+              __typename?: "AuthorityBoundaryConnectType";
               id: string;
               code: string;
               name: string;
@@ -3789,6 +3833,12 @@ export type GetAuthorityQuery = {
     area?: any | null;
     inherits: Array<{
       __typename?: "AuthorityInheritType";
+      id: string;
+      code: string;
+      name: string;
+    } | null>;
+    boundaryConnects: Array<{
+      __typename?: "AuthorityBoundaryConnectType";
       id: string;
       code: string;
       name: string;
@@ -5733,6 +5783,60 @@ export type ReportsQuery = {
   } | null;
 };
 
+export type BoundaryConnectedReportsQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+  fromDate?: InputMaybe<Scalars["DateTime"]>;
+  throughDate?: InputMaybe<Scalars["DateTime"]>;
+  authorities?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
+  reportTypes?: InputMaybe<
+    Array<InputMaybe<Scalars["UUID"]>> | InputMaybe<Scalars["UUID"]>
+  >;
+  testFlag?: InputMaybe<Scalars["Boolean"]>;
+}>;
+
+export type BoundaryConnectedReportsQuery = {
+  __typename?: "Query";
+  boundaryConnectedIncidentReports?: {
+    __typename?: "IncidentReportTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "IncidentReportType";
+      id: any;
+      createdAt: any;
+      incidentDate: any;
+      rendererData: string;
+      caseId?: any | null;
+      gpsLocation?: string | null;
+      testFlag: boolean;
+      reportType?: {
+        __typename?: "ReportTypeType";
+        id: any;
+        name: string;
+        category?: {
+          __typename?: "CategoryType";
+          id: string;
+          name: string;
+          icon?: string | null;
+        } | null;
+      } | null;
+      reportedBy?: {
+        __typename?: "UserType";
+        username: string;
+        firstName: string;
+        lastName: string;
+        telephone?: string | null;
+      } | null;
+      images?: Array<{
+        __typename?: "ImageType";
+        thumbnail?: string | null;
+      } | null> | null;
+    } | null>;
+  } | null;
+};
+
 export type GetReportQueryVariables = Exact<{
   id: Scalars["ID"];
 }>;
@@ -7552,6 +7656,20 @@ export const AuthorityCreateDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "boundaryConnects" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -7590,6 +7708,14 @@ export const AuthorityCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "inherits" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "boundaryConnects" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "boundaryConnects" },
                 },
               },
             ],
@@ -7736,6 +7862,20 @@ export const AuthorityUpdateDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "boundaryConnects" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -7782,6 +7922,14 @@ export const AuthorityUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "inherits" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "boundaryConnects" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "boundaryConnects" },
                 },
               },
             ],
@@ -7835,6 +7983,30 @@ export const AuthorityUpdateDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "inherits" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "code" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "boundaryConnects",
+                                    },
                                     selectionSet: {
                                       kind: "SelectionSet",
                                       selections: [
@@ -8000,6 +8172,18 @@ export const GetAuthorityDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "inherits" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "boundaryConnects" },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
@@ -17608,6 +17792,281 @@ export const ReportsDocument = {
     },
   ],
 } as unknown as DocumentNode<ReportsQuery, ReportsQueryVariables>;
+export const BoundaryConnectedReportsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "BoundaryConnectedReports" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "fromDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "throughDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorities" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypes" },
+          },
+          type: {
+            kind: "ListType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "testFlag" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "boundaryConnectedIncidentReports" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "createdAt_Gte" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "fromDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "createdAt_Lte" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "throughDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "relevantAuthorities_Id_In" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorities" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportType_Id_In" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypes" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "testFlag" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "testFlag" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "incidentDate" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "rendererData" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "caseId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "gpsLocation" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "reportType" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "category" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "icon" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "reportedBy" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "username" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "firstName" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "lastName" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "telephone" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "images" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "thumbnail" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "testFlag" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  BoundaryConnectedReportsQuery,
+  BoundaryConnectedReportsQueryVariables
+>;
 export const GetReportDocument = {
   kind: "Document",
   definitions: [

@@ -11,6 +11,7 @@ export abstract class AuthorityViewModel extends BaseFormViewModel {
   _name: string = "";
   _area?: PolygonData = undefined;
   _authorityInherits: string[] = [];
+  _authorityBoundaryConnects: string[] = [];
 
   constructor(authorityService: IAuthorityService) {
     super();
@@ -18,13 +19,17 @@ export abstract class AuthorityViewModel extends BaseFormViewModel {
       _code: observable,
       _name: observable,
       _authorityInherits: observable,
+      _authorityBoundaryConnects: observable,
       code: computed,
       name: computed,
       authorityInherits: computed,
+      authorityBoundaryConnects: computed,
       save: action,
       validate: action,
       addAuthorityInherits: action,
       removeAuthorityInherits: action,
+      addAuthorityBoundaryConnects: action,
+      removeAuthorityBoundaryConnects: action,
     });
     this.authorityService = authorityService;
   }
@@ -71,6 +76,17 @@ export abstract class AuthorityViewModel extends BaseFormViewModel {
   public set authorityInherits(value: string[]) {
     this._authorityInherits = value;
     delete this.fieldErrors["authorityInherits"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public get authorityBoundaryConnects(): string[] {
+    return this._authorityBoundaryConnects;
+  }
+  public set authorityBoundaryConnects(value: string[]) {
+    this._authorityBoundaryConnects = value;
+    delete this.fieldErrors["authorityBoundaryConnects"];
     if (this.submitError.length > 0) {
       this.submitError = "";
     }
@@ -125,6 +141,24 @@ export abstract class AuthorityViewModel extends BaseFormViewModel {
     const idx = this.authorityInherits.findIndex(it => it === authorityId);
     if (idx > -1) {
       this.authorityInherits.splice(idx, 1);
+    }
+  }
+
+  async addAuthorityBoundaryConnects(authorityId: string) {
+    const idx = this.authorityBoundaryConnects.findIndex(
+      it => it === authorityId
+    );
+    if (idx === -1) {
+      this.authorityBoundaryConnects.push(authorityId);
+    }
+  }
+
+  removeAuthorityBoundaryConnects(authorityId: string) {
+    const idx = this.authorityBoundaryConnects.findIndex(
+      it => it === authorityId
+    );
+    if (idx > -1) {
+      this.authorityBoundaryConnects.splice(idx, 1);
     }
   }
 }

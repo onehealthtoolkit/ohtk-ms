@@ -21,6 +21,7 @@ import { AuthorityUpdateViewModel } from "./updateViewModel";
 import AuthorityInherits from "components/admin/authority/authorityInherits";
 import { toJS } from "mobx";
 import { useTranslation } from "react-i18next";
+import AuthorityBoundaryConnects from "components/admin/authority/authorityBoundaryConnects";
 
 const AuthorityUpdate = () => {
   const router = useRouter();
@@ -79,7 +80,7 @@ const AuthorityUpdate = () => {
     );
   }, [t, viewModel]);
 
-  const inhertitsField = useMemo(
+  const inheritsField = useMemo(
     () => (
       <Observer>
         {() => (
@@ -120,6 +121,31 @@ const AuthorityUpdate = () => {
     [t, viewModel]
   );
 
+  const boundaryConnectsField = useMemo(
+    () => (
+      <Observer>
+        {() => (
+          <Field $size="half">
+            <Label htmlFor="boundaryConnects">
+              {t("form.label.boundaryConnects", "Boundary Connects")}
+            </Label>
+            <AuthorityBoundaryConnects
+              values={viewModel.authorityBoundaryConnects.slice()}
+              onAdd={authorityId =>
+                viewModel.addAuthorityBoundaryConnects(authorityId)
+              }
+              onDelete={authorityId =>
+                viewModel.removeAuthorityBoundaryConnects(authorityId)
+              }
+            />
+            <ErrorText>{viewModel.fieldErrors.boundaryConnects}</ErrorText>
+          </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
   const onSubmit = useCallback(async () => {
     if (await viewModel.save()) {
       router.back();
@@ -132,8 +158,9 @@ const AuthorityUpdate = () => {
         <FieldGroup>
           {codeField}
           {nameField}
-          {inhertitsField}
+          {inheritsField}
           {areaField}
+          {boundaryConnectsField}
         </FieldGroup>
         {viewModel.submitError.length > 0 && (
           <FormMessage>{viewModel.submitError}</FormMessage>

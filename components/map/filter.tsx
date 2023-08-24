@@ -1,12 +1,13 @@
 import { observer } from "mobx-react";
 import React, { Fragment } from "react";
-import { Field, Label } from "components/widgets/forms";
+import { Checkbox, Field, Label } from "components/widgets/forms";
 import DatePicker from "components/widgets/datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import MapViewViewModel from "components/map/viewViewModel";
 import ReportTypeSelect from "components/report/reportTypeSelect";
+import { MapPin } from "components/map/markerIcon";
 
 const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
   const setThisWeek = () => {
@@ -132,6 +133,21 @@ const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
             ];
           }}
         />
+      </Field>
+      <Field $size="full" className="flex items-baseline">
+        <Checkbox
+          id="boundaryConnect"
+          value="1"
+          onChange={evt =>
+            (viewModel.includeBoundaryConnects = evt.target.checked)
+          }
+          defaultChecked={viewModel.includeBoundaryConnects}
+          disabled={false}
+          label={"Includes boundary connects"}
+        />
+        <div className="w-[36px] h-[36px] relative ">
+          <MapPin color="fill-purple-600" />
+        </div>
       </Field>
     </div>
   );

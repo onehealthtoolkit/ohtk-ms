@@ -42,7 +42,8 @@ export interface IAuthorityService extends IService {
     code: string,
     name: string,
     area: PolygonData | undefined,
-    inherits: string[]
+    inherits: string[],
+    boundaryConnects: string[]
   ): Promise<SaveResult<Authority>>;
 
   updateAuthority(
@@ -50,7 +51,8 @@ export interface IAuthorityService extends IService {
     code: string,
     name: string,
     area: PolygonData | undefined,
-    inherits: string[]
+    inherits: string[],
+    boundaryConnects: string[]
   ): Promise<SaveResult<Authority>>;
 
   deleteAuthority(id: string): Promise<DeleteResult>;
@@ -190,12 +192,20 @@ export class AuthorityService implements IAuthorityService {
           name: obj!.name,
         };
       });
+      const boundaryConnects = authority.boundaryConnects?.map(obj => {
+        return {
+          id: obj!.id,
+          code: obj!.code,
+          name: obj!.name,
+        };
+      });
       data = {
         id: authority.id,
         code: authority.code,
         name: authority.name,
         area: authority.area,
         inherits,
+        boundaryConnects,
       };
     }
     return {
@@ -207,7 +217,8 @@ export class AuthorityService implements IAuthorityService {
     code: string,
     name: string,
     area: PolygonData | undefined,
-    inherits: string[]
+    inherits: string[],
+    boundaryConnects: string[]
   ): Promise<SaveResult<Authority>> {
     const createResult = await this.client.mutate({
       mutation: AuthorityCreateDocument,
@@ -216,6 +227,7 @@ export class AuthorityService implements IAuthorityService {
         name,
         area: area && JSON.stringify(area),
         inherits,
+        boundaryConnects,
       },
       refetchQueries: [
         {
@@ -263,7 +275,8 @@ export class AuthorityService implements IAuthorityService {
     code: string,
     name: string,
     area: PolygonData | undefined,
-    inherits: string[]
+    inherits: string[],
+    boundaryConnects: string[]
   ): Promise<SaveResult<Authority>> {
     const updateResult = await this.client.mutate({
       mutation: AuthorityUpdateDocument,
@@ -273,6 +286,7 @@ export class AuthorityService implements IAuthorityService {
         name,
         area: area && JSON.stringify(area),
         inherits,
+        boundaryConnects,
       },
       refetchQueries: [
         {
