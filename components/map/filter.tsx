@@ -7,7 +7,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import MapViewViewModel from "components/map/viewViewModel";
 import ReportTypeSelect from "components/report/reportTypeSelect";
-import { MapPin } from "components/map/markerIcon";
+import { MapPin } from "components/widgets/mapPin";
 
 const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
   const setThisWeek = () => {
