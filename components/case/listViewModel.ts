@@ -1,4 +1,10 @@
-import { action, makeObservable, observable, runInAction } from "mobx";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
 import { Case } from "lib/services/case";
 import { CaseFilterData, ICaseService } from "lib/services/case/caseService";
@@ -27,10 +33,16 @@ export class CaseListViewModel extends BaseViewModel {
   filter: CaseFilterData = initialFilter;
   calendarViewModel = new CaseCalendarViewModel();
   isCalendarView = false;
+  _fromDate?: Date = undefined;
+  _throughDate?: Date = undefined;
 
   constructor(readonly caseService: ICaseService) {
     super();
     makeObservable(this, {
+      _fromDate: observable,
+      _throughDate: observable,
+      fromDate: computed,
+      throughDate: computed,
       data: observable,
       filter: observable,
       setSearchValue: action,
@@ -39,6 +51,22 @@ export class CaseListViewModel extends BaseViewModel {
       isCalendarView: observable,
       switchView: action,
     });
+  }
+
+  public get fromDate() {
+    return this._fromDate;
+  }
+
+  public set fromDate(value: Date | undefined) {
+    this._fromDate = value;
+  }
+
+  public get throughDate() {
+    return this._throughDate;
+  }
+
+  public set throughDate(value: Date | undefined) {
+    this._throughDate = value;
   }
 
   setSearchValue(params: SearchParams) {
@@ -89,7 +117,9 @@ export class CaseListViewModel extends BaseViewModel {
 
   filterReset() {
     this.filter = initialFilter;
-    this.fetch();
+    this.fromDate = undefined;
+    this.throughDate = undefined;
+    this.calendarViewModel.today();
   }
 
   switchView(isCalendarView: boolean) {

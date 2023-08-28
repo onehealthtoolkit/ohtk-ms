@@ -101,8 +101,8 @@ const ReportList = () => {
 
   const applySearch = () => {
     setUrl({
-      fromDate: viewModel.filter.fromDate?.toISOString(),
-      throughDate: viewModel.filter.throughDate?.toISOString(),
+      fromDate: viewModel.fromDate?.toISOString(),
+      throughDate: viewModel.throughDate?.toISOString(),
       offset: viewModel.offset,
       authorities: JSURL.stringify(viewModel.filter.authorities),
       reportTypes: JSURL.stringify(viewModel.filter.reportTypes),
@@ -124,6 +124,7 @@ const ReportList = () => {
             <Filter
               onSearch={applySearch}
               onReset={() => {
+                viewModel.filterReset();
                 resetUrl();
               }}
             >

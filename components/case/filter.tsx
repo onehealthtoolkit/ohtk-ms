@@ -29,16 +29,16 @@ const CaseFilter = ({ viewModel }: { viewModel: CaseListViewModel }) => {
             <Label htmlFor="fromDate">From Date</Label>
             <DatePicker
               id="fromDate"
-              selected={viewModel.filter.fromDate}
-              onChange={(date: Date) => (viewModel.filter.fromDate = date)}
+              selected={viewModel.fromDate}
+              onChange={(date: Date) => (viewModel.fromDate = date)}
             />
           </Field>
           <Field $size="full">
             <Label htmlFor="throughDate">Through Date</Label>
             <DatePicker
               id="throughDate"
-              selected={viewModel.filter.throughDate}
-              onChange={(date: Date) => (viewModel.filter.throughDate = date)}
+              selected={viewModel.throughDate}
+              onChange={(date: Date) => (viewModel.throughDate = date)}
             />
           </Field>
         </>
