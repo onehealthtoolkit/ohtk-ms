@@ -152,6 +152,9 @@ const ExcelFilter: React.FC<ExcelFilterProp> = ({ action, reportType }) => {
         <DownloadButton type="submit">
           {t("form.button.downloadExcel", "Download Excel")}
         </DownloadButton>
+        <DownloadButton type="submit" name="hdf5Format" value="True">
+          {t("form.button.downloadHDF5", "Download HDF5")}
+        </DownloadButton>
       </FormAction>
     </form>
   );
