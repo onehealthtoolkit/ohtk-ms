@@ -44,7 +44,7 @@ const Tooltip: React.FC<Props> = ({ text, children }) => {
         role="tooltip"
         className={`${
           visible ? "visible" : "invisible"
-        }  delay-500 absolute z-10  inline-block px-3 py-2 text-sm font-normal text-white bg-gray-700 rounded-lg shadow-sm opacity-90 tooltip`}
+        }  delay-500 absolute z-[500]  inline-block px-3 py-2 text-sm font-normal text-white bg-gray-700 rounded-lg shadow-sm opacity-90 tooltip`}
       >
         {text}
         <div

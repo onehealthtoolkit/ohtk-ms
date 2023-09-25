@@ -33,7 +33,8 @@
     "resetButton": "ປຸ່ມຣີເຊັດ",
     "placeholder": "ຕົວຍຶດ",
     "listView": "ລາຍການເບິ່ງ",
-    "calendarView": "ປະຕິທິນເບິ່ງ"
+    "calendarView": "ປະຕິທິນເບິ່ງ",
+    "refresh": "ໂຫຼດຫນ້າຈໍຄືນ"
   },
   "table": {
     "id": "id",
