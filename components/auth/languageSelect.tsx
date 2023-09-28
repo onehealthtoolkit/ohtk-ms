@@ -25,6 +25,9 @@ const LanguageSelect = () => {
         <option value="th">ภาษาไทย</option>
         <option value="km">ភាសាខ្មែរ</option>
         <option value="la">ພາສາລາວ</option>
+        <option value="fr">Français</option>
+        <option value="es">Española</option>
+        <option value="mm">မြန်မာ</option>
       </select>
     </div>
   );
