@@ -210,7 +210,7 @@
     "Oct",
     "Nov",
     "Dic"
-  ],  
+  ],
   "days": ["D", "L", "M", "X", "J", "V", "S"],
   "qr": {
     "login": "Iniciar sesión Código QR",

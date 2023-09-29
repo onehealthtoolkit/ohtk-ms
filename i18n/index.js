@@ -5,6 +5,9 @@ import translationEn from "./translations.en.json";
 import translationTh from "./translations.th.json";
 import translationKm from "./translations.km.json";
 import translationLa from "./translations.la.json";
+import translationFr from "./translations.fr.json";
+import translationEs from "./translations.es.json";
+import translationMm from "./translations.mm.json";
 
 export const resources = {
   en: {
@@ -18,6 +21,15 @@ export const resources = {
   },
   la: {
     translation: translationLa,
+  },
+  fr: {
+    translation: translationFr,
+  },
+  es: {
+    translation: translationEs,
+  },
+  mm: {
+    translation: translationMm,
   },
 };
 

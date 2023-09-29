@@ -32,7 +32,8 @@
     "resetButton": "កំណត់ឡើងវិញ",
     "placeholder": "ស្វែងរក",
     "listView": "តុ",
-    "calendarView": "ប្រតិទិន"
+    "calendarView": "ប្រតិទិន",
+    "refresh": "ធ្វើ​ឱ្យ​ស្រស់"
   },
   "table": {
     "id": "ID",

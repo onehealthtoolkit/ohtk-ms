@@ -9,6 +9,8 @@ import { ChevronDownIcon, RefreshIcon } from "@heroicons/react/solid";
 import AuthorityFilter from "./authorityFilter";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import Filter from "components/widgets/filter";
+import Tooltip from "components/widgets/tooltip";
+import { useTranslation } from "react-i18next";
 
 type DashboardFilterProp = {
   viewModel: DashboardViewModel;
@@ -29,6 +31,7 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
   const [toDate, setToDate] = useState<Date | undefined>(viewModel.toDate);
   const [periodText, setPeriodText] = useState<String>();
   const { setUrl, resetUrl } = useUrlParams();
+  const { t } = useTranslation();
 
   const setThisWeek = () => {
     const curr = new Date();
@@ -180,7 +183,9 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
             className="text-blue-400  hover:text-blue-700 focus:outline-none font-medium rounded-full text-sm p-1.5 text-center inline-flex items-center"
             onClick={() => onRefresh()}
           >
-            <RefreshIcon className="h-5 w-5" aria-hidden="true" />
+            <Tooltip text={`${t("filter.refresh", "Refresh")}`}>
+              <RefreshIcon className="h-5 w-5" aria-hidden="true" />
+            </Tooltip>
           </button>
         </div>
       </div>

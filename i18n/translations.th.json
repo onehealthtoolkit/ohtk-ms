@@ -33,7 +33,8 @@
     "resetButton": "รีเซ็ต",
     "placeholder": "ค้นหา",
     "listView": "ตาราง",
-    "calendarView": "ดูปฏิทินงาน"
+    "calendarView": "ดูปฏิทินงาน",
+    "refresh": "รีเฟรช"
   },
   "table": {
     "id": "ไอดี",

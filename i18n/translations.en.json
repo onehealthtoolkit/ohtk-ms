@@ -32,7 +32,8 @@
     "resetButton": "Reset",
     "placeholder": "Search",
     "listView": "List",
-    "calendarView": "Calendar"
+    "calendarView": "Calendar",
+    "refresh": "Refresh"
   },
   "table": {
     "id": "ID",
