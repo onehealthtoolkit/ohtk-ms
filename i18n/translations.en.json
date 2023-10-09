@@ -108,7 +108,12 @@
       "notificationTo": "Contact",
       "contributions": "Contributions",
       "registerFormDefinition": "RegisterForm Definition",
-      "identityTemplate": "Identity Template"
+      "identityTemplate": "Identity Template",
+      "authorityName": "Authority Name",
+      "createdAt": "Created At",
+      "incidentDate": "Incident Date",
+      "data": "Data",
+      "caseType": "Case Type"
     },
     "placeholder": {
       "code": "Code",

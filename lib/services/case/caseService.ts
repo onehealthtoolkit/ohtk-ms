@@ -100,6 +100,9 @@ export class CaseService implements ICaseService {
           reportTypeName: item.report?.reportType?.name,
           isFinished: item.isFinished,
           statusLabel: item.statusLabel || "",
+          authorityName: item.report?.authorities
+            ?.map(item => item?.name)
+            .join(", "),
         });
       }
     });

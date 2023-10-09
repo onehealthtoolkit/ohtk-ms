@@ -108,6 +108,7 @@ export class ReportService implements IReportService {
             item.images && item.images.length > 0
               ? item.images[0]?.thumbnail
               : null,
+          authorityName: item.authorities?.map(item => item?.name).join(", "),
           testFlag: item.testFlag,
         });
       }

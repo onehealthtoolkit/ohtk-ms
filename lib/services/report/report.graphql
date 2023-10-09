@@ -42,6 +42,9 @@ query Reports(
       images {
         thumbnail
       }
+      authorities {
+        name
+      }
       testFlag
     }
   }
