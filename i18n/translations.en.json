@@ -176,10 +176,10 @@
       "edit": "Edit",
       "exportToJson": "Export",
       "qrcodeLogin": "Login QR Code",
-      "formDefinitionQrcode": "Form Definitiion QR Code",
+      "formDefinitionQrcode": "Form Definition QR Code",
       "formSimulation": "Form Simulation",
-      "publishReportType": "Publish ReportTyp",
-      "unPublishReportType": "Un publish ReportType"
+      "publishReportType": "Publish Report Types",
+      "unPublishReportType": "Unpublish Report Types"
     }
   },
   "dialog": {
