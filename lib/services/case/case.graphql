@@ -90,6 +90,9 @@ query GetCase($id: UUID!) {
         id
         telephone
       }
+      authorities {
+        name
+      }
     }
     stateDefinition {
       id

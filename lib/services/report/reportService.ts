@@ -195,6 +195,9 @@ export class ReportService implements IReportService {
         threadId: incidentReport.threadId,
         reportByName: `${incidentReport.reportedBy?.firstName} ${incidentReport.reportedBy?.lastName}`,
         reportByTelephone: incidentReport.reportedBy?.telephone || "",
+        authorityName: incidentReport.authorities
+          ?.map(item => item?.name)
+          .join(", "),
         testFlag: incidentReport.testFlag,
       };
     }

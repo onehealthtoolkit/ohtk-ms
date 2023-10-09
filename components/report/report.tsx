@@ -21,6 +21,7 @@ import ViewActionButtons from "components/widgets/viewActionButtons";
 import FollowupList from "./followup/list";
 import { formatYmdt } from "lib/datetime";
 import TestLabel from "./testLabel";
+import { useTranslation } from "react-i18next";
 
 export const PromoteToCaseButton = tw.button`
   px-4 
@@ -53,26 +54,36 @@ const ReportLocation = dynamic(() => import("../case/reportMap"), {
 
 const ReportInformation = observer(
   ({ viewModel }: { viewModel: ReportViewModel }) => {
+    const { t } = useTranslation();
+
     return (
       <div className="relative overflow-x-auto md:w-1/2 w-full">
         <table className="table-fixed border w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <tbody>
             <TR
-              label="Created at"
+              label={t("form.label.createdAt", "Created At")}
               value={formatYmdt(viewModel.data?.createdAt)}
             />
 
             <TR
-              label="Incident date"
+              label={t("form.label.incidentDate", "Incident Date")}
               value={viewModel.data?.incidentDate?.toString() || ""}
             />
 
             <TR
-              label="Report type"
+              label={t("form.label.reportType", "Report Type")}
               value={viewModel.data?.reportTypeName || ""}
             />
 
-            <TR label="Report by" value={viewModel.data?.reportByName || ""} />
+            <TR
+              label={t("form.label.reportBy", "Report by")}
+              value={viewModel.data?.reportByName || ""}
+            />
+
+            <TR
+              label={t("form.label.authorityName", "Authority Name")}
+              value={viewModel.data?.authorityName || ""}
+            />
 
             <TR
               label="Phone number"
@@ -118,6 +129,8 @@ const Report = (props: { id: string }) => {
   const router = useRouter();
   const services = useServices();
   const [viewModel, setViewModel] = useState<ReportViewModel | undefined>();
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setViewModel(
@@ -185,7 +198,8 @@ const Report = (props: { id: string }) => {
               <div>
                 <div className="flex gap-2">
                   <p className="text-md dark:text-gray-400 ">
-                    Report type: {viewModel.data.reportTypeName}
+                    {t("form.label.reportType", "Report Type")}:{" "}
+                    {viewModel.data.reportTypeName}
                   </p>
                   <CaseLink caseId={viewModel.data.caseId} />
                   <TestLabel isTest={viewModel.data.testFlag} />

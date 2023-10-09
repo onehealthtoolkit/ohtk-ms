@@ -167,6 +167,9 @@ export class CaseService implements ICaseService {
         states: incidentCase.states,
         outbreakInfo: incidentCase.outbreakPlanInfo,
         statusLabel: incidentCase.statusLabel || "",
+        authorityName: incidentCase.report?.authorities
+          ?.map(item => item?.name)
+          .join(", "),
       };
     }
     return {

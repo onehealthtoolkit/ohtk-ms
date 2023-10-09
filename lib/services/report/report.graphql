@@ -142,6 +142,9 @@ query GetReport($id: ID!) {
     }
     testFlag
     definition
+    authorities {
+      name
+    }
   }
 }
 

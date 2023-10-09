@@ -3958,6 +3958,10 @@ export type GetCaseQuery = {
         id: string;
         telephone?: string | null;
       } | null;
+      authorities?: Array<{
+        __typename?: "AuthorityType";
+        name: string;
+      } | null> | null;
     } | null;
     stateDefinition?: {
       __typename?: "DeepStateDefinitionType";
@@ -5899,6 +5903,10 @@ export type GetReportQuery = {
       id: string;
       telephone?: string | null;
     } | null;
+    authorities?: Array<{
+      __typename?: "AuthorityType";
+      name: string;
+    } | null> | null;
   } | null;
 };
 
@@ -8654,6 +8662,19 @@ export const GetCaseDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "telephone" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "authorities" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
                             },
                           ],
                         },
@@ -18247,6 +18268,16 @@ export const GetReportDocument = {
                 },
                 { kind: "Field", name: { kind: "Name", value: "testFlag" } },
                 { kind: "Field", name: { kind: "Name", value: "definition" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "authorities" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
               ],
             },
           },
