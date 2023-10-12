@@ -108,6 +108,7 @@ export class ReportService implements IReportService {
             item.images && item.images.length > 0
               ? item.images[0]?.thumbnail
               : null,
+          authorityName: item.authorities?.map(item => item?.name).join(", "),
           testFlag: item.testFlag,
         });
       }
@@ -194,6 +195,9 @@ export class ReportService implements IReportService {
         threadId: incidentReport.threadId,
         reportByName: `${incidentReport.reportedBy?.firstName} ${incidentReport.reportedBy?.lastName}`,
         reportByTelephone: incidentReport.reportedBy?.telephone || "",
+        authorityName: incidentReport.authorities
+          ?.map(item => item?.name)
+          .join(", "),
         testFlag: incidentReport.testFlag,
       };
     }

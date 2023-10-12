@@ -12,6 +12,7 @@ export type Report = {
   categoryName?: string | null;
   categoryIcon?: string | null;
   imageUrl?: string | null;
+  authorityName?: string;
   testFlag: boolean;
 };
 

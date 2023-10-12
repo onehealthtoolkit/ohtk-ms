@@ -17,6 +17,7 @@ export type Case = {
   threadId?: number | null;
   gpsLocation?: string | null;
   reportId?: number;
+  authorityName?: string;
 };
 
 export type CaseDetail = Case & {

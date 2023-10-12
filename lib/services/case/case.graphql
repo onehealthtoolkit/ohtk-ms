@@ -33,6 +33,9 @@ query Cases(
           lastName
           telephone
         }
+        authorities {
+          name
+        }
       }
     }
   }
@@ -86,6 +89,9 @@ query GetCase($id: UUID!) {
         lastName
         id
         telephone
+      }
+      authorities {
+        name
       }
     }
     stateDefinition {

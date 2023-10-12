@@ -108,7 +108,12 @@
       "longitude": "ลองจิจูด",
       "notificationTo": "แจ้งเตือนถึง",
       "registerFormDefinition": "ฟอร์มการลงทะเบียน",
-      "identityTemplate": "แม่แบบเอกลักษณ์"
+      "identityTemplate": "แม่แบบเอกลักษณ์",
+      "authorityName": "หน่วยงาน",
+      "createdAt": "วันที่สร้าง",
+      "incidentDate": "วันที่เกิดเหตุ",
+      "data": "ข้อมูล",
+      "caseType": "ประเภทรายงาน"
     },
     "placeholder": {
       "code": "รหัส",

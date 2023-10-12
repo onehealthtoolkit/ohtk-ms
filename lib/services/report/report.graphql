@@ -42,6 +42,9 @@ query Reports(
       images {
         thumbnail
       }
+      authorities {
+        name
+      }
       testFlag
     }
   }
@@ -139,6 +142,9 @@ query GetReport($id: ID!) {
     }
     testFlag
     definition
+    authorities {
+      name
+    }
   }
 }
 

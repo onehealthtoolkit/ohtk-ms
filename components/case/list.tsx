@@ -87,6 +87,7 @@ const CaseList = () => {
   const router = useRouter();
   const { caseService } = useServices();
   const { setUrl, query, resetUrl } = useUrlParams();
+  const { t } = useTranslation();
 
   const [viewModel] = useState<CaseListViewModel>(() => {
     return new CaseListViewModel(caseService);
@@ -158,21 +159,25 @@ const CaseList = () => {
                 <Table
                   columns={[
                     {
-                      label: "Created At",
+                      label: t("form.label.createdAt", "Created At"),
                       get: record =>
                         formatDateTime(record.createdAt, router.locale),
                     },
                     {
-                      label: "Incident Date",
+                      label: t("form.label.incidentDate", "Incident Date"),
                       get: record =>
                         formatDate(record.incidentDate, router.locale),
                     },
                     {
-                      label: "Case Type",
+                      label: t("form.label.caseType", "Case Type"),
                       get: record => record.reportTypeName,
                     },
                     {
-                      label: "Data",
+                      label: t("form.label.authorityName", "Authority Name"),
+                      get: record => record.authorityName,
+                    },
+                    {
+                      label: t("form.label.data", "Data"),
                       get: record => record.rendererData,
                     },
                     {

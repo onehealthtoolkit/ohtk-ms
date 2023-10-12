@@ -27,6 +27,7 @@ import FollowupList from "components/report/followup/list";
 import { useRouter } from "next/router";
 import ReportLocationMapDialog from "components/case/reportMapDialog";
 import { toJS } from "mobx";
+import { useTranslation } from "react-i18next";
 
 const ReportMap = dynamic(() => import("./reportMap"), {
   loading: () => <p>A map is loading</p>,
@@ -35,22 +36,31 @@ const ReportMap = dynamic(() => import("./reportMap"), {
 
 const ReportInformation = observer(
   ({ viewModel }: { viewModel: CaseViewModel }) => {
+    const { t } = useTranslation();
+
     return (
       <div className="relative overflow-x-auto md:w-1/2 w-full">
         <table className="table-fixed border w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <tbody>
             <TR
-              label="Created at"
+              label={t("form.label.createdAt", "Created At")}
               value={formatYmdt(viewModel.data?.createdAt)}
             />
 
             <TR
-              label="Incident date"
+              label={t("form.label.incidentDate", "Incident Date")}
               value={viewModel.data?.incidentDate?.toString() || ""}
             />
 
-            <TR label="Report by" value={viewModel.data?.reportByName || ""} />
+            <TR
+              label={t("form.label.reportBy", "Report by")}
+              value={viewModel.data?.reportByName || ""}
+            />
 
+            <TR
+              label={t("form.label.authorityName", "Authority Name")}
+              value={viewModel.data?.authorityName || ""}
+            />
             <TR
               label="Phone number"
               value={viewModel.data?.reportByTelephone || ""}
@@ -102,6 +112,7 @@ const Case = (props: { id: string }) => {
       outbreakService
     )
   );
+  const { t } = useTranslation();
 
   const setUrl = useCallback(
     (query: Record<string, string>) => {
@@ -130,7 +141,8 @@ const Case = (props: { id: string }) => {
               <div>
                 <div className="flex gap-2">
                   <p className="text-md dark:text-gray-400 ">
-                    Report type: {viewModel.data.reportTypeName}
+                    {t("form.label.reportType", "Report Type")}:{" "}
+                    {viewModel.data.reportTypeName}
                   </p>
                   <CaseStatus
                     isFinished={viewModel.data.isFinished}

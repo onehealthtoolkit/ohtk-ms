@@ -108,7 +108,12 @@
       "notificationTo": "Contact",
       "contributions": "Contributions",
       "registerFormDefinition": "RegisterForm Definition",
-      "identityTemplate": "Identity Template"
+      "identityTemplate": "Identity Template",
+      "authorityName": "Authority Name",
+      "createdAt": "Created At",
+      "incidentDate": "Incident Date",
+      "data": "Data",
+      "caseType": "Case Type"
     },
     "placeholder": {
       "code": "Code",
@@ -171,10 +176,10 @@
       "edit": "Edit",
       "exportToJson": "Export",
       "qrcodeLogin": "Login QR Code",
-      "formDefinitionQrcode": "Form Definitiion QR Code",
+      "formDefinitionQrcode": "Form Definition QR Code",
       "formSimulation": "Form Simulation",
-      "publishReportType": "Publish ReportTyp",
-      "unPublishReportType": "Un publish ReportType"
+      "publishReportType": "Publish Report Types",
+      "unPublishReportType": "Unpublish Report Types"
     }
   },
   "dialog": {
@@ -215,6 +220,6 @@
   "days": ["s", "m", "t", "w", "t", "f", "s"],
   "qr": {
     "login": "Login QR Code",
-    "reportTypeFormDefinition": "Form Definitiion QR Code"
+    "reportTypeFormDefinition": "Form Definition QR Code"
   }
 }

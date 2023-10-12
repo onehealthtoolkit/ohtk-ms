@@ -3209,6 +3209,7 @@ export type QueryObservationSubjectsArgs = {
   limit?: InputMaybe<Scalars["Int"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryObservationSubjectsInBoundedArgs = {
@@ -3886,6 +3887,10 @@ export type CasesQuery = {
           lastName: string;
           telephone?: string | null;
         } | null;
+        authorities?: Array<{
+          __typename?: "AuthorityType";
+          name: string;
+        } | null> | null;
       } | null;
     } | null>;
   } | null;
@@ -3953,6 +3958,10 @@ export type GetCaseQuery = {
         id: string;
         telephone?: string | null;
       } | null;
+      authorities?: Array<{
+        __typename?: "AuthorityType";
+        name: string;
+      } | null> | null;
     } | null;
     stateDefinition?: {
       __typename?: "DeepStateDefinitionType";
@@ -5779,6 +5788,10 @@ export type ReportsQuery = {
         __typename?: "ImageType";
         thumbnail?: string | null;
       } | null> | null;
+      authorities?: Array<{
+        __typename?: "AuthorityType";
+        name: string;
+      } | null> | null;
     } | null>;
   } | null;
 };
@@ -5890,6 +5903,10 @@ export type GetReportQuery = {
       id: string;
       telephone?: string | null;
     } | null;
+    authorities?: Array<{
+      __typename?: "AuthorityType";
+      name: string;
+    } | null> | null;
   } | null;
 };
 
@@ -8417,6 +8434,19 @@ export const CasesDocument = {
                                 ],
                               },
                             },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "authorities" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                ],
+                              },
+                            },
                           ],
                         },
                       },
@@ -8632,6 +8662,19 @@ export const GetCaseDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "telephone" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "authorities" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
                             },
                           ],
                         },
@@ -17779,6 +17822,19 @@ export const ReportsDocument = {
                       },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "authorities" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "testFlag" },
                       },
                     ],
@@ -18212,6 +18268,16 @@ export const GetReportDocument = {
                 },
                 { kind: "Field", name: { kind: "Name", value: "testFlag" } },
                 { kind: "Field", name: { kind: "Name", value: "definition" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "authorities" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
               ],
             },
           },
