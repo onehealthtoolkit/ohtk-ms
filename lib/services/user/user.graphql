@@ -1,8 +1,17 @@
-query Users($limit: Int!, $offset: Int!, $q: String, $ordering: String) {
+query Users(
+  $limit: Int!
+  $offset: Int!
+  $q: String
+  $authorities: [String]
+  $role: String
+  $ordering: String
+) {
   adminAuthorityUserQuery(
     limit: $limit
     offset: $offset
     q: $q
+    authorities: $authorities
+    role: $role
     ordering: $ordering
   ) {
     totalCount

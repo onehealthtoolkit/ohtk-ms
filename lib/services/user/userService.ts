@@ -19,12 +19,15 @@ import {
   SaveResult,
 } from "lib/services/interface";
 import { Contribution } from ".";
+import { Authority } from "../authority";
 
 export interface IUserService extends IService {
   fetchUsers(
     limit: number,
     offset: number,
     searchText: string,
+    authorities?: Pick<Authority, "id" | "code" | "name">[],
+    role?: string,
     force?: boolean
   ): Promise<QueryResult<User[]>>;
 
@@ -81,6 +84,8 @@ export class UserService implements IUserService {
     limit: number,
     offset: number,
     searchText: string,
+    authorities?: Pick<Authority, "id" | "code" | "name">[],
+    role?: string,
     force?: boolean
   ) {
     this.fetchUsersQuery = {
@@ -88,6 +93,8 @@ export class UserService implements IUserService {
       limit,
       offset,
       q: searchText,
+      authorities: authorities?.map(a => a.id),
+      role: role,
     };
 
     const fetchResult = await this.client.query({
