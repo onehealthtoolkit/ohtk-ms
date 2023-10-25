@@ -10,23 +10,34 @@ import { IReportService } from "lib/services/report";
 import { ReportDetail } from "lib/services/report/report";
 import { ICaseService } from "lib/services/case";
 import { GalleryDialogViewModel } from "components/widgets/dialogs/galleryDialogViewModel";
+import { ReportMapDialogViewModel } from "components/case/reportMapDialogViewModel";
+import { OutbreakPlace } from "lib/services/outbreak/outbreak";
+import { IOutbreakService } from "lib/services/outbreak/outbreakService";
+import { OutbreakZone } from "components/case/caseViewModel";
+import { CaseDetail } from "lib/services/case/case";
+import { FetchPolicy } from "@apollo/client";
 
 export class ReportViewModel extends BaseViewModel {
   data: ReportDetail = {} as ReportDetail;
+  caseData: CaseDetail = {} as CaseDetail;
   id: string;
   galleryViewModel?: GalleryDialogViewModel = undefined;
 
   _activeTabIndex: number = 0;
   _converting: boolean = false;
+  reportMapViewModel?: ReportMapDialogViewModel = undefined;
+  outbreakPlaces: OutbreakPlace[] = [];
 
   constructor(
     id: string,
     readonly reportService: IReportService,
-    readonly caseService: ICaseService
+    readonly caseService: ICaseService,
+    readonly outbreakService: IOutbreakService
   ) {
     super();
     makeObservable(this, {
       data: observable,
+      caseData: observable,
       fetch: action,
       promoteToCase: action,
       galleryViewModel: observable,
@@ -40,6 +51,7 @@ export class ReportViewModel extends BaseViewModel {
       shouldDisplayPromoteToCase: computed,
       imageUrlMap: computed,
       fileUrlMap: computed,
+      reportMapViewModel: observable,
     });
     this.id = id;
     this.fetch();
@@ -86,6 +98,22 @@ export class ReportViewModel extends BaseViewModel {
       runInAction(() => {
         this.data = data;
       });
+      if (data.caseId) {
+        this.fetchCase(data.caseId);
+      }
+    }
+    this.isLoading = false;
+  }
+
+  async fetchCase(caseId: string, policy?: FetchPolicy) {
+    this.isLoading = true;
+    const data = (await this.caseService.getCase(caseId, policy)).data;
+    if (data) {
+      runInAction(() => {
+        this.caseData = data;
+      });
+
+      this.fetchOutbreakPlaces();
     }
     this.isLoading = false;
   }
@@ -130,5 +158,38 @@ export class ReportViewModel extends BaseViewModel {
 
   get shouldDisplayPromoteToCase() {
     return !this.data.caseId && this.data.testFlag == false;
+  }
+
+  async fetchOutbreakPlaces() {
+    if (this.caseData.outbreakInfo) {
+      const result = await this.outbreakService.fecthOutbreakPlaces(
+        this.caseData.id
+      );
+      if (result.items) {
+        this.outbreakPlaces = result.items;
+      }
+    }
+  }
+
+  get outbreakInfo(): OutbreakZone[] | undefined {
+    let zones: OutbreakZone[] | undefined;
+    if (this.caseData.outbreakInfo) {
+      try {
+        zones = JSON.parse(this.caseData.outbreakInfo).zones;
+      } catch (_) {
+        console.log("Error parsing outbreak plan info");
+      }
+    }
+    return zones;
+  }
+
+  openReportMap(caseId: string) {
+    console.log(caseId);
+    this.reportMapViewModel = new ReportMapDialogViewModel(
+      this.outbreakService,
+      caseId,
+      this.outbreakPlaces
+    );
+    this.reportMapViewModel.open(null);
   }
 }
