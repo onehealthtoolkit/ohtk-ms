@@ -69,7 +69,9 @@ const UserFilter = ({ viewModel }: { viewModel: AdminUserListViewModel }) => {
       {() => (
         <div className="w-full">
           <Field $size="full">
-            <Label htmlFor="throughDate">Authority</Label>
+            <Label htmlFor="throughDate">
+              {t("form.label.authority", "Authority")}
+            </Label>
             <AsyncSelect
               cacheOptions
               value={viewModel.authoritiesSearch}
