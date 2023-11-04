@@ -10,11 +10,13 @@ import { Authority } from "lib/services/authority";
 import { runInAction } from "mobx";
 import ReportTypeSelect from "./reportTypeSelect";
 import { styledReactSelect } from "components/widgets/styledReactSelect";
+import { useTranslation } from "react-i18next";
 
 export const defaultOptions: Authority[] = [];
 
 const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
   const { authorityService } = useServices();
+  const { t } = useTranslation();
 
   const loadAuthorityOptions = (inputValue: string) =>
     authorityService
@@ -26,7 +28,9 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
       {!viewModel.isCalendarView && (
         <>
           <Field $size="full">
-            <Label htmlFor="fromDate">From Date</Label>
+            <Label htmlFor="fromDate">
+              {t("form.label.fromDate", "Form Date")}
+            </Label>
             <DatePicker
               id="fromDate"
               selected={viewModel.fromDate}
@@ -34,7 +38,9 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
             />
           </Field>
           <Field $size="full">
-            <Label htmlFor="throughDate">Through Date</Label>
+            <Label htmlFor="throughDate">
+              {t("form.label.throughDate", "Through Date")}
+            </Label>
             <DatePicker
               id="throughDate"
               selected={viewModel.throughDate}
@@ -44,7 +50,9 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
         </>
       )}
       <Field $size="full">
-        <Label htmlFor="throughDate">Authority</Label>
+        <Label htmlFor="throughDate">
+          {t("form.label.authority", "Authority")}
+        </Label>
         <AsyncSelect
           cacheOptions
           value={viewModel.filter.authorities}
@@ -63,7 +71,9 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
         />
       </Field>
       <Field $size="full">
-        <Label htmlFor="throughDate">Report type</Label>
+        <Label htmlFor="throughDate">
+          {t("form.label.reportType", "Report Type")}
+        </Label>
         <ReportTypeSelect
           value={viewModel.filter.reportTypes}
           onChange={values => {

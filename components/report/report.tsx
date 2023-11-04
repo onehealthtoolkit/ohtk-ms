@@ -22,6 +22,8 @@ import FollowupList from "./followup/list";
 import { formatYmdt } from "lib/datetime";
 import TestLabel from "./testLabel";
 import { useTranslation } from "react-i18next";
+import { ArrowsExpandIcon } from "@heroicons/react/solid";
+import ReportLocationMapDialog from "components/case/reportMapDialog";
 
 export const PromoteToCaseButton = tw.button`
   px-4 
@@ -137,7 +139,8 @@ const Report = (props: { id: string }) => {
       new ReportViewModel(
         id as string,
         services.reportService,
-        services.caseService
+        services.caseService,
+        services.outbreakService
       )
     );
   }, [setViewModel, id, services]);
@@ -212,8 +215,18 @@ const Report = (props: { id: string }) => {
 
               <div className="flex flex-row gap-2 md:flex-nowrap flex-wrap ">
                 <ReportInformation viewModel={viewModel} />
-                <div className="md:w-1/2 w-full h-[300px] md:h-auto">
+                <div className="md:w-1/2 w-full h-[300px] md:h-auto relative">
                   <ReportLocation lnglat={viewModel.data.gpsLocation} />
+                  <div
+                    className={`bg-red absolute top-3 right-3 p-2 z-[1001] hover:bg-gray-50
+                      border border-gray-400 rounded bg-white cursor-pointer
+                    `}
+                    onClick={() =>
+                      viewModel.openReportMap(viewModel.data.caseId || "")
+                    }
+                  >
+                    <ArrowsExpandIcon className="w-5 h-5 " />
+                  </div>
                 </div>
               </div>
 
@@ -288,7 +301,11 @@ const Report = (props: { id: string }) => {
               )}
 
               <GalleryDialog viewModel={viewModel.galleryViewModel} />
-
+              <ReportLocationMapDialog
+                viewModel={viewModel.reportMapViewModel}
+                lnglat={viewModel.data.gpsLocation}
+                zones={viewModel.outbreakInfo}
+              />
               <ViewActionButtons />
             </>
           </MaskingLoader>

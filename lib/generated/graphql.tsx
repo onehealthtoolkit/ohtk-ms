@@ -1576,6 +1576,8 @@ export type CheckInvitationCodeType = {
   __typename?: "CheckInvitationCodeType";
   authority: AdminAuthorityCreateSuccess;
   code: Scalars["String"];
+  generatedEmail?: Maybe<Scalars["String"]>;
+  generatedUsername?: Maybe<Scalars["String"]>;
 };
 
 export type ClientType = {
@@ -2822,6 +2824,7 @@ export type QueryAdminAuthorityQueryArgs = {
 
 export type QueryAdminAuthorityUserQueryArgs = {
   after?: InputMaybe<Scalars["String"]>;
+  authorities?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   before?: InputMaybe<Scalars["String"]>;
   first?: InputMaybe<Scalars["Int"]>;
   last?: InputMaybe<Scalars["Int"]>;
@@ -2829,6 +2832,7 @@ export type QueryAdminAuthorityUserQueryArgs = {
   offset?: InputMaybe<Scalars["Int"]>;
   ordering?: InputMaybe<Scalars["String"]>;
   q?: InputMaybe<Scalars["String"]>;
+  role?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryAdminCaseDefinitionQueryArgs = {
@@ -6873,6 +6877,10 @@ export type UsersQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
   q?: InputMaybe<Scalars["String"]>;
+  authorities?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
+  role?: InputMaybe<Scalars["String"]>;
   ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
@@ -23112,6 +23120,25 @@ export const UsersDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
+            name: { kind: "Name", value: "authorities" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "role" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
             name: { kind: "Name", value: "ordering" },
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
@@ -23144,6 +23171,22 @@ export const UsersDocument = {
                 kind: "Argument",
                 name: { kind: "Name", value: "q" },
                 value: { kind: "Variable", name: { kind: "Name", value: "q" } },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "authorities" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorities" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "role" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "role" },
+                },
               },
               {
                 kind: "Argument",

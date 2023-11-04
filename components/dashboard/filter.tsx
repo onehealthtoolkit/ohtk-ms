@@ -140,7 +140,9 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
         </Menu>
       </div>
       <Field $size="full">
-        <Label htmlFor="fromDate">From Date</Label>
+        <Label htmlFor="fromDate">
+          {t("form.label.fromDate", "Form Date")}
+        </Label>
         <DatePicker
           id="fromDate"
           selected={fromDate}
@@ -148,7 +150,9 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
         />
       </Field>
       <Field $size="full">
-        <Label htmlFor="toDate">To Date</Label>
+        <Label htmlFor="toDate">
+          {t("form.label.throughDate", "Through Date")}
+        </Label>
         <DatePicker
           id="toDate"
           selected={toDate}
@@ -156,7 +160,9 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
         />
       </Field>
       <Field $size="full">
-        <Label htmlFor="toDate">Authority</Label>
+        <Label htmlFor="authority">
+          {t("form.label.authority", "Authority")}
+        </Label>
         <AuthorityFilter
           value={{
             id: viewModel.authorityId.toString(),

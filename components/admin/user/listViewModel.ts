@@ -1,26 +1,38 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
 import { IUserService, User } from "lib/services/user";
+import { Authority } from "lib/services/authority";
 
 export class AdminUserListViewModel extends BaseViewModel {
   data: User[] = [];
 
   nameSearch: string = "";
+  roleSearch: string = "";
+  authoritiesSearch: Pick<Authority, "id" | "code" | "name">[] = [];
 
   constructor(readonly userService: IUserService) {
     super();
     makeObservable(this, {
       data: observable,
       nameSearch: observable,
+      roleSearch: observable,
+      authoritiesSearch: observable,
       setSearchValue: action,
       clearNameSearch: action,
       fetch: action,
     });
   }
 
-  setSearchValue(nameSearch: string = "", offset: number = 0) {
+  setSearchValue(
+    nameSearch: string = "",
+    authoritiesSearch: Pick<Authority, "id" | "code" | "name">[],
+    roleSearch: string,
+    offset: number = 0
+  ) {
     this.nameSearch = nameSearch;
     this.offset = offset;
+    this.authoritiesSearch = authoritiesSearch;
+    this.roleSearch = roleSearch;
     this.fetch();
   }
 
@@ -34,6 +46,8 @@ export class AdminUserListViewModel extends BaseViewModel {
       this.limit,
       this.offset,
       this.nameSearch,
+      this.authoritiesSearch,
+      this.roleSearch,
       force
     );
     runInAction(() => {

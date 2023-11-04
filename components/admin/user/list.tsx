@@ -7,7 +7,7 @@ import Filter from "./filter";
 import { AdminUserListViewModel } from "./listViewModel";
 import ErrorDisplay from "components/widgets/errorDisplay";
 import Link from "next/link";
-import { AddButton } from "components/widgets/forms";
+import { AddButton, Field, Label, Select } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import Paginate from "components/widgets/table/paginate";
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
@@ -20,6 +20,13 @@ import { AccountsAuthorityUserRoleChoices } from "lib/generated/graphql";
 import { KeyIcon, QrcodeIcon } from "@heroicons/react/solid";
 import QrcodeDialog from "components/admin/user/qrcodeDialog";
 import Tooltip from "components/widgets/tooltip";
+import OptionFilter from "components/widgets/filter";
+import AsyncSelect from "react-select/async";
+import { styledReactSelect } from "components/widgets/styledReactSelect";
+import { Authority } from "lib/services/authority";
+import useStore from "lib/store";
+import { runInAction } from "mobx";
+const JSURL = require("jsurl");
 
 export const getRoleName = (role: string) => {
   switch (role) {
@@ -39,8 +46,79 @@ export const getRoleName = (role: string) => {
 const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
     q: query.q as string,
+    authorities: query.authorities ? JSURL.parse(query.authorities) : [],
+    role: query.role as string,
     offset: query.offset ? parseInt(query.offset as string) : 0,
   };
+};
+
+const defaultOptions: Authority[] = [];
+
+const UserFilter = ({ viewModel }: { viewModel: AdminUserListViewModel }) => {
+  const { authorityService } = useServices();
+  const store = useStore();
+  const { t } = useTranslation();
+
+  const loadAuthorityOptions = (inputValue: string) =>
+    authorityService
+      .lookupAuthorities(100, 0, inputValue)
+      .then(result => (result.items ? result.items : []));
+
+  return (
+    <Observer>
+      {() => (
+        <div className="w-full">
+          <Field $size="full">
+            <Label htmlFor="throughDate">
+              {t("form.label.authority", "Authority")}
+            </Label>
+            <AsyncSelect
+              cacheOptions
+              value={viewModel.authoritiesSearch}
+              defaultOptions={defaultOptions}
+              loadOptions={loadAuthorityOptions}
+              placeholder="type to select"
+              isMulti={true}
+              getOptionValue={item => item.id}
+              getOptionLabel={item => item.name}
+              styles={styledReactSelect}
+              onChange={values => {
+                runInAction(() => {
+                  viewModel.authoritiesSearch = [...values];
+                });
+              }}
+            />
+          </Field>
+          <Field $size="full">
+            <Label htmlFor="role">{t("form.label.role", "Role")}</Label>
+            <Select
+              id="role"
+              onChange={evt => {
+                viewModel.roleSearch = evt.target.value;
+              }}
+              placeholder={t("form.placeholder.role", "Role")}
+              disabled={viewModel.isSubmitting}
+              value={viewModel.roleSearch}
+              required
+            >
+              <option value="">All</option>
+              <option value={AccountsAuthorityUserRoleChoices.Rep}>
+                Reporter
+              </option>
+              <option value={AccountsAuthorityUserRoleChoices.Ofc}>
+                Officer
+              </option>
+              {(store.isRoleAdmin || store.isSuperUser) && (
+                <option value={AccountsAuthorityUserRoleChoices.Adm}>
+                  Admin
+                </option>
+              )}
+            </Select>
+          </Field>
+        </div>
+      )}
+    </Observer>
+  );
 };
 
 const UserList = () => {
@@ -58,7 +136,12 @@ const UserList = () => {
   useEffect(() => {
     if (router.isReady) {
       const filter = parseUrlParams(query);
-      viewModel.setSearchValue(filter.q, filter.offset);
+      viewModel.setSearchValue(
+        filter.q,
+        filter.authorities,
+        filter.role,
+        filter.offset
+      );
     }
   }, [query, viewModel, router.isReady]);
 
@@ -70,6 +153,9 @@ const UserList = () => {
     if (Number.isInteger(offset)) {
       filter.offset = offset!;
     }
+    filter.authorities = JSURL.stringify(viewModel.authoritiesSearch);
+    filter.role = viewModel.roleSearch;
+    console.log("applySearch", filter);
     setUrl(filter);
   };
 
@@ -81,6 +167,20 @@ const UserList = () => {
       {() => (
         <div>
           <div className="flex items-center flex-wrap mb-4 gap-2">
+            <div className="mr-3">
+              <OptionFilter
+                onSearch={() =>
+                  applySearch({ q: viewModel.nameSearch, offset: 0 })
+                }
+                popPositionClass="left-0"
+                onReset={() => {
+                  resetUrl();
+                }}
+              >
+                <UserFilter viewModel={viewModel}></UserFilter>
+              </OptionFilter>
+            </div>
+
             <TotalItem
               totalCount={viewModel.totalCount}
               onRefresh={() => viewModel.fetch(true)}
