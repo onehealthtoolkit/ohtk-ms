@@ -101,9 +101,17 @@ export class ReportListViewModel extends BaseViewModel {
 
   async fetch(force?: boolean): Promise<void> {
     this.isLoading = true;
+
+    let limit = this.limit;
+    let offset = this.offset;
+    if (this.isCalendarView) {
+      limit = 500;
+      offset = 0;
+    }
+
     const result = await this.reportService.fetchReports(
-      this.limit,
-      this.offset,
+      limit,
+      offset,
       this.filter,
       force
     );
