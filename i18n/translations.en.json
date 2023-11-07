@@ -190,7 +190,8 @@
       "confirmDelete": "Confirm Delete",
       "confirmPublishReportType": "Publish this report to mobile application.",
       "confirmUnpublishReportType": "Unpublish this report from moible application.",
-      "confirmTransition": "Are you want to change status to  {{stepName}} ?"
+      "confirmTransition": "Are you want to change status to  {{stepName}} ?",
+      "confirmConvertToTest": "Would like to change this report to test report?"
     }
   },
   "title": {
@@ -221,5 +222,14 @@
   "qr": {
     "login": "Login QR Code",
     "reportTypeFormDefinition": "Form Definition QR Code"
+  },
+  "status": {
+    "case": "case",
+    "suspectedOutbreak": "suspected outbreak",
+    "outbreak": "outbreak",
+    "actions": {
+      "promoteToCase": "Promote to case",
+      "convertToTest": "Convert to test report"
+    }
   }
 }

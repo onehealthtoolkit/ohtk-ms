@@ -14,6 +14,7 @@ import Spinner from "components/widgets/spinner";
 import { useRouter } from "next/router";
 import CaseLink from "components/case/caseLink";
 import { RenderData, TR } from "components/widgets/renderData";
+import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 import dynamic from "next/dynamic";
 import Comments from "components/widgets/comments";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
@@ -135,14 +136,16 @@ const Report = (props: { id: string }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    setViewModel(
-      new ReportViewModel(
-        id as string,
-        services.reportService,
-        services.caseService,
-        services.outbreakService
-      )
+    const model = new ReportViewModel(
+      id as string,
+      services.reportService,
+      services.caseService,
+      services.outbreakService
     );
+    model.registerDialog("confirmToTest");
+    model.registerDialog("confirmToPromoteToCase");
+
+    setViewModel(model);
   }, [setViewModel, id, services]);
 
   if (viewModel === undefined) {
@@ -166,13 +169,13 @@ const Report = (props: { id: string }) => {
                     <PromoteToCaseButton
                       disabled={viewModel.isLoading}
                       type="button"
-                      onClick={async () => {
-                        const caseId = await viewModel.promoteToCase();
-                        if (caseId) router.push(`/cases/${caseId}`);
-                      }}
+                      onClick={() =>
+                        viewModel.dialog("confirmToPromoteToCase")?.open(null)
+                      }
                     >
                       {viewModel.isLoading && <Spinner />}
-                      &nbsp;Promote To Case
+                      &nbsp;
+                      {t("status.actions.promoteToCase", "Promote to case")}
                     </PromoteToCaseButton>
                   )}
                   {viewModel.shouldDisplayConvertToTestReport && (
@@ -180,11 +183,15 @@ const Report = (props: { id: string }) => {
                       disabled={viewModel.converting}
                       type="button"
                       onClick={async () => {
-                        await viewModel.convertToTestReport();
+                        viewModel.dialog("confirmToTest")?.open(null);
                       }}
                     >
                       {viewModel.converting && <Spinner />}
-                      &nbsp;Convert to Test Report
+                      &nbsp;
+                      {t(
+                        "status.actions.convertToTest",
+                        "Convert to test report"
+                      )}
                     </ConvertToTestReportButton>
                   )}
                 </div>
@@ -229,6 +236,29 @@ const Report = (props: { id: string }) => {
                   </div>
                 </div>
               </div>
+
+              <ConfirmDialog
+                store={viewModel.dialog("confirmToTest")}
+                content={t(
+                  "dialog.content.confirmConvertToTest",
+                  "Would you like to convert this report to test report?.?"
+                )}
+                onYes={() => viewModel.convertToTestReport()}
+                onNo={() => viewModel.dialog("confirmDelete")?.close()}
+              />
+
+              <ConfirmDialog
+                store={viewModel.dialog("confirmToPromoteToCase")}
+                content={t(
+                  "dialog.content.confirmToPromoteToCase",
+                  "Would you like to promote this report to case?.?"
+                )}
+                onYes={async () => {
+                  const caseId = await viewModel.promoteToCase();
+                  if (caseId) router.push(`/cases/${caseId}`);
+                }}
+                onNo={() => viewModel.dialog("confirmToPromoteToCase")?.close()}
+              />
 
               <ReportImage viewModel={viewModel} />
 

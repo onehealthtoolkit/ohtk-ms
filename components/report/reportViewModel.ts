@@ -153,7 +153,7 @@ export class ReportViewModel extends BaseViewModel {
   }
 
   get shouldDisplayConvertToTestReport() {
-    return this.data.testFlag == false && this.data.caseId == null;
+    return this.data.testFlag == false;
   }
 
   get shouldDisplayPromoteToCase() {

@@ -187,7 +187,7 @@ const ReportList = () => {
                     {
                       label: "",
                       get: record => (
-                        <div className="flex flex-row">
+                        <div className="flex flex-row gap-1">
                           <CaseLink caseId={record.caseId} />
                           <TestLabel isTest={record.testFlag || false} />
                         </div>

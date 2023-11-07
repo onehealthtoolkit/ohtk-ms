@@ -12,8 +12,8 @@
     "caseDefinitions": "ຄໍານິຍາມກໍລະນີ",
     "stateDefinitions": "ຕັ້ງ​ສະ​ຖາ​ນະ​ພາບ​",
     "notificationTemplates": "ແມ່ແບບການແຈ້ງເຕືອນ",
-    "notifications": "ແຈ້ງການ",
-    "reporterNotifications": "ແຈ້ງ​ການ​ນັກ​ຂ່າວ​",
+    "notifications": "ແຈ້ງເຕືອນ",
+    "reporterNotifications": "ແຈ້ງ​ຄືນໃຫ້ອາສາ",
     "profile": "ໂປຣໄຟລ໌",
     "create": "ສ້າງ",
     "update": "ອັບເດດ",
@@ -25,8 +25,8 @@
     "contributions": "ລາຍ​ງານ​ປະ​ຫວັດ​ສາດ​",
     "observationDefinitions": "ຄໍາ​ນິ​ຍາມ​ການ​ສັງ​ເກດ​ການ",
     "observationMonitoringDefinitions": "ຄໍານິຍາມການຕິດຕາມການສັງເກດ",
-    "inactiveReporter": "ນັກຂ່າວທີ່ບໍ່ເຄື່ອນໄຫວ",
-    "reporterPerformance": "ຜົນງານຂອງນັກຂ່າວ"
+    "inactiveReporter": "ອາສາທີ່ບໍ່ເຄື່ອນໄຫວ",
+    "reporterPerformance": "ຜົນງານຂອງອາສາ"
   },
   "filter": {
     "searchButton": "ປຸ່ມຊອກຫາ",
@@ -191,7 +191,9 @@
       "confirmDelete": "ຢືນຢັນການລຶບ ?",
       "confirmPublishReportType": "ທ່ານແນ່ໃຈບໍ່ວ່າຢືນຢັນການເຜີຍແຜ່ປະເພດລາຍງານ ?",
       "confirmUnpublishReportType": "ທ່ານແນ່ໃຈບໍ່ວ່າຢືນຢັນປະເພດລາຍງານທີ່ບໍ່ໄດ້ເຜີຍແຜ່ ?",
-      "confirmTransition": "ທ່ານຕ້ອງການປ່ຽນສະຖານະເປັນ  {{stepName}} ?"
+      "confirmTransition": "ທ່ານຕ້ອງການປ່ຽນສະຖານະເປັນ  {{stepName}} ?",
+      "confirmConvertToTest": "ທ່ານຕ້ອງການປ່ຽນສະຖານະເປັນທົດສອບ ?",
+      "confirmToPromoteToCase": "ທ່ານຕ້ອງການປ່ຽນສະຖານະເປັນກໍລະນີ ?"
     }
   },
   "title": {
@@ -230,5 +232,15 @@
   "qr": {
     "login": "ເຂົ້າສູ່ລະບົບດ້ວຍລະຫັດ qr",
     "reportTypeFormDefinition": "Form Definition QR Code"
+  },
+  "status": {
+    "test": "ທົດສອບ",
+    "case": "ກໍລະນີ",
+    "suspectedOutbreak": "suspected outbreak",
+    "outbreak": "outbreak",
+    "actions": {
+      "promoteToCase": "ປ່ຽນເປັນກໍລະນີ",
+      "convertToTest": "ປ່ຽນເປັນທົດສອບ"
+    }
   }
 }
