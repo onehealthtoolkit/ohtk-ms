@@ -26,6 +26,7 @@ query Users(
       authority {
         name
       }
+      telephone
     }
   }
 }

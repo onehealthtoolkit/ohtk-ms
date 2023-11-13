@@ -114,6 +114,7 @@ export class UserService implements IUserService {
           email: item.email,
           role: item.role,
           authorityName: item.authority.name,
+          telephone: item.telephone || undefined,
         });
       }
     });

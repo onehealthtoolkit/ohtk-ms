@@ -224,6 +224,10 @@ const UserList = () => {
                 get: record => record.email,
               },
               {
+                label: t("form.label.telephone", "Telephone"),
+                get: record => record.telephone,
+              },
+              {
                 label: t("form.label.role", "Role"),
                 get: record => getRoleName(record.role || ""),
               },

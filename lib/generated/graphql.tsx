@@ -246,6 +246,7 @@ export type AdminAuthorityUserQueryType = {
   id: Scalars["ID"];
   lastName: Scalars["String"];
   role?: Maybe<AccountsAuthorityUserRoleChoices>;
+  telephone?: Maybe<Scalars["String"]>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
   username: Scalars["String"];
 };
@@ -6897,6 +6898,7 @@ export type UsersQuery = {
       firstName: string;
       lastName: string;
       role?: AccountsAuthorityUserRoleChoices | null;
+      telephone?: string | null;
       authority: { __typename?: "AdminAuthorityCreateSuccess"; name: string };
     } | null>;
   } | null;
@@ -23238,6 +23240,10 @@ export const UsersDocument = {
                             },
                           ],
                         },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "telephone" },
                       },
                     ],
                   },
