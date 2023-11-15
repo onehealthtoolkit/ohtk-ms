@@ -26,6 +26,10 @@ import { styledReactSelect } from "components/widgets/styledReactSelect";
 import { Authority } from "lib/services/authority";
 import useStore from "lib/store";
 import { runInAction } from "mobx";
+import DatePicker from "components/widgets/datepicker";
+import { isoStringToDate } from "lib/utils";
+import "react-datepicker/dist/react-datepicker.css";
+
 const JSURL = require("jsurl");
 
 export const getRoleName = (role: string) => {
@@ -48,6 +52,12 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
     q: query.q as string,
     authorities: query.authorities ? JSURL.parse(query.authorities) : [],
     role: query.role as string,
+    fromDate: query.fromDate
+      ? isoStringToDate(query.fromDate as string)
+      : undefined,
+    throughDate: query.throughDate
+      ? isoStringToDate(query.throughDate as string)
+      : undefined,
     offset: query.offset ? parseInt(query.offset as string) : 0,
   };
 };
@@ -69,7 +79,7 @@ const UserFilter = ({ viewModel }: { viewModel: AdminUserListViewModel }) => {
       {() => (
         <div className="w-full">
           <Field $size="full">
-            <Label htmlFor="throughDate">
+            <Label htmlFor="authority">
               {t("form.label.authority", "Authority")}
             </Label>
             <AsyncSelect
@@ -115,6 +125,27 @@ const UserFilter = ({ viewModel }: { viewModel: AdminUserListViewModel }) => {
               )}
             </Select>
           </Field>
+
+          <Field $size="full">
+            <Label htmlFor="fromDate">
+              {t("form.label.fromDate", "Form Date")}
+            </Label>
+            <DatePicker
+              id="fromDate"
+              selected={viewModel.fromDate}
+              onChange={(date: Date) => (viewModel.fromDate = date)}
+            />
+          </Field>
+          <Field $size="full">
+            <Label htmlFor="throughDate">
+              {t("form.label.throughDate", "Through Date")}
+            </Label>
+            <DatePicker
+              id="throughDate"
+              selected={viewModel.throughDate}
+              onChange={(date: Date) => (viewModel.throughDate = date)}
+            />
+          </Field>
         </div>
       )}
     </Observer>
@@ -140,23 +171,22 @@ const UserList = () => {
         filter.q,
         filter.authorities,
         filter.role,
+        filter.fromDate,
+        filter.throughDate,
         filter.offset
       );
     }
   }, [query, viewModel, router.isReady]);
 
   const applySearch = ({ q, offset }: { q?: string; offset?: number }) => {
-    const filter = parseUrlParams(query);
-    if (q) {
-      filter.q = q;
-    }
-    if (Number.isInteger(offset)) {
-      filter.offset = offset!;
-    }
-    filter.authorities = JSURL.stringify(viewModel.authoritiesSearch);
-    filter.role = viewModel.roleSearch;
-    console.log("applySearch", filter);
-    setUrl(filter);
+    setUrl({
+      q: q,
+      offset: offset,
+      authorities: JSURL.stringify(viewModel.authoritiesSearch),
+      role: viewModel.roleSearch,
+      fromDate: viewModel.fromDate?.toISOString(),
+      throughDate: viewModel.throughDate?.toISOString(),
+    });
   };
 
   if (!viewModel) {

@@ -28,6 +28,8 @@ export interface IUserService extends IService {
     searchText: string,
     authorities?: Pick<Authority, "id" | "code" | "name">[],
     role?: string,
+    fromDate?: Date,
+    throughDate?: Date,
     force?: boolean
   ): Promise<QueryResult<User[]>>;
 
@@ -86,8 +88,12 @@ export class UserService implements IUserService {
     searchText: string,
     authorities?: Pick<Authority, "id" | "code" | "name">[],
     role?: string,
+    fromDate?: Date,
+    throughDate?: Date,
     force?: boolean
   ) {
+    if (throughDate) throughDate.setHours(23, 59, 59, 999);
+
     this.fetchUsersQuery = {
       ...this.fetchUsersQuery,
       limit,
@@ -95,6 +101,8 @@ export class UserService implements IUserService {
       q: searchText,
       authorities: authorities?.map(a => a.id),
       role: role,
+      fromDate: fromDate,
+      throughDate: throughDate,
     };
 
     const fetchResult = await this.client.query({

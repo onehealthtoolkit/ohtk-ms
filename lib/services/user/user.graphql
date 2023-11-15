@@ -4,6 +4,8 @@ query Users(
   $q: String
   $authorities: [String]
   $role: String
+  $fromDate: DateTime
+  $throughDate: DateTime
   $ordering: String
 ) {
   adminAuthorityUserQuery(
@@ -12,6 +14,8 @@ query Users(
     q: $q
     authorities: $authorities
     role: $role
+    dateJoinedGte: $fromDate
+    dateJoinedLte: $throughDate
     ordering: $ordering
   ) {
     totalCount
