@@ -25,7 +25,8 @@
     "observationDefinitions": "និយមន័យនៃការសង្កេត",
     "observationMonitoringDefinitions": "និយមន័យនៃការត្រួតពិនិត្យការសង្កេត",
     "inactiveReporter": "អ្នករាយការណ៍អសកម្ម",
-    "reporterPerformance": "ការសម្តែងអ្នកសារព័ត៌មាន"
+    "reporterPerformance": "ការសម្តែងអ្នកសារព័ត៌មាន",
+    "zeroReporter": "រាយការណ៍មិនប្រក្រតី"
   },
   "filter": {
     "searchButton": "ស្វែងរក",

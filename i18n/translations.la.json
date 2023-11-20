@@ -26,7 +26,8 @@
     "observationDefinitions": "ຄໍາ​ນິ​ຍາມ​ການ​ສັງ​ເກດ​ການ",
     "observationMonitoringDefinitions": "ຄໍານິຍາມການຕິດຕາມການສັງເກດ",
     "inactiveReporter": "ອາສາທີ່ບໍ່ເຄື່ອນໄຫວ",
-    "reporterPerformance": "ຜົນງານຂອງອາສາ"
+    "reporterPerformance": "ຜົນງານຂອງອາສາ",
+    "zeroReporter": "ລາຍ​ງານ​ບໍ່​ມີ​ຄວາມ​ຜິດ​ປົກ​ກະ​ຕິ​"
   },
   "filter": {
     "searchButton": "ປຸ່ມຊອກຫາ",

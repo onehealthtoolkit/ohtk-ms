@@ -25,7 +25,8 @@
     "observationDefinitions": "Définitions des observations",
     "observationMonitoringDefinitions": "Définition du suivi des observations",
     "inactiveReporter": "Journaliste inactif",
-    "reporterPerformance": "Performances des journalistes"
+    "reporterPerformance": "Performances des journalistes",
+    "zeroReporter": "Ne signaler aucune anomalie"
   },
   "filter": {
     "searchButton": "Recherche",

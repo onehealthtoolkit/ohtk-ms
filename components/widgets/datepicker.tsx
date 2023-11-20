@@ -6,11 +6,15 @@ const datePicker = ({
   id,
   locale,
   selected,
+  dateFormat,
+  showMonthYearPicker,
   onChange,
 }: {
   id: string;
   selected?: Date | null;
   locale?: string;
+  dateFormat?: string;
+  showMonthYearPicker?: boolean;
   onChange: (date: Date) => void;
 }) => {
   return (
@@ -20,6 +24,8 @@ const datePicker = ({
       className={dateClass}
       selected={selected}
       onChange={onChange}
+      dateFormat={dateFormat}
+      showMonthYearPicker={showMonthYearPicker}
     />
   );
 };
