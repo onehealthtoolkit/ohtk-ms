@@ -25,7 +25,8 @@
     "observationDefinitions": "Observation Definitions",
     "observationMonitoringDefinitions": "Observation Monitoring Definition",
     "inactiveReporter": "Inactive Reporter",
-    "reporterPerformance": "Reporter Performance"
+    "reporterPerformance": "Reporter Performance",
+    "zeroReporter": "Zero Reporter"
   },
   "filter": {
     "searchButton": "Search",

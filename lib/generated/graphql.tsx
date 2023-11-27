@@ -246,6 +246,7 @@ export type AdminAuthorityUserQueryType = {
   id: Scalars["ID"];
   lastName: Scalars["String"];
   role?: Maybe<AccountsAuthorityUserRoleChoices>;
+  telephone?: Maybe<Scalars["String"]>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
   username: Scalars["String"];
 };
@@ -2826,6 +2827,8 @@ export type QueryAdminAuthorityUserQueryArgs = {
   after?: InputMaybe<Scalars["String"]>;
   authorities?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   before?: InputMaybe<Scalars["String"]>;
+  dateJoinedGte?: InputMaybe<Scalars["DateTime"]>;
+  dateJoinedLte?: InputMaybe<Scalars["DateTime"]>;
   first?: InputMaybe<Scalars["Int"]>;
   last?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -6881,6 +6884,8 @@ export type UsersQueryVariables = Exact<{
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
   >;
   role?: InputMaybe<Scalars["String"]>;
+  fromDate?: InputMaybe<Scalars["DateTime"]>;
+  throughDate?: InputMaybe<Scalars["DateTime"]>;
   ordering?: InputMaybe<Scalars["String"]>;
 }>;
 
@@ -6897,6 +6902,7 @@ export type UsersQuery = {
       firstName: string;
       lastName: string;
       role?: AccountsAuthorityUserRoleChoices | null;
+      telephone?: string | null;
       authority: { __typename?: "AdminAuthorityCreateSuccess"; name: string };
     } | null>;
   } | null;
@@ -23139,6 +23145,28 @@ export const UsersDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
+            name: { kind: "Name", value: "fromDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "throughDate" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
             name: { kind: "Name", value: "ordering" },
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
@@ -23186,6 +23214,22 @@ export const UsersDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "role" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "dateJoinedGte" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "fromDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "dateJoinedLte" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "throughDate" },
                 },
               },
               {
@@ -23238,6 +23282,10 @@ export const UsersDocument = {
                             },
                           ],
                         },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "telephone" },
                       },
                     ],
                   },

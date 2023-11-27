@@ -1,3 +1,5 @@
+import "leaflet-draw/dist/leaflet.draw.css";
+import "leaflet/dist/leaflet.css";
 import { observer } from "mobx-react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import { renderToStaticMarkup } from "react-dom/server";

@@ -25,7 +25,8 @@
     "observationDefinitions": "Observation အဓိပ္ပါယ်ဖွင့်ဆိုချက်",
     "observationMonitoringDefinitions": "စောင့်ကြည့်လေ့လာခြင်း အဓိပ္ပါယ်",
     "inactiveReporter": "မလှုပ်မရှား သတင်းထောက်",
-    "reporterPerformance": "သတင်းထောက်စွမ်းဆောင်ရည်"
+    "reporterPerformance": "သတင်းထောက်စွမ်းဆောင်ရည်",
+    "zeroReporter": "မူမမှန်မှုများကို သတင်းပို့ပါ။"
   },
   "filter": {
     "searchButton": "ရှာရန်",

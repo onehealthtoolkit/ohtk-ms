@@ -25,7 +25,8 @@
     "observationDefinitions": "Definiciones de observación",
     "observationMonitoringDefinitions": "Definición de monitoreo de observación",
     "inactiveReporter": "Reportero inactivo",
-    "reporterPerformance": "Rendimiento del reportero"
+    "reporterPerformance": "Rendimiento del reportero",
+    "zeroReporter": "Raportu neniujn anomaliojn"
   },
   "filter": {
     "searchButton": "Buscar",

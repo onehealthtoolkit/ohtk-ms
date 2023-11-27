@@ -161,6 +161,14 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     icon={<DocumentIcon className={iconClassName} />}
                   />
                   <Menu
+                    href="/excels/zero_reporter"
+                    pathname={pathname}
+                    label={t("breadcrumb.zeroReporter", "Zero Reporter")}
+                    collapsed={store.menu.collapsed}
+                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    icon={<DocumentIcon className={iconClassName} />}
+                  />
+                  <Menu
                     href="/excels/reports"
                     pathname={pathname}
                     label={t("breadcrumb.reports", "Reports")}

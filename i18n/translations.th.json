@@ -26,7 +26,8 @@
     "observationDefinitions": "นิยามการสังเกต",
     "observationMonitoringDefinitions": "คำจำกัดความการติดตามการสังเกต",
     "inactiveReporter": "รีพอร์เตอร์ที่ไม่ใช้งาน",
-    "reporterPerformance": "ประสิทธิภาพของรีพอร์เตอร์"
+    "reporterPerformance": "ประสิทธิภาพของรีพอร์เตอร์",
+    "zeroReporter": "รายงานไม่พบเหตุผิดปกติ"
   },
   "filter": {
     "searchButton": "ค้นหา",
