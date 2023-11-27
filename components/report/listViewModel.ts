@@ -18,6 +18,7 @@ const initialFilter: ReportFilterData = {
   throughDate: undefined,
   authorities: undefined,
   reportTypes: undefined,
+  includeChildAuthorities: undefined,
   includeTest: undefined,
 };
 
@@ -28,6 +29,7 @@ type SearchParams = {
   authorities?: ReportFilterData["authorities"];
   reportTypes?: ReportFilterData["reportTypes"];
   includeTest?: boolean;
+  includeChildAuthorities?: boolean;
 } & ReportCalendarParams;
 
 export class ReportListViewModel extends BaseViewModel {
@@ -78,6 +80,7 @@ export class ReportListViewModel extends BaseViewModel {
     this.filter.authorities = params.authorities;
     this.filter.reportTypes = params.reportTypes;
     this.filter.includeTest = params.includeTest;
+    this.filter.includeChildAuthorities = params.includeChildAuthorities;
 
     this.offset = params.offset || 0;
 

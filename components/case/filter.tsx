@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { Field, Label } from "components/widgets/forms";
+import { Checkbox, Field, Label } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import AsyncSelect from "react-select/async";
 import DatePicker from "components/widgets/datepicker";
@@ -50,7 +50,7 @@ const CaseFilter = ({ viewModel }: { viewModel: CaseListViewModel }) => {
         </>
       )}
       <Field $size="full">
-        <Label htmlFor="throughDate">
+        <Label htmlFor="authority">
           {t("form.label.authority", "Authority")}
         </Label>
         <AsyncSelect
@@ -70,6 +70,28 @@ const CaseFilter = ({ viewModel }: { viewModel: CaseListViewModel }) => {
           }}
         />
       </Field>
+      {viewModel.filter.authorities &&
+        viewModel.filter.authorities?.length == 1 && (
+          <Field $size="half">
+            <Checkbox
+              id="includeChildAuthority"
+              value="True"
+              checked={viewModel.filter.includeChildAuthorities || false}
+              onChange={evt =>
+                runInAction(
+                  () =>
+                    (viewModel.filter.includeChildAuthorities =
+                      evt.target.checked)
+                )
+              }
+              label={t(
+                "form.label.includeChildAuthority ",
+                "Include child authority"
+              )}
+              disabled={false}
+            />
+          </Field>
+        )}
       <Field $size="full">
         <Label htmlFor="throughDate">
           {t("form.label.reportType", "Report Type")}

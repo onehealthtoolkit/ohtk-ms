@@ -20,6 +20,7 @@ export type ReportFilterData = {
   throughDate?: Date;
   authorities?: Pick<Authority, "id" | "code" | "name">[];
   reportTypes?: Pick<ReportType, "id" | "name">[];
+  includeChildAuthorities?: boolean;
   includeTest?: boolean;
 };
 
@@ -31,6 +32,7 @@ export type ReportFilter = {
   limit: number;
   offset: number;
   testFlag?: boolean;
+  includeChildAuthorities?: boolean;
 };
 
 export interface IReportService extends IService {
@@ -63,6 +65,7 @@ export class ReportService implements IReportService {
     authorities: undefined,
     reportTypes: undefined,
     testFlag: undefined,
+    includeChildAuthorities: undefined,
   };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
@@ -84,6 +87,7 @@ export class ReportService implements IReportService {
       fromDate: filter.fromDate,
       throughDate: filter.throughDate,
       testFlag: filter.includeTest ? undefined : false,
+      includeChildAuthorities: filter.includeChildAuthorities,
     };
     const fetchResult = await this.client.query({
       query: ReportsDocument,

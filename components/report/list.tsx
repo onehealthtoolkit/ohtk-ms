@@ -43,6 +43,9 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
       ? parseInt(query.calendarYear as string)
       : undefined,
     includeTest: query.includeTest ? query.includeTest === "true" : undefined,
+    includeChildAuthorities: query.includeChildAuthorities
+      ? query.includeChildAuthorities === "true"
+      : undefined,
   };
 };
 
@@ -110,6 +113,7 @@ const ReportList = () => {
       isCalendar: viewModel.isCalendarView ? 1 : 0,
       calendarMonth: viewModel.calendarViewModel.month,
       calendarYear: viewModel.calendarViewModel.year,
+      includeChildAuthorities: viewModel.filter.includeChildAuthorities,
       includeTest: viewModel.filter.includeTest,
     });
   };

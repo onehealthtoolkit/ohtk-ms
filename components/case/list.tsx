@@ -41,6 +41,9 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
     calendarYear: query.calendarYear
       ? parseInt(query.calendarYear as string)
       : undefined,
+    includeChildAuthorities: query.includeChildAuthorities
+      ? query.includeChildAuthorities === "true"
+      : undefined,
   };
 };
 
@@ -109,6 +112,7 @@ const CaseList = () => {
       isCalendar: viewModel.isCalendarView ? 1 : 0,
       calendarMonth: viewModel.calendarViewModel.month,
       calendarYear: viewModel.calendarViewModel.year,
+      includeChildAuthorities: viewModel.filter.includeChildAuthorities,
     });
   };
 

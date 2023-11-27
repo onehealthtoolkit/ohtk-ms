@@ -20,6 +20,7 @@ export type CaseFilterData = {
   throughDate?: Date;
   authorities?: Pick<Authority, "id" | "code" | "name">[];
   reportTypes?: Pick<ReportType, "id" | "name">[];
+  includeChildAuthorities?: boolean;
 };
 
 export type CaseFilter = {
@@ -27,6 +28,7 @@ export type CaseFilter = {
   throughDate?: Date;
   authorities?: string[];
   reportTypes?: string[];
+  includeChildAuthorities?: boolean;
   limit: number;
   offset: number;
 };
@@ -62,6 +64,7 @@ export class CaseService implements ICaseService {
     offset: 0,
     authorities: undefined,
     reportTypes: undefined,
+    includeChildAuthorities: undefined,
   };
 
   constructor(client: ApolloClient<NormalizedCacheObject>) {
@@ -80,6 +83,7 @@ export class CaseService implements ICaseService {
       reportTypes: filter.reportTypes?.map(a => a.id),
       fromDate: filter.fromDate,
       throughDate: filter.throughDate,
+      includeChildAuthorities: filter.includeChildAuthorities,
       limit,
       offset,
     };

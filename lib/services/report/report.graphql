@@ -6,6 +6,7 @@ query Reports(
   $authorities: [String]
   $reportTypes: [UUID]
   $testFlag: Boolean
+  $includeChildAuthorities: Boolean
 ) {
   incidentReports(
     createdAt_Gte: $fromDate
@@ -13,6 +14,7 @@ query Reports(
     relevantAuthorities_Id_In: $authorities
     reportType_Id_In: $reportTypes
     testFlag: $testFlag
+    includeChildAuthorities: $includeChildAuthorities
     limit: $limit
     offset: $offset
   ) {

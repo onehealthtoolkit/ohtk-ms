@@ -50,7 +50,7 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
         </>
       )}
       <Field $size="full">
-        <Label htmlFor="throughDate">
+        <Label htmlFor="authority">
           {t("form.label.authority", "Authority")}
         </Label>
         <AsyncSelect
@@ -70,6 +70,28 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
           }}
         />
       </Field>
+      {viewModel.filter.authorities &&
+        viewModel.filter.authorities?.length == 1 && (
+          <Field $size="half">
+            <Checkbox
+              id="includeChildAuthority"
+              value="True"
+              checked={viewModel.filter.includeChildAuthorities || false}
+              onChange={evt =>
+                runInAction(
+                  () =>
+                    (viewModel.filter.includeChildAuthorities =
+                      evt.target.checked)
+                )
+              }
+              label={t(
+                "form.label.includeChildAuthority ",
+                "Include child authority"
+              )}
+              disabled={false}
+            />
+          </Field>
+        )}
       <Field $size="full">
         <Label htmlFor="throughDate">
           {t("form.label.reportType", "Report Type")}
@@ -88,7 +110,11 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
           id="testing"
           value="True"
           checked={viewModel.filter.includeTest}
-          onChange={evt => (viewModel.filter.includeTest = evt.target.checked)}
+          onChange={evt =>
+            runInAction(
+              () => (viewModel.filter.includeTest = evt.target.checked || false)
+            )
+          }
           label="Show test report"
           disabled={false}
         />
