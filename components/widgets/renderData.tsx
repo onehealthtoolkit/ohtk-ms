@@ -8,6 +8,7 @@ import Form from "lib/opsvForm/models/form";
 import { parseForm } from "lib/opsvForm/models/json";
 import { Fragment, useId, useState } from "react";
 import { renderDefinitionDataAsForm } from "./renderDataAsForm";
+import { RenderDataDialogViewModel } from "./renderDataDialogViewModel";
 
 type ViewTypeSwitchProps = {
   active: boolean;
@@ -95,6 +96,9 @@ export const RenderFormData = ({
   fileUrlMap?: Record<string, string>;
 }) => {
   const [isDefinitionView, setIsDefinitionView] = useState(true);
+  const [renderDataDialogViewModel] = useState<RenderDataDialogViewModel>(
+    new RenderDataDialogViewModel()
+  );
   const renderAsForm = true;
   try {
     return (
@@ -107,7 +111,13 @@ export const RenderFormData = ({
         </div>
         {isDefinitionView
           ? renderAsForm
-            ? renderDefinitionDataAsForm(form, data, imageUrlMap, fileUrlMap)
+            ? renderDefinitionDataAsForm(
+                form,
+                data,
+                renderDataDialogViewModel,
+                imageUrlMap,
+                fileUrlMap
+              )
             : renderDefinitionData(form, imageUrlMap, fileUrlMap)
           : renderRawData(data)}
       </>
