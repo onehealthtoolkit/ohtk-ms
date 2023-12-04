@@ -5,12 +5,14 @@ query Cases(
   $throughDate: DateTime
   $authorities: [String]
   $reportTypes: [UUID]
+  $includeChildAuthorities: Boolean
 ) {
   casesQuery(
     report_CreatedAt_Gte: $fromDate
     report_CreatedAt_Lte: $throughDate
     report_RelevantAuthorities_Id_In: $authorities
     report_ReportType_Id_In: $reportTypes
+    includeChildAuthorities: $includeChildAuthorities
     limit: $limit
     offset: $offset
   ) {

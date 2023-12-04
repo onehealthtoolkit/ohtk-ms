@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { DownloadIcon } from "@heroicons/react/solid";
+import { ArrowsExpandIcon, DownloadIcon } from "@heroicons/react/solid";
 import Field from "lib/opsvForm/models/fields";
 import FilesField from "lib/opsvForm/models/fields/filesField";
 import ImagesField from "lib/opsvForm/models/fields/imagesField";
@@ -12,6 +12,8 @@ import Form from "lib/opsvForm/models/form";
 import { Fragment } from "react";
 import RenderSubformField from "./renderSubformField";
 import { Definition } from "components/admin/formBuilder/shared";
+import RenderDataDialog from "./renderDataDialog";
+import { RenderDataDialogViewModel } from "./renderDataDialogViewModel";
 
 const re = new RegExp(/\((.*)\.(.*)\)/);
 
@@ -165,20 +167,15 @@ const RenderSubformFields = ({
   ) : null;
 };
 
-/**
- * New render form data using format in a form definition
- * Sort data in a sequence of sections, questions, and fields
- * @param form
- * @returns <table /> or null if form data is undefined
- */
-export const renderDefinitionDataAsForm = (
-  form: Form,
-  data: Record<string, any>,
-  imageUrlMap?: Record<string, string>,
-  fileUrlMap?: Record<string, string>
-) => {
-  return form.sections.length > 0 ? (
-    <div className="max-h-[32rem] inline-block overflow-scroll">
+export const RenderForms = (props: {
+  form: Form;
+  data: Record<string, any>;
+  imageUrlMap?: Record<string, string>;
+  fileUrlMap?: Record<string, string>;
+}) => {
+  const { form, data, imageUrlMap, fileUrlMap } = props;
+  return (
+    <>
       {form.sections.map((section, idx) => {
         return (
           <div className="m-4" key={`section-${idx}`}>
@@ -287,6 +284,49 @@ export const renderDefinitionDataAsForm = (
           </div>
         );
       })}
+    </>
+  );
+};
+
+/**
+ * New render form data using format in a form definition
+ * Sort data in a sequence of sections, questions, and fields
+ * @param form
+ * @returns <table /> or null if form data is undefined
+ */
+export const renderDefinitionDataAsForm = (
+  form: Form,
+  data: Record<string, any>,
+  renderDataDialogViewModel: RenderDataDialogViewModel,
+  imageUrlMap?: Record<string, string>,
+  fileUrlMap?: Record<string, string>
+) => {
+  return form.sections.length > 0 ? (
+    <div className="relative">
+      <div
+        className={`bg-red absolute top-11 right-3 p-2 z-[1001] hover:bg-gray-50
+                      border border-gray-400 rounded bg-white cursor-pointer
+                    `}
+        onClick={() => renderDataDialogViewModel.open(null)}
+      >
+        <ArrowsExpandIcon className="w-5 h-5 " />
+      </div>
+      <div className="max-h-[32rem] inline-block overflow-scroll">
+        <RenderForms
+          form={form}
+          data={data}
+          imageUrlMap={imageUrlMap}
+          fileUrlMap={fileUrlMap}
+        ></RenderForms>
+      </div>
+
+      <RenderDataDialog
+        viewModel={renderDataDialogViewModel}
+        form={form}
+        data={data}
+        imageUrlMap={imageUrlMap}
+        fileUrlMap={fileUrlMap}
+      />
     </div>
   ) : null;
 };

@@ -3040,6 +3040,7 @@ export type QueryBoundaryConnectedIncidentReportsArgs = {
   first?: InputMaybe<Scalars["Int"]>;
   incidentDate_Gte?: InputMaybe<Scalars["Date"]>;
   incidentDate_Lte?: InputMaybe<Scalars["Date"]>;
+  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]>;
   last?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
   offset?: InputMaybe<Scalars["Int"]>;
@@ -3063,6 +3064,7 @@ export type QueryCasesQueryArgs = {
   after?: InputMaybe<Scalars["String"]>;
   before?: InputMaybe<Scalars["String"]>;
   first?: InputMaybe<Scalars["Int"]>;
+  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]>;
   last?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
   offset?: InputMaybe<Scalars["Int"]>;
@@ -3123,6 +3125,7 @@ export type QueryIncidentReportsArgs = {
   first?: InputMaybe<Scalars["Int"]>;
   incidentDate_Gte?: InputMaybe<Scalars["Date"]>;
   incidentDate_Lte?: InputMaybe<Scalars["Date"]>;
+  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]>;
   last?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
   offset?: InputMaybe<Scalars["Int"]>;
@@ -3146,6 +3149,7 @@ export type QueryMyIncidentReportsArgs = {
   first?: InputMaybe<Scalars["Int"]>;
   incidentDate_Gte?: InputMaybe<Scalars["Date"]>;
   incidentDate_Lte?: InputMaybe<Scalars["Date"]>;
+  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]>;
   last?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
   offset?: InputMaybe<Scalars["Int"]>;
@@ -3865,6 +3869,7 @@ export type CasesQueryVariables = Exact<{
   reportTypes?: InputMaybe<
     Array<InputMaybe<Scalars["UUID"]>> | InputMaybe<Scalars["UUID"]>
   >;
+  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]>;
 }>;
 
 export type CasesQuery = {
@@ -5757,6 +5762,7 @@ export type ReportsQueryVariables = Exact<{
     Array<InputMaybe<Scalars["UUID"]>> | InputMaybe<Scalars["UUID"]>
   >;
   testFlag?: InputMaybe<Scalars["Boolean"]>;
+  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]>;
 }>;
 
 export type ReportsQuery = {
@@ -8309,6 +8315,14 @@ export const CasesDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "includeChildAuthorities" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -8350,6 +8364,14 @@ export const CasesDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "reportTypes" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "includeChildAuthorities" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "includeChildAuthorities" },
                 },
               },
               {
@@ -17662,6 +17684,14 @@ export const ReportsDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "includeChildAuthorities" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -17708,6 +17738,14 @@ export const ReportsDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "testFlag" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "includeChildAuthorities" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "includeChildAuthorities" },
                 },
               },
               {
