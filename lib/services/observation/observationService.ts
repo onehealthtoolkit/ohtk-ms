@@ -117,6 +117,7 @@ export class ObservationService implements IObservationService {
         registerFormDefinition:
           observationSubject.definition?.registerFormDefinition,
         formData: observationSubject.formData,
+        originFormData: observationSubject.originFormData,
         gpsLocation: observationSubject.gpsLocation,
         subjectMonitorings:
           observationSubject.monitoringRecords as ObservationSubjectMonitoring[],

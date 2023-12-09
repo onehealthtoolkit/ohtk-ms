@@ -14,6 +14,9 @@ export type ObservationSubjectDetail = ObservationSubject & {
   definitionName: string;
   definitionDescription: string;
   formData: Record<string, string> | Record<string, Record<string, string>>;
+  originFormData:
+    | Record<string, string>
+    | Record<string, Record<string, string>>;
   images: Array<Image>;
   files: Array<UploadFile>;
   registerFormDefinition?: Record<string, any>;

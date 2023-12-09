@@ -1,7 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import { Fragment, useEffect, useState } from "react";
 import { observer, Observer } from "mobx-react";
-import { Divide, MaskingLoader } from "components/widgets/forms";
+import {
+  Divide,
+  MaskingLoader,
+  TabBar,
+  TabItem,
+} from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { ObservationSubjectViewModel } from "./observationSubjectViewModel";
 import { useRouter } from "next/router";
@@ -119,14 +124,70 @@ const ObservationSubject = (props: { id: string }) => {
               <SubjectImage viewModel={viewModel} />
 
               <Divide />
-
+              {viewModel.hasMonitoringRecords && (
+                <TabBar>
+                  <TabItem
+                    id="formData"
+                    active={viewModel.activeTabIndex == 0}
+                    onTab={() => {
+                      viewModel.activeTabIndex = 0;
+                      router.push(
+                        {
+                          pathname: router.pathname,
+                          query: { ...router.query, activeTabIndex: 0 },
+                        },
+                        undefined,
+                        { shallow: true }
+                      );
+                    }}
+                  >
+                    {() => (
+                      <>
+                        <span>Latest Form Data</span>
+                      </>
+                    )}
+                  </TabItem>
+                  <TabItem
+                    id="originFormData"
+                    active={viewModel.activeTabIndex == 1}
+                    onTab={() => {
+                      viewModel.activeTabIndex = 1;
+                      router.push(
+                        {
+                          pathname: router.pathname,
+                          query: { ...router.query, activeTabIndex: 1 },
+                        },
+                        undefined,
+                        { shallow: true }
+                      );
+                    }}
+                  >
+                    {() => (
+                      <>
+                        <span>Original Form Data</span>
+                      </>
+                    )}
+                  </TabItem>
+                </TabBar>
+              )}
               <div className="mb-4">
-                <RenderData
-                  data={viewModel.data.formData}
-                  definition={viewModel.data.registerFormDefinition}
-                  imageUrlMap={viewModel.imageUrlMap}
-                  fileUrlMap={viewModel.fileUrlMap}
-                />
+                {viewModel.activeTabIndex == 0 && (
+                  <RenderData
+                    data={viewModel.data.formData}
+                    definition={viewModel.data.registerFormDefinition}
+                    imageUrlMap={viewModel.imageUrlMap}
+                    fileUrlMap={viewModel.fileUrlMap}
+                  />
+                )}
+                {viewModel.activeTabIndex == 1 &&
+                  viewModel.hasMonitoringRecords && (
+                    <RenderData
+                      data={viewModel.data.originFormData}
+                      definition={viewModel.data.registerFormDefinition}
+                      imageUrlMap={viewModel.imageUrlMap}
+                      fileUrlMap={viewModel.fileUrlMap}
+                    />
+                  )}
               </div>
 
               <Divide />
