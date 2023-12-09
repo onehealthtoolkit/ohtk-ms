@@ -25,6 +25,7 @@ import TotalItem from "components/widgets/table/totalItem";
 import ObservationFilter from "./filter";
 import { toJS } from "mobx";
 import dynamic from "next/dynamic";
+import FilterQuery from "components/observation/filterQuery";
 
 export const Map = dynamic(() => import("./map"), {
   loading: () => <p>A map is loading</p>,
@@ -36,6 +37,7 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
     definitionId: parseInt(query.definitionId as string),
     definitionName: query.definitionName as string,
     viewMode: query.viewMode ? parseInt(query.viewMode as string) : 0,
+    q: query.q as string,
     fromDate: query.fromDate
       ? isoStringToDate(query.fromDate as string)
       : undefined,
@@ -123,6 +125,7 @@ const ObservationList = () => {
       viewMode: viewModel.viewMode,
       calendarMonth: viewModel.calendarViewModel.month,
       calendarYear: viewModel.calendarViewModel.year,
+      q: viewModel.q,
     });
   };
 
@@ -208,6 +211,7 @@ const ObservationList = () => {
                   resetUrl({
                     definitionId: viewModel.filter.definitionId,
                     definitionName: router.query.definitionName as string,
+                    q: viewModel.q,
                   });
                 }}
               >
@@ -216,15 +220,23 @@ const ObservationList = () => {
             )}
             <div
               className={`${
-                viewModel.viewMode != ObservationViewMode.calendar ? "ml-6" : ""
-              } flex-grow`}
+                viewModel.viewMode != ObservationViewMode.calendar
+                  ? "ml-6 mr-4"
+                  : ""
+              }`}
             >
               <TotalItem
                 totalCount={viewModel.totalCount}
                 onRefresh={() => viewModel.fetch(true)}
               />
             </div>
-
+            <FilterQuery
+              querySearch={viewModel.q}
+              onChange={value => {
+                viewModel.q = value;
+                applySearch();
+              }}
+            />
             <ViewSwitch
               viewMode={viewModel.viewMode}
               onSwitchView={viewMode => {

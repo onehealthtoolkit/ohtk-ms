@@ -2608,6 +2608,7 @@ export type ObservationSubjectType = {
   monitoringRecords?: Maybe<
     Array<Maybe<ObservationSubjectMonitoringRecordType>>
   >;
+  originFormData?: Maybe<Scalars["GenericScalar"]>;
   reportedBy?: Maybe<UserType>;
   title: Scalars["String"];
   uploadFiles?: Maybe<Array<Maybe<ObservationUploadFileType>>>;
@@ -2757,6 +2758,7 @@ export type Query = {
   eventsQuery?: Maybe<EventType>;
   features?: Maybe<Array<Maybe<FeatureType>>>;
   followupReport?: Maybe<FollowupReportType>;
+  followupReportDataSummary?: Maybe<ReportDataSummaryType>;
   followups?: Maybe<Array<Maybe<FollowupReportType>>>;
   getLoginQrToken?: Maybe<LoginQrTokenType>;
   healthCheck?: Maybe<Scalars["String"]>;
@@ -2779,6 +2781,7 @@ export type Query = {
   outbreakPlaces?: Maybe<Array<Maybe<OutbreakPlaceType>>>;
   outbreakPlanGet?: Maybe<OutbreakPlanType>;
   placeGet?: Maybe<PlaceType>;
+  reportDataSummary?: Maybe<ReportDataSummaryType>;
   reportType?: Maybe<ReportTypeType>;
   reportTypeByName?: Maybe<ReportTypeType>;
   reporterNotification?: Maybe<ReporterNotificationType>;
@@ -3105,6 +3108,12 @@ export type QueryFollowupReportArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryFollowupReportDataSummaryArgs = {
+  data: Scalars["GenericScalar"];
+  incidentReportId: Scalars["UUID"];
+  reportTypeId: Scalars["UUID"];
+};
+
 export type QueryFollowupsArgs = {
   incidentId: Scalars["ID"];
 };
@@ -3243,6 +3252,12 @@ export type QueryPlaceGetArgs = {
   id: Scalars["Int"];
 };
 
+export type QueryReportDataSummaryArgs = {
+  data: Scalars["GenericScalar"];
+  incidentDate: Scalars["Date"];
+  reportTypeId: Scalars["UUID"];
+};
+
 export type QueryReportTypeArgs = {
   id: Scalars["ID"];
 };
@@ -3333,6 +3348,11 @@ export type Refresh = {
 export type RegisterFcmTokenMutation = {
   __typename?: "RegisterFcmTokenMutation";
   success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type ReportDataSummaryType = {
+  __typename?: "ReportDataSummaryType";
+  result?: Maybe<Scalars["String"]>;
 };
 
 export type ReportTypeId = {
@@ -4956,6 +4976,7 @@ export type ObservationSubjectsQueryVariables = Exact<{
   definitionId?: InputMaybe<Scalars["Float"]>;
   fromDate?: InputMaybe<Scalars["DateTime"]>;
   throughDate?: InputMaybe<Scalars["DateTime"]>;
+  q?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type ObservationSubjectsQuery = {
@@ -4994,6 +5015,7 @@ export type GetObservationSubjectQuery = {
     description: string;
     identity: string;
     formData?: any | null;
+    originFormData?: any | null;
     createdAt: any;
     gpsLocation?: string | null;
     definition?: {
@@ -13375,6 +13397,11 @@ export const ObservationSubjectsDocument = {
             name: { kind: "Name", value: "DateTime" },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -13383,6 +13410,15 @@ export const ObservationSubjectsDocument = {
             kind: "Field",
             name: { kind: "Name", value: "observationSubjects" },
             arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "StringValue",
+                  value: "created_at,desc",
+                  block: false,
+                },
+              },
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "createdAt_Gte" },
@@ -13422,6 +13458,11 @@ export const ObservationSubjectsDocument = {
                   kind: "Variable",
                   name: { kind: "Name", value: "offset" },
                 },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
               },
             ],
             selectionSet: {
@@ -13528,6 +13569,10 @@ export const GetObservationSubjectDocument = {
                 { kind: "Field", name: { kind: "Name", value: "description" } },
                 { kind: "Field", name: { kind: "Name", value: "identity" } },
                 { kind: "Field", name: { kind: "Name", value: "formData" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "originFormData" },
+                },
                 { kind: "Field", name: { kind: "Name", value: "createdAt" } },
                 { kind: "Field", name: { kind: "Name", value: "gpsLocation" } },
                 {

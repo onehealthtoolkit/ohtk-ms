@@ -17,6 +17,7 @@ export type ObservationFilterData = {
   definitionId?: number;
   fromDate?: Date;
   throughDate?: Date;
+  q?: string;
 };
 
 export type ObservationFilter = ObservationFilterData & {
@@ -62,6 +63,7 @@ export class ObservationService implements IObservationService {
         definitionId: filter.definitionId,
         fromDate: filter.fromDate,
         throughDate: filter.throughDate,
+        q: filter.q,
       },
       fetchPolicy: force ? "network-only" : "cache-first",
     });
