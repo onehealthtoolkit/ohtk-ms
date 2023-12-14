@@ -4,13 +4,16 @@ query ObservationSubjects(
   $definitionId: Float
   $fromDate: DateTime
   $throughDate: DateTime
+  $q: String
 ) {
   observationSubjects(
+    ordering: "created_at,desc"
     createdAt_Gte: $fromDate
     createdAt_Lte: $throughDate
     definition_Id: $definitionId
     limit: $limit
     offset: $offset
+    q: $q
   ) {
     totalCount
     results {
@@ -36,6 +39,7 @@ query GetObservationSubject($id: ID!) {
     description
     identity
     formData
+    originFormData
     createdAt
     gpsLocation
     definition {

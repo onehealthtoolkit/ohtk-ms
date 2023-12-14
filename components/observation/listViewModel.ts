@@ -21,6 +21,7 @@ const initialFilter: ObservationFilterData = {
   definitionId: undefined,
   fromDate: undefined,
   throughDate: undefined,
+  q: undefined,
 };
 
 type SearchParams = {
@@ -29,6 +30,7 @@ type SearchParams = {
   fromDate?: Date;
   throughDate?: Date;
   offset?: number;
+  q?: string;
 } & ObservationCalendarParams;
 
 export class ObservationListViewModel extends BaseViewModel {
@@ -37,6 +39,7 @@ export class ObservationListViewModel extends BaseViewModel {
   filter: ObservationFilterData = initialFilter;
   calendarViewModel = new ObservationCalendarViewModel();
   viewMode: ObservationViewMode = ObservationViewMode.list;
+  q = "";
 
   constructor(readonly observationService: IObservationService) {
     super();
@@ -44,6 +47,7 @@ export class ObservationListViewModel extends BaseViewModel {
       data: observable,
       dataEvents: observable,
       filter: observable,
+      q: observable,
       setSearchValue: action,
       fetch: action,
       filterReset: action,
@@ -57,6 +61,7 @@ export class ObservationListViewModel extends BaseViewModel {
     this.filter.definitionId = params.definitionId;
     this.filter.fromDate = params.fromDate;
     this.filter.throughDate = params.throughDate;
+    this.q = params.q || "";
     this.viewMode = params.viewMode
       ? (params.viewMode as ObservationViewMode)
       : ObservationViewMode.list;
@@ -86,6 +91,8 @@ export class ObservationListViewModel extends BaseViewModel {
 
   async fetch(force?: boolean): Promise<void> {
     this.isLoading = true;
+    this.filter.q = this.q;
+
     const result = await this.observationService.fetchObservationSubjects(
       this.limit,
       this.offset,

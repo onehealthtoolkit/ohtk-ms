@@ -302,9 +302,9 @@ export const renderDefinitionDataAsForm = (
   fileUrlMap?: Record<string, string>
 ) => {
   return form.sections.length > 0 ? (
-    <div className="relative">
+    <div className="inline-block relative">
       <div
-        className={`bg-red absolute top-11 right-3 p-2 z-[1001] hover:bg-gray-50
+        className={`bg-red absolute top-0 right-3 p-2 z-[1001] hover:bg-gray-50
                       border border-gray-400 rounded bg-white cursor-pointer
                     `}
         onClick={() => renderDataDialogViewModel.open(null)}

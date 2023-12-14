@@ -60,6 +60,12 @@ export class ObservationSubjectViewModel extends BaseViewModel {
     return m;
   }
 
+  get hasMonitoringRecords(): boolean {
+    return (
+      this.data.subjectMonitorings && this.data.subjectMonitorings.length > 0
+    );
+  }
+
   async fetch() {
     this.isLoading = true;
     const data = (await this.observationService.getObservationSubject(this.id))
