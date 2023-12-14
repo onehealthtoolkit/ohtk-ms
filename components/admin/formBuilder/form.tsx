@@ -15,9 +15,13 @@ import { ConfirmDialog } from "components/admin/formBuilder/shared";
 
 export type FormBuilderProps = {
   viewModel: FormViewModel;
+  rendererDataTemplate: string;
 };
 
-const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
+const FormBuilder: FC<FormBuilderProps> = ({
+  viewModel: form,
+  rendererDataTemplate,
+}) => {
   const elementRef = useRef<HTMLDivElement>(null);
 
   const { t } = useTranslation();
@@ -149,7 +153,10 @@ const FormBuilder: FC<FormBuilderProps> = ({ viewModel: form }) => {
         </div>
       ) : (
         form.formSimulation && (
-          <FormSimulation viewModel={form.formSimulation} />
+          <FormSimulation
+            viewModel={form.formSimulation}
+            rendererDataTemplate={rendererDataTemplate}
+          />
         )
       )}
 

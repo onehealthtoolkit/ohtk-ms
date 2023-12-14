@@ -16,6 +16,7 @@ query ReportTypes($limit: Int!, $offset: Int!, $q: String, $ordering: String) {
       definition
       ordering
       published
+      rendererDataTemplate
     }
   }
 }
@@ -200,5 +201,33 @@ query GetReportType($id: ID!) {
     rendererFollowupDataTemplate
     isFollowable
     ordering
+  }
+}
+
+mutation SubmitEvaluateReportSimulation(
+  $data: GenericScalar!
+  $incidentDate: Date!
+  $rendererDataTemplate: String!
+  $reportId: UUID = null
+  $reportTypeId: UUID = null
+) {
+  evaluateReportSimulation(
+    data: $data
+    incidentDate: $incidentDate
+    rendererDataTemplate: $rendererDataTemplate
+    reportId: $reportId
+    reportTypeId: $reportTypeId
+  ) {
+    result {
+      rendererData
+      reporterNotifications {
+        id
+        name
+      }
+      caseDefinitions {
+        id
+        description
+      }
+    }
   }
 }

@@ -8,6 +8,7 @@ import { FormSimulationViewModel } from "components/admin/formBuilder/simulator/
 import { action, computed, makeObservable, observable } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import { SubformFieldViewModel } from "./field";
+import { IReportTypeService } from "lib/services/reportType/reportTypeService";
 
 export type FormVariableItem = { label: string; value: string; type: string };
 
@@ -26,7 +27,9 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
     public builtinVariables: FormVariableItem[] = [],
     id?: string,
     label?: string,
-    readonly parent?: FormViewModel
+    readonly parent?: FormViewModel,
+    readonly reportTypeService?: IReportTypeService,
+    readonly reportTypeId?: string
   ) {
     super(id || "", label || "");
     makeObservable(this, {
@@ -241,7 +244,12 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
   set isSimulationMode(isSimulationMode: boolean) {
     this._isSimulationMode = isSimulationMode;
     if (isSimulationMode) {
-      this.formSimulation = new FormSimulationViewModel(this.jsonString);
+      this.formSimulation = new FormSimulationViewModel(
+        this.jsonString,
+        undefined,
+        this.reportTypeService,
+        this.reportTypeId
+      );
     }
   }
 

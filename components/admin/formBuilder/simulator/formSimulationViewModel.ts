@@ -1,6 +1,8 @@
 import Form from "lib/opsvForm/models/form";
 import { parseForm } from "lib/opsvForm/models/json";
 import Section from "lib/opsvForm/models/section";
+import { IReportTypeService } from "lib/services/reportType";
+import { SimulationReportType } from "lib/services/reportType/reportType";
 import {
   action,
   computed,
@@ -15,19 +17,29 @@ export class FormSimulationViewModel {
   errorRendering = false;
   isSubmitting = false;
   isSubmitted = false;
+  rendererDataTemplate?: string;
+  simulatorIncidentReportType?: SimulationReportType = undefined;
 
-  constructor(readonly definition: string, readonly formRef?: string) {
+  constructor(
+    readonly definition: string,
+    readonly formRef?: string,
+    readonly reportTypeService?: IReportTypeService,
+    readonly reportTypeId?: string,
+    rendererDataTemplate?: string
+  ) {
     makeObservable(this, {
       form: observable,
       errorRendering: observable,
       isSubmitting: observable,
       isSubmitted: observable,
+      simulatorIncidentReportType: observable,
       currentSection: computed,
       next: action,
       previous: action,
       isFirst: computed,
       isLast: computed,
     });
+    this.rendererDataTemplate = rendererDataTemplate;
     this._init();
   }
 
@@ -81,9 +93,19 @@ export class FormSimulationViewModel {
     this.form?.previous();
   }
 
-  submit() {
+  async submit() {
     this.isSubmitting = true;
     this.isSubmitted = false;
+    if (this.reportTypeService) {
+      this.simulatorIncidentReportType =
+        await this.reportTypeService.submitSimulationReport(
+          this.form?.toJsonValue(),
+          new Date().toISOString().split("T")[0],
+          this.rendererDataTemplate || "",
+          undefined,
+          this.reportTypeId
+        );
+    }
     setTimeout(() => {
       runInAction(() => {
         this.isSubmitting = false;

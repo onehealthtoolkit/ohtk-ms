@@ -8,13 +8,20 @@ import tw from "tailwind-styled-components";
 
 type FormSimulationProps = {
   viewModel?: FormSimulationViewModel;
+  rendererDataTemplate: string;
   onSubmit?: () => void;
 };
 
-const FormSimulation = ({ viewModel: form, onSubmit }: FormSimulationProps) => {
+const FormSimulation = ({
+  viewModel: form,
+  onSubmit,
+  rendererDataTemplate,
+}: FormSimulationProps) => {
   if (!form) {
     return null;
   }
+
+  if (rendererDataTemplate) form.rendererDataTemplate = rendererDataTemplate;
 
   return !form.errorRendering ? (
     <div className={`flex flex-col relative w-full`}>
@@ -25,8 +32,28 @@ const FormSimulation = ({ viewModel: form, onSubmit }: FormSimulationProps) => {
 
       <FormInput viewModel={form} />
       {form.isSubmitted && (
-        <div className="rounded p-4 border-2 border-green-300 text-green-600">
-          Simulating submission is complete.
+        <div className="rounded p-4 border-2 border-green-30">
+          <div className="text-green-600 text-2xl">
+            Simulating submission is complete
+          </div>
+          <div className="text-green-700">Case Definitions: </div>
+          <ul className="text-gray-600 pl-10 list-disc">
+            {form.simulatorIncidentReportType?.caseDefinitions.map(item => (
+              <li key={item.id}>{item.description}</li>
+            ))}
+          </ul>
+          <div className="text-green-700">Reporter Alerts:</div>
+          <ul className="text-gray-600 pl-10 list-disc">
+            {form.simulatorIncidentReportType?.reporterNotifications.map(
+              item => (
+                <li key={item.id}>{item.name}</li>
+              )
+            )}
+          </ul>
+          <div className="text-green-700">Description:</div>
+          <ul className="text-gray-600 pl-10">
+            <li>{form.simulatorIncidentReportType?.rendererData}</li>
+          </ul>
         </div>
       )}
       <Footer viewModel={form} onSubmit={onSubmit} />
@@ -114,6 +141,7 @@ const Footer = ({
               onClick={(e: MouseEvent) => {
                 e.preventDefault();
                 form.next();
+                console.log("isSubmitting", form.form?.toJsonValue());
                 if (form.isSubmitting && onSubmit) {
                   onSubmit();
                 }

@@ -173,7 +173,7 @@ const ReportTypeList = () => {
                     <TableIcon
                       className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
                       onClick={() => {
-                        viewModel.openFormSimulationDialog(record.definition);
+                        viewModel.openFormSimulationDialog(record);
                       }}
                     />
                   </Tooltip>
@@ -263,7 +263,10 @@ const ReportTypeList = () => {
           />
 
           <FormSimulationDialog viewModel={viewModel.dialog("formSimulation")}>
-            <FormSimulation viewModel={viewModel.formSimulationViewModel} />
+            <FormSimulation
+              viewModel={viewModel.formSimulationViewModel}
+              rendererDataTemplate=""
+            />
           </FormSimulationDialog>
 
           <QrcodeDialog

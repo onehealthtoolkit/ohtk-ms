@@ -178,8 +178,14 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
     );
   }
 
-  openFormSimulationDialog(definition: string) {
-    this.formSimulationViewModel = new FormSimulationViewModel(definition);
+  openFormSimulationDialog(item: ReportType) {
+    this.formSimulationViewModel = new FormSimulationViewModel(
+      item.definition,
+      undefined,
+      this.reportTypeService,
+      item.id,
+      item.rendererDataTemplate
+    );
     this.dialog("formSimulation")?.open(null);
   }
 

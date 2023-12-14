@@ -13,3 +13,9 @@ export type ReportType = {
   published?: boolean;
   isFollowable?: boolean;
 };
+
+export type SimulationReportType = {
+  rendererData: string;
+  reporterNotifications: Array<{ id: string; name: string }>;
+  caseDefinitions: Array<{ id: string; description: string }>;
+};

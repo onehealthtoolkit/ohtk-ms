@@ -324,7 +324,10 @@ const ReportTypeCreate = () => {
           viewModel.definition = viewModel.definitionFormViewModel.jsonString;
         }}
       >
-        <FormBuilder viewModel={viewModel.definitionFormViewModel} />
+        <FormBuilder
+          viewModel={viewModel.definitionFormViewModel}
+          rendererDataTemplate={viewModel.rendererDataTemplate}
+        />
       </FormBuilderDialog>
       <FormBuilderDialog
         viewModel={viewModel.dialog("followupDefinitionFormBuilder")}
@@ -333,7 +336,10 @@ const ReportTypeCreate = () => {
             viewModel.followupDefinitionFormViewModel.jsonString;
         }}
       >
-        <FormBuilder viewModel={viewModel.followupDefinitionFormViewModel} />
+        <FormBuilder
+          viewModel={viewModel.followupDefinitionFormViewModel}
+          rendererDataTemplate={viewModel.rendererFollowupDataTemplate}
+        />
       </FormBuilderDialog>
     </>
   );
