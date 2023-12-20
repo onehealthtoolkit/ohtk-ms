@@ -26,7 +26,8 @@
     "observationMonitoringDefinitions": "Definición de monitoreo de observación",
     "inactiveReporter": "Reportero inactivo",
     "reporterPerformance": "Rendimiento del reportero",
-    "zeroReporter": "Raportu neniujn anomaliojn"
+    "zeroReporter": "Raportu neniujn anomaliojn",
+    "requestToDelete": "Request to Delete Account"
   },
   "filter": {
     "searchButton": "Buscar",
@@ -174,7 +175,8 @@
       "formDefinitionQrcode": "Código QR de definición de formulario",
       "formSimulation": "Simulación de formulario",
       "publishReportType": "Publicar tipo de informe",
-      "unPublishReportType": "Anular publicación Tipo de informe"
+      "unPublishReportType": "Anular publicación Tipo de informe",
+      "submit": "Submit"
     }
   },
   "dialog": {
@@ -196,7 +198,19 @@
   },
   "message": {
     "resetPasswordRequestSuccess": "Recibimos una solicitud para restablecer su contraseña.",
-    "passwordMissmatch": "La contraseña y la contraseña de confirmación que ingresó no coinciden."
+    "passwordMissmatch": "La contraseña y la contraseña de confirmación que ingresó no coinciden.",
+    "requestToDelete": [
+      "Dear {{user}},",
+      "We have received your request to delete your account on our platform. Please be advised that upon processing your request, we will take the following actions:",
+      "1. Removal of Personal Information:",
+      "All personal information associated with your account will be permanently deleted from our platform. This includes any data you have provided during registration or through your usage of the platform.",
+      "2. Retention of Reports:",
+      "While we will erase your personal information, any reports you have created will be retained for legal and regulatory purposes. However, rest assured that your personal details will no longer be visible or accessible in connection with these reports. Your privacy remains a top priority, and we will ensure that your identity is anonymized in all retained documents accessible by authorities.",
+      "Should you have any concerns or questions regarding this process, please feel free to reach out to our support team at {{supportEmail}}. Your satisfaction and privacy are important to us.",
+      "Thank you for being a part of our community, and we wish you the best in your future endeavors.",
+      "Best regards,",
+      "OHTK Platform."
+    ]
   },
   "months": [
     "Ene",

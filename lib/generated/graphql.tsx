@@ -1921,6 +1921,7 @@ export type Mutation = {
   publishReportType?: Maybe<PublishReportTypeMutation>;
   refreshToken?: Maybe<Refresh>;
   registerFcmToken?: Maybe<RegisterFcmTokenMutation>;
+  requestToDeleteMyAccount?: Maybe<RequestToDeleteMyAccountMutation>;
   resetPassword?: Maybe<ResetPasswordMutation>;
   resetPasswordRequest?: Maybe<ResetPasswordRequestMutation>;
   revokeToken?: Maybe<Revoke>;
@@ -3441,6 +3442,11 @@ export type ReporterReportByDate = {
   week?: Maybe<Scalars["Int"]>;
   year?: Maybe<Scalars["Int"]>;
   yearWeek?: Maybe<Scalars["String"]>;
+};
+
+export type RequestToDeleteMyAccountMutation = {
+  __typename?: "RequestToDeleteMyAccountMutation";
+  success?: Maybe<Scalars["Boolean"]>;
 };
 
 export type ResetPasswordMutation = {
@@ -5752,6 +5758,18 @@ export type UserUploadAvatarMutation = {
     __typename?: "AdminUserUploadAvatarMutation";
     success?: boolean | null;
     avatarUrl?: string | null;
+  } | null;
+};
+
+export type UserRequestToDeleteMyAccountMutationVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type UserRequestToDeleteMyAccountMutation = {
+  __typename?: "Mutation";
+  requestToDeleteMyAccount?: {
+    __typename?: "RequestToDeleteMyAccountMutation";
+    success?: boolean | null;
   } | null;
 };
 
@@ -17433,6 +17451,34 @@ export const UserUploadAvatarDocument = {
 } as unknown as DocumentNode<
   UserUploadAvatarMutation,
   UserUploadAvatarMutationVariables
+>;
+export const UserRequestToDeleteMyAccountDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "userRequestToDeleteMyAccount" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "requestToDeleteMyAccount" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UserRequestToDeleteMyAccountMutation,
+  UserRequestToDeleteMyAccountMutationVariables
 >;
 export const CheckCodeDocument = {
   kind: "Document",

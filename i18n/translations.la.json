@@ -27,7 +27,8 @@
     "observationMonitoringDefinitions": "ຄໍານິຍາມການຕິດຕາມການສັງເກດ",
     "inactiveReporter": "ອາສາທີ່ບໍ່ເຄື່ອນໄຫວ",
     "reporterPerformance": "ຜົນງານຂອງອາສາ",
-    "zeroReporter": "ລາຍ​ງານ​ບໍ່​ມີ​ຄວາມ​ຜິດ​ປົກ​ກະ​ຕິ​"
+    "zeroReporter": "ລາຍ​ງານ​ບໍ່​ມີ​ຄວາມ​ຜິດ​ປົກ​ກະ​ຕິ​",
+    "requestToDelete": "Request to Delete Account"
   },
   "filter": {
     "searchButton": "ປຸ່ມຊອກຫາ",
@@ -178,7 +179,8 @@
       "formDefinitionQrcode": "ຄຳນິຍາມແບບຟອມ QR Code",
       "formSimulation": "ການຈຳລອງແບບຟອມ",
       "publishReportType": "PublishTyp",
-      "unPublishReportType": "ຍົກເລີກການເຜີຍແຜ່ປະເພດລາຍງານ"
+      "unPublishReportType": "ຍົກເລີກການເຜີຍແຜ່ປະເພດລາຍງານ",
+      "submit": "Submit"
     }
   },
   "dialog": {
@@ -205,7 +207,19 @@
   },
   "message": {
     "resetPasswordRequestSuccess": "ລະບົບໄດ້ຮັບການຮ້ອງຂໍໃຫ້ຣີເຊັດລະຫັດຜ່ານຂອງທ່ານແລ້ວ.",
-    "passwordMissmatch": "ລະຫັດຜ່ານ ແລະຢືນຢັນລະຫັດຜ່ານທີ່ທ່ານໃສ່ນັ້ນບໍ່ກົງກັນ."
+    "passwordMissmatch": "ລະຫັດຜ່ານ ແລະຢືນຢັນລະຫັດຜ່ານທີ່ທ່ານໃສ່ນັ້ນບໍ່ກົງກັນ.",
+    "requestToDelete": [
+      "Dear {{user}},",
+      "We have received your request to delete your account on our platform. Please be advised that upon processing your request, we will take the following actions:",
+      "1. Removal of Personal Information:",
+      "All personal information associated with your account will be permanently deleted from our platform. This includes any data you have provided during registration or through your usage of the platform.",
+      "2. Retention of Reports:",
+      "While we will erase your personal information, any reports you have created will be retained for legal and regulatory purposes. However, rest assured that your personal details will no longer be visible or accessible in connection with these reports. Your privacy remains a top priority, and we will ensure that your identity is anonymized in all retained documents accessible by authorities.",
+      "Should you have any concerns or questions regarding this process, please feel free to reach out to our support team at {{supportEmail}}. Your satisfaction and privacy are important to us.",
+      "Thank you for being a part of our community, and we wish you the best in your future endeavors.",
+      "Best regards,",
+      "OHTK Platform."
+    ]
   },
   "months": [
     "ມັງກອນ",

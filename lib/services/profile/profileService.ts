@@ -4,6 +4,7 @@ import {
   UserUploadAvatarDocument,
   MeDocument,
   UserUpdateProfileDocument,
+  UserRequestToDeleteMyAccountDocument,
 } from "lib/generated/graphql";
 import { IService, SaveResult } from "lib/services/interface";
 import { Me, ProfileUpdate } from "lib/services/profile/me";
@@ -20,6 +21,8 @@ export interface IProfileService extends IService {
     lastName: string,
     telephone?: string
   ): Promise<SaveResult<ProfileUpdate>>;
+
+  deleteMyAccount(): Promise<SaveResult<void>>;
 }
 
 export class ProfileService implements IProfileService {
@@ -131,6 +134,25 @@ export class ProfileService implements IProfileService {
     }
 
     const success = updateResult.data?.adminUserUpdateProfile
+      ?.success as boolean;
+    return {
+      success,
+    };
+  }
+
+  async deleteMyAccount(): Promise<SaveResult<void>> {
+    const deleteResult = await this.client.mutate({
+      mutation: UserRequestToDeleteMyAccountDocument,
+    });
+
+    if (deleteResult.errors) {
+      return {
+        success: false,
+        message: deleteResult.errors.map(o => o.message).join(","),
+      };
+    }
+
+    const success = deleteResult.data?.requestToDeleteMyAccount
       ?.success as boolean;
     return {
       success,
