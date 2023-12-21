@@ -178,7 +178,10 @@ const StateTransitionsUpdateForm = () => {
           viewModel.formDefinition = viewModel.formViewModel.jsonString;
         }}
       >
-        <FormBuilder viewModel={viewModel.formViewModel} />
+        <FormBuilder
+          viewModel={viewModel.formViewModel}
+          rendererDataTemplate=""
+        />
       </FormBuilderDialog>
     </>
   );

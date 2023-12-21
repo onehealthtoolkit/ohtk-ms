@@ -6,7 +6,7 @@ import { ReportTypeViewModel } from "./reportTypeViewModel";
 export class ReportTypeUpdateViewModel extends ReportTypeViewModel {
   id: string;
   constructor(id: string, reportTypeService: IReportTypeService) {
-    super(reportTypeService);
+    super(reportTypeService, id);
     this.id = id;
     this.fetch();
   }

@@ -75,6 +75,7 @@ const Component: FC<FormSubformFieldProps> = ({ field, definition }) => {
       >
         <FormSimulation
           viewModel={viewModel.formSimulationViewModel}
+          rendererDataTemplate=""
           onSubmit={() => {
             viewModel.supplantValues();
             viewModel.dialog("subformFieldDialog")?.close();

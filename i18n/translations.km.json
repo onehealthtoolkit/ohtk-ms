@@ -26,7 +26,8 @@
     "observationMonitoringDefinitions": "និយមន័យនៃការត្រួតពិនិត្យការសង្កេត",
     "inactiveReporter": "អ្នករាយការណ៍អសកម្ម",
     "reporterPerformance": "ការសម្តែងអ្នកសារព័ត៌មាន",
-    "zeroReporter": "រាយការណ៍មិនប្រក្រតី"
+    "zeroReporter": "រាយការណ៍មិនប្រក្រតី",
+    "requestToDelete": "Request to Delete Account"
   },
   "filter": {
     "searchButton": "ស្វែងរក",
@@ -174,7 +175,8 @@
       "formDefinitionQrcode": "និយមន័យទម្រង់បែបបទ QR Code",
       "formSimulation": "ការក្លែងធ្វើទម្រង់",
       "publishReportType": "បោះពុម្ពរបាយការណ៍ប្រភេទ",
-      "unPublishReportType": "មិនបោះពុម្ពប្រភេទរបាយការណ៍"
+      "unPublishReportType": "មិនបោះពុម្ពប្រភេទរបាយការណ៍",
+      "submit": "Submit"
     }
   },
   "dialog": {
@@ -199,7 +201,19 @@
   },
   "message": {
     "resetPasswordRequestSuccess": "យើងបានទទួលសំណើសុំកំណត់ពាក្យសម្ងាត់របស់អ្នកឡើងវិញ។",
-    "passwordMissmatch": "ពាក្យសម្ងាត់ និងបញ្ជាក់ពាក្យសម្ងាត់ដែលអ្នកបានបញ្ចូលមិនត្រូវគ្នាទេ។"
+    "passwordMissmatch": "ពាក្យសម្ងាត់ និងបញ្ជាក់ពាក្យសម្ងាត់ដែលអ្នកបានបញ្ចូលមិនត្រូវគ្នាទេ។",
+    "requestToDelete": [
+      "Dear {{user}},",
+      "We have received your request to delete your account on our platform. Please be advised that upon processing your request, we will take the following actions:",
+      "1. Removal of Personal Information:",
+      "All personal information associated with your account will be permanently deleted from our platform. This includes any data you have provided during registration or through your usage of the platform.",
+      "2. Retention of Reports:",
+      "While we will erase your personal information, any reports you have created will be retained for legal and regulatory purposes. However, rest assured that your personal details will no longer be visible or accessible in connection with these reports. Your privacy remains a top priority, and we will ensure that your identity is anonymized in all retained documents accessible by authorities.",
+      "Should you have any concerns or questions regarding this process, please feel free to reach out to our support team at {{supportEmail}}. Your satisfaction and privacy are important to us.",
+      "Thank you for being a part of our community, and we wish you the best in your future endeavors.",
+      "Best regards,",
+      "OHTK Platform."
+    ]
   },
   "months": [
     "មករា",

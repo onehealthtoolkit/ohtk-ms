@@ -10,8 +10,12 @@ import {
   PublicReportTypeDocument,
   UnpublicReportTypeDocument,
   ReportTypeByNameDocument,
+  SubmitEvaluateReportSimulationDocument,
 } from "lib/generated/graphql";
-import { ReportType } from "lib/services/reportType/reportType";
+import {
+  ReportType,
+  SimulationReportType,
+} from "lib/services/reportType/reportType";
 import {
   DeleteResult,
   GetResult,
@@ -70,6 +74,14 @@ export interface IReportTypeService extends IService {
   publishReportType(id: string): Promise<String>;
 
   unpublishReportType(id: string): Promise<String>;
+
+  submitSimulationReport(
+    data: any,
+    incidentDate: string,
+    rendererDataTemplate: string,
+    reportId?: string,
+    reportTypeId?: string
+  ): Promise<SimulationReportType>;
 }
 
 export class ReportTypeService implements IReportTypeService {
@@ -114,6 +126,7 @@ export class ReportTypeService implements IReportTypeService {
           categoryName: item.category.name,
           ordering: item.ordering,
           published: item.published,
+          rendererDataTemplate: item.rendererDataTemplate || "",
         });
       }
     });
@@ -472,5 +485,30 @@ export class ReportTypeService implements IReportTypeService {
     });
 
     return result.data?.unpublishReportType?.reportType?.id;
+  }
+
+  async submitSimulationReport(
+    data: any,
+    incidentDate: string,
+    rendererDataTemplate: string,
+    reportId: string,
+    reportTypeId: string
+  ): Promise<SimulationReportType> {
+    const submitResult = await this.client.mutate({
+      mutation: SubmitEvaluateReportSimulationDocument,
+      variables: {
+        data,
+        incidentDate,
+        rendererDataTemplate,
+        reportId,
+        reportTypeId,
+      },
+    });
+    const result = submitResult.data?.evaluateReportSimulation?.result;
+    return {
+      rendererData: result?.rendererData || "",
+      reporterNotifications: result?.reporterNotifications as [],
+      caseDefinitions: result?.caseDefinitions as [],
+    };
   }
 }

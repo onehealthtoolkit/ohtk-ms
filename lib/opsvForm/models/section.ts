@@ -21,7 +21,9 @@ export default class Section {
   }
 
   public toJsonValue(json: Record<string, any>) {
-    this.questions.forEach(question => question.toJsonValue(json));
+    this.questions.forEach(question => {
+      if (question.display) question.toJsonValue(json);
+    });
   }
 
   public validate(): boolean {

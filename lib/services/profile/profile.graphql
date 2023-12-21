@@ -42,3 +42,9 @@ mutation userUploadAvatar($image: Upload!) {
     avatarUrl
   }
 }
+
+mutation userRequestToDeleteMyAccount {
+  requestToDeleteMyAccount {
+    success
+  }
+}

@@ -1722,6 +1722,11 @@ export type DomainType = {
   isPrimary: Scalars["Boolean"];
 };
 
+export type EvaluateReportSimulation = {
+  __typename?: "EvaluateReportSimulation";
+  result?: Maybe<SimulationReportType>;
+};
+
 export type EventType = {
   __typename?: "EventType";
   cases?: Maybe<Array<Maybe<CaseType>>>;
@@ -1910,11 +1915,13 @@ export type Mutation = {
   convertToTestReport?: Maybe<ConvertToTestReportMutation>;
   deleteRefreshTokenCookie?: Maybe<DeleteRefreshTokenCookie>;
   deleteTokenCookie?: Maybe<DeleteJsonWebTokenCookie>;
+  evaluateReportSimulation?: Maybe<EvaluateReportSimulation>;
   forwardState?: Maybe<ForwardStateMutation>;
   promoteToCase?: Maybe<PromoteToCaseMutation>;
   publishReportType?: Maybe<PublishReportTypeMutation>;
   refreshToken?: Maybe<Refresh>;
   registerFcmToken?: Maybe<RegisterFcmTokenMutation>;
+  requestToDeleteMyAccount?: Maybe<RequestToDeleteMyAccountMutation>;
   resetPassword?: Maybe<ResetPasswordMutation>;
   resetPasswordRequest?: Maybe<ResetPasswordRequestMutation>;
   revokeToken?: Maybe<Revoke>;
@@ -2373,6 +2380,14 @@ export type MutationCommentUpdateArgs = {
 
 export type MutationConvertToTestReportArgs = {
   reportId: Scalars["UUID"];
+};
+
+export type MutationEvaluateReportSimulationArgs = {
+  data: Scalars["GenericScalar"];
+  incidentDate: Scalars["Date"];
+  rendererDataTemplate: Scalars["String"];
+  reportId?: InputMaybe<Scalars["UUID"]>;
+  reportTypeId?: InputMaybe<Scalars["UUID"]>;
 };
 
 export type MutationForwardStateArgs = {
@@ -3429,6 +3444,11 @@ export type ReporterReportByDate = {
   yearWeek?: Maybe<Scalars["String"]>;
 };
 
+export type RequestToDeleteMyAccountMutation = {
+  __typename?: "RequestToDeleteMyAccountMutation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
 export type ResetPasswordMutation = {
   __typename?: "ResetPasswordMutation";
   success?: Maybe<Scalars["Boolean"]>;
@@ -3442,6 +3462,27 @@ export type ResetPasswordRequestMutation = {
 export type Revoke = {
   __typename?: "Revoke";
   revoked: Scalars["Int"];
+};
+
+export type SimulationCaseDefinitionType = {
+  __typename?: "SimulationCaseDefinitionType";
+  description?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["Int"]>;
+};
+
+export type SimulationReportType = {
+  __typename?: "SimulationReportType";
+  caseDefinitions?: Maybe<Array<Maybe<SimulationCaseDefinitionType>>>;
+  rendererData?: Maybe<Scalars["String"]>;
+  reporterNotifications?: Maybe<
+    Array<Maybe<SimulationReporterNotificationType>>
+  >;
+};
+
+export type SimulationReporterNotificationType = {
+  __typename?: "SimulationReporterNotificationType";
+  id?: Maybe<Scalars["Int"]>;
+  name?: Maybe<Scalars["String"]>;
 };
 
 export type StatType = {
@@ -5720,6 +5761,18 @@ export type UserUploadAvatarMutation = {
   } | null;
 };
 
+export type UserRequestToDeleteMyAccountMutationVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type UserRequestToDeleteMyAccountMutation = {
+  __typename?: "Mutation";
+  requestToDeleteMyAccount?: {
+    __typename?: "RequestToDeleteMyAccountMutation";
+    success?: boolean | null;
+  } | null;
+};
+
 export type CheckCodeQueryVariables = Exact<{
   code: Scalars["String"];
 }>;
@@ -6116,6 +6169,7 @@ export type ReportTypesQuery = {
       definition: any;
       ordering: number;
       published: boolean;
+      rendererDataTemplate?: string | null;
       category: {
         __typename?: "AdminCategoryCreateSuccess";
         id: string;
@@ -6317,6 +6371,35 @@ export type GetReportTypeQuery = {
       __typename?: "DeepStateDefinitionType";
       id: string;
       name: string;
+    } | null;
+  } | null;
+};
+
+export type SubmitEvaluateReportSimulationMutationVariables = Exact<{
+  data: Scalars["GenericScalar"];
+  incidentDate: Scalars["Date"];
+  rendererDataTemplate: Scalars["String"];
+  reportId?: InputMaybe<Scalars["UUID"]>;
+  reportTypeId?: InputMaybe<Scalars["UUID"]>;
+}>;
+
+export type SubmitEvaluateReportSimulationMutation = {
+  __typename?: "Mutation";
+  evaluateReportSimulation?: {
+    __typename?: "EvaluateReportSimulation";
+    result?: {
+      __typename?: "SimulationReportType";
+      rendererData?: string | null;
+      reporterNotifications?: Array<{
+        __typename?: "SimulationReporterNotificationType";
+        id?: number | null;
+        name?: string | null;
+      } | null> | null;
+      caseDefinitions?: Array<{
+        __typename?: "SimulationCaseDefinitionType";
+        id?: number | null;
+        description?: string | null;
+      } | null> | null;
     } | null;
   } | null;
 };
@@ -17369,6 +17452,34 @@ export const UserUploadAvatarDocument = {
   UserUploadAvatarMutation,
   UserUploadAvatarMutationVariables
 >;
+export const UserRequestToDeleteMyAccountDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "userRequestToDeleteMyAccount" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "requestToDeleteMyAccount" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UserRequestToDeleteMyAccountMutation,
+  UserRequestToDeleteMyAccountMutationVariables
+>;
 export const CheckCodeDocument = {
   kind: "Document",
   definitions: [
@@ -19259,6 +19370,10 @@ export const ReportTypesDocument = {
                         kind: "Field",
                         name: { kind: "Name", value: "published" },
                       },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "rendererDataTemplate" },
+                      },
                     ],
                   },
                 },
@@ -20358,6 +20473,178 @@ export const GetReportTypeDocument = {
     },
   ],
 } as unknown as DocumentNode<GetReportTypeQuery, GetReportTypeQueryVariables>;
+export const SubmitEvaluateReportSimulationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "SubmitEvaluateReportSimulation" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "data" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "GenericScalar" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "incidentDate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Date" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "rendererDataTemplate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          defaultValue: { kind: "NullValue" },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          defaultValue: { kind: "NullValue" },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "evaluateReportSimulation" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "data" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "data" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "incidentDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "incidentDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "rendererDataTemplate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "rendererDataTemplate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "rendererData" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "reporterNotifications" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "caseDefinitions" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "description" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SubmitEvaluateReportSimulationMutation,
+  SubmitEvaluateReportSimulationMutationVariables
+>;
 export const ReporterNotificationsDocument = {
   kind: "Document",
   definitions: [

@@ -80,6 +80,8 @@ export default class Question {
       json[this.name] = currentJson;
     }
 
-    this.fields.forEach(field => field.toJsonValue(currentJson));
+    this.fields.forEach(field => {
+      if (field.display) field.toJsonValue(currentJson);
+    });
   }
 }

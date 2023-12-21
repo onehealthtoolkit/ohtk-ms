@@ -18,48 +18,62 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   _rendererFollowupDataTemplate: string = "";
   _isFollowable: boolean = false;
 
-  definitionFormViewModel = new FormViewModel([
-    {
-      label: "reportDate",
-      value: "report_date",
-      type: "Report",
-    },
-    {
-      label: "incidentDate",
-      value: "incident_date",
-      type: "Report",
-    },
-    {
-      label: "gpsLocation",
-      value: "gps_location",
-      type: "Report",
-    },
-    {
-      label: "reportId",
-      value: "report_id",
-      type: "Report",
-    },
-    {
-      label: "reportTypeId",
-      value: "report_type.id",
-      type: "Report type",
-    },
-    {
-      label: "reportTypeName",
-      value: "report_type.name",
-      type: "Report type",
-    },
-    {
-      label: "reportCategory",
-      value: "report_type.category",
-      type: "Report category",
-    },
-  ]);
+  definitionFormViewModel: FormViewModel;
+  followupDefinitionFormViewModel: FormViewModel;
 
-  followupDefinitionFormViewModel = new FormViewModel();
-
-  constructor(reportTypeService: IReportTypeService) {
+  constructor(
+    reportTypeService: IReportTypeService,
+    readonly reportTypeId?: string
+  ) {
     super();
+    this.reportTypeService = reportTypeService;
+
+    this.definitionFormViewModel = new FormViewModel(
+      [
+        {
+          label: "reportDate",
+          value: "report_date",
+          type: "Report",
+        },
+        {
+          label: "incidentDate",
+          value: "incident_date",
+          type: "Report",
+        },
+        {
+          label: "gpsLocation",
+          value: "gps_location",
+          type: "Report",
+        },
+        {
+          label: "reportId",
+          value: "report_id",
+          type: "Report",
+        },
+        {
+          label: "reportTypeId",
+          value: "report_type.id",
+          type: "Report type",
+        },
+        {
+          label: "reportTypeName",
+          value: "report_type.name",
+          type: "Report type",
+        },
+        {
+          label: "reportCategory",
+          value: "report_type.category",
+          type: "Report category",
+        },
+      ],
+      undefined,
+      undefined,
+      undefined,
+      this.reportTypeService,
+      this.reportTypeId
+    );
+
+    this.followupDefinitionFormViewModel = new FormViewModel();
     makeObservable(this, {
       _name: observable,
       name: computed,
@@ -85,7 +99,6 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
       followupDefinitionFormViewModel: observable,
       parseDefinition: action,
     });
-    this.reportTypeService = reportTypeService;
   }
 
   public get name(): string {

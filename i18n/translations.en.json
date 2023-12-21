@@ -26,7 +26,8 @@
     "observationMonitoringDefinitions": "Observation Monitoring Definition",
     "inactiveReporter": "Inactive Reporter",
     "reporterPerformance": "Reporter Performance",
-    "zeroReporter": "Zero Reports"
+    "zeroReporter": "Zero Reports",
+    "requestToDelete": "Request to Delete My Account"
   },
   "filter": {
     "searchButton": "Search",
@@ -180,7 +181,8 @@
       "formDefinitionQrcode": "Form Definition QR Code",
       "formSimulation": "Form Simulation",
       "publishReportType": "Publish Report Types",
-      "unPublishReportType": "Unpublish Report Types"
+      "unPublishReportType": "Unpublish Report Types",
+      "submit": "Submit"
     }
   },
   "dialog": {
@@ -203,7 +205,19 @@
   },
   "message": {
     "resetPasswordRequestSuccess": "We received a request to reset your password.",
-    "passwordMissmatch": "The password and confirm password you entered don’t match."
+    "passwordMissmatch": "The password and confirm password you entered don’t match.",
+    "requestToDelete": [
+      "Dear {{user}},",
+      "We have received your request to delete your account on our platform. Please be advised that upon processing your request, we will take the following actions:",
+      "1. Removal of Personal Information:",
+      "All personal information associated with your account will be permanently deleted from our platform. This includes any data you have provided during registration or through your usage of the platform.",
+      "2. Retention of Reports:",
+      "While we will erase your personal information, any reports you have created will be retained for legal and regulatory purposes. However, rest assured that your personal details will no longer be visible or accessible in connection with these reports. Your privacy remains a top priority, and we will ensure that your identity is anonymized in all retained documents accessible by authorities.",
+      "Should you have any concerns or questions regarding this process, please feel free to reach out to our support team at {{supportEmail}}. Your satisfaction and privacy are important to us.",
+      "Thank you for being a part of our community, and we wish you the best in your future endeavors.",
+      "Best regards,",
+      "OHTK Platform."
+    ]
   },
   "months": [
     "Jan",
@@ -219,15 +233,7 @@
     "Nov",
     "Dec"
   ],
-  "days": [
-    "s",
-    "m",
-    "t",
-    "w",
-    "t",
-    "f",
-    "s"
-  ],
+  "days": ["s", "m", "t", "w", "t", "f", "s"],
   "qr": {
     "login": "Login QR Code",
     "reportTypeFormDefinition": "Form Definition QR Code"

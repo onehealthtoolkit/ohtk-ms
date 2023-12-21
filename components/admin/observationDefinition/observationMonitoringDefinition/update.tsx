@@ -244,7 +244,10 @@ const ObservationMonitoringDefinitionsUpdateForm = () => {
               viewModel.definitionFormViewModel.jsonString;
           }}
         >
-          <FormBuilder viewModel={viewModel.definitionFormViewModel} />
+          <FormBuilder
+            viewModel={viewModel.definitionFormViewModel}
+            rendererDataTemplate={viewModel.descriptionTemplate}
+          />
         </FormBuilderDialog>
       </>
     </MaskingLoader>
