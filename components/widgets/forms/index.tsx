@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { ChangeEventHandler, FC, forwardRef, ReactElement } from "react";
-import { PlusIcon, UploadIcon } from "@heroicons/react/solid";
+import { PlusIcon, UploadIcon, DownloadIcon } from "@heroicons/react/solid";
 import Spinner from "components/widgets/spinner";
 import tw from "tailwind-styled-components";
 import dynamic from "next/dynamic";
@@ -74,6 +74,40 @@ export const UploadButton = forwardRef(function UploadButton(
     >
       {props.isSubmitting === true && <Spinner />}
       <UploadIcon className="h-5 w-5 text-gray-500 mr-2" />
+      <span>{t("form.button.import", "Import")}</span>
+    </button>
+  );
+});
+
+export const ExportButton = forwardRef(function ExportButton(
+  props: React.ComponentPropsWithoutRef<"button"> & { isSubmitting: boolean },
+  ref: React.Ref<HTMLButtonElement>
+) {
+  const { t } = useTranslation();
+  const { isSubmitting, ...otherProps } = props;
+  return (
+    <button
+      ref={ref}
+      type="button"
+      {...otherProps}
+      disabled={isSubmitting}
+      className="
+      px-4
+      py-2
+      text-black
+      bg-slate-50
+      hover:border-gray-800
+      hover:bg-gray-100
+      border-slate-700
+      rounded
+      items-center
+      inline-flex
+      justify-center
+      border
+      "
+    >
+      {props.isSubmitting === true && <Spinner />}
+      <DownloadIcon className="h-5 w-5 text-gray-500 mr-2" />
       <span>{t("form.button.import", "Import")}</span>
     </button>
   );

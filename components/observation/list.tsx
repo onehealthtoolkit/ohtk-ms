@@ -26,6 +26,8 @@ import ObservationFilter from "./filter";
 import { toJS } from "mobx";
 import dynamic from "next/dynamic";
 import FilterQuery from "components/observation/filterQuery";
+import { ExportButton } from "components/widgets/forms";
+import { currentExcelEndpoint } from "components/excel/filter";
 
 export const Map = dynamic(() => import("./map"), {
   loading: () => <p>A map is loading</p>,
@@ -108,6 +110,9 @@ const ObservationList = () => {
   const [viewModel] = useState<ObservationListViewModel>(
     new ObservationListViewModel(observationService)
   );
+  const today = new Date();
+  const fromDate = new Date(today.getFullYear(), today.getMonth(), 1);
+  const toDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
   useEffect(() => {
     if (router.isReady) {
@@ -196,6 +201,42 @@ const ObservationList = () => {
     }
   };
 
+  const exportExcel = () => {
+    return (
+      <div className="flex space-x-2 ml-2">
+        <form method="GET" action={`${currentExcelEndpoint()}observation`}>
+          <input
+            type="hidden"
+            name="definitionId"
+            value={viewModel.filter.definitionId}
+          ></input>
+          <input
+            type="hidden"
+            name="fromDate"
+            value={
+              viewModel.filter.fromDate?.toISOString() ||
+              fromDate?.toISOString()
+            }
+          ></input>
+          <input
+            type="hidden"
+            name="toDate"
+            value={
+              viewModel.filter.throughDate?.toISOString() ||
+              toDate?.toISOString()
+            }
+          ></input>
+          <input
+            type="hidden"
+            name="timezoneOffset"
+            value={new Date().getTimezoneOffset()}
+          ></input>
+          <ExportButton type="submit" isSubmitting={viewModel.isSubmitting} />
+        </form>
+      </div>
+    );
+  };
+
   if (!viewModel) {
     return <Spinner />;
   }
@@ -244,6 +285,7 @@ const ObservationList = () => {
                 applySearch();
               }}
             />
+            {exportExcel()}
           </div>
 
           <div className="mt-2">{render()}</div>
