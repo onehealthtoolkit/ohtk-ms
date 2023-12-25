@@ -108,7 +108,7 @@ export const ExportButton = forwardRef(function ExportButton(
     >
       {props.isSubmitting === true && <Spinner />}
       <DownloadIcon className="h-5 w-5 text-gray-500 mr-2" />
-      <span>{t("form.button.import", "Import")}</span>
+      <span>{t("form.button.export", "Export")}</span>
     </button>
   );
 });
