@@ -110,9 +110,6 @@ const ObservationList = () => {
   const [viewModel] = useState<ObservationListViewModel>(
     new ObservationListViewModel(observationService)
   );
-  const today = new Date();
-  const fromDate = new Date(today.getFullYear(), today.getMonth(), 1);
-  const toDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
   useEffect(() => {
     if (router.isReady) {
@@ -213,18 +210,12 @@ const ObservationList = () => {
           <input
             type="hidden"
             name="fromDate"
-            value={
-              viewModel.filter.fromDate?.toISOString() ||
-              fromDate?.toISOString()
-            }
+            value={viewModel.filter.fromDate?.toISOString() || ""}
           ></input>
           <input
             type="hidden"
             name="toDate"
-            value={
-              viewModel.filter.throughDate?.toISOString() ||
-              toDate?.toISOString()
-            }
+            value={viewModel.filter.throughDate?.toISOString() || ""}
           ></input>
           <input
             type="hidden"
