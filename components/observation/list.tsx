@@ -26,6 +26,8 @@ import ObservationFilter from "./filter";
 import { toJS } from "mobx";
 import dynamic from "next/dynamic";
 import FilterQuery from "components/observation/filterQuery";
+import { ExportButton } from "components/widgets/forms";
+import { currentExcelEndpoint } from "components/excel/filter";
 
 export const Map = dynamic(() => import("./map"), {
   loading: () => <p>A map is loading</p>,
@@ -196,6 +198,36 @@ const ObservationList = () => {
     }
   };
 
+  const exportExcel = () => {
+    return (
+      <div className="flex space-x-2 ml-2">
+        <form method="GET" action={`${currentExcelEndpoint()}observation`}>
+          <input
+            type="hidden"
+            name="definitionId"
+            value={viewModel.filter.definitionId}
+          ></input>
+          <input
+            type="hidden"
+            name="fromDate"
+            value={viewModel.filter.fromDate?.toISOString() || ""}
+          ></input>
+          <input
+            type="hidden"
+            name="toDate"
+            value={viewModel.filter.throughDate?.toISOString() || ""}
+          ></input>
+          <input
+            type="hidden"
+            name="timezoneOffset"
+            value={new Date().getTimezoneOffset()}
+          ></input>
+          <ExportButton type="submit" isSubmitting={viewModel.isSubmitting} />
+        </form>
+      </div>
+    );
+  };
+
   if (!viewModel) {
     return <Spinner />;
   }
@@ -244,6 +276,7 @@ const ObservationList = () => {
                 applySearch();
               }}
             />
+            {exportExcel()}
           </div>
 
           <div className="mt-2">{render()}</div>
