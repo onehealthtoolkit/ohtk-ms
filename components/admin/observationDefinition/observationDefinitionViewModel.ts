@@ -150,7 +150,7 @@ export abstract class ObservationDefinitionViewModel extends BaseFormViewModel {
   public parseDefinition(value: string): boolean {
     try {
       this.definitionFormViewModel.parse(JSON.parse(value));
-      this.definitionFormViewModel.setLabel(this.name + " Definition");
+      this.definitionFormViewModel.setLabel(this.name);
       this.registerFormDefinition = this.definitionFormViewModel.jsonString;
       return true;
     } catch (e) {
