@@ -110,7 +110,23 @@
       "longitude": "ເສັ້ນແວງ",
       "notificationTo": "ແຈ້ງການເຖິງ",
       "registerFormDefinition": "ແບບ​ຟອມ​​ລົງ​ທະ​ບຽນ",
-      "identityTemplate": "ແມ່ແບບຕົວຕົນ"
+      "identityTemplate": "ແມ່ແບບຕົວຕົນ",
+      "authorityName": "ອົງການ",
+      "createdAt": "ສ້າງຢູ່",
+      "incidentDate": "ວັນທີເກີດເຫດ",
+      "data": "ຂໍ້ມູນ",
+      "caseType": "ລາຍງານໂດຍ",
+      "reportBy": "ລາຍງານໂດຍ",
+      "phoneNumber": "ເບີໂທລະສັບ",
+      "formData": " ຂໍ້ມູນແບບຟອມ",
+      "followup": "ຕິດຕາມ",
+      "raw": "ຂໍ້ມູນດິບ",
+      "definition": "ຄໍານິຍາມ",
+      "comments": "ຄໍາເຫັນ",
+      "noComments": "ບໍ່ມີຄວາມຄິດເຫັນ",
+      "state": "ສະຖານະການ",
+      "detail": "ລາຍລະອຽດ",
+      "finished": " ສຳເລັດແລ້ວ"
     },
     "placeholder": {
       "code": "ລະຫັດ",
@@ -159,7 +175,8 @@
       "longitude": "ເສັ້ນແວງ",
       "notificationTo": "email:john@gmail.com, user:pphetra",
       "registerFormDefinition": "ແບບ​ຟອມ​ລົງ​ທະ​ບຽນ",
-      "identityTemplate": "ແມ່ແບບຕົວຕົນ"
+      "identityTemplate": "ແມ່ແບບຕົວຕົນ",
+      "enterCommentHere": "ໃສ່ຄຳເຫັນທີ່ນີ້…"
     },
     "button": {
       "signin": "ເຂົ້າ​ສູ່​ລະ​ບົບ",
@@ -180,7 +197,8 @@
       "formSimulation": "ການຈຳລອງແບບຟອມ",
       "publishReportType": "PublishTyp",
       "unPublishReportType": "ຍົກເລີກການເຜີຍແຜ່ປະເພດລາຍງານ",
-      "submit": "Submit"
+      "submit": "ບັນທຶກ",
+      "back": "ເລົ່າຄືນ"
     }
   },
   "dialog": {

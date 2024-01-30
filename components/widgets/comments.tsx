@@ -15,12 +15,15 @@ import { useRouter } from "next/router";
 import { formatDateTime } from "lib/datetime";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 import { currentWebsocketEndpoint } from "lib/client";
+import { useTranslation } from "react-i18next";
 
 type CommentsProps = {
   threadId?: number | null;
 };
 
 const Comments: React.FC<CommentsProps> = ({ threadId }) => {
+  const { t } = useTranslation();
+
   const { commentService } = useServices();
   const [viewModel] = useState(new CommentsViewModel(commentService, threadId));
 
@@ -44,7 +47,7 @@ const Comments: React.FC<CommentsProps> = ({ threadId }) => {
         <>
           <label className="mt-4 px-4 text-gray-700 text-sm font-bold flex gap-1">
             <ChatAltIcon className="w-5 h-5" />
-            <span>Comments</span>
+            <span>{t("form.label.comments", "Comments")}</span>
           </label>
 
           <div>
@@ -57,7 +60,7 @@ const Comments: React.FC<CommentsProps> = ({ threadId }) => {
                 />
               ))
             ) : (
-              <div>No comments</div>
+              <div>{t("form.label.noComments", "No comments")}</div>
             )}
           </div>
 
@@ -74,6 +77,8 @@ export default memo(Comments);
 
 const CommentForm = observer(
   ({ viewModel }: { viewModel: CommentsViewModel }) => {
+    const { t } = useTranslation();
+
     return (
       <form
         className="border border-gray-200  mx-4 rounded"
@@ -86,7 +91,10 @@ const CommentForm = observer(
           <div className="flex flex-row gap-2">
             <TextArea
               id="body"
-              placeholder="Enter comment here..."
+              placeholder={t(
+                "form.placeholder.enterCommentHere",
+                "Enter comment here..."
+              )}
               rows={3}
               value={viewModel.body}
               onChange={evt => (viewModel.body = evt.target.value)}
@@ -138,7 +146,11 @@ const CommentForm = observer(
             type="submit"
             disabled={viewModel.isSubmitting}
           >
-            {viewModel.isSubmitting ? <Spinner /> : "Submit"}
+            {viewModel.isSubmitting ? (
+              <Spinner />
+            ) : (
+              t("form.button.submit", "Submit")
+            )}
           </button>
         </div>
         {viewModel.submitError.length > 0 && (

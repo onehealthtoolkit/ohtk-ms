@@ -9,6 +9,7 @@ import { parseForm } from "lib/opsvForm/models/json";
 import { Fragment, useId, useState } from "react";
 import { renderDefinitionDataAsForm } from "./renderDataAsForm";
 import { RenderDataDialogViewModel } from "./renderDataDialogViewModel";
+import { useTranslation } from "react-i18next";
 
 type ViewTypeSwitchProps = {
   active: boolean;
@@ -16,13 +17,17 @@ type ViewTypeSwitchProps = {
 };
 
 const ViewTypeSwitch = ({ active, onChange }: ViewTypeSwitchProps) => {
+  const { t } = useTranslation();
+
   const id = useId();
   return (
     <label
       htmlFor={id}
       className="inline-flex relative items-center cursor-pointer bg-white rounded-md h-10"
     >
-      <span className="mx-2 text-sm font-medium text-gray-900">Raw</span>
+      <span className="mx-2 text-sm font-medium text-gray-900">
+        {t("form.label.raw", "Raw")}
+      </span>
       <input
         type="checkbox"
         value=""
@@ -41,7 +46,9 @@ const ViewTypeSwitch = ({ active, onChange }: ViewTypeSwitchProps) => {
         after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600
         "
       ></div>
-      <span className="mx-2 text-sm font-medium text-gray-900">Definition</span>
+      <span className="mx-2 text-sm font-medium text-gray-900">
+        {t("form.label.definition", "Definition")}
+      </span>
     </label>
   );
 };

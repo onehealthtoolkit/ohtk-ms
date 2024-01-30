@@ -62,7 +62,7 @@ const ReportInformation = observer(
               value={viewModel.data?.authorityName || ""}
             />
             <TR
-              label="Phone number"
+              label={t("form.label.phoneNumber", "Phone number")}
               value={viewModel.data?.reportByTelephone || ""}
             />
           </tbody>
@@ -193,7 +193,7 @@ const Case = (props: { id: string }) => {
                         <CollectionIcon
                           className={`mr-2 w-5 h-5 ${activeCss}`}
                         />
-                        <span>State</span>
+                        <span>{t("form.label.state", "State")}</span>
                       </>
                     )}
                   </TabItem>
@@ -210,7 +210,7 @@ const Case = (props: { id: string }) => {
                         <AdjustmentsIcon
                           className={`mr-2 w-5 h-5 ${activeCss}`}
                         />
-                        <span>Detail</span>
+                        <span>{t("form.label.detail", "Detail")}</span>
                       </>
                     )}
                   </TabItem>
@@ -224,7 +224,7 @@ const Case = (props: { id: string }) => {
                   >
                     {() => (
                       <>
-                        <span>Followup</span>
+                        <span>{t("form.label.followup", "Followup")}</span>
                       </>
                     )}
                   </TabItem>
@@ -239,7 +239,9 @@ const Case = (props: { id: string }) => {
                 {viewModel.activeTabIndex == 1 && (
                   <>
                     <div className="">
-                      <p className="text-md dark:text-gray-400">Form Data</p>
+                      <p className="text-md dark:text-gray-400">
+                        {t("form.label.formData", "Form Data")}
+                      </p>
                     </div>
                     <RenderData
                       data={viewModel.data.data}
