@@ -64,6 +64,10 @@
       "category": "ກຸ່ມ",
       "reportType": "ປະເພດລາຍງານ",
       "condition": "ສະພາບ",
+      "select": "ເລືອກ...",
+      "thisWeek": "ອາທິດນີ້",
+      "thisMonth": "ເດືອນນີ້",
+      "thisYear": "ປີນີ້",
       "selectItem": "ເລືອກລາຍການ...",
       "fromDate": "ນັບຕັ້ງແຕ່ວັນທີ",
       "toDate": "ເຖິງວັນທີ",
@@ -131,7 +135,8 @@
       "month": "ເດືອນ",
       "year": "ປີ",
       "columnSplit": "ແບ່ງຖັນ",
-      "showTestReport": "ສະ​ແດງ​ໃຫ້​ເຫັນ​ບົດ​ລາຍ​ງານ​ການ​ທົດ​ສອບ​"
+      "showTestReport": "ສະ​ແດງ​ໃຫ້​ເຫັນ​ບົດ​ລາຍ​ງານ​ການ​ທົດ​ສອບ​",
+      "includesBoundaryConnects": "ປະ​ກອບ​ມີ​ການ​ເຊື່ອມ​ຕໍ່​ຊາຍ​ແດນ​"
     },
     "placeholder": {
       "code": "ລະຫັດ",

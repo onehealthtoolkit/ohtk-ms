@@ -5,6 +5,7 @@ import useServices from "lib/services/provider";
 import { ReportType } from "lib/services/reportType";
 import { ReportCategory } from "lib/services/reportCategory";
 import { styledReactSelect } from "components/widgets/styledReactSelect";
+import { useTranslation } from "react-i18next";
 
 interface GroupedOption {
   readonly label: string;
@@ -49,6 +50,7 @@ const ReportTypeSelect: React.FC<ReportTypeSelectProps> = ({
   value,
   onChange,
 }) => {
+  const { t } = useTranslation();
   const services = useServices();
   const [groupedOptions, setGroupedOptions] = useState<GroupedOption[]>();
 
@@ -80,6 +82,7 @@ const ReportTypeSelect: React.FC<ReportTypeSelectProps> = ({
       true,
       GroupedOption
     >
+      placeholder={t("form.label.select", "Select ...")}
       value={value}
       menuPlacement="top"
       isMulti={true}

@@ -8,21 +8,23 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import MapViewViewModel from "components/map/viewViewModel";
 import ReportTypeSelect from "components/report/reportTypeSelect";
 import { MapPin } from "components/widgets/mapPin";
+import { useTranslation } from "react-i18next";
 
 const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
+  const { t } = useTranslation();
   const setThisWeek = () => {
     const curr = new Date();
     const first = curr.getDate() - curr.getDay();
     viewModel.fromDate = new Date(curr.setDate(first));
     viewModel.toDate = new Date();
-    viewModel.periodText = "This week";
+    viewModel.periodText = t("form.label.thisWeek", "This week");
   };
 
   const setThisMonth = () => {
     const curr = new Date();
     viewModel.fromDate = new Date(curr.setDate(1));
     viewModel.toDate = new Date();
-    viewModel.periodText = "This month";
+    viewModel.periodText = t("form.label.thisMonth", "This month");
   };
 
   const setThisYear = () => {
@@ -30,7 +32,7 @@ const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
     curr.setMonth(0);
     viewModel.fromDate = new Date(curr.setDate(1));
     viewModel.toDate = new Date();
-    viewModel.periodText = "This year";
+    viewModel.periodText = t("form.label.thisYear", "This year");
   };
 
   return (
@@ -43,7 +45,8 @@ const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
                 viewModel.periodText ? "text-black" : "text-gray-400"
               } inline-flex w-full justify-center rounded-md px-4 py-0 text-sm font-medium  underline hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
             >
-              {viewModel.periodText || "Select ..."}
+              {viewModel.periodText ||
+                (t("form.label.select", "Select ...") as string)}
               <ChevronDownIcon
                 className="ml-2 -mr-1 h-5 w-5 text-black"
                 aria-hidden="true"
@@ -69,7 +72,7 @@ const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
                       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                       onClick={() => setThisWeek()}
                     >
-                      This week
+                      {t("form.label.thisWeek", "This week")}
                     </button>
                   )}
                 </Menu.Item>
@@ -81,7 +84,7 @@ const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
                       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                       onClick={() => setThisMonth()}
                     >
-                      This month
+                      {t("form.label.thisMonth", "This month")}
                     </button>
                   )}
                 </Menu.Item>
@@ -93,7 +96,7 @@ const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
                       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                       onClick={() => setThisYear()}
                     >
-                      This year
+                      {t("form.label.thisYear", "This year")}
                     </button>
                   )}
                 </Menu.Item>
@@ -104,7 +107,9 @@ const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
       </div>
 
       <Field $size="full" className="z-0">
-        <Label htmlFor="fromDate">From Date</Label>
+        <Label htmlFor="fromDate">
+          {t("form.label.fromDate", "Form Date")}
+        </Label>
         <DatePicker
           id="fromDate"
           selected={viewModel.fromDate}
@@ -112,7 +117,9 @@ const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
         />
       </Field>
       <Field $size="full">
-        <Label htmlFor="toDate">To Date</Label>
+        <Label htmlFor="toDate">
+          {t("form.label.throughDate", "Through Date")}
+        </Label>
         <DatePicker
           id="toDate"
           selected={viewModel.toDate}
@@ -121,7 +128,9 @@ const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
       </Field>
 
       <Field $size="full">
-        <Label htmlFor="reportType">Report type</Label>
+        <Label htmlFor="reportType">
+          {t("form.label.reportType", "Report type")}
+        </Label>
         <ReportTypeSelect
           value={viewModel.reportTypes}
           onChange={values => {
@@ -143,7 +152,10 @@ const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
           }
           defaultChecked={viewModel.includeBoundaryConnects}
           disabled={false}
-          label={"Includes boundary connects"}
+          label={t(
+            "form.label.includesBoundaryConnects",
+            "Includes boundary connects"
+          )}
         />
         <div className="w-[36px] h-[36px] relative ">
           <MapPin color="fill-purple-600" />
