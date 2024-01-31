@@ -82,7 +82,9 @@ const ExcelFilter: React.FC<ExcelFilterProp> = ({ action, reportType }) => {
       ></input>
       <FieldGroup>
         <Field $size="half">
-          <Label htmlFor="fromDate">From Date</Label>
+          <Label htmlFor="fromDate">
+            {t("form.label.fromDate", "From Date")}
+          </Label>
           <DatePicker
             id="fromDate"
             selected={fromDate}
@@ -93,7 +95,7 @@ const ExcelFilter: React.FC<ExcelFilterProp> = ({ action, reportType }) => {
           />
         </Field>
         <Field $size="half">
-          <Label htmlFor="toDate">To Date</Label>
+          <Label htmlFor="toDate">{t("form.label.toDate", "To Date")}</Label>
           <DatePicker
             id="toDate"
             selected={toDate}
@@ -104,7 +106,9 @@ const ExcelFilter: React.FC<ExcelFilterProp> = ({ action, reportType }) => {
           />
         </Field>
         <Field $size="half">
-          <Label htmlFor="toDate">Authority</Label>
+          <Label htmlFor="toDate">
+            {t("form.label.authority", "Authority")}
+          </Label>
           <AuthorityFilter
             name="authorityId"
             onChange={value => {

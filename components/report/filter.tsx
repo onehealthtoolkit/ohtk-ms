@@ -115,7 +115,7 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
               () => (viewModel.filter.includeTest = evt.target.checked || false)
             )
           }
-          label="Show test report"
+          label={t("form.label.showTestReport", "Show test report")}
           disabled={false}
         />
       </Field>

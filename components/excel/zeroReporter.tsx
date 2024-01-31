@@ -74,7 +74,9 @@ const ZeroReporter: React.FC = () => {
       ></input>
       <FieldGroup>
         <Field $size="half">
-          <Label htmlFor="monthYear">Month/Year</Label>
+          <Label htmlFor="monthYear">
+            {t("form.label.month", "Month")}/{t("form.label.year", "Year")}
+          </Label>
           <DatePicker
             id="monthYear"
             selected={monthYear}
@@ -89,7 +91,9 @@ const ZeroReporter: React.FC = () => {
           />
         </Field>
         <Field $size="half">
-          <Label htmlFor="toDate">Authority</Label>
+          <Label htmlFor="toDate">
+            {t("form.label.authority", "Authority")}
+          </Label>
           <AuthorityFilter
             name="authorityId"
             onChange={value => {

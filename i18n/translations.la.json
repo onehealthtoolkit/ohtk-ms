@@ -66,6 +66,7 @@
       "condition": "ສະພາບ",
       "selectItem": "ເລືອກລາຍການ...",
       "fromDate": "ນັບຕັ້ງແຕ່ວັນທີ",
+      "toDate": "ເຖິງວັນທີ",
       "throughDate": "ເຖິງວັນທີ",
       "role": "ບົດບາດ",
       "transition": "ການຫັນປ່ຽນ",
@@ -126,7 +127,11 @@
       "noComments": "ບໍ່ມີຄວາມຄິດເຫັນ",
       "state": "ສະຖານະການ",
       "detail": "ລາຍລະອຽດ",
-      "finished": " ສຳເລັດແລ້ວ"
+      "finished": " ສຳເລັດແລ້ວ",
+      "month": "ເດືອນ",
+      "year": "ປີ",
+      "columnSplit": "ແບ່ງຖັນ",
+      "showTestReport": "ສະ​ແດງ​ໃຫ້​ເຫັນ​ບົດ​ລາຍ​ງານ​ການ​ທົດ​ສອບ​"
     },
     "placeholder": {
       "code": "ລະຫັດ",
@@ -198,7 +203,10 @@
       "publishReportType": "PublishTyp",
       "unPublishReportType": "ຍົກເລີກການເຜີຍແຜ່ປະເພດລາຍງານ",
       "submit": "ບັນທຶກ",
-      "back": "ເລົ່າຄືນ"
+      "back": "ເລົ່າຄືນ",
+      "filter": "ການກັ່ນຕອງ",
+      "apply": "ໃຊ້",
+      "reset": " ລ້າງ"
     }
   },
   "dialog": {
