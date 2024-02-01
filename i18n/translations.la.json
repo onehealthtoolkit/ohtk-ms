@@ -251,8 +251,9 @@
   "status": {
     "test": "ທົດສອບ",
     "case": "ກໍລະນີ",
-    "suspectedOutbreak": "suspected outbreak",
-    "outbreak": "outbreak",
+    "suspectedOutbreak": "ສົງໃສການລະບາດ",
+    "outbreak": "ການລະບາດ",
+    "finished": "ສຳເລັດແລ້ວ",
     "actions": {
       "promoteToCase": "ປ່ຽນເປັນກໍລະນີ",
       "convertToTest": "ປ່ຽນເປັນທົດສອບ"
