@@ -2,9 +2,11 @@ import { CaseEvent } from "components/case/calendarViewModel";
 import { DayEventsProps } from "components/widgets/calendar";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 
 export const CaseDayEvents = observer(
   ({ date, viewModel }: DayEventsProps<CaseEvent>) => {
+    const { t } = useTranslation();
     const router = useRouter();
     const events = viewModel.getDayEvents(date);
     return (
@@ -22,7 +24,7 @@ export const CaseDayEvents = observer(
                   font-normal rounded px-1
                 "
               >
-                finished
+                {t("status.finished", "finished")}
               </span>
             )}
           </p>

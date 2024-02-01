@@ -9,7 +9,7 @@ const CaseStatus: React.FC<CaseStatusProps> = ({ statusLabel, isFinished }) => {
   const { t } = useTranslation();
   return isFinished ? (
     <div className="bg-green-400 text-white text-center rounded cursor-pointer px-2">
-      {t("form.label.finished", "Finished")}
+      {t("status.finished", "finished")}
     </div>
   ) : (
     <div className="text-blue-400 text-center rounded  px-2">{statusLabel}</div>

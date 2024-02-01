@@ -242,6 +242,7 @@
     "case": "case",
     "suspectedOutbreak": "suspected outbreak",
     "outbreak": "outbreak",
+    "finished": "Finished",
     "actions": {
       "promoteToCase": "Promote to case",
       "convertToTest": "Convert to test report"
