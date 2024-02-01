@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import useStore from "lib/store";
 import Spinner from "components/widgets/spinner";
 import AuthorityFilter from "components/dashboard/authorityFilter";
+import i18n from "i18n";
 
 const ZeroReporter: React.FC = () => {
   const { t } = useTranslation();
@@ -33,6 +34,11 @@ const ZeroReporter: React.FC = () => {
   const [toDate, setToDate] = useState<Date>(
     new Date(today.getFullYear(), today.getMonth() + 1, 0)
   );
+
+  const [language] = useState(i18n.language);
+  var url = `${currentExcelEndpoint()}/excels/zero_report`;
+  if (language == "la")
+    url = `${currentExcelEndpoint()}/${language}/excels/zero_report`;
 
   useEffect(() => {
     if (router.isReady) {
@@ -55,7 +61,7 @@ const ZeroReporter: React.FC = () => {
     le
   "
       method="GET"
-      action={`${currentExcelEndpoint()}zero_report`}
+      action={url}
     >
       <input
         type="hidden"

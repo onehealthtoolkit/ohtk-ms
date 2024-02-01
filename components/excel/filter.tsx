@@ -18,10 +18,11 @@ import useStore from "lib/store";
 import { useRouter } from "next/router";
 import Spinner from "components/widgets/spinner";
 import useReportTypes from "lib/hooks/reportTypes";
+import i18n from "i18n";
 
 export function currentExcelEndpoint() {
   const subdomain = getSubDomain() || BACKEND_DOMAIN;
-  return `https://${subdomain}/excels/`;
+  return `https://${subdomain}`;
 }
 
 type ExcelFilterProp = {
@@ -41,6 +42,11 @@ const ExcelFilter: React.FC<ExcelFilterProp> = ({ action, reportType }) => {
   );
   const [toDate, setToDate] = useState<Date>(today);
   const reportTypes = useReportTypes();
+
+  const [language] = useState(i18n.language);
+  var url = `${currentExcelEndpoint()}/excels/${action}`;
+  if (language == "la")
+    url = `${currentExcelEndpoint()}/${language}/excels/${action}`;
 
   useEffect(() => {
     if (router.isReady) {
@@ -63,7 +69,7 @@ const ExcelFilter: React.FC<ExcelFilterProp> = ({ action, reportType }) => {
       le
     "
       method="GET"
-      action={`${currentExcelEndpoint()}${action}`}
+      action={url}
     >
       <input
         type="hidden"
