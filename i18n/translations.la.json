@@ -28,7 +28,10 @@
     "inactiveReporter": "ອາສາທີ່ບໍ່ເຄື່ອນໄຫວ",
     "reporterPerformance": "ຜົນງານຂອງອາສາ",
     "zeroReporter": "ລາຍ​ງານ​ບໍ່​ມີ​ຄວາມ​ຜິດ​ປົກ​ກະ​ຕິ​",
-    "requestToDelete": "Request to Delete Account"
+    "requestToDelete": "Request to Delete Account",
+    "pagesCategory": "ຫນ້າ",
+    "reportsCategory": "ບົດລາຍງານ",
+    "settingsCategory": "ການຕັ້ງຄ່າ"
   },
   "filter": {
     "searchButton": "ປຸ່ມຊອກຫາ",
@@ -290,5 +293,17 @@
       "promoteToCase": "ປ່ຽນເປັນກໍລະນີ",
       "convertToTest": "ປ່ຽນເປັນທົດສອບ"
     }
+  },
+  "dashboard": {
+    "reportingTrends": "ທ່າອ່ຽງການລາຍງານ",
+    "reports": "ບົດລາຍງານ",
+    "cases": "ກໍລະນີ",
+    "allTypes": "ທຸກປະເພດ",
+    "totalReports": "ບົດລາຍງານທັງຫມົດ",
+    "seeAll": "ເບິ່ງທັງໝົດ",
+    "createdAt": "ສ້າງຢູ່",
+    "incidentDate": "ວັນທີເກີດເຫດ",
+    "reportType": "ປະເພດລາຍງານ",
+    "data": "ຂໍ້ມູນ"
   }
 }

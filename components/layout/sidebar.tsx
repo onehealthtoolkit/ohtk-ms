@@ -74,7 +74,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   }`}
                 >
                   <span className="md:sidebar-expanded:block 2xl:block">
-                    Pages
+                    {t("breadcrumb.pagesCategory", "Pages")}
                   </span>
                 </h3>
                 <ul className="mt-3">
@@ -134,7 +134,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   }`}
                 >
                   <span className="md:sidebar-expanded:block 2xl:block">
-                    Reports
+                    {t("breadcrumb.reportsCategory", "Reports")}
                   </span>
                 </h3>
                 <ul className="mt-3">
@@ -187,7 +187,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 }`}
                 >
                   <span className="md:sidebar-expanded:block 2xl:block">
-                    Settings
+                    {t("breadcrumb.settingsCategory", "Settings")}
                   </span>
                 </h3>
                 <ul className="mt-3">

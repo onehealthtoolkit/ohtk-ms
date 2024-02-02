@@ -33,19 +33,23 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
   const { setUrl, resetUrl } = useUrlParams();
   const { t } = useTranslation();
 
+  const thisWeekStr = t("form.label.thisWeek", "This week");
+  const thisMonthStr = t("form.label.thisMonth", "This month");
+  const thisYearStr = t("form.label.thisYear", "This year");
+
   const setThisWeek = () => {
     const curr = new Date();
     const first = curr.getDate() - curr.getDay();
     setFromDate(new Date(curr.setDate(first)));
     setToDate(new Date());
-    setPeriodText("This week");
+    setPeriodText(thisWeekStr);
   };
 
   const setThisMonth = () => {
     const curr = new Date();
     setFromDate(new Date(curr.setDate(1)));
     setToDate(new Date());
-    setPeriodText("This month");
+    setPeriodText(thisMonthStr);
   };
 
   const setThisYear = () => {
@@ -53,7 +57,7 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
     curr.setMonth(0);
     setFromDate(new Date(curr.setDate(1)));
     setToDate(new Date());
-    setPeriodText("This year");
+    setPeriodText(thisYearStr);
   };
 
   const applySearch = () => {
@@ -80,7 +84,7 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
                 periodText ? "text-black" : "text-gray-400"
               } inline-flex w-full justify-center rounded-md px-4 py-0 text-sm font-medium  underline hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
             >
-              {periodText || "Select ..."}
+              {periodText || (t("form.label.select", "Select ...") as string)}
               <ChevronDownIcon
                 className="ml-2 -mr-1 h-5 w-5 text-black"
                 aria-hidden="true"
@@ -106,7 +110,7 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
                       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                       onClick={() => setThisWeek()}
                     >
-                      This week
+                      {thisWeekStr}
                     </button>
                   )}
                 </Menu.Item>
@@ -118,7 +122,7 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
                       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                       onClick={() => setThisMonth()}
                     >
-                      This month
+                      {thisMonthStr}
                     </button>
                   )}
                 </Menu.Item>
@@ -130,7 +134,7 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
                       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                       onClick={() => setThisYear()}
                     >
-                      This year
+                      {thisYearStr}
                     </button>
                   )}
                 </Menu.Item>

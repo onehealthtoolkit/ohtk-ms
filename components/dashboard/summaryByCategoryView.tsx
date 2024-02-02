@@ -21,6 +21,7 @@ import useReportCategories from "lib/hooks/reportCategories";
 import SelectableChips from "components/widgets/chips";
 import { DashBoardFilterData } from "./dashboardViewModel";
 import DashboardCard from "./card";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(
   CategoryScale,
@@ -79,12 +80,15 @@ const SummaryByCategoryView: React.FC<SummaryByCategoryViewProps> = ({
   authorityId,
   filter,
 }) => {
+  const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
     () => new SummaryByCategoryViewModel(services.dashboardService)
   );
 
   const categories = useReportCategories();
+  const reportsStr = t("dashboard.reports", "Reports");
+  const casesStr = t("dashboard.cases", "Cases");
 
   useEffect(() => {
     if (authorityId) viewModel.setSearchValue(authorityId, filter);
@@ -96,14 +100,14 @@ const SummaryByCategoryView: React.FC<SummaryByCategoryViewProps> = ({
     <MaskingLoader loading={viewModel.isLoading}>
       <DashboardCard
         titleClass="bg-[#5E7284]"
-        title="Reporting Trends"
+        title={t("dashboard.reportingTrends", "Reporting Trends")}
         action={
           <Menu as="div" className="relative inline-block text-left">
             <div>
               <Menu.Button
                 className={`text-white inline-flex w-full justify-center rounded-md px-0 py-0 text-sm font-medium  underline hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
               >
-                {viewModel.summaryType == "report" ? "Reports" : "Cases"}
+                {viewModel.summaryType == "report" ? reportsStr : casesStr}
                 <ChevronDownIcon
                   className="ml-2 -mr-1 h-5 w-5 text-slate-100"
                   aria-hidden="true"
@@ -129,7 +133,7 @@ const SummaryByCategoryView: React.FC<SummaryByCategoryViewProps> = ({
                         } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                         onClick={() => viewModel.changeSummaryType("report")}
                       >
-                        Reports
+                        {reportsStr}
                       </button>
                     )}
                   </Menu.Item>
@@ -141,7 +145,7 @@ const SummaryByCategoryView: React.FC<SummaryByCategoryViewProps> = ({
                         } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                         onClick={() => viewModel.changeSummaryType("case")}
                       >
-                        Cases
+                        {casesStr}
                       </button>
                     )}
                   </Menu.Item>

@@ -27,7 +27,10 @@
     "inactiveReporter": "Inactive Reporter",
     "reporterPerformance": "Reporter Performance",
     "zeroReporter": "Zero Reports",
-    "requestToDelete": "Request to Delete My Account"
+    "requestToDelete": "Request to Delete My Account",
+    "pagesCategory": "Pages",
+    "reportsCategory": "Reports",
+    "settingsCategory": "Settings"
   },
   "filter": {
     "searchButton": "Search",
@@ -247,5 +250,17 @@
       "promoteToCase": "Promote to case",
       "convertToTest": "Convert to test report"
     }
+  },
+  "dashboard": {
+    "reportingTrends": "Reporting trends",
+    "reports": "Reports",
+    "cases": "Cases",
+    "allTypes": "All types",
+    "totalReports": "Total reports",
+    "seeAll": "See all",
+    "createdAt": "Created at",
+    "incidentDate": "Incident date",
+    "reportType": "Report type",
+    "data": "Data"
   }
 }
