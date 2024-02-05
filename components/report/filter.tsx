@@ -58,7 +58,7 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
           value={viewModel.filter.authorities}
           defaultOptions={defaultOptions}
           loadOptions={loadAuthorityOptions}
-          placeholder="type to select"
+          placeholder={t("form.placeholder.typeToSelect", "Type to select")}
           isMulti={true}
           getOptionValue={item => item.id}
           getOptionLabel={item => item.name}
@@ -85,7 +85,7 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
                 )
               }
               label={t(
-                "form.label.includeChildAuthority ",
+                "form.label.includeChildAuthority",
                 "Include child authority"
               )}
               disabled={false}

@@ -39,6 +39,8 @@
     "placeholder": "ຕົວຍຶດ",
     "listView": "ລາຍການເບິ່ງ",
     "calendarView": "ປະຕິທິນເບິ່ງ",
+    "liveView": "ເບິ່ງສົດ",
+    "today": "ມື້ນີ້",
     "refresh": "ໂຫຼດຫນ້າຈໍຄືນ"
   },
   "table": {
@@ -67,7 +69,7 @@
       "category": "ກຸ່ມ",
       "reportType": "ປະເພດລາຍງານ",
       "condition": "ສະພາບ",
-      "select": "ເລືອກ...",
+      "select": "ເລືອກ ...",
       "thisWeek": "ອາທິດນີ້",
       "thisMonth": "ເດືອນນີ້",
       "thisYear": "ປີນີ້",
@@ -139,7 +141,8 @@
       "year": "ປີ",
       "columnSplit": "ແບ່ງຖັນ",
       "showTestReport": "ສະ​ແດງ​ໃຫ້​ເຫັນ​ບົດ​ລາຍ​ງານ​ການ​ທົດ​ສອບ​",
-      "includesBoundaryConnects": "ປະ​ກອບ​ມີ​ການ​ເຊື່ອມ​ຕໍ່​ຊາຍ​ແດນ​"
+      "includesBoundaryConnects": "ປະ​ກອບ​ມີ​ການ​ເຊື່ອມ​ຕໍ່​ຊາຍ​ແດນ​",
+      "includeChildAuthority": "ລວມເອົາສິດອຳນາດຂອງເດັກ"
     },
     "placeholder": {
       "code": "ລະຫັດ",
@@ -177,6 +180,7 @@
       "confirmPassword": "ຢືນ​ຢັນ​ລະ​ຫັດ​ຜ່ານ​ໃຫມ່",
       "to": "email:john@gmail.com, user:pphetra",
       "selectReportType": "ເລືອກປະເພດບົດລາຍງານ",
+      "typeToSelect": "ພິມບາງຕົວອັກສອນຂອງຄໍາ. ຫຼັງຈາກນັ້ນ, ລະບົບຈະສະແດງຄໍາທີ່ຈະເລືອກເອົາຈາກ.",
       "invitationCode": "ລະ​ຫັດ​ການ​ຈົດ​ທະ​ບຽນ",
       "language": "ພາສາ",
       "server": "ເຊີບເວີ",

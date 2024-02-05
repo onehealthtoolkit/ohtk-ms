@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import React, { useEffect, useState } from "react";
 import MapViewFilter from "./filter";
+import { useTranslation } from "react-i18next";
 
 const JSURL = require("jsurl");
 
@@ -30,6 +31,7 @@ type MapSwitchProps = {
 };
 
 const MapSwitch = ({ active, onChange }: MapSwitchProps) => {
+  const { t } = useTranslation();
   return (
     <label
       htmlFor="live-toggle"
@@ -53,7 +55,9 @@ const MapSwitch = ({ active, onChange }: MapSwitchProps) => {
         after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600
         "
       ></div>
-      <span className="ml-3 text-sm font-medium text-gray-900">Live View</span>
+      <span className="ml-3 text-sm font-medium text-gray-900">
+        {t("filter.liveView", "Live View")}
+      </span>
     </label>
   );
 };

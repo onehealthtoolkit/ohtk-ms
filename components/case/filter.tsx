@@ -58,7 +58,7 @@ const CaseFilter = ({ viewModel }: { viewModel: CaseListViewModel }) => {
           value={viewModel.filter.authorities}
           defaultOptions={defaultOptions}
           loadOptions={loadAuthorityOptions}
-          placeholder="type to select"
+          placeholder={t("form.placeholder.typeToSelect", "Type to select")}
           isMulti={true}
           getOptionValue={item => item.id}
           getOptionLabel={item => item.name}

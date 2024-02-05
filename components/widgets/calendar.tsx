@@ -53,7 +53,7 @@ const Calendar = <T extends CalendarEvent>({
               onMonthChange();
             }}
           >
-            Today
+            {t("filter.today", "Today")}
           </span>
           <ChevronRightIcon
             className="w-5 h-5 text-gray-400"
