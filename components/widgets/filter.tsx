@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import { RefreshIcon } from "@heroicons/react/solid";
 import { forwardRef } from "react";
 import tw from "tailwind-styled-components";
+import { useTranslation } from "react-i18next";
 
 export const SearchButton = tw.button`
   px-4
@@ -79,14 +80,16 @@ const Filter: React.FC<FilterProps> = ({
   onReset,
   popPositionClass = "left-0",
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Popover className="relative">
       {({ open, close }) => (
         <>
-          <Popover.Button as="div" className="w-20">
+          <Popover.Button as="div">
             <FilterButton className={`${open ? "open" : ""}`}>
               <AdjustmentsIcon className="w-5 h-5 mr-2 transform rotate-90" />
-              <span>Filter</span>
+              <span>{t("form.button.filter", "Filter")}</span>
             </FilterButton>
           </Popover.Button>
           <Transition
@@ -104,7 +107,7 @@ const Filter: React.FC<FilterProps> = ({
               <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white">
                 <div className="px-6 py-4 flex items-center justify-between border-b-2 border-gray-300">
                   <div className="text-2xl font-display font-semibold">
-                    Filter
+                    {t("form.button.filter", "Filter")}
                   </div>
                   <button type="button" onClick={() => close()}>
                     <XIcon className="w-5 h-5 hover:bg-gray-100" />
@@ -122,7 +125,7 @@ const Filter: React.FC<FilterProps> = ({
                           close();
                         }}
                       >
-                        Apply
+                        {t("form.button.apply", "Apply")}
                       </SearchButton>
                       <button
                         type="button"
@@ -132,7 +135,7 @@ const Filter: React.FC<FilterProps> = ({
                           close();
                         }}
                       >
-                        Reset
+                        {t("form.button.reset", "Reset")}
                       </button>
                     </div>
                   </div>

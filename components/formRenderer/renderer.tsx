@@ -6,6 +6,7 @@ import {
 } from "components/formRenderer/rendererViewModel";
 import { Observer, observer } from "mobx-react";
 import { FC, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 export type FormRendererProps = {
   viewModel: FormRendererViewModel;
@@ -126,6 +127,8 @@ const Footer = ({
   viewModel: FormRendererViewModel;
   onNavigate: (direction: string) => void;
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Observer>
       {() => (
@@ -171,7 +174,7 @@ const Footer = ({
             "
               onClick={() => form.submit()}
             >
-              <span>Submit</span>
+              <span>{t("form.button.submit", "Submit")}</span>
             </button>
           )}
         </div>

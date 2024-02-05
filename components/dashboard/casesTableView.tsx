@@ -9,6 +9,7 @@ import { CaseTableViewModel } from "./caseTableViewModel";
 import DashboardCard from "./card";
 import { DashBoardFilterData } from "./dashboardViewModel";
 import DashboardTable from "./table";
+import { useTranslation } from "react-i18next";
 
 type CasesTableViewProps = {
   authorityId: number;
@@ -19,6 +20,7 @@ const CasesTableView: React.FC<CasesTableViewProps> = ({
   authorityId,
   filter,
 }) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
@@ -35,33 +37,33 @@ const CasesTableView: React.FC<CasesTableViewProps> = ({
     <MaskingLoader loading={viewModel.isLoading}>
       <DashboardCard
         titleClass="bg-[#5E7284]"
-        title={`Cases [${viewModel?.totalCount}]`}
+        title={`${t("dashboard.cases", "Cases")} [${viewModel?.totalCount}]`}
         action={
           <button
             className="text-white underline active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none ease-linear transition-all duration-150"
             type="button"
             onClick={() => router.push(`/cases/`)}
           >
-            {"See all >"}
+            {t("dashboard.seeAll", "See all")}&nbsp;{">"}
           </button>
         }
       >
         <DashboardTable
           columns={[
             {
-              label: "Created At",
+              label: t("dashboard.createdAt", "Created At"),
               get: record => formatDateTime(record.createdAt),
             },
             {
-              label: "Incident Date",
+              label: t("dashboard.incidentDate", "Incident Date"),
               get: record => formatDate(record.incidentDate),
             },
             {
-              label: "Report type",
+              label: t("dashboard.reportType", "Report type"),
               get: record => record.reportTypeName,
             },
             {
-              label: "Data",
+              label: t("dashboard.data", "Data"),
               get: record => record.rendererData,
             },
           ]}

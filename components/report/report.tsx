@@ -89,7 +89,7 @@ const ReportInformation = observer(
             />
 
             <TR
-              label="Phone number"
+              label={t("form.label.phoneNumber", "Phone number")}
               value={viewModel.data?.reportByTelephone || ""}
             />
           </tbody>
@@ -281,7 +281,7 @@ const Report = (props: { id: string }) => {
                 >
                   {() => (
                     <>
-                      <span>Form Data</span>
+                      <span>{t("form.label.formData", "Form Data")}</span>
                     </>
                   )}
                 </TabItem>
@@ -302,7 +302,7 @@ const Report = (props: { id: string }) => {
                 >
                   {() => (
                     <>
-                      <span>Followup</span>
+                      <span>{t("form.label.followup", "Followup")}</span>
                     </>
                   )}
                 </TabItem>

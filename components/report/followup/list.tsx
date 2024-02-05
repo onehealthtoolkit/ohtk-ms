@@ -7,12 +7,15 @@ import { currentWebsocketEndpoint } from "lib/client";
 import { FollowupListViewModel } from "./listViewModel";
 import Table from "components/widgets/table";
 import ErrorDisplay from "components/widgets/errorDisplay";
+import { useTranslation } from "react-i18next";
 
 type FollowupListProps = {
   incidentId: string;
 };
 
 const FollowupList: React.FC<FollowupListProps> = ({ incidentId }) => {
+  const { t } = useTranslation();
+
   const router = useRouter();
   const { followupService } = useServices();
   const [viewModel] = useState(
@@ -40,11 +43,11 @@ const FollowupList: React.FC<FollowupListProps> = ({ incidentId }) => {
           <Table
             columns={[
               {
-                label: "Created At",
+                label: t("form.label.createdAt", "Created At"),
                 get: record => formatDateTime(record.createdAt, router.locale),
               },
               {
-                label: "Data",
+                label: t("form.label.data", "Data"),
                 get: record => record.rendererData,
               },
             ]}

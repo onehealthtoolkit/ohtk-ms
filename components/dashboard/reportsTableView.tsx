@@ -10,6 +10,7 @@ import DashboardCard from "./card";
 import { DashBoardFilterData } from "./dashboardViewModel";
 import { ReportTableViewModel } from "./reportsTableViewModel";
 import DashboardTable from "./table";
+import { useTranslation } from "react-i18next";
 
 type ReportsTableViewProps = {
   authorityId: number;
@@ -20,6 +21,7 @@ const ReportsTableView: React.FC<ReportsTableViewProps> = ({
   authorityId,
   filter,
 }) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const services = useServices();
   const [viewModel] = useState(
@@ -35,29 +37,31 @@ const ReportsTableView: React.FC<ReportsTableViewProps> = ({
     <MaskingLoader loading={viewModel.isLoading}>
       <DashboardCard
         titleClass="bg-[#DA3535]"
-        title={`Reports [${viewModel?.totalCount}]`}
+        title={`${t("dashboard.reports", "Reports")} [${
+          viewModel?.totalCount
+        }]`}
         action={
           <button
             className="text-white underline active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none ease-linear transition-all duration-150"
             type="button"
             onClick={() => router.push(`/reports/`)}
           >
-            {"See all >"}
+            {t("dashboard.seeAll", "See all")}&nbsp;{">"}
           </button>
         }
       >
         <DashboardTable
           columns={[
             {
-              label: "Created At",
+              label: t("dashboard.createdAt", "Created At"),
               get: record => formatDateTime(record.createdAt),
             },
             {
-              label: "Incident Date",
+              label: t("dashboard.incidentDate", "Incident Date"),
               get: record => formatDate(record.incidentDate),
             },
             {
-              label: "Report type",
+              label: t("dashboard.reportType", "Report type"),
               get: record => {
                 return (
                   <>
@@ -67,7 +71,7 @@ const ReportsTableView: React.FC<ReportsTableViewProps> = ({
               },
             },
             {
-              label: "Data",
+              label: t("dashboard.data", "Data"),
               get: record => record.rendererData,
             },
           ]}

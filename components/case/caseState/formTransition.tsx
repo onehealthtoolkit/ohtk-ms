@@ -108,6 +108,7 @@ const Footer = ({
   viewModel: FormTransitionViewModel;
   onTransitionComplete?: () => void;
 }) => {
+  const { t } = useTranslation();
   return (
     <Observer>
       {() => (
@@ -146,7 +147,11 @@ const Footer = ({
               }}
             >
               {!form.isSubmitting ? (
-                <span>{form.currentSection ? "Submit" : "Confirm"}</span>
+                <span>
+                  {form.currentSection
+                    ? t("form.button.submit", "Submit")
+                    : t("form.button.confirm", "Confirm")}
+                </span>
               ) : (
                 <Spinner />
               )}

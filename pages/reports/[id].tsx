@@ -5,8 +5,11 @@ import Protect from "components/auth/protect";
 import { useRouter } from "next/router";
 import Spinner from "components/widgets/spinner";
 import Breadcrumb from "components/layout/breadcrumb";
+import { useTranslation } from "react-i18next";
 
 const ReportPage: NextPage = () => {
+  const { t } = useTranslation();
+
   const router = useRouter();
   const { id } = router.query;
   if (!id) {
@@ -17,7 +20,7 @@ const ReportPage: NextPage = () => {
       <Layout>
         <Breadcrumb
           crumbs={[
-            { text: "Reports", href: "/reports" },
+            { text: t("breadcrumb.reports", "Reports"), href: "/reports" },
             { text: id as string },
           ]}
         />

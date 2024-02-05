@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type ChipsProps = {
   value: string;
@@ -30,6 +31,7 @@ const SelectableChips: React.FC<SelectableChipsProps> = ({
   value,
   onChangeChips,
 }) => {
+  const { t } = useTranslation();
   const [selectedChips, setSelectedChips] = useState<string[]>(value);
 
   const selectChip = (value: string) => {
@@ -72,7 +74,7 @@ const SelectableChips: React.FC<SelectableChipsProps> = ({
         } px-6 py-2 leading-4  rounded-full border border-gray-300  font-['Kanit'] font-normal text-sm flex align-center w-max cursor-pointer active:bg-gray-300 transition duration-300 ease`}
         onClick={() => selectAll()}
       >
-        All types
+        {t("dashboard.allTypes", "All types")}
       </span>
 
       {initialChips.map(item => (
