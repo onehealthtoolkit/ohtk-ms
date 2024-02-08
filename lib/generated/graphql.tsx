@@ -3473,6 +3473,9 @@ export type SimulationCaseDefinitionType = {
 export type SimulationReportType = {
   __typename?: "SimulationReportType";
   caseDefinitions?: Maybe<Array<Maybe<SimulationCaseDefinitionType>>>;
+  notificationTemplates?: Maybe<
+    Array<Maybe<SimulationReporterNotificationType>>
+  >;
   rendererData?: Maybe<Scalars["String"]>;
   reporterNotifications?: Maybe<
     Array<Maybe<SimulationReporterNotificationType>>
@@ -3704,6 +3707,7 @@ export type TokenAuthMutation = {
     __typename?: "ObtainJSONWebToken";
     refreshExpiresIn: number;
     token: string;
+    payload: any;
   } | null;
 };
 
@@ -7341,6 +7345,7 @@ export const TokenAuthDocument = {
                   name: { kind: "Name", value: "refreshExpiresIn" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "token" } },
+                { kind: "Field", name: { kind: "Name", value: "payload" } },
               ],
             },
           },

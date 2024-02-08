@@ -73,6 +73,7 @@ export class Store {
 
     if (result.success) {
       await this.fetchMe();
+      this.authService.startAutoRefreshToken();
       runInAction(() => {
         this.isLogin = true;
       });

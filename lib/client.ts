@@ -70,14 +70,17 @@ export function getSubDomain() {
   return localStorage.getItem(LOCAL_STORGAGE_SUB_DOMAIN) || undefined;
 }
 
-const refreshToken = async (): Promise<void> => {
+const refreshToken = async (): Promise<boolean> => {
   const result = await client.mutate({
     mutation: RefreshTokenDocument,
   });
 
   if (!result.errors) {
     setRefreshExpiresIn(result.data?.refreshToken?.payload.exp || 0);
+    return false;
   }
+
+  return true;
 };
 
 const resolveUri = (defaultUri: string) => {
@@ -89,14 +92,23 @@ const customFetch = (uri: string, options: Record<string, string>) => {
 
   const now = Math.round(new Date().getTime() / 1000);
   const refreshExpiresIn = getRefreshExpiresIn();
-  // diff is number of seconds until token expires
+  // diff is number of seconds until refresh token expires
   // diff value could be negative if token is already expired
   const diff = refreshExpiresIn - now;
 
-  if (refreshExpiresIn !== 0 && diff < 30) {
+  // we should prevent recursive call of refreshToken by
+  // checking if options[body] is containing refreshToken
+  var isRefreshingToken = false;
+  if (options.body && options.body.includes("RefreshToken")) {
+    isRefreshingToken = true;
+  }
+
+  if (refreshExpiresIn !== 0 && diff < 30 && !isRefreshingToken) {
     console.log("refreshing token due to expiration", diff);
     return refreshToken().then(() => {
-      return fetch(fetchUri, options);
+      return fetch(fetchUri, {
+        ...options,
+      });
     });
   } else {
     return fetch(fetchUri, options);

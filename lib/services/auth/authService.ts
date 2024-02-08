@@ -12,6 +12,10 @@ export function setRefreshExpiresIn(value: number) {
   localStorage.setItem(REFRESH_EXPIRES_IN, value.toString());
 }
 
+export function clearRefreshExpiresIn() {
+  localStorage.removeItem(REFRESH_EXPIRES_IN);
+}
+
 export function getRefreshExpiresIn(): number {
   const value = localStorage.getItem(REFRESH_EXPIRES_IN);
   if (value) {
@@ -80,6 +84,13 @@ export class AuthService implements IAuthService {
         this.refreshToken();
       }
     }, 60 * 1 * 1000 /* millisec */);
+    console.log("startAutoRefreshToken", this.interval);
+  }
+
+  clearAutoRefreshToken(): void {
+    if (this.interval != undefined) {
+      clearInterval(this.interval);
+    }
   }
 
   async refreshToken(refreshToken?: string): Promise<boolean> {
@@ -113,8 +124,8 @@ export class AuthService implements IAuthService {
         message: fetchResult.errors.map(o => o.message).join(","),
       };
     }
-
-    setRefreshExpiresIn(fetchResult.data?.tokenAuth?.refreshExpiresIn!);
+    console.log("tokenAuth exp", fetchResult.data?.tokenAuth?.payload.exp);
+    setRefreshExpiresIn(fetchResult.data?.tokenAuth?.payload.exp!);
 
     return {
       success: true,
@@ -132,6 +143,8 @@ export class AuthService implements IAuthService {
     if (deleteTokenResult.errors) {
       throw new Error(deleteTokenResult.errors.map(o => o.message).join(","));
     }
+    clearRefreshExpiresIn();
+    this.clearAutoRefreshToken();
     this.client.resetStore();
   }
 }

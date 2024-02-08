@@ -28877,6 +28877,22 @@
             "deprecationReason": null
           },
           {
+            "name": "notificationTemplates",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "SimulationReporterNotificationType",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "rendererData",
             "description": null,
             "args": [],
