@@ -26,7 +26,6 @@
     "ace-builds": "^1.12.3",
     "apollo-upload-client": "^17.0.0",
     "browserslist": "^4.21.10",
-    "caniuse-lite": "^1.0.30001519",
     "chart.js": "^3.8.0",
     "chartjs-plugin-datalabels": "^2.1.0",
     "decimal.js": "^10.3.1",
