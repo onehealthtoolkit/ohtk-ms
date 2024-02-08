@@ -89,8 +89,12 @@ const customFetch = (uri: string, options: Record<string, string>) => {
 
   const now = Math.round(new Date().getTime() / 1000);
   const refreshExpiresIn = getRefreshExpiresIn();
+  // diff is number of seconds until token expires
+  // diff value could be negative if token is already expired
   const diff = refreshExpiresIn - now;
-  if (refreshExpiresIn !== 0 && diff < 30 && diff > 5) {
+
+  if (refreshExpiresIn !== 0 && diff < 30) {
+    console.log("refreshing token due to expiration", diff);
     return refreshToken().then(() => {
       return fetch(fetchUri, options);
     });
