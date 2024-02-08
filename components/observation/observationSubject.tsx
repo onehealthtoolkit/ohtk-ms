@@ -112,7 +112,7 @@ const ObservationSubject = (props: { id: string }) => {
                   Title: {viewModel.data.title}
                 </p>
               </div>
-              <Divide hilight />
+              <Divide hilight={true} />
 
               <div className="flex flex-row gap-2 md:flex-nowrap flex-wrap ">
                 <SubjectInformation viewModel={viewModel} />

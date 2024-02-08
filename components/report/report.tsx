@@ -218,7 +218,7 @@ const Report = (props: { id: string }) => {
                   {viewModel.data.rendererData}
                 </p>
               </div>
-              <Divide hilight />
+              <Divide hilight={true} />
 
               <div className="flex flex-row gap-2 md:flex-nowrap flex-wrap ">
                 <ReportInformation viewModel={viewModel} />
