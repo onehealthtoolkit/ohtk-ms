@@ -12,6 +12,7 @@ export class UserCreateViewModel extends UserViewModel {
       this.lastName,
       this.email,
       this.telephone,
+      this.address,
       this.role
     );
   }

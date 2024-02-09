@@ -43,6 +43,7 @@ mutation UserCreate(
   $password: String!
   $telephone: String = null
   $username: String!
+  $address: String = null
   $role: String
 ) {
   adminAuthorityUserCreate(
@@ -53,6 +54,7 @@ mutation UserCreate(
     password: $password
     telephone: $telephone
     username: $username
+    address: $address
     role: $role
   ) {
     result {
@@ -80,6 +82,7 @@ mutation UserUpdate(
   $lastName: String!
   $telephone: String = null
   $username: String!
+  $address: String = null
   $role: String
 ) {
   adminAuthorityUserUpdate(
@@ -90,6 +93,7 @@ mutation UserUpdate(
     lastName: $lastName
     telephone: $telephone
     username: $username
+    address: $address
     role: $role
   ) {
     result {
@@ -103,6 +107,7 @@ mutation UserUpdate(
           email
           telephone
           role
+          address
           authority {
             id
           }
@@ -154,6 +159,7 @@ query GetUser($id: ID!) {
     lastName
     email
     telephone
+    address
     role
     authority {
       id

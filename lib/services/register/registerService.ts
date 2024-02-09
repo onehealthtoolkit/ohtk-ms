@@ -14,7 +14,8 @@ export interface IRegisterService extends IService {
     firstName?: string,
     lastName?: string,
     email?: string,
-    phone?: string
+    phone?: string,
+    address?: string
   ): Promise<RegisterResult>;
 }
 
@@ -56,7 +57,8 @@ export class RegisterService implements IRegisterService {
     firstName: string,
     lastName: string,
     email: string,
-    telephone?: string
+    telephone?: string,
+    address?: string
   ): Promise<RegisterResult> {
     const registerResult = await this.client.mutate({
       mutation: UserRegisterDocument,
@@ -67,6 +69,7 @@ export class RegisterService implements IRegisterService {
         lastName: lastName,
         email: email,
         telephone: telephone,
+        address: address,
       },
       fetchPolicy: "network-only",
     });
@@ -96,6 +99,7 @@ export class RegisterService implements IRegisterService {
         isSuperUser: me.isSuperuser || false,
         email: me.email || "",
         telephone: me.telephone || "",
+        address: me.address || "",
         features: me.features as Array<string>,
       },
       tokenAuth: {

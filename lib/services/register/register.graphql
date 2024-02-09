@@ -15,6 +15,7 @@ mutation UserRegister(
   $invitationCode: String!
   $lastName: String!
   $telephone: String = null
+  $address: String = null
   $username: String!
 ) {
   authorityUserRegister(
@@ -23,6 +24,7 @@ mutation UserRegister(
     invitationCode: $invitationCode
     lastName: $lastName
     telephone: $telephone
+    address: $address
     username: $username
   ) {
     me {
@@ -38,6 +40,7 @@ mutation UserRegister(
       isSuperuser
       email
       telephone
+      address
       features
     }
     refreshToken

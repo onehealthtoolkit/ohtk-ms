@@ -14,6 +14,7 @@ export abstract class UserViewModel extends BaseFormViewModel {
   _lastName: string = "";
   _email: string = "";
   _telephone: string = "";
+  _address: string = "";
   _role: string = AccountsAuthorityUserRoleChoices.Rep;
   constructor(userService: IUserService) {
     super();
@@ -30,6 +31,8 @@ export abstract class UserViewModel extends BaseFormViewModel {
       email: computed,
       _telephone: observable,
       telephone: computed,
+      _address: observable,
+      address: computed,
       _role: observable,
       role: computed,
       save: action,
@@ -99,6 +102,17 @@ export abstract class UserViewModel extends BaseFormViewModel {
   public set telephone(value: string) {
     this._telephone = value;
     delete this.fieldErrors["telephone"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public get address(): string {
+    return this._address;
+  }
+  public set address(value: string) {
+    this._address = value;
+    delete this.fieldErrors["address"];
     if (this.submitError.length > 0) {
       this.submitError = "";
     }

@@ -172,6 +172,30 @@ const UserUpdate = () => {
     [t, viewModel]
   );
 
+  const addressField = useMemo(
+    () => (
+      <Observer>
+        {() => (
+          <Field $size="half">
+            <Label htmlFor="address">
+              {t("form.label.address", "Address")}
+            </Label>
+            <TextInput
+              id="address"
+              type="text"
+              placeholder={t("form.placeholder.address", "Address")}
+              onChange={evt => (viewModel.address = evt.target.value)}
+              disabled={viewModel.isSubmitting}
+              value={viewModel.address}
+            />
+            <ErrorText>{viewModel.fieldErrors.address}</ErrorText>
+          </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
   const roleField = useMemo(
     () => (
       <Observer>
@@ -224,6 +248,7 @@ const UserUpdate = () => {
           {lastNameField}
           {emailField}
           {telephoneField}
+          {addressField}
           {roleField}
         </FieldGroup>
         {viewModel.submitError.length > 0 && (

@@ -1194,6 +1194,18 @@
         "description": null,
         "fields": [
           {
+            "name": "address",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "authority",
             "description": null,
             "args": [],
@@ -11368,6 +11380,18 @@
         "description": null,
         "fields": [
           {
+            "name": "address",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "authority",
             "description": null,
             "args": [],
@@ -14895,6 +14919,18 @@
             "description": null,
             "args": [
               {
+                "name": "address",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": "null",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
                 "name": "authorityId",
                 "description": null,
                 "type": {
@@ -15052,6 +15088,18 @@
             "name": "adminAuthorityUserUpdate",
             "description": null,
             "args": [
+              {
+                "name": "address",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": "null",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
               {
                 "name": "authorityId",
                 "description": null,
@@ -18779,6 +18827,18 @@
             "description": null,
             "args": [
               {
+                "name": "address",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": "null",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
                 "name": "firstName",
                 "description": null,
                 "type": {
@@ -18860,6 +18920,18 @@
             "name": "authorityUserRegister",
             "description": null,
             "args": [
+              {
+                "name": "address",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": "null",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
               {
                 "name": "email",
                 "description": null,
@@ -30113,6 +30185,18 @@
         "name": "UserProfileType",
         "description": null,
         "fields": [
+          {
+            "name": "address",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "authorityId",
             "description": null,
