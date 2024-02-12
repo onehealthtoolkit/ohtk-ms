@@ -20,6 +20,7 @@ export class UserUpdateViewModel extends UserViewModel {
       this.lastName = data.lastName;
       this.email = data.email;
       this.telephone = data.telephone || "";
+      this.address = data.address || "";
       this.role = data.role || "";
       this.authorityId = data.authorityId || 0;
     }
@@ -35,6 +36,7 @@ export class UserUpdateViewModel extends UserViewModel {
       this.lastName,
       this.email,
       this.telephone,
+      this.address,
       this.role
     );
   }

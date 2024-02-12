@@ -124,6 +124,17 @@ const UserCreate = () => {
           <ErrorText>{errors.telephone}</ErrorText>
         </Field>
         <Field $size="half">
+          <Label htmlFor="address">{t("form.label.address", "Address")}</Label>
+          <TextInput
+            id="address"
+            type="text"
+            placeholder={t("form.placeholder.address", "Address")}
+            onChange={evt => (viewModel.address = evt.target.value)}
+            disabled={isSubmitting}
+          />
+          <ErrorText>{errors.address}</ErrorText>
+        </Field>
+        <Field $size="half">
           <Label htmlFor="role">{t("form.label.role", "Role")}</Label>
           <Select
             id="role"

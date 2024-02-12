@@ -207,6 +207,7 @@ export type AdminAuthorityUserCreateResult =
 
 export type AdminAuthorityUserCreateSuccess = {
   __typename?: "AdminAuthorityUserCreateSuccess";
+  address?: Maybe<Scalars["String"]>;
   authority: AdminAuthorityCreateSuccess;
   avatar?: Maybe<Scalars["String"]>;
   avatarUrl?: Maybe<Scalars["String"]>;
@@ -1496,6 +1497,7 @@ export type AuthorityUserRegisterMutation = {
 
 export type AuthorityUserType = {
   __typename?: "AuthorityUserType";
+  address?: Maybe<Scalars["String"]>;
   authority: AdminAuthorityCreateSuccess;
   email: Scalars["String"];
   firstName: Scalars["String"];
@@ -1972,6 +1974,7 @@ export type MutationAdminAuthorityUpdateArgs = {
 };
 
 export type MutationAdminAuthorityUserCreateArgs = {
+  address?: InputMaybe<Scalars["String"]>;
   authorityId?: InputMaybe<Scalars["Int"]>;
   email: Scalars["String"];
   firstName: Scalars["String"];
@@ -1987,6 +1990,7 @@ export type MutationAdminAuthorityUserDeleteArgs = {
 };
 
 export type MutationAdminAuthorityUserUpdateArgs = {
+  address?: InputMaybe<Scalars["String"]>;
   authorityId?: InputMaybe<Scalars["Int"]>;
   email: Scalars["String"];
   firstName: Scalars["String"];
@@ -2345,6 +2349,7 @@ export type MutationAdminUserChangePasswordArgs = {
 };
 
 export type MutationAdminUserUpdateProfileArgs = {
+  address?: InputMaybe<Scalars["String"]>;
   firstName: Scalars["String"];
   lastName: Scalars["String"];
   telephone?: InputMaybe<Scalars["String"]>;
@@ -2355,6 +2360,7 @@ export type MutationAdminUserUploadAvatarArgs = {
 };
 
 export type MutationAuthorityUserRegisterArgs = {
+  address?: InputMaybe<Scalars["String"]>;
   email: Scalars["String"];
   firstName: Scalars["String"];
   invitationCode: Scalars["String"];
@@ -3632,6 +3638,7 @@ export type UserMessageTypeNodeConnection = {
 
 export type UserProfileType = {
   __typename?: "UserProfileType";
+  address?: Maybe<Scalars["String"]>;
   authorityId?: Maybe<Scalars["Int"]>;
   authorityName?: Maybe<Scalars["String"]>;
   avatarUrl?: Maybe<Scalars["String"]>;
@@ -5722,6 +5729,7 @@ export type MeQuery = {
     role?: string | null;
     email?: string | null;
     telephone?: string | null;
+    address?: string | null;
     features?: Array<string | null> | null;
   } | null;
 };
@@ -5742,6 +5750,7 @@ export type UserUpdateProfileMutationVariables = Exact<{
   firstName: Scalars["String"];
   lastName: Scalars["String"];
   telephone?: InputMaybe<Scalars["String"]>;
+  address?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type UserUpdateProfileMutation = {
@@ -5801,6 +5810,7 @@ export type UserRegisterMutationVariables = Exact<{
   invitationCode: Scalars["String"];
   lastName: Scalars["String"];
   telephone?: InputMaybe<Scalars["String"]>;
+  address?: InputMaybe<Scalars["String"]>;
   username: Scalars["String"];
 }>;
 
@@ -5824,6 +5834,7 @@ export type UserRegisterMutation = {
       isSuperuser?: boolean | null;
       email?: string | null;
       telephone?: string | null;
+      address?: string | null;
       features?: Array<string | null> | null;
     } | null;
   } | null;
@@ -7031,6 +7042,7 @@ export type UserCreateMutationVariables = Exact<{
   password: Scalars["String"];
   telephone?: InputMaybe<Scalars["String"]>;
   username: Scalars["String"];
+  address?: InputMaybe<Scalars["String"]>;
   role?: InputMaybe<Scalars["String"]>;
 }>;
 
@@ -7065,6 +7077,7 @@ export type UserUpdateMutationVariables = Exact<{
   lastName: Scalars["String"];
   telephone?: InputMaybe<Scalars["String"]>;
   username: Scalars["String"];
+  address?: InputMaybe<Scalars["String"]>;
   role?: InputMaybe<Scalars["String"]>;
 }>;
 
@@ -7093,6 +7106,7 @@ export type UserUpdateMutation = {
             email: string;
             telephone?: string | null;
             role?: AccountsAuthorityUserRoleChoices | null;
+            address?: string | null;
             authority: {
               __typename?: "AdminAuthorityCreateSuccess";
               id: string;
@@ -7160,6 +7174,7 @@ export type GetUserQuery = {
     lastName: string;
     email: string;
     telephone?: string | null;
+    address?: string | null;
     role?: AccountsAuthorityUserRoleChoices | null;
     authority: { __typename?: "AdminAuthorityCreateSuccess"; id: string };
   } | null;
@@ -17247,6 +17262,7 @@ export const MeDocument = {
                 { kind: "Field", name: { kind: "Name", value: "role" } },
                 { kind: "Field", name: { kind: "Name", value: "email" } },
                 { kind: "Field", name: { kind: "Name", value: "telephone" } },
+                { kind: "Field", name: { kind: "Name", value: "address" } },
                 { kind: "Field", name: { kind: "Name", value: "features" } },
               ],
             },
@@ -17354,6 +17370,14 @@ export const UserUpdateProfileDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "address" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -17384,6 +17408,14 @@ export const UserUpdateProfileDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "telephone" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "address" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "address" },
                 },
               },
             ],
@@ -17622,6 +17654,15 @@ export const UserRegisterDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
+            name: { kind: "Name", value: "address" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "NullValue" },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
             name: { kind: "Name", value: "username" },
           },
           type: {
@@ -17682,6 +17723,14 @@ export const UserRegisterDocument = {
               },
               {
                 kind: "Argument",
+                name: { kind: "Name", value: "address" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "address" },
+                },
+              },
+              {
+                kind: "Argument",
                 name: { kind: "Name", value: "username" },
                 value: {
                   kind: "Variable",
@@ -17736,6 +17785,10 @@ export const UserRegisterDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "telephone" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
                       },
                       {
                         kind: "Field",
@@ -23773,6 +23826,15 @@ export const UserCreateDocument = {
         },
         {
           kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "address" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "NullValue" },
+        },
+        {
+          kind: "VariableDefinition",
           variable: { kind: "Variable", name: { kind: "Name", value: "role" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
@@ -23838,6 +23900,14 @@ export const UserCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "username" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "address" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "address" },
                 },
               },
               {
@@ -24026,6 +24096,15 @@ export const UserUpdateDocument = {
         },
         {
           kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "address" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "NullValue" },
+        },
+        {
+          kind: "VariableDefinition",
           variable: { kind: "Variable", name: { kind: "Name", value: "role" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
@@ -24095,6 +24174,14 @@ export const UserUpdateDocument = {
               },
               {
                 kind: "Argument",
+                name: { kind: "Name", value: "address" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "address" },
+                },
+              },
+              {
+                kind: "Argument",
                 name: { kind: "Name", value: "role" },
                 value: {
                   kind: "Variable",
@@ -24160,6 +24247,10 @@ export const UserUpdateDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "role" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "address" },
                                   },
                                   {
                                     kind: "Field",
@@ -24464,6 +24555,7 @@ export const GetUserDocument = {
                 { kind: "Field", name: { kind: "Name", value: "lastName" } },
                 { kind: "Field", name: { kind: "Name", value: "email" } },
                 { kind: "Field", name: { kind: "Name", value: "telephone" } },
+                { kind: "Field", name: { kind: "Name", value: "address" } },
                 { kind: "Field", name: { kind: "Name", value: "role" } },
                 {
                   kind: "Field",

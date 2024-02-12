@@ -48,7 +48,7 @@ const Register = () => {
               alt="img"
             />
           </div>
-          <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+          <div className="h-screen flex items-center justify-center p-6 sm:p-12 md:w-1/2 overflow-y-auto">
             <div className="w-full">
               <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
                 {t("title.signup", "Sing Up")}

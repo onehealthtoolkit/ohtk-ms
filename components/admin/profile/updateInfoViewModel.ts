@@ -8,6 +8,7 @@ export class ProfileUpdateInfoViewModel extends BaseFormViewModel {
   _firstName: string = "";
   _lastName: string = "";
   _telephone: string = "";
+  _address: string = "";
 
   constructor(readonly me: Me, readonly profileService: IProfileService) {
     super();
@@ -18,6 +19,8 @@ export class ProfileUpdateInfoViewModel extends BaseFormViewModel {
       lastName: computed,
       _telephone: observable,
       telephone: computed,
+      _address: observable,
+      address: computed,
       save: action,
       validate: action,
     });
@@ -30,6 +33,7 @@ export class ProfileUpdateInfoViewModel extends BaseFormViewModel {
     this.firstName = this.me.firstName;
     this.lastName = this.me.lastName;
     this.telephone = this.me.telephone || "";
+    this.address = this.me.address || "";
   }
 
   public get firstName(): string {
@@ -65,6 +69,17 @@ export class ProfileUpdateInfoViewModel extends BaseFormViewModel {
     }
   }
 
+  public get address(): string {
+    return this._address;
+  }
+  public set address(value: string) {
+    this._address = value;
+    delete this.fieldErrors["address"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
   public async save(): Promise<boolean> {
     this.isSubmitting = true;
 
@@ -91,7 +106,8 @@ export class ProfileUpdateInfoViewModel extends BaseFormViewModel {
     return this.profileService.updateProfile(
       this.firstName,
       this.lastName,
-      this.telephone
+      this.telephone,
+      this.address
     );
   }
 

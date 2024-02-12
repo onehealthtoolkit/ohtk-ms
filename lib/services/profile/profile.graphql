@@ -12,6 +12,7 @@ query me {
     role
     email
     telephone
+    address
     features
   }
 }
@@ -26,11 +27,13 @@ mutation userUpdateProfile(
   $firstName: String!
   $lastName: String!
   $telephone: String
+  $address: String
 ) {
   adminUserUpdateProfile(
     firstName: $firstName
     lastName: $lastName
     telephone: $telephone
+    address: $address
   ) {
     success
   }

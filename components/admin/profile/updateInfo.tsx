@@ -109,6 +109,20 @@ const ProfileInfoUpdate = () => {
               />
               <ErrorText>{errors.telephone}</ErrorText>
             </Field>
+            <Field $size="half">
+              <Label htmlFor="address">
+                {t("form.label.address", "Address")}
+              </Label>
+              <TextInput
+                id="address"
+                type="text"
+                placeholder={t("form.placeholder.address", "Address")}
+                onChange={evt => (viewModel.address = evt.target.value)}
+                disabled={viewModel.isSubmitting}
+                value={viewModel.address}
+              />
+              <ErrorText>{errors.address}</ErrorText>
+            </Field>
           </FieldGroup>
           {viewModel.submitError.length > 0 && (
             <FormMessage>{viewModel.submitError}</FormMessage>

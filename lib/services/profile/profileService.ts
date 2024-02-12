@@ -19,7 +19,8 @@ export interface IProfileService extends IService {
   updateProfile(
     firstName: string,
     lastName: string,
-    telephone?: string
+    telephone?: string,
+    address?: string
   ): Promise<SaveResult<ProfileUpdate>>;
 
   deleteMyAccount(): Promise<SaveResult<void>>;
@@ -54,6 +55,7 @@ export class ProfileService implements IProfileService {
         isSuperUser: me.isSuperuser || false,
         email: me.email || "",
         telephone: me.telephone || "",
+        address: me.address || "",
         features: me.features as Array<string>,
       };
     } else {
@@ -115,7 +117,8 @@ export class ProfileService implements IProfileService {
   async updateProfile(
     firstName: string,
     lastName: string,
-    telephone?: string
+    telephone?: string,
+    address?: string
   ): Promise<SaveResult<ProfileUpdate>> {
     const updateResult = await this.client.mutate({
       mutation: UserUpdateProfileDocument,
@@ -123,6 +126,7 @@ export class ProfileService implements IProfileService {
         firstName,
         lastName,
         telephone,
+        address,
       },
     });
 

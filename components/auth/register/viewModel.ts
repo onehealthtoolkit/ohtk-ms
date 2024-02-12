@@ -23,6 +23,7 @@ export class RegisterViewModel {
   _lastName: string = "";
   _email: string = "";
   _telephone: string = "";
+  _address: string = "";
   _authorityName: string = "";
 
   fieldErrors: { [key: string]: string } = {};
@@ -57,6 +58,8 @@ export class RegisterViewModel {
       email: computed,
       _telephone: observable,
       telephone: computed,
+      _address: observable,
+      address: computed,
       fieldErrors: observable,
       submitError: observable,
       checkInvitationCode: action,
@@ -162,6 +165,17 @@ export class RegisterViewModel {
     }
   }
 
+  public get address(): string {
+    return this._address;
+  }
+  public set address(value: string) {
+    this._address = value;
+    delete this.fieldErrors["address"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
   public get isValid(): boolean {
     return Object.keys(this.fieldErrors).length === 0;
   }
@@ -199,7 +213,8 @@ export class RegisterViewModel {
         this.firstName,
         this.lastName,
         this.email,
-        this.telephone
+        this.telephone,
+        this.address
       );
       this.isSubmitting = false;
       if (result.success) {
