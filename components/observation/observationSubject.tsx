@@ -17,6 +17,8 @@ import ViewActionButtons from "components/widgets/viewActionButtons";
 import { formatDateTime, formatYmdt } from "lib/datetime";
 import { EyeIcon } from "@heroicons/react/solid";
 import Table from "components/widgets/table";
+import TotalItem from "components/widgets/table/totalItem";
+import { useTranslation } from "react-i18next";
 
 const SubjectLocation = dynamic(() => import("../case/reportMap"), {
   loading: () => <p>A map is loading</p>,
@@ -82,6 +84,8 @@ const ObservationSubject = (props: { id: string }) => {
     ObservationSubjectViewModel | undefined
   >();
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     setViewModel(
       new ObservationSubjectViewModel(id as string, services.observationService)
@@ -105,11 +109,12 @@ const ObservationSubject = (props: { id: string }) => {
               <div>
                 <div className="flex gap-2">
                   <p className="text-md dark:text-gray-400 ">
-                    Identity: {viewModel.data.identity}
+                    {t("form.label.identity", "Identity")} :{" "}
+                    {viewModel.data.identity}
                   </p>
                 </div>
                 <p className="text-sm pt-1 font-bold">
-                  Title: {viewModel.data.title}
+                  {t("form.label.title", "Title")}: {viewModel.data.title}
                 </p>
               </div>
               <Divide hilight={true} />
@@ -191,24 +196,31 @@ const ObservationSubject = (props: { id: string }) => {
               </div>
 
               <Divide />
-              <label className="mt-4 px-4 text-gray-700 text-sm font-bold flex gap-1">
-                <EyeIcon className="w-5 h-5" />
-                <span>Monitoring</span>
-              </label>
+              <div className="flex justify-between">
+                <label className="mt-4 px-4 text-gray-700 text-sm font-bold flex gap-1">
+                  <EyeIcon className="w-5 h-5" />
+                  <span>{t("form.label.monitoring", "Monitoring")}</span>
+                </label>
+                <TotalItem
+                  totalCount={viewModel.data.subjectMonitorings?.length}
+                  onRefresh={() => viewModel.fetch(true)}
+                />
+              </div>
+
               <div className="gap-2">
                 <Table
                   columns={[
                     {
-                      label: "Created At",
+                      label: t("form.label.createdAt", "Created At"),
                       get: record =>
                         formatDateTime(record.createdAt, router.locale),
                     },
                     {
-                      label: "Title",
+                      label: t("form.label.title", "Title"),
                       get: record => record.title,
                     },
                     {
-                      label: "Description",
+                      label: t("form.label.description", "Description"),
                       get: record => record.description,
                     },
                   ]}

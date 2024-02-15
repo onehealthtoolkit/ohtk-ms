@@ -66,10 +66,11 @@ export class ObservationSubjectViewModel extends BaseViewModel {
     );
   }
 
-  async fetch() {
+  async fetch(force?: boolean) {
     this.isLoading = true;
-    const data = (await this.observationService.getObservationSubject(this.id))
-      .data;
+    const data = (
+      await this.observationService.getObservationSubject(this.id, force)
+    ).data;
     if (data) {
       runInAction(() => {
         this.data = data;
