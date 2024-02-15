@@ -15,7 +15,33 @@ export abstract class ObservationMonitoringDefinitionViewModel extends BaseFormV
   _titleTemplate: string = "";
   _descriptionTemplate: string = "";
 
-  definitionFormViewModel = new FormViewModel();
+  definitionFormViewModel = new FormViewModel([
+    {
+      label: "createDate",
+      value: "created_at",
+      type: "Monitoring",
+    },
+    {
+      label: "createDateString",
+      value: "created_at_str",
+      type: "Monitoring",
+    },
+    {
+      label: "subjectTitle",
+      value: "subject_title",
+      type: "Subject",
+    },
+    {
+      label: "subjectIdentity",
+      value: "subject_identity",
+      type: "Subject",
+    },
+    {
+      label: "subjectDescription",
+      value: "subject_description",
+      type: "Subject",
+    },
+  ]);
 
   constructor(
     readonly definitionId: string,
