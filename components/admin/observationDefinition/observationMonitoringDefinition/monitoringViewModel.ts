@@ -22,8 +22,8 @@ export abstract class ObservationMonitoringDefinitionViewModel extends BaseFormV
       type: "Monitoring",
     },
     {
-      label: "createDateString",
-      value: "created_at_str",
+      label: "createDateNoTime",
+      value: "created_at_no_time",
       type: "Monitoring",
     },
     {
