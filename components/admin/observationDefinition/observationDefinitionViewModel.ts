@@ -28,13 +28,8 @@ export abstract class ObservationDefinitionViewModel extends BaseFormViewModel {
       type: "Report",
     },
     {
-      label: "reportDateString",
-      value: "report_date_str",
-      type: "Report",
-    },
-    {
-      label: "reportDateNoTimeString",
-      value: "report_date_no_time_str",
+      label: "reportDateNoTime",
+      value: "report_date_no_time",
       type: "Report",
     },
     {

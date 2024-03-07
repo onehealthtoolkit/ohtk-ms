@@ -40,7 +40,7 @@ const displayValue = (value: any) => {
       </div>
     );
   } else {
-    return val;
+    return <div>{val}</div>;
   }
 };
 

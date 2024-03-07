@@ -303,8 +303,8 @@ export class FormViewModel extends MovableItemsViewModel<SectionViewModel> {
     this.idEdit = "";
   }
 
-  // Simplified form variables used in Description template / followup template
-  // in Report type config
+  // Simplified form variables used in many templates such as Title, Description, Followup
+  // defined in Report type, Observation subject/monitoring definition
   get variableList(): Array<FormVariableItem> {
     let vars = Array<FormVariableItem>();
     // form variables

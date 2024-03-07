@@ -34,7 +34,8 @@ export interface IObservationService extends IService {
   ): Promise<QueryResult<ObservationSubject[]>>;
 
   getObservationSubject(
-    id: string
+    id: string,
+    force?: boolean
   ): Promise<GetResult<ObservationSubjectDetail>>;
 
   getObservationSubjectMonitoring(
@@ -92,13 +93,15 @@ export class ObservationService implements IObservationService {
   }
 
   async getObservationSubject(
-    id: string
+    id: string,
+    force?: boolean
   ): Promise<GetResult<ObservationSubjectDetail>> {
     const getResult = await this.client.query({
       query: GetObservationSubjectDocument,
       variables: {
         id,
       },
+      fetchPolicy: force ? "network-only" : "cache-first",
     });
 
     let data;

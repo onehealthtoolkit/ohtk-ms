@@ -20,6 +20,8 @@ export class FormSimulationViewModel {
   rendererDataTemplate?: string;
   simulatorIncidentReportType?: SimulationReportType = undefined;
 
+  _activeTabIndex: number = 0;
+
   constructor(
     readonly definition: string,
     readonly formRef?: string,
@@ -38,9 +40,18 @@ export class FormSimulationViewModel {
       previous: action,
       isFirst: computed,
       isLast: computed,
+      _activeTabIndex: observable,
+      activeTabIndex: computed,
     });
     this.rendererDataTemplate = rendererDataTemplate;
     this._init();
+  }
+
+  public get activeTabIndex(): number {
+    return this._activeTabIndex;
+  }
+  public set activeTabIndex(value: number) {
+    this._activeTabIndex = value;
   }
 
   private _init() {

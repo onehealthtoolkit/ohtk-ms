@@ -1,6 +1,8 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { FormSimulationViewModel } from "components/admin/formBuilder/simulator/formSimulationViewModel";
 import { FormQuestion } from "components/formRenderer/question";
+import { TabBar, TabItem } from "components/widgets/forms";
+import { RenderData } from "components/widgets/renderData";
 import Spinner from "components/widgets/spinner";
 import { Observer, observer } from "mobx-react";
 import { useEffect, useRef } from "react";
@@ -33,27 +35,59 @@ const FormSimulation = ({
       <FormInput viewModel={form} />
       {form.isSubmitted && (
         <div className="rounded p-4 border-2 border-green-30">
-          <div className="text-green-600 text-2xl">
-            Simulating submission is complete
-          </div>
-          <div className="text-green-700">Case Definitions: </div>
-          <ul className="text-gray-600 pl-10 list-disc">
-            {form.simulatorIncidentReportType?.caseDefinitions.map(item => (
-              <li key={item.id}>{item.description}</li>
-            ))}
-          </ul>
-          <div className="text-green-700">Reporter Alerts:</div>
-          <ul className="text-gray-600 pl-10 list-disc">
-            {form.simulatorIncidentReportType?.reporterNotifications.map(
-              item => (
-                <li key={item.id}>{item.name}</li>
-              )
-            )}
-          </ul>
-          <div className="text-green-700">Description:</div>
-          <ul className="text-gray-600 pl-10">
-            <li>{form.simulatorIncidentReportType?.rendererData}</li>
-          </ul>
+          <TabBar>
+            <TabItem
+              id="state"
+              active={form.activeTabIndex == 0}
+              onTab={() => {
+                form.activeTabIndex = 0;
+              }}
+            >
+              {({ activeCss }) => (
+                <span className={activeCss}>Simulating submission</span>
+              )}
+            </TabItem>
+            <TabItem
+              id="detail"
+              active={form.activeTabIndex == 1}
+              onTab={() => {
+                form.activeTabIndex = 1;
+              }}
+            >
+              {({ activeCss }) => (
+                <span className={activeCss}> Raw data simulating</span>
+              )}
+            </TabItem>
+          </TabBar>
+
+          {form.activeTabIndex == 0 && (
+            <>
+              <div className="text-green-700">Case Definitions: </div>
+              <ul className="text-gray-600 pl-10 list-disc">
+                {form.simulatorIncidentReportType?.caseDefinitions.map(item => (
+                  <li key={item.id}>{item.description}</li>
+                ))}
+              </ul>
+              <div className="text-green-700">Reporter Alerts:</div>
+              <ul className="text-gray-600 pl-10 list-disc">
+                {form.simulatorIncidentReportType?.reporterNotifications.map(
+                  item => (
+                    <li key={item.id}>{item.name}</li>
+                  )
+                )}
+              </ul>
+              <div className="text-green-700">Description:</div>
+              <ul className="text-gray-600 pl-10">
+                <li>{form.simulatorIncidentReportType?.rendererData}</li>
+              </ul>
+            </>
+          )}
+          {form.activeTabIndex == 1 && (
+            <RenderData
+              data={form.form?.toJsonValue()}
+              definition={JSON.parse(form.definition)}
+            />
+          )}
         </div>
       )}
       <Footer viewModel={form} onSubmit={onSubmit} />

@@ -36,6 +36,11 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
           type: "Report",
         },
         {
+          label: "reportDateNoTime",
+          value: "report_date_no_time",
+          type: "Report",
+        },
+        {
           label: "incidentDate",
           value: "incident_date",
           type: "Report",
