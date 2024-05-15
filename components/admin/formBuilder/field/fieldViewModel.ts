@@ -70,7 +70,6 @@ export class FieldViewModel extends BaseViewModel {
   fieldType: TFieldValueType = "text";
   isNameEditing = false;
   isRequired = false;
-  isScan = false;
   isAdvanceOn = false;
   _extension: unknown = undefined;
   _condition: OperatorViewModel = new ComparableOperatorViewModel("=", "", "");
@@ -95,8 +94,6 @@ export class FieldViewModel extends BaseViewModel {
       unsetCurrent: action,
       isRequired: observable,
       toggleRequired: action,
-      isScan: observable,
-      toggleScan: action,
       isAdvanceOn: observable,
       toggleAdvanceOn: action,
       _extension: observable,
@@ -224,10 +221,6 @@ export class FieldViewModel extends BaseViewModel {
     return (this.isRequired = !this.isRequired);
   }
 
-  toggleScan() {
-    return (this.isScan = !this.isScan);
-  }
-
   toggleAdvanceOn() {
     return (this.isAdvanceOn = !this.isAdvanceOn);
   }
@@ -254,12 +247,6 @@ export class FieldViewModel extends BaseViewModel {
           this.isRequired = Boolean(definition.required);
         } else {
           this.isRequired = false;
-        }
-
-        if (definition.scan !== undefined) {
-          this.isScan = Boolean(definition.scan);
-        } else {
-          this.isScan = false;
         }
 
         const fieldType = String(definition.type);
@@ -306,7 +293,6 @@ export class FieldViewModel extends BaseViewModel {
       name: this.name,
       type: this.fieldType,
       required: this.isRequired,
-      scan: this.isScan,
     };
 
     if (this._tags) {
