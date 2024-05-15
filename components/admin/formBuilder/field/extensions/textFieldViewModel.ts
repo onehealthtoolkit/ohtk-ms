@@ -7,14 +7,17 @@ import { action, makeObservable, observable } from "mobx";
 export class TextFieldViewModel extends AbstractDefinitionViewModel {
   minLength?: string = "";
   maxLength?: string = "";
+  scan = false;
 
   constructor() {
     super();
     makeObservable(this, {
       minLength: observable,
       maxLength: observable,
+      scan: observable,
       setMinLength: action,
       setMaxLength: action,
+      toggleScan: action,
     });
   }
 
@@ -24,6 +27,10 @@ export class TextFieldViewModel extends AbstractDefinitionViewModel {
 
   setMaxLength(value: string) {
     this.maxLength = value || "";
+  }
+
+  toggleScan() {
+    return (this.scan = !this.scan);
   }
 
   parse(definition: Definition) {
@@ -37,10 +44,18 @@ export class TextFieldViewModel extends AbstractDefinitionViewModel {
     } else {
       this.maxLength = "";
     }
+    if (definition.scan !== undefined) {
+      this.scan = Boolean(definition.scan);
+    } else {
+      this.scan = false;
+    }
   }
 
   toJson() {
-    const json: Definition = {};
+    const json: Definition = {
+      scan: this.scan,
+    };
+
     const minNum = parseInt(this.minLength || "");
     if (minNum >= 0) {
       json.minLength = minNum;
