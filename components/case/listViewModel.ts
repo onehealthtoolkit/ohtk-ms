@@ -1,17 +1,17 @@
 import {
+  CaseCalendarParams,
+  CaseCalendarViewModel,
+} from "components/case/calendarViewModel";
+import { BaseViewModel } from "lib/baseViewModel";
+import { Case } from "lib/services/case";
+import { CaseFilterData, ICaseService } from "lib/services/case/caseService";
+import {
   action,
   computed,
   makeObservable,
   observable,
   runInAction,
 } from "mobx";
-import { BaseViewModel } from "lib/baseViewModel";
-import { Case } from "lib/services/case";
-import { CaseFilterData, ICaseService } from "lib/services/case/caseService";
-import {
-  CaseCalendarParams,
-  CaseCalendarViewModel,
-} from "components/case/calendarViewModel";
 
 const initialFilter: CaseFilterData = {
   fromDate: undefined,
@@ -101,7 +101,7 @@ export class CaseListViewModel extends BaseViewModel {
   async fetch(force?: boolean): Promise<void> {
     this.isLoading = true;
     const result = await this.caseService.fetchCases(
-      this.limit,
+      this.isCalendarView ? 1000 : this.limit, // calendar view fetches all cases but we limit to 1000 records
       this.offset,
       this.filter,
       force
