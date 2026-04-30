@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, PencilAltIcon } from "@heroicons/react/solid";
+import { ChevronLeftIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import tw from "tailwind-styled-components";
@@ -53,7 +53,7 @@ const ViewActionButtons: React.FC<ViewActionButtonsProps> = ({ editUrl }) => {
             if (editUrl) router.push(editUrl);
           }}
         >
-          <PencilAltIcon className="mr-2 -ml-1 w-5 h-5" />
+          <PencilSquareIcon className="mr-2 -ml-1 w-5 h-5" />
           {t("form.button.edit", "Edit")}
         </EditButton>
       )}

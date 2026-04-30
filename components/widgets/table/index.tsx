@@ -1,6 +1,10 @@
 import React from "react";
 import tw from "tailwind-styled-components";
-import { PencilAltIcon, TrashIcon, EyeIcon } from "@heroicons/react/solid";
+import {
+  PencilSquareIcon,
+  TrashIcon,
+  EyeIcon,
+} from "@heroicons/react/24/solid";
 import { observer } from "mobx-react";
 import { Trans } from "react-i18next";
 import Spinner from "../spinner";
@@ -22,7 +26,7 @@ interface ActionHandlerProps {
 
 export const EditAction = (props: ActionHandlerProps) => (
   <Tooltip text={`${t("form.button.edit", "Edit.")}`}>
-    <PencilAltIcon
+    <PencilSquareIcon
       type="edit"
       className="w-5 h-5 text-[#ADC7FF] hover:text-indigo-900 cursor-pointer"
       {...props}

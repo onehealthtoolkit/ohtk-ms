@@ -1,6 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { ChangeEventHandler, FC, forwardRef, ReactElement } from "react";
-import { PlusIcon, UploadIcon, DownloadIcon } from "@heroicons/react/solid";
+import {
+  PlusIcon,
+  ArrowUpTrayIcon,
+  ArrowDownTrayIcon,
+} from "@heroicons/react/24/solid";
 import Spinner from "components/widgets/spinner";
 import tw from "tailwind-styled-components";
 import dynamic from "next/dynamic";
@@ -73,7 +77,7 @@ export const UploadButton = forwardRef(function UploadButton(
       "
     >
       {props.isSubmitting === true && <Spinner />}
-      <UploadIcon className="h-5 w-5 text-gray-500 mr-2" />
+      <ArrowUpTrayIcon className="h-5 w-5 text-gray-500 mr-2" />
       <span>{t("form.button.import", "Import")}</span>
     </button>
   );
@@ -107,7 +111,7 @@ export const ExportButton = forwardRef(function ExportButton(
       "
     >
       {props.isSubmitting === true && <Spinner />}
-      <DownloadIcon className="h-5 w-5 text-gray-500 mr-2" />
+      <ArrowDownTrayIcon className="h-5 w-5 text-gray-500 mr-2" />
       <span>{t("form.button.export", "Export")}</span>
     </button>
   );
@@ -446,7 +450,7 @@ export const Divide: FC<DivideProps> = tw.hr`
   rounded
   mx-4
   ${(p: DivideProps) => {
-    const results = [];
+    const results: string[] = [];
     if (p.hilight) {
       results.push("border-[#1a8297]");
     }

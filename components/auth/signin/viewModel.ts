@@ -28,7 +28,10 @@ export class SignInViewModel {
 
   isForgotPassword: boolean = false;
 
-  constructor(readonly store: Store, tenantApiEndpoint: string) {
+  constructor(
+    readonly store: Store,
+    tenantApiEndpoint: string
+  ) {
     makeObservable(this, {
       _username: observable,
       _password: observable,

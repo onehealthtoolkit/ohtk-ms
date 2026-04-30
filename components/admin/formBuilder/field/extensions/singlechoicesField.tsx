@@ -1,4 +1,4 @@
-import { PlusIcon, TrashIcon } from "@heroicons/react/solid";
+import { PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import {
   FieldActionBar,
   FieldViewModel,

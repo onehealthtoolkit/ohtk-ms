@@ -12,12 +12,12 @@ import { AddButton, UploadButton } from "components/widgets/forms";
 import Paginate from "components/widgets/table/paginate";
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 import { StateDefinition } from "lib/services/stateDefinition";
-import CheckIcon from "@heroicons/react/solid/CheckIcon";
+import { CheckIcon } from "@heroicons/react/24/solid";
 import TotalItem from "components/widgets/table/totalItem";
 import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { useTranslation } from "react-i18next";
-import { DownloadIcon } from "@heroicons/react/solid";
+import { ArrowDownTrayIcon } from "@heroicons/react/24/solid";
 import Tooltip from "components/widgets/tooltip";
 
 const parseUrlParams = (query: ParsedUrlQuery) => {
@@ -143,7 +143,7 @@ const StateDefinitionList = () => {
             actions={record => {
               return (
                 <Tooltip text={`${t("form.button.exportToJson", "Export")}`}>
-                  <DownloadIcon
+                  <ArrowDownTrayIcon
                     className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
                     onClick={() => viewModel.exportStateDefinition(record.id)}
                   />

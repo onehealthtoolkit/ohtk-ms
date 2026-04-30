@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   OutbreakPlansDocument,
   OutbreakPlanCreateDocument,
@@ -68,7 +68,7 @@ export interface IOutbreakPlanService extends IService {
 }
 
 export class OutbreakPlanService implements IOutbreakPlanService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
 
   fetchOutbreakPlansQuery = {
     limit: 20,
@@ -77,7 +77,7 @@ export class OutbreakPlanService implements IOutbreakPlanService {
     ordering: "name,asc",
   };
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

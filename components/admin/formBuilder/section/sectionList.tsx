@@ -1,4 +1,4 @@
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/solid";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import { SectionViewModel } from "components/admin/formBuilder/section";
 import { observer } from "mobx-react";
 import { FC } from "react";

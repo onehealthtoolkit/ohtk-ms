@@ -34,7 +34,9 @@ const CaseFilter = ({ viewModel }: { viewModel: CaseListViewModel }) => {
             <DatePicker
               id="fromDate"
               selected={viewModel.fromDate}
-              onChange={(date: Date) => (viewModel.fromDate = date)}
+              onChange={(date: Date | null) => {
+                if (date) viewModel.fromDate = date;
+              }}
             />
           </Field>
           <Field $size="full">
@@ -44,7 +46,9 @@ const CaseFilter = ({ viewModel }: { viewModel: CaseListViewModel }) => {
             <DatePicker
               id="throughDate"
               selected={viewModel.throughDate}
-              onChange={(date: Date) => (viewModel.throughDate = date)}
+              onChange={(date: Date | null) => {
+                if (date) viewModel.throughDate = date;
+              }}
             />
           </Field>
         </>
@@ -53,17 +57,17 @@ const CaseFilter = ({ viewModel }: { viewModel: CaseListViewModel }) => {
         <Label htmlFor="authority">
           {t("form.label.authority", "Authority")}
         </Label>
-        <AsyncSelect
+        <AsyncSelect<Authority, true>
           cacheOptions
           value={viewModel.filter.authorities}
           defaultOptions={defaultOptions}
           loadOptions={loadAuthorityOptions}
           placeholder={t("form.placeholder.typeToSelect", "Type to select")}
           isMulti={true}
-          getOptionValue={item => item.id}
-          getOptionLabel={item => item.name}
+          getOptionValue={(item: Authority) => item.id}
+          getOptionLabel={(item: Authority) => item.name}
           styles={styledReactSelect}
-          onChange={values => {
+          onChange={(values: readonly Authority[]) => {
             runInAction(() => {
               viewModel.filter.authorities = [...values];
             });

@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   NotificationTemplatesDocument,
   NotificationTemplateCreateDocument,
@@ -51,10 +51,8 @@ export interface INotificationTemplateService extends IService {
   deleteNotificationTemplate(id: string): Promise<DeleteResult>;
 }
 
-export class NotificationTemplateService
-  implements INotificationTemplateService
-{
-  client: ApolloClient<NormalizedCacheObject>;
+export class NotificationTemplateService implements INotificationTemplateService {
+  client: LegacyApolloClient;
 
   fetchNotificationTemplatesQuery = {
     limit: 20,
@@ -63,7 +61,7 @@ export class NotificationTemplateService
     ordering: "name,asc",
   };
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

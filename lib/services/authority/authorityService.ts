@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   AuthorityCreateDocument,
   AuthorityUpdateDocument,
@@ -59,7 +59,7 @@ export interface IAuthorityService extends IService {
 }
 
 export class AuthorityService implements IAuthorityService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
   fetchAuthoritiesQuery = {
     limit: 20,
     offset: 0,
@@ -67,7 +67,7 @@ export class AuthorityService implements IAuthorityService {
     ordering: "code,asc",
   };
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

@@ -1,5 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import { ArrowsExpandIcon, DownloadIcon } from "@heroicons/react/solid";
+import {
+  ArrowsPointingOutIcon,
+  ArrowDownTrayIcon,
+} from "@heroicons/react/24/solid";
 import Field from "lib/opsvForm/models/fields";
 import FilesField from "lib/opsvForm/models/fields/filesField";
 import ImagesField from "lib/opsvForm/models/fields/imagesField";
@@ -28,7 +31,7 @@ const displayValue = (value: any) => {
     const id = arr[arr.length - 1];
     return (
       <div className="flex">
-        <DownloadIcon className="w-5 text-blue-500" />
+        <ArrowDownTrayIcon className="w-5 text-blue-500" />
         <a
           href={val}
           target="_blank"
@@ -309,7 +312,7 @@ export const renderDefinitionDataAsForm = (
                     `}
         onClick={() => renderDataDialogViewModel.open(null)}
       >
-        <ArrowsExpandIcon className="w-5 h-5 " />
+        <ArrowsPointingOutIcon className="w-5 h-5 " />
       </div>
       <div className="max-h-[32rem] inline-block overflow-scroll">
         <RenderForms

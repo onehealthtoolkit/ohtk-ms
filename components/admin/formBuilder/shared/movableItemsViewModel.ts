@@ -6,7 +6,7 @@ type MovableItem = {
 };
 
 export abstract class MovableItemsViewModel<
-  VM extends MovableItem
+  VM extends MovableItem,
 > extends BaseViewModel {
   constructor(id: string, label: string) {
     super(id, label);

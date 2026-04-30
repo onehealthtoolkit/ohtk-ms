@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { PhotographIcon } from "@heroicons/react/solid";
+import { PhotoIcon } from "@heroicons/react/24/solid";
 import { ProfileUpdateViewModel } from "components/admin/profile/updateViewModel";
 import AlertDialog from "components/widgets/dialogs/alertDialog";
 import {
@@ -55,10 +55,7 @@ const ProfileUpdate = () => {
                   />
                 ) : (
                   <div className="rounded-full max-w-full h-auto align-middle border-2 flex justify-center items-center bg-gray-200 p-4">
-                    <PhotographIcon
-                      fill="currentColor"
-                      className="w-24 h-24 my-2"
-                    />
+                    <PhotoIcon fill="currentColor" className="w-24 h-24 my-2" />
                   </div>
                 )}
               </div>

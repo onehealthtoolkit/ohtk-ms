@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   DeleteTokenCookieDocument,
   RefreshTokenDocument,
@@ -64,10 +64,10 @@ export interface IAuthService extends IService {
 }
 
 export class AuthService implements IAuthService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
   interval?: number;
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 
@@ -77,13 +77,16 @@ export class AuthService implements IAuthService {
     }
     // window.setInterval return number
     // setInterval without window prefix return NodeJS.Timer
-    this.interval = window.setInterval(() => {
-      const diff = minutesUntilTokenExpire();
-      console.debug("refresh interval", diff);
-      if (diff < 3) {
-        this.refreshToken();
-      }
-    }, 60 * 1 * 1000 /* millisec */);
+    this.interval = window.setInterval(
+      () => {
+        const diff = minutesUntilTokenExpire();
+        console.debug("refresh interval", diff);
+        if (diff < 3) {
+          this.refreshToken();
+        }
+      },
+      60 * 1 * 1000 /* millisec */
+    );
     console.log("startAutoRefreshToken", this.interval);
   }
 

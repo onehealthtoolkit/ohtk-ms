@@ -6,7 +6,10 @@ export class StateStepViewViewModel extends BaseViewModel {
   id: string;
   _data: StateStep = {} as StateStep;
 
-  constructor(id: string, readonly stateDefinitionService: IStateStepService) {
+  constructor(
+    id: string,
+    readonly stateDefinitionService: IStateStepService
+  ) {
     super();
     makeObservable(this, {
       _data: observable,

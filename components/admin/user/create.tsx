@@ -141,7 +141,6 @@ const UserCreate = () => {
             onChange={evt => {
               viewModel.role = evt.target.value;
             }}
-            placeholder={t("form.placeholder.role", "Role")}
             disabled={isSubmitting}
             defaultValue=""
             required

@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   StateStepCreateDocument,
   StateStepUpdateDocument,
@@ -42,9 +42,9 @@ export interface IStateStepService extends IService {
 }
 
 export class StateStepService implements IStateStepService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

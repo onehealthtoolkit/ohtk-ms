@@ -10,7 +10,10 @@ export class ProfileUpdateInfoViewModel extends BaseFormViewModel {
   _telephone: string = "";
   _address: string = "";
 
-  constructor(readonly me: Me, readonly profileService: IProfileService) {
+  constructor(
+    readonly me: Me,
+    readonly profileService: IProfileService
+  ) {
     super();
     makeObservable(this, {
       _firstName: observable,

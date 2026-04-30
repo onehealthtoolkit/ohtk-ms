@@ -87,11 +87,15 @@ const ReportTypeSelect: React.FC<ReportTypeSelectProps> = ({
       menuPlacement="top"
       isMulti={true}
       options={groupedOptions}
-      getOptionValue={item => item.id}
-      getOptionLabel={item => item.name}
+      getOptionValue={(
+        item: ReportCategory | Pick<ReportType, "id" | "name">
+      ) => item.id}
+      getOptionLabel={(
+        item: ReportCategory | Pick<ReportType, "id" | "name">
+      ) => item.name}
       formatGroupLabel={formatGroupLabel}
       styles={styledReactSelect}
-      onChange={values => {
+      onChange={(values: MultiValue<Pick<ReportType, "id" | "name">>) => {
         onChange(values);
       }}
     />

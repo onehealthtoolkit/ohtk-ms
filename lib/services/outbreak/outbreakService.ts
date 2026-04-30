@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import { OutbreakPlacesDocument } from "lib/generated/graphql";
 import { IService, QueryResult } from "lib/services/interface";
 import { OutbreakPlace } from "lib/services/outbreak/outbreak";
@@ -8,9 +8,9 @@ export interface IOutbreakService extends IService {
 }
 
 export class OutbreakService implements IOutbreakService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

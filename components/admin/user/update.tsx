@@ -207,7 +207,6 @@ const UserUpdate = () => {
               onChange={evt => {
                 viewModel.role = evt.target.value;
               }}
-              placeholder={t("form.placeholder.role", "Role")}
               disabled={viewModel.isSubmitting}
               value={viewModel.role}
               required

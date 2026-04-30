@@ -124,7 +124,6 @@ const ReportTypeCreate = () => {
             </Label>
             <Select
               id="category"
-              placeholder="Category"
               value={viewModel.categoryId}
               onChange={evt => {
                 if (evt.target.value) {
@@ -269,10 +268,6 @@ const ReportTypeCreate = () => {
             <Label htmlFor="stateDefinitionId">State definition</Label>
             <Select
               id="stateDefinitionId"
-              placeholder={t(
-                "form.placeholder.stateDefinition",
-                "State definition"
-              )}
               onChange={evt =>
                 (viewModel.stateDefinitionId = +evt.target.value)
               }

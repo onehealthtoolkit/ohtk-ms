@@ -1,4 +1,4 @@
-import { XCircleIcon, XIcon } from "@heroicons/react/solid";
+import { XCircleIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { AddButton } from "components/widgets/forms";
 import Downshift, { GetInputPropsOptions } from "downshift";
 import { Authority } from "lib/services/authority";
@@ -110,7 +110,7 @@ const AuthorityInherits: FC<AuthorityInheritsProps> = ({
                   }) as GetInputPropsOptionsRef)}
                 />
                 {selectedItem && (
-                  <XIcon
+                  <XMarkIcon
                     className="h-4 w-4 text-gray-500 mt-1"
                     onClick={() => clearSelection()}
                   />

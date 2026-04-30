@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   BoundaryConnectedReportsDocument,
   ConvertReportToTestReportDocument,
@@ -56,7 +56,7 @@ export interface IReportService extends IService {
 }
 
 export class ReportService implements IReportService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
   fetchReportsQuery: ReportFilter = {
     fromDate: undefined,
     throughDate: undefined,
@@ -68,7 +68,7 @@ export class ReportService implements IReportService {
     includeChildAuthorities: undefined,
   };
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

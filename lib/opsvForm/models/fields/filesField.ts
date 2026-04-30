@@ -216,7 +216,8 @@ export default class FilesField extends PrimitiveField<Array<string>> {
   }
 
   toJsonValue(json: Record<string, any>) {
-    json[this.name] = toJS(this._pendings);
-    json[this.name + "__value"] = this._pendings?.join(", ");
+    const value = this._pendings ?? this.value;
+    json[this.name] = toJS(value);
+    json[this.name + "__value"] = value?.join(", ") ?? "";
   }
 }

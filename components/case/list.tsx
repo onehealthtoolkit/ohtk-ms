@@ -15,7 +15,7 @@ import { ParsedUrlQuery } from "querystring";
 import { isoStringToDate } from "lib/utils";
 import Filter from "components/widgets/filter";
 import CaseStatus from "./caseStatus";
-import { CalendarIcon, TableIcon } from "@heroicons/react/solid";
+import { CalendarIcon, TableCellsIcon } from "@heroicons/react/24/solid";
 import { CaseDayEvents } from "components/case/dayEvents";
 import Calendar from "components/widgets/calendar";
 import TotalItem from "components/widgets/table/totalItem";
@@ -72,7 +72,7 @@ const ViewSwitch = ({
         active={!isCalendarView ? 1 : 0}
         onClick={() => onSwitchView(false)}
       >
-        <TableIcon className="w-5 h-5 mr-2" />
+        <TableCellsIcon className="w-5 h-5 mr-2" />
         <span>{t("filter.listView", "List")}</span>
       </SwitchViewButton>
       <SwitchViewButton

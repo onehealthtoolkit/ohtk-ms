@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { PhotographIcon } from "@heroicons/react/solid";
+import { PhotoIcon } from "@heroicons/react/24/solid";
 import { MapPin } from "components/widgets/mapPin";
 import L, { LatLngTuple } from "leaflet";
 import { formatDateTime } from "lib/datetime";
@@ -121,7 +121,7 @@ export const MarkerPopup = ({ event, onPopupClick }: EventMarkerProps) => {
             className="w-full h-10 object-cover"
           />
         ) : (
-          <PhotographIcon className="w-full fill-gray-400 p-2" />
+          <PhotoIcon className="w-full fill-gray-400 p-2" />
         )}
       </div>
       <div className="flex flex-col grow">

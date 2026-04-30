@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   UsersDocument,
   UserCreateDocument,
@@ -73,14 +73,14 @@ export interface IUserService extends IService {
 }
 
 export class UserService implements IUserService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
   fetchUsersQuery: UsersQueryVariables = {
     limit: 20,
     offset: 0,
     ordering: "username,asc",
   };
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 
@@ -101,7 +101,7 @@ export class UserService implements IUserService {
       limit,
       offset,
       q: searchText,
-      authorities: authorities?.map(a => a.id),
+      authorities: authorities?.[0]?.id ? Number(authorities[0].id) : undefined,
       role: role,
       fromDate: fromDate,
       throughDate: throughDate,

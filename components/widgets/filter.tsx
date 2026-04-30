@@ -1,7 +1,10 @@
 import { Popover, Transition } from "@headlessui/react";
-import { AdjustmentsIcon, XIcon } from "@heroicons/react/solid";
+import {
+  AdjustmentsHorizontalIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/solid";
 import { Fragment } from "react";
-import { RefreshIcon } from "@heroicons/react/solid";
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import { forwardRef } from "react";
 import tw from "tailwind-styled-components";
 import { useTranslation } from "react-i18next";
@@ -43,7 +46,7 @@ export const ResetButton = forwardRef(function ResetButton(
       border
       "
     >
-      <RefreshIcon className="h-5 w-5 text-black mr-2" />
+      <ArrowPathIcon className="h-5 w-5 text-black mr-2" />
       <span>{props.children}</span>
     </button>
   );
@@ -88,7 +91,7 @@ const Filter: React.FC<FilterProps> = ({
         <>
           <Popover.Button as="div">
             <FilterButton className={`${open ? "open" : ""}`}>
-              <AdjustmentsIcon className="w-5 h-5 mr-2 transform rotate-90" />
+              <AdjustmentsHorizontalIcon className="w-5 h-5 mr-2 transform rotate-90" />
               <span>{t("form.button.filter", "Filter")}</span>
             </FilterButton>
           </Popover.Button>
@@ -110,7 +113,7 @@ const Filter: React.FC<FilterProps> = ({
                     {t("form.button.filter", "Filter")}
                   </div>
                   <button type="button" onClick={() => close()}>
-                    <XIcon className="w-5 h-5 hover:bg-gray-100" />
+                    <XMarkIcon className="w-5 h-5 hover:bg-gray-100" />
                   </button>
                 </div>
                 <div className="p-6 space-y-3">{children}</div>

@@ -22,7 +22,7 @@ const MapView: React.FC<MapViewProps> = ({ data }) => {
 
   useEffect(() => {
     const mark = () => {
-      const points: LatLngTuple[] = data.map(it => [
+      const points: Array<[number, number]> = data.map(it => [
         it.location.lng,
         it.location.lat,
       ]);

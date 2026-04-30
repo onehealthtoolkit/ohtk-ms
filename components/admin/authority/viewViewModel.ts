@@ -8,7 +8,10 @@ export class AuthorityViewViewModel extends BaseViewModel {
   _data: Authority = {} as Authority;
   _inheritsDown?: Authority[] = undefined;
 
-  constructor(id: string, readonly authorityService: IAuthorityService) {
+  constructor(
+    id: string,
+    readonly authorityService: IAuthorityService
+  ) {
     super();
     makeObservable(this, {
       _id: observable,

@@ -15,7 +15,7 @@ import dynamic from "next/dynamic";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 import ViewActionButtons from "components/widgets/viewActionButtons";
 import { formatDateTime, formatYmdt } from "lib/datetime";
-import { EyeIcon } from "@heroicons/react/solid";
+import { EyeIcon } from "@heroicons/react/24/solid";
 import Table from "components/widgets/table";
 import TotalItem from "components/widgets/table/totalItem";
 import { useTranslation } from "react-i18next";

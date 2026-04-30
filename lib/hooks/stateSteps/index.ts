@@ -7,9 +7,8 @@ export default function useStateSteps(stateDefinitionId: string) {
   const [stateSteps, setStateSteps] = useState<StateStep[]>();
   useEffect(() => {
     async function loadStateSteps() {
-      const result = await services.stateStepService.fetchStateSteps(
-        stateDefinitionId
-      );
+      const result =
+        await services.stateStepService.fetchStateSteps(stateDefinitionId);
       setStateSteps(result);
     }
     loadStateSteps();

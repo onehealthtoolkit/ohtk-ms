@@ -68,7 +68,6 @@ const StateTransitionCreate = () => {
             </Label>
             <Select
               id="fromStepId"
-              placeholder={t("form.placeholder.fromStep", "From Step")}
               onChange={evt => {
                 viewModel.fromStepId = evt.target.value;
               }}
@@ -93,7 +92,6 @@ const StateTransitionCreate = () => {
             </Label>
             <Select
               id="toStepId"
-              placeholder={t("form.placeholder.toStep", "To Step")}
               onChange={evt => {
                 viewModel.toStepId = evt.target.value;
               }}

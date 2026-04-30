@@ -23,9 +23,9 @@
       "const $1 = () => {",
       "  return <div></div>;",
       "}",
-      "export default $1;"
+      "export default $1;",
     ],
-    "description": "react stateless function"
+    "description": "react stateless function",
   },
   "rfcwp": {
     "scope": "typescriptreact",
@@ -37,8 +37,8 @@
       "const $1 = (props: Props) => {",
       "  return <div></div>;",
       "}",
-      "export default $1;"
+      "export default $1;",
     ],
-    "description": "react stateless function with props"
-  }
+    "description": "react stateless function with props",
+  },
 }

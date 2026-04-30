@@ -63,7 +63,6 @@ const ReportTypeUpdateForm = () => {
           </Label>
           <Select
             id="category"
-            placeholder={t("form.placeholder.category", "Category")}
             onChange={evt => (viewModel.categoryId = +evt.target.value)}
             disabled={viewModel.isSubmitting}
             value={viewModel.categoryId}
@@ -300,10 +299,6 @@ const ReportTypeUpdateForm = () => {
           <Label htmlFor="stateDefinitionId">State definition</Label>
           <Select
             id="stateDefinitionId"
-            placeholder={t(
-              "form.placeholder.stateDefinition",
-              "State definition"
-            )}
             onChange={evt => (viewModel.stateDefinitionId = +evt.target.value)}
             disabled={viewModel.isSubmitting}
             value={viewModel.stateDefinitionId}

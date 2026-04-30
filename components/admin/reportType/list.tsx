@@ -19,12 +19,12 @@ import { useTranslation } from "react-i18next";
 import FormSimulationDialog from "components/admin/reportType/formSimulationDialog";
 import FormSimulation from "components/admin/formBuilder/simulator/formSimulation";
 import {
-  DownloadIcon,
+  ArrowDownTrayIcon,
   EyeIcon,
-  EyeOffIcon,
-  QrcodeIcon,
-  TableIcon,
-} from "@heroicons/react/solid";
+  EyeSlashIcon,
+  QrCodeIcon,
+  TableCellsIcon,
+} from "@heroicons/react/24/solid";
 import QrcodeDialog from "components/admin/reportType/qrcodeDialog";
 import Tooltip from "components/widgets/tooltip";
 
@@ -157,7 +157,7 @@ const ReportTypeList = () => {
                       "Form Definitiion QR Code"
                     )}`}
                   >
-                    <QrcodeIcon
+                    <QrCodeIcon
                       onClick={() => {
                         viewModel.dialog("definitionQrcode")?.open({ record });
                       }}
@@ -170,7 +170,7 @@ const ReportTypeList = () => {
                       "Form simulation"
                     )}`}
                   >
-                    <TableIcon
+                    <TableCellsIcon
                       className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
                       onClick={() => {
                         viewModel.openFormSimulationDialog(record);
@@ -178,7 +178,7 @@ const ReportTypeList = () => {
                     />
                   </Tooltip>
                   <Tooltip text={`${t("form.button.exportToJson", "Export")}`}>
-                    <DownloadIcon
+                    <ArrowDownTrayIcon
                       className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
                       onClick={() => viewModel.exportReportType(record.id)}
                     />
@@ -190,7 +190,7 @@ const ReportTypeList = () => {
                         "Publish ReportType"
                       )}`}
                     >
-                      <EyeOffIcon
+                      <EyeSlashIcon
                         className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
                         onClick={() =>
                           viewModel

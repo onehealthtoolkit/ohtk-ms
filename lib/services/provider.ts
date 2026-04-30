@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import { AuthService, IAuthService } from "./auth";
 import { AuthorityService, IAuthorityService } from "./authority";
 import ProfileService, { IProfileService } from "./profile";
@@ -61,7 +61,7 @@ export interface IServiceProvider {
 }
 
 export class ServicesProvider implements IServiceProvider {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
 
   authService: AuthService;
   profileService: ProfileService;
@@ -92,7 +92,7 @@ export class ServicesProvider implements IServiceProvider {
   observationMonitoringDefinitionService: ObservationMonitoringDefinitionService;
   observationService: ObservationService;
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
     this.authService = new AuthService(client);
     this.profileService = new ProfileService(client);

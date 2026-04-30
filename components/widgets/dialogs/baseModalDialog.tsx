@@ -1,4 +1,4 @@
-import { XCircleIcon } from "@heroicons/react/solid";
+import { XCircleIcon } from "@heroicons/react/24/solid";
 import { ModalDialogViewModel } from "lib/dialogViewModel";
 import { Observer } from "mobx-react";
 import React, {

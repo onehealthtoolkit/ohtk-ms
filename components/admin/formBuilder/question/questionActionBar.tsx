@@ -2,7 +2,7 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
   TrashIcon,
-} from "@heroicons/react/solid";
+} from "@heroicons/react/24/solid";
 import { QuestionViewModel } from "components/admin/formBuilder/question/questionViewModel";
 import { observer } from "mobx-react";
 import { FC, ReactNode } from "react";

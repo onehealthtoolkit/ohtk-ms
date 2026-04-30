@@ -15,9 +15,9 @@ import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import {
   CalendarIcon,
-  TableIcon,
-  LocationMarkerIcon,
-} from "@heroicons/react/solid";
+  TableCellsIcon,
+  MapPinIcon,
+} from "@heroicons/react/24/solid";
 import Calendar from "components/widgets/calendar";
 import { ObservationDayEvents } from "components/observation/dayEvents";
 import { useTranslation } from "react-i18next";
@@ -81,7 +81,7 @@ const ViewSwitch = ({
         active={viewMode == ObservationViewMode.list ? 1 : 0}
         onClick={() => onSwitchView(ObservationViewMode.list)}
       >
-        <TableIcon className="w-5 h-5 mr-2" />
+        <TableCellsIcon className="w-5 h-5 mr-2" />
         <span>{t("filter.listView", "List")}</span>
       </SwitchViewButton>
       <SwitchViewButton
@@ -95,7 +95,7 @@ const ViewSwitch = ({
         active={viewMode == ObservationViewMode.map ? 1 : 0}
         onClick={() => onSwitchView(ObservationViewMode.map)}
       >
-        <LocationMarkerIcon className="w-5 h-5 mr-2" />
+        <MapPinIcon className="w-5 h-5 mr-2" />
         <span>{t("filter.mapView", "Map")}</span>
       </SwitchViewButton>
     </div>

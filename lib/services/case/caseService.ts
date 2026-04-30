@@ -1,8 +1,5 @@
-import {
-  ApolloClient,
-  FetchPolicy,
-  NormalizedCacheObject,
-} from "@apollo/client";
+import { FetchPolicy } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   GetCaseDocument,
   CasesDocument,
@@ -56,7 +53,7 @@ export interface ICaseService extends IService {
 }
 
 export class CaseService implements ICaseService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
   fetchCasesQuery: CaseFilter = {
     fromDate: undefined,
     throughDate: undefined,
@@ -67,7 +64,7 @@ export class CaseService implements ICaseService {
     includeChildAuthorities: undefined,
   };
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   ConfigurationsDocument,
   ConfigurationCreateDocument,
@@ -40,7 +40,7 @@ export interface IConfigurationService extends IService {
 }
 
 export class ConfigurationService implements IConfigurationService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
 
   fetchConfigurationsQuery = {
     limit: 20,
@@ -49,7 +49,7 @@ export class ConfigurationService implements IConfigurationService {
     ordering: "key,asc",
   };
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

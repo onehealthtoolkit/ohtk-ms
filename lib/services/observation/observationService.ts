@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
 import {
   ObservationSubject,
@@ -44,9 +44,9 @@ export interface IObservationService extends IService {
 }
 
 export class ObservationService implements IObservationService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 
@@ -61,7 +61,7 @@ export class ObservationService implements IObservationService {
       variables: {
         limit: limit,
         offset: offset,
-        definitionId: filter.definitionId,
+        definitionId: filter.definitionId?.toString(),
         fromDate: filter.fromDate,
         throughDate: filter.throughDate,
         q: filter.q,

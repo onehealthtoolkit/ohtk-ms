@@ -15,7 +15,7 @@ const datePicker = ({
   locale?: string;
   dateFormat?: string;
   showMonthYearPicker?: boolean;
-  onChange: (date: Date) => void;
+  onChange: (date: Date | null) => void;
 }) => {
   return (
     <DatePicker

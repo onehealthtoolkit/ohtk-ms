@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   CaseDefinitionsDocument,
   CaseDefinitionCreateDocument,
@@ -42,7 +42,7 @@ export interface ICaseDefinitionService extends IService {
 }
 
 export class CaseDefinitionService implements ICaseDefinitionService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
   fetchCaseDefinitionsQuery = {
     limit: 20,
     offset: 0,
@@ -51,7 +51,7 @@ export class CaseDefinitionService implements ICaseDefinitionService {
       "reportType__category__ordering reportType__ordering,asc description,asc",
   };
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

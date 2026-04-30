@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { MaskingLoader } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import { StateDefinitionViewViewModel } from "./viewViewModel";
-import CheckIcon from "@heroicons/react/solid/CheckIcon";
+import { CheckIcon } from "@heroicons/react/24/solid";
 import Table from "components/widgets/table";
 import { useTranslation } from "react-i18next";
 import ViewActionButtons from "components/widgets/viewActionButtons";

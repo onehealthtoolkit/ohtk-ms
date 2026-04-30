@@ -60,10 +60,10 @@ const AuthroitySelect: React.FC<AuthorityFilterProps> = ({
       value={authorities?.find(item => item.id == String(value))}
       isMulti={false}
       options={authorities}
-      getOptionValue={item => item.id}
-      getOptionLabel={item => item.name}
+      getOptionValue={(item: AuthorityOption) => item.id}
+      getOptionLabel={(item: AuthorityOption) => item.name}
       styles={styledReactSelect}
-      onChange={value => {
+      onChange={(value: AuthorityOption | null) => {
         if (value) {
           onChange(value);
         }

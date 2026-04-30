@@ -1,4 +1,4 @@
-import { ServerIcon } from "@heroicons/react/outline";
+import { ServerIcon } from "@heroicons/react/24/outline";
 import { getSubDomain } from "lib/client";
 import { useState } from "react";
 import { ServerOption } from "./signin/viewModel";

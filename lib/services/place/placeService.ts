@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   PlacesDocument,
   PlaceCreateDocument,
@@ -46,7 +46,7 @@ export interface IPlaceService extends IService {
 }
 
 export class PlaceService implements IPlaceService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
 
   fetchPlacesQuery = {
     limit: 20,
@@ -55,7 +55,7 @@ export class PlaceService implements IPlaceService {
     ordering: "name,asc",
   };
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

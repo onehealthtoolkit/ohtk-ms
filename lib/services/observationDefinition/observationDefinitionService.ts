@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   ObservationDefinitionsDocument,
   ObservationDefinitionCreateDocument,
@@ -50,10 +50,8 @@ export interface IObservationDefinitionService extends IService {
   deleteObservationDefinition(id: string): Promise<DeleteResult>;
 }
 
-export class ObservationDefinitionService
-  implements IObservationDefinitionService
-{
-  client: ApolloClient<NormalizedCacheObject>;
+export class ObservationDefinitionService implements IObservationDefinitionService {
+  client: LegacyApolloClient;
   fetchObservationDefinitionsQuery = {
     limit: 20,
     offset: 0,
@@ -61,7 +59,7 @@ export class ObservationDefinitionService
     ordering: "name,asc",
   };
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

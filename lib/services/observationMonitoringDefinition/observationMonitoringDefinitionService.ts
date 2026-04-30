@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   ObservationMonitoringDefinitionCreateDocument,
   ObservationMonitoringDefinitionUpdateDocument,
@@ -44,12 +44,10 @@ export interface IObservationMonitoringDefinitionService extends IService {
   ): Promise<DeleteResult>;
 }
 
-export class ObservationMonitoringDefinitionService
-  implements IObservationMonitoringDefinitionService
-{
-  client: ApolloClient<NormalizedCacheObject>;
+export class ObservationMonitoringDefinitionService implements IObservationMonitoringDefinitionService {
+  client: LegacyApolloClient;
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

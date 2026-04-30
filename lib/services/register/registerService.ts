@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import { CheckCodeDocument, UserRegisterDocument } from "lib/generated/graphql";
 import { IService } from "../interface";
 import { CheckInvitationCodeResult, RegisterResult } from "./register";
@@ -20,9 +20,9 @@ export interface IRegisterService extends IService {
 }
 
 export class RegisterService implements IRegisterService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

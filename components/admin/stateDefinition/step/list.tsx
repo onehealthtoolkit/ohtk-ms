@@ -1,4 +1,4 @@
-import { CheckIcon } from "@heroicons/react/solid";
+import { CheckIcon } from "@heroicons/react/24/solid";
 import { AddButton } from "components/widgets/forms";
 import Table from "components/widgets/table";
 import Link from "next/link";

@@ -18,7 +18,10 @@ export class ObservationSubjectMonitoringViewModel extends BaseViewModel {
 
   _activeTabIndex: number = 0;
 
-  constructor(id: string, readonly observationService: IObservationService) {
+  constructor(
+    id: string,
+    readonly observationService: IObservationService
+  ) {
     super();
     makeObservable(this, {
       data: observable,

@@ -18,7 +18,7 @@ export type SaveResult<T> =
     }
   | {
       success: false;
-      fields?: { [key in keyof T]: string };
+      fields?: Record<keyof T, string>;
       message?: string | null;
     };
 

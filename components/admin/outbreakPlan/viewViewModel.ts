@@ -7,7 +7,10 @@ export class OutbreakPlanViewViewModel extends BaseViewModel {
   id: number;
   _data: OutbreakPlan = {} as OutbreakPlan;
 
-  constructor(id: number, readonly outbreakPlanService: IOutbreakPlanService) {
+  constructor(
+    id: number,
+    readonly outbreakPlanService: IOutbreakPlanService
+  ) {
     super();
     makeObservable(this, {
       _data: observable,

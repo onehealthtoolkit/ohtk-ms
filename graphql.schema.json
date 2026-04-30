@@ -1,10 +1,12 @@
 {
   "__schema": {
     "queryType": {
-      "name": "Query"
+      "name": "Query",
+      "kind": "OBJECT"
     },
     "mutationType": {
-      "name": "Mutation"
+      "name": "Mutation",
+      "kind": "OBJECT"
     },
     "subscriptionType": null,
     "types": [
@@ -12,6 +14,7 @@
         "kind": "ENUM",
         "name": "AccountsAuthorityUserRoleChoices",
         "description": "An enumeration.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -41,6 +44,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -64,6 +68,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -107,6 +112,7 @@
         "kind": "UNION",
         "name": "AdminAuthorityCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -128,10 +134,11 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "area",
-            "description": null,
+            "description": "",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -507,6 +514,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -530,6 +538,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityInheritLookupType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "code",
@@ -589,6 +598,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityInheritLookupTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -648,6 +658,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityNotificationDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -671,6 +682,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityNotificationUpsertMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -694,6 +706,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityNotificationUpsertProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -737,6 +750,7 @@
         "kind": "UNION",
         "name": "AdminAuthorityNotificationUpsertResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -758,6 +772,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityNotificationUpsertSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authority",
@@ -877,6 +892,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "code",
@@ -936,6 +952,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityQueryTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -995,6 +1012,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -1018,6 +1036,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -1061,6 +1080,7 @@
         "kind": "UNION",
         "name": "AdminAuthorityUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1082,6 +1102,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authority",
@@ -1105,6 +1126,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityUserCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -1128,6 +1150,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityUserCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -1171,6 +1194,7 @@
         "kind": "UNION",
         "name": "AdminAuthorityUserCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1192,6 +1216,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityUserCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "address",
@@ -1222,6 +1247,18 @@
             "deprecationReason": null
           },
           {
+            "name": "authorityuser",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "AdminAuthorityUserCreateSuccess",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "avatar",
             "description": null,
             "args": [],
@@ -1241,6 +1278,54 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "casestatetransitionSet",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "CaseStateTransitionType",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "commentSet",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "CommentUpdateSuccess",
+                    "ofType": null
+                  }
+                }
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -1326,6 +1411,30 @@
             "deprecationReason": null
           },
           {
+            "name": "followupreport",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "FollowupReportType",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -1336,6 +1445,30 @@
                 "kind": "SCALAR",
                 "name": "ID",
                 "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "incidentreport",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "IncidentReportType",
+                    "ofType": null
+                  }
+                }
               }
             },
             "isDeprecated": false,
@@ -1418,6 +1551,30 @@
             "deprecationReason": null
           },
           {
+            "name": "monitoringrecord",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "ObservationSubjectMonitoringRecordType",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "password",
             "description": null,
             "args": [],
@@ -1441,6 +1598,30 @@
               "kind": "ENUM",
               "name": "AccountsAuthorityUserRoleChoices",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "subjectrecord",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "ObservationSubjectType",
+                    "ofType": null
+                  }
+                }
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -1486,6 +1667,30 @@
             "deprecationReason": null
           },
           {
+            "name": "usermessageSet",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserMessageType",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "username",
             "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
             "args": [],
@@ -1511,6 +1716,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityUserDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -1534,6 +1740,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityUserQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authority",
@@ -1665,6 +1872,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityUserQueryTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -1724,6 +1932,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityUserUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -1747,6 +1956,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityUserUpdatePasswordMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -1770,6 +1980,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityUserUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -1813,6 +2024,7 @@
         "kind": "UNION",
         "name": "AdminAuthorityUserUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1834,6 +2046,7 @@
         "kind": "OBJECT",
         "name": "AdminAuthorityUserUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authorityUser",
@@ -1857,6 +2070,7 @@
         "kind": "OBJECT",
         "name": "AdminCaseDefinitionCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -1880,6 +2094,7 @@
         "kind": "OBJECT",
         "name": "AdminCaseDefinitionCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -1923,6 +2138,7 @@
         "kind": "UNION",
         "name": "AdminCaseDefinitionCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1944,6 +2160,7 @@
         "kind": "OBJECT",
         "name": "AdminCaseDefinitionCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "condition",
@@ -2079,6 +2296,7 @@
         "kind": "OBJECT",
         "name": "AdminCaseDefinitionDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -2102,6 +2320,7 @@
         "kind": "OBJECT",
         "name": "AdminCaseDefinitionQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "condition",
@@ -2177,6 +2396,7 @@
         "kind": "OBJECT",
         "name": "AdminCaseDefinitionQueryTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -2236,6 +2456,7 @@
         "kind": "OBJECT",
         "name": "AdminCaseDefinitionUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -2259,6 +2480,7 @@
         "kind": "OBJECT",
         "name": "AdminCaseDefinitionUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -2302,6 +2524,7 @@
         "kind": "UNION",
         "name": "AdminCaseDefinitionUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2323,6 +2546,7 @@
         "kind": "OBJECT",
         "name": "AdminCaseDefinitionUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "caseDefinition",
@@ -2346,6 +2570,7 @@
         "kind": "OBJECT",
         "name": "AdminCategoryCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -2369,6 +2594,7 @@
         "kind": "OBJECT",
         "name": "AdminCategoryCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -2412,6 +2638,7 @@
         "kind": "UNION",
         "name": "AdminCategoryCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2433,6 +2660,7 @@
         "kind": "OBJECT",
         "name": "AdminCategoryCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -2572,6 +2800,7 @@
         "kind": "OBJECT",
         "name": "AdminCategoryDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -2595,6 +2824,7 @@
         "kind": "OBJECT",
         "name": "AdminCategoryQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "icon",
@@ -2666,6 +2896,7 @@
         "kind": "OBJECT",
         "name": "AdminCategoryQueryTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -2725,6 +2956,7 @@
         "kind": "OBJECT",
         "name": "AdminCategoryUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -2748,6 +2980,7 @@
         "kind": "OBJECT",
         "name": "AdminCategoryUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -2791,6 +3024,7 @@
         "kind": "UNION",
         "name": "AdminCategoryUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2812,6 +3046,7 @@
         "kind": "OBJECT",
         "name": "AdminCategoryUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "category",
@@ -2835,6 +3070,7 @@
         "kind": "OBJECT",
         "name": "AdminClientCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -2858,6 +3094,7 @@
         "kind": "OBJECT",
         "name": "AdminClientCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -2901,6 +3138,7 @@
         "kind": "UNION",
         "name": "AdminClientCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2922,6 +3160,7 @@
         "kind": "OBJECT",
         "name": "AdminClientCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -3049,6 +3288,7 @@
         "kind": "OBJECT",
         "name": "AdminClientQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "id",
@@ -3108,6 +3348,7 @@
         "kind": "OBJECT",
         "name": "AdminClientQueryTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -3167,6 +3408,7 @@
         "kind": "OBJECT",
         "name": "AdminClientUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -3190,6 +3432,7 @@
         "kind": "OBJECT",
         "name": "AdminClientUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -3233,6 +3476,7 @@
         "kind": "UNION",
         "name": "AdminClientUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -3254,6 +3498,7 @@
         "kind": "OBJECT",
         "name": "AdminClientUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -3381,6 +3626,7 @@
         "kind": "OBJECT",
         "name": "AdminConfigurationCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -3404,6 +3650,7 @@
         "kind": "OBJECT",
         "name": "AdminConfigurationCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -3447,6 +3694,7 @@
         "kind": "UNION",
         "name": "AdminConfigurationCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -3468,6 +3716,7 @@
         "kind": "OBJECT",
         "name": "AdminConfigurationCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -3555,6 +3804,7 @@
         "kind": "OBJECT",
         "name": "AdminConfigurationDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -3578,6 +3828,7 @@
         "kind": "OBJECT",
         "name": "AdminConfigurationQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "key",
@@ -3621,6 +3872,7 @@
         "kind": "OBJECT",
         "name": "AdminConfigurationQueryTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -3680,6 +3932,7 @@
         "kind": "OBJECT",
         "name": "AdminConfigurationUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -3703,6 +3956,7 @@
         "kind": "OBJECT",
         "name": "AdminConfigurationUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -3746,6 +4000,7 @@
         "kind": "UNION",
         "name": "AdminConfigurationUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -3767,6 +4022,7 @@
         "kind": "OBJECT",
         "name": "AdminConfigurationUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -3854,6 +4110,7 @@
         "kind": "OBJECT",
         "name": "AdminDefinitionQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "description",
@@ -3957,6 +4214,7 @@
         "kind": "OBJECT",
         "name": "AdminDefinitionQueryTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -4016,6 +4274,7 @@
         "kind": "OBJECT",
         "name": "AdminDomainCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -4039,6 +4298,7 @@
         "kind": "OBJECT",
         "name": "AdminDomainCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -4082,6 +4342,7 @@
         "kind": "UNION",
         "name": "AdminDomainCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -4103,6 +4364,7 @@
         "kind": "OBJECT",
         "name": "AdminDomainCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "domain",
@@ -4178,6 +4440,7 @@
         "kind": "OBJECT",
         "name": "AdminDomainDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -4201,6 +4464,7 @@
         "kind": "OBJECT",
         "name": "AdminDomainUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -4224,6 +4488,7 @@
         "kind": "OBJECT",
         "name": "AdminDomainUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -4267,6 +4532,7 @@
         "kind": "UNION",
         "name": "AdminDomainUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -4288,6 +4554,7 @@
         "kind": "OBJECT",
         "name": "AdminDomainUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "domain",
@@ -4363,6 +4630,7 @@
         "kind": "OBJECT",
         "name": "AdminFieldValidationProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "message",
@@ -4406,6 +4674,7 @@
         "kind": "OBJECT",
         "name": "AdminInvitationCodeCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -4429,6 +4698,7 @@
         "kind": "OBJECT",
         "name": "AdminInvitationCodeCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -4472,6 +4742,7 @@
         "kind": "UNION",
         "name": "AdminInvitationCodeCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -4493,6 +4764,7 @@
         "kind": "OBJECT",
         "name": "AdminInvitationCodeCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authority",
@@ -4644,6 +4916,7 @@
         "kind": "OBJECT",
         "name": "AdminInvitationCodeDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -4667,6 +4940,7 @@
         "kind": "OBJECT",
         "name": "AdminInvitationCodeQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authority",
@@ -4774,6 +5048,7 @@
         "kind": "OBJECT",
         "name": "AdminInvitationCodeQueryTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -4833,6 +5108,7 @@
         "kind": "OBJECT",
         "name": "AdminInvitationCodeUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -4856,6 +5132,7 @@
         "kind": "OBJECT",
         "name": "AdminInvitationCodeUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -4899,6 +5176,7 @@
         "kind": "UNION",
         "name": "AdminInvitationCodeUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -4920,6 +5198,7 @@
         "kind": "OBJECT",
         "name": "AdminInvitationCodeUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "invitationCode",
@@ -4943,6 +5222,7 @@
         "kind": "OBJECT",
         "name": "AdminMonitoringDefinitionQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "description",
@@ -5014,6 +5294,7 @@
         "kind": "OBJECT",
         "name": "AdminMonitoringDefinitionType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "description",
@@ -5101,6 +5382,7 @@
         "kind": "OBJECT",
         "name": "AdminNotificationTemplateAuthorityType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "notificationId",
@@ -5168,6 +5450,7 @@
         "kind": "OBJECT",
         "name": "AdminNotificationTemplateCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -5191,6 +5474,7 @@
         "kind": "OBJECT",
         "name": "AdminNotificationTemplateCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -5234,6 +5518,7 @@
         "kind": "UNION",
         "name": "AdminNotificationTemplateCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -5255,6 +5540,7 @@
         "kind": "OBJECT",
         "name": "AdminNotificationTemplateCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authoritynotificationSet",
@@ -5454,6 +5740,7 @@
         "kind": "OBJECT",
         "name": "AdminNotificationTemplateDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -5477,6 +5764,7 @@
         "kind": "OBJECT",
         "name": "AdminNotificationTemplateQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "id",
@@ -5536,6 +5824,7 @@
         "kind": "OBJECT",
         "name": "AdminNotificationTemplateQueryTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -5595,6 +5884,7 @@
         "kind": "OBJECT",
         "name": "AdminNotificationTemplateUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -5618,6 +5908,7 @@
         "kind": "OBJECT",
         "name": "AdminNotificationTemplateUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -5661,6 +5952,7 @@
         "kind": "UNION",
         "name": "AdminNotificationTemplateUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -5682,6 +5974,7 @@
         "kind": "OBJECT",
         "name": "AdminNotificationTemplateUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "notificationTemplate",
@@ -5705,6 +5998,7 @@
         "kind": "OBJECT",
         "name": "AdminObservationDefinitionCreateMutation",
         "description": "use to create a new observation definition",
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -5728,6 +6022,7 @@
         "kind": "OBJECT",
         "name": "AdminObservationDefinitionCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -5771,6 +6066,7 @@
         "kind": "UNION",
         "name": "AdminObservationDefinitionCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -5792,6 +6088,7 @@
         "kind": "OBJECT",
         "name": "AdminObservationDefinitionCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -6019,6 +6316,7 @@
         "kind": "OBJECT",
         "name": "AdminObservationDefinitionDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -6042,6 +6340,7 @@
         "kind": "OBJECT",
         "name": "AdminObservationDefinitionUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -6065,6 +6364,7 @@
         "kind": "OBJECT",
         "name": "AdminObservationDefinitionUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -6108,6 +6408,7 @@
         "kind": "UNION",
         "name": "AdminObservationDefinitionUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -6129,6 +6430,7 @@
         "kind": "OBJECT",
         "name": "AdminObservationDefinitionUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "definition",
@@ -6152,6 +6454,7 @@
         "kind": "OBJECT",
         "name": "AdminObservationMonitoringDefinitionCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -6175,6 +6478,7 @@
         "kind": "OBJECT",
         "name": "AdminObservationMonitoringDefinitionCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -6218,6 +6522,7 @@
         "kind": "UNION",
         "name": "AdminObservationMonitoringDefinitionCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -6239,6 +6544,7 @@
         "kind": "OBJECT",
         "name": "AdminObservationMonitoringDefinitionCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -6442,6 +6748,7 @@
         "kind": "OBJECT",
         "name": "AdminObservationMonitoringDefinitionDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -6465,6 +6772,7 @@
         "kind": "OBJECT",
         "name": "AdminObservationMonitoringDefinitionUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -6488,6 +6796,7 @@
         "kind": "OBJECT",
         "name": "AdminObservationMonitoringDefinitionUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -6531,6 +6840,7 @@
         "kind": "UNION",
         "name": "AdminObservationMonitoringDefinitionUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -6552,6 +6862,7 @@
         "kind": "OBJECT",
         "name": "AdminObservationMonitoringDefinitionUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "monitoringDefinition",
@@ -6575,6 +6886,7 @@
         "kind": "OBJECT",
         "name": "AdminOutbreakPlanCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -6598,6 +6910,7 @@
         "kind": "OBJECT",
         "name": "AdminOutbreakPlanCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -6641,6 +6954,7 @@
         "kind": "UNION",
         "name": "AdminOutbreakPlanCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -6662,6 +6976,7 @@
         "kind": "OBJECT",
         "name": "AdminOutbreakPlanCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -7001,6 +7316,7 @@
         "kind": "OBJECT",
         "name": "AdminOutbreakPlanDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -7024,6 +7340,7 @@
         "kind": "OBJECT",
         "name": "AdminOutbreakPlanQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "description",
@@ -7099,6 +7416,7 @@
         "kind": "OBJECT",
         "name": "AdminOutbreakPlanQueryTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -7158,6 +7476,7 @@
         "kind": "OBJECT",
         "name": "AdminOutbreakPlanUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -7181,6 +7500,7 @@
         "kind": "OBJECT",
         "name": "AdminOutbreakPlanUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -7224,6 +7544,7 @@
         "kind": "UNION",
         "name": "AdminOutbreakPlanUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -7245,6 +7566,7 @@
         "kind": "OBJECT",
         "name": "AdminOutbreakPlanUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -7584,6 +7906,7 @@
         "kind": "OBJECT",
         "name": "AdminPlaceCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -7607,6 +7930,7 @@
         "kind": "OBJECT",
         "name": "AdminPlaceCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -7650,6 +7974,7 @@
         "kind": "UNION",
         "name": "AdminPlaceCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -7671,6 +7996,7 @@
         "kind": "OBJECT",
         "name": "AdminPlaceCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authority",
@@ -7734,7 +8060,7 @@
           },
           {
             "name": "location",
-            "description": null,
+            "description": "",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -7826,6 +8152,7 @@
         "kind": "OBJECT",
         "name": "AdminPlaceDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -7849,6 +8176,7 @@
         "kind": "OBJECT",
         "name": "AdminPlaceQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authority",
@@ -7924,6 +8252,7 @@
         "kind": "OBJECT",
         "name": "AdminPlaceQueryTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -7983,6 +8312,7 @@
         "kind": "OBJECT",
         "name": "AdminPlaceUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -8006,6 +8336,7 @@
         "kind": "OBJECT",
         "name": "AdminPlaceUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -8049,6 +8380,7 @@
         "kind": "UNION",
         "name": "AdminPlaceUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -8070,6 +8402,7 @@
         "kind": "OBJECT",
         "name": "AdminPlaceUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authority",
@@ -8145,7 +8478,7 @@
           },
           {
             "name": "location",
-            "description": null,
+            "description": "",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -8249,6 +8582,7 @@
         "kind": "OBJECT",
         "name": "AdminReportTypeCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -8272,6 +8606,7 @@
         "kind": "OBJECT",
         "name": "AdminReportTypeCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -8315,6 +8650,7 @@
         "kind": "UNION",
         "name": "AdminReportTypeCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -8336,6 +8672,7 @@
         "kind": "OBJECT",
         "name": "AdminReportTypeCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authorities",
@@ -8719,6 +9056,7 @@
         "kind": "OBJECT",
         "name": "AdminReportTypeDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -8742,6 +9080,7 @@
         "kind": "OBJECT",
         "name": "AdminReportTypeQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authorities",
@@ -8901,6 +9240,7 @@
         "kind": "OBJECT",
         "name": "AdminReportTypeQueryTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -8960,6 +9300,7 @@
         "kind": "OBJECT",
         "name": "AdminReportTypeUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -8983,6 +9324,7 @@
         "kind": "OBJECT",
         "name": "AdminReportTypeUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -9026,6 +9368,7 @@
         "kind": "UNION",
         "name": "AdminReportTypeUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -9047,6 +9390,7 @@
         "kind": "OBJECT",
         "name": "AdminReportTypeUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "reportType",
@@ -9070,6 +9414,7 @@
         "kind": "OBJECT",
         "name": "AdminReporterNotificationCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -9093,6 +9438,7 @@
         "kind": "OBJECT",
         "name": "AdminReporterNotificationCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -9136,6 +9482,7 @@
         "kind": "UNION",
         "name": "AdminReporterNotificationCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -9157,6 +9504,7 @@
         "kind": "OBJECT",
         "name": "AdminReporterNotificationCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "condition",
@@ -9320,6 +9668,7 @@
         "kind": "OBJECT",
         "name": "AdminReporterNotificationDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -9343,6 +9692,7 @@
         "kind": "OBJECT",
         "name": "AdminReporterNotificationQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "condition",
@@ -9446,6 +9796,7 @@
         "kind": "OBJECT",
         "name": "AdminReporterNotificationQueryTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -9505,6 +9856,7 @@
         "kind": "OBJECT",
         "name": "AdminReporterNotificationUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -9528,6 +9880,7 @@
         "kind": "OBJECT",
         "name": "AdminReporterNotificationUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -9571,6 +9924,7 @@
         "kind": "UNION",
         "name": "AdminReporterNotificationUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -9592,6 +9946,7 @@
         "kind": "OBJECT",
         "name": "AdminReporterNotificationUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "reporterNotification",
@@ -9615,6 +9970,7 @@
         "kind": "OBJECT",
         "name": "AdminStateDefinitionCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -9638,6 +9994,7 @@
         "kind": "OBJECT",
         "name": "AdminStateDefinitionCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -9681,6 +10038,7 @@
         "kind": "UNION",
         "name": "AdminStateDefinitionCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -9702,6 +10060,7 @@
         "kind": "OBJECT",
         "name": "AdminStateDefinitionCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "caseSet",
@@ -9877,6 +10236,7 @@
         "kind": "OBJECT",
         "name": "AdminStateDefinitionDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -9900,6 +10260,7 @@
         "kind": "OBJECT",
         "name": "AdminStateDefinitionQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "id",
@@ -9959,6 +10320,7 @@
         "kind": "OBJECT",
         "name": "AdminStateDefinitionQueryTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -10018,6 +10380,7 @@
         "kind": "OBJECT",
         "name": "AdminStateDefinitionUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -10041,6 +10404,7 @@
         "kind": "OBJECT",
         "name": "AdminStateDefinitionUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -10084,6 +10448,7 @@
         "kind": "UNION",
         "name": "AdminStateDefinitionUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -10105,6 +10470,7 @@
         "kind": "OBJECT",
         "name": "AdminStateDefinitionUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "stateDefinition",
@@ -10128,6 +10494,7 @@
         "kind": "OBJECT",
         "name": "AdminStateStepCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -10151,6 +10518,7 @@
         "kind": "OBJECT",
         "name": "AdminStateStepCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -10194,6 +10562,7 @@
         "kind": "UNION",
         "name": "AdminStateStepCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -10215,6 +10584,7 @@
         "kind": "OBJECT",
         "name": "AdminStateStepCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "casestateSet",
@@ -10446,6 +10816,7 @@
         "kind": "OBJECT",
         "name": "AdminStateStepDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -10469,6 +10840,7 @@
         "kind": "OBJECT",
         "name": "AdminStateStepUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -10492,6 +10864,7 @@
         "kind": "OBJECT",
         "name": "AdminStateStepUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -10535,6 +10908,7 @@
         "kind": "UNION",
         "name": "AdminStateStepUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -10556,6 +10930,7 @@
         "kind": "OBJECT",
         "name": "AdminStateStepUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "stateStep",
@@ -10579,6 +10954,7 @@
         "kind": "OBJECT",
         "name": "AdminStateTransitionCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -10602,6 +10978,7 @@
         "kind": "OBJECT",
         "name": "AdminStateTransitionCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -10645,6 +11022,7 @@
         "kind": "UNION",
         "name": "AdminStateTransitionCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -10666,6 +11044,7 @@
         "kind": "OBJECT",
         "name": "AdminStateTransitionCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "casestatetransitionSet",
@@ -10829,6 +11208,7 @@
         "kind": "OBJECT",
         "name": "AdminStateTransitionDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -10852,6 +11232,7 @@
         "kind": "OBJECT",
         "name": "AdminStateTransitionUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -10875,6 +11256,7 @@
         "kind": "OBJECT",
         "name": "AdminStateTransitionUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -10918,6 +11300,7 @@
         "kind": "UNION",
         "name": "AdminStateTransitionUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -10939,6 +11322,7 @@
         "kind": "OBJECT",
         "name": "AdminStateTransitionUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "stateTransition",
@@ -10962,6 +11346,7 @@
         "kind": "OBJECT",
         "name": "AdminUserChangePasswordMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -10985,6 +11370,7 @@
         "kind": "OBJECT",
         "name": "AdminUserUpdateProfileMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -11008,6 +11394,7 @@
         "kind": "OBJECT",
         "name": "AdminUserUploadAvatarMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "avatarUrl",
@@ -11043,6 +11430,7 @@
         "kind": "OBJECT",
         "name": "AuthorityBoundaryConnectType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "code",
@@ -11102,6 +11490,7 @@
         "kind": "OBJECT",
         "name": "AuthorityInheritType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "code",
@@ -11161,10 +11550,11 @@
         "kind": "OBJECT",
         "name": "AuthorityType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "area",
-            "description": null,
+            "description": "",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -11272,6 +11662,7 @@
         "kind": "OBJECT",
         "name": "AuthorityTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -11331,6 +11722,7 @@
         "kind": "OBJECT",
         "name": "AuthorityUserRegisterMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "me",
@@ -11378,6 +11770,7 @@
         "kind": "OBJECT",
         "name": "AuthorityUserType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "address",
@@ -11521,6 +11914,7 @@
         "kind": "SCALAR",
         "name": "Boolean",
         "description": "The `Boolean` scalar type represents `true` or `false`.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -11531,6 +11925,7 @@
         "kind": "OBJECT",
         "name": "CaseDefinitionType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "condition",
@@ -11622,6 +12017,7 @@
         "kind": "OBJECT",
         "name": "CaseStateTransitionType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -11709,6 +12105,7 @@
         "kind": "OBJECT",
         "name": "CaseStateType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "id",
@@ -11764,6 +12161,7 @@
         "kind": "OBJECT",
         "name": "CaseType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authorities",
@@ -11915,6 +12313,7 @@
         "kind": "OBJECT",
         "name": "CaseTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -11974,6 +12373,7 @@
         "kind": "ENUM",
         "name": "CasesNotificationTemplateTypeChoices",
         "description": "An enumeration.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -12003,6 +12403,7 @@
         "kind": "OBJECT",
         "name": "CategoryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "icon",
@@ -12074,6 +12475,7 @@
         "kind": "OBJECT",
         "name": "CheckInvitationCodeType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authority",
@@ -12141,6 +12543,7 @@
         "kind": "OBJECT",
         "name": "ClientType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "domains",
@@ -12216,6 +12619,7 @@
         "kind": "OBJECT",
         "name": "CommentAttachmentType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "comment",
@@ -12327,6 +12731,7 @@
         "kind": "OBJECT",
         "name": "CommentCreateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -12350,6 +12755,7 @@
         "kind": "OBJECT",
         "name": "CommentCreateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -12393,6 +12799,7 @@
         "kind": "UNION",
         "name": "CommentCreateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -12414,6 +12821,7 @@
         "kind": "OBJECT",
         "name": "CommentCreateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "attachments",
@@ -12517,6 +12925,7 @@
         "kind": "OBJECT",
         "name": "CommentDeleteMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -12540,6 +12949,7 @@
         "kind": "OBJECT",
         "name": "CommentType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "attachments",
@@ -12643,6 +13053,7 @@
         "kind": "OBJECT",
         "name": "CommentUpdateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -12666,6 +13077,7 @@
         "kind": "OBJECT",
         "name": "CommentUpdateProblem",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "fields",
@@ -12709,6 +13121,7 @@
         "kind": "UNION",
         "name": "CommentUpdateResult",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -12730,6 +13143,7 @@
         "kind": "OBJECT",
         "name": "CommentUpdateSuccess",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "attachments",
@@ -12833,6 +13247,7 @@
         "kind": "OBJECT",
         "name": "ConfigurationType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -12920,6 +13335,7 @@
         "kind": "OBJECT",
         "name": "ConfirmConsentMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "ok",
@@ -12943,6 +13359,7 @@
         "kind": "OBJECT",
         "name": "ConvertToTestReportMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "report",
@@ -12966,6 +13383,7 @@
         "kind": "SCALAR",
         "name": "Date",
         "description": "The `Date` scalar type represents a Date\nvalue as specified by\n[iso8601](https://en.wikipedia.org/wiki/ISO_8601).",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -12976,6 +13394,18 @@
         "kind": "SCALAR",
         "name": "DateTime",
         "description": "The `DateTime` scalar type represents a DateTime\nvalue as specified by\n[iso8601](https://en.wikipedia.org/wiki/ISO_8601).",
+        "isOneOf": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "Decimal",
+        "description": "The `Decimal` scalar type represents a python Decimal.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -12986,6 +13416,7 @@
         "kind": "OBJECT",
         "name": "DeepStateDefinitionType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "id",
@@ -13061,6 +13492,7 @@
         "kind": "OBJECT",
         "name": "DeepStateStepType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "id",
@@ -13152,6 +13584,7 @@
         "kind": "OBJECT",
         "name": "DeepStateTransitionType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "formDefinition",
@@ -13215,6 +13648,7 @@
         "kind": "OBJECT",
         "name": "DeleteJSONWebTokenCookie",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "deleted",
@@ -13242,6 +13676,7 @@
         "kind": "OBJECT",
         "name": "DeleteRefreshTokenCookie",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "deleted",
@@ -13269,6 +13704,7 @@
         "kind": "OBJECT",
         "name": "DomainType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "domain",
@@ -13328,6 +13764,7 @@
         "kind": "OBJECT",
         "name": "EvaluateReportSimulation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -13351,6 +13788,7 @@
         "kind": "OBJECT",
         "name": "EventType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "cases",
@@ -13394,6 +13832,7 @@
         "kind": "OBJECT",
         "name": "FeatureType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -13481,6 +13920,7 @@
         "kind": "SCALAR",
         "name": "Float",
         "description": "The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -13491,6 +13931,7 @@
         "kind": "OBJECT",
         "name": "FollowupReportType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -13658,6 +14099,7 @@
         "kind": "OBJECT",
         "name": "FollowupType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -13769,6 +14211,7 @@
         "kind": "OBJECT",
         "name": "ForwardStateMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -13792,6 +14235,7 @@
         "kind": "SCALAR",
         "name": "GenericScalar",
         "description": "The `GenericScalar` scalar type represents a generic\nGraphQL scalar value that could be:\nString, Boolean, Int, Float, List or Object.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -13802,6 +14246,7 @@
         "kind": "SCALAR",
         "name": "GeoJSON",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -13812,6 +14257,7 @@
         "kind": "SCALAR",
         "name": "ID",
         "description": "The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"4\"`) or integer (such as `4`) input value will be accepted as an ID.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -13822,6 +14268,7 @@
         "kind": "OBJECT",
         "name": "ImageType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -13997,6 +14444,7 @@
         "kind": "OBJECT",
         "name": "IncidentReportType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authorities",
@@ -14150,6 +14598,18 @@
                 "name": "Date",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isFollowable",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -14328,6 +14788,7 @@
         "kind": "OBJECT",
         "name": "IncidentReportTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -14387,6 +14848,7 @@
         "kind": "SCALAR",
         "name": "Int",
         "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -14397,6 +14859,7 @@
         "kind": "OBJECT",
         "name": "InvitationCodeType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authority",
@@ -14504,6 +14967,7 @@
         "kind": "SCALAR",
         "name": "JSONString",
         "description": "Allows use of a JSON String for input / output from the GraphQL schema.\n\nUse of this type is *not recommended* as you lose the benefits of having a defined, static\nschema (one of the key benefits of GraphQL).",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -14514,6 +14978,7 @@
         "kind": "OBJECT",
         "name": "LoginQrTokenType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "token",
@@ -14541,6 +15006,7 @@
         "kind": "OBJECT",
         "name": "MessageType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "body",
@@ -14616,6 +15082,7 @@
         "kind": "OBJECT",
         "name": "Mutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "adminAuthorityCreate",
@@ -20316,6 +20783,7 @@
         "kind": "OBJECT",
         "name": "NotificationTemplateType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authoritynotificationSet",
@@ -20527,6 +20995,7 @@
         "kind": "OBJECT",
         "name": "ObservationDefinitionId",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "id",
@@ -20554,6 +21023,7 @@
         "kind": "INPUT_OBJECT",
         "name": "ObservationDefinitionSyncInputType",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -20597,6 +21067,7 @@
         "kind": "OBJECT",
         "name": "ObservationDefinitionSyncOutputType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "removedList",
@@ -20640,6 +21111,7 @@
         "kind": "OBJECT",
         "name": "ObservationDefinitionType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -20879,6 +21351,7 @@
         "kind": "OBJECT",
         "name": "ObservationImageType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -21054,6 +21527,7 @@
         "kind": "OBJECT",
         "name": "ObservationMonitoringDefinitionType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -21265,6 +21739,7 @@
         "kind": "OBJECT",
         "name": "ObservationSubjectMonitoringRecordType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -21464,6 +21939,7 @@
         "kind": "OBJECT",
         "name": "ObservationSubjectMonitoringRecordTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -21523,6 +21999,7 @@
         "kind": "OBJECT",
         "name": "ObservationSubjectType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -21750,6 +22227,7 @@
         "kind": "OBJECT",
         "name": "ObservationSubjectTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -21809,6 +22287,7 @@
         "kind": "OBJECT",
         "name": "ObservationUploadFileType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -21940,6 +22419,7 @@
         "kind": "OBJECT",
         "name": "ObtainJSONWebToken",
         "description": "Obtain JSON Web Token mutation",
+        "isOneOf": null,
         "fields": [
           {
             "name": "payload",
@@ -22015,6 +22495,7 @@
         "kind": "OBJECT",
         "name": "OutbreakPlaceType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "case",
@@ -22158,6 +22639,7 @@
         "kind": "OBJECT",
         "name": "OutbreakPlanType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -22497,6 +22979,7 @@
         "kind": "OBJECT",
         "name": "PageInfoExtra",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "hasNextPage",
@@ -22540,6 +23023,7 @@
         "kind": "OBJECT",
         "name": "PlaceType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authority",
@@ -22587,7 +23071,7 @@
           },
           {
             "name": "location",
-            "description": null,
+            "description": "",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -22651,6 +23135,7 @@
         "kind": "OBJECT",
         "name": "PromoteToCaseMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "case",
@@ -22686,6 +23171,7 @@
         "kind": "OBJECT",
         "name": "PublishReportTypeMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "reportType",
@@ -22709,6 +23195,7 @@
         "kind": "OBJECT",
         "name": "Query",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "adminAuthorityGet",
@@ -22977,13 +23464,9 @@
                 "name": "authorities",
                 "description": null,
                 "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
+                  "kind": "SCALAR",
+                  "name": "Decimal",
+                  "ofType": null
                 },
                 "defaultValue": "null",
                 "isDeprecated": false,
@@ -25145,7 +25628,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "ID",
                     "ofType": null
                   }
                 },
@@ -25404,7 +25887,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "ID",
                     "ofType": null
                   }
                 },
@@ -25996,7 +26479,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "ID",
                     "ofType": null
                   }
                 },
@@ -26262,7 +26745,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "ID",
                     "ofType": null
                   }
                 },
@@ -26812,7 +27295,7 @@
                 "description": null,
                 "type": {
                   "kind": "SCALAR",
-                  "name": "Float",
+                  "name": "ID",
                   "ofType": null
                 },
                 "defaultValue": "null",
@@ -26827,7 +27310,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "ID",
                     "ofType": null
                   }
                 },
@@ -27121,6 +27604,18 @@
                   }
                 },
                 "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "gpsLocation",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": "null",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -27839,6 +28334,7 @@
         "kind": "ENUM",
         "name": "RecordType",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -27862,6 +28358,7 @@
         "kind": "OBJECT",
         "name": "Refresh",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "payload",
@@ -27937,6 +28434,7 @@
         "kind": "OBJECT",
         "name": "RegisterFcmTokenMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -27960,6 +28458,7 @@
         "kind": "OBJECT",
         "name": "ReportDataSummaryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -27983,6 +28482,7 @@
         "kind": "OBJECT",
         "name": "ReportTypeId",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "id",
@@ -28010,6 +28510,7 @@
         "kind": "INPUT_OBJECT",
         "name": "ReportTypeSyncInputType",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -28053,6 +28554,7 @@
         "kind": "OBJECT",
         "name": "ReportTypeSyncOutputType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "categoryList",
@@ -28120,6 +28622,7 @@
         "kind": "OBJECT",
         "name": "ReportTypeType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authorities",
@@ -28495,6 +28998,7 @@
         "kind": "OBJECT",
         "name": "ReporterNoReport",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authorityName",
@@ -28542,6 +29046,7 @@
         "kind": "OBJECT",
         "name": "ReporterNotificationType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "condition",
@@ -28705,6 +29210,7 @@
         "kind": "OBJECT",
         "name": "ReporterReportByDate",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "authorityName",
@@ -28800,6 +29306,7 @@
         "kind": "OBJECT",
         "name": "RequestToDeleteMyAccountMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -28823,6 +29330,7 @@
         "kind": "OBJECT",
         "name": "ResetPasswordMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -28846,6 +29354,7 @@
         "kind": "OBJECT",
         "name": "ResetPasswordRequestMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "success",
@@ -28869,6 +29378,7 @@
         "kind": "OBJECT",
         "name": "Revoke",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "revoked",
@@ -28896,6 +29406,7 @@
         "kind": "OBJECT",
         "name": "SimulationCaseDefinitionType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "description",
@@ -28931,6 +29442,7 @@
         "kind": "OBJECT",
         "name": "SimulationReportType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "caseDefinitions",
@@ -29002,6 +29514,7 @@
         "kind": "OBJECT",
         "name": "SimulationReporterNotificationType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "id",
@@ -29037,6 +29550,7 @@
         "kind": "OBJECT",
         "name": "StatType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "officialCount",
@@ -29084,6 +29598,7 @@
         "kind": "OBJECT",
         "name": "StateDefinitionType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "id",
@@ -29143,6 +29658,7 @@
         "kind": "OBJECT",
         "name": "StateStepType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "id",
@@ -29230,6 +29746,7 @@
         "kind": "OBJECT",
         "name": "StateTransitionType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "casestatetransitionSet",
@@ -29393,6 +29910,7 @@
         "kind": "SCALAR",
         "name": "String",
         "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -29403,6 +29921,7 @@
         "kind": "OBJECT",
         "name": "SubmitFollowupReport",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -29426,6 +29945,7 @@
         "kind": "OBJECT",
         "name": "SubmitImage",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "file",
@@ -29485,6 +30005,7 @@
         "kind": "OBJECT",
         "name": "SubmitIncidentReport",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -29508,6 +30029,7 @@
         "kind": "OBJECT",
         "name": "SubmitObservationSubject",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -29531,6 +30053,7 @@
         "kind": "OBJECT",
         "name": "SubmitObservationSubjectMonitoringRecord",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "result",
@@ -29554,6 +30077,7 @@
         "kind": "OBJECT",
         "name": "SubmitRecordImage",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "file",
@@ -29613,6 +30137,7 @@
         "kind": "OBJECT",
         "name": "SubmitRecordUploadFile",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "file",
@@ -29672,6 +30197,7 @@
         "kind": "OBJECT",
         "name": "SubmitUploadFile",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "file",
@@ -29731,6 +30257,7 @@
         "kind": "OBJECT",
         "name": "SubmitZeroReportMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "id",
@@ -29754,6 +30281,7 @@
         "kind": "OBJECT",
         "name": "SummaryByCategoryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "category",
@@ -29825,6 +30353,7 @@
         "kind": "OBJECT",
         "name": "SummaryContributionType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "day",
@@ -29868,6 +30397,7 @@
         "kind": "SCALAR",
         "name": "UUID",
         "description": "Leverages the internal Python implementation of UUID (uuid.UUID) to provide native UUID objects\nin fields, resolvers and input.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -29878,6 +30408,7 @@
         "kind": "OBJECT",
         "name": "UnPublishReportTypeMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "reportType",
@@ -29901,6 +30432,7 @@
         "kind": "SCALAR",
         "name": "Upload",
         "description": "Create scalar that ignores normal serialization/deserialization, since\nthat will be handled by the multipart request spec",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -29911,6 +30443,7 @@
         "kind": "OBJECT",
         "name": "UploadFileType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -30042,6 +30575,7 @@
         "kind": "OBJECT",
         "name": "UserMessageType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -30125,6 +30659,7 @@
         "kind": "OBJECT",
         "name": "UserMessageTypeNodeConnection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pageInfo",
@@ -30184,6 +30719,7 @@
         "kind": "OBJECT",
         "name": "UserProfileType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "address",
@@ -30395,6 +30931,7 @@
         "kind": "OBJECT",
         "name": "UserType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "avatarUrl",
@@ -30494,6 +31031,7 @@
         "kind": "OBJECT",
         "name": "Verify",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "payload",
@@ -30521,6 +31059,7 @@
         "kind": "OBJECT",
         "name": "VerifyLoginQRTokenMutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "me",
@@ -30568,6 +31107,7 @@
         "kind": "OBJECT",
         "name": "__Directive",
         "description": "A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.\n\nIn some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -30684,6 +31224,7 @@
         "kind": "ENUM",
         "name": "__DirectiveLocation",
         "description": "A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -30809,6 +31350,7 @@
         "kind": "OBJECT",
         "name": "__EnumValue",
         "description": "One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -30876,6 +31418,7 @@
         "kind": "OBJECT",
         "name": "__Field",
         "description": "Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -30996,6 +31539,7 @@
         "kind": "OBJECT",
         "name": "__InputValue",
         "description": "Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -31091,6 +31635,7 @@
         "kind": "OBJECT",
         "name": "__Schema",
         "description": "A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "description",
@@ -31202,6 +31747,7 @@
         "kind": "OBJECT",
         "name": "__Type",
         "description": "The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByURL`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "kind",
@@ -31405,6 +31951,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "isOneOf",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -31416,6 +31974,7 @@
         "kind": "ENUM",
         "name": "__TypeKind",
         "description": "An enum describing what kind of type a given `__Type` is.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -31548,13 +32107,13 @@
       },
       {
         "name": "specifiedBy",
-        "description": "Exposes a URL that specifies the behavior of this scalar.",
+        "description": "Exposes a URL that specifies the behaviour of this scalar.",
         "isRepeatable": false,
         "locations": ["SCALAR"],
         "args": [
           {
             "name": "url",
-            "description": "The URL that specifies the behavior of this scalar.",
+            "description": "The URL that specifies the behaviour of this scalar.",
             "type": {
               "kind": "NON_NULL",
               "name": null,

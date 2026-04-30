@@ -7,7 +7,10 @@ export class ReportTypeViewViewModel extends BaseViewModel {
   id: string;
   _data: ReportType = {} as ReportType;
 
-  constructor(id: string, readonly reportTypeService: IReportTypeService) {
+  constructor(
+    id: string,
+    readonly reportTypeService: IReportTypeService
+  ) {
     super();
     makeObservable(this, {
       _data: observable,

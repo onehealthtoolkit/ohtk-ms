@@ -6,7 +6,10 @@ import { action, makeObservable } from "mobx";
 export class RequestToDeleteViewModel extends BaseFormViewModel {
   user?: Me = undefined;
 
-  constructor(user: Me, readonly profileService: IProfileService) {
+  constructor(
+    user: Me,
+    readonly profileService: IProfileService
+  ) {
     super();
     makeObservable(this, {
       delete: action,

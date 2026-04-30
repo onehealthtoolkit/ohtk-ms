@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { CameraIcon, XCircleIcon } from "@heroicons/react/solid";
+import { CameraIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { FormFieldValidation } from "components/formRenderer/fieldValidation";
 import "leaflet/dist/leaflet.css";
 import ImagesField from "lib/opsvForm/models/fields/imagesField";

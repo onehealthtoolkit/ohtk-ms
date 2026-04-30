@@ -9,7 +9,10 @@ export class ProfileUpdateViewModel extends BaseFormViewModel {
   _password: string = "";
   _confirmPassword: string = "";
 
-  constructor(imageUrl: string, readonly profileService: IProfileService) {
+  constructor(
+    imageUrl: string,
+    readonly profileService: IProfileService
+  ) {
     super();
     makeObservable(this, {
       _image: observable,

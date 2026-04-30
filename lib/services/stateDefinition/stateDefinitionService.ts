@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   StateDefinitionsDocument,
   StateDefinitionCreateDocument,
@@ -45,7 +45,7 @@ export interface IStateDefinitionService extends IService {
 }
 
 export class StateDefinitionService implements IStateDefinitionService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
   fetchStateDefinitionsQuery = {
     limit: 20,
     offset: 0,
@@ -53,7 +53,7 @@ export class StateDefinitionService implements IStateDefinitionService {
     ordering: "name,asc",
   };
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

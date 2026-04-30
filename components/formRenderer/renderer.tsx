@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { FormQuestion } from "components/formRenderer/question";
 import {
   FormRendererViewModel,

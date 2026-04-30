@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import {
   DocumentTextIcon,
-  PhotographIcon,
+  PhotoIcon,
   PlusIcon,
   VideoCameraIcon,
-  VolumeUpIcon,
-} from "@heroicons/react/solid";
+  SpeakerWaveIcon,
+} from "@heroicons/react/24/solid";
 import {
   DateField,
   DecimalField,
@@ -141,10 +141,10 @@ const Field: FC<Props> = ({
         return (
           <div className="flex flex-wrap mt-2">
             <div className="w-20 h-20 border rounded border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
-              <PhotographIcon className="w-8 h-8 text-gray-300" />
+              <PhotoIcon className="w-8 h-8 text-gray-300" />
             </div>
             <div className="w-20 h-20 border rounded border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
-              <PhotographIcon className="w-8 h-8 text-gray-300" />
+              <PhotoIcon className="w-8 h-8 text-gray-300" />
             </div>
             <div className="w-20 h-20 border rounded border-gray-200 bg-gray-50 flex items-center justify-center">
               <PlusIcon className="w-8 h-8 text-gray-300" />
@@ -155,7 +155,7 @@ const Field: FC<Props> = ({
         return (
           <div className="flex flex-wrap mt-2">
             <div className="w-20 h-20 border rounded border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
-              <VolumeUpIcon className="w-8 h-8 text-gray-300" />
+              <SpeakerWaveIcon className="w-8 h-8 text-gray-300" />
             </div>
             <div className="w-20 h-20 border rounded border-gray-200 bg-gray-50 flex items-center justify-center mr-2">
               <VideoCameraIcon className="w-8 h-8 text-gray-300" />

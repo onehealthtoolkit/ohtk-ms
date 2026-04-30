@@ -63,7 +63,6 @@ const CaseDefinitionCreate = () => {
             onChange={evt => {
               viewModel.reportTypeId = evt.target.value;
             }}
-            placeholder={t("form.placeholder.reportType", "Report Type")}
             disabled={viewModel.isSubmitting}
             defaultValue=""
             required

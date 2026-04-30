@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   ReportTypesDocument,
   ReportTypeCreateDocument,
@@ -85,7 +85,7 @@ export interface IReportTypeService extends IService {
 }
 
 export class ReportTypeService implements IReportTypeService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
   fetchReportTypesQuery = {
     limit: 20,
     offset: 0,
@@ -93,7 +93,7 @@ export class ReportTypeService implements IReportTypeService {
     ordering: "category__ordering,asc ordering,asc",
   };
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

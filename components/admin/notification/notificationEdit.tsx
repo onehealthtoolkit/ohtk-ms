@@ -1,4 +1,4 @@
-import { CheckIcon, XIcon } from "@heroicons/react/solid";
+import { CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { ErrorText, TextArea } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import { useEffect, useState } from "react";
@@ -96,7 +96,7 @@ const NotificationEdit = ({
             <CheckIcon className="mr-2 -ml-1 w-6 h-6 text-green-800" />
           )}
           {indicator && success === false && (
-            <XIcon className="mr-2 -ml-1 w-6 h-6 text-red-800" />
+            <XMarkIcon className="mr-2 -ml-1 w-6 h-6 text-red-800" />
           )}
           {t("form.button.save", "Save")}
         </button>

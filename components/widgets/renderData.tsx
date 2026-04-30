@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { DownloadIcon } from "@heroicons/react/solid";
+import { ArrowDownTrayIcon } from "@heroicons/react/24/solid";
 import Field from "lib/opsvForm/models/fields";
 import FilesField from "lib/opsvForm/models/fields/filesField";
 import ImagesField from "lib/opsvForm/models/fields/imagesField";
@@ -290,7 +290,7 @@ const displayValue = (value: any) => {
       const id = arr[arr.length - 1];
       return (
         <p className="flex">
-          <DownloadIcon className="w-5 text-blue-500" />
+          <ArrowDownTrayIcon className="w-5 text-blue-500" />
           <a
             href={val}
             target="_blank"

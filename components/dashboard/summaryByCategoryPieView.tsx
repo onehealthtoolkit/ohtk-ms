@@ -10,7 +10,7 @@ import { DashBoardFilterData } from "./dashboardViewModel";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { SummaryByCategoryPieViewModel } from "./summaryByCategoryPieViewModel";
 import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/solid";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import DashboardCard from "./card";
 import { useTranslation } from "react-i18next";
 

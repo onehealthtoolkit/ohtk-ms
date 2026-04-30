@@ -1,6 +1,6 @@
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { RefreshIcon } from "@heroicons/react/solid";
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import Tooltip from "../tooltip";
 
 type TotalItemProps = {
@@ -27,7 +27,7 @@ const TotalItem: React.FC<TotalItemProps> = ({ totalCount, onRefresh }) => {
         onClick={() => onRefresh()}
       >
         <Tooltip text={`${t("filter.refresh", "Refresh")}`}>
-          <RefreshIcon className="h-5 w-5" aria-hidden="true" />
+          <ArrowPathIcon className="h-5 w-5" aria-hidden="true" />
         </Tooltip>
       </button>
     </div>

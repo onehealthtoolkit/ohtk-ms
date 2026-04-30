@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   EventsQueryDocument,
   StatQueryDocument,
@@ -29,9 +29,9 @@ export interface IDashboardService extends IService {
 }
 
 export class DashboardService implements IDashboardService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

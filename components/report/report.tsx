@@ -23,7 +23,7 @@ import FollowupList from "./followup/list";
 import { formatYmdt } from "lib/datetime";
 import TestLabel from "./testLabel";
 import { useTranslation } from "react-i18next";
-import { ArrowsExpandIcon } from "@heroicons/react/solid";
+import { ArrowsPointingOutIcon } from "@heroicons/react/24/solid";
 import ReportLocationMapDialog from "components/case/reportMapDialog";
 
 export const PromoteToCaseButton = tw.button`
@@ -232,7 +232,7 @@ const Report = (props: { id: string }) => {
                       viewModel.openReportMap(viewModel.data.caseId || "")
                     }
                   >
-                    <ArrowsExpandIcon className="w-5 h-5 " />
+                    <ArrowsPointingOutIcon className="w-5 h-5 " />
                   </div>
                 </div>
               </div>

@@ -25,7 +25,7 @@ const MenuCollapsed: React.FC<MenuProps> = ({
           pathname === href && "bg-black"
         }`}
       >
-        <Link href={href} passHref>
+        <Link href={href} passHref legacyBehavior>
           <a
             className={`block text-slate-500 hover:text-black truncate transition duration-150 ${
               pathname === href && "hover:text-slate-200"
@@ -66,7 +66,7 @@ const MenuExpaned: React.FC<MenuProps> = ({
         pathname === href && "bg-black"
       }`}
     >
-      <Link href={href} passHref>
+      <Link href={href} passHref legacyBehavior>
         <a
           className={`block text-slate-200 hover:text-white truncate transition duration-150 ${
             pathname === href && "hover:text-slate-200"

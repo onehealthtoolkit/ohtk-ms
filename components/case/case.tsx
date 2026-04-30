@@ -11,10 +11,10 @@ import useServices from "lib/services/provider";
 import { CaseViewModel } from "./caseViewModel";
 import CaseStateView from "components/case/caseState/view";
 import {
-  AdjustmentsIcon,
-  ArrowsExpandIcon,
-  CollectionIcon,
-} from "@heroicons/react/solid";
+  AdjustmentsHorizontalIcon,
+  ArrowsPointingOutIcon,
+  RectangleGroupIcon,
+} from "@heroicons/react/24/solid";
 import useStore from "lib/store";
 import CaseStatus from "./caseStatus";
 import { RenderData, TR } from "components/widgets/renderData";
@@ -169,7 +169,7 @@ const Case = (props: { id: string }) => {
                     `}
                     onClick={() => viewModel.openReportMap(viewModel.data.id)}
                   >
-                    <ArrowsExpandIcon className="w-5 h-5 " />
+                    <ArrowsPointingOutIcon className="w-5 h-5 " />
                   </div>
                 </div>
               </div>
@@ -190,7 +190,7 @@ const Case = (props: { id: string }) => {
                   >
                     {({ activeCss }) => (
                       <>
-                        <CollectionIcon
+                        <RectangleGroupIcon
                           className={`mr-2 w-5 h-5 ${activeCss}`}
                         />
                         <span>{t("form.label.state", "State")}</span>
@@ -207,7 +207,7 @@ const Case = (props: { id: string }) => {
                   >
                     {({ activeCss }) => (
                       <>
-                        <AdjustmentsIcon
+                        <AdjustmentsHorizontalIcon
                           className={`mr-2 w-5 h-5 ${activeCss}`}
                         />
                         <span>{t("form.label.detail", "Detail")}</span>

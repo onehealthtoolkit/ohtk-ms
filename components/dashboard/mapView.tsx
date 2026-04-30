@@ -40,7 +40,7 @@ const MapView: React.FC<MapViewProps> = ({ authorityId, filter }) => {
     [18.796143, 98.992696],
   ];
 
-  const points: LatLngTuple[] = viewModel.data.map(it => [
+  const points: Array<[number, number]> = viewModel.data.map(it => [
     it.location.lng,
     it.location.lat,
   ]);

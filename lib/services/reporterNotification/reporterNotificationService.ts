@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   ReporterNotificationsDocument,
   ReporterNotificationCreateDocument,
@@ -45,10 +45,8 @@ export interface IReporterNotificationService extends IService {
   deleteReporterNotification(id: string): Promise<DeleteResult>;
 }
 
-export class ReporterNotificationService
-  implements IReporterNotificationService
-{
-  client: ApolloClient<NormalizedCacheObject>;
+export class ReporterNotificationService implements IReporterNotificationService {
+  client: LegacyApolloClient;
   fetchReporterNotificationsQuery = {
     limit: 20,
     offset: 0,
@@ -56,7 +54,7 @@ export class ReporterNotificationService
     ordering: "description,asc",
   };
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

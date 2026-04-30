@@ -109,8 +109,8 @@ const CaseStateStep: FC<CaseStateStepProps> = ({
             caseState.transition
               ? "bg-gray-200 border-gray-200 text-gray-600"
               : caseState.state.isStopState
-              ? "bg-green-500 border-green-500 text-white"
-              : "bg-blue-600 border-blue-600 text-white"
+                ? "bg-green-500 border-green-500 text-white"
+                : "bg-blue-600 border-blue-600 text-white"
           }`}
         >
           {caseState.state.name}

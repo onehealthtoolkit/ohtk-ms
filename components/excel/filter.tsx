@@ -94,7 +94,8 @@ const ExcelFilter: React.FC<ExcelFilterProp> = ({ action, reportType }) => {
           <DatePicker
             id="fromDate"
             selected={fromDate}
-            onChange={(date: Date) => {
+            onChange={(date: Date | null) => {
+              if (!date) return;
               date.setHours(0, 0, 0, 0);
               setFromDate(date);
             }}
@@ -105,7 +106,8 @@ const ExcelFilter: React.FC<ExcelFilterProp> = ({ action, reportType }) => {
           <DatePicker
             id="toDate"
             selected={toDate}
-            onChange={(date: Date) => {
+            onChange={(date: Date | null) => {
+              if (!date) return;
               date.setHours(23, 59, 59, 999);
               setToDate(date);
             }}

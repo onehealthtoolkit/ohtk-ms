@@ -39,30 +39,30 @@ export const FIELD_TYPES = [
   "subform",
 ] as const;
 
-export type TFieldValueType = typeof FIELD_TYPES[number];
+export type TFieldValueType = (typeof FIELD_TYPES)[number];
 export type TFieldExtensionType<T> = T extends "text"
   ? TextFieldViewModel
   : T extends "integer"
-  ? IntegerFieldViewModel
-  : T extends "decimal"
-  ? DecimalFieldViewModel
-  : T extends "date"
-  ? DateFieldViewModel
-  : T extends "images"
-  ? ImagesFieldViewModel
-  : T extends "files"
-  ? FilesFieldViewModel
-  : T extends "location"
-  ? LocationFieldViewModel
-  : T extends "singlechoices"
-  ? SinglechoicesFieldViewModel
-  : T extends "multiplechoices"
-  ? MultiplechoicesFieldViewModel
-  : T extends "textarea"
-  ? TextAreaFieldViewModel
-  : T extends "subform"
-  ? SubformFieldViewModel
-  : never;
+    ? IntegerFieldViewModel
+    : T extends "decimal"
+      ? DecimalFieldViewModel
+      : T extends "date"
+        ? DateFieldViewModel
+        : T extends "images"
+          ? ImagesFieldViewModel
+          : T extends "files"
+            ? FilesFieldViewModel
+            : T extends "location"
+              ? LocationFieldViewModel
+              : T extends "singlechoices"
+                ? SinglechoicesFieldViewModel
+                : T extends "multiplechoices"
+                  ? MultiplechoicesFieldViewModel
+                  : T extends "textarea"
+                    ? TextAreaFieldViewModel
+                    : T extends "subform"
+                      ? SubformFieldViewModel
+                      : never;
 
 export class FieldViewModel extends BaseViewModel {
   isCurrent = false;

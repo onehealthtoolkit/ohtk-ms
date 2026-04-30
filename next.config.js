@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
+  transpilePackages: ["uuid"],
   exportPathMap: async function () {
     return {
       "/": { page: "/" },
@@ -16,10 +17,7 @@ const nextConfig = {
     loader: "akamai",
     path: "",
   },
-  experimental: {
-    outputStandalone: true, // next 12.1.x
-    // for next 12.2.x -> root: { output: "standalone" }
-  },
+  output: "standalone",
 };
 
 module.exports = nextConfig;

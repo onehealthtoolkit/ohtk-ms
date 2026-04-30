@@ -9,7 +9,10 @@ export class UserUpdatePasswordViewModel extends BaseFormViewModel {
   _confirmPassword: string = "";
 
   id: string;
-  constructor(id: string, readonly userService: IUserService) {
+  constructor(
+    id: string,
+    readonly userService: IUserService
+  ) {
     super();
     makeObservable(this, {
       _password: observable,

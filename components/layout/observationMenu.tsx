@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import useStore from "lib/store";
 import { Transition } from "@headlessui/react";
 import { Menu } from "@headlessui/react";
-import { ChevronDownIcon, EyeIcon } from "@heroicons/react/solid";
+import { ChevronDownIcon, EyeIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { ObservationDefinition } from "lib/services/observationDefinition";
 import useServices from "lib/services/provider";
@@ -90,6 +90,7 @@ const ObservationMenu: React.FC<ObservationMenuProps> = ({ icon, label }) => {
                             },
                           }}
                           passHref
+                          legacyBehavior
                         >
                           <a
                             className={`${

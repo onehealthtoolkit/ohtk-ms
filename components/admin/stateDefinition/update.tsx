@@ -20,7 +20,10 @@ import {
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
-import { AdjustmentsIcon, CollectionIcon } from "@heroicons/react/solid";
+import {
+  AdjustmentsHorizontalIcon,
+  RectangleGroupIcon,
+} from "@heroicons/react/24/solid";
 import { StateStepList } from "./step/list";
 import { StateTransitionList } from "./transition/list";
 import { useTranslation } from "react-i18next";
@@ -142,7 +145,7 @@ const StateDefinitionsUpdateForm = () => {
           >
             {({ activeCss }) => (
               <>
-                <CollectionIcon className={`mr-2 w-5 h-5 ${activeCss}`} />
+                <RectangleGroupIcon className={`mr-2 w-5 h-5 ${activeCss}`} />
                 <span>Step</span>
               </>
             )}
@@ -164,7 +167,9 @@ const StateDefinitionsUpdateForm = () => {
           >
             {({ activeCss }) => (
               <>
-                <AdjustmentsIcon className={`mr-2 w-5 h-5 ${activeCss}`} />
+                <AdjustmentsHorizontalIcon
+                  className={`mr-2 w-5 h-5 ${activeCss}`}
+                />
                 <span>Transition</span>
               </>
             )}

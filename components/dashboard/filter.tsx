@@ -5,7 +5,7 @@ import DatePicker from "components/widgets/datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import DashboardViewModel from "./dashboardViewModel";
 import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon, RefreshIcon } from "@heroicons/react/solid";
+import { ChevronDownIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
 import AuthorityFilter from "./authorityFilter";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import Filter from "components/widgets/filter";
@@ -150,7 +150,9 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
         <DatePicker
           id="fromDate"
           selected={fromDate}
-          onChange={(date: Date) => setFromDate(date)}
+          onChange={(date: Date | null) => {
+            if (date) setFromDate(date);
+          }}
         />
       </Field>
       <Field $size="full">
@@ -160,7 +162,9 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
         <DatePicker
           id="toDate"
           selected={toDate}
-          onChange={(date: Date) => setToDate(date)}
+          onChange={(date: Date | null) => {
+            if (date) setToDate(date);
+          }}
         />
       </Field>
       <Field $size="full">
@@ -194,7 +198,7 @@ const DashboardFilter: React.FC<DashboardFilterProp> = ({
             onClick={() => onRefresh()}
           >
             <Tooltip text={`${t("filter.refresh", "Refresh")}`}>
-              <RefreshIcon className="h-5 w-5" aria-hidden="true" />
+              <ArrowPathIcon className="h-5 w-5" aria-hidden="true" />
             </Tooltip>
           </button>
         </div>

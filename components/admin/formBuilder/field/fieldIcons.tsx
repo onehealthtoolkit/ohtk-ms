@@ -1,9 +1,9 @@
 import {
   CalendarIcon,
   DocumentTextIcon,
-  LocationMarkerIcon,
-  PhotographIcon,
-} from "@heroicons/react/outline";
+  MapPinIcon,
+  PhotoIcon,
+} from "@heroicons/react/24/outline";
 import { TFieldValueType } from "./fieldViewModel";
 
 const fieldIconClass = "h-8 w-8 text-gray-400";
@@ -33,9 +33,7 @@ export const getFieldIcon = (fieldType: TFieldValueType) => {
         </svg>
       );
     case "location":
-      return (
-        <LocationMarkerIcon className={fieldIconClass}></LocationMarkerIcon>
-      );
+      return <MapPinIcon className={fieldIconClass}></MapPinIcon>;
     case "textarea":
       return (
         <svg
@@ -63,7 +61,7 @@ export const getFieldIcon = (fieldType: TFieldValueType) => {
     case "files":
       return <DocumentTextIcon className={fieldIconClass}></DocumentTextIcon>;
     case "images":
-      return <PhotographIcon className={fieldIconClass}></PhotographIcon>;
+      return <PhotoIcon className={fieldIconClass}></PhotoIcon>;
     case "singlechoices":
       return (
         <svg

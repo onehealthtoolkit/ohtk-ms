@@ -2,10 +2,13 @@ import { Observer } from "mobx-react";
 import React, { Fragment } from "react";
 import useStore from "lib/store";
 import { UserAvatar } from "components/widgets/forms";
-import { LogoutIcon, UserCircleIcon } from "@heroicons/react/outline";
+import {
+  ArrowLeftOnRectangleIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
 import { Transition } from "@headlessui/react";
 import { Menu } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/solid";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
@@ -76,7 +79,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ className }) => {
                         <button
                           className={`group flex w-full items-center rounded-md  text-sm`}
                         >
-                          <Link href="/admin/profile/" passHref>
+                          <Link href="/admin/profile/" passHref legacyBehavior>
                             <a
                               className={`${
                                 active
@@ -99,7 +102,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ className }) => {
                         <button
                           className={`group flex w-full items-center rounded-md  text-sm`}
                         >
-                          <Link href="/admin/logout/" passHref>
+                          <Link href="/admin/logout/" passHref legacyBehavior>
                             <a
                               className={`${
                                 active
@@ -112,7 +115,11 @@ const UserMenu: React.FC<UserMenuProps> = ({ className }) => {
                                 signOut();
                               }}
                             >
-                              {<LogoutIcon className={iconClassName} />}
+                              {
+                                <ArrowLeftOnRectangleIcon
+                                  className={iconClassName}
+                                />
+                              }
                               <span className="text-sm font-medium ml-3 duration-200">
                                 {"Logout"}
                               </span>

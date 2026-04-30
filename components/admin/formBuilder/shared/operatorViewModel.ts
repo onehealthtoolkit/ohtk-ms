@@ -37,8 +37,8 @@ export interface ConditionDefinition {
   value?: TOperatorValue;
 }
 
-export type TLogicalOperatorKey = typeof logicalOperatorKeys[number];
-export type TComparableOperatorKey = typeof comparableOperatorKeys[number];
+export type TLogicalOperatorKey = (typeof logicalOperatorKeys)[number];
+export type TComparableOperatorKey = (typeof comparableOperatorKeys)[number];
 export type TOperatorKey = TLogicalOperatorKey | TComparableOperatorKey;
 
 /**

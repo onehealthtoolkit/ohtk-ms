@@ -8,7 +8,10 @@ export class UserViewViewModel extends BaseViewModel {
   _data: User = {} as User;
   _contribution?: { string: number } = undefined;
 
-  constructor(id: string, readonly userService: IUserService) {
+  constructor(
+    id: string,
+    readonly userService: IUserService
+  ) {
     super();
     makeObservable(this, {
       _data: observable,
@@ -62,8 +65,7 @@ export class UserViewViewModel extends BaseViewModel {
     ) {
       map[obj.day] = obj.total;
       return map;
-    },
-    {});
+    }, {});
 
     this.isLoading = false;
   }

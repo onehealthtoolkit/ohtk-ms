@@ -51,7 +51,7 @@ const Breadcrumb = ({ crumbs }: { crumbs: Array<CrumbProps> }) => {
 const Crumb = ({ text, href }: CrumbProps) => {
   if (href) {
     return (
-      <Link color="inherit" href={href}>
+      <Link color="inherit" href={href} legacyBehavior>
         <a className={`${crumbClass} hover:text-sky-300`}>{text}</a>
       </Link>
     );

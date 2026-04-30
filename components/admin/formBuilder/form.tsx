@@ -1,9 +1,9 @@
 import {
   PlusIcon,
-  TableIcon,
-  TemplateIcon,
+  TableCellsIcon,
+  DocumentDuplicateIcon,
   XCircleIcon,
-} from "@heroicons/react/solid";
+} from "@heroicons/react/24/solid";
 import { FormViewModel } from "components/admin/formBuilder/formViewModel";
 import Section, { SectionList } from "components/admin/formBuilder/section";
 import FormSimulation from "components/admin/formBuilder/simulator/formSimulation";
@@ -40,13 +40,13 @@ const FormBuilder: FC<FormBuilderProps> = ({
         >
           {form.isSimulationMode ? (
             <>
-              <TemplateIcon className="w-5 h-5" />
+              <DocumentDuplicateIcon className="w-5 h-5" />
               <span>Builder mode &laquo; </span>
             </>
           ) : (
             <>
               <span>&raquo; Simulator mode </span>
-              <TableIcon className="w-5 h-5" />
+              <TableCellsIcon className="w-5 h-5" />
             </>
           )}
         </button>

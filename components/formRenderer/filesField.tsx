@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import {
-  DocumentAddIcon,
+  DocumentPlusIcon,
   DocumentIcon,
   FilmIcon,
-  MusicNoteIcon,
+  MusicalNoteIcon,
   QuestionMarkCircleIcon,
   XCircleIcon,
-} from "@heroicons/react/solid";
+} from "@heroicons/react/24/solid";
 import { FormFieldValidation } from "components/formRenderer/fieldValidation";
 import FilesField from "lib/opsvForm/models/fields/filesField";
 import { Observer, observer } from "mobx-react";
@@ -27,7 +27,7 @@ const Component: FC<FormFilesFieldProps> = ({ field }) => {
                       hover:border-gray-400 rounded shadow cursor-pointer 
                     "
         >
-          <DocumentAddIcon className="w-5 h-5 fill-black" />
+          <DocumentPlusIcon className="w-5 h-5 fill-black" />
         </label>
         <input
           id={"file-" + field.name}
@@ -71,7 +71,7 @@ const FileItem: FC<FileItemProps> = ({ id, index, field }) => {
 
   const renderIcon = (fileType: string): ReactElement => {
     if (fileType.indexOf("audio") > -1) {
-      return <MusicNoteIcon className="w-full h-full fill-white" />;
+      return <MusicalNoteIcon className="w-full h-full fill-white" />;
     } else if (fileType.indexOf("video") > -1) {
       return <FilmIcon className="w-full h-full fill-white" />;
     } else if (fileType.indexOf("application") > -1) {

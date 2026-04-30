@@ -1,11 +1,11 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { FormSimulationViewModel } from "components/admin/formBuilder/simulator/formSimulationViewModel";
 import { FormQuestion } from "components/formRenderer/question";
 import { TabBar, TabItem } from "components/widgets/forms";
 import { RenderData } from "components/widgets/renderData";
 import Spinner from "components/widgets/spinner";
 import { Observer, observer } from "mobx-react";
-import { useEffect, useRef } from "react";
+import { MouseEvent, useEffect, useRef } from "react";
 import tw from "tailwind-styled-components";
 
 type FormSimulationProps = {
@@ -160,7 +160,7 @@ const Footer = ({
         >
           {form.isFirst ? null : (
             <NavigateButton
-              onClick={(e: MouseEvent) => {
+              onClick={(e: MouseEvent<HTMLButtonElement>) => {
                 e.preventDefault();
                 form.previous();
               }}
@@ -172,7 +172,7 @@ const Footer = ({
           {form.isLast ? (
             <NavigateButton
               disabled={form.isSubmitting}
-              onClick={(e: MouseEvent) => {
+              onClick={(e: MouseEvent<HTMLButtonElement>) => {
                 e.preventDefault();
                 form.next();
                 console.log("isSubmitting", form.form?.toJsonValue());
@@ -189,7 +189,7 @@ const Footer = ({
             </NavigateButton>
           ) : (
             <NavigateButton
-              onClick={(e: MouseEvent) => {
+              onClick={(e: MouseEvent<HTMLButtonElement>) => {
                 e.preventDefault();
                 form.next();
               }}

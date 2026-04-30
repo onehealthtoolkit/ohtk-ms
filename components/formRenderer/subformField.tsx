@@ -1,4 +1,4 @@
-import { PlusCircleIcon } from "@heroicons/react/solid";
+import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { FormFieldValidation } from "components/formRenderer/fieldValidation";
 import SubformField from "lib/opsvForm/models/fields/subformField";
 import { observer } from "mobx-react";

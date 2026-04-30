@@ -64,9 +64,9 @@ describe("MultipleChoicesField", () => {
         headache: true,
         other: true,
         other_text: "vomit",
-        value: "other,headache",
+        value: "other, headache",
       });
-      expect(json["symptom__value"]).toEqual("other - vomit,headache");
+      expect(json["symptom__value"]).toEqual("other - vomit, headache");
     });
 
     it("load json value", () => {

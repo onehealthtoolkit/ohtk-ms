@@ -1,4 +1,4 @@
-import { GlobeAltIcon } from "@heroicons/react/outline";
+import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { BaseSyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 

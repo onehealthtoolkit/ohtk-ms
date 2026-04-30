@@ -23,6 +23,13 @@ const ConditionTemplateEditor = ({
       editor = monaco.languages.registerCompletionItemProvider("python", {
         triggerCharacters: ["."],
         provideCompletionItems: (model: any, position: any) => {
+          const wordUntilPosition = model.getWordUntilPosition(position);
+          const range = {
+            startLineNumber: position.lineNumber,
+            endLineNumber: position.lineNumber,
+            startColumn: wordUntilPosition.startColumn,
+            endColumn: wordUntilPosition.endColumn,
+          };
           const wordAtPosition = model.getWordAtPosition({
             lineNumber: position.lineNumber,
             column: Math.max(position.column - 1, 0),
@@ -34,6 +41,7 @@ const ConditionTemplateEditor = ({
                   label: item.label,
                   kind: monaco.languages.CompletionItemKind.Property,
                   insertText: item.label,
+                  range,
                 };
               }),
             };
@@ -44,6 +52,7 @@ const ConditionTemplateEditor = ({
                 label: item.value,
                 kind: monaco.languages.CompletionItemKind.Property,
                 insertText: item.value,
+                range,
               };
             }),
           };

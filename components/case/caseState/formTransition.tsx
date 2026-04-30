@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { FormTransitionViewModel } from "components/case/caseState/formTransitionViewModel";
 import { FormQuestion } from "components/formRenderer/question";
 import BaseModalDialog from "components/widgets/dialogs/baseModalDialog";

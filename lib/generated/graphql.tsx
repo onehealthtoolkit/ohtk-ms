@@ -10,49 +10,30 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>;
 };
+export type MakeEmpty<
+  T extends { [key: string]: unknown },
+  K extends keyof T,
+> = { [_ in K]?: never };
+export type Incremental<T> =
+  | T
+  | {
+      [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
+    };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-  /**
-   * The `Date` scalar type represents a Date
-   * value as specified by
-   * [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
-   */
-  Date: any;
-  /**
-   * The `DateTime` scalar type represents a DateTime
-   * value as specified by
-   * [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
-   */
-  DateTime: any;
-  /**
-   * The `GenericScalar` scalar type represents a generic
-   * GraphQL scalar value that could be:
-   * String, Boolean, Int, Float, List or Object.
-   */
-  GenericScalar: any;
-  GeoJSON: any;
-  /**
-   * Allows use of a JSON String for input / output from the GraphQL schema.
-   *
-   * Use of this type is *not recommended* as you lose the benefits of having a defined, static
-   * schema (one of the key benefits of GraphQL).
-   */
-  JSONString: any;
-  /**
-   * Leverages the internal Python implementation of UUID (uuid.UUID) to provide native UUID objects
-   * in fields, resolvers and input.
-   */
-  UUID: any;
-  /**
-   * Create scalar that ignores normal serialization/deserialization, since
-   * that will be handled by the multipart request spec
-   */
-  Upload: any;
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  Date: { input: any; output: any };
+  DateTime: { input: any; output: any };
+  Decimal: { input: any; output: any };
+  GenericScalar: { input: any; output: any };
+  GeoJSON: { input: any; output: any };
+  JSONString: { input: any; output: any };
+  UUID: { input: any; output: any };
+  Upload: { input: any; output: any };
 };
 
 /** An enumeration. */
@@ -73,7 +54,7 @@ export type AdminAuthorityCreateMutation = {
 export type AdminAuthorityCreateProblem = {
   __typename?: "AdminAuthorityCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminAuthorityCreateResult =
@@ -82,36 +63,36 @@ export type AdminAuthorityCreateResult =
 
 export type AdminAuthorityCreateSuccess = {
   __typename?: "AdminAuthorityCreateSuccess";
-  area?: Maybe<Scalars["GeoJSON"]>;
+  area?: Maybe<Scalars["GeoJSON"]["output"]>;
   authorityBoundaryConnects: Array<AdminAuthorityCreateSuccess>;
   authorityInherits: Array<AdminAuthorityCreateSuccess>;
   authoritynotificationSet: Array<AdminAuthorityNotificationUpsertSuccess>;
   boundaryConnects: Array<AdminAuthorityCreateSuccess>;
   cases: Array<CaseType>;
-  code: Scalars["String"];
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  id: Scalars["ID"];
+  code: Scalars["String"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  id: Scalars["ID"]["output"];
   incidents: Array<IncidentReportType>;
   inherits: Array<AdminAuthorityCreateSuccess>;
   invitations: Array<AdminInvitationCodeCreateSuccess>;
-  name: Scalars["String"];
+  name: Scalars["String"]["output"];
   places: Array<AdminPlaceUpdateSuccess>;
   reportTypes: Array<AdminReportTypeCreateSuccess>;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"]["output"];
   users: Array<AdminAuthorityUserCreateSuccess>;
 };
 
 export type AdminAuthorityDeleteMutation = {
   __typename?: "AdminAuthorityDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminAuthorityInheritLookupType = {
   __typename?: "AdminAuthorityInheritLookupType";
-  code: Scalars["String"];
-  id: Scalars["ID"];
-  name: Scalars["String"];
+  code: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
 };
 
 export type AdminAuthorityInheritLookupTypeNodeConnection = {
@@ -120,12 +101,12 @@ export type AdminAuthorityInheritLookupTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminAuthorityInheritLookupType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AdminAuthorityNotificationDeleteMutation = {
   __typename?: "AdminAuthorityNotificationDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminAuthorityNotificationUpsertMutation = {
@@ -136,7 +117,7 @@ export type AdminAuthorityNotificationUpsertMutation = {
 export type AdminAuthorityNotificationUpsertProblem = {
   __typename?: "AdminAuthorityNotificationUpsertProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminAuthorityNotificationUpsertResult =
@@ -146,19 +127,19 @@ export type AdminAuthorityNotificationUpsertResult =
 export type AdminAuthorityNotificationUpsertSuccess = {
   __typename?: "AdminAuthorityNotificationUpsertSuccess";
   authority: AdminAuthorityCreateSuccess;
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  id: Scalars["ID"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  id: Scalars["ID"]["output"];
   template: AdminNotificationTemplateCreateSuccess;
-  to: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
+  to: Scalars["String"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminAuthorityQueryType = {
   __typename?: "AdminAuthorityQueryType";
-  code: Scalars["String"];
-  id: Scalars["ID"];
-  name: Scalars["String"];
+  code: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
 };
 
 export type AdminAuthorityQueryTypeNodeConnection = {
@@ -167,7 +148,7 @@ export type AdminAuthorityQueryTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminAuthorityQueryType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AdminAuthorityUpdateMutation = {
@@ -178,7 +159,7 @@ export type AdminAuthorityUpdateMutation = {
 export type AdminAuthorityUpdateProblem = {
   __typename?: "AdminAuthorityUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminAuthorityUpdateResult =
@@ -198,7 +179,7 @@ export type AdminAuthorityUserCreateMutation = {
 export type AdminAuthorityUserCreateProblem = {
   __typename?: "AdminAuthorityUserCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminAuthorityUserCreateResult =
@@ -207,49 +188,57 @@ export type AdminAuthorityUserCreateResult =
 
 export type AdminAuthorityUserCreateSuccess = {
   __typename?: "AdminAuthorityUserCreateSuccess";
-  address?: Maybe<Scalars["String"]>;
+  address?: Maybe<Scalars["String"]["output"]>;
   authority: AdminAuthorityCreateSuccess;
-  avatar?: Maybe<Scalars["String"]>;
-  avatarUrl?: Maybe<Scalars["String"]>;
-  consent: Scalars["Boolean"];
-  dateJoined: Scalars["DateTime"];
-  email: Scalars["String"];
-  fcmToken: Scalars["String"];
-  firstName: Scalars["String"];
-  id: Scalars["ID"];
+  authorityuser?: Maybe<AdminAuthorityUserCreateSuccess>;
+  avatar?: Maybe<Scalars["String"]["output"]>;
+  avatarUrl?: Maybe<Scalars["String"]["output"]>;
+  casestatetransitionSet: Array<CaseStateTransitionType>;
+  commentSet: Array<CommentUpdateSuccess>;
+  consent: Scalars["Boolean"]["output"];
+  dateJoined: Scalars["DateTime"]["output"];
+  email: Scalars["String"]["output"];
+  fcmToken: Scalars["String"]["output"];
+  firstName: Scalars["String"]["output"];
+  followupreport: Array<FollowupReportType>;
+  id: Scalars["ID"]["output"];
+  incidentreport: Array<IncidentReportType>;
   /** Designates whether this user should be treated as active. Unselect this instead of deleting accounts. */
-  isActive: Scalars["Boolean"];
+  isActive: Scalars["Boolean"]["output"];
   /** Designates whether the user can log into this admin site. */
-  isStaff: Scalars["Boolean"];
+  isStaff: Scalars["Boolean"]["output"];
   /** Designates that this user has all permissions without explicitly assigning them. */
-  isSuperuser: Scalars["Boolean"];
-  lastLogin?: Maybe<Scalars["DateTime"]>;
-  lastName: Scalars["String"];
-  password: Scalars["String"];
+  isSuperuser: Scalars["Boolean"]["output"];
+  lastLogin?: Maybe<Scalars["DateTime"]["output"]>;
+  lastName: Scalars["String"]["output"];
+  monitoringrecord: Array<ObservationSubjectMonitoringRecordType>;
+  password: Scalars["String"]["output"];
   role?: Maybe<AccountsAuthorityUserRoleChoices>;
-  telephone?: Maybe<Scalars["String"]>;
-  thumbnailAvatarUrl?: Maybe<Scalars["String"]>;
+  subjectrecord: Array<ObservationSubjectType>;
+  telephone?: Maybe<Scalars["String"]["output"]>;
+  thumbnailAvatarUrl?: Maybe<Scalars["String"]["output"]>;
   userPtr: UserType;
+  usermessageSet: Array<UserMessageType>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
-  username: Scalars["String"];
+  username: Scalars["String"]["output"];
 };
 
 export type AdminAuthorityUserDeleteMutation = {
   __typename?: "AdminAuthorityUserDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminAuthorityUserQueryType = {
   __typename?: "AdminAuthorityUserQueryType";
   authority: AdminAuthorityCreateSuccess;
-  email: Scalars["String"];
-  firstName: Scalars["String"];
-  id: Scalars["ID"];
-  lastName: Scalars["String"];
+  email: Scalars["String"]["output"];
+  firstName: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  lastName: Scalars["String"]["output"];
   role?: Maybe<AccountsAuthorityUserRoleChoices>;
-  telephone?: Maybe<Scalars["String"]>;
+  telephone?: Maybe<Scalars["String"]["output"]>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
-  username: Scalars["String"];
+  username: Scalars["String"]["output"];
 };
 
 export type AdminAuthorityUserQueryTypeNodeConnection = {
@@ -258,7 +247,7 @@ export type AdminAuthorityUserQueryTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminAuthorityUserQueryType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AdminAuthorityUserUpdateMutation = {
@@ -274,7 +263,7 @@ export type AdminAuthorityUserUpdatePasswordMutation = {
 export type AdminAuthorityUserUpdateProblem = {
   __typename?: "AdminAuthorityUserUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminAuthorityUserUpdateResult =
@@ -294,7 +283,7 @@ export type AdminCaseDefinitionCreateMutation = {
 export type AdminCaseDefinitionCreateProblem = {
   __typename?: "AdminCaseDefinitionCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminCaseDefinitionCreateResult =
@@ -303,26 +292,26 @@ export type AdminCaseDefinitionCreateResult =
 
 export type AdminCaseDefinitionCreateSuccess = {
   __typename?: "AdminCaseDefinitionCreateSuccess";
-  condition: Scalars["String"];
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  description: Scalars["String"];
-  id: Scalars["ID"];
-  isActive: Scalars["Boolean"];
+  condition: Scalars["String"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  description: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  isActive: Scalars["Boolean"]["output"];
   reportType: AdminReportTypeCreateSuccess;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminCaseDefinitionDeleteMutation = {
   __typename?: "AdminCaseDefinitionDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminCaseDefinitionQueryType = {
   __typename?: "AdminCaseDefinitionQueryType";
-  condition: Scalars["String"];
-  description: Scalars["String"];
-  id: Scalars["ID"];
+  condition: Scalars["String"]["output"];
+  description: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
   reportType: AdminReportTypeCreateSuccess;
 };
 
@@ -332,7 +321,7 @@ export type AdminCaseDefinitionQueryTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminCaseDefinitionQueryType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AdminCaseDefinitionUpdateMutation = {
@@ -343,7 +332,7 @@ export type AdminCaseDefinitionUpdateMutation = {
 export type AdminCaseDefinitionUpdateProblem = {
   __typename?: "AdminCaseDefinitionUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminCaseDefinitionUpdateResult =
@@ -363,7 +352,7 @@ export type AdminCategoryCreateMutation = {
 export type AdminCategoryCreateProblem = {
   __typename?: "AdminCategoryCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminCategoryCreateResult =
@@ -372,27 +361,27 @@ export type AdminCategoryCreateResult =
 
 export type AdminCategoryCreateSuccess = {
   __typename?: "AdminCategoryCreateSuccess";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  icon?: Maybe<Scalars["String"]>;
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  ordering: Scalars["Int"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  icon?: Maybe<Scalars["String"]["output"]>;
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
+  ordering: Scalars["Int"]["output"];
   reporttypeSet: Array<AdminReportTypeCreateSuccess>;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminCategoryDeleteMutation = {
   __typename?: "AdminCategoryDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminCategoryQueryType = {
   __typename?: "AdminCategoryQueryType";
-  icon?: Maybe<Scalars["String"]>;
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  ordering: Scalars["Int"];
+  icon?: Maybe<Scalars["String"]["output"]>;
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
+  ordering: Scalars["Int"]["output"];
 };
 
 export type AdminCategoryQueryTypeNodeConnection = {
@@ -401,7 +390,7 @@ export type AdminCategoryQueryTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminCategoryQueryType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AdminCategoryUpdateMutation = {
@@ -412,7 +401,7 @@ export type AdminCategoryUpdateMutation = {
 export type AdminCategoryUpdateProblem = {
   __typename?: "AdminCategoryUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminCategoryUpdateResult =
@@ -432,7 +421,7 @@ export type AdminClientCreateMutation = {
 export type AdminClientCreateProblem = {
   __typename?: "AdminClientCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminClientCreateResult =
@@ -441,20 +430,20 @@ export type AdminClientCreateResult =
 
 export type AdminClientCreateSuccess = {
   __typename?: "AdminClientCreateSuccess";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
   domains: Array<AdminDomainUpdateSuccess>;
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  schemaName: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
+  schemaName: Scalars["String"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminClientQueryType = {
   __typename?: "AdminClientQueryType";
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  schemaName: Scalars["String"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
+  schemaName: Scalars["String"]["output"];
 };
 
 export type AdminClientQueryTypeNodeConnection = {
@@ -463,7 +452,7 @@ export type AdminClientQueryTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminClientQueryType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AdminClientUpdateMutation = {
@@ -474,7 +463,7 @@ export type AdminClientUpdateMutation = {
 export type AdminClientUpdateProblem = {
   __typename?: "AdminClientUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminClientUpdateResult =
@@ -483,13 +472,13 @@ export type AdminClientUpdateResult =
 
 export type AdminClientUpdateSuccess = {
   __typename?: "AdminClientUpdateSuccess";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
   domains: Array<AdminDomainUpdateSuccess>;
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  schemaName: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
+  schemaName: Scalars["String"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminConfigurationCreateMutation = {
@@ -500,7 +489,7 @@ export type AdminConfigurationCreateMutation = {
 export type AdminConfigurationCreateProblem = {
   __typename?: "AdminConfigurationCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminConfigurationCreateResult =
@@ -509,22 +498,22 @@ export type AdminConfigurationCreateResult =
 
 export type AdminConfigurationCreateSuccess = {
   __typename?: "AdminConfigurationCreateSuccess";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  key: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
-  value: Scalars["String"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  key: Scalars["String"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
+  value: Scalars["String"]["output"];
 };
 
 export type AdminConfigurationDeleteMutation = {
   __typename?: "AdminConfigurationDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminConfigurationQueryType = {
   __typename?: "AdminConfigurationQueryType";
-  key: Scalars["String"];
-  value: Scalars["String"];
+  key: Scalars["String"]["output"];
+  value: Scalars["String"]["output"];
 };
 
 export type AdminConfigurationQueryTypeNodeConnection = {
@@ -533,7 +522,7 @@ export type AdminConfigurationQueryTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminConfigurationQueryType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AdminConfigurationUpdateMutation = {
@@ -544,7 +533,7 @@ export type AdminConfigurationUpdateMutation = {
 export type AdminConfigurationUpdateProblem = {
   __typename?: "AdminConfigurationUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminConfigurationUpdateResult =
@@ -553,21 +542,21 @@ export type AdminConfigurationUpdateResult =
 
 export type AdminConfigurationUpdateSuccess = {
   __typename?: "AdminConfigurationUpdateSuccess";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  key: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
-  value: Scalars["String"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  key: Scalars["String"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
+  value: Scalars["String"]["output"];
 };
 
 export type AdminDefinitionQueryType = {
   __typename?: "AdminDefinitionQueryType";
-  description?: Maybe<Scalars["String"]>;
-  id: Scalars["ID"];
-  isActive: Scalars["Boolean"];
+  description?: Maybe<Scalars["String"]["output"]>;
+  id: Scalars["ID"]["output"];
+  isActive: Scalars["Boolean"]["output"];
   monitoringDefinitions?: Maybe<Array<Maybe<AdminMonitoringDefinitionType>>>;
-  name: Scalars["String"];
-  registerFormDefinition: Scalars["JSONString"];
+  name: Scalars["String"]["output"];
+  registerFormDefinition: Scalars["JSONString"]["output"];
 };
 
 export type AdminDefinitionQueryTypeNodeConnection = {
@@ -576,7 +565,7 @@ export type AdminDefinitionQueryTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminDefinitionQueryType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AdminDomainCreateMutation = {
@@ -587,7 +576,7 @@ export type AdminDomainCreateMutation = {
 export type AdminDomainCreateProblem = {
   __typename?: "AdminDomainCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminDomainCreateResult =
@@ -596,15 +585,15 @@ export type AdminDomainCreateResult =
 
 export type AdminDomainCreateSuccess = {
   __typename?: "AdminDomainCreateSuccess";
-  domain: Scalars["String"];
-  id: Scalars["ID"];
-  isPrimary: Scalars["Boolean"];
+  domain: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  isPrimary: Scalars["Boolean"]["output"];
   tenant: AdminClientUpdateSuccess;
 };
 
 export type AdminDomainDeleteMutation = {
   __typename?: "AdminDomainDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminDomainUpdateMutation = {
@@ -615,7 +604,7 @@ export type AdminDomainUpdateMutation = {
 export type AdminDomainUpdateProblem = {
   __typename?: "AdminDomainUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminDomainUpdateResult =
@@ -624,16 +613,16 @@ export type AdminDomainUpdateResult =
 
 export type AdminDomainUpdateSuccess = {
   __typename?: "AdminDomainUpdateSuccess";
-  domain: Scalars["String"];
-  id: Scalars["ID"];
-  isPrimary: Scalars["Boolean"];
+  domain: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  isPrimary: Scalars["Boolean"]["output"];
   tenant: AdminClientUpdateSuccess;
 };
 
 export type AdminFieldValidationProblem = {
   __typename?: "AdminFieldValidationProblem";
-  message: Scalars["String"];
-  name: Scalars["String"];
+  message: Scalars["String"]["output"];
+  name: Scalars["String"]["output"];
 };
 
 export type AdminInvitationCodeCreateMutation = {
@@ -644,7 +633,7 @@ export type AdminInvitationCodeCreateMutation = {
 export type AdminInvitationCodeCreateProblem = {
   __typename?: "AdminInvitationCodeCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminInvitationCodeCreateResult =
@@ -654,29 +643,29 @@ export type AdminInvitationCodeCreateResult =
 export type AdminInvitationCodeCreateSuccess = {
   __typename?: "AdminInvitationCodeCreateSuccess";
   authority: AdminAuthorityCreateSuccess;
-  code: Scalars["String"];
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  fromDate: Scalars["DateTime"];
-  id: Scalars["ID"];
-  role: Scalars["String"];
-  throughDate: Scalars["DateTime"];
-  updatedAt: Scalars["DateTime"];
+  code: Scalars["String"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  fromDate: Scalars["DateTime"]["output"];
+  id: Scalars["ID"]["output"];
+  role: Scalars["String"]["output"];
+  throughDate: Scalars["DateTime"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminInvitationCodeDeleteMutation = {
   __typename?: "AdminInvitationCodeDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminInvitationCodeQueryType = {
   __typename?: "AdminInvitationCodeQueryType";
   authority: AdminAuthorityCreateSuccess;
-  code: Scalars["String"];
-  fromDate: Scalars["DateTime"];
-  id: Scalars["ID"];
-  role: Scalars["String"];
-  throughDate: Scalars["DateTime"];
+  code: Scalars["String"]["output"];
+  fromDate: Scalars["DateTime"]["output"];
+  id: Scalars["ID"]["output"];
+  role: Scalars["String"]["output"];
+  throughDate: Scalars["DateTime"]["output"];
 };
 
 export type AdminInvitationCodeQueryTypeNodeConnection = {
@@ -685,7 +674,7 @@ export type AdminInvitationCodeQueryTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminInvitationCodeQueryType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AdminInvitationCodeUpdateMutation = {
@@ -696,7 +685,7 @@ export type AdminInvitationCodeUpdateMutation = {
 export type AdminInvitationCodeUpdateProblem = {
   __typename?: "AdminInvitationCodeUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminInvitationCodeUpdateResult =
@@ -710,27 +699,27 @@ export type AdminInvitationCodeUpdateSuccess = {
 
 export type AdminMonitoringDefinitionQueryType = {
   __typename?: "AdminMonitoringDefinitionQueryType";
-  description?: Maybe<Scalars["String"]>;
-  id: Scalars["ID"];
-  isActive: Scalars["Boolean"];
-  name: Scalars["String"];
+  description?: Maybe<Scalars["String"]["output"]>;
+  id: Scalars["ID"]["output"];
+  isActive: Scalars["Boolean"]["output"];
+  name: Scalars["String"]["output"];
 };
 
 export type AdminMonitoringDefinitionType = {
   __typename?: "AdminMonitoringDefinitionType";
-  description?: Maybe<Scalars["String"]>;
-  formDefinition: Scalars["JSONString"];
-  id: Scalars["ID"];
-  isActive: Scalars["Boolean"];
-  name: Scalars["String"];
+  description?: Maybe<Scalars["String"]["output"]>;
+  formDefinition: Scalars["JSONString"]["output"];
+  id: Scalars["ID"]["output"];
+  isActive: Scalars["Boolean"]["output"];
+  name: Scalars["String"]["output"];
 };
 
 export type AdminNotificationTemplateAuthorityType = {
   __typename?: "AdminNotificationTemplateAuthorityType";
-  notificationId?: Maybe<Scalars["Int"]>;
-  notificationTemplateId: Scalars["ID"];
-  notificationTemplateName: Scalars["String"];
-  to?: Maybe<Scalars["String"]>;
+  notificationId?: Maybe<Scalars["Int"]["output"]>;
+  notificationTemplateId: Scalars["ID"]["output"];
+  notificationTemplateName: Scalars["String"]["output"];
+  to?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminNotificationTemplateCreateMutation = {
@@ -741,7 +730,7 @@ export type AdminNotificationTemplateCreateMutation = {
 export type AdminNotificationTemplateCreateProblem = {
   __typename?: "AdminNotificationTemplateCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminNotificationTemplateCreateResult =
@@ -751,28 +740,28 @@ export type AdminNotificationTemplateCreateResult =
 export type AdminNotificationTemplateCreateSuccess = {
   __typename?: "AdminNotificationTemplateCreateSuccess";
   authoritynotificationSet: Array<AdminAuthorityNotificationUpsertSuccess>;
-  bodyTemplate: Scalars["String"];
-  condition?: Maybe<Scalars["String"]>;
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  id: Scalars["ID"];
-  name: Scalars["String"];
+  bodyTemplate: Scalars["String"]["output"];
+  condition?: Maybe<Scalars["String"]["output"]>;
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
   reportType: AdminReportTypeCreateSuccess;
   stateTransition?: Maybe<DeepStateTransitionType>;
-  titleTemplate: Scalars["String"];
+  titleTemplate: Scalars["String"]["output"];
   type: CasesNotificationTemplateTypeChoices;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminNotificationTemplateDeleteMutation = {
   __typename?: "AdminNotificationTemplateDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminNotificationTemplateQueryType = {
   __typename?: "AdminNotificationTemplateQueryType";
-  id: Scalars["ID"];
-  name: Scalars["String"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
   reportType: AdminReportTypeCreateSuccess;
 };
 
@@ -782,7 +771,7 @@ export type AdminNotificationTemplateQueryTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminNotificationTemplateQueryType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AdminNotificationTemplateUpdateMutation = {
@@ -793,7 +782,7 @@ export type AdminNotificationTemplateUpdateMutation = {
 export type AdminNotificationTemplateUpdateProblem = {
   __typename?: "AdminNotificationTemplateUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminNotificationTemplateUpdateResult =
@@ -814,7 +803,7 @@ export type AdminObservationDefinitionCreateMutation = {
 export type AdminObservationDefinitionCreateProblem = {
   __typename?: "AdminObservationDefinitionCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminObservationDefinitionCreateResult =
@@ -823,24 +812,24 @@ export type AdminObservationDefinitionCreateResult =
 
 export type AdminObservationDefinitionCreateSuccess = {
   __typename?: "AdminObservationDefinitionCreateSuccess";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  description?: Maybe<Scalars["String"]>;
-  descriptionTemplate: Scalars["String"];
-  id: Scalars["ID"];
-  identityTemplate: Scalars["String"];
-  isActive: Scalars["Boolean"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  description?: Maybe<Scalars["String"]["output"]>;
+  descriptionTemplate: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  identityTemplate: Scalars["String"]["output"];
+  isActive: Scalars["Boolean"]["output"];
   monitoringdefinitionSet: Array<AdminObservationMonitoringDefinitionCreateSuccess>;
-  name: Scalars["String"];
-  registerFormDefinition: Scalars["JSONString"];
+  name: Scalars["String"]["output"];
+  registerFormDefinition: Scalars["JSONString"]["output"];
   subjectrecordSet: Array<ObservationSubjectType>;
-  titleTemplate: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
+  titleTemplate: Scalars["String"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminObservationDefinitionDeleteMutation = {
   __typename?: "AdminObservationDefinitionDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminObservationDefinitionUpdateMutation = {
@@ -851,7 +840,7 @@ export type AdminObservationDefinitionUpdateMutation = {
 export type AdminObservationDefinitionUpdateProblem = {
   __typename?: "AdminObservationDefinitionUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminObservationDefinitionUpdateResult =
@@ -871,7 +860,7 @@ export type AdminObservationMonitoringDefinitionCreateMutation = {
 export type AdminObservationMonitoringDefinitionCreateProblem = {
   __typename?: "AdminObservationMonitoringDefinitionCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminObservationMonitoringDefinitionCreateResult =
@@ -880,23 +869,23 @@ export type AdminObservationMonitoringDefinitionCreateResult =
 
 export type AdminObservationMonitoringDefinitionCreateSuccess = {
   __typename?: "AdminObservationMonitoringDefinitionCreateSuccess";
-  createdAt: Scalars["DateTime"];
+  createdAt: Scalars["DateTime"]["output"];
   definition: AdminObservationDefinitionCreateSuccess;
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  description?: Maybe<Scalars["String"]>;
-  descriptionTemplate: Scalars["String"];
-  formDefinition: Scalars["JSONString"];
-  id: Scalars["ID"];
-  isActive: Scalars["Boolean"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  description?: Maybe<Scalars["String"]["output"]>;
+  descriptionTemplate: Scalars["String"]["output"];
+  formDefinition: Scalars["JSONString"]["output"];
+  id: Scalars["ID"]["output"];
+  isActive: Scalars["Boolean"]["output"];
   monitoringrecordSet: Array<ObservationSubjectMonitoringRecordType>;
-  name: Scalars["String"];
-  titleTemplate: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
+  name: Scalars["String"]["output"];
+  titleTemplate: Scalars["String"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminObservationMonitoringDefinitionDeleteMutation = {
   __typename?: "AdminObservationMonitoringDefinitionDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminObservationMonitoringDefinitionUpdateMutation = {
@@ -907,7 +896,7 @@ export type AdminObservationMonitoringDefinitionUpdateMutation = {
 export type AdminObservationMonitoringDefinitionUpdateProblem = {
   __typename?: "AdminObservationMonitoringDefinitionUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminObservationMonitoringDefinitionUpdateResult =
@@ -927,7 +916,7 @@ export type AdminOutbreakPlanCreateMutation = {
 export type AdminOutbreakPlanCreateProblem = {
   __typename?: "AdminOutbreakPlanCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminOutbreakPlanCreateResult =
@@ -936,39 +925,39 @@ export type AdminOutbreakPlanCreateResult =
 
 export type AdminOutbreakPlanCreateSuccess = {
   __typename?: "AdminOutbreakPlanCreateSuccess";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  description: Scalars["String"];
-  id: Scalars["ID"];
-  name: Scalars["String"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  description: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
   places: Array<OutbreakPlaceType>;
   reportType: AdminReportTypeCreateSuccess;
   stateStep: DeepStateStepType;
-  updatedAt: Scalars["DateTime"];
-  zone1Color: Scalars["String"];
-  zone1MessageBody: Scalars["String"];
-  zone1MessageTitle: Scalars["String"];
-  zone1Radius?: Maybe<Scalars["Float"]>;
-  zone2Color: Scalars["String"];
-  zone2MessageBody: Scalars["String"];
-  zone2MessageTitle: Scalars["String"];
-  zone2Radius?: Maybe<Scalars["Float"]>;
-  zone3Color: Scalars["String"];
-  zone3MessageBody: Scalars["String"];
-  zone3MessageTitle: Scalars["String"];
-  zone3Radius?: Maybe<Scalars["Float"]>;
+  updatedAt: Scalars["DateTime"]["output"];
+  zone1Color: Scalars["String"]["output"];
+  zone1MessageBody: Scalars["String"]["output"];
+  zone1MessageTitle: Scalars["String"]["output"];
+  zone1Radius?: Maybe<Scalars["Float"]["output"]>;
+  zone2Color: Scalars["String"]["output"];
+  zone2MessageBody: Scalars["String"]["output"];
+  zone2MessageTitle: Scalars["String"]["output"];
+  zone2Radius?: Maybe<Scalars["Float"]["output"]>;
+  zone3Color: Scalars["String"]["output"];
+  zone3MessageBody: Scalars["String"]["output"];
+  zone3MessageTitle: Scalars["String"]["output"];
+  zone3Radius?: Maybe<Scalars["Float"]["output"]>;
 };
 
 export type AdminOutbreakPlanDeleteMutation = {
   __typename?: "AdminOutbreakPlanDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminOutbreakPlanQueryType = {
   __typename?: "AdminOutbreakPlanQueryType";
-  description: Scalars["String"];
-  id: Scalars["ID"];
-  name: Scalars["String"];
+  description: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
   reportType: AdminReportTypeCreateSuccess;
 };
 
@@ -978,7 +967,7 @@ export type AdminOutbreakPlanQueryTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminOutbreakPlanQueryType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AdminOutbreakPlanUpdateMutation = {
@@ -989,7 +978,7 @@ export type AdminOutbreakPlanUpdateMutation = {
 export type AdminOutbreakPlanUpdateProblem = {
   __typename?: "AdminOutbreakPlanUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminOutbreakPlanUpdateResult =
@@ -998,27 +987,27 @@ export type AdminOutbreakPlanUpdateResult =
 
 export type AdminOutbreakPlanUpdateSuccess = {
   __typename?: "AdminOutbreakPlanUpdateSuccess";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  description: Scalars["String"];
-  id: Scalars["ID"];
-  name: Scalars["String"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  description: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
   places: Array<OutbreakPlaceType>;
   reportType: AdminReportTypeCreateSuccess;
   stateStep: DeepStateStepType;
-  updatedAt: Scalars["DateTime"];
-  zone1Color: Scalars["String"];
-  zone1MessageBody: Scalars["String"];
-  zone1MessageTitle: Scalars["String"];
-  zone1Radius?: Maybe<Scalars["Float"]>;
-  zone2Color: Scalars["String"];
-  zone2MessageBody: Scalars["String"];
-  zone2MessageTitle: Scalars["String"];
-  zone2Radius?: Maybe<Scalars["Float"]>;
-  zone3Color: Scalars["String"];
-  zone3MessageBody: Scalars["String"];
-  zone3MessageTitle: Scalars["String"];
-  zone3Radius?: Maybe<Scalars["Float"]>;
+  updatedAt: Scalars["DateTime"]["output"];
+  zone1Color: Scalars["String"]["output"];
+  zone1MessageBody: Scalars["String"]["output"];
+  zone1MessageTitle: Scalars["String"]["output"];
+  zone1Radius?: Maybe<Scalars["Float"]["output"]>;
+  zone2Color: Scalars["String"]["output"];
+  zone2MessageBody: Scalars["String"]["output"];
+  zone2MessageTitle: Scalars["String"]["output"];
+  zone2Radius?: Maybe<Scalars["Float"]["output"]>;
+  zone3Color: Scalars["String"]["output"];
+  zone3MessageBody: Scalars["String"]["output"];
+  zone3MessageTitle: Scalars["String"]["output"];
+  zone3Radius?: Maybe<Scalars["Float"]["output"]>;
 };
 
 export type AdminPlaceCreateMutation = {
@@ -1029,7 +1018,7 @@ export type AdminPlaceCreateMutation = {
 export type AdminPlaceCreateProblem = {
   __typename?: "AdminPlaceCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminPlaceCreateResult =
@@ -1039,27 +1028,27 @@ export type AdminPlaceCreateResult =
 export type AdminPlaceCreateSuccess = {
   __typename?: "AdminPlaceCreateSuccess";
   authority: AdminAuthorityCreateSuccess;
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  id: Scalars["ID"];
-  location?: Maybe<Scalars["GeoJSON"]>;
-  name: Scalars["String"];
-  notificationTo: Scalars["String"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  id: Scalars["ID"]["output"];
+  location?: Maybe<Scalars["GeoJSON"]["output"]>;
+  name: Scalars["String"]["output"];
+  notificationTo: Scalars["String"]["output"];
   outbreakPlaces: Array<OutbreakPlaceType>;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminPlaceDeleteMutation = {
   __typename?: "AdminPlaceDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminPlaceQueryType = {
   __typename?: "AdminPlaceQueryType";
   authority: AdminAuthorityCreateSuccess;
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  notificationTo: Scalars["String"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
+  notificationTo: Scalars["String"]["output"];
 };
 
 export type AdminPlaceQueryTypeNodeConnection = {
@@ -1068,7 +1057,7 @@ export type AdminPlaceQueryTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminPlaceQueryType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AdminPlaceUpdateMutation = {
@@ -1079,7 +1068,7 @@ export type AdminPlaceUpdateMutation = {
 export type AdminPlaceUpdateProblem = {
   __typename?: "AdminPlaceUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminPlaceUpdateResult =
@@ -1089,16 +1078,16 @@ export type AdminPlaceUpdateResult =
 export type AdminPlaceUpdateSuccess = {
   __typename?: "AdminPlaceUpdateSuccess";
   authority: AdminAuthorityCreateSuccess;
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  id: Scalars["ID"];
-  latitude?: Maybe<Scalars["Float"]>;
-  location?: Maybe<Scalars["GeoJSON"]>;
-  longitude?: Maybe<Scalars["Float"]>;
-  name: Scalars["String"];
-  notificationTo: Scalars["String"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  id: Scalars["ID"]["output"];
+  latitude?: Maybe<Scalars["Float"]["output"]>;
+  location?: Maybe<Scalars["GeoJSON"]["output"]>;
+  longitude?: Maybe<Scalars["Float"]["output"]>;
+  name: Scalars["String"]["output"];
+  notificationTo: Scalars["String"]["output"];
   outbreakPlaces: Array<OutbreakPlaceType>;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminReportTypeCreateMutation = {
@@ -1109,7 +1098,7 @@ export type AdminReportTypeCreateMutation = {
 export type AdminReportTypeCreateProblem = {
   __typename?: "AdminReportTypeCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminReportTypeCreateResult =
@@ -1121,42 +1110,42 @@ export type AdminReportTypeCreateSuccess = {
   authorities: Array<AdminAuthorityCreateSuccess>;
   casedefinitionSet: Array<AdminCaseDefinitionCreateSuccess>;
   category: AdminCategoryCreateSuccess;
-  createdAt: Scalars["DateTime"];
-  definition: Scalars["JSONString"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  followupDefinition?: Maybe<Scalars["JSONString"]>;
+  createdAt: Scalars["DateTime"]["output"];
+  definition: Scalars["JSONString"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  followupDefinition?: Maybe<Scalars["JSONString"]["output"]>;
   followupreports: Array<FollowupReportType>;
-  id: Scalars["UUID"];
+  id: Scalars["UUID"]["output"];
   incidentreports: Array<IncidentReportType>;
-  isFollowable: Scalars["Boolean"];
-  name: Scalars["String"];
+  isFollowable: Scalars["Boolean"]["output"];
+  name: Scalars["String"]["output"];
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
-  ordering: Scalars["Int"];
+  ordering: Scalars["Int"]["output"];
   planSet: Array<AdminOutbreakPlanUpdateSuccess>;
-  published: Scalars["Boolean"];
-  rendererDataTemplate?: Maybe<Scalars["String"]>;
-  rendererFollowupDataTemplate?: Maybe<Scalars["String"]>;
+  published: Scalars["Boolean"]["output"];
+  rendererDataTemplate?: Maybe<Scalars["String"]["output"]>;
+  rendererFollowupDataTemplate?: Maybe<Scalars["String"]["output"]>;
   reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
   stateDefinition?: Maybe<DeepStateDefinitionType>;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminReportTypeDeleteMutation = {
   __typename?: "AdminReportTypeDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminReportTypeQueryType = {
   __typename?: "AdminReportTypeQueryType";
   authorities: Array<AdminAuthorityCreateSuccess>;
   category: AdminCategoryCreateSuccess;
-  definition: Scalars["JSONString"];
-  id: Scalars["UUID"];
-  isFollowable: Scalars["Boolean"];
-  name: Scalars["String"];
-  ordering: Scalars["Int"];
-  published: Scalars["Boolean"];
-  rendererDataTemplate?: Maybe<Scalars["String"]>;
+  definition: Scalars["JSONString"]["output"];
+  id: Scalars["UUID"]["output"];
+  isFollowable: Scalars["Boolean"]["output"];
+  name: Scalars["String"]["output"];
+  ordering: Scalars["Int"]["output"];
+  published: Scalars["Boolean"]["output"];
+  rendererDataTemplate?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminReportTypeQueryTypeNodeConnection = {
@@ -1165,7 +1154,7 @@ export type AdminReportTypeQueryTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminReportTypeQueryType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AdminReportTypeUpdateMutation = {
@@ -1176,7 +1165,7 @@ export type AdminReportTypeUpdateMutation = {
 export type AdminReportTypeUpdateProblem = {
   __typename?: "AdminReportTypeUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminReportTypeUpdateResult =
@@ -1196,7 +1185,7 @@ export type AdminReporterNotificationCreateMutation = {
 export type AdminReporterNotificationCreateProblem = {
   __typename?: "AdminReporterNotificationCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminReporterNotificationCreateResult =
@@ -1205,31 +1194,31 @@ export type AdminReporterNotificationCreateResult =
 
 export type AdminReporterNotificationCreateSuccess = {
   __typename?: "AdminReporterNotificationCreateSuccess";
-  condition: Scalars["String"];
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  description: Scalars["String"];
-  id: Scalars["ID"];
-  isActive: Scalars["Boolean"];
+  condition: Scalars["String"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  description: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  isActive: Scalars["Boolean"]["output"];
   reportType?: Maybe<AdminReportTypeCreateSuccess>;
-  template: Scalars["String"];
-  titleTemplate: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
+  template: Scalars["String"]["output"];
+  titleTemplate: Scalars["String"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminReporterNotificationDeleteMutation = {
   __typename?: "AdminReporterNotificationDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminReporterNotificationQueryType = {
   __typename?: "AdminReporterNotificationQueryType";
-  condition: Scalars["String"];
-  description: Scalars["String"];
-  id: Scalars["ID"];
+  condition: Scalars["String"]["output"];
+  description: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
   reportType?: Maybe<ReportTypeType>;
-  template: Scalars["String"];
-  titleTemplate: Scalars["String"];
+  template: Scalars["String"]["output"];
+  titleTemplate: Scalars["String"]["output"];
 };
 
 export type AdminReporterNotificationQueryTypeNodeConnection = {
@@ -1238,7 +1227,7 @@ export type AdminReporterNotificationQueryTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminReporterNotificationQueryType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AdminReporterNotificationUpdateMutation = {
@@ -1249,7 +1238,7 @@ export type AdminReporterNotificationUpdateMutation = {
 export type AdminReporterNotificationUpdateProblem = {
   __typename?: "AdminReporterNotificationUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminReporterNotificationUpdateResult =
@@ -1269,7 +1258,7 @@ export type AdminStateDefinitionCreateMutation = {
 export type AdminStateDefinitionCreateProblem = {
   __typename?: "AdminStateDefinitionCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminStateDefinitionCreateResult =
@@ -1279,26 +1268,26 @@ export type AdminStateDefinitionCreateResult =
 export type AdminStateDefinitionCreateSuccess = {
   __typename?: "AdminStateDefinitionCreateSuccess";
   caseSet: Array<CaseType>;
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  id: Scalars["ID"];
-  isDefault: Scalars["Boolean"];
-  name: Scalars["String"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  id: Scalars["ID"]["output"];
+  isDefault: Scalars["Boolean"]["output"];
+  name: Scalars["String"]["output"];
   reporttypeSet: Array<AdminReportTypeCreateSuccess>;
   statestepSet: Array<DeepStateStepType>;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminStateDefinitionDeleteMutation = {
   __typename?: "AdminStateDefinitionDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminStateDefinitionQueryType = {
   __typename?: "AdminStateDefinitionQueryType";
-  id: Scalars["ID"];
-  isDefault: Scalars["Boolean"];
-  name: Scalars["String"];
+  id: Scalars["ID"]["output"];
+  isDefault: Scalars["Boolean"]["output"];
+  name: Scalars["String"]["output"];
 };
 
 export type AdminStateDefinitionQueryTypeNodeConnection = {
@@ -1307,7 +1296,7 @@ export type AdminStateDefinitionQueryTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AdminStateDefinitionQueryType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AdminStateDefinitionUpdateMutation = {
@@ -1318,7 +1307,7 @@ export type AdminStateDefinitionUpdateMutation = {
 export type AdminStateDefinitionUpdateProblem = {
   __typename?: "AdminStateDefinitionUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminStateDefinitionUpdateResult =
@@ -1338,7 +1327,7 @@ export type AdminStateStepCreateMutation = {
 export type AdminStateStepCreateProblem = {
   __typename?: "AdminStateStepCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminStateStepCreateResult =
@@ -1348,22 +1337,22 @@ export type AdminStateStepCreateResult =
 export type AdminStateStepCreateSuccess = {
   __typename?: "AdminStateStepCreateSuccess";
   casestateSet: Array<CaseStateType>;
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
   fromTransitions: Array<DeepStateTransitionType>;
-  id: Scalars["ID"];
-  isStartState: Scalars["Boolean"];
-  isStopState: Scalars["Boolean"];
-  name: Scalars["String"];
+  id: Scalars["ID"]["output"];
+  isStartState: Scalars["Boolean"]["output"];
+  isStopState: Scalars["Boolean"]["output"];
+  name: Scalars["String"]["output"];
   planSet: Array<AdminOutbreakPlanUpdateSuccess>;
   stateDefinition: DeepStateDefinitionType;
   toTransitions: Array<DeepStateTransitionType>;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminStateStepDeleteMutation = {
   __typename?: "AdminStateStepDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminStateStepUpdateMutation = {
@@ -1374,7 +1363,7 @@ export type AdminStateStepUpdateMutation = {
 export type AdminStateStepUpdateProblem = {
   __typename?: "AdminStateStepUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminStateStepUpdateResult =
@@ -1394,7 +1383,7 @@ export type AdminStateTransitionCreateMutation = {
 export type AdminStateTransitionCreateProblem = {
   __typename?: "AdminStateTransitionCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminStateTransitionCreateResult =
@@ -1404,19 +1393,19 @@ export type AdminStateTransitionCreateResult =
 export type AdminStateTransitionCreateSuccess = {
   __typename?: "AdminStateTransitionCreateSuccess";
   casestatetransitionSet: Array<CaseStateTransitionType>;
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  formDefinition?: Maybe<Scalars["JSONString"]>;
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  formDefinition?: Maybe<Scalars["JSONString"]["output"]>;
   fromStep: DeepStateStepType;
-  id: Scalars["ID"];
+  id: Scalars["ID"]["output"];
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   toStep: DeepStateStepType;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type AdminStateTransitionDeleteMutation = {
   __typename?: "AdminStateTransitionDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminStateTransitionUpdateMutation = {
@@ -1427,7 +1416,7 @@ export type AdminStateTransitionUpdateMutation = {
 export type AdminStateTransitionUpdateProblem = {
   __typename?: "AdminStateTransitionUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AdminStateTransitionUpdateResult =
@@ -1441,42 +1430,42 @@ export type AdminStateTransitionUpdateSuccess = {
 
 export type AdminUserChangePasswordMutation = {
   __typename?: "AdminUserChangePasswordMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminUserUpdateProfileMutation = {
   __typename?: "AdminUserUpdateProfileMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AdminUserUploadAvatarMutation = {
   __typename?: "AdminUserUploadAvatarMutation";
-  avatarUrl?: Maybe<Scalars["String"]>;
-  success?: Maybe<Scalars["Boolean"]>;
+  avatarUrl?: Maybe<Scalars["String"]["output"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type AuthorityBoundaryConnectType = {
   __typename?: "AuthorityBoundaryConnectType";
-  code: Scalars["String"];
-  id: Scalars["ID"];
-  name: Scalars["String"];
+  code: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
 };
 
 export type AuthorityInheritType = {
   __typename?: "AuthorityInheritType";
-  code: Scalars["String"];
-  id: Scalars["ID"];
-  name: Scalars["String"];
+  code: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
 };
 
 export type AuthorityType = {
   __typename?: "AuthorityType";
-  area?: Maybe<Scalars["GeoJSON"]>;
+  area?: Maybe<Scalars["GeoJSON"]["output"]>;
   boundaryConnects: Array<Maybe<AuthorityBoundaryConnectType>>;
-  code: Scalars["String"];
-  id: Scalars["ID"];
+  code: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
   inherits: Array<Maybe<AuthorityInheritType>>;
-  name: Scalars["String"];
+  name: Scalars["String"]["output"];
 };
 
 export type AuthorityTypeNodeConnection = {
@@ -1485,51 +1474,51 @@ export type AuthorityTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<AuthorityType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type AuthorityUserRegisterMutation = {
   __typename?: "AuthorityUserRegisterMutation";
   me?: Maybe<UserProfileType>;
-  refreshToken?: Maybe<Scalars["String"]>;
-  token?: Maybe<Scalars["String"]>;
+  refreshToken?: Maybe<Scalars["String"]["output"]>;
+  token?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type AuthorityUserType = {
   __typename?: "AuthorityUserType";
-  address?: Maybe<Scalars["String"]>;
+  address?: Maybe<Scalars["String"]["output"]>;
   authority: AdminAuthorityCreateSuccess;
-  email: Scalars["String"];
-  firstName: Scalars["String"];
-  id: Scalars["ID"];
-  lastName: Scalars["String"];
+  email: Scalars["String"]["output"];
+  firstName: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  lastName: Scalars["String"]["output"];
   role?: Maybe<AccountsAuthorityUserRoleChoices>;
-  telephone?: Maybe<Scalars["String"]>;
+  telephone?: Maybe<Scalars["String"]["output"]>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
-  username: Scalars["String"];
+  username: Scalars["String"]["output"];
 };
 
 export type CaseDefinitionType = {
   __typename?: "CaseDefinitionType";
-  condition: Scalars["String"];
-  description: Scalars["String"];
-  id: Scalars["ID"];
-  isActive: Scalars["Boolean"];
+  condition: Scalars["String"]["output"];
+  description: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  isActive: Scalars["Boolean"]["output"];
   reportType: AdminReportTypeCreateSuccess;
 };
 
 export type CaseStateTransitionType = {
   __typename?: "CaseStateTransitionType";
-  createdAt: Scalars["DateTime"];
+  createdAt: Scalars["DateTime"]["output"];
   createdBy: UserType;
-  formData?: Maybe<Scalars["JSONString"]>;
-  id: Scalars["ID"];
+  formData?: Maybe<Scalars["JSONString"]["output"]>;
+  id: Scalars["ID"]["output"];
   transition: StateTransitionType;
 };
 
 export type CaseStateType = {
   __typename?: "CaseStateType";
-  id: Scalars["ID"];
+  id: Scalars["ID"]["output"];
   state: DeepStateStepType;
   transition?: Maybe<CaseStateTransitionType>;
 };
@@ -1537,15 +1526,15 @@ export type CaseStateType = {
 export type CaseType = {
   __typename?: "CaseType";
   authorities?: Maybe<Array<Maybe<AuthorityType>>>;
-  description: Scalars["String"];
-  id: Scalars["UUID"];
-  isFinished: Scalars["Boolean"];
-  outbreakPlanInfo?: Maybe<Scalars["JSONString"]>;
+  description: Scalars["String"]["output"];
+  id: Scalars["UUID"]["output"];
+  isFinished: Scalars["Boolean"]["output"];
+  outbreakPlanInfo?: Maybe<Scalars["JSONString"]["output"]>;
   report?: Maybe<IncidentReportType>;
   stateDefinition?: Maybe<DeepStateDefinitionType>;
   states?: Maybe<Array<Maybe<CaseStateType>>>;
-  statusLabel?: Maybe<Scalars["String"]>;
-  threadId?: Maybe<Scalars["Int"]>;
+  statusLabel?: Maybe<Scalars["String"]["output"]>;
+  threadId?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type CaseTypeNodeConnection = {
@@ -1554,7 +1543,7 @@ export type CaseTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<CaseType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 /** An enumeration. */
@@ -1569,37 +1558,37 @@ export enum CasesNotificationTemplateTypeChoices {
 
 export type CategoryType = {
   __typename?: "CategoryType";
-  icon?: Maybe<Scalars["String"]>;
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  ordering: Scalars["Int"];
+  icon?: Maybe<Scalars["String"]["output"]>;
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
+  ordering: Scalars["Int"]["output"];
 };
 
 export type CheckInvitationCodeType = {
   __typename?: "CheckInvitationCodeType";
   authority: AdminAuthorityCreateSuccess;
-  code: Scalars["String"];
-  generatedEmail?: Maybe<Scalars["String"]>;
-  generatedUsername?: Maybe<Scalars["String"]>;
+  code: Scalars["String"]["output"];
+  generatedEmail?: Maybe<Scalars["String"]["output"]>;
+  generatedUsername?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type ClientType = {
   __typename?: "ClientType";
   domains?: Maybe<Array<Maybe<DomainType>>>;
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  schemaName: Scalars["String"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
+  schemaName: Scalars["String"]["output"];
 };
 
 export type CommentAttachmentType = {
   __typename?: "CommentAttachmentType";
   comment: CommentUpdateSuccess;
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  file?: Maybe<Scalars["String"]>;
-  id: Scalars["ID"];
-  thumbnail?: Maybe<Scalars["String"]>;
-  updatedAt: Scalars["DateTime"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  file?: Maybe<Scalars["String"]["output"]>;
+  id: Scalars["ID"]["output"];
+  thumbnail?: Maybe<Scalars["String"]["output"]>;
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type CommentCreateMutation = {
@@ -1610,7 +1599,7 @@ export type CommentCreateMutation = {
 export type CommentCreateProblem = {
   __typename?: "CommentCreateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type CommentCreateResult = CommentCreateProblem | CommentCreateSuccess;
@@ -1618,26 +1607,26 @@ export type CommentCreateResult = CommentCreateProblem | CommentCreateSuccess;
 export type CommentCreateSuccess = {
   __typename?: "CommentCreateSuccess";
   attachments?: Maybe<Array<Maybe<CommentAttachmentType>>>;
-  body: Scalars["String"];
-  createdAt: Scalars["DateTime"];
+  body: Scalars["String"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
   createdBy: UserType;
-  id: Scalars["ID"];
-  threadId?: Maybe<Scalars["Int"]>;
+  id: Scalars["ID"]["output"];
+  threadId?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type CommentDeleteMutation = {
   __typename?: "CommentDeleteMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type CommentType = {
   __typename?: "CommentType";
   attachments?: Maybe<Array<Maybe<CommentAttachmentType>>>;
-  body: Scalars["String"];
-  createdAt: Scalars["DateTime"];
+  body: Scalars["String"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
   createdBy: UserType;
-  id: Scalars["ID"];
-  threadId?: Maybe<Scalars["Int"]>;
+  id: Scalars["ID"]["output"];
+  threadId?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type CommentUpdateMutation = {
@@ -1648,7 +1637,7 @@ export type CommentUpdateMutation = {
 export type CommentUpdateProblem = {
   __typename?: "CommentUpdateProblem";
   fields?: Maybe<Array<AdminFieldValidationProblem>>;
-  message?: Maybe<Scalars["String"]>;
+  message?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type CommentUpdateResult = CommentUpdateProblem | CommentUpdateSuccess;
@@ -1656,25 +1645,25 @@ export type CommentUpdateResult = CommentUpdateProblem | CommentUpdateSuccess;
 export type CommentUpdateSuccess = {
   __typename?: "CommentUpdateSuccess";
   attachments?: Maybe<Array<Maybe<CommentAttachmentType>>>;
-  body: Scalars["String"];
-  createdAt: Scalars["DateTime"];
+  body: Scalars["String"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
   createdBy: UserType;
-  id: Scalars["ID"];
-  threadId?: Maybe<Scalars["Int"]>;
+  id: Scalars["ID"]["output"];
+  threadId?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type ConfigurationType = {
   __typename?: "ConfigurationType";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  key: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
-  value: Scalars["String"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  key: Scalars["String"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
+  value: Scalars["String"]["output"];
 };
 
 export type ConfirmConsentMutation = {
   __typename?: "ConfirmConsentMutation";
-  ok?: Maybe<Scalars["Boolean"]>;
+  ok?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type ConvertToTestReportMutation = {
@@ -1684,44 +1673,44 @@ export type ConvertToTestReportMutation = {
 
 export type DeepStateDefinitionType = {
   __typename?: "DeepStateDefinitionType";
-  id: Scalars["ID"];
-  isDefault: Scalars["Boolean"];
-  name: Scalars["String"];
+  id: Scalars["ID"]["output"];
+  isDefault: Scalars["Boolean"]["output"];
+  name: Scalars["String"]["output"];
   statestepSet?: Maybe<Array<Maybe<DeepStateStepType>>>;
 };
 
 export type DeepStateStepType = {
   __typename?: "DeepStateStepType";
-  id: Scalars["ID"];
-  isStartState: Scalars["Boolean"];
-  isStopState: Scalars["Boolean"];
-  name: Scalars["String"];
+  id: Scalars["ID"]["output"];
+  isStartState: Scalars["Boolean"]["output"];
+  isStopState: Scalars["Boolean"]["output"];
+  name: Scalars["String"]["output"];
   toTransitions?: Maybe<Array<Maybe<DeepStateTransitionType>>>;
 };
 
 export type DeepStateTransitionType = {
   __typename?: "DeepStateTransitionType";
-  formDefinition?: Maybe<Scalars["JSONString"]>;
+  formDefinition?: Maybe<Scalars["JSONString"]["output"]>;
   fromStep?: Maybe<StateStepType>;
-  id: Scalars["ID"];
+  id: Scalars["ID"]["output"];
   toStep?: Maybe<StateStepType>;
 };
 
 export type DeleteJsonWebTokenCookie = {
   __typename?: "DeleteJSONWebTokenCookie";
-  deleted: Scalars["Boolean"];
+  deleted: Scalars["Boolean"]["output"];
 };
 
 export type DeleteRefreshTokenCookie = {
   __typename?: "DeleteRefreshTokenCookie";
-  deleted: Scalars["Boolean"];
+  deleted: Scalars["Boolean"]["output"];
 };
 
 export type DomainType = {
   __typename?: "DomainType";
-  domain: Scalars["String"];
-  id: Scalars["ID"];
-  isPrimary: Scalars["Boolean"];
+  domain: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  isPrimary: Scalars["Boolean"]["output"];
 };
 
 export type EvaluateReportSimulation = {
@@ -1737,37 +1726,37 @@ export type EventType = {
 
 export type FeatureType = {
   __typename?: "FeatureType";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  key: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
-  value: Scalars["String"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  key: Scalars["String"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
+  value: Scalars["String"]["output"];
 };
 
 export type FollowupReportType = {
   __typename?: "FollowupReportType";
-  createdAt: Scalars["DateTime"];
-  data?: Maybe<Scalars["GenericScalar"]>;
-  gpsLocation?: Maybe<Scalars["String"]>;
-  id: Scalars["UUID"];
+  createdAt: Scalars["DateTime"]["output"];
+  data?: Maybe<Scalars["GenericScalar"]["output"]>;
+  gpsLocation?: Maybe<Scalars["String"]["output"]>;
+  id: Scalars["UUID"]["output"];
   images?: Maybe<Array<Maybe<ImageType>>>;
   incident?: Maybe<IncidentReportType>;
-  rendererData: Scalars["String"];
+  rendererData: Scalars["String"]["output"];
   reportType?: Maybe<ReportTypeType>;
   reportedBy?: Maybe<UserType>;
-  testFlag: Scalars["Boolean"];
+  testFlag: Scalars["Boolean"]["output"];
   uploadFiles?: Maybe<Array<Maybe<UploadFileType>>>;
 };
 
 export type FollowupType = {
   __typename?: "FollowupType";
-  createdAt: Scalars["DateTime"];
-  data?: Maybe<Scalars["GenericScalar"]>;
-  id: Scalars["UUID"];
-  rendererData: Scalars["String"];
+  createdAt: Scalars["DateTime"]["output"];
+  data?: Maybe<Scalars["GenericScalar"]["output"]>;
+  id: Scalars["UUID"]["output"];
+  rendererData: Scalars["String"]["output"];
   reportType?: Maybe<ReportTypeType>;
   reportedBy?: Maybe<UserType>;
-  testFlag: Scalars["Boolean"];
+  testFlag: Scalars["Boolean"]["output"];
 };
 
 export type ForwardStateMutation = {
@@ -1777,41 +1766,42 @@ export type ForwardStateMutation = {
 
 export type ImageType = {
   __typename?: "ImageType";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  file: Scalars["String"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  file: Scalars["String"]["output"];
   followupreportSet: Array<FollowupReportType>;
-  id: Scalars["UUID"];
-  imageUrl?: Maybe<Scalars["String"]>;
+  id: Scalars["UUID"]["output"];
+  imageUrl?: Maybe<Scalars["String"]["output"]>;
   incidentreportSet: Array<IncidentReportType>;
-  reportId: Scalars["UUID"];
-  thumbnail?: Maybe<Scalars["String"]>;
-  updatedAt: Scalars["DateTime"];
+  reportId: Scalars["UUID"]["output"];
+  thumbnail?: Maybe<Scalars["String"]["output"]>;
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type IncidentReportType = {
   __typename?: "IncidentReportType";
   authorities?: Maybe<Array<Maybe<AuthorityType>>>;
-  caseId?: Maybe<Scalars["UUID"]>;
+  caseId?: Maybe<Scalars["UUID"]["output"]>;
   coverImage?: Maybe<ImageType>;
-  createdAt: Scalars["DateTime"];
-  data?: Maybe<Scalars["GenericScalar"]>;
-  definition?: Maybe<Scalars["GenericScalar"]>;
+  createdAt: Scalars["DateTime"]["output"];
+  data?: Maybe<Scalars["GenericScalar"]["output"]>;
+  definition?: Maybe<Scalars["GenericScalar"]["output"]>;
   followups?: Maybe<Array<Maybe<FollowupType>>>;
-  gpsLocation?: Maybe<Scalars["String"]>;
-  id: Scalars["UUID"];
+  gpsLocation?: Maybe<Scalars["String"]["output"]>;
+  id: Scalars["UUID"]["output"];
   images?: Maybe<Array<Maybe<ImageType>>>;
-  incidentDate: Scalars["Date"];
-  originalData?: Maybe<Scalars["GenericScalar"]>;
-  platform?: Maybe<Scalars["String"]>;
+  incidentDate: Scalars["Date"]["output"];
+  isFollowable?: Maybe<Scalars["Boolean"]["output"]>;
+  originalData?: Maybe<Scalars["GenericScalar"]["output"]>;
+  platform?: Maybe<Scalars["String"]["output"]>;
   relevantAuthorities: Array<AdminAuthorityCreateSuccess>;
-  relevantAuthorityResolved: Scalars["Boolean"];
-  rendererData: Scalars["String"];
+  relevantAuthorityResolved: Scalars["Boolean"]["output"];
+  rendererData: Scalars["String"]["output"];
   reportType?: Maybe<ReportTypeType>;
   reportedBy?: Maybe<UserType>;
-  testFlag: Scalars["Boolean"];
-  threadId?: Maybe<Scalars["Int"]>;
-  updatedAt: Scalars["DateTime"];
+  testFlag: Scalars["Boolean"]["output"];
+  threadId?: Maybe<Scalars["Int"]["output"]>;
+  updatedAt: Scalars["DateTime"]["output"];
   uploadFiles?: Maybe<Array<Maybe<UploadFileType>>>;
 };
 
@@ -1821,30 +1811,30 @@ export type IncidentReportTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<IncidentReportType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type InvitationCodeType = {
   __typename?: "InvitationCodeType";
   authority: AdminAuthorityCreateSuccess;
-  code: Scalars["String"];
-  fromDate: Scalars["DateTime"];
-  id: Scalars["ID"];
-  role: Scalars["String"];
-  throughDate: Scalars["DateTime"];
+  code: Scalars["String"]["output"];
+  fromDate: Scalars["DateTime"]["output"];
+  id: Scalars["ID"]["output"];
+  role: Scalars["String"]["output"];
+  throughDate: Scalars["DateTime"]["output"];
 };
 
 export type LoginQrTokenType = {
   __typename?: "LoginQrTokenType";
-  token: Scalars["String"];
+  token: Scalars["String"]["output"];
 };
 
 export type MessageType = {
   __typename?: "MessageType";
-  body: Scalars["String"];
-  id: Scalars["ID"];
-  image: Scalars["String"];
-  title: Scalars["String"];
+  body: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  image: Scalars["String"]["output"];
+  title: Scalars["String"]["output"];
 };
 
 export type Mutation = {
@@ -1944,591 +1934,591 @@ export type Mutation = {
 };
 
 export type MutationAdminAuthorityCreateArgs = {
-  area?: InputMaybe<Scalars["String"]>;
-  boundaryConnects?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  code: Scalars["String"];
-  inherits?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  name: Scalars["String"];
+  area?: InputMaybe<Scalars["String"]["input"]>;
+  boundaryConnects?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  code: Scalars["String"]["input"];
+  inherits?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  name: Scalars["String"]["input"];
 };
 
 export type MutationAdminAuthorityDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationAdminAuthorityNotificationDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationAdminAuthorityNotificationUpsertArgs = {
-  notificationTemplateId: Scalars["Int"];
-  to: Scalars["String"];
+  notificationTemplateId: Scalars["Int"]["input"];
+  to: Scalars["String"]["input"];
 };
 
 export type MutationAdminAuthorityUpdateArgs = {
-  area?: InputMaybe<Scalars["String"]>;
-  boundaryConnects?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  code: Scalars["String"];
-  id: Scalars["ID"];
-  inherits?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  name: Scalars["String"];
+  area?: InputMaybe<Scalars["String"]["input"]>;
+  boundaryConnects?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  code: Scalars["String"]["input"];
+  id: Scalars["ID"]["input"];
+  inherits?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  name: Scalars["String"]["input"];
 };
 
 export type MutationAdminAuthorityUserCreateArgs = {
-  address?: InputMaybe<Scalars["String"]>;
-  authorityId?: InputMaybe<Scalars["Int"]>;
-  email: Scalars["String"];
-  firstName: Scalars["String"];
-  lastName: Scalars["String"];
-  password: Scalars["String"];
-  role?: InputMaybe<Scalars["String"]>;
-  telephone?: InputMaybe<Scalars["String"]>;
-  username: Scalars["String"];
+  address?: InputMaybe<Scalars["String"]["input"]>;
+  authorityId?: InputMaybe<Scalars["Int"]["input"]>;
+  email: Scalars["String"]["input"];
+  firstName: Scalars["String"]["input"];
+  lastName: Scalars["String"]["input"];
+  password: Scalars["String"]["input"];
+  role?: InputMaybe<Scalars["String"]["input"]>;
+  telephone?: InputMaybe<Scalars["String"]["input"]>;
+  username: Scalars["String"]["input"];
 };
 
 export type MutationAdminAuthorityUserDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationAdminAuthorityUserUpdateArgs = {
-  address?: InputMaybe<Scalars["String"]>;
-  authorityId?: InputMaybe<Scalars["Int"]>;
-  email: Scalars["String"];
-  firstName: Scalars["String"];
-  id: Scalars["ID"];
-  lastName: Scalars["String"];
-  role?: InputMaybe<Scalars["String"]>;
-  telephone?: InputMaybe<Scalars["String"]>;
-  username: Scalars["String"];
+  address?: InputMaybe<Scalars["String"]["input"]>;
+  authorityId?: InputMaybe<Scalars["Int"]["input"]>;
+  email: Scalars["String"]["input"];
+  firstName: Scalars["String"]["input"];
+  id: Scalars["ID"]["input"];
+  lastName: Scalars["String"]["input"];
+  role?: InputMaybe<Scalars["String"]["input"]>;
+  telephone?: InputMaybe<Scalars["String"]["input"]>;
+  username: Scalars["String"]["input"];
 };
 
 export type MutationAdminAuthorityUserUpdatePasswordArgs = {
-  id: Scalars["ID"];
-  password: Scalars["String"];
+  id: Scalars["ID"]["input"];
+  password: Scalars["String"]["input"];
 };
 
 export type MutationAdminCaseDefinitionCreateArgs = {
-  condition: Scalars["String"];
-  description: Scalars["String"];
-  isActive?: InputMaybe<Scalars["Boolean"]>;
-  reportTypeId: Scalars["UUID"];
+  condition: Scalars["String"]["input"];
+  description: Scalars["String"]["input"];
+  isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
+  reportTypeId: Scalars["UUID"]["input"];
 };
 
 export type MutationAdminCaseDefinitionDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationAdminCaseDefinitionUpdateArgs = {
-  condition: Scalars["String"];
-  description: Scalars["String"];
-  id: Scalars["ID"];
-  isActive?: InputMaybe<Scalars["Boolean"]>;
-  reportTypeId: Scalars["UUID"];
+  condition: Scalars["String"]["input"];
+  description: Scalars["String"]["input"];
+  id: Scalars["ID"]["input"];
+  isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
+  reportTypeId: Scalars["UUID"]["input"];
 };
 
 export type MutationAdminCategoryCreateArgs = {
-  icon?: InputMaybe<Scalars["Upload"]>;
-  name: Scalars["String"];
-  ordering: Scalars["Int"];
+  icon?: InputMaybe<Scalars["Upload"]["input"]>;
+  name: Scalars["String"]["input"];
+  ordering: Scalars["Int"]["input"];
 };
 
 export type MutationAdminCategoryDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationAdminCategoryUpdateArgs = {
-  clearIcon?: InputMaybe<Scalars["Boolean"]>;
-  icon?: InputMaybe<Scalars["Upload"]>;
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  ordering: Scalars["Int"];
+  clearIcon?: InputMaybe<Scalars["Boolean"]["input"]>;
+  icon?: InputMaybe<Scalars["Upload"]["input"]>;
+  id: Scalars["ID"]["input"];
+  name: Scalars["String"]["input"];
+  ordering: Scalars["Int"]["input"];
 };
 
 export type MutationAdminClientCreateArgs = {
-  name: Scalars["String"];
-  schemaName: Scalars["String"];
+  name: Scalars["String"]["input"];
+  schemaName: Scalars["String"]["input"];
 };
 
 export type MutationAdminClientUpdateArgs = {
-  id: Scalars["ID"];
-  name: Scalars["String"];
+  id: Scalars["ID"]["input"];
+  name: Scalars["String"]["input"];
 };
 
 export type MutationAdminConfigurationCreateArgs = {
-  key: Scalars["String"];
-  value: Scalars["String"];
+  key: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
 };
 
 export type MutationAdminConfigurationDeleteArgs = {
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 };
 
 export type MutationAdminConfigurationUpdateArgs = {
-  id: Scalars["String"];
-  key: Scalars["String"];
-  value: Scalars["String"];
+  id: Scalars["String"]["input"];
+  key: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
 };
 
 export type MutationAdminDomainCreateArgs = {
-  clientId: Scalars["ID"];
-  domain: Scalars["String"];
-  isPrimary: Scalars["Boolean"];
+  clientId: Scalars["ID"]["input"];
+  domain: Scalars["String"]["input"];
+  isPrimary: Scalars["Boolean"]["input"];
 };
 
 export type MutationAdminDomainDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationAdminDomainUpdateArgs = {
-  domain: Scalars["String"];
-  id: Scalars["ID"];
-  isPrimary: Scalars["Boolean"];
+  domain: Scalars["String"]["input"];
+  id: Scalars["ID"]["input"];
+  isPrimary: Scalars["Boolean"]["input"];
 };
 
 export type MutationAdminInvitationCodeCreateArgs = {
-  authorityId: Scalars["Int"];
-  code: Scalars["String"];
-  fromDate: Scalars["DateTime"];
-  inherits?: InputMaybe<Array<InputMaybe<Scalars["Int"]>>>;
-  role?: InputMaybe<Scalars["String"]>;
-  throughDate: Scalars["DateTime"];
+  authorityId: Scalars["Int"]["input"];
+  code: Scalars["String"]["input"];
+  fromDate: Scalars["DateTime"]["input"];
+  inherits?: InputMaybe<Array<InputMaybe<Scalars["Int"]["input"]>>>;
+  role?: InputMaybe<Scalars["String"]["input"]>;
+  throughDate: Scalars["DateTime"]["input"];
 };
 
 export type MutationAdminInvitationCodeDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationAdminInvitationCodeUpdateArgs = {
-  authorityId?: InputMaybe<Scalars["Int"]>;
-  code: Scalars["String"];
-  fromDate?: InputMaybe<Scalars["DateTime"]>;
-  id: Scalars["ID"];
-  role?: InputMaybe<Scalars["String"]>;
-  throughDate?: InputMaybe<Scalars["DateTime"]>;
+  authorityId?: InputMaybe<Scalars["Int"]["input"]>;
+  code: Scalars["String"]["input"];
+  fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  id: Scalars["ID"]["input"];
+  role?: InputMaybe<Scalars["String"]["input"]>;
+  throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
 };
 
 export type MutationAdminNotificationTemplateCreateArgs = {
-  bodyTemplate: Scalars["String"];
-  condition?: InputMaybe<Scalars["String"]>;
-  name: Scalars["String"];
-  reportTypeId: Scalars["UUID"];
-  stateTransitionId?: InputMaybe<Scalars["Int"]>;
-  titleTemplate: Scalars["String"];
-  type: Scalars["String"];
+  bodyTemplate: Scalars["String"]["input"];
+  condition?: InputMaybe<Scalars["String"]["input"]>;
+  name: Scalars["String"]["input"];
+  reportTypeId: Scalars["UUID"]["input"];
+  stateTransitionId?: InputMaybe<Scalars["Int"]["input"]>;
+  titleTemplate: Scalars["String"]["input"];
+  type: Scalars["String"]["input"];
 };
 
 export type MutationAdminNotificationTemplateDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationAdminNotificationTemplateUpdateArgs = {
-  bodyTemplate: Scalars["String"];
-  condition?: InputMaybe<Scalars["String"]>;
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  reportTypeId: Scalars["UUID"];
-  stateTransitionId?: InputMaybe<Scalars["Int"]>;
-  titleTemplate: Scalars["String"];
-  type: Scalars["String"];
+  bodyTemplate: Scalars["String"]["input"];
+  condition?: InputMaybe<Scalars["String"]["input"]>;
+  id: Scalars["ID"]["input"];
+  name: Scalars["String"]["input"];
+  reportTypeId: Scalars["UUID"]["input"];
+  stateTransitionId?: InputMaybe<Scalars["Int"]["input"]>;
+  titleTemplate: Scalars["String"]["input"];
+  type: Scalars["String"]["input"];
 };
 
 export type MutationAdminObservationDefinitionCreateArgs = {
-  description?: InputMaybe<Scalars["String"]>;
-  descriptionTemplate: Scalars["String"];
-  identityTemplate: Scalars["String"];
-  name: Scalars["String"];
-  registerFormDefinition: Scalars["JSONString"];
-  titleTemplate: Scalars["String"];
+  description?: InputMaybe<Scalars["String"]["input"]>;
+  descriptionTemplate: Scalars["String"]["input"];
+  identityTemplate: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  registerFormDefinition: Scalars["JSONString"]["input"];
+  titleTemplate: Scalars["String"]["input"];
 };
 
 export type MutationAdminObservationDefinitionDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationAdminObservationDefinitionUpdateArgs = {
-  description?: InputMaybe<Scalars["String"]>;
-  descriptionTemplate: Scalars["String"];
-  id: Scalars["ID"];
-  identityTemplate: Scalars["String"];
-  name: Scalars["String"];
-  registerFormDefinition: Scalars["JSONString"];
-  titleTemplate: Scalars["String"];
+  description?: InputMaybe<Scalars["String"]["input"]>;
+  descriptionTemplate: Scalars["String"]["input"];
+  id: Scalars["ID"]["input"];
+  identityTemplate: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  registerFormDefinition: Scalars["JSONString"]["input"];
+  titleTemplate: Scalars["String"]["input"];
 };
 
 export type MutationAdminObservationMonitoringDefinitionCreateArgs = {
-  definitionId: Scalars["ID"];
-  description: Scalars["String"];
-  descriptionTemplate: Scalars["String"];
-  formDefinition: Scalars["JSONString"];
-  name: Scalars["String"];
-  titleTemplate: Scalars["String"];
+  definitionId: Scalars["ID"]["input"];
+  description: Scalars["String"]["input"];
+  descriptionTemplate: Scalars["String"]["input"];
+  formDefinition: Scalars["JSONString"]["input"];
+  name: Scalars["String"]["input"];
+  titleTemplate: Scalars["String"]["input"];
 };
 
 export type MutationAdminObservationMonitoringDefinitionDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationAdminObservationMonitoringDefinitionUpdateArgs = {
-  definitionId: Scalars["ID"];
-  description: Scalars["String"];
-  descriptionTemplate: Scalars["String"];
-  formDefinition: Scalars["JSONString"];
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  titleTemplate: Scalars["String"];
+  definitionId: Scalars["ID"]["input"];
+  description: Scalars["String"]["input"];
+  descriptionTemplate: Scalars["String"]["input"];
+  formDefinition: Scalars["JSONString"]["input"];
+  id: Scalars["ID"]["input"];
+  name: Scalars["String"]["input"];
+  titleTemplate: Scalars["String"]["input"];
 };
 
 export type MutationAdminOutbreakPlanCreateArgs = {
-  description: Scalars["String"];
-  name: Scalars["String"];
-  reportTypeId: Scalars["UUID"];
-  stateStepId: Scalars["Int"];
-  zone1Color?: InputMaybe<Scalars["String"]>;
-  zone1MessageBody?: InputMaybe<Scalars["String"]>;
-  zone1MessageTitle?: InputMaybe<Scalars["String"]>;
-  zone1Radius?: InputMaybe<Scalars["Float"]>;
-  zone2Color?: InputMaybe<Scalars["String"]>;
-  zone2MessageBody?: InputMaybe<Scalars["String"]>;
-  zone2MessageTitle?: InputMaybe<Scalars["String"]>;
-  zone2Radius?: InputMaybe<Scalars["Float"]>;
-  zone3Color?: InputMaybe<Scalars["String"]>;
-  zone3MessageBody?: InputMaybe<Scalars["String"]>;
-  zone3MessageTitle?: InputMaybe<Scalars["String"]>;
-  zone3Radius?: InputMaybe<Scalars["Float"]>;
+  description: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  reportTypeId: Scalars["UUID"]["input"];
+  stateStepId: Scalars["Int"]["input"];
+  zone1Color?: InputMaybe<Scalars["String"]["input"]>;
+  zone1MessageBody?: InputMaybe<Scalars["String"]["input"]>;
+  zone1MessageTitle?: InputMaybe<Scalars["String"]["input"]>;
+  zone1Radius?: InputMaybe<Scalars["Float"]["input"]>;
+  zone2Color?: InputMaybe<Scalars["String"]["input"]>;
+  zone2MessageBody?: InputMaybe<Scalars["String"]["input"]>;
+  zone2MessageTitle?: InputMaybe<Scalars["String"]["input"]>;
+  zone2Radius?: InputMaybe<Scalars["Float"]["input"]>;
+  zone3Color?: InputMaybe<Scalars["String"]["input"]>;
+  zone3MessageBody?: InputMaybe<Scalars["String"]["input"]>;
+  zone3MessageTitle?: InputMaybe<Scalars["String"]["input"]>;
+  zone3Radius?: InputMaybe<Scalars["Float"]["input"]>;
 };
 
 export type MutationAdminOutbreakPlanDeleteArgs = {
-  id: Scalars["Int"];
+  id: Scalars["Int"]["input"];
 };
 
 export type MutationAdminOutbreakPlanUpdateArgs = {
-  description: Scalars["String"];
-  id: Scalars["Int"];
-  name: Scalars["String"];
-  reportTypeId: Scalars["UUID"];
-  stateStepId: Scalars["Int"];
-  zone1Color?: InputMaybe<Scalars["String"]>;
-  zone1MessageBody?: InputMaybe<Scalars["String"]>;
-  zone1MessageTitle?: InputMaybe<Scalars["String"]>;
-  zone1Radius?: InputMaybe<Scalars["Float"]>;
-  zone2Color?: InputMaybe<Scalars["String"]>;
-  zone2MessageBody?: InputMaybe<Scalars["String"]>;
-  zone2MessageTitle?: InputMaybe<Scalars["String"]>;
-  zone2Radius?: InputMaybe<Scalars["Float"]>;
-  zone3Color?: InputMaybe<Scalars["String"]>;
-  zone3MessageBody?: InputMaybe<Scalars["String"]>;
-  zone3MessageTitle?: InputMaybe<Scalars["String"]>;
-  zone3Radius?: InputMaybe<Scalars["Float"]>;
+  description: Scalars["String"]["input"];
+  id: Scalars["Int"]["input"];
+  name: Scalars["String"]["input"];
+  reportTypeId: Scalars["UUID"]["input"];
+  stateStepId: Scalars["Int"]["input"];
+  zone1Color?: InputMaybe<Scalars["String"]["input"]>;
+  zone1MessageBody?: InputMaybe<Scalars["String"]["input"]>;
+  zone1MessageTitle?: InputMaybe<Scalars["String"]["input"]>;
+  zone1Radius?: InputMaybe<Scalars["Float"]["input"]>;
+  zone2Color?: InputMaybe<Scalars["String"]["input"]>;
+  zone2MessageBody?: InputMaybe<Scalars["String"]["input"]>;
+  zone2MessageTitle?: InputMaybe<Scalars["String"]["input"]>;
+  zone2Radius?: InputMaybe<Scalars["Float"]["input"]>;
+  zone3Color?: InputMaybe<Scalars["String"]["input"]>;
+  zone3MessageBody?: InputMaybe<Scalars["String"]["input"]>;
+  zone3MessageTitle?: InputMaybe<Scalars["String"]["input"]>;
+  zone3Radius?: InputMaybe<Scalars["Float"]["input"]>;
 };
 
 export type MutationAdminPlaceCreateArgs = {
-  authorityId: Scalars["Int"];
-  latitude: Scalars["Float"];
-  longitude: Scalars["Float"];
-  name: Scalars["String"];
-  notificationTo?: InputMaybe<Scalars["String"]>;
+  authorityId: Scalars["Int"]["input"];
+  latitude: Scalars["Float"]["input"];
+  longitude: Scalars["Float"]["input"];
+  name: Scalars["String"]["input"];
+  notificationTo?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type MutationAdminPlaceDeleteArgs = {
-  id: Scalars["Int"];
+  id: Scalars["Int"]["input"];
 };
 
 export type MutationAdminPlaceUpdateArgs = {
-  authorityId: Scalars["Int"];
-  id: Scalars["Int"];
-  latitude: Scalars["Float"];
-  longitude: Scalars["Float"];
-  name: Scalars["String"];
-  notificationTo?: InputMaybe<Scalars["String"]>;
+  authorityId: Scalars["Int"]["input"];
+  id: Scalars["Int"]["input"];
+  latitude: Scalars["Float"]["input"];
+  longitude: Scalars["Float"]["input"];
+  name: Scalars["String"]["input"];
+  notificationTo?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type MutationAdminReportTypeCreateArgs = {
-  categoryId: Scalars["Int"];
-  definition: Scalars["String"];
-  followupDefinition?: InputMaybe<Scalars["String"]>;
-  isFollowable?: InputMaybe<Scalars["Boolean"]>;
-  name: Scalars["String"];
-  ordering: Scalars["Int"];
-  rendererDataTemplate?: InputMaybe<Scalars["String"]>;
-  rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]>;
-  stateDefinitionId?: InputMaybe<Scalars["Int"]>;
+  categoryId: Scalars["Int"]["input"];
+  definition: Scalars["String"]["input"];
+  followupDefinition?: InputMaybe<Scalars["String"]["input"]>;
+  isFollowable?: InputMaybe<Scalars["Boolean"]["input"]>;
+  name: Scalars["String"]["input"];
+  ordering: Scalars["Int"]["input"];
+  rendererDataTemplate?: InputMaybe<Scalars["String"]["input"]>;
+  rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]["input"]>;
+  stateDefinitionId?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type MutationAdminReportTypeDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationAdminReportTypeUpdateArgs = {
-  categoryId: Scalars["Int"];
-  definition: Scalars["String"];
-  followupDefinition?: InputMaybe<Scalars["String"]>;
-  id: Scalars["ID"];
-  isFollowable?: InputMaybe<Scalars["Boolean"]>;
-  name: Scalars["String"];
-  ordering: Scalars["Int"];
-  rendererDataTemplate?: InputMaybe<Scalars["String"]>;
-  rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]>;
-  stateDefinitionId?: InputMaybe<Scalars["Int"]>;
+  categoryId: Scalars["Int"]["input"];
+  definition: Scalars["String"]["input"];
+  followupDefinition?: InputMaybe<Scalars["String"]["input"]>;
+  id: Scalars["ID"]["input"];
+  isFollowable?: InputMaybe<Scalars["Boolean"]["input"]>;
+  name: Scalars["String"]["input"];
+  ordering: Scalars["Int"]["input"];
+  rendererDataTemplate?: InputMaybe<Scalars["String"]["input"]>;
+  rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]["input"]>;
+  stateDefinitionId?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type MutationAdminReporterNotificationCreateArgs = {
-  condition: Scalars["String"];
-  description: Scalars["String"];
-  isActive?: InputMaybe<Scalars["Boolean"]>;
-  reportTypeId: Scalars["UUID"];
-  template: Scalars["String"];
-  titleTemplate: Scalars["String"];
+  condition: Scalars["String"]["input"];
+  description: Scalars["String"]["input"];
+  isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
+  reportTypeId: Scalars["UUID"]["input"];
+  template: Scalars["String"]["input"];
+  titleTemplate: Scalars["String"]["input"];
 };
 
 export type MutationAdminReporterNotificationDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationAdminReporterNotificationUpdateArgs = {
-  condition: Scalars["String"];
-  description: Scalars["String"];
-  id: Scalars["ID"];
-  isActive?: InputMaybe<Scalars["Boolean"]>;
-  reportTypeId: Scalars["UUID"];
-  template: Scalars["String"];
-  titleTemplate: Scalars["String"];
+  condition: Scalars["String"]["input"];
+  description: Scalars["String"]["input"];
+  id: Scalars["ID"]["input"];
+  isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
+  reportTypeId: Scalars["UUID"]["input"];
+  template: Scalars["String"]["input"];
+  titleTemplate: Scalars["String"]["input"];
 };
 
 export type MutationAdminStateDefinitionCreateArgs = {
-  isDefault?: InputMaybe<Scalars["Boolean"]>;
-  name: Scalars["String"];
+  isDefault?: InputMaybe<Scalars["Boolean"]["input"]>;
+  name: Scalars["String"]["input"];
 };
 
 export type MutationAdminStateDefinitionDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationAdminStateDefinitionUpdateArgs = {
-  id: Scalars["ID"];
-  isDefault?: InputMaybe<Scalars["Boolean"]>;
-  name: Scalars["String"];
+  id: Scalars["ID"]["input"];
+  isDefault?: InputMaybe<Scalars["Boolean"]["input"]>;
+  name: Scalars["String"]["input"];
 };
 
 export type MutationAdminStateStepCreateArgs = {
-  isStartState?: InputMaybe<Scalars["Boolean"]>;
-  isStopState?: InputMaybe<Scalars["Boolean"]>;
-  name: Scalars["String"];
-  stateDefinitionId: Scalars["ID"];
+  isStartState?: InputMaybe<Scalars["Boolean"]["input"]>;
+  isStopState?: InputMaybe<Scalars["Boolean"]["input"]>;
+  name: Scalars["String"]["input"];
+  stateDefinitionId: Scalars["ID"]["input"];
 };
 
 export type MutationAdminStateStepDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationAdminStateStepUpdateArgs = {
-  id: Scalars["ID"];
-  isStartState?: InputMaybe<Scalars["Boolean"]>;
-  isStopState?: InputMaybe<Scalars["Boolean"]>;
-  name: Scalars["String"];
-  stateDefinitionId: Scalars["ID"];
+  id: Scalars["ID"]["input"];
+  isStartState?: InputMaybe<Scalars["Boolean"]["input"]>;
+  isStopState?: InputMaybe<Scalars["Boolean"]["input"]>;
+  name: Scalars["String"]["input"];
+  stateDefinitionId: Scalars["ID"]["input"];
 };
 
 export type MutationAdminStateTransitionCreateArgs = {
-  formDefinition: Scalars["String"];
-  fromStepId: Scalars["ID"];
-  toStepId: Scalars["ID"];
+  formDefinition: Scalars["String"]["input"];
+  fromStepId: Scalars["ID"]["input"];
+  toStepId: Scalars["ID"]["input"];
 };
 
 export type MutationAdminStateTransitionDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationAdminStateTransitionUpdateArgs = {
-  formDefinition: Scalars["String"];
-  fromStepId: Scalars["ID"];
-  id: Scalars["ID"];
-  toStepId: Scalars["ID"];
+  formDefinition: Scalars["String"]["input"];
+  fromStepId: Scalars["ID"]["input"];
+  id: Scalars["ID"]["input"];
+  toStepId: Scalars["ID"]["input"];
 };
 
 export type MutationAdminUserChangePasswordArgs = {
-  newPassword: Scalars["String"];
+  newPassword: Scalars["String"]["input"];
 };
 
 export type MutationAdminUserUpdateProfileArgs = {
-  address?: InputMaybe<Scalars["String"]>;
-  firstName: Scalars["String"];
-  lastName: Scalars["String"];
-  telephone?: InputMaybe<Scalars["String"]>;
+  address?: InputMaybe<Scalars["String"]["input"]>;
+  firstName: Scalars["String"]["input"];
+  lastName: Scalars["String"]["input"];
+  telephone?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type MutationAdminUserUploadAvatarArgs = {
-  image?: InputMaybe<Scalars["Upload"]>;
+  image?: InputMaybe<Scalars["Upload"]["input"]>;
 };
 
 export type MutationAuthorityUserRegisterArgs = {
-  address?: InputMaybe<Scalars["String"]>;
-  email: Scalars["String"];
-  firstName: Scalars["String"];
-  invitationCode: Scalars["String"];
-  lastName: Scalars["String"];
-  telephone?: InputMaybe<Scalars["String"]>;
-  username: Scalars["String"];
+  address?: InputMaybe<Scalars["String"]["input"]>;
+  email: Scalars["String"]["input"];
+  firstName: Scalars["String"]["input"];
+  invitationCode: Scalars["String"]["input"];
+  lastName: Scalars["String"]["input"];
+  telephone?: InputMaybe<Scalars["String"]["input"]>;
+  username: Scalars["String"]["input"];
 };
 
 export type MutationCommentCreateArgs = {
-  body: Scalars["String"];
-  files?: InputMaybe<Array<InputMaybe<Scalars["Upload"]>>>;
-  threadId: Scalars["Int"];
+  body: Scalars["String"]["input"];
+  files?: InputMaybe<Array<InputMaybe<Scalars["Upload"]["input"]>>>;
+  threadId: Scalars["Int"]["input"];
 };
 
 export type MutationCommentDeleteArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationCommentUpdateArgs = {
-  body: Scalars["String"];
-  commentId: Scalars["Int"];
+  body: Scalars["String"]["input"];
+  commentId: Scalars["Int"]["input"];
 };
 
 export type MutationConvertToTestReportArgs = {
-  reportId: Scalars["UUID"];
+  reportId: Scalars["UUID"]["input"];
 };
 
 export type MutationEvaluateReportSimulationArgs = {
-  data: Scalars["GenericScalar"];
-  incidentDate: Scalars["Date"];
-  rendererDataTemplate: Scalars["String"];
-  reportId?: InputMaybe<Scalars["UUID"]>;
-  reportTypeId?: InputMaybe<Scalars["UUID"]>;
+  data: Scalars["GenericScalar"]["input"];
+  incidentDate: Scalars["Date"]["input"];
+  rendererDataTemplate: Scalars["String"]["input"];
+  reportId?: InputMaybe<Scalars["UUID"]["input"]>;
+  reportTypeId?: InputMaybe<Scalars["UUID"]["input"]>;
 };
 
 export type MutationForwardStateArgs = {
-  caseId: Scalars["ID"];
-  formData?: InputMaybe<Scalars["GenericScalar"]>;
-  transitionId: Scalars["ID"];
+  caseId: Scalars["ID"]["input"];
+  formData?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+  transitionId: Scalars["ID"]["input"];
 };
 
 export type MutationPromoteToCaseArgs = {
-  reportId: Scalars["UUID"];
+  reportId: Scalars["UUID"]["input"];
 };
 
 export type MutationPublishReportTypeArgs = {
-  reportTypeId: Scalars["UUID"];
+  reportTypeId: Scalars["UUID"]["input"];
 };
 
 export type MutationRefreshTokenArgs = {
-  refreshToken?: InputMaybe<Scalars["String"]>;
+  refreshToken?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type MutationRegisterFcmTokenArgs = {
-  token: Scalars["String"];
-  userId: Scalars["String"];
+  token: Scalars["String"]["input"];
+  userId: Scalars["String"]["input"];
 };
 
 export type MutationResetPasswordArgs = {
-  password: Scalars["String"];
-  token: Scalars["String"];
+  password: Scalars["String"]["input"];
+  token: Scalars["String"]["input"];
 };
 
 export type MutationResetPasswordRequestArgs = {
-  email: Scalars["String"];
+  email: Scalars["String"]["input"];
 };
 
 export type MutationRevokeTokenArgs = {
-  refreshToken?: InputMaybe<Scalars["String"]>;
+  refreshToken?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type MutationSubmitFollowupReportArgs = {
-  data: Scalars["GenericScalar"];
-  followupId?: InputMaybe<Scalars["UUID"]>;
-  incidentId: Scalars["UUID"];
+  data: Scalars["GenericScalar"]["input"];
+  followupId?: InputMaybe<Scalars["UUID"]["input"]>;
+  incidentId: Scalars["UUID"]["input"];
 };
 
 export type MutationSubmitImageArgs = {
-  image: Scalars["Upload"];
-  imageId?: InputMaybe<Scalars["UUID"]>;
-  isCover?: InputMaybe<Scalars["Boolean"]>;
-  reportId: Scalars["UUID"];
+  image: Scalars["Upload"]["input"];
+  imageId?: InputMaybe<Scalars["UUID"]["input"]>;
+  isCover?: InputMaybe<Scalars["Boolean"]["input"]>;
+  reportId: Scalars["UUID"]["input"];
 };
 
 export type MutationSubmitIncidentReportArgs = {
-  data: Scalars["GenericScalar"];
-  gpsLocation?: InputMaybe<Scalars["String"]>;
-  incidentDate: Scalars["Date"];
-  incidentInAuthority?: InputMaybe<Scalars["Boolean"]>;
-  reportId?: InputMaybe<Scalars["UUID"]>;
-  reportTypeId: Scalars["UUID"];
-  testFlag?: InputMaybe<Scalars["Boolean"]>;
+  data: Scalars["GenericScalar"]["input"];
+  gpsLocation?: InputMaybe<Scalars["String"]["input"]>;
+  incidentDate: Scalars["Date"]["input"];
+  incidentInAuthority?: InputMaybe<Scalars["Boolean"]["input"]>;
+  reportId?: InputMaybe<Scalars["UUID"]["input"]>;
+  reportTypeId: Scalars["UUID"]["input"];
+  testFlag?: InputMaybe<Scalars["Boolean"]["input"]>;
 };
 
 export type MutationSubmitObservationSubjectArgs = {
-  data: Scalars["GenericScalar"];
-  definitionId: Scalars["Int"];
-  gpsLocation?: InputMaybe<Scalars["String"]>;
+  data: Scalars["GenericScalar"]["input"];
+  definitionId: Scalars["Int"]["input"];
+  gpsLocation?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type MutationSubmitObservationSubjectMonitoringArgs = {
-  data: Scalars["GenericScalar"];
-  monitoringDefinitionId: Scalars["Int"];
-  subjectId: Scalars["UUID"];
+  data: Scalars["GenericScalar"]["input"];
+  monitoringDefinitionId: Scalars["Int"]["input"];
+  subjectId: Scalars["UUID"]["input"];
 };
 
 export type MutationSubmitRecordImageArgs = {
-  image: Scalars["Upload"];
-  imageId?: InputMaybe<Scalars["UUID"]>;
-  isCover?: InputMaybe<Scalars["Boolean"]>;
-  recordId: Scalars["UUID"];
+  image: Scalars["Upload"]["input"];
+  imageId?: InputMaybe<Scalars["UUID"]["input"]>;
+  isCover?: InputMaybe<Scalars["Boolean"]["input"]>;
+  recordId: Scalars["UUID"]["input"];
   recordType: RecordType;
 };
 
 export type MutationSubmitRecordUploadFileArgs = {
-  file: Scalars["Upload"];
-  fileId?: InputMaybe<Scalars["UUID"]>;
-  recordId: Scalars["UUID"];
+  file: Scalars["Upload"]["input"];
+  fileId?: InputMaybe<Scalars["UUID"]["input"]>;
+  recordId: Scalars["UUID"]["input"];
 };
 
 export type MutationSubmitUploadFileArgs = {
-  file: Scalars["Upload"];
-  fileId?: InputMaybe<Scalars["UUID"]>;
-  reportId: Scalars["UUID"];
+  file: Scalars["Upload"]["input"];
+  fileId?: InputMaybe<Scalars["UUID"]["input"]>;
+  reportId: Scalars["UUID"]["input"];
 };
 
 export type MutationTokenAuthArgs = {
-  password: Scalars["String"];
-  username: Scalars["String"];
+  password: Scalars["String"]["input"];
+  username: Scalars["String"]["input"];
 };
 
 export type MutationUnpublishReportTypeArgs = {
-  reportTypeId: Scalars["UUID"];
+  reportTypeId: Scalars["UUID"]["input"];
 };
 
 export type MutationVerifyLoginQrTokenArgs = {
-  token: Scalars["String"];
+  token: Scalars["String"]["input"];
 };
 
 export type MutationVerifyTokenArgs = {
-  token?: InputMaybe<Scalars["String"]>;
+  token?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type NotificationTemplateType = {
   __typename?: "NotificationTemplateType";
   authoritynotificationSet: Array<AdminAuthorityNotificationUpsertSuccess>;
-  bodyTemplate: Scalars["String"];
-  condition?: Maybe<Scalars["String"]>;
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  id: Scalars["ID"];
-  name: Scalars["String"];
+  bodyTemplate: Scalars["String"]["output"];
+  condition?: Maybe<Scalars["String"]["output"]>;
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
   reportType: AdminReportTypeCreateSuccess;
   stateDefinition?: Maybe<StateDefinitionType>;
   stateTransition?: Maybe<DeepStateTransitionType>;
-  titleTemplate: Scalars["String"];
+  titleTemplate: Scalars["String"]["output"];
   type: CasesNotificationTemplateTypeChoices;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type ObservationDefinitionId = {
   __typename?: "ObservationDefinitionId";
-  id: Scalars["ID"];
+  id: Scalars["ID"]["output"];
 };
 
 export type ObservationDefinitionSyncInputType = {
-  id: Scalars["ID"];
-  updatedAt: Scalars["DateTime"];
+  id: Scalars["ID"]["input"];
+  updatedAt: Scalars["DateTime"]["input"];
 };
 
 export type ObservationDefinitionSyncOutputType = {
@@ -2539,69 +2529,69 @@ export type ObservationDefinitionSyncOutputType = {
 
 export type ObservationDefinitionType = {
   __typename?: "ObservationDefinitionType";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  description?: Maybe<Scalars["String"]>;
-  descriptionTemplate: Scalars["String"];
-  id: Scalars["ID"];
-  identityTemplate: Scalars["String"];
-  isActive: Scalars["Boolean"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  description?: Maybe<Scalars["String"]["output"]>;
+  descriptionTemplate: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  identityTemplate: Scalars["String"]["output"];
+  isActive: Scalars["Boolean"]["output"];
   monitoringDefinitions?: Maybe<
     Array<Maybe<ObservationMonitoringDefinitionType>>
   >;
   monitoringdefinitionSet: Array<AdminObservationMonitoringDefinitionCreateSuccess>;
-  name: Scalars["String"];
-  registerFormDefinition?: Maybe<Scalars["GenericScalar"]>;
+  name: Scalars["String"]["output"];
+  registerFormDefinition?: Maybe<Scalars["GenericScalar"]["output"]>;
   subjectrecordSet: Array<ObservationSubjectType>;
-  titleTemplate: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
+  titleTemplate: Scalars["String"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type ObservationImageType = {
   __typename?: "ObservationImageType";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  file: Scalars["String"];
-  id: Scalars["UUID"];
-  imageUrl?: Maybe<Scalars["String"]>;
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  file: Scalars["String"]["output"];
+  id: Scalars["UUID"]["output"];
+  imageUrl?: Maybe<Scalars["String"]["output"]>;
   monitoringrecordSet: Array<ObservationSubjectMonitoringRecordType>;
-  recordId: Scalars["UUID"];
+  recordId: Scalars["UUID"]["output"];
   subjectrecordSet: Array<ObservationSubjectType>;
-  thumbnail?: Maybe<Scalars["String"]>;
-  updatedAt: Scalars["DateTime"];
+  thumbnail?: Maybe<Scalars["String"]["output"]>;
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type ObservationMonitoringDefinitionType = {
   __typename?: "ObservationMonitoringDefinitionType";
-  createdAt: Scalars["DateTime"];
+  createdAt: Scalars["DateTime"]["output"];
   definition: AdminObservationDefinitionCreateSuccess;
-  definitionId?: Maybe<Scalars["Int"]>;
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  description?: Maybe<Scalars["String"]>;
-  descriptionTemplate: Scalars["String"];
-  formDefinition?: Maybe<Scalars["GenericScalar"]>;
-  id: Scalars["ID"];
-  isActive: Scalars["Boolean"];
+  definitionId?: Maybe<Scalars["Int"]["output"]>;
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  description?: Maybe<Scalars["String"]["output"]>;
+  descriptionTemplate: Scalars["String"]["output"];
+  formDefinition?: Maybe<Scalars["GenericScalar"]["output"]>;
+  id: Scalars["ID"]["output"];
+  isActive: Scalars["Boolean"]["output"];
   monitoringrecordSet: Array<ObservationSubjectMonitoringRecordType>;
-  name: Scalars["String"];
-  titleTemplate: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
+  name: Scalars["String"]["output"];
+  titleTemplate: Scalars["String"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type ObservationSubjectMonitoringRecordType = {
   __typename?: "ObservationSubjectMonitoringRecordType";
-  createdAt: Scalars["DateTime"];
-  description: Scalars["String"];
-  formData?: Maybe<Scalars["GenericScalar"]>;
-  id: Scalars["UUID"];
+  createdAt: Scalars["DateTime"]["output"];
+  description: Scalars["String"]["output"];
+  formData?: Maybe<Scalars["GenericScalar"]["output"]>;
+  id: Scalars["UUID"]["output"];
   images?: Maybe<Array<Maybe<ObservationImageType>>>;
-  isActive: Scalars["Boolean"];
+  isActive: Scalars["Boolean"]["output"];
   monitoringDefinition?: Maybe<ObservationMonitoringDefinitionType>;
-  monitoringDefinitionId?: Maybe<Scalars["Int"]>;
+  monitoringDefinitionId?: Maybe<Scalars["Int"]["output"]>;
   reportedBy?: Maybe<UserType>;
   subject: ObservationSubjectType;
-  subjectId?: Maybe<Scalars["UUID"]>;
-  title: Scalars["String"];
+  subjectId?: Maybe<Scalars["UUID"]["output"]>;
+  title: Scalars["String"]["output"];
   uploadFiles?: Maybe<Array<Maybe<ObservationUploadFileType>>>;
 };
 
@@ -2611,27 +2601,27 @@ export type ObservationSubjectMonitoringRecordTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<ObservationSubjectMonitoringRecordType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type ObservationSubjectType = {
   __typename?: "ObservationSubjectType";
-  createdAt: Scalars["DateTime"];
+  createdAt: Scalars["DateTime"]["output"];
   definition?: Maybe<ObservationDefinitionType>;
-  definitionId?: Maybe<Scalars["Int"]>;
-  description: Scalars["String"];
-  formData?: Maybe<Scalars["GenericScalar"]>;
-  gpsLocation?: Maybe<Scalars["String"]>;
-  id: Scalars["UUID"];
-  identity: Scalars["String"];
+  definitionId?: Maybe<Scalars["Int"]["output"]>;
+  description: Scalars["String"]["output"];
+  formData?: Maybe<Scalars["GenericScalar"]["output"]>;
+  gpsLocation?: Maybe<Scalars["String"]["output"]>;
+  id: Scalars["UUID"]["output"];
+  identity: Scalars["String"]["output"];
   images?: Maybe<Array<Maybe<ObservationImageType>>>;
-  isActive: Scalars["Boolean"];
+  isActive: Scalars["Boolean"]["output"];
   monitoringRecords?: Maybe<
     Array<Maybe<ObservationSubjectMonitoringRecordType>>
   >;
-  originFormData?: Maybe<Scalars["GenericScalar"]>;
+  originFormData?: Maybe<Scalars["GenericScalar"]["output"]>;
   reportedBy?: Maybe<UserType>;
-  title: Scalars["String"];
+  title: Scalars["String"]["output"];
   uploadFiles?: Maybe<Array<Maybe<ObservationUploadFileType>>>;
 };
 
@@ -2641,85 +2631,85 @@ export type ObservationSubjectTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<ObservationSubjectType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type ObservationUploadFileType = {
   __typename?: "ObservationUploadFileType";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  file: Scalars["String"];
-  fileType: Scalars["String"];
-  fileUrl?: Maybe<Scalars["String"]>;
-  id: Scalars["UUID"];
-  recordId: Scalars["UUID"];
-  updatedAt: Scalars["DateTime"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  file: Scalars["String"]["output"];
+  fileType: Scalars["String"]["output"];
+  fileUrl?: Maybe<Scalars["String"]["output"]>;
+  id: Scalars["UUID"]["output"];
+  recordId: Scalars["UUID"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 /** Obtain JSON Web Token mutation */
 export type ObtainJsonWebToken = {
   __typename?: "ObtainJSONWebToken";
-  payload: Scalars["GenericScalar"];
-  refreshExpiresIn: Scalars["Int"];
-  refreshToken: Scalars["String"];
-  token: Scalars["String"];
+  payload: Scalars["GenericScalar"]["output"];
+  refreshExpiresIn: Scalars["Int"]["output"];
+  refreshToken: Scalars["String"]["output"];
+  token: Scalars["String"]["output"];
 };
 
 export type OutbreakPlaceType = {
   __typename?: "OutbreakPlaceType";
   case: CaseType;
-  color: Scalars["String"];
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  id: Scalars["ID"];
+  color: Scalars["String"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  id: Scalars["ID"]["output"];
   place?: Maybe<PlaceType>;
   plan: AdminOutbreakPlanUpdateSuccess;
-  updatedAt: Scalars["DateTime"];
-  zone?: Maybe<Scalars["Int"]>;
+  updatedAt: Scalars["DateTime"]["output"];
+  zone?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type OutbreakPlanType = {
   __typename?: "OutbreakPlanType";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  description: Scalars["String"];
-  id: Scalars["ID"];
-  name: Scalars["String"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  description: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
   places: Array<OutbreakPlaceType>;
   reportType: AdminReportTypeCreateSuccess;
   stateStep: DeepStateStepType;
-  updatedAt: Scalars["DateTime"];
-  zone1Color: Scalars["String"];
-  zone1MessageBody: Scalars["String"];
-  zone1MessageTitle: Scalars["String"];
-  zone1Radius?: Maybe<Scalars["Float"]>;
-  zone2Color: Scalars["String"];
-  zone2MessageBody: Scalars["String"];
-  zone2MessageTitle: Scalars["String"];
-  zone2Radius?: Maybe<Scalars["Float"]>;
-  zone3Color: Scalars["String"];
-  zone3MessageBody: Scalars["String"];
-  zone3MessageTitle: Scalars["String"];
-  zone3Radius?: Maybe<Scalars["Float"]>;
+  updatedAt: Scalars["DateTime"]["output"];
+  zone1Color: Scalars["String"]["output"];
+  zone1MessageBody: Scalars["String"]["output"];
+  zone1MessageTitle: Scalars["String"]["output"];
+  zone1Radius?: Maybe<Scalars["Float"]["output"]>;
+  zone2Color: Scalars["String"]["output"];
+  zone2MessageBody: Scalars["String"]["output"];
+  zone2MessageTitle: Scalars["String"]["output"];
+  zone2Radius?: Maybe<Scalars["Float"]["output"]>;
+  zone3Color: Scalars["String"]["output"];
+  zone3MessageBody: Scalars["String"]["output"];
+  zone3MessageTitle: Scalars["String"]["output"];
+  zone3Radius?: Maybe<Scalars["Float"]["output"]>;
 };
 
 export type PageInfoExtra = {
   __typename?: "PageInfoExtra";
   /** When paginating forwards, are there more items? */
-  hasNextPage: Scalars["Boolean"];
+  hasNextPage: Scalars["Boolean"]["output"];
   /** When paginating backwards, are there more items? */
-  hasPreviousPage: Scalars["Boolean"];
+  hasPreviousPage: Scalars["Boolean"]["output"];
 };
 
 export type PlaceType = {
   __typename?: "PlaceType";
   authority: AdminAuthorityCreateSuccess;
-  id: Scalars["ID"];
-  latitude?: Maybe<Scalars["Float"]>;
-  location?: Maybe<Scalars["GeoJSON"]>;
-  longitude?: Maybe<Scalars["Float"]>;
-  name: Scalars["String"];
-  notificationTo: Scalars["String"];
+  id: Scalars["ID"]["output"];
+  latitude?: Maybe<Scalars["Float"]["output"]>;
+  location?: Maybe<Scalars["GeoJSON"]["output"]>;
+  longitude?: Maybe<Scalars["Float"]["output"]>;
+  name: Scalars["String"]["output"];
+  notificationTo: Scalars["String"]["output"];
 };
 
 export type PromoteToCaseMutation = {
@@ -2782,7 +2772,7 @@ export type Query = {
   followupReportDataSummary?: Maybe<ReportDataSummaryType>;
   followups?: Maybe<Array<Maybe<FollowupReportType>>>;
   getLoginQrToken?: Maybe<LoginQrTokenType>;
-  healthCheck?: Maybe<Scalars["String"]>;
+  healthCheck?: Maybe<Scalars["String"]["output"]>;
   incidentReport?: Maybe<IncidentReportType>;
   incidentReports?: Maybe<IncidentReportTypeNodeConnection>;
   invitationCode?: Maybe<InvitationCodeType>;
@@ -2822,523 +2812,532 @@ export type Query = {
 };
 
 export type QueryAdminAuthorityGetArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryAdminAuthorityInheritLookupArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  q?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminAuthorityQueryArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  q?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminAuthorityUserQueryArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  authorities?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  before?: InputMaybe<Scalars["String"]>;
-  dateJoinedGte?: InputMaybe<Scalars["DateTime"]>;
-  dateJoinedLte?: InputMaybe<Scalars["DateTime"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  q?: InputMaybe<Scalars["String"]>;
-  role?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  authorities?: InputMaybe<Scalars["Decimal"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  dateJoinedGte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  dateJoinedLte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  role?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminCaseDefinitionQueryArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  description?: InputMaybe<Scalars["String"]>;
-  description_Contains?: InputMaybe<Scalars["String"]>;
-  description_Istartswith?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  description?: InputMaybe<Scalars["String"]["input"]>;
+  description_Contains?: InputMaybe<Scalars["String"]["input"]>;
+  description_Istartswith?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminCategoryQueryArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  name?: InputMaybe<Scalars["String"]>;
-  name_Contains?: InputMaybe<Scalars["String"]>;
-  name_Istartswith?: InputMaybe<Scalars["String"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  name?: InputMaybe<Scalars["String"]["input"]>;
+  name_Contains?: InputMaybe<Scalars["String"]["input"]>;
+  name_Istartswith?: InputMaybe<Scalars["String"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminClientGetArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryAdminClientQueryArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  q?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminConfigurationQueryArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  q?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminDomainGetArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryAdminInvitationCodeQueryArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  role?: InputMaybe<Scalars["String"]>;
-  role_Contains?: InputMaybe<Scalars["String"]>;
-  role_Istartswith?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  role?: InputMaybe<Scalars["String"]["input"]>;
+  role_Contains?: InputMaybe<Scalars["String"]["input"]>;
+  role_Istartswith?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminNotificationTemplateAuthorityQueryArgs = {
-  reportTypeId: Scalars["ID"];
+  reportTypeId: Scalars["ID"]["input"];
 };
 
 export type QueryAdminNotificationTemplateQueryArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  q?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminObservationDefinitionQueryArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  q?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminObservationMonitoringDefinitionQueryArgs = {
-  definitionId: Scalars["ID"];
+  definitionId: Scalars["ID"]["input"];
 };
 
 export type QueryAdminOutbreakPlanQueryArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  q?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminPlaceQueryArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  q?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminReportTypeQueryArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  q?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminReporterNotificationQueryArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  description?: InputMaybe<Scalars["String"]>;
-  description_Contains?: InputMaybe<Scalars["String"]>;
-  description_Istartswith?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  description?: InputMaybe<Scalars["String"]["input"]>;
+  description_Contains?: InputMaybe<Scalars["String"]["input"]>;
+  description_Istartswith?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminStateDefinitionQueryArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  name?: InputMaybe<Scalars["String"]>;
-  name_Contains?: InputMaybe<Scalars["String"]>;
-  name_Istartswith?: InputMaybe<Scalars["String"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  name?: InputMaybe<Scalars["String"]["input"]>;
+  name_Contains?: InputMaybe<Scalars["String"]["input"]>;
+  name_Istartswith?: InputMaybe<Scalars["String"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminStateStepQueryArgs = {
-  definitionId: Scalars["ID"];
+  definitionId: Scalars["ID"]["input"];
 };
 
 export type QueryAdminStateTransitionQueryArgs = {
-  definitionId: Scalars["ID"];
+  definitionId: Scalars["ID"]["input"];
 };
 
 export type QueryAuthoritiesArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  name?: InputMaybe<Scalars["String"]>;
-  name_Istartswith?: InputMaybe<Scalars["String"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  name?: InputMaybe<Scalars["String"]["input"]>;
+  name_Istartswith?: InputMaybe<Scalars["String"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAuthorityArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryAuthorityInheritsDownArgs = {
-  authorityId: Scalars["ID"];
+  authorityId: Scalars["ID"]["input"];
 };
 
 export type QueryAuthorityInheritsDownShallowArgs = {
-  authorityId: Scalars["ID"];
+  authorityId: Scalars["ID"]["input"];
 };
 
 export type QueryAuthorityUserArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryBoundaryConnectedIncidentReportsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  createdAt_Gte?: InputMaybe<Scalars["DateTime"]>;
-  createdAt_Lte?: InputMaybe<Scalars["DateTime"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  incidentDate_Gte?: InputMaybe<Scalars["Date"]>;
-  incidentDate_Lte?: InputMaybe<Scalars["Date"]>;
-  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  relevantAuthorities_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  relevantAuthorities_Name?: InputMaybe<Scalars["String"]>;
-  relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]>;
-  reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
-  testFlag?: InputMaybe<Scalars["Boolean"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  createdAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  createdAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  incidentDate_Gte?: InputMaybe<Scalars["Date"]["input"]>;
+  incidentDate_Lte?: InputMaybe<Scalars["Date"]["input"]>;
+  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  relevantAuthorities_Id_In?: InputMaybe<
+    Array<InputMaybe<Scalars["ID"]["input"]>>
+  >;
+  relevantAuthorities_Name?: InputMaybe<Scalars["String"]["input"]>;
+  relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]["input"]>;
+  reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]["input"]>>>;
+  testFlag?: InputMaybe<Scalars["Boolean"]["input"]>;
 };
 
 export type QueryCaseDefinitionGetArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryCaseGetArgs = {
-  id: Scalars["UUID"];
+  id: Scalars["UUID"]["input"];
 };
 
 export type QueryCasesQueryArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  report_CreatedAt_Gte?: InputMaybe<Scalars["DateTime"]>;
-  report_CreatedAt_Lte?: InputMaybe<Scalars["DateTime"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  report_CreatedAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  report_CreatedAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
   report_RelevantAuthorities_Id_In?: InputMaybe<
-    Array<InputMaybe<Scalars["String"]>>
+    Array<InputMaybe<Scalars["ID"]["input"]>>
   >;
-  report_ReportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
+  report_ReportType_Id_In?: InputMaybe<
+    Array<InputMaybe<Scalars["UUID"]["input"]>>
+  >;
 };
 
 export type QueryCategoryArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryCheckInvitationCodeArgs = {
-  code: Scalars["String"];
+  code: Scalars["String"]["input"];
 };
 
 export type QueryCommentsArgs = {
-  threadId: Scalars["ID"];
+  threadId: Scalars["ID"]["input"];
 };
 
 export type QueryConfigurationGetArgs = {
-  key: Scalars["String"];
+  key: Scalars["String"]["input"];
 };
 
 export type QueryDeepStateDefinitionGetArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryEventsQueryArgs = {
-  authorityId: Scalars["Int"];
+  authorityId: Scalars["Int"]["input"];
 };
 
 export type QueryFollowupReportArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryFollowupReportDataSummaryArgs = {
-  data: Scalars["GenericScalar"];
-  incidentReportId: Scalars["UUID"];
-  reportTypeId: Scalars["UUID"];
+  data: Scalars["GenericScalar"]["input"];
+  incidentReportId: Scalars["UUID"]["input"];
+  reportTypeId: Scalars["UUID"]["input"];
 };
 
 export type QueryFollowupsArgs = {
-  incidentId: Scalars["ID"];
+  incidentId: Scalars["ID"]["input"];
 };
 
 export type QueryGetLoginQrTokenArgs = {
-  userId: Scalars["ID"];
+  userId: Scalars["ID"]["input"];
 };
 
 export type QueryIncidentReportArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryIncidentReportsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  createdAt_Gte?: InputMaybe<Scalars["DateTime"]>;
-  createdAt_Lte?: InputMaybe<Scalars["DateTime"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  incidentDate_Gte?: InputMaybe<Scalars["Date"]>;
-  incidentDate_Lte?: InputMaybe<Scalars["Date"]>;
-  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  relevantAuthorities_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  relevantAuthorities_Name?: InputMaybe<Scalars["String"]>;
-  relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]>;
-  reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
-  testFlag?: InputMaybe<Scalars["Boolean"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  createdAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  createdAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  incidentDate_Gte?: InputMaybe<Scalars["Date"]["input"]>;
+  incidentDate_Lte?: InputMaybe<Scalars["Date"]["input"]>;
+  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  relevantAuthorities_Id_In?: InputMaybe<
+    Array<InputMaybe<Scalars["ID"]["input"]>>
+  >;
+  relevantAuthorities_Name?: InputMaybe<Scalars["String"]["input"]>;
+  relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]["input"]>;
+  reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]["input"]>>>;
+  testFlag?: InputMaybe<Scalars["Boolean"]["input"]>;
 };
 
 export type QueryInvitationCodeArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryMyIncidentReportsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  createdAt_Gte?: InputMaybe<Scalars["DateTime"]>;
-  createdAt_Lte?: InputMaybe<Scalars["DateTime"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  incidentDate_Gte?: InputMaybe<Scalars["Date"]>;
-  incidentDate_Lte?: InputMaybe<Scalars["Date"]>;
-  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  relevantAuthorities_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  relevantAuthorities_Name?: InputMaybe<Scalars["String"]>;
-  relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]>;
-  reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
-  testFlag?: InputMaybe<Scalars["Boolean"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  createdAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  createdAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  incidentDate_Gte?: InputMaybe<Scalars["Date"]["input"]>;
+  incidentDate_Lte?: InputMaybe<Scalars["Date"]["input"]>;
+  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  relevantAuthorities_Id_In?: InputMaybe<
+    Array<InputMaybe<Scalars["ID"]["input"]>>
+  >;
+  relevantAuthorities_Name?: InputMaybe<Scalars["String"]["input"]>;
+  relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]["input"]>;
+  reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]["input"]>>>;
+  testFlag?: InputMaybe<Scalars["Boolean"]["input"]>;
 };
 
 export type QueryMyMessageArgs = {
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 };
 
 export type QueryMyMessagesArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryNotificationTemplateGetArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryObservationDefinitionGetArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryObservationMonitoringDefinitionGetArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryObservationSubjectArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryObservationSubjectMonitoringRecordArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryObservationSubjectMonitoringRecordsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  createdAt_Gte?: InputMaybe<Scalars["DateTime"]>;
-  createdAt_Lte?: InputMaybe<Scalars["DateTime"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  subject_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]>>>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  createdAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  createdAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  subject_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]["input"]>>>;
 };
 
 export type QueryObservationSubjectsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  createdAt_Gte?: InputMaybe<Scalars["DateTime"]>;
-  createdAt_Lte?: InputMaybe<Scalars["DateTime"]>;
-  definition_Id?: InputMaybe<Scalars["Float"]>;
-  definition_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
-  limit?: InputMaybe<Scalars["Int"]>;
-  offset?: InputMaybe<Scalars["Int"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
-  q?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  createdAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  createdAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  definition_Id?: InputMaybe<Scalars["ID"]["input"]>;
+  definition_Id_In?: InputMaybe<Array<InputMaybe<Scalars["ID"]["input"]>>>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryObservationSubjectsInBoundedArgs = {
-  bottomRightX: Scalars["Float"];
-  bottomRightY: Scalars["Float"];
-  definitionId: Scalars["Int"];
-  topLeftX: Scalars["Float"];
-  topLeftY: Scalars["Float"];
+  bottomRightX: Scalars["Float"]["input"];
+  bottomRightY: Scalars["Float"]["input"];
+  definitionId: Scalars["Int"]["input"];
+  topLeftX: Scalars["Float"]["input"];
+  topLeftY: Scalars["Float"]["input"];
 };
 
 export type QueryOutbreakPlacesArgs = {
-  caseId: Scalars["UUID"];
+  caseId: Scalars["UUID"]["input"];
 };
 
 export type QueryOutbreakPlanGetArgs = {
-  id: Scalars["Int"];
+  id: Scalars["Int"]["input"];
 };
 
 export type QueryPlaceGetArgs = {
-  id: Scalars["Int"];
+  id: Scalars["Int"]["input"];
 };
 
 export type QueryReportDataSummaryArgs = {
-  data: Scalars["GenericScalar"];
-  incidentDate: Scalars["Date"];
-  reportTypeId: Scalars["UUID"];
+  data: Scalars["GenericScalar"]["input"];
+  gpsLocation?: InputMaybe<Scalars["String"]["input"]>;
+  incidentDate: Scalars["Date"]["input"];
+  reportTypeId: Scalars["UUID"]["input"];
 };
 
 export type QueryReportTypeArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryReportTypeByNameArgs = {
-  name: Scalars["String"];
+  name: Scalars["String"]["input"];
 };
 
 export type QueryReporterNotificationArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryStatQueryArgs = {
-  authorityId: Scalars["Int"];
+  authorityId: Scalars["Int"]["input"];
 };
 
 export type QueryStateDefinitionGetArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryStateStepGetArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryStateStepListByReportTypeArgs = {
-  reportTypeId: Scalars["ID"];
+  reportTypeId: Scalars["ID"]["input"];
 };
 
 export type QueryStateTransitionGetArgs = {
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 };
 
 export type QuerySummaryCaseByCategoryQueryArgs = {
-  authorityId: Scalars["Int"];
-  fromDate?: InputMaybe<Scalars["DateTime"]>;
-  toDate?: InputMaybe<Scalars["DateTime"]>;
+  authorityId: Scalars["Int"]["input"];
+  fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  toDate?: InputMaybe<Scalars["DateTime"]["input"]>;
 };
 
 export type QuerySummaryContributionQueryArgs = {
-  fromDate?: InputMaybe<Scalars["DateTime"]>;
-  toDate?: InputMaybe<Scalars["DateTime"]>;
-  userId: Scalars["Int"];
+  fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  toDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  userId: Scalars["Int"]["input"];
 };
 
 export type QuerySummaryReportByCategoryQueryArgs = {
-  authorityId: Scalars["Int"];
-  fromDate?: InputMaybe<Scalars["DateTime"]>;
-  toDate?: InputMaybe<Scalars["DateTime"]>;
+  authorityId: Scalars["Int"]["input"];
+  fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  toDate?: InputMaybe<Scalars["DateTime"]["input"]>;
 };
 
 export type QuerySummaryReporterNoReportArgs = {
-  authorityId: Scalars["Int"];
-  fromDate: Scalars["Date"];
-  toDate: Scalars["Date"];
+  authorityId: Scalars["Int"]["input"];
+  fromDate: Scalars["Date"]["input"];
+  toDate: Scalars["Date"]["input"];
 };
 
 export type QuerySummaryReporterReportByDayArgs = {
-  authorityId: Scalars["Int"];
-  fromDate: Scalars["Date"];
-  toDate: Scalars["Date"];
+  authorityId: Scalars["Int"]["input"];
+  fromDate: Scalars["Date"]["input"];
+  toDate: Scalars["Date"]["input"];
 };
 
 export type QuerySyncObservationDefinitionsArgs = {
@@ -3350,7 +3349,7 @@ export type QuerySyncReportTypesArgs = {
 };
 
 export type QueryTransitionListByReportTypeArgs = {
-  reportTypeId: Scalars["ID"];
+  reportTypeId: Scalars["ID"]["input"];
 };
 
 export enum RecordType {
@@ -3360,30 +3359,30 @@ export enum RecordType {
 
 export type Refresh = {
   __typename?: "Refresh";
-  payload: Scalars["GenericScalar"];
-  refreshExpiresIn: Scalars["Int"];
-  refreshToken: Scalars["String"];
-  token: Scalars["String"];
+  payload: Scalars["GenericScalar"]["output"];
+  refreshExpiresIn: Scalars["Int"]["output"];
+  refreshToken: Scalars["String"]["output"];
+  token: Scalars["String"]["output"];
 };
 
 export type RegisterFcmTokenMutation = {
   __typename?: "RegisterFcmTokenMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type ReportDataSummaryType = {
   __typename?: "ReportDataSummaryType";
-  result?: Maybe<Scalars["String"]>;
+  result?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type ReportTypeId = {
   __typename?: "ReportTypeId";
-  id: Scalars["UUID"];
+  id: Scalars["UUID"]["output"];
 };
 
 export type ReportTypeSyncInputType = {
-  id: Scalars["UUID"];
-  updatedAt: Scalars["DateTime"];
+  id: Scalars["UUID"]["input"];
+  updatedAt: Scalars["DateTime"]["input"];
 };
 
 export type ReportTypeSyncOutputType = {
@@ -3398,82 +3397,82 @@ export type ReportTypeType = {
   authorities: Array<AdminAuthorityCreateSuccess>;
   casedefinitionSet: Array<AdminCaseDefinitionCreateSuccess>;
   category?: Maybe<CategoryType>;
-  createdAt: Scalars["DateTime"];
-  definition?: Maybe<Scalars["GenericScalar"]>;
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  followupDefinition?: Maybe<Scalars["GenericScalar"]>;
+  createdAt: Scalars["DateTime"]["output"];
+  definition?: Maybe<Scalars["GenericScalar"]["output"]>;
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  followupDefinition?: Maybe<Scalars["GenericScalar"]["output"]>;
   followupreports: Array<FollowupReportType>;
-  id: Scalars["UUID"];
+  id: Scalars["UUID"]["output"];
   incidentreports: Array<IncidentReportType>;
-  isFollowable: Scalars["Boolean"];
-  name: Scalars["String"];
+  isFollowable: Scalars["Boolean"]["output"];
+  name: Scalars["String"]["output"];
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
-  ordering: Scalars["Int"];
+  ordering: Scalars["Int"]["output"];
   planSet: Array<AdminOutbreakPlanUpdateSuccess>;
-  published: Scalars["Boolean"];
-  rendererDataTemplate?: Maybe<Scalars["String"]>;
-  rendererFollowupDataTemplate?: Maybe<Scalars["String"]>;
+  published: Scalars["Boolean"]["output"];
+  rendererDataTemplate?: Maybe<Scalars["String"]["output"]>;
+  rendererFollowupDataTemplate?: Maybe<Scalars["String"]["output"]>;
   reporternotificationSet: Array<AdminReporterNotificationCreateSuccess>;
   stateDefinition?: Maybe<DeepStateDefinitionType>;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type ReporterNoReport = {
   __typename?: "ReporterNoReport";
-  authorityName?: Maybe<Scalars["String"]>;
-  reporterId?: Maybe<Scalars["Int"]>;
-  reporterName?: Maybe<Scalars["String"]>;
+  authorityName?: Maybe<Scalars["String"]["output"]>;
+  reporterId?: Maybe<Scalars["Int"]["output"]>;
+  reporterName?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type ReporterNotificationType = {
   __typename?: "ReporterNotificationType";
-  condition: Scalars["String"];
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  description: Scalars["String"];
-  id: Scalars["ID"];
-  isActive: Scalars["Boolean"];
+  condition: Scalars["String"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  description: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  isActive: Scalars["Boolean"]["output"];
   reportType?: Maybe<AdminReportTypeCreateSuccess>;
-  template: Scalars["String"];
-  titleTemplate: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
+  template: Scalars["String"]["output"];
+  titleTemplate: Scalars["String"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type ReporterReportByDate = {
   __typename?: "ReporterReportByDate";
-  authorityName?: Maybe<Scalars["String"]>;
-  date?: Maybe<Scalars["Date"]>;
-  reportCount?: Maybe<Scalars["Int"]>;
-  reporterName?: Maybe<Scalars["String"]>;
-  week?: Maybe<Scalars["Int"]>;
-  year?: Maybe<Scalars["Int"]>;
-  yearWeek?: Maybe<Scalars["String"]>;
+  authorityName?: Maybe<Scalars["String"]["output"]>;
+  date?: Maybe<Scalars["Date"]["output"]>;
+  reportCount?: Maybe<Scalars["Int"]["output"]>;
+  reporterName?: Maybe<Scalars["String"]["output"]>;
+  week?: Maybe<Scalars["Int"]["output"]>;
+  year?: Maybe<Scalars["Int"]["output"]>;
+  yearWeek?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type RequestToDeleteMyAccountMutation = {
   __typename?: "RequestToDeleteMyAccountMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type ResetPasswordMutation = {
   __typename?: "ResetPasswordMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type ResetPasswordRequestMutation = {
   __typename?: "ResetPasswordRequestMutation";
-  success?: Maybe<Scalars["Boolean"]>;
+  success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type Revoke = {
   __typename?: "Revoke";
-  revoked: Scalars["Int"];
+  revoked: Scalars["Int"]["output"];
 };
 
 export type SimulationCaseDefinitionType = {
   __typename?: "SimulationCaseDefinitionType";
-  description?: Maybe<Scalars["String"]>;
-  id?: Maybe<Scalars["Int"]>;
+  description?: Maybe<Scalars["String"]["output"]>;
+  id?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type SimulationReportType = {
@@ -3482,7 +3481,7 @@ export type SimulationReportType = {
   notificationTemplates?: Maybe<
     Array<Maybe<SimulationReporterNotificationType>>
   >;
-  rendererData?: Maybe<Scalars["String"]>;
+  rendererData?: Maybe<Scalars["String"]["output"]>;
   reporterNotifications?: Maybe<
     Array<Maybe<SimulationReporterNotificationType>>
   >;
@@ -3490,44 +3489,44 @@ export type SimulationReportType = {
 
 export type SimulationReporterNotificationType = {
   __typename?: "SimulationReporterNotificationType";
-  id?: Maybe<Scalars["Int"]>;
-  name?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["Int"]["output"]>;
+  name?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type StatType = {
   __typename?: "StatType";
-  officialCount?: Maybe<Scalars["Int"]>;
-  openCaseCount?: Maybe<Scalars["Int"]>;
-  reporterCount?: Maybe<Scalars["Int"]>;
+  officialCount?: Maybe<Scalars["Int"]["output"]>;
+  openCaseCount?: Maybe<Scalars["Int"]["output"]>;
+  reporterCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type StateDefinitionType = {
   __typename?: "StateDefinitionType";
-  id: Scalars["ID"];
-  isDefault: Scalars["Boolean"];
-  name: Scalars["String"];
+  id: Scalars["ID"]["output"];
+  isDefault: Scalars["Boolean"]["output"];
+  name: Scalars["String"]["output"];
 };
 
 export type StateStepType = {
   __typename?: "StateStepType";
-  id: Scalars["ID"];
-  isStartState: Scalars["Boolean"];
-  isStopState: Scalars["Boolean"];
-  name: Scalars["String"];
+  id: Scalars["ID"]["output"];
+  isStartState: Scalars["Boolean"]["output"];
+  isStopState: Scalars["Boolean"]["output"];
+  name: Scalars["String"]["output"];
   stateDefinition?: Maybe<StateDefinitionType>;
 };
 
 export type StateTransitionType = {
   __typename?: "StateTransitionType";
   casestatetransitionSet: Array<CaseStateTransitionType>;
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  formDefinition?: Maybe<Scalars["GenericScalar"]>;
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  formDefinition?: Maybe<Scalars["GenericScalar"]["output"]>;
   fromStep: DeepStateStepType;
-  id: Scalars["ID"];
+  id: Scalars["ID"]["output"];
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   toStep: DeepStateStepType;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type SubmitFollowupReport = {
@@ -3537,10 +3536,10 @@ export type SubmitFollowupReport = {
 
 export type SubmitImage = {
   __typename?: "SubmitImage";
-  file?: Maybe<Scalars["String"]>;
-  id?: Maybe<Scalars["UUID"]>;
-  imageUrl?: Maybe<Scalars["String"]>;
-  thumbnail?: Maybe<Scalars["String"]>;
+  file?: Maybe<Scalars["String"]["output"]>;
+  id?: Maybe<Scalars["UUID"]["output"]>;
+  imageUrl?: Maybe<Scalars["String"]["output"]>;
+  thumbnail?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type SubmitIncidentReport = {
@@ -3560,45 +3559,45 @@ export type SubmitObservationSubjectMonitoringRecord = {
 
 export type SubmitRecordImage = {
   __typename?: "SubmitRecordImage";
-  file?: Maybe<Scalars["String"]>;
-  id?: Maybe<Scalars["UUID"]>;
-  imageUrl?: Maybe<Scalars["String"]>;
-  thumbnail?: Maybe<Scalars["String"]>;
+  file?: Maybe<Scalars["String"]["output"]>;
+  id?: Maybe<Scalars["UUID"]["output"]>;
+  imageUrl?: Maybe<Scalars["String"]["output"]>;
+  thumbnail?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type SubmitRecordUploadFile = {
   __typename?: "SubmitRecordUploadFile";
-  file?: Maybe<Scalars["String"]>;
-  fileType?: Maybe<Scalars["String"]>;
-  fileUrl?: Maybe<Scalars["String"]>;
-  id?: Maybe<Scalars["UUID"]>;
+  file?: Maybe<Scalars["String"]["output"]>;
+  fileType?: Maybe<Scalars["String"]["output"]>;
+  fileUrl?: Maybe<Scalars["String"]["output"]>;
+  id?: Maybe<Scalars["UUID"]["output"]>;
 };
 
 export type SubmitUploadFile = {
   __typename?: "SubmitUploadFile";
-  file?: Maybe<Scalars["String"]>;
-  fileType?: Maybe<Scalars["String"]>;
-  fileUrl?: Maybe<Scalars["String"]>;
-  id?: Maybe<Scalars["UUID"]>;
+  file?: Maybe<Scalars["String"]["output"]>;
+  fileType?: Maybe<Scalars["String"]["output"]>;
+  fileUrl?: Maybe<Scalars["String"]["output"]>;
+  id?: Maybe<Scalars["UUID"]["output"]>;
 };
 
 export type SubmitZeroReportMutation = {
   __typename?: "SubmitZeroReportMutation";
-  id?: Maybe<Scalars["UUID"]>;
+  id?: Maybe<Scalars["UUID"]["output"]>;
 };
 
 export type SummaryByCategoryType = {
   __typename?: "SummaryByCategoryType";
-  category: Scalars["String"];
-  day: Scalars["Date"];
-  ordering?: Maybe<Scalars["Int"]>;
-  total: Scalars["Int"];
+  category: Scalars["String"]["output"];
+  day: Scalars["Date"]["output"];
+  ordering?: Maybe<Scalars["Int"]["output"]>;
+  total: Scalars["Int"]["output"];
 };
 
 export type SummaryContributionType = {
   __typename?: "SummaryContributionType";
-  day: Scalars["Date"];
-  total: Scalars["Int"];
+  day: Scalars["Date"]["output"];
+  total: Scalars["Int"]["output"];
 };
 
 export type UnPublishReportTypeMutation = {
@@ -3608,21 +3607,21 @@ export type UnPublishReportTypeMutation = {
 
 export type UploadFileType = {
   __typename?: "UploadFileType";
-  createdAt: Scalars["DateTime"];
-  deletedAt?: Maybe<Scalars["DateTime"]>;
-  file: Scalars["String"];
-  fileType: Scalars["String"];
-  fileUrl?: Maybe<Scalars["String"]>;
-  id: Scalars["UUID"];
-  reportId: Scalars["UUID"];
-  updatedAt: Scalars["DateTime"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  file: Scalars["String"]["output"];
+  fileType: Scalars["String"]["output"];
+  fileUrl?: Maybe<Scalars["String"]["output"]>;
+  id: Scalars["UUID"]["output"];
+  reportId: Scalars["UUID"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type UserMessageType = {
   __typename?: "UserMessageType";
-  createdAt: Scalars["DateTime"];
-  id: Scalars["ID"];
-  isSeen: Scalars["Boolean"];
+  createdAt: Scalars["DateTime"]["output"];
+  id: Scalars["ID"]["output"];
+  isSeen: Scalars["Boolean"]["output"];
   message?: Maybe<MessageType>;
   user?: Maybe<UserType>;
 };
@@ -3633,49 +3632,49 @@ export type UserMessageTypeNodeConnection = {
   pageInfo: PageInfoExtra;
   /** Contains the nodes in this connection. */
   results: Array<Maybe<UserMessageType>>;
-  totalCount?: Maybe<Scalars["Int"]>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type UserProfileType = {
   __typename?: "UserProfileType";
-  address?: Maybe<Scalars["String"]>;
-  authorityId?: Maybe<Scalars["Int"]>;
-  authorityName?: Maybe<Scalars["String"]>;
-  avatarUrl?: Maybe<Scalars["String"]>;
-  consent?: Maybe<Scalars["Boolean"]>;
-  email?: Maybe<Scalars["String"]>;
-  features?: Maybe<Array<Maybe<Scalars["String"]>>>;
-  firstName: Scalars["String"];
-  id: Scalars["Int"];
-  isStaff?: Maybe<Scalars["Boolean"]>;
-  isSuperuser?: Maybe<Scalars["Boolean"]>;
-  lastName: Scalars["String"];
-  role?: Maybe<Scalars["String"]>;
-  telephone?: Maybe<Scalars["String"]>;
-  username: Scalars["String"];
+  address?: Maybe<Scalars["String"]["output"]>;
+  authorityId?: Maybe<Scalars["Int"]["output"]>;
+  authorityName?: Maybe<Scalars["String"]["output"]>;
+  avatarUrl?: Maybe<Scalars["String"]["output"]>;
+  consent?: Maybe<Scalars["Boolean"]["output"]>;
+  email?: Maybe<Scalars["String"]["output"]>;
+  features?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
+  firstName: Scalars["String"]["output"];
+  id: Scalars["Int"]["output"];
+  isStaff?: Maybe<Scalars["Boolean"]["output"]>;
+  isSuperuser?: Maybe<Scalars["Boolean"]["output"]>;
+  lastName: Scalars["String"]["output"];
+  role?: Maybe<Scalars["String"]["output"]>;
+  telephone?: Maybe<Scalars["String"]["output"]>;
+  username: Scalars["String"]["output"];
 };
 
 export type UserType = {
   __typename?: "UserType";
-  avatarUrl?: Maybe<Scalars["String"]>;
-  firstName: Scalars["String"];
-  id: Scalars["ID"];
-  lastName: Scalars["String"];
-  telephone?: Maybe<Scalars["String"]>;
+  avatarUrl?: Maybe<Scalars["String"]["output"]>;
+  firstName: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  lastName: Scalars["String"]["output"];
+  telephone?: Maybe<Scalars["String"]["output"]>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
-  username: Scalars["String"];
+  username: Scalars["String"]["output"];
 };
 
 export type Verify = {
   __typename?: "Verify";
-  payload: Scalars["GenericScalar"];
+  payload: Scalars["GenericScalar"]["output"];
 };
 
 export type VerifyLoginQrTokenMutation = {
   __typename?: "VerifyLoginQRTokenMutation";
   me?: Maybe<UserProfileType>;
-  refreshToken?: Maybe<Scalars["String"]>;
-  token?: Maybe<Scalars["String"]>;
+  refreshToken?: Maybe<Scalars["String"]["output"]>;
+  token?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type DeleteTokenCookieMutationVariables = Exact<{
@@ -3695,7 +3694,7 @@ export type DeleteTokenCookieMutation = {
 };
 
 export type RefreshTokenMutationVariables = Exact<{
-  refreshToken?: InputMaybe<Scalars["String"]>;
+  refreshToken?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type RefreshTokenMutation = {
@@ -3704,8 +3703,8 @@ export type RefreshTokenMutation = {
 };
 
 export type TokenAuthMutationVariables = Exact<{
-  username: Scalars["String"];
-  password: Scalars["String"];
+  username: Scalars["String"]["input"];
+  password: Scalars["String"]["input"];
 }>;
 
 export type TokenAuthMutation = {
@@ -3719,10 +3718,10 @@ export type TokenAuthMutation = {
 };
 
 export type AuthoritiesQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  nameStartWith?: InputMaybe<Scalars["String"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  nameStartWith?: InputMaybe<Scalars["String"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type AuthoritiesQuery = {
@@ -3740,10 +3739,10 @@ export type AuthoritiesQuery = {
 };
 
 export type AuthorityQueryQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  q?: InputMaybe<Scalars["String"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type AuthorityQueryQuery = {
@@ -3761,8 +3760,8 @@ export type AuthorityQueryQuery = {
 };
 
 export type AuthorityInheritLookupQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  q?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type AuthorityInheritLookupQuery = {
@@ -3780,7 +3779,7 @@ export type AuthorityInheritLookupQuery = {
 };
 
 export type AuthorityInheritsDownLookupQueryVariables = Exact<{
-  authorityId: Scalars["ID"];
+  authorityId: Scalars["ID"]["input"];
 }>;
 
 export type AuthorityInheritsDownLookupQuery = {
@@ -3794,7 +3793,7 @@ export type AuthorityInheritsDownLookupQuery = {
 };
 
 export type AuthorityInheritsDownShallowQueryVariables = Exact<{
-  authorityId: Scalars["ID"];
+  authorityId: Scalars["ID"]["input"];
 }>;
 
 export type AuthorityInheritsDownShallowQuery = {
@@ -3808,14 +3807,16 @@ export type AuthorityInheritsDownShallowQuery = {
 };
 
 export type AuthorityCreateMutationVariables = Exact<{
-  code: Scalars["String"];
-  name: Scalars["String"];
-  area?: InputMaybe<Scalars["String"]>;
+  code: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  area?: InputMaybe<Scalars["String"]["input"]>;
   inherits?: InputMaybe<
-    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+    | Array<InputMaybe<Scalars["String"]["input"]>>
+    | InputMaybe<Scalars["String"]["input"]>
   >;
   boundaryConnects?: InputMaybe<
-    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+    | Array<InputMaybe<Scalars["String"]["input"]>>
+    | InputMaybe<Scalars["String"]["input"]>
   >;
 }>;
 
@@ -3839,15 +3840,17 @@ export type AuthorityCreateMutation = {
 };
 
 export type AuthorityUpdateMutationVariables = Exact<{
-  id: Scalars["ID"];
-  code: Scalars["String"];
-  name: Scalars["String"];
-  area?: InputMaybe<Scalars["String"]>;
+  id: Scalars["ID"]["input"];
+  code: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  area?: InputMaybe<Scalars["String"]["input"]>;
   inherits?: InputMaybe<
-    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+    | Array<InputMaybe<Scalars["String"]["input"]>>
+    | InputMaybe<Scalars["String"]["input"]>
   >;
   boundaryConnects?: InputMaybe<
-    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+    | Array<InputMaybe<Scalars["String"]["input"]>>
+    | InputMaybe<Scalars["String"]["input"]>
   >;
 }>;
 
@@ -3892,7 +3895,7 @@ export type AuthorityUpdateMutation = {
 };
 
 export type AuthorityDeleteMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type AuthorityDeleteMutation = {
@@ -3904,7 +3907,7 @@ export type AuthorityDeleteMutation = {
 };
 
 export type GetAuthorityQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetAuthorityQuery = {
@@ -3931,17 +3934,19 @@ export type GetAuthorityQuery = {
 };
 
 export type CasesQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  fromDate?: InputMaybe<Scalars["DateTime"]>;
-  throughDate?: InputMaybe<Scalars["DateTime"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   authorities?: InputMaybe<
-    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+    | Array<InputMaybe<Scalars["ID"]["input"]>>
+    | InputMaybe<Scalars["ID"]["input"]>
   >;
   reportTypes?: InputMaybe<
-    Array<InputMaybe<Scalars["UUID"]>> | InputMaybe<Scalars["UUID"]>
+    | Array<InputMaybe<Scalars["UUID"]["input"]>>
+    | InputMaybe<Scalars["UUID"]["input"]>
   >;
-  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]>;
+  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]["input"]>;
 }>;
 
 export type CasesQuery = {
@@ -3981,7 +3986,7 @@ export type CasesQuery = {
 };
 
 export type GetCaseQueryVariables = Exact<{
-  id: Scalars["UUID"];
+  id: Scalars["UUID"]["input"];
 }>;
 
 export type GetCaseQuery = {
@@ -4144,9 +4149,9 @@ export type GetCaseQuery = {
 };
 
 export type StateForwardMutationVariables = Exact<{
-  caseId: Scalars["ID"];
-  transitionId: Scalars["ID"];
-  formData?: InputMaybe<Scalars["GenericScalar"]>;
+  caseId: Scalars["ID"]["input"];
+  transitionId: Scalars["ID"]["input"];
+  formData?: InputMaybe<Scalars["GenericScalar"]["input"]>;
 }>;
 
 export type StateForwardMutation = {
@@ -4187,10 +4192,10 @@ export type StateForwardMutation = {
 };
 
 export type CaseDefinitionsQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  descriptionContains?: InputMaybe<Scalars["String"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  descriptionContains?: InputMaybe<Scalars["String"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type CaseDefinitionsQuery = {
@@ -4213,9 +4218,9 @@ export type CaseDefinitionsQuery = {
 };
 
 export type CaseDefinitionCreateMutationVariables = Exact<{
-  reportTypeId: Scalars["UUID"];
-  description: Scalars["String"];
-  condition: Scalars["String"];
+  reportTypeId: Scalars["UUID"]["input"];
+  description: Scalars["String"]["input"];
+  condition: Scalars["String"]["input"];
 }>;
 
 export type CaseDefinitionCreateMutation = {
@@ -4242,10 +4247,10 @@ export type CaseDefinitionCreateMutation = {
 };
 
 export type CaseDefinitionUpdateMutationVariables = Exact<{
-  id: Scalars["ID"];
-  reportTypeId: Scalars["UUID"];
-  description: Scalars["String"];
-  condition: Scalars["String"];
+  id: Scalars["ID"]["input"];
+  reportTypeId: Scalars["UUID"]["input"];
+  description: Scalars["String"]["input"];
+  condition: Scalars["String"]["input"];
 }>;
 
 export type CaseDefinitionUpdateMutation = {
@@ -4281,7 +4286,7 @@ export type CaseDefinitionUpdateMutation = {
 };
 
 export type CaseDefinitionDeleteMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type CaseDefinitionDeleteMutation = {
@@ -4293,7 +4298,7 @@ export type CaseDefinitionDeleteMutation = {
 };
 
 export type GetCaseDefinitionQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetCaseDefinitionQuery = {
@@ -4312,7 +4317,7 @@ export type GetCaseDefinitionQuery = {
 };
 
 export type QueryCommentsQueryVariables = Exact<{
-  threadId: Scalars["ID"];
+  threadId: Scalars["ID"]["input"];
 }>;
 
 export type QueryCommentsQuery = {
@@ -4342,10 +4347,11 @@ export type QueryCommentsQuery = {
 };
 
 export type MutationCommentCreateMutationVariables = Exact<{
-  body: Scalars["String"];
-  threadId: Scalars["Int"];
+  body: Scalars["String"]["input"];
+  threadId: Scalars["Int"]["input"];
   files?: InputMaybe<
-    Array<InputMaybe<Scalars["Upload"]>> | InputMaybe<Scalars["Upload"]>
+    | Array<InputMaybe<Scalars["Upload"]["input"]>>
+    | InputMaybe<Scalars["Upload"]["input"]>
   >;
 }>;
 
@@ -4390,10 +4396,10 @@ export type MutationCommentCreateMutation = {
 };
 
 export type ConfigurationsQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  q?: InputMaybe<Scalars["String"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type ConfigurationsQuery = {
@@ -4410,8 +4416,8 @@ export type ConfigurationsQuery = {
 };
 
 export type ConfigurationCreateMutationVariables = Exact<{
-  key: Scalars["String"];
-  value: Scalars["String"];
+  key: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
 }>;
 
 export type ConfigurationCreateMutation = {
@@ -4438,9 +4444,9 @@ export type ConfigurationCreateMutation = {
 };
 
 export type ConfigurationUpdateMutationVariables = Exact<{
-  id: Scalars["String"];
-  key: Scalars["String"];
-  value: Scalars["String"];
+  id: Scalars["String"]["input"];
+  key: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
 }>;
 
 export type ConfigurationUpdateMutation = {
@@ -4467,7 +4473,7 @@ export type ConfigurationUpdateMutation = {
 };
 
 export type ConfigurationDeleteMutationVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type ConfigurationDeleteMutation = {
@@ -4479,7 +4485,7 @@ export type ConfigurationDeleteMutation = {
 };
 
 export type GetConfigurationQueryVariables = Exact<{
-  key: Scalars["String"];
+  key: Scalars["String"]["input"];
 }>;
 
 export type GetConfigurationQuery = {
@@ -4492,7 +4498,7 @@ export type GetConfigurationQuery = {
 };
 
 export type StatQueryQueryVariables = Exact<{
-  authorityId: Scalars["Int"];
+  authorityId: Scalars["Int"]["input"];
 }>;
 
 export type StatQueryQuery = {
@@ -4506,7 +4512,7 @@ export type StatQueryQuery = {
 };
 
 export type EventsQueryQueryVariables = Exact<{
-  authorityId: Scalars["Int"];
+  authorityId: Scalars["Int"]["input"];
 }>;
 
 export type EventsQueryQuery = {
@@ -4559,9 +4565,9 @@ export type EventsQueryQuery = {
 };
 
 export type SummaryReportByCategoryQueryQueryVariables = Exact<{
-  authorityId: Scalars["Int"];
-  fromDate?: InputMaybe<Scalars["DateTime"]>;
-  toDate?: InputMaybe<Scalars["DateTime"]>;
+  authorityId: Scalars["Int"]["input"];
+  fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  toDate?: InputMaybe<Scalars["DateTime"]["input"]>;
 }>;
 
 export type SummaryReportByCategoryQueryQuery = {
@@ -4576,9 +4582,9 @@ export type SummaryReportByCategoryQueryQuery = {
 };
 
 export type SummaryCaseByCategoryQueryQueryVariables = Exact<{
-  authorityId: Scalars["Int"];
-  fromDate?: InputMaybe<Scalars["DateTime"]>;
-  toDate?: InputMaybe<Scalars["DateTime"]>;
+  authorityId: Scalars["Int"]["input"];
+  fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  toDate?: InputMaybe<Scalars["DateTime"]["input"]>;
 }>;
 
 export type SummaryCaseByCategoryQueryQuery = {
@@ -4593,7 +4599,7 @@ export type SummaryCaseByCategoryQueryQuery = {
 };
 
 export type QueryFollowupsQueryVariables = Exact<{
-  incidentId: Scalars["ID"];
+  incidentId: Scalars["ID"]["input"];
 }>;
 
 export type QueryFollowupsQuery = {
@@ -4613,7 +4619,7 @@ export type QueryFollowupsQuery = {
 };
 
 export type GetFollowupReportQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetFollowupReportQuery = {
@@ -4650,7 +4656,7 @@ export type GetFollowupReportQuery = {
 };
 
 export type ResetPasswordRequestCreateMutationVariables = Exact<{
-  email: Scalars["String"];
+  email: Scalars["String"]["input"];
 }>;
 
 export type ResetPasswordRequestCreateMutation = {
@@ -4662,8 +4668,8 @@ export type ResetPasswordRequestCreateMutation = {
 };
 
 export type ResetPasswordCreateMutationVariables = Exact<{
-  token: Scalars["String"];
-  password: Scalars["String"];
+  token: Scalars["String"]["input"];
+  password: Scalars["String"]["input"];
 }>;
 
 export type ResetPasswordCreateMutation = {
@@ -4675,10 +4681,10 @@ export type ResetPasswordCreateMutation = {
 };
 
 export type InvitationCodesQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  roleContains?: InputMaybe<Scalars["String"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  roleContains?: InputMaybe<Scalars["String"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type InvitationCodesQuery = {
@@ -4699,11 +4705,11 @@ export type InvitationCodesQuery = {
 };
 
 export type InvitationCodeCreateMutationVariables = Exact<{
-  code: Scalars["String"];
-  authorityId: Scalars["Int"];
-  fromDate: Scalars["DateTime"];
-  throughDate: Scalars["DateTime"];
-  role?: InputMaybe<Scalars["String"]>;
+  code: Scalars["String"]["input"];
+  authorityId: Scalars["Int"]["input"];
+  fromDate: Scalars["DateTime"]["input"];
+  throughDate: Scalars["DateTime"]["input"];
+  role?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type InvitationCodeCreateMutation = {
@@ -4730,12 +4736,12 @@ export type InvitationCodeCreateMutation = {
 };
 
 export type InvitationCodeUpdateMutationVariables = Exact<{
-  id: Scalars["ID"];
-  code: Scalars["String"];
-  authorityId?: InputMaybe<Scalars["Int"]>;
-  fromDate?: InputMaybe<Scalars["DateTime"]>;
-  throughDate?: InputMaybe<Scalars["DateTime"]>;
-  role?: InputMaybe<Scalars["String"]>;
+  id: Scalars["ID"]["input"];
+  code: Scalars["String"]["input"];
+  authorityId?: InputMaybe<Scalars["Int"]["input"]>;
+  fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  role?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type InvitationCodeUpdateMutation = {
@@ -4773,7 +4779,7 @@ export type InvitationCodeUpdateMutation = {
 };
 
 export type InvitationCodeDeleteMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type InvitationCodeDeleteMutation = {
@@ -4785,7 +4791,7 @@ export type InvitationCodeDeleteMutation = {
 };
 
 export type GetInvitationCodeQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetInvitationCodeQuery = {
@@ -4806,7 +4812,7 @@ export type GetInvitationCodeQuery = {
 };
 
 export type NotificationTemplateAuthorityQueryVariables = Exact<{
-  reportTypeId: Scalars["ID"];
+  reportTypeId: Scalars["ID"]["input"];
 }>;
 
 export type NotificationTemplateAuthorityQuery = {
@@ -4821,8 +4827,8 @@ export type NotificationTemplateAuthorityQuery = {
 };
 
 export type AuthorityNotificationUpsertMutationVariables = Exact<{
-  notificationTemplateId: Scalars["Int"];
-  to: Scalars["String"];
+  notificationTemplateId: Scalars["Int"]["input"];
+  to: Scalars["String"]["input"];
 }>;
 
 export type AuthorityNotificationUpsertMutation = {
@@ -4849,7 +4855,7 @@ export type AuthorityNotificationUpsertMutation = {
 };
 
 export type AuthorityNotificationDeleteMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type AuthorityNotificationDeleteMutation = {
@@ -4861,10 +4867,10 @@ export type AuthorityNotificationDeleteMutation = {
 };
 
 export type NotificationTemplatesQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  q?: InputMaybe<Scalars["String"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type NotificationTemplatesQuery = {
@@ -4886,13 +4892,13 @@ export type NotificationTemplatesQuery = {
 };
 
 export type NotificationTemplateCreateMutationVariables = Exact<{
-  name: Scalars["String"];
-  type: Scalars["String"];
-  condition?: InputMaybe<Scalars["String"]>;
-  stateTransitionId?: InputMaybe<Scalars["Int"]>;
-  reportTypeId: Scalars["UUID"];
-  titleTemplate: Scalars["String"];
-  bodyTemplate: Scalars["String"];
+  name: Scalars["String"]["input"];
+  type: Scalars["String"]["input"];
+  condition?: InputMaybe<Scalars["String"]["input"]>;
+  stateTransitionId?: InputMaybe<Scalars["Int"]["input"]>;
+  reportTypeId: Scalars["UUID"]["input"];
+  titleTemplate: Scalars["String"]["input"];
+  bodyTemplate: Scalars["String"]["input"];
 }>;
 
 export type NotificationTemplateCreateMutation = {
@@ -4925,14 +4931,14 @@ export type NotificationTemplateCreateMutation = {
 };
 
 export type NotificationTemplateUpdateMutationVariables = Exact<{
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  type: Scalars["String"];
-  condition?: InputMaybe<Scalars["String"]>;
-  stateTransitionId?: InputMaybe<Scalars["Int"]>;
-  reportTypeId: Scalars["UUID"];
-  titleTemplate: Scalars["String"];
-  bodyTemplate: Scalars["String"];
+  id: Scalars["ID"]["input"];
+  name: Scalars["String"]["input"];
+  type: Scalars["String"]["input"];
+  condition?: InputMaybe<Scalars["String"]["input"]>;
+  stateTransitionId?: InputMaybe<Scalars["Int"]["input"]>;
+  reportTypeId: Scalars["UUID"]["input"];
+  titleTemplate: Scalars["String"]["input"];
+  bodyTemplate: Scalars["String"]["input"];
 }>;
 
 export type NotificationTemplateUpdateMutation = {
@@ -4975,7 +4981,7 @@ export type NotificationTemplateUpdateMutation = {
 };
 
 export type NotificationTemplateDeleteMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type NotificationTemplateDeleteMutation = {
@@ -4987,7 +4993,7 @@ export type NotificationTemplateDeleteMutation = {
 };
 
 export type GetNotificationTemplateQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetNotificationTemplateQuery = {
@@ -5023,12 +5029,12 @@ export type GetNotificationTemplateQuery = {
 };
 
 export type ObservationSubjectsQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  definitionId?: InputMaybe<Scalars["Float"]>;
-  fromDate?: InputMaybe<Scalars["DateTime"]>;
-  throughDate?: InputMaybe<Scalars["DateTime"]>;
-  q?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  definitionId?: InputMaybe<Scalars["ID"]["input"]>;
+  fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type ObservationSubjectsQuery = {
@@ -5055,7 +5061,7 @@ export type ObservationSubjectsQuery = {
 };
 
 export type GetObservationSubjectQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetObservationSubjectQuery = {
@@ -5101,7 +5107,7 @@ export type GetObservationSubjectQuery = {
 };
 
 export type GetObservationSubjectMonitoringQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetObservationSubjectMonitoringQuery = {
@@ -5142,10 +5148,10 @@ export type GetObservationSubjectMonitoringQuery = {
 };
 
 export type ObservationDefinitionsQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  q?: InputMaybe<Scalars["String"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type ObservationDefinitionsQuery = {
@@ -5163,12 +5169,12 @@ export type ObservationDefinitionsQuery = {
 };
 
 export type ObservationDefinitionCreateMutationVariables = Exact<{
-  name: Scalars["String"];
-  description?: InputMaybe<Scalars["String"]>;
-  registerFormDefinition: Scalars["JSONString"];
-  titleTemplate: Scalars["String"];
-  descriptionTemplate: Scalars["String"];
-  identityTemplate: Scalars["String"];
+  name: Scalars["String"]["input"];
+  description?: InputMaybe<Scalars["String"]["input"]>;
+  registerFormDefinition: Scalars["JSONString"]["input"];
+  titleTemplate: Scalars["String"]["input"];
+  descriptionTemplate: Scalars["String"]["input"];
+  identityTemplate: Scalars["String"]["input"];
 }>;
 
 export type ObservationDefinitionCreateMutation = {
@@ -5195,13 +5201,13 @@ export type ObservationDefinitionCreateMutation = {
 };
 
 export type ObservationDefinitionUpdateMutationVariables = Exact<{
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  description?: InputMaybe<Scalars["String"]>;
-  registerFormDefinition: Scalars["JSONString"];
-  titleTemplate: Scalars["String"];
-  descriptionTemplate: Scalars["String"];
-  identityTemplate: Scalars["String"];
+  id: Scalars["ID"]["input"];
+  name: Scalars["String"]["input"];
+  description?: InputMaybe<Scalars["String"]["input"]>;
+  registerFormDefinition: Scalars["JSONString"]["input"];
+  titleTemplate: Scalars["String"]["input"];
+  descriptionTemplate: Scalars["String"]["input"];
+  identityTemplate: Scalars["String"]["input"];
 }>;
 
 export type ObservationDefinitionUpdateMutation = {
@@ -5236,7 +5242,7 @@ export type ObservationDefinitionUpdateMutation = {
 };
 
 export type ObservationDefinitionDeleteMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type ObservationDefinitionDeleteMutation = {
@@ -5248,7 +5254,7 @@ export type ObservationDefinitionDeleteMutation = {
 };
 
 export type GetObservationDefinitionQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetObservationDefinitionQuery = {
@@ -5272,12 +5278,12 @@ export type GetObservationDefinitionQuery = {
 };
 
 export type ObservationMonitoringDefinitionCreateMutationVariables = Exact<{
-  definitionId: Scalars["ID"];
-  name: Scalars["String"];
-  description: Scalars["String"];
-  formDefinition: Scalars["JSONString"];
-  titleTemplate: Scalars["String"];
-  descriptionTemplate: Scalars["String"];
+  definitionId: Scalars["ID"]["input"];
+  name: Scalars["String"]["input"];
+  description: Scalars["String"]["input"];
+  formDefinition: Scalars["JSONString"]["input"];
+  titleTemplate: Scalars["String"]["input"];
+  descriptionTemplate: Scalars["String"]["input"];
 }>;
 
 export type ObservationMonitoringDefinitionCreateMutation = {
@@ -5304,13 +5310,13 @@ export type ObservationMonitoringDefinitionCreateMutation = {
 };
 
 export type ObservationMonitoringDefinitionUpdateMutationVariables = Exact<{
-  id: Scalars["ID"];
-  definitionId: Scalars["ID"];
-  name: Scalars["String"];
-  description: Scalars["String"];
-  formDefinition: Scalars["JSONString"];
-  titleTemplate: Scalars["String"];
-  descriptionTemplate: Scalars["String"];
+  id: Scalars["ID"]["input"];
+  definitionId: Scalars["ID"]["input"];
+  name: Scalars["String"]["input"];
+  description: Scalars["String"]["input"];
+  formDefinition: Scalars["JSONString"]["input"];
+  titleTemplate: Scalars["String"]["input"];
+  descriptionTemplate: Scalars["String"]["input"];
 }>;
 
 export type ObservationMonitoringDefinitionUpdateMutation = {
@@ -5348,7 +5354,7 @@ export type ObservationMonitoringDefinitionUpdateMutation = {
 };
 
 export type ObservationMonitoringDefinitionDeleteMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type ObservationMonitoringDefinitionDeleteMutation = {
@@ -5360,7 +5366,7 @@ export type ObservationMonitoringDefinitionDeleteMutation = {
 };
 
 export type GetObservationMonitoringDefinitionQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetObservationMonitoringDefinitionQuery = {
@@ -5381,7 +5387,7 @@ export type GetObservationMonitoringDefinitionQuery = {
 };
 
 export type OutbreakPlacesQueryVariables = Exact<{
-  caseId: Scalars["UUID"];
+  caseId: Scalars["UUID"]["input"];
 }>;
 
 export type OutbreakPlacesQuery = {
@@ -5400,10 +5406,10 @@ export type OutbreakPlacesQuery = {
 };
 
 export type OutbreakPlansQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  q?: InputMaybe<Scalars["String"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type OutbreakPlansQuery = {
@@ -5422,22 +5428,22 @@ export type OutbreakPlansQuery = {
 };
 
 export type OutbreakPlanCreateMutationVariables = Exact<{
-  name: Scalars["String"];
-  description: Scalars["String"];
-  reportTypeId: Scalars["UUID"];
-  stateStepId: Scalars["Int"];
-  zone1Color?: InputMaybe<Scalars["String"]>;
-  zone1MessageBody?: InputMaybe<Scalars["String"]>;
-  zone1MessageTitle?: InputMaybe<Scalars["String"]>;
-  zone1Radius?: InputMaybe<Scalars["Float"]>;
-  zone2Color?: InputMaybe<Scalars["String"]>;
-  zone2MessageBody?: InputMaybe<Scalars["String"]>;
-  zone2MessageTitle?: InputMaybe<Scalars["String"]>;
-  zone2Radius?: InputMaybe<Scalars["Float"]>;
-  zone3Color?: InputMaybe<Scalars["String"]>;
-  zone3MessageBody?: InputMaybe<Scalars["String"]>;
-  zone3MessageTitle?: InputMaybe<Scalars["String"]>;
-  zone3Radius?: InputMaybe<Scalars["Float"]>;
+  name: Scalars["String"]["input"];
+  description: Scalars["String"]["input"];
+  reportTypeId: Scalars["UUID"]["input"];
+  stateStepId: Scalars["Int"]["input"];
+  zone1Color?: InputMaybe<Scalars["String"]["input"]>;
+  zone1MessageBody?: InputMaybe<Scalars["String"]["input"]>;
+  zone1MessageTitle?: InputMaybe<Scalars["String"]["input"]>;
+  zone1Radius?: InputMaybe<Scalars["Float"]["input"]>;
+  zone2Color?: InputMaybe<Scalars["String"]["input"]>;
+  zone2MessageBody?: InputMaybe<Scalars["String"]["input"]>;
+  zone2MessageTitle?: InputMaybe<Scalars["String"]["input"]>;
+  zone2Radius?: InputMaybe<Scalars["Float"]["input"]>;
+  zone3Color?: InputMaybe<Scalars["String"]["input"]>;
+  zone3MessageBody?: InputMaybe<Scalars["String"]["input"]>;
+  zone3MessageTitle?: InputMaybe<Scalars["String"]["input"]>;
+  zone3Radius?: InputMaybe<Scalars["Float"]["input"]>;
 }>;
 
 export type OutbreakPlanCreateMutation = {
@@ -5470,23 +5476,23 @@ export type OutbreakPlanCreateMutation = {
 };
 
 export type OutbreakPlanUpdateMutationVariables = Exact<{
-  id: Scalars["Int"];
-  name: Scalars["String"];
-  description: Scalars["String"];
-  reportTypeId: Scalars["UUID"];
-  stateStepId: Scalars["Int"];
-  zone1Color?: InputMaybe<Scalars["String"]>;
-  zone1MessageBody?: InputMaybe<Scalars["String"]>;
-  zone1MessageTitle?: InputMaybe<Scalars["String"]>;
-  zone1Radius?: InputMaybe<Scalars["Float"]>;
-  zone2Color?: InputMaybe<Scalars["String"]>;
-  zone2MessageBody?: InputMaybe<Scalars["String"]>;
-  zone2MessageTitle?: InputMaybe<Scalars["String"]>;
-  zone2Radius?: InputMaybe<Scalars["Float"]>;
-  zone3Color?: InputMaybe<Scalars["String"]>;
-  zone3MessageBody?: InputMaybe<Scalars["String"]>;
-  zone3MessageTitle?: InputMaybe<Scalars["String"]>;
-  zone3Radius?: InputMaybe<Scalars["Float"]>;
+  id: Scalars["Int"]["input"];
+  name: Scalars["String"]["input"];
+  description: Scalars["String"]["input"];
+  reportTypeId: Scalars["UUID"]["input"];
+  stateStepId: Scalars["Int"]["input"];
+  zone1Color?: InputMaybe<Scalars["String"]["input"]>;
+  zone1MessageBody?: InputMaybe<Scalars["String"]["input"]>;
+  zone1MessageTitle?: InputMaybe<Scalars["String"]["input"]>;
+  zone1Radius?: InputMaybe<Scalars["Float"]["input"]>;
+  zone2Color?: InputMaybe<Scalars["String"]["input"]>;
+  zone2MessageBody?: InputMaybe<Scalars["String"]["input"]>;
+  zone2MessageTitle?: InputMaybe<Scalars["String"]["input"]>;
+  zone2Radius?: InputMaybe<Scalars["Float"]["input"]>;
+  zone3Color?: InputMaybe<Scalars["String"]["input"]>;
+  zone3MessageBody?: InputMaybe<Scalars["String"]["input"]>;
+  zone3MessageTitle?: InputMaybe<Scalars["String"]["input"]>;
+  zone3Radius?: InputMaybe<Scalars["Float"]["input"]>;
 }>;
 
 export type OutbreakPlanUpdateMutation = {
@@ -5536,7 +5542,7 @@ export type OutbreakPlanUpdateMutation = {
 };
 
 export type OutbreakPlanDeleteMutationVariables = Exact<{
-  id: Scalars["Int"];
+  id: Scalars["Int"]["input"];
 }>;
 
 export type OutbreakPlanDeleteMutation = {
@@ -5548,7 +5554,7 @@ export type OutbreakPlanDeleteMutation = {
 };
 
 export type GetOutbreakPlanQueryVariables = Exact<{
-  id: Scalars["Int"];
+  id: Scalars["Int"]["input"];
 }>;
 
 export type GetOutbreakPlanQuery = {
@@ -5580,10 +5586,10 @@ export type GetOutbreakPlanQuery = {
 };
 
 export type PlacesQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  q?: InputMaybe<Scalars["String"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type PlacesQuery = {
@@ -5601,11 +5607,11 @@ export type PlacesQuery = {
 };
 
 export type PlaceCreateMutationVariables = Exact<{
-  name: Scalars["String"];
-  authorityId: Scalars["Int"];
-  latitude: Scalars["Float"];
-  longitude: Scalars["Float"];
-  notificationTo?: InputMaybe<Scalars["String"]>;
+  name: Scalars["String"]["input"];
+  authorityId: Scalars["Int"]["input"];
+  latitude: Scalars["Float"]["input"];
+  longitude: Scalars["Float"]["input"];
+  notificationTo?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type PlaceCreateMutation = {
@@ -5639,12 +5645,12 @@ export type PlaceCreateMutation = {
 };
 
 export type PlaceUpdateMutationVariables = Exact<{
-  id: Scalars["Int"];
-  name: Scalars["String"];
-  authorityId: Scalars["Int"];
-  latitude: Scalars["Float"];
-  longitude: Scalars["Float"];
-  notificationTo?: InputMaybe<Scalars["String"]>;
+  id: Scalars["Int"]["input"];
+  name: Scalars["String"]["input"];
+  authorityId: Scalars["Int"]["input"];
+  latitude: Scalars["Float"]["input"];
+  longitude: Scalars["Float"]["input"];
+  notificationTo?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type PlaceUpdateMutation = {
@@ -5679,7 +5685,7 @@ export type PlaceUpdateMutation = {
 };
 
 export type PlaceDeleteMutationVariables = Exact<{
-  id: Scalars["Int"];
+  id: Scalars["Int"]["input"];
 }>;
 
 export type PlaceDeleteMutation = {
@@ -5691,7 +5697,7 @@ export type PlaceDeleteMutation = {
 };
 
 export type GetPlaceQueryVariables = Exact<{
-  id: Scalars["Int"];
+  id: Scalars["Int"]["input"];
 }>;
 
 export type GetPlaceQuery = {
@@ -5735,7 +5741,7 @@ export type MeQuery = {
 };
 
 export type UserChangePasswordMutationVariables = Exact<{
-  newPassword: Scalars["String"];
+  newPassword: Scalars["String"]["input"];
 }>;
 
 export type UserChangePasswordMutation = {
@@ -5747,10 +5753,10 @@ export type UserChangePasswordMutation = {
 };
 
 export type UserUpdateProfileMutationVariables = Exact<{
-  firstName: Scalars["String"];
-  lastName: Scalars["String"];
-  telephone?: InputMaybe<Scalars["String"]>;
-  address?: InputMaybe<Scalars["String"]>;
+  firstName: Scalars["String"]["input"];
+  lastName: Scalars["String"]["input"];
+  telephone?: InputMaybe<Scalars["String"]["input"]>;
+  address?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type UserUpdateProfileMutation = {
@@ -5762,7 +5768,7 @@ export type UserUpdateProfileMutation = {
 };
 
 export type UserUploadAvatarMutationVariables = Exact<{
-  image: Scalars["Upload"];
+  image: Scalars["Upload"]["input"];
 }>;
 
 export type UserUploadAvatarMutation = {
@@ -5787,7 +5793,7 @@ export type UserRequestToDeleteMyAccountMutation = {
 };
 
 export type CheckCodeQueryVariables = Exact<{
-  code: Scalars["String"];
+  code: Scalars["String"]["input"];
 }>;
 
 export type CheckCodeQuery = {
@@ -5805,13 +5811,13 @@ export type CheckCodeQuery = {
 };
 
 export type UserRegisterMutationVariables = Exact<{
-  email: Scalars["String"];
-  firstName: Scalars["String"];
-  invitationCode: Scalars["String"];
-  lastName: Scalars["String"];
-  telephone?: InputMaybe<Scalars["String"]>;
-  address?: InputMaybe<Scalars["String"]>;
-  username: Scalars["String"];
+  email: Scalars["String"]["input"];
+  firstName: Scalars["String"]["input"];
+  invitationCode: Scalars["String"]["input"];
+  lastName: Scalars["String"]["input"];
+  telephone?: InputMaybe<Scalars["String"]["input"]>;
+  address?: InputMaybe<Scalars["String"]["input"]>;
+  username: Scalars["String"]["input"];
 }>;
 
 export type UserRegisterMutation = {
@@ -5841,18 +5847,20 @@ export type UserRegisterMutation = {
 };
 
 export type ReportsQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  fromDate?: InputMaybe<Scalars["DateTime"]>;
-  throughDate?: InputMaybe<Scalars["DateTime"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   authorities?: InputMaybe<
-    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+    | Array<InputMaybe<Scalars["ID"]["input"]>>
+    | InputMaybe<Scalars["ID"]["input"]>
   >;
   reportTypes?: InputMaybe<
-    Array<InputMaybe<Scalars["UUID"]>> | InputMaybe<Scalars["UUID"]>
+    | Array<InputMaybe<Scalars["UUID"]["input"]>>
+    | InputMaybe<Scalars["UUID"]["input"]>
   >;
-  testFlag?: InputMaybe<Scalars["Boolean"]>;
-  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]>;
+  testFlag?: InputMaybe<Scalars["Boolean"]["input"]>;
+  includeChildAuthorities?: InputMaybe<Scalars["Boolean"]["input"]>;
 }>;
 
 export type ReportsQuery = {
@@ -5900,17 +5908,19 @@ export type ReportsQuery = {
 };
 
 export type BoundaryConnectedReportsQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  fromDate?: InputMaybe<Scalars["DateTime"]>;
-  throughDate?: InputMaybe<Scalars["DateTime"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   authorities?: InputMaybe<
-    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+    | Array<InputMaybe<Scalars["ID"]["input"]>>
+    | InputMaybe<Scalars["ID"]["input"]>
   >;
   reportTypes?: InputMaybe<
-    Array<InputMaybe<Scalars["UUID"]>> | InputMaybe<Scalars["UUID"]>
+    | Array<InputMaybe<Scalars["UUID"]["input"]>>
+    | InputMaybe<Scalars["UUID"]["input"]>
   >;
-  testFlag?: InputMaybe<Scalars["Boolean"]>;
+  testFlag?: InputMaybe<Scalars["Boolean"]["input"]>;
 }>;
 
 export type BoundaryConnectedReportsQuery = {
@@ -5954,7 +5964,7 @@ export type BoundaryConnectedReportsQuery = {
 };
 
 export type GetReportQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetReportQuery = {
@@ -6014,7 +6024,7 @@ export type GetReportQuery = {
 };
 
 export type PromoteReportToCaseMutationVariables = Exact<{
-  reportId: Scalars["UUID"];
+  reportId: Scalars["UUID"]["input"];
 }>;
 
 export type PromoteReportToCaseMutation = {
@@ -6026,7 +6036,7 @@ export type PromoteReportToCaseMutation = {
 };
 
 export type ConvertReportToTestReportMutationVariables = Exact<{
-  reportId: Scalars["UUID"];
+  reportId: Scalars["UUID"]["input"];
 }>;
 
 export type ConvertReportToTestReportMutation = {
@@ -6038,10 +6048,10 @@ export type ConvertReportToTestReportMutation = {
 };
 
 export type ReportCategoriesQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  nameContains?: InputMaybe<Scalars["String"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  nameContains?: InputMaybe<Scalars["String"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type ReportCategoriesQuery = {
@@ -6060,7 +6070,7 @@ export type ReportCategoriesQuery = {
 };
 
 export type ReportCategoriesByNameQueryVariables = Exact<{
-  name?: InputMaybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type ReportCategoriesByNameQuery = {
@@ -6078,9 +6088,9 @@ export type ReportCategoriesByNameQuery = {
 };
 
 export type ReportCategoryCreateMutationVariables = Exact<{
-  name: Scalars["String"];
-  ordering: Scalars["Int"];
-  icon?: InputMaybe<Scalars["Upload"]>;
+  name: Scalars["String"]["input"];
+  ordering: Scalars["Int"]["input"];
+  icon?: InputMaybe<Scalars["Upload"]["input"]>;
 }>;
 
 export type ReportCategoryCreateMutation = {
@@ -6103,11 +6113,11 @@ export type ReportCategoryCreateMutation = {
 };
 
 export type ReportCategoryUpdateMutationVariables = Exact<{
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  ordering: Scalars["Int"];
-  icon?: InputMaybe<Scalars["Upload"]>;
-  clearIcon?: InputMaybe<Scalars["Boolean"]>;
+  id: Scalars["ID"]["input"];
+  name: Scalars["String"]["input"];
+  ordering: Scalars["Int"]["input"];
+  icon?: InputMaybe<Scalars["Upload"]["input"]>;
+  clearIcon?: InputMaybe<Scalars["Boolean"]["input"]>;
 }>;
 
 export type ReportCategoryUpdateMutation = {
@@ -6139,7 +6149,7 @@ export type ReportCategoryUpdateMutation = {
 };
 
 export type ReportCategoryDeleteMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type ReportCategoryDeleteMutation = {
@@ -6151,7 +6161,7 @@ export type ReportCategoryDeleteMutation = {
 };
 
 export type GetReportCategoryQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetReportCategoryQuery = {
@@ -6166,10 +6176,10 @@ export type GetReportCategoryQuery = {
 };
 
 export type ReportTypesQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  q?: InputMaybe<Scalars["String"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type ReportTypesQuery = {
@@ -6195,7 +6205,7 @@ export type ReportTypesQuery = {
 };
 
 export type ReportTypeByNameQueryVariables = Exact<{
-  name: Scalars["String"];
+  name: Scalars["String"]["input"];
 }>;
 
 export type ReportTypeByNameQuery = {
@@ -6210,10 +6220,10 @@ export type ReportTypeByNameQuery = {
 };
 
 export type ReportTypeSelectionsQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  q?: InputMaybe<Scalars["String"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type ReportTypeSelectionsQuery = {
@@ -6244,15 +6254,15 @@ export type MyReportTypesQuery = {
 };
 
 export type ReportTypeCreateMutationVariables = Exact<{
-  categoryId: Scalars["Int"];
-  definition: Scalars["String"];
-  name: Scalars["String"];
-  ordering: Scalars["Int"];
-  stateDefinitionId?: InputMaybe<Scalars["Int"]>;
-  rendererDataTemplate?: InputMaybe<Scalars["String"]>;
-  followupDefinition?: InputMaybe<Scalars["String"]>;
-  rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]>;
-  isFollowable?: InputMaybe<Scalars["Boolean"]>;
+  categoryId: Scalars["Int"]["input"];
+  definition: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  ordering: Scalars["Int"]["input"];
+  stateDefinitionId?: InputMaybe<Scalars["Int"]["input"]>;
+  rendererDataTemplate?: InputMaybe<Scalars["String"]["input"]>;
+  followupDefinition?: InputMaybe<Scalars["String"]["input"]>;
+  rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]["input"]>;
+  isFollowable?: InputMaybe<Scalars["Boolean"]["input"]>;
 }>;
 
 export type ReportTypeCreateMutation = {
@@ -6275,16 +6285,16 @@ export type ReportTypeCreateMutation = {
 };
 
 export type ReportTypeUpdateMutationVariables = Exact<{
-  id: Scalars["ID"];
-  categoryId: Scalars["Int"];
-  definition: Scalars["String"];
-  name: Scalars["String"];
-  ordering: Scalars["Int"];
-  stateDefinitionId?: InputMaybe<Scalars["Int"]>;
-  rendererDataTemplate?: InputMaybe<Scalars["String"]>;
-  followupDefinition?: InputMaybe<Scalars["String"]>;
-  rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]>;
-  isFollowable?: InputMaybe<Scalars["Boolean"]>;
+  id: Scalars["ID"]["input"];
+  categoryId: Scalars["Int"]["input"];
+  definition: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  ordering: Scalars["Int"]["input"];
+  stateDefinitionId?: InputMaybe<Scalars["Int"]["input"]>;
+  rendererDataTemplate?: InputMaybe<Scalars["String"]["input"]>;
+  followupDefinition?: InputMaybe<Scalars["String"]["input"]>;
+  rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]["input"]>;
+  isFollowable?: InputMaybe<Scalars["Boolean"]["input"]>;
 }>;
 
 export type ReportTypeUpdateMutation = {
@@ -6330,7 +6340,7 @@ export type ReportTypeUpdateMutation = {
 };
 
 export type ReportTypeDeleteMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type ReportTypeDeleteMutation = {
@@ -6342,7 +6352,7 @@ export type ReportTypeDeleteMutation = {
 };
 
 export type PublicReportTypeMutationVariables = Exact<{
-  reportTypeId: Scalars["UUID"];
+  reportTypeId: Scalars["UUID"]["input"];
 }>;
 
 export type PublicReportTypeMutation = {
@@ -6354,7 +6364,7 @@ export type PublicReportTypeMutation = {
 };
 
 export type UnpublicReportTypeMutationVariables = Exact<{
-  reportTypeId: Scalars["UUID"];
+  reportTypeId: Scalars["UUID"]["input"];
 }>;
 
 export type UnpublicReportTypeMutation = {
@@ -6366,7 +6376,7 @@ export type UnpublicReportTypeMutation = {
 };
 
 export type GetReportTypeQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetReportTypeQuery = {
@@ -6391,11 +6401,11 @@ export type GetReportTypeQuery = {
 };
 
 export type SubmitEvaluateReportSimulationMutationVariables = Exact<{
-  data: Scalars["GenericScalar"];
-  incidentDate: Scalars["Date"];
-  rendererDataTemplate: Scalars["String"];
-  reportId?: InputMaybe<Scalars["UUID"]>;
-  reportTypeId?: InputMaybe<Scalars["UUID"]>;
+  data: Scalars["GenericScalar"]["input"];
+  incidentDate: Scalars["Date"]["input"];
+  rendererDataTemplate: Scalars["String"]["input"];
+  reportId?: InputMaybe<Scalars["UUID"]["input"]>;
+  reportTypeId?: InputMaybe<Scalars["UUID"]["input"]>;
 }>;
 
 export type SubmitEvaluateReportSimulationMutation = {
@@ -6420,10 +6430,10 @@ export type SubmitEvaluateReportSimulationMutation = {
 };
 
 export type ReporterNotificationsQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  descriptionContains?: InputMaybe<Scalars["String"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  descriptionContains?: InputMaybe<Scalars["String"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type ReporterNotificationsQuery = {
@@ -6448,11 +6458,11 @@ export type ReporterNotificationsQuery = {
 };
 
 export type ReporterNotificationCreateMutationVariables = Exact<{
-  reportTypeId: Scalars["UUID"];
-  description: Scalars["String"];
-  condition: Scalars["String"];
-  titleTemplate: Scalars["String"];
-  template: Scalars["String"];
+  reportTypeId: Scalars["UUID"]["input"];
+  description: Scalars["String"]["input"];
+  condition: Scalars["String"]["input"];
+  titleTemplate: Scalars["String"]["input"];
+  template: Scalars["String"]["input"];
 }>;
 
 export type ReporterNotificationCreateMutation = {
@@ -6475,12 +6485,12 @@ export type ReporterNotificationCreateMutation = {
 };
 
 export type ReporterNotificationUpdateMutationVariables = Exact<{
-  id: Scalars["ID"];
-  reportTypeId: Scalars["UUID"];
-  description: Scalars["String"];
-  condition: Scalars["String"];
-  titleTemplate: Scalars["String"];
-  template: Scalars["String"];
+  id: Scalars["ID"]["input"];
+  reportTypeId: Scalars["UUID"]["input"];
+  description: Scalars["String"]["input"];
+  condition: Scalars["String"]["input"];
+  titleTemplate: Scalars["String"]["input"];
+  template: Scalars["String"]["input"];
 }>;
 
 export type ReporterNotificationUpdateMutation = {
@@ -6518,7 +6528,7 @@ export type ReporterNotificationUpdateMutation = {
 };
 
 export type ReporterNotificationDeleteMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type ReporterNotificationDeleteMutation = {
@@ -6530,7 +6540,7 @@ export type ReporterNotificationDeleteMutation = {
 };
 
 export type GetReporterNotificationQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetReporterNotificationQuery = {
@@ -6551,10 +6561,10 @@ export type GetReporterNotificationQuery = {
 };
 
 export type StateDefinitionsQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  nameContains?: InputMaybe<Scalars["String"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  nameContains?: InputMaybe<Scalars["String"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type StateDefinitionsQuery = {
@@ -6572,7 +6582,7 @@ export type StateDefinitionsQuery = {
 };
 
 export type StateDefinitionsByNameQueryVariables = Exact<{
-  name?: InputMaybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type StateDefinitionsByNameQuery = {
@@ -6590,8 +6600,8 @@ export type StateDefinitionsByNameQuery = {
 };
 
 export type StateDefinitionCreateMutationVariables = Exact<{
-  name: Scalars["String"];
-  isDefault: Scalars["Boolean"];
+  name: Scalars["String"]["input"];
+  isDefault: Scalars["Boolean"]["input"];
 }>;
 
 export type StateDefinitionCreateMutation = {
@@ -6619,9 +6629,9 @@ export type StateDefinitionCreateMutation = {
 };
 
 export type StateDefinitionUpdateMutationVariables = Exact<{
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  isDefault: Scalars["Boolean"];
+  id: Scalars["ID"]["input"];
+  name: Scalars["String"]["input"];
+  isDefault: Scalars["Boolean"]["input"];
 }>;
 
 export type StateDefinitionUpdateMutation = {
@@ -6652,7 +6662,7 @@ export type StateDefinitionUpdateMutation = {
 };
 
 export type StateDefinitionDeleteMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type StateDefinitionDeleteMutation = {
@@ -6664,7 +6674,7 @@ export type StateDefinitionDeleteMutation = {
 };
 
 export type GetStateDefinitionQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetStateDefinitionQuery = {
@@ -6704,7 +6714,7 @@ export type GetStateDefinitionQuery = {
 };
 
 export type StateStepsQueryVariables = Exact<{
-  definitionId: Scalars["ID"];
+  definitionId: Scalars["ID"]["input"];
 }>;
 
 export type StateStepsQuery = {
@@ -6719,7 +6729,7 @@ export type StateStepsQuery = {
 };
 
 export type StateStepsByReportTypeQueryVariables = Exact<{
-  reportTypeId: Scalars["ID"];
+  reportTypeId: Scalars["ID"]["input"];
 }>;
 
 export type StateStepsByReportTypeQuery = {
@@ -6734,10 +6744,10 @@ export type StateStepsByReportTypeQuery = {
 };
 
 export type StateStepCreateMutationVariables = Exact<{
-  name: Scalars["String"];
-  isStartState: Scalars["Boolean"];
-  isStopState: Scalars["Boolean"];
-  stateDefinitionId: Scalars["ID"];
+  name: Scalars["String"]["input"];
+  isStartState: Scalars["Boolean"]["input"];
+  isStopState: Scalars["Boolean"]["input"];
+  stateDefinitionId: Scalars["ID"]["input"];
 }>;
 
 export type StateStepCreateMutation = {
@@ -6766,11 +6776,11 @@ export type StateStepCreateMutation = {
 };
 
 export type StateStepUpdateMutationVariables = Exact<{
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  isStartState: Scalars["Boolean"];
-  isStopState: Scalars["Boolean"];
-  stateDefinitionId: Scalars["ID"];
+  id: Scalars["ID"]["input"];
+  name: Scalars["String"]["input"];
+  isStartState: Scalars["Boolean"]["input"];
+  isStopState: Scalars["Boolean"]["input"];
+  stateDefinitionId: Scalars["ID"]["input"];
 }>;
 
 export type StateStepUpdateMutation = {
@@ -6807,7 +6817,7 @@ export type StateStepUpdateMutation = {
 };
 
 export type StateStepDeleteMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type StateStepDeleteMutation = {
@@ -6819,7 +6829,7 @@ export type StateStepDeleteMutation = {
 };
 
 export type GetStateStepQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetStateStepQuery = {
@@ -6839,7 +6849,7 @@ export type GetStateStepQuery = {
 };
 
 export type StateTransitionsQueryVariables = Exact<{
-  definitionId: Scalars["ID"];
+  definitionId: Scalars["ID"]["input"];
 }>;
 
 export type StateTransitionsQuery = {
@@ -6866,7 +6876,7 @@ export type StateTransitionsQuery = {
 };
 
 export type StateTransistionListByReportTypeQueryVariables = Exact<{
-  reportTypeId: Scalars["ID"];
+  reportTypeId: Scalars["ID"]["input"];
 }>;
 
 export type StateTransistionListByReportTypeQuery = {
@@ -6892,9 +6902,9 @@ export type StateTransistionListByReportTypeQuery = {
 };
 
 export type StateTransitionCreateMutationVariables = Exact<{
-  formDefinition: Scalars["String"];
-  fromStepId: Scalars["ID"];
-  toStepId: Scalars["ID"];
+  formDefinition: Scalars["String"]["input"];
+  fromStepId: Scalars["ID"]["input"];
+  toStepId: Scalars["ID"]["input"];
 }>;
 
 export type StateTransitionCreateMutation = {
@@ -6917,10 +6927,10 @@ export type StateTransitionCreateMutation = {
 };
 
 export type StateTransitionUpdateMutationVariables = Exact<{
-  id: Scalars["ID"];
-  formDefinition: Scalars["String"];
-  fromStepId: Scalars["ID"];
-  toStepId: Scalars["ID"];
+  id: Scalars["ID"]["input"];
+  formDefinition: Scalars["String"]["input"];
+  fromStepId: Scalars["ID"]["input"];
+  toStepId: Scalars["ID"]["input"];
 }>;
 
 export type StateTransitionUpdateMutation = {
@@ -6964,7 +6974,7 @@ export type StateTransitionUpdateMutation = {
 };
 
 export type StateTransitionDeleteMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type StateTransitionDeleteMutation = {
@@ -6976,7 +6986,7 @@ export type StateTransitionDeleteMutation = {
 };
 
 export type GetStateTransitionQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetStateTransitionQuery = {
@@ -7003,16 +7013,14 @@ export type GetStateTransitionQuery = {
 };
 
 export type UsersQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-  q?: InputMaybe<Scalars["String"]>;
-  authorities?: InputMaybe<
-    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
-  >;
-  role?: InputMaybe<Scalars["String"]>;
-  fromDate?: InputMaybe<Scalars["DateTime"]>;
-  throughDate?: InputMaybe<Scalars["DateTime"]>;
-  ordering?: InputMaybe<Scalars["String"]>;
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  authorities?: InputMaybe<Scalars["Decimal"]["input"]>;
+  role?: InputMaybe<Scalars["String"]["input"]>;
+  fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type UsersQuery = {
@@ -7035,15 +7043,15 @@ export type UsersQuery = {
 };
 
 export type UserCreateMutationVariables = Exact<{
-  authorityId: Scalars["Int"];
-  email: Scalars["String"];
-  firstName: Scalars["String"];
-  lastName: Scalars["String"];
-  password: Scalars["String"];
-  telephone?: InputMaybe<Scalars["String"]>;
-  username: Scalars["String"];
-  address?: InputMaybe<Scalars["String"]>;
-  role?: InputMaybe<Scalars["String"]>;
+  authorityId: Scalars["Int"]["input"];
+  email: Scalars["String"]["input"];
+  firstName: Scalars["String"]["input"];
+  lastName: Scalars["String"]["input"];
+  password: Scalars["String"]["input"];
+  telephone?: InputMaybe<Scalars["String"]["input"]>;
+  username: Scalars["String"]["input"];
+  address?: InputMaybe<Scalars["String"]["input"]>;
+  role?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type UserCreateMutation = {
@@ -7070,15 +7078,15 @@ export type UserCreateMutation = {
 };
 
 export type UserUpdateMutationVariables = Exact<{
-  id: Scalars["ID"];
-  authorityId: Scalars["Int"];
-  email: Scalars["String"];
-  firstName: Scalars["String"];
-  lastName: Scalars["String"];
-  telephone?: InputMaybe<Scalars["String"]>;
-  username: Scalars["String"];
-  address?: InputMaybe<Scalars["String"]>;
-  role?: InputMaybe<Scalars["String"]>;
+  id: Scalars["ID"]["input"];
+  authorityId: Scalars["Int"]["input"];
+  email: Scalars["String"]["input"];
+  firstName: Scalars["String"]["input"];
+  lastName: Scalars["String"]["input"];
+  telephone?: InputMaybe<Scalars["String"]["input"]>;
+  username: Scalars["String"]["input"];
+  address?: InputMaybe<Scalars["String"]["input"]>;
+  role?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type UserUpdateMutation = {
@@ -7118,8 +7126,8 @@ export type UserUpdateMutation = {
 };
 
 export type UserUpdatePasswordMutationVariables = Exact<{
-  id: Scalars["ID"];
-  password: Scalars["String"];
+  id: Scalars["ID"]["input"];
+  password: Scalars["String"]["input"];
 }>;
 
 export type UserUpdatePasswordMutation = {
@@ -7149,7 +7157,7 @@ export type UserUpdatePasswordMutation = {
 };
 
 export type UserDeleteMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type UserDeleteMutation = {
@@ -7161,7 +7169,7 @@ export type UserDeleteMutation = {
 };
 
 export type GetUserQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetUserQuery = {
@@ -7181,7 +7189,7 @@ export type GetUserQuery = {
 };
 
 export type LoginQrTokenQueryVariables = Exact<{
-  userId: Scalars["ID"];
+  userId: Scalars["ID"]["input"];
 }>;
 
 export type LoginQrTokenQuery = {
@@ -7190,9 +7198,9 @@ export type LoginQrTokenQuery = {
 };
 
 export type SummaryContributionQueryQueryVariables = Exact<{
-  userId: Scalars["Int"];
-  fromDate?: InputMaybe<Scalars["DateTime"]>;
-  toDate?: InputMaybe<Scalars["DateTime"]>;
+  userId: Scalars["Int"]["input"];
+  fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  toDate?: InputMaybe<Scalars["DateTime"]["input"]>;
 }>;
 
 export type SummaryContributionQueryQuery = {
@@ -8423,10 +8431,7 @@ export const CasesDocument = {
           },
           type: {
             kind: "ListType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
           },
         },
         {
@@ -13476,7 +13481,7 @@ export const ObservationSubjectsDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "definitionId" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
         },
         {
           kind: "VariableDefinition",
@@ -17873,10 +17878,7 @@ export const ReportsDocument = {
           },
           type: {
             kind: "ListType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
           },
         },
         {
@@ -18174,10 +18176,7 @@ export const BoundaryConnectedReportsDocument = {
           },
           type: {
             kind: "ListType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
           },
         },
         {
@@ -23556,13 +23555,7 @@ export const UsersDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "authorities" },
           },
-          type: {
-            kind: "ListType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Decimal" } },
         },
         {
           kind: "VariableDefinition",

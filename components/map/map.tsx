@@ -22,7 +22,7 @@ const MapView: React.FC<MapViewProps> = ({ data, boundaryConnect }) => {
   const [bounds, setBounds] = useState<LatLngTuple[]>(DEFAULT_BOUNDS);
 
   useEffect(() => {
-    const points: LatLngTuple[] = data
+    const points: Array<[number, number]> = data
       .concat(...boundaryConnect)
       .map(it => [it.location.lng, it.location.lat]);
     const collection = turfPoints(points);

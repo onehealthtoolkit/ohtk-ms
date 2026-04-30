@@ -1,4 +1,4 @@
-import { LocationMarkerIcon } from "@heroicons/react/solid";
+import { MapPinIcon } from "@heroicons/react/24/solid";
 import { FormFieldValidation } from "components/formRenderer/fieldValidation";
 import LocationField from "lib/opsvForm/models/fields/locationField";
 import { observer } from "mobx-react";
@@ -42,7 +42,7 @@ const FormLocationField: FC<FormLocationFieldProps> = ({ field }) => {
           }
         }}
       >
-        <LocationMarkerIcon className="fill-gray-600 w-5 h-5 mr-2" />
+        <MapPinIcon className="fill-gray-600 w-5 h-5 mr-2" />
         <span>Locate current position</span>
       </button>
       <MapContainer

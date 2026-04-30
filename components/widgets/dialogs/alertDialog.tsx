@@ -1,4 +1,4 @@
-import { CheckCircleIcon } from "@heroicons/react/solid";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import BaseModalDialog from "components/widgets/dialogs/baseModalDialog";
 import { ModalDialogViewModel } from "lib/dialogViewModel";
 import React from "react";

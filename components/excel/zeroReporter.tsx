@@ -88,7 +88,8 @@ const ZeroReporter: React.FC = () => {
             selected={monthYear}
             dateFormat="MM/yyyy"
             showMonthYearPicker
-            onChange={(date: Date) => {
+            onChange={(date: Date | null) => {
+              if (!date) return;
               date.setHours(0, 0, 0, 0);
               setMonthYear(date);
               setFromDate(new Date(date.getFullYear(), date.getMonth(), 1));

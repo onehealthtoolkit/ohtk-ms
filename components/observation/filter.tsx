@@ -22,7 +22,9 @@ const ObservationFilter = ({
             <DatePicker
               id="fromDate"
               selected={viewModel.filter.fromDate}
-              onChange={(date: Date) => (viewModel.filter.fromDate = date)}
+              onChange={(date: Date | null) => {
+                if (date) viewModel.filter.fromDate = date;
+              }}
             />
           </Field>
           <Field $size="full">
@@ -30,7 +32,9 @@ const ObservationFilter = ({
             <DatePicker
               id="throughDate"
               selected={viewModel.filter.throughDate}
-              onChange={(date: Date) => (viewModel.filter.throughDate = date)}
+              onChange={(date: Date | null) => {
+                if (date) viewModel.filter.throughDate = date;
+              }}
             />
           </Field>
         </>

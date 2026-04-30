@@ -7,7 +7,10 @@ export default class Section {
   form?: Form;
   questions: Question[] = [];
 
-  constructor(readonly label: string, readonly description?: string) {}
+  constructor(
+    readonly label: string,
+    readonly description?: string
+  ) {}
 
   public registerValues(values: Values, form?: Form) {
     this.form = form;

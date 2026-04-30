@@ -49,13 +49,16 @@ const AuthroityFilter: React.FC<AuthorityFilterProps> = ({
       defaultValue={value}
       isMulti={false}
       options={authorities}
-      getOptionValue={item => item.id}
-      getOptionLabel={item => item.name}
+      getOptionValue={(item: AuthorityOption) => item.id}
+      getOptionLabel={(item: AuthorityOption) => item.name}
       styles={{
         ...styledReactSelect,
-        menu: provided => ({ ...provided, zIndex: 9999 }),
+        menu: (provided: Record<string, unknown>) => ({
+          ...provided,
+          zIndex: 9999,
+        }),
       }}
-      onChange={value => {
+      onChange={(value: AuthorityOption | null) => {
         if (value) {
           onChange(value);
         }

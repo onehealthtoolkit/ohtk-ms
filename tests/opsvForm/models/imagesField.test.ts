@@ -15,7 +15,7 @@ describe("Images field", () => {
       const json: Record<string, any> = {};
       field.toJsonValue(json);
       expect(json["images"]).toEqual(["a", "b"]);
-      expect(json["images__value"]).toEqual("a,b");
+      expect(json["images__value"]).toEqual("a, b");
     });
 
     it("to json without value", () => {
@@ -29,6 +29,14 @@ describe("Images field", () => {
       field.loadJsonValue({ images: ["a", "b"] });
       expect(field.value).toEqual(["a", "b"]);
       expect(field.images.length).toBe(0);
+    });
+
+    it("to json from loaded value", () => {
+      field.loadJsonValue({ images: ["a", "b"] });
+      const json: Record<string, any> = {};
+      field.toJsonValue(json);
+      expect(json["images"]).toEqual(["a", "b"]);
+      expect(json["images__value"]).toEqual("a, b");
     });
   });
 

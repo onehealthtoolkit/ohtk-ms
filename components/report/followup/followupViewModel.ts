@@ -11,7 +11,10 @@ export class FollowupViewModel extends BaseViewModel {
 
   _activeTabIndex: number = 0;
 
-  constructor(id: string, readonly followupService: IFollowupService) {
+  constructor(
+    id: string,
+    readonly followupService: IFollowupService
+  ) {
     super();
     makeObservable(this, {
       data: observable,

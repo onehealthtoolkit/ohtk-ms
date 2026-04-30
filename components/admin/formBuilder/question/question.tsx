@@ -1,4 +1,4 @@
-import { MenuAlt4Icon } from "@heroicons/react/solid";
+import { Bars4Icon } from "@heroicons/react/24/solid";
 import Field, { FieldList } from "components/admin/formBuilder/field";
 import {
   DragItem,
@@ -25,76 +25,80 @@ type Props = {
   onMoveQuestion: (fromIndex: number, toIndex: number) => void;
 };
 
-const Menus: FC<{ value: QuestionViewModel; onSelect: (id: string) => void }> =
-  observer(({ value: question, onSelect }) => {
-    return (
-      <div className="">
-        <div className="py-4 flex flex-col z-10 right-10 top-0 absolute">
-          <button
-            type="button"
-            className="hover:bg-blue-300 hover:text-white rounded-full w-8 h-8 flex justify-center items-center"
-            onClick={() => onSelect("-----")}
+type MenusProps = {
+  value: QuestionViewModel;
+  onSelect(id: string): void;
+};
+
+const Menus: FC<MenusProps> = observer(({ value: question, onSelect }) => {
+  return (
+    <div className="">
+      <div className="py-4 flex flex-col z-10 right-10 top-0 absolute">
+        <button
+          type="button"
+          className="hover:bg-blue-300 hover:text-white rounded-full w-8 h-8 flex justify-center items-center"
+          onClick={() => onSelect("-----")}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-6 h-6"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.5 12.75l7.5-7.5 7.5 7.5m-15 6l7.5-7.5 7.5 7.5"
-              />
-            </svg>
-          </button>
-        </div>
-        <div className="py-4 flex flex-col items-end z-10 right-3 top-0 absolute">
-          <button
-            type="button"
-            className="hover:bg-blue-300 hover:text-white rounded-full w-8 h-8 flex justify-center items-center"
-            onClick={() => question.toggleMenus()}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-              />
-            </svg>
-          </button>
-          {question.isMenusOpen && (
-            <div className=" bg-white divide-y divide-gray-100 rounded shadow-md w-auto">
-              <ul className="py-1 text-sm text-gray-700 ">
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                    onClick={e => {
-                      e.preventDefault();
-                      question.toggleMenus();
-                      question.registerDialog("moveQuestion")?.open(question);
-                    }}
-                  >
-                    Move
-                  </a>
-                </li>
-              </ul>
-            </div>
-          )}
-        </div>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4.5 12.75l7.5-7.5 7.5 7.5m-15 6l7.5-7.5 7.5 7.5"
+            />
+          </svg>
+        </button>
       </div>
-    );
-  });
+      <div className="py-4 flex flex-col items-end z-10 right-3 top-0 absolute">
+        <button
+          type="button"
+          className="hover:bg-blue-300 hover:text-white rounded-full w-8 h-8 flex justify-center items-center"
+          onClick={() => question.toggleMenus()}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+            />
+          </svg>
+        </button>
+        {question.isMenusOpen && (
+          <div className=" bg-white divide-y divide-gray-100 rounded shadow-md w-auto">
+            <ul className="py-1 text-sm text-gray-700 ">
+              <li>
+                <a
+                  href="#"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={e => {
+                    e.preventDefault();
+                    question.toggleMenus();
+                    question.registerDialog("moveQuestion")?.open(question);
+                  }}
+                >
+                  Move
+                </a>
+              </li>
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+});
 
 const Question: FC<Props> = ({
   value: question,
@@ -294,7 +298,7 @@ const Question: FC<Props> = ({
           dragItem.isDragging ? "cursor-grabbing" : "cursor-grab"
         }`}
       >
-        <MenuAlt4Icon className="h-5 w-10 opacity-[0.4]" />
+        <Bars4Icon className="h-5 w-10 opacity-[0.4]" />
       </div>
       <div>
         {question.label || <span className="text-gray-400">Question</span>}

@@ -15,7 +15,7 @@ import { isoStringToDate } from "lib/utils";
 import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import CaseLink from "components/case/caseLink";
-import { CalendarIcon, TableIcon } from "@heroicons/react/solid";
+import { CalendarIcon, TableCellsIcon } from "@heroicons/react/24/solid";
 import Calendar from "components/widgets/calendar";
 import { ReportDayEvents } from "components/report/dayEvents";
 import { useTranslation } from "react-i18next";
@@ -73,7 +73,7 @@ const ViewSwitch = ({
         active={!isCalendarView ? 1 : 0}
         onClick={() => onSwitchView(false)}
       >
-        <TableIcon className="w-5 h-5 mr-2" />
+        <TableCellsIcon className="w-5 h-5 mr-2" />
         <span>{t("filter.listView", "List")}</span>
       </SwitchViewButton>
       <SwitchViewButton

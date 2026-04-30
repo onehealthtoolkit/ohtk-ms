@@ -7,7 +7,10 @@ export class PlaceViewViewModel extends BaseViewModel {
   id: number;
   _data: Place = {} as Place;
 
-  constructor(id: number, readonly placeService: IPlaceService) {
+  constructor(
+    id: number,
+    readonly placeService: IPlaceService
+  ) {
     super();
     makeObservable(this, {
       _data: observable,

@@ -108,20 +108,20 @@ const NotificationUpsert = () => {
                 "form.placeholder.selectReportType",
                 "Select report type"
               )}
-              getOptionValue={item => item.id}
-              getOptionLabel={item => item.name}
+              getOptionValue={(item: ReportCategory | ReportType) => item.id}
+              getOptionLabel={(item: ReportCategory | ReportType) => item.name}
               defaultOptions
               formatGroupLabel={formatGroupLabel}
               styles={{
                 ...styledReactSelect,
-                option: styles => {
+                option: (styles: Record<string, unknown>) => {
                   return {
                     ...styles,
                     paddingLeft: "30px",
                   };
                 },
               }}
-              onChange={values => {
+              onChange={(values: ReportCategory | ReportType | null) => {
                 if (values) {
                   viewModel.reportTypeId = values.id;
                   viewModel.reportTypeName = values.name;

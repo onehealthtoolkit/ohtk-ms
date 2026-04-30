@@ -82,7 +82,7 @@ const LiveMapView: React.FC<LiveMapViewProps> = ({ data, authorityId }) => {
   );
 
   useEffect(() => {
-    const points: LatLngTuple[] = data.map(it => [
+    const points: Array<[number, number]> = data.map(it => [
       it.location.lng,
       it.location.lat,
     ]);

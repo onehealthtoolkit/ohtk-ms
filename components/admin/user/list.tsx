@@ -17,7 +17,7 @@ import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { useTranslation } from "react-i18next";
 import { AccountsAuthorityUserRoleChoices } from "lib/generated/graphql";
-import { KeyIcon, QrcodeIcon } from "@heroicons/react/solid";
+import { KeyIcon, QrCodeIcon } from "@heroicons/react/24/solid";
 import QrcodeDialog from "components/admin/user/qrcodeDialog";
 import Tooltip from "components/widgets/tooltip";
 import OptionFilter from "components/widgets/filter";
@@ -82,17 +82,17 @@ const UserFilter = ({ viewModel }: { viewModel: AdminUserListViewModel }) => {
             <Label htmlFor="authority">
               {t("form.label.authority", "Authority")}
             </Label>
-            <AsyncSelect
+            <AsyncSelect<Authority, true>
               cacheOptions
               value={viewModel.authoritiesSearch}
               defaultOptions={defaultOptions}
               loadOptions={loadAuthorityOptions}
               placeholder="type to select"
               isMulti={true}
-              getOptionValue={item => item.id}
-              getOptionLabel={item => item.name}
+              getOptionValue={(item: Authority) => item.id}
+              getOptionLabel={(item: Authority) => item.name}
               styles={styledReactSelect}
-              onChange={values => {
+              onChange={(values: readonly Authority[]) => {
                 runInAction(() => {
                   viewModel.authoritiesSearch = [...values];
                 });
@@ -106,7 +106,6 @@ const UserFilter = ({ viewModel }: { viewModel: AdminUserListViewModel }) => {
               onChange={evt => {
                 viewModel.roleSearch = evt.target.value;
               }}
-              placeholder={t("form.placeholder.role", "Role")}
               disabled={viewModel.isSubmitting}
               value={viewModel.roleSearch}
               required
@@ -133,7 +132,9 @@ const UserFilter = ({ viewModel }: { viewModel: AdminUserListViewModel }) => {
             <DatePicker
               id="fromDate"
               selected={viewModel.fromDate}
-              onChange={(date: Date) => (viewModel.fromDate = date)}
+              onChange={(date: Date | null) => {
+                if (date) viewModel.fromDate = date;
+              }}
             />
           </Field>
           <Field $size="full">
@@ -143,7 +144,9 @@ const UserFilter = ({ viewModel }: { viewModel: AdminUserListViewModel }) => {
             <DatePicker
               id="throughDate"
               selected={viewModel.throughDate}
-              onChange={(date: Date) => (viewModel.throughDate = date)}
+              onChange={(date: Date | null) => {
+                if (date) viewModel.throughDate = date;
+              }}
             />
           </Field>
         </div>
@@ -272,7 +275,7 @@ const UserList = () => {
                 <Tooltip
                   text={`${t("form.button.qrcodeLogin", "Login QR Code")}`}
                 >
-                  <QrcodeIcon
+                  <QrCodeIcon
                     onClick={async () => {
                       const qrValue = await viewModel.getLoginQrcodeToken(
                         record.id

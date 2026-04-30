@@ -168,7 +168,7 @@ const DataTemplateField = ({
   return (
     <Slate
       editor={editor}
-      value={initialValue}
+      initialValue={initialValue}
       onChange={value => {
         console.log("onchange value", value);
         const isAstChange = editor.operations.some(

@@ -16,7 +16,7 @@ import { SummaryByCategoryViewModel } from "./summaryByCategoryViewModel";
 import { MaskingLoader } from "components/widgets/forms";
 import "react-datepicker/dist/react-datepicker.css";
 import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/solid";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import useReportCategories from "lib/hooks/reportCategories";
 import SelectableChips from "components/widgets/chips";
 import { DashBoardFilterData } from "./dashboardViewModel";

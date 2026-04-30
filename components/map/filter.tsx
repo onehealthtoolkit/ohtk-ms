@@ -4,7 +4,7 @@ import { Checkbox, Field, Label } from "components/widgets/forms";
 import DatePicker from "components/widgets/datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/solid";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import MapViewViewModel from "components/map/viewViewModel";
 import ReportTypeSelect from "components/report/reportTypeSelect";
 import { MapPin } from "components/widgets/mapPin";
@@ -113,7 +113,9 @@ const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
         <DatePicker
           id="fromDate"
           selected={viewModel.fromDate}
-          onChange={(date: Date) => (viewModel.fromDate = date)}
+          onChange={(date: Date | null) => {
+            if (date) viewModel.fromDate = date;
+          }}
         />
       </Field>
       <Field $size="full">
@@ -123,7 +125,9 @@ const MapViewFilter = ({ viewModel }: { viewModel: MapViewViewModel }) => {
         <DatePicker
           id="toDate"
           selected={viewModel.toDate}
-          onChange={(date: Date) => (viewModel.toDate = date)}
+          onChange={(date: Date | null) => {
+            if (date) viewModel.toDate = date;
+          }}
         />
       </Field>
 

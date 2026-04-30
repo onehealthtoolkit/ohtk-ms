@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
-import { ApolloClient, ApolloLink, from, InMemoryCache } from "@apollo/client";
+import { ApolloClient, ApolloLink, InMemoryCache } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-import { createUploadLink } from "apollo-upload-client";
+import UploadHttpLink from "apollo-upload-client/UploadHttpLink.mjs";
 import { RefreshTokenDocument } from "./generated/graphql";
 import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
@@ -75,7 +75,7 @@ const refreshToken = async (): Promise<boolean> => {
     mutation: RefreshTokenDocument,
   });
 
-  if (!result.errors) {
+  if (!result.error) {
     setRefreshExpiresIn(result.data?.refreshToken?.payload.exp || 0);
     return false;
   }
@@ -87,8 +87,9 @@ const resolveUri = (defaultUri: string) => {
   return localStorage.getItem(LOCAL_STORGAGE_BACKEND_URL_KEY) || defaultUri;
 };
 
-const customFetch = (uri: string, options: Record<string, string>) => {
-  const fetchUri = resolveUri(uri);
+const customFetch = (input: RequestInfo | URL, options?: RequestInit) => {
+  const fetchUri = resolveUri(input.toString());
+  const requestOptions = options ?? {};
 
   const now = Math.round(new Date().getTime() / 1000);
   const refreshExpiresIn = getRefreshExpiresIn();
@@ -99,7 +100,10 @@ const customFetch = (uri: string, options: Record<string, string>) => {
   // we should prevent recursive call of refreshToken by
   // checking if options[body] is containing refreshToken
   var isRefreshingToken = false;
-  if (options.body && options.body.includes("RefreshToken")) {
+  if (
+    typeof requestOptions.body === "string" &&
+    requestOptions.body.includes("RefreshToken")
+  ) {
     isRefreshingToken = true;
   }
 
@@ -107,27 +111,27 @@ const customFetch = (uri: string, options: Record<string, string>) => {
     console.log("refreshing token due to expiration", diff);
     return refreshToken().then(() => {
       return fetch(fetchUri, {
-        ...options,
+        ...requestOptions,
       });
     });
   } else {
-    return fetch(fetchUri, options);
+    return fetch(fetchUri, requestOptions);
   }
 };
 
-const httpLink = createUploadLink({
+const httpLink = new UploadHttpLink({
   uri: DEFAULT_GRAPHQL_URI,
   credentials: "include",
   fetch: customFetch,
-}) as unknown as ApolloLink;
+});
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  console.error(graphQLErrors || networkError);
+const errorLink = onError(({ error }) => {
+  console.error(error);
 });
 
 export const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: from([errorLink, httpLink]),
+  link: ApolloLink.from([errorLink, httpLink]),
   defaultOptions: {
     query: {
       errorPolicy: "all",

@@ -4,7 +4,7 @@ export type EventData = {
 };
 
 const eventType = ["report", "case"] as const;
-export type EventItemType = typeof eventType[number];
+export type EventItemType = (typeof eventType)[number];
 
 export type EventItem = {
   id: string;

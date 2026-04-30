@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   InvitationCodesDocument,
   InvitationCodeCreateDocument,
@@ -47,7 +47,7 @@ export interface IInvitationCodeService extends IService {
 }
 
 export class InvitationCodeService implements IInvitationCodeService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
 
   fetchInvitationCodesQuery = {
     limit: 20,
@@ -56,7 +56,7 @@ export class InvitationCodeService implements IInvitationCodeService {
     ordering: "code,asc",
   };
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

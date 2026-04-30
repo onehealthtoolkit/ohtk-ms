@@ -5,25 +5,25 @@ import {
   DocumentTextIcon,
   CubeIcon,
   UserIcon,
-  TemplateIcon,
+  DocumentDuplicateIcon,
   VariableIcon,
   BellIcon,
-  DocumentReportIcon,
-  AnnotationIcon,
+  DocumentChartBarIcon,
+  ChatBubbleBottomCenterTextIcon,
   LightBulbIcon,
-  CollectionIcon,
-  SpeakerphoneIcon,
+  RectangleGroupIcon,
+  MegaphoneIcon,
   CalendarIcon,
   MapIcon,
   CogIcon,
   DocumentIcon,
-} from "@heroicons/react/outline";
+} from "@heroicons/react/24/outline";
 import useStore from "lib/store";
 import CollapsIcon from "components/layout/CollapsIcon";
 import { Observer, observer } from "mobx-react";
 import { Menu } from "./menu";
 import UserMenu from "./userMenu";
-import { ColorSwatchIcon, LocationMarkerIcon } from "@heroicons/react/solid";
+import { SwatchIcon, MapPinIcon } from "@heroicons/react/24/solid";
 import { useTranslation } from "react-i18next";
 import ObservationMenu from "./observationMenu";
 
@@ -85,7 +85,9 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     collapsed={store.menu.collapsed}
                     display={store.isRoleOfficer || store.isRoleAdmin}
                     icon={
-                      <TemplateIcon className={`${iconClassName} -rotate-90`} />
+                      <DocumentDuplicateIcon
+                        className={`${iconClassName} -rotate-90`}
+                      />
                     }
                   />
                   <Menu
@@ -94,7 +96,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     label={t("breadcrumb.reports", "Reports")}
                     collapsed={store.menu.collapsed}
                     display={store.isRoleOfficer || store.isRoleAdmin}
-                    icon={<DocumentReportIcon className={iconClassName} />}
+                    icon={<DocumentChartBarIcon className={iconClassName} />}
                   />
 
                   <Menu
@@ -112,14 +114,12 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     label={t("breadcrumb.map", "Map")}
                     collapsed={store.menu.collapsed}
                     display={store.isRoleOfficer || store.isRoleAdmin}
-                    icon={<LocationMarkerIcon className={iconClassName} />}
+                    icon={<MapPinIcon className={iconClassName} />}
                   />
                   {store.isFeatureEnable("observation") && (
                     <ObservationMenu
                       icon={
-                        <ColorSwatchIcon
-                          className={`${iconClassName} -rotate-90`}
-                        />
+                        <SwatchIcon className={`${iconClassName} -rotate-90`} />
                       }
                       label={t("breadcrumb.observation", "Observation")}
                     />
@@ -221,7 +221,11 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                       store.isRoleAdmin ||
                       store.isRoleOfficer
                     }
-                    icon={<AnnotationIcon className={iconClassName} />}
+                    icon={
+                      <ChatBubbleBottomCenterTextIcon
+                        className={iconClassName}
+                      />
+                    }
                   />
                   <Menu
                     href="/admin/report_categories/"
@@ -232,7 +236,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     )}
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
-                    icon={<CollectionIcon className={iconClassName} />}
+                    icon={<RectangleGroupIcon className={iconClassName} />}
                   />
                   <Menu
                     href="/admin/report_types/"
@@ -240,7 +244,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     label={t("breadcrumb.reportTypes", "Report Types")}
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
-                    icon={<DocumentReportIcon className={iconClassName} />}
+                    icon={<DocumentChartBarIcon className={iconClassName} />}
                   />
                   <Menu
                     href="/admin/state_definitions/"
@@ -270,7 +274,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     )}
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
-                    icon={<SpeakerphoneIcon className={iconClassName} />}
+                    icon={<MegaphoneIcon className={iconClassName} />}
                   />
                   <Menu
                     href="/admin/notification_templates/"
@@ -281,7 +285,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     )}
                     collapsed={store.menu.collapsed}
                     display={store.isSuperUser}
-                    icon={<TemplateIcon className={iconClassName} />}
+                    icon={<DocumentDuplicateIcon className={iconClassName} />}
                   />
                   <Menu
                     href="/admin/notifications/"
@@ -329,7 +333,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                       )}
                       collapsed={store.menu.collapsed}
                       display={store.isSuperUser}
-                      icon={<ColorSwatchIcon className={iconClassName} />}
+                      icon={<SwatchIcon className={iconClassName} />}
                     />
                   )}
                 </ul>

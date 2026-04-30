@@ -2,7 +2,7 @@ import "styles/globals.css";
 import type { AppProps } from "next/app";
 import { observer } from "mobx-react";
 
-import { ApolloProvider } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client/react";
 import { client } from "lib/client";
 import { Store, StoreContext } from "lib/store";
 import { ServicesContext, ServicesProvider } from "lib/services/provider";

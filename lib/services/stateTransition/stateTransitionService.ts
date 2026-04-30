@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   StateTransitionCreateDocument,
   StateTransitionUpdateDocument,
@@ -40,9 +40,9 @@ export interface IStateTransitionService extends IService {
 }
 
 export class StateTransitionService implements IStateTransitionService {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: LegacyApolloClient;
 
-  constructor(client: ApolloClient<NormalizedCacheObject>) {
+  constructor(client: LegacyApolloClient) {
     this.client = client;
   }
 

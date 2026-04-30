@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import { CameraIcon } from "@heroicons/react/solid";
-import { ChatAltIcon } from "@heroicons/react/outline";
+import { CameraIcon } from "@heroicons/react/24/solid";
+import { ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
 import {
   CommentsViewModel,
   LocalFile,
 } from "components/widgets/commentsViewModel";
 import { TextArea, UserAvatar } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
-import { Attachment, Comment } from "lib/services/comment/comment";
+import type { Attachment, Comment } from "lib/services/comment/comment";
 import useServices from "lib/services/provider";
 import { observer, Observer } from "mobx-react";
 import { memo, useEffect, useState } from "react";
@@ -46,7 +46,7 @@ const Comments: React.FC<CommentsProps> = ({ threadId }) => {
       {() => (
         <>
           <label className="mt-4 px-4 text-gray-700 text-sm font-bold flex gap-1">
-            <ChatAltIcon className="w-5 h-5" />
+            <ChatBubbleLeftRightIcon className="w-5 h-5" />
             <span>{t("form.label.comments", "Comments")}</span>
           </label>
 
