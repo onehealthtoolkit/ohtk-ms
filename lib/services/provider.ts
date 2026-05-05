@@ -23,6 +23,8 @@ import { FollowupService } from "./followup/followupService";
 import { ForgotPasswordService } from "./forgotPassword/forgotPasswordService";
 import { OutbreakPlanService } from "./outbreakPlan";
 import { PlaceService } from "./place";
+import { VillageService } from "./village";
+import { AnimalSpeciesService } from "./animalSpecies";
 import { ConfigurationService } from "./configuration";
 import { OutbreakService } from "./outbreak/outbreakService";
 import { ObservationDefinitionService } from "./observationDefinition/observationDefinitionService";
@@ -53,6 +55,8 @@ export interface IServiceProvider {
   get followupService(): FollowupService;
   get outbreakPlanService(): OutbreakPlanService;
   get placeService(): PlaceService;
+  get villageService(): VillageService;
+  get animalSpeciesService(): AnimalSpeciesService;
   get configurationService(): ConfigurationService;
   get outbreakService(): OutbreakService;
   get observationDefinitionService(): ObservationDefinitionService;
@@ -86,6 +90,8 @@ export class ServicesProvider implements IServiceProvider {
   followupService: FollowupService;
   outbreakPlanService: OutbreakPlanService;
   placeService: PlaceService;
+  villageService: VillageService;
+  animalSpeciesService: AnimalSpeciesService;
   configurationService: ConfigurationService;
   outbreakService: OutbreakService;
   observationDefinitionService: ObservationDefinitionService;
@@ -117,6 +123,8 @@ export class ServicesProvider implements IServiceProvider {
     this.followupService = new FollowupService(client);
     this.outbreakPlanService = new OutbreakPlanService(client);
     this.placeService = new PlaceService(client);
+    this.villageService = new VillageService(client);
+    this.animalSpeciesService = new AnimalSpeciesService(client);
     this.configurationService = new ConfigurationService(client);
     this.outbreakService = new OutbreakService(client);
     this.observationDefinitionService = new ObservationDefinitionService(

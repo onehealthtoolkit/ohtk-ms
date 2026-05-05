@@ -1,7 +1,7 @@
 query ObservationSubjects(
   $limit: Int!
   $offset: Int!
-  $definitionId: ID
+  $definitionId: Float
   $fromDate: DateTime
   $throughDate: DateTime
   $q: String

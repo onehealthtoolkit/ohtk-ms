@@ -3,7 +3,7 @@ query Reports(
   $offset: Int!
   $fromDate: DateTime
   $throughDate: DateTime
-  $authorities: [ID]
+  $authorities: [String]
   $reportTypes: [UUID]
   $testFlag: Boolean
   $includeChildAuthorities: Boolean
@@ -57,7 +57,7 @@ query BoundaryConnectedReports(
   $offset: Int!
   $fromDate: DateTime
   $throughDate: DateTime
-  $authorities: [ID]
+  $authorities: [String]
   $reportTypes: [UUID]
   $testFlag: Boolean
 ) {

@@ -3,7 +3,7 @@ query Cases(
   $offset: Int!
   $fromDate: DateTime
   $throughDate: DateTime
-  $authorities: [ID]
+  $authorities: [String]
   $reportTypes: [UUID]
   $includeChildAuthorities: Boolean
 ) {

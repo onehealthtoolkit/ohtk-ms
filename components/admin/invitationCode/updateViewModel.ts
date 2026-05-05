@@ -26,6 +26,8 @@ export class InvitationCodeUpdateViewModel extends InvitationCodeViewModel {
           .toISOString()
           .split("T")[0];
       this.role = data.role!;
+      this.villageIds =
+        data.villages?.map(village => parseInt(village.id)) || [];
     }
     this.isLoading = false;
   }
@@ -37,7 +39,8 @@ export class InvitationCodeUpdateViewModel extends InvitationCodeViewModel {
       this.authorityId,
       new Date(this.fromDate).toISOString(),
       new Date(this.throughDate).toISOString(),
-      this.role
+      this.role,
+      this.role === "REP" ? this.villageIds : []
     );
   }
 }

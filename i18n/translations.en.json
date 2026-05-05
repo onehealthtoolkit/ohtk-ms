@@ -21,6 +21,9 @@
     "view": "View",
     "outbreakPlans": "Outbreak Plans",
     "places": "Places",
+    "villages": "Villages",
+    "animalSpecies": "Animal Species",
+    "latestVillageCensus": "Latest Village Census",
     "configurations": "Configurations",
     "observationDefinitions": "Observation Definitions",
     "observationMonitoringDefinitions": "Observation Monitoring Definition",
@@ -142,7 +145,13 @@
       "columnSplit": "column split",
       "showTestReport": "Show test report",
       "includesBoundaryConnects": "Includes boundary connects",
-      "includeChildAuthority": "Include child authority"
+      "includeChildAuthority": "Include child authority",
+      "active": "Active",
+      "villages": "Villages",
+      "sortOrder": "Sort Order",
+      "species": "Species",
+      "animals": "Animals",
+      "households": "Households"
     },
     "placeholder": {
       "code": "Code",
@@ -188,6 +197,7 @@
       "value": "Value",
       "latitude": "Latitude",
       "longitude": "Longitude",
+      "sortOrder": "Sort Order",
       "notificationTo": "email:john@gmail.com, user:pphetra",
       "registerFormDefinition": "RegisterForm Definition",
       "identityTemplate": "Identity Template"

@@ -20,10 +20,12 @@ import RoleSelect from "./roleSelect";
 import { useTranslation } from "react-i18next";
 import useStore from "lib/store";
 import AuthroitySelect from "components/widgets/authoritySelect";
+import VillageSelect from "./villageSelect";
 
 const InvitationCodeCreate = () => {
   const router = useRouter();
-  const { me } = useStore();
+  const store = useStore();
+  const { me } = store;
   const { t } = useTranslation();
   const services = useServices();
   const [viewModel] = useState(
@@ -104,6 +106,20 @@ const InvitationCodeCreate = () => {
           <RoleSelect viewModel={viewModel} />
           <ErrorText>{viewModel.fieldErrors.role}</ErrorText>
         </Field>
+        {store.isFeatureEnable("village") && viewModel.role === "REP" ? (
+          <Field $size="half">
+            <Label htmlFor="villages">
+              {t("form.label.villages", "Villages")}
+            </Label>
+            <VillageSelect
+              viewModel={viewModel}
+              villageService={services.villageService}
+            />
+            <ErrorText>{viewModel.fieldErrors.villageIds}</ErrorText>
+          </Field>
+        ) : (
+          <></>
+        )}
       </FieldGroup>
       {viewModel.submitError.length > 0 && (
         <FormMessage>{viewModel.submitError}</FormMessage>

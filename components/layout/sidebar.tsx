@@ -17,6 +17,7 @@ import {
   MapIcon,
   CogIcon,
   DocumentIcon,
+  HomeModernIcon,
 } from "@heroicons/react/24/outline";
 import useStore from "lib/store";
 import CollapsIcon from "components/layout/CollapsIcon";
@@ -315,6 +316,30 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     }
                     icon={<MapIcon className={iconClassName} />}
                   />
+                  {store.isFeatureEnable("village") && (
+                    <Menu
+                      href="/admin/villages/"
+                      pathname={pathname}
+                      label={t("breadcrumb.villages", "Villages")}
+                      collapsed={store.menu.collapsed}
+                      display={
+                        store.isSuperUser ||
+                        store.isRoleOfficer ||
+                        store.isRoleAdmin
+                      }
+                      icon={<HomeModernIcon className={iconClassName} />}
+                    />
+                  )}
+                  {store.isFeatureEnable("animal_census") && (
+                    <Menu
+                      href="/admin/animal_species/"
+                      pathname={pathname}
+                      label={t("breadcrumb.animalSpecies", "Animal Species")}
+                      collapsed={store.menu.collapsed}
+                      display={store.isSuperUser}
+                      icon={<SwatchIcon className={iconClassName} />}
+                    />
+                  )}
                   <Menu
                     href="/admin/configurations/"
                     pathname={pathname}

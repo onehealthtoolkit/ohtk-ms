@@ -61,7 +61,7 @@ export class ObservationService implements IObservationService {
       variables: {
         limit: limit,
         offset: offset,
-        definitionId: filter.definitionId?.toString(),
+        definitionId: filter.definitionId,
         fromDate: filter.fromDate,
         throughDate: filter.throughDate,
         q: filter.q,

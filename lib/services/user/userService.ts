@@ -101,7 +101,7 @@ export class UserService implements IUserService {
       limit,
       offset,
       q: searchText,
-      authorities: authorities?.[0]?.id ? Number(authorities[0].id) : undefined,
+      authorities: authorities?.map(authority => authority.id),
       role: role,
       fromDate: fromDate,
       throughDate: throughDate,

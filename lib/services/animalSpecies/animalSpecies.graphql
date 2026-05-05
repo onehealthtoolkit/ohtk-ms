@@ -1,0 +1,90 @@
+query animalSpecies(
+  $limit: Int!
+  $offset: Int!
+  $q: String
+  $active: Boolean
+  $ordering: String
+) {
+  adminAnimalSpeciesQuery(
+    limit: $limit
+    offset: $offset
+    q: $q
+    active: $active
+    ordering: $ordering
+  ) {
+    totalCount
+    results {
+      id
+      code
+      name
+      active
+      sortOrder
+    }
+  }
+}
+
+mutation AnimalSpeciesCreate(
+  $code: String!
+  $name: String!
+  $active: Boolean = true
+  $sortOrder: Int = 0
+) {
+  adminAnimalSpeciesCreate(
+    code: $code
+    name: $name
+    active: $active
+    sortOrder: $sortOrder
+  ) {
+    result {
+      __typename
+      ... on AdminAnimalSpeciesCreateSuccess {
+        id
+        code
+        name
+        active
+        sortOrder
+      }
+      ... on AdminAnimalSpeciesCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation AnimalSpeciesUpdate(
+  $id: Int!
+  $code: String!
+  $name: String!
+  $active: Boolean!
+  $sortOrder: Int = 0
+) {
+  adminAnimalSpeciesUpdate(
+    id: $id
+    code: $code
+    name: $name
+    active: $active
+    sortOrder: $sortOrder
+  ) {
+    result {
+      __typename
+      ... on AdminAnimalSpeciesUpdateSuccess {
+        id
+        code
+        name
+        active
+        sortOrder
+      }
+      ... on AdminAnimalSpeciesUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
