@@ -28,6 +28,7 @@ export type Scalars = {
   Float: { input: number; output: number };
   Date: { input: any; output: any };
   DateTime: { input: any; output: any };
+  Decimal: { input: any; output: any };
   GenericScalar: { input: any; output: any };
   GeoJSON: { input: any; output: any };
   JSONString: { input: any; output: any };
@@ -270,15 +271,20 @@ export type AdminAuthorityUserCreateSuccess = {
   __typename?: "AdminAuthorityUserCreateSuccess";
   address?: Maybe<Scalars["String"]["output"]>;
   authority: AdminAuthorityCreateSuccess;
+  authorityuser?: Maybe<AdminAuthorityUserCreateSuccess>;
   avatar?: Maybe<Scalars["String"]["output"]>;
   avatarUrl?: Maybe<Scalars["String"]["output"]>;
+  casestatetransitionSet: Array<CaseStateTransitionType>;
   censusSnapshots: Array<VillageCensusSnapshotType>;
+  commentSet: Array<CommentUpdateSuccess>;
   consent: Scalars["Boolean"]["output"];
   dateJoined: Scalars["DateTime"]["output"];
   email: Scalars["String"]["output"];
   fcmToken: Scalars["String"]["output"];
   firstName: Scalars["String"]["output"];
+  followupreport: Array<FollowupReportType>;
   id: Scalars["ID"]["output"];
+  incidentreport: Array<IncidentReportType>;
   /** Designates whether this user should be treated as active. Unselect this instead of deleting accounts. */
   isActive: Scalars["Boolean"]["output"];
   /** Designates whether the user can log into this admin site. */
@@ -287,11 +293,14 @@ export type AdminAuthorityUserCreateSuccess = {
   isSuperuser: Scalars["Boolean"]["output"];
   lastLogin?: Maybe<Scalars["DateTime"]["output"]>;
   lastName: Scalars["String"]["output"];
+  monitoringrecord: Array<ObservationSubjectMonitoringRecordType>;
   password: Scalars["String"]["output"];
   role?: Maybe<AccountsAuthorityUserRoleChoices>;
+  subjectrecord: Array<ObservationSubjectType>;
   telephone?: Maybe<Scalars["String"]["output"]>;
   thumbnailAvatarUrl?: Maybe<Scalars["String"]["output"]>;
   userPtr: UserType;
+  usermessageSet: Array<UserMessageType>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
   username: Scalars["String"]["output"];
 };
@@ -1621,6 +1630,15 @@ export type AnimalCensusFactType = {
   householdQuantity: Scalars["Int"]["output"];
   id: Scalars["ID"]["output"];
   species: AdminAnimalSpeciesUpdateSuccess;
+};
+
+export type AnimalSpeciesType = {
+  __typename?: "AnimalSpeciesType";
+  active: Scalars["Boolean"]["output"];
+  code: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
+  sortOrder: Scalars["Int"]["output"];
 };
 
 export type AuthorityBoundaryConnectType = {
@@ -2993,6 +3011,7 @@ export type Query = {
   adminStateTransitionQuery?: Maybe<Array<Maybe<StateTransitionType>>>;
   adminVillageQuery?: Maybe<AdminVillageQueryTypeNodeConnection>;
   animalCensusCapabilityEnabled: Scalars["Boolean"]["output"];
+  animalSpecies?: Maybe<Array<Maybe<AnimalSpeciesType>>>;
   authorities?: Maybe<AuthorityTypeNodeConnection>;
   authority?: Maybe<AuthorityType>;
   authorityInheritsDown?: Maybe<Array<AuthorityType>>;
@@ -3095,7 +3114,7 @@ export type QueryAdminAuthorityQueryArgs = {
 
 export type QueryAdminAuthorityUserQueryArgs = {
   after?: InputMaybe<Scalars["String"]["input"]>;
-  authorities?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  authorities?: InputMaybe<Scalars["Decimal"]["input"]>;
   before?: InputMaybe<Scalars["String"]["input"]>;
   dateJoinedGte?: InputMaybe<Scalars["DateTime"]["input"]>;
   dateJoinedLte?: InputMaybe<Scalars["DateTime"]["input"]>;
@@ -3277,7 +3296,7 @@ export type QueryAdminStateTransitionQueryArgs = {
 export type QueryAdminVillageQueryArgs = {
   active?: InputMaybe<Scalars["Boolean"]["input"]>;
   after?: InputMaybe<Scalars["String"]["input"]>;
-  authorityId?: InputMaybe<Scalars["Float"]["input"]>;
+  authorityId?: InputMaybe<Scalars["Decimal"]["input"]>;
   before?: InputMaybe<Scalars["String"]["input"]>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
   last?: InputMaybe<Scalars["Int"]["input"]>;
@@ -3329,7 +3348,7 @@ export type QueryBoundaryConnectedIncidentReportsArgs = {
   offset?: InputMaybe<Scalars["Int"]["input"]>;
   ordering?: InputMaybe<Scalars["String"]["input"]>;
   relevantAuthorities_Id_In?: InputMaybe<
-    Array<InputMaybe<Scalars["String"]["input"]>>
+    Array<InputMaybe<Scalars["ID"]["input"]>>
   >;
   relevantAuthorities_Name?: InputMaybe<Scalars["String"]["input"]>;
   relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]["input"]>;
@@ -3357,7 +3376,7 @@ export type QueryCasesQueryArgs = {
   report_CreatedAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
   report_CreatedAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
   report_RelevantAuthorities_Id_In?: InputMaybe<
-    Array<InputMaybe<Scalars["String"]["input"]>>
+    Array<InputMaybe<Scalars["ID"]["input"]>>
   >;
   report_ReportType_Id_In?: InputMaybe<
     Array<InputMaybe<Scalars["UUID"]["input"]>>
@@ -3424,7 +3443,7 @@ export type QueryIncidentReportsArgs = {
   offset?: InputMaybe<Scalars["Int"]["input"]>;
   ordering?: InputMaybe<Scalars["String"]["input"]>;
   relevantAuthorities_Id_In?: InputMaybe<
-    Array<InputMaybe<Scalars["String"]["input"]>>
+    Array<InputMaybe<Scalars["ID"]["input"]>>
   >;
   relevantAuthorities_Name?: InputMaybe<Scalars["String"]["input"]>;
   relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]["input"]>;
@@ -3454,7 +3473,7 @@ export type QueryMyIncidentReportsArgs = {
   offset?: InputMaybe<Scalars["Int"]["input"]>;
   ordering?: InputMaybe<Scalars["String"]["input"]>;
   relevantAuthorities_Id_In?: InputMaybe<
-    Array<InputMaybe<Scalars["String"]["input"]>>
+    Array<InputMaybe<Scalars["ID"]["input"]>>
   >;
   relevantAuthorities_Name?: InputMaybe<Scalars["String"]["input"]>;
   relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]["input"]>;
@@ -3514,8 +3533,8 @@ export type QueryObservationSubjectsArgs = {
   before?: InputMaybe<Scalars["String"]["input"]>;
   createdAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
   createdAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
-  definition_Id?: InputMaybe<Scalars["Float"]["input"]>;
-  definition_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  definition_Id?: InputMaybe<Scalars["ID"]["input"]>;
+  definition_Id_In?: InputMaybe<Array<InputMaybe<Scalars["ID"]["input"]>>>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
   last?: InputMaybe<Scalars["Int"]["input"]>;
   limit?: InputMaybe<Scalars["Int"]["input"]>;
@@ -4341,8 +4360,8 @@ export type CasesQueryVariables = Exact<{
   fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   authorities?: InputMaybe<
-    | Array<InputMaybe<Scalars["String"]["input"]>>
-    | InputMaybe<Scalars["String"]["input"]>
+    | Array<InputMaybe<Scalars["ID"]["input"]>>
+    | InputMaybe<Scalars["ID"]["input"]>
   >;
   reportTypes?: InputMaybe<
     | Array<InputMaybe<Scalars["UUID"]["input"]>>
@@ -5465,7 +5484,7 @@ export type GetNotificationTemplateQuery = {
 export type ObservationSubjectsQueryVariables = Exact<{
   limit: Scalars["Int"]["input"];
   offset: Scalars["Int"]["input"];
-  definitionId?: InputMaybe<Scalars["Float"]["input"]>;
+  definitionId?: InputMaybe<Scalars["ID"]["input"]>;
   fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   q?: InputMaybe<Scalars["String"]["input"]>;
@@ -6286,8 +6305,8 @@ export type ReportsQueryVariables = Exact<{
   fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   authorities?: InputMaybe<
-    | Array<InputMaybe<Scalars["String"]["input"]>>
-    | InputMaybe<Scalars["String"]["input"]>
+    | Array<InputMaybe<Scalars["ID"]["input"]>>
+    | InputMaybe<Scalars["ID"]["input"]>
   >;
   reportTypes?: InputMaybe<
     | Array<InputMaybe<Scalars["UUID"]["input"]>>
@@ -6347,8 +6366,8 @@ export type BoundaryConnectedReportsQueryVariables = Exact<{
   fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   authorities?: InputMaybe<
-    | Array<InputMaybe<Scalars["String"]["input"]>>
-    | InputMaybe<Scalars["String"]["input"]>
+    | Array<InputMaybe<Scalars["ID"]["input"]>>
+    | InputMaybe<Scalars["ID"]["input"]>
   >;
   reportTypes?: InputMaybe<
     | Array<InputMaybe<Scalars["UUID"]["input"]>>
@@ -7450,10 +7469,7 @@ export type UsersQueryVariables = Exact<{
   limit: Scalars["Int"]["input"];
   offset: Scalars["Int"]["input"];
   q?: InputMaybe<Scalars["String"]["input"]>;
-  authorities?: InputMaybe<
-    | Array<InputMaybe<Scalars["String"]["input"]>>
-    | InputMaybe<Scalars["String"]["input"]>
-  >;
+  authorities?: InputMaybe<Scalars["Decimal"]["input"]>;
   role?: InputMaybe<Scalars["String"]["input"]>;
   fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
@@ -9533,10 +9549,7 @@ export const CasesDocument = {
           },
           type: {
             kind: "ListType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
           },
         },
         {
@@ -14699,7 +14712,7 @@ export const ObservationSubjectsDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "definitionId" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
         },
         {
           kind: "VariableDefinition",
@@ -19096,10 +19109,7 @@ export const ReportsDocument = {
           },
           type: {
             kind: "ListType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
           },
         },
         {
@@ -19397,10 +19407,7 @@ export const BoundaryConnectedReportsDocument = {
           },
           type: {
             kind: "ListType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
           },
         },
         {
@@ -24779,13 +24786,7 @@ export const UsersDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "authorities" },
           },
-          type: {
-            kind: "ListType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Decimal" } },
         },
         {
           kind: "VariableDefinition",
