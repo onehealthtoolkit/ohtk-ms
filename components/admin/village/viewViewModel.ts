@@ -8,7 +8,7 @@ import { computed, makeObservable, observable, runInAction } from "mobx";
 
 export class VillageViewViewModel extends BaseViewModel {
   _data: Village = {} as Village;
-  _latestCensus?: VillageCensusSnapshot;
+  _latestCensus: VillageCensusSnapshot | undefined = undefined;
 
   constructor(
     readonly id: number,
