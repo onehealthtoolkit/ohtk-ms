@@ -9,6 +9,7 @@ import ViewActionButtons from "components/widgets/viewActionButtons";
 import { Tree, TreeNode } from "react-organizational-chart";
 import tw from "tailwind-styled-components";
 import useStore from "lib/store";
+import Link from "next/link";
 
 const StyledCurrentNode = tw.div`
 p-2
@@ -110,8 +111,16 @@ const AuthorityView = () => {
                         key={village.id}
                         className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700"
                       >
-                        <td className="px-6 py-4">{village.code}</td>
-                        <td className="px-6 py-4">{village.name}</td>
+                        <td className="px-6 py-4 text-blue-700 underline">
+                          <Link href={`/admin/villages/${village.id}/view`}>
+                            {village.code}
+                          </Link>
+                        </td>
+                        <td className="px-6 py-4 text-blue-700 underline">
+                          <Link href={`/admin/villages/${village.id}/view`}>
+                            {village.name}
+                          </Link>
+                        </td>
                         <td className="px-6 py-4">
                           {village.active ? "Yes" : "No"}
                         </td>
