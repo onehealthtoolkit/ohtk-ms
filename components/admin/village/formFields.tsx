@@ -1,4 +1,5 @@
 import AuthroitySelect from "components/widgets/authoritySelect";
+import dynamic from "next/dynamic";
 import {
   Checkbox,
   ErrorText,
@@ -10,6 +11,11 @@ import { Observer } from "mobx-react";
 import { useTranslation } from "react-i18next";
 import { VillageViewModel } from "./villageViewModel";
 
+const VillageLocationMap = dynamic(() => import("../place/placeMap"), {
+  loading: () => <p>A map is loading</p>,
+  ssr: false,
+});
+
 const optionalNumber = (value: string) => {
   if (value === "") {
     return null;
@@ -17,7 +23,13 @@ const optionalNumber = (value: string) => {
   return Number(value);
 };
 
-const VillageFormFields = ({ viewModel }: { viewModel: VillageViewModel }) => {
+const VillageFormFields = ({
+  viewModel,
+  showLocationMap = false,
+}: {
+  viewModel: VillageViewModel;
+  showLocationMap?: boolean;
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -56,6 +68,22 @@ const VillageFormFields = ({ viewModel }: { viewModel: VillageViewModel }) => {
           </Field>
         )}
       </Observer>
+      {showLocationMap && (
+        <Observer>
+          {() => (
+            <Field $size="half">
+              <VillageLocationMap
+                lat={viewModel.latitude ?? 0}
+                lng={viewModel.longitude ?? 0}
+                onMarkerChange={value => {
+                  viewModel.latitude = value.lat;
+                  viewModel.longitude = value.lng;
+                }}
+              />
+            </Field>
+          )}
+        </Observer>
+      )}
       <Observer>
         {() => (
           <Field $size="half">
