@@ -9,19 +9,13 @@ import {
 } from "components/widgets/forms";
 import { Observer } from "mobx-react";
 import { useTranslation } from "react-i18next";
+import { optionalCoordinate, roundCoordinate } from "./coordinates";
 import { VillageViewModel } from "./villageViewModel";
 
 const VillageLocationMap = dynamic(() => import("../place/placeMap"), {
   loading: () => <p>A map is loading</p>,
   ssr: false,
 });
-
-const optionalNumber = (value: string) => {
-  if (value === "") {
-    return null;
-  }
-  return Number(value);
-};
 
 const VillageFormFields = ({
   viewModel,
@@ -76,8 +70,8 @@ const VillageFormFields = ({
                 lat={viewModel.latitude ?? 0}
                 lng={viewModel.longitude ?? 0}
                 onMarkerChange={value => {
-                  viewModel.latitude = value.lat;
-                  viewModel.longitude = value.lng;
+                  viewModel.latitude = roundCoordinate(value.lat);
+                  viewModel.longitude = roundCoordinate(value.lng);
                 }}
               />
             </Field>
@@ -108,9 +102,10 @@ const VillageFormFields = ({
             <TextInput
               id="latitude"
               type="number"
+              step="0.000001"
               placeholder={t("form.placeholder.latitude", "Latitude")}
               onChange={evt =>
-                (viewModel.latitude = optionalNumber(evt.target.value))
+                (viewModel.latitude = optionalCoordinate(evt.target.value))
               }
               disabled={viewModel.isSubmitting}
               value={viewModel.latitude ?? ""}
@@ -128,9 +123,10 @@ const VillageFormFields = ({
             <TextInput
               id="longitude"
               type="number"
+              step="0.000001"
               placeholder={t("form.placeholder.longitude", "Longitude")}
               onChange={evt =>
-                (viewModel.longitude = optionalNumber(evt.target.value))
+                (viewModel.longitude = optionalCoordinate(evt.target.value))
               }
               disabled={viewModel.isSubmitting}
               value={viewModel.longitude ?? ""}

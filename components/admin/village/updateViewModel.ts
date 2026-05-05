@@ -1,5 +1,6 @@
 import { SaveResult } from "lib/services/interface";
 import { IVillageService, Village } from "lib/services/village";
+import { roundCoordinate } from "./coordinates";
 import { VillageViewModel } from "./villageViewModel";
 
 export class VillageUpdateViewModel extends VillageViewModel {
@@ -18,8 +19,8 @@ export class VillageUpdateViewModel extends VillageViewModel {
       this.code = data.code;
       this.name = data.name;
       this.authorityId = data.authorityId;
-      this.latitude = data.latitude || null;
-      this.longitude = data.longitude || null;
+      this.latitude = data.latitude ? roundCoordinate(data.latitude) : null;
+      this.longitude = data.longitude ? roundCoordinate(data.longitude) : null;
       this.active = data.active;
     }
     this.isLoading = false;
