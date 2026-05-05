@@ -53,7 +53,11 @@ export abstract class InvitationCodeViewModel extends BaseFormViewModel {
     return this._authorityId;
   }
   public set authorityId(value: number) {
+    const changed = this._authorityId !== value;
     this._authorityId = value;
+    if (changed) {
+      this.villageIds = [];
+    }
     delete this.fieldErrors["authorityId"];
     if (this.submitError.length > 0) {
       this.submitError = "";

@@ -1,6 +1,6 @@
 import { Checkbox } from "components/widgets/forms";
 import { IVillageService, Village } from "lib/services/village";
-import { Observer } from "mobx-react";
+import { Observer, observer } from "mobx-react";
 import { useEffect, useState } from "react";
 import { InvitationCodeViewModel } from "./invitationCodeViewModel";
 
@@ -12,18 +12,29 @@ const VillageSelect = ({
   villageService: IVillageService;
 }) => {
   const [villages, setVillages] = useState<Village[]>([]);
+  const authorityId = viewModel.authorityId;
 
   useEffect(() => {
     let active = true;
+    if (!authorityId) {
+      setVillages([]);
+      return () => {
+        active = false;
+      };
+    }
     villageService.fetchVillages(200, 0, "", true).then(result => {
       if (active) {
-        setVillages(result.items || []);
+        setVillages(
+          (result.items || []).filter(
+            village => village.authorityId === authorityId
+          )
+        );
       }
     });
     return () => {
       active = false;
     };
-  }, [villageService]);
+  }, [villageService, authorityId]);
 
   return (
     <Observer>
@@ -46,8 +57,15 @@ const VillageSelect = ({
               }
             />
           ))}
-          {!villages.length && (
-            <div className="text-sm text-gray-500 py-2">No villages found</div>
+          {!authorityId && (
+            <div className="text-sm text-gray-500 py-2">
+              Select authority first
+            </div>
+          )}
+          {authorityId > 0 && !villages.length && (
+            <div className="text-sm text-gray-500 py-2">
+              No villages found for selected authority
+            </div>
           )}
         </div>
       )}
@@ -55,4 +73,4 @@ const VillageSelect = ({
   );
 };
 
-export default VillageSelect;
+export default observer(VillageSelect);
