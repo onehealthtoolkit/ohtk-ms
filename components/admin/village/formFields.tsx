@@ -17,13 +17,7 @@ const VillageLocationMap = dynamic(() => import("../place/placeMap"), {
   ssr: false,
 });
 
-const VillageFormFields = ({
-  viewModel,
-  showLocationMap = false,
-}: {
-  viewModel: VillageViewModel;
-  showLocationMap?: boolean;
-}) => {
+const VillageFormFields = ({ viewModel }: { viewModel: VillageViewModel }) => {
   const { t } = useTranslation();
 
   return (
@@ -62,22 +56,6 @@ const VillageFormFields = ({
           </Field>
         )}
       </Observer>
-      {showLocationMap && (
-        <Observer>
-          {() => (
-            <Field $size="half">
-              <VillageLocationMap
-                lat={viewModel.latitude ?? 0}
-                lng={viewModel.longitude ?? 0}
-                onMarkerChange={value => {
-                  viewModel.latitude = roundCoordinate(value.lat);
-                  viewModel.longitude = roundCoordinate(value.lng);
-                }}
-              />
-            </Field>
-          )}
-        </Observer>
-      )}
       <Observer>
         {() => (
           <Field $size="half">
@@ -132,6 +110,20 @@ const VillageFormFields = ({
               value={viewModel.longitude ?? ""}
             />
             <ErrorText>{viewModel.fieldErrors.longitude}</ErrorText>
+          </Field>
+        )}
+      </Observer>
+      <Observer>
+        {() => (
+          <Field $size="half">
+            <VillageLocationMap
+              lat={viewModel.latitude ?? 0}
+              lng={viewModel.longitude ?? 0}
+              onMarkerChange={value => {
+                viewModel.latitude = roundCoordinate(value.lat);
+                viewModel.longitude = roundCoordinate(value.lng);
+              }}
+            />
           </Field>
         )}
       </Observer>

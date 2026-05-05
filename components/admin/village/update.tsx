@@ -38,7 +38,7 @@ const VillageUpdate = () => {
     <MaskingLoader loading={viewModel.isLoading}>
       <Form>
         <FieldGroup>
-          <VillageFormFields viewModel={viewModel} showLocationMap />
+          <VillageFormFields viewModel={viewModel} />
         </FieldGroup>
         {viewModel.submitError.length > 0 && (
           <FormMessage>{viewModel.submitError}</FormMessage>

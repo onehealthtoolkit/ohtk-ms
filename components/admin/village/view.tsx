@@ -3,10 +3,17 @@ import Table from "components/widgets/table";
 import ViewActionButtons from "components/widgets/viewActionButtons";
 import useServices from "lib/services/provider";
 import { observer } from "mobx-react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { roundCoordinate } from "./coordinates";
 import { VillageViewViewModel } from "./viewViewModel";
+
+const VillageLocationMap = dynamic(() => import("../place/placeMap"), {
+  loading: () => <p>A map is loading</p>,
+  ssr: false,
+});
 
 const rowClass =
   "border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700";
@@ -24,6 +31,9 @@ const VillageView = () => {
         services.villageService
       )
   );
+  const hasLocation =
+    typeof viewModel.data.latitude === "number" &&
+    typeof viewModel.data.longitude === "number";
 
   return (
     <MaskingLoader loading={viewModel.isLoading}>
@@ -48,6 +58,42 @@ const VillageView = () => {
                   {t("form.label.authority", "Authority")}
                 </th>
                 <td className="px-6 py-4">{viewModel.data.authorityName}</td>
+              </tr>
+              <tr className={rowClass}>
+                <th scope="row" className={labelClass}>
+                  {t("form.label.latitude", "Latitude")}
+                </th>
+                <td className="px-6 py-4">
+                  {typeof viewModel.data.latitude === "number"
+                    ? roundCoordinate(viewModel.data.latitude)
+                    : ""}
+                </td>
+              </tr>
+              <tr className={rowClass}>
+                <th scope="row" className={labelClass}>
+                  {t("form.label.longitude", "Longitude")}
+                </th>
+                <td className="px-6 py-4">
+                  {typeof viewModel.data.longitude === "number"
+                    ? roundCoordinate(viewModel.data.longitude)
+                    : ""}
+                </td>
+              </tr>
+              <tr className={rowClass}>
+                <th scope="row" className={labelClass}>
+                  {t("form.label.map", "Map")}
+                </th>
+                <td className="px-6 py-4">
+                  {hasLocation ? (
+                    <VillageLocationMap
+                      lat={viewModel.data.latitude ?? 0}
+                      lng={viewModel.data.longitude ?? 0}
+                      draggable={false}
+                    />
+                  ) : (
+                    t("table.notFound", "Not found")
+                  )}
+                </td>
               </tr>
               <tr className={rowClass}>
                 <th scope="row" className={labelClass}>
