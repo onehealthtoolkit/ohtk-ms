@@ -164,6 +164,12 @@ query GetUser($id: ID!) {
     authority {
       id
     }
+    assignedVillages {
+      id
+      code
+      name
+      active
+    }
   }
 }
 

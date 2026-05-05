@@ -1,3 +1,5 @@
+import type { Village } from "lib/services/village";
+
 export type User = {
   id: string;
   username: string;
@@ -10,4 +12,5 @@ export type User = {
   role?: string | null;
   authorityId?: number;
   authorityName?: string;
+  assignedVillages?: Pick<Village, "id" | "code" | "name" | "active">[];
 };

@@ -7638,6 +7638,13 @@ export type GetUserQuery = {
     address?: string | null;
     role?: AccountsAuthorityUserRoleChoices | null;
     authority: { __typename?: "AdminAuthorityCreateSuccess"; id: string };
+    assignedVillages?: Array<{
+      __typename?: "VillageType";
+      id: string;
+      code: string;
+      name: string;
+      active: boolean;
+    } | null> | null;
   } | null;
 };
 
@@ -25788,6 +25795,22 @@ export const GetUserDocument = {
                     kind: "SelectionSet",
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "assignedVillages" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "active" },
+                      },
                     ],
                   },
                 },

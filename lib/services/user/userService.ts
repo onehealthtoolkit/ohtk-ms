@@ -155,6 +155,15 @@ export class UserService implements IUserService {
         address: user.address || "",
         role: user.role,
         authorityId: parseInt(user.authority.id),
+        assignedVillages:
+          user.assignedVillages
+            ?.filter(village => village)
+            .map(village => ({
+              id: village!.id,
+              code: village!.code,
+              name: village!.name,
+              active: village!.active,
+            })) || [],
       };
     }
     return {
