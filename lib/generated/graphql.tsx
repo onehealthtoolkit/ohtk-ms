@@ -3534,7 +3534,7 @@ export type QueryObservationSubjectsArgs = {
   createdAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
   createdAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
   definition_Id?: InputMaybe<Scalars["ID"]["input"]>;
-  definition_Id_In?: InputMaybe<Array<InputMaybe<Scalars["ID"]["input"]>>>;
+  definition_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
   last?: InputMaybe<Scalars["Int"]["input"]>;
   limit?: InputMaybe<Scalars["Int"]["input"]>;
