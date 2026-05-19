@@ -100,8 +100,12 @@ const CENSUS_DEFINITION_VERSION_PUBLISH = gql`
 `;
 
 export interface ICensusDefinitionService extends IService {
-  fetchAdminState(force?: boolean): Promise<GetResult<CensusDefinitionAdminState>>;
-  ensureDefaults(resetSchema?: boolean): Promise<SaveResult<CensusDefinitionAdminState>>;
+  fetchAdminState(
+    force?: boolean
+  ): Promise<GetResult<CensusDefinitionAdminState>>;
+  ensureDefaults(
+    resetSchema?: boolean
+  ): Promise<SaveResult<CensusDefinitionAdminState>>;
   publishVersion(
     kind: CensusKind,
     schema: CensusSchema,
@@ -236,7 +240,9 @@ export class CensusDefinitionService implements ICensusDefinitionService {
     }
     return {
       success: false,
-      message: fields.map(field => `${field.name}: ${field.message}`).join(", "),
+      message: fields
+        .map(field => `${field.name}: ${field.message}`)
+        .join(", "),
     };
   }
 

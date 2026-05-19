@@ -6,7 +6,13 @@ import {
   CensusSchema,
   ICensusDefinitionService,
 } from "lib/services/censusDefinition";
-import { action, computed, makeObservable, observable, runInAction } from "mobx";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from "mobx";
 
 export class CensusDefinitionViewViewModel extends BaseViewModel {
   _state: CensusDefinitionAdminState = {
@@ -43,9 +49,10 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
   }
 
   get versions(): CensusDefinitionVersion[] {
-    return [this.state.activeVersions.ANIMAL, this.state.activeVersions.HUMAN].filter(
-      Boolean
-    ) as CensusDefinitionVersion[];
+    return [
+      this.state.activeVersions.ANIMAL,
+      this.state.activeVersions.HUMAN,
+    ].filter(Boolean) as CensusDefinitionVersion[];
   }
 
   setSchemaText(kind: CensusKind, value: string) {
@@ -68,7 +75,8 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
 
   async ensureDefaults(resetSchema: boolean = false) {
     this.isSubmitting = true;
-    const result = await this.censusDefinitionService.ensureDefaults(resetSchema);
+    const result =
+      await this.censusDefinitionService.ensureDefaults(resetSchema);
     runInAction(() => {
       if (result.success) {
         this.fetch(true);

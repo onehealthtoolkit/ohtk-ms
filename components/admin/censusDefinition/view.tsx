@@ -56,8 +56,7 @@ const CensusDefinitionView = () => {
           },
           {
             label: t("form.label.rows", "Rows"),
-            get: record =>
-              (record.runtimeSchema.rows?.length ?? 0).toString(),
+            get: record => (record.runtimeSchema.rows?.length ?? 0).toString(),
           },
           {
             label: t("form.label.measures", "Measures"),
