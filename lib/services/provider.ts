@@ -25,6 +25,7 @@ import { OutbreakPlanService } from "./outbreakPlan";
 import { PlaceService } from "./place";
 import { VillageService } from "./village";
 import { AnimalSpeciesService } from "./animalSpecies";
+import { CensusDefinitionService } from "./censusDefinition";
 import { ConfigurationService } from "./configuration";
 import { OutbreakService } from "./outbreak/outbreakService";
 import { ObservationDefinitionService } from "./observationDefinition/observationDefinitionService";
@@ -57,6 +58,7 @@ export interface IServiceProvider {
   get placeService(): PlaceService;
   get villageService(): VillageService;
   get animalSpeciesService(): AnimalSpeciesService;
+  get censusDefinitionService(): CensusDefinitionService;
   get configurationService(): ConfigurationService;
   get outbreakService(): OutbreakService;
   get observationDefinitionService(): ObservationDefinitionService;
@@ -92,6 +94,7 @@ export class ServicesProvider implements IServiceProvider {
   placeService: PlaceService;
   villageService: VillageService;
   animalSpeciesService: AnimalSpeciesService;
+  censusDefinitionService: CensusDefinitionService;
   configurationService: ConfigurationService;
   outbreakService: OutbreakService;
   observationDefinitionService: ObservationDefinitionService;
@@ -125,6 +128,7 @@ export class ServicesProvider implements IServiceProvider {
     this.placeService = new PlaceService(client);
     this.villageService = new VillageService(client);
     this.animalSpeciesService = new AnimalSpeciesService(client);
+    this.censusDefinitionService = new CensusDefinitionService(client);
     this.configurationService = new ConfigurationService(client);
     this.outbreakService = new OutbreakService(client);
     this.observationDefinitionService = new ObservationDefinitionService(

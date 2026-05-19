@@ -18,6 +18,7 @@ import {
   CogIcon,
   DocumentIcon,
   HomeModernIcon,
+  ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline";
 import useStore from "lib/store";
 import CollapsIcon from "components/layout/CollapsIcon";
@@ -331,14 +332,31 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     />
                   )}
                   {store.isFeatureEnable("animal_census") && (
-                    <Menu
-                      href="/admin/animal_species/"
-                      pathname={pathname}
-                      label={t("breadcrumb.animalSpecies", "Animal Species")}
-                      collapsed={store.menu.collapsed}
-                      display={store.isSuperUser}
-                      icon={<SwatchIcon className={iconClassName} />}
-                    />
+                    <>
+                      <Menu
+                        href="/admin/census_definitions/"
+                        pathname={pathname}
+                        label={t(
+                          "breadcrumb.censusDefinition",
+                          "Census Definition"
+                        )}
+                        collapsed={store.menu.collapsed}
+                        display={store.isSuperUser}
+                        icon={
+                          <ClipboardDocumentListIcon
+                            className={iconClassName}
+                          />
+                        }
+                      />
+                      <Menu
+                        href="/admin/animal_species/"
+                        pathname={pathname}
+                        label={t("breadcrumb.animalSpecies", "Animal Species")}
+                        collapsed={store.menu.collapsed}
+                        display={store.isSuperUser}
+                        icon={<SwatchIcon className={iconClassName} />}
+                      />
+                    </>
                   )}
                   <Menu
                     href="/admin/configurations/"
