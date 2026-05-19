@@ -11,6 +11,7 @@ export const DEFAULT_GRAPHQL_URI = graphqlEndpoint(BACKEND_DOMAIN);
 export const DEFAULT_WEBSOCKET_URI = websocketEndpoint(BACKEND_DOMAIN);
 
 const LOCAL_STORAGE_REFRESH_EXPIRES_IN_KEY = "refreshExpiresIn";
+const LOCAL_STORAGE_ACCESS_TOKEN_KEY = "accessToken";
 const LOCAL_STORGAGE_BACKEND_URL_KEY = "backendUrl";
 const LOCAL_STORGAGE_SUB_DOMAIN = "subdomain";
 
@@ -58,6 +59,18 @@ export function setRefreshExpiresIn(value: number) {
   localStorage.setItem(LOCAL_STORAGE_REFRESH_EXPIRES_IN_KEY, value.toString());
 }
 
+export function setAccessToken(value: string) {
+  localStorage.setItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY, value);
+}
+
+export function clearAccessToken() {
+  localStorage.removeItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
+}
+
+export function getAccessToken(): string | undefined {
+  return localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY) || undefined;
+}
+
 export function getRefreshExpiresIn(): number {
   const value = localStorage.getItem(LOCAL_STORAGE_REFRESH_EXPIRES_IN_KEY);
   if (value) {
@@ -70,13 +83,68 @@ export function getSubDomain() {
   return localStorage.getItem(LOCAL_STORGAGE_SUB_DOMAIN) || undefined;
 }
 
+function getPayloadExp(payload: unknown): number {
+  if (!payload) {
+    return 0;
+  }
+
+  let parsedPayload: unknown;
+  try {
+    parsedPayload = typeof payload === "string" ? JSON.parse(payload) : payload;
+  } catch (_) {
+    return 0;
+  }
+
+  if (
+    typeof parsedPayload === "object" &&
+    parsedPayload !== null &&
+    "exp" in parsedPayload
+  ) {
+    const exp = Number(parsedPayload.exp);
+    return Number.isFinite(exp) ? exp : 0;
+  }
+
+  return 0;
+}
+
+const isAuthOperation = (body: unknown) =>
+  typeof body === "string" &&
+  (body.includes("TokenAuth") ||
+    body.includes("RefreshToken") ||
+    body.includes("DeleteTokenCookie"));
+
+const withAuthorizationHeader = (options: RequestInit): RequestInit => {
+  if (isAuthOperation(options.body)) {
+    return options;
+  }
+
+  const token = getAccessToken();
+  if (!token) {
+    return options;
+  }
+
+  const headers = new Headers(options.headers);
+  if (!headers.has("Authorization")) {
+    headers.set("Authorization", `JWT ${token}`);
+  }
+
+  return {
+    ...options,
+    headers,
+  };
+};
+
 const refreshToken = async (): Promise<boolean> => {
   const result = await client.mutate({
     mutation: RefreshTokenDocument,
   });
 
   if (!result.error) {
-    setRefreshExpiresIn(result.data?.refreshToken?.payload.exp || 0);
+    setRefreshExpiresIn(getPayloadExp(result.data?.refreshToken?.payload));
+    const token = result.data?.refreshToken?.token;
+    if (token) {
+      setAccessToken(token);
+    }
     return false;
   }
 
@@ -99,23 +167,17 @@ const customFetch = (input: RequestInfo | URL, options?: RequestInit) => {
 
   // we should prevent recursive call of refreshToken by
   // checking if options[body] is containing refreshToken
-  var isRefreshingToken = false;
-  if (
-    typeof requestOptions.body === "string" &&
-    requestOptions.body.includes("RefreshToken")
-  ) {
-    isRefreshingToken = true;
-  }
+  var isRefreshingToken = isAuthOperation(requestOptions.body);
 
   if (refreshExpiresIn !== 0 && diff < 30 && !isRefreshingToken) {
     console.log("refreshing token due to expiration", diff);
     return refreshToken().then(() => {
       return fetch(fetchUri, {
-        ...requestOptions,
+        ...withAuthorizationHeader(requestOptions),
       });
     });
   } else {
-    return fetch(fetchUri, requestOptions);
+    return fetch(fetchUri, withAuthorizationHeader(requestOptions));
   }
 };
 

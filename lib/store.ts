@@ -4,6 +4,7 @@ import { Me } from "./services/profile/me";
 import { IAuthService, SignInResult } from "./services/auth";
 import { IProfileService } from "./services/profile";
 import { IServiceProvider } from "./services/provider";
+import { clearAccessToken, getAccessToken } from "lib/client";
 
 type Menu = {
   open: boolean;
@@ -54,6 +55,21 @@ export class Store {
           this.isLogin = true;
         });
         this.authService.startAutoRefreshToken();
+      } else if (getAccessToken()) {
+        try {
+          await this.fetchMe();
+          runInAction(() => {
+            this.initTokenPending = false;
+            this.isLogin = true;
+          });
+          this.authService.startAutoRefreshToken();
+        } catch (e) {
+          clearAccessToken();
+          runInAction(() => {
+            this.initTokenPending = false;
+            this.isLogin = false;
+          });
+        }
       } else {
         runInAction(() => {
           this.initTokenPending = false;
