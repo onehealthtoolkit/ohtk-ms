@@ -15,6 +15,15 @@ import {
   runInAction,
 } from "mobx";
 
+const censusKinds: CensusKind[] = ["ANIMAL", "HUMAN"];
+
+export type CensusDefinitionAdminRow = {
+  id: string;
+  kind: CensusKind;
+  enabled: boolean;
+  activeVersion?: CensusDefinitionVersion;
+};
+
 export class CensusDefinitionViewViewModel extends BaseViewModel {
   _state: CensusDefinitionAdminState = {
     definitions: [],
@@ -46,6 +55,7 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
       _state: observable,
       state: computed,
       versions: computed,
+      rows: computed,
       schemaText: observable,
       publishSuccess: observable,
       statusSuccess: observable,
@@ -71,6 +81,19 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
       this.state.activeVersions.ANIMAL,
       this.state.activeVersions.HUMAN,
     ].filter(Boolean) as CensusDefinitionVersion[];
+  }
+
+  get rows(): CensusDefinitionAdminRow[] {
+    return censusKinds.map(kind => {
+      const definition = this.definitionFor(kind);
+      const activeVersion = this.activeVersionFor(kind);
+      return {
+        id: definition?.id ?? activeVersion?.definition.id ?? kind,
+        kind,
+        enabled: this.isKindEnabled(kind),
+        activeVersion,
+      };
+    });
   }
 
   setSchemaText(kind: CensusKind, value: string) {

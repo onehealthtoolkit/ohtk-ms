@@ -288,10 +288,12 @@
   },
   "censusDefinition": {
     "publishLifecycleTitle": "Published versions are the mobile forms",
-    "publishLifecycleBody": "Editing JSON here does not change reporter phones until you click Publish. Publishing creates a new version and makes it the active form returned to OHTK Mobile. Existing village submissions remain readable with the version they used.",
+    "publishLifecycleBody": "Open a census definition to edit its JSON, publish a new mobile form version, or activate and deactivate it for reporter mobile apps. Existing village submissions remain readable with the version they used.",
     "publishSuccess": "{{kind}} census {{version}} is now the published mobile form. Reporters will receive it the next time the mobile app refreshes this census.",
     "deactivateSuccess": "{{kind}} census is inactive. Reporter mobile apps will hide it, but existing submissions remain available.",
     "reactivateSuccess": "{{kind}} census is active again. Reporters can open it after the mobile app refreshes.",
+    "mobileAvailability": "Mobile availability",
+    "inactive": "Inactive",
     "mobileActiveLabel": "mobile active",
     "mobileInactiveLabel": "mobile inactive",
     "noPublishedVersion": "No published version. Mobile will not show this census.",
@@ -306,6 +308,8 @@
     "inactiveHelp": "This census is inactive and hidden from reporter mobile apps. Reactivate it before publishing a new version.",
     "publishNextVersion": "Publish next version",
     "publishDisabledUntilActive": "Reactivate before publishing",
+    "schemaJson": "Schema JSON",
+    "invalidKind": "Unknown census definition.",
     "versionLabel": "v{{version}}",
     "newVersionLabel": "the new version",
     "kind": {

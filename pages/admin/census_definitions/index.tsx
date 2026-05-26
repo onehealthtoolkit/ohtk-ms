@@ -1,4 +1,4 @@
-import CensusDefinitionView from "components/admin/censusDefinition/view";
+import CensusDefinitionList from "components/admin/censusDefinition/list";
 import Protect from "components/auth/protect";
 import Breadcrumb from "components/layout/breadcrumb";
 import Layout from "components/layout";
@@ -19,7 +19,7 @@ const AdminCensusDefinitionsPage: NextPage = () => {
             },
           ]}
         />
-        <CensusDefinitionView />
+        <CensusDefinitionList />
       </Layout>
     </Protect>
   );
