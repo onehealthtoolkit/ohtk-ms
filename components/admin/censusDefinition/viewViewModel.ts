@@ -25,6 +25,13 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
     HUMAN: "",
   };
 
+  publishSuccess:
+    | {
+        kind: CensusKind;
+        version?: number;
+      }
+    | undefined = undefined;
+
   constructor(readonly censusDefinitionService: ICensusDefinitionService) {
     super();
     makeObservable(this, {
@@ -32,6 +39,7 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
       state: computed,
       versions: computed,
       schemaText: observable,
+      publishSuccess: observable,
       fetch: action,
       ensureDefaults: action,
       publish: action,
@@ -57,6 +65,19 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
 
   setSchemaText(kind: CensusKind, value: string) {
     this.schemaText[kind] = value;
+    this.publishSuccess = undefined;
+  }
+
+  activeVersionFor(kind: CensusKind): CensusDefinitionVersion | undefined {
+    return this.state.activeVersions[kind];
+  }
+
+  hasSchemaEdits(kind: CensusKind): boolean {
+    const activeVersion = this.activeVersionFor(kind);
+    if (!activeVersion && !this.schemaText[kind].trim()) {
+      return false;
+    }
+    return this.schemaText[kind].trim() !== this.formatSchema(activeVersion);
   }
 
   async fetch(force?: boolean) {
@@ -81,6 +102,7 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
       if (result.success) {
         this.fetch(true);
         this.submitError = "";
+        this.publishSuccess = undefined;
       } else {
         this.submitError = result.message ?? "";
       }
@@ -89,6 +111,7 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
   }
 
   async publish(kind: CensusKind) {
+    this.publishSuccess = undefined;
     let parsedSchema: CensusSchema;
     try {
       parsedSchema = JSON.parse(this.schemaText[kind] || "{}");
@@ -107,6 +130,10 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
       if (result.success) {
         this.fetch(true);
         this.submitError = "";
+        this.publishSuccess = {
+          kind,
+          version: result.data?.version,
+        };
       } else {
         this.submitError = result.message ?? "";
       }

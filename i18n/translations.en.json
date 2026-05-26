@@ -23,6 +23,7 @@
     "places": "Places",
     "villages": "Villages",
     "animalSpecies": "Animal Species",
+    "censusDefinition": "Census Definition",
     "latestVillageCensus": "Latest Village Census",
     "configurations": "Configurations",
     "observationDefinitions": "Observation Definitions",
@@ -151,7 +152,13 @@
       "sortOrder": "Sort Order",
       "species": "Species",
       "animals": "Animals",
-      "households": "Households"
+      "households": "Households",
+      "kind": "Kind",
+      "version": "Version",
+      "status": "Status",
+      "rows": "Rows",
+      "measures": "Measures",
+      "publishedAt": "Published At"
     },
     "placeholder": {
       "code": "Code",
@@ -221,7 +228,9 @@
       "formSimulation": "Form Simulation",
       "publishReportType": "Publish Report Types",
       "unPublishReportType": "Unpublish Report Types",
-      "submit": "Submit"
+      "submit": "Submit",
+      "ensureDefaults": "Ensure Defaults",
+      "publish": "Publish"
     }
   },
   "dialog": {
@@ -276,6 +285,24 @@
   "qr": {
     "login": "Login QR Code",
     "reportTypeFormDefinition": "Form Definition QR Code"
+  },
+  "censusDefinition": {
+    "publishLifecycleTitle": "Published versions are the mobile forms",
+    "publishLifecycleBody": "Editing JSON here does not change reporter phones until you click Publish. Publishing creates a new version and makes it the active form returned to OHTK Mobile. Existing village submissions remain readable with the version they used.",
+    "publishSuccess": "{{kind}} census {{version}} is now the published mobile form. Reporters will receive it the next time the mobile app refreshes this census.",
+    "mobileActiveLabel": "mobile active",
+    "noPublishedVersion": "No published version. Mobile will not show this census.",
+    "editingVersionHelp": "Currently published mobile form: v{{version}}",
+    "noVersionHelp": "No version is currently published for mobile.",
+    "unpublishedEditsBadge": "Unpublished edits",
+    "unpublishedEditsHelp": "These edits are not visible to mobile reporters yet. Click Publish to create the next active mobile version.",
+    "publishNextVersion": "Publish next version",
+    "versionLabel": "v{{version}}",
+    "newVersionLabel": "the new version",
+    "kind": {
+      "ANIMAL": "Animal census",
+      "HUMAN": "Human census"
+    }
   },
   "status": {
     "case": "case",

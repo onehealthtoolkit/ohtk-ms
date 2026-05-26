@@ -21,6 +21,10 @@
     "view": "ເບິ່ງ",
     "outbreakPlans": "ແຜນການລະບາດ",
     "places": "ສະຖານທີ່",
+    "villages": "ບ້ານ",
+    "animalSpecies": "ຊະນິດສັດ",
+    "censusDefinition": "ຄຳນິຍາມແບບຟອມສຳມະໂນ",
+    "latestVillageCensus": "ສຳມະໂນບ້ານຫຼ້າສຸດ",
     "configurations": "ການຕັ້ງຄ່າ",
     "contributions": "ລາຍ​ງານ​ປະ​ຫວັດ​ສາດ​",
     "observationDefinitions": "ຄໍາ​ນິ​ຍາມ​ການ​ສັງ​ເກດ​ການ",
@@ -143,7 +147,19 @@
       "columnSplit": "ແບ່ງຖັນ",
       "showTestReport": "ສະ​ແດງ​ໃຫ້​ເຫັນ​ບົດ​ລາຍ​ງານ​ການ​ທົດ​ສອບ​",
       "includesBoundaryConnects": "ປະ​ກອບ​ມີ​ການ​ເຊື່ອມ​ຕໍ່​ຊາຍ​ແດນ​",
-      "includeChildAuthority": "ລວມເອົາສິດອຳນາດຂອງເດັກ"
+      "includeChildAuthority": "ລວມເອົາສິດອຳນາດຂອງເດັກ",
+      "active": "ເປີດໃຊ້ງານ",
+      "villages": "ບ້ານ",
+      "sortOrder": "ລຳດັບ",
+      "species": "ຊະນິດສັດ",
+      "animals": "ສັດ",
+      "households": "ຄົວເຮືອນ",
+      "kind": "ປະເພດ",
+      "version": "ເວີຊັນ",
+      "status": "ສະຖານະ",
+      "rows": "ແຖວ",
+      "measures": "ຄ່າທີ່ວັດ",
+      "publishedAt": "ເຜີຍແຜ່ເມື່ອ"
     },
     "placeholder": {
       "code": "ລະຫັດ",
@@ -217,6 +233,8 @@
       "publishReportType": "PublishTyp",
       "unPublishReportType": "ຍົກເລີກການເຜີຍແຜ່ປະເພດລາຍງານ",
       "submit": "ບັນທຶກ",
+      "ensureDefaults": "ສ້າງຄ່າເລີ່ມຕົ້ນ",
+      "publish": "ເຜີຍແຜ່",
       "confirm": "ບັນທຶກ",
       "back": "ເລົ່າຄືນ",
       "filter": "ການກັ່ນຕອງ",
@@ -288,6 +306,24 @@
   "qr": {
     "login": "ເຂົ້າສູ່ລະບົບດ້ວຍລະຫັດ qr",
     "reportTypeFormDefinition": "Form Definition QR Code"
+  },
+  "censusDefinition": {
+    "publishLifecycleTitle": "ເວີຊັນທີ່ເຜີຍແຜ່ແມ່ນແບບຟອມໃນແອັບມືຖື",
+    "publishLifecycleBody": "ການແກ້ໄຂ JSON ຢູ່ຫນ້ານີ້ຈະຍັງບໍ່ປ່ຽນແບບຟອມໃນໂທລະສັບຂອງອາສາ ຈົນກວ່າຈະກົດ ເຜີຍແຜ່. ການເຜີຍແຜ່ຈະສ້າງເວີຊັນໃໝ່ ແລະໃຫ້ເປັນແບບຟອມທີ່ OHTK Mobile ໃຊ້ຢູ່. ຂໍ້ມູນສຳມະໂນຂອງບ້ານທີ່ສົ່ງແລ້ວຍັງອ່ານໄດ້ຕາມເວີຊັນເກົ່າທີ່ໃຊ້.",
+    "publishSuccess": "ສຳມະໂນ{{kind}} {{version}} ເປັນແບບຟອມມືຖືທີ່ເຜີຍແຜ່ແລ້ວ. ອາສາຈະໄດ້ຮັບເມື່ອແອັບມືຖືໂຫຼດສຳມະໂນນີ້ຄືນ.",
+    "mobileActiveLabel": "ກຳລັງໃຊ້ໃນມືຖື",
+    "noPublishedVersion": "ຍັງບໍ່ມີເວີຊັນທີ່ເຜີຍແຜ່. ແອັບມືຖືຈະບໍ່ສະແດງສຳມະໂນນີ້.",
+    "editingVersionHelp": "ແບບຟອມມືຖືທີ່ເຜີຍແຜ່ປະຈຸບັນ: v{{version}}",
+    "noVersionHelp": "ຍັງບໍ່ມີເວີຊັນທີ່ເຜີຍແຜ່ສຳລັບມືຖື.",
+    "unpublishedEditsBadge": "ມີການແກ້ໄຂທີ່ຍັງບໍ່ເຜີຍແຜ່",
+    "unpublishedEditsHelp": "ການແກ້ໄຂນີ້ຍັງບໍ່ສະແດງໃຫ້ອາສາໃນມືຖືເຫັນ. ກົດ ເຜີຍແຜ່ ເພື່ອສ້າງເວີຊັນມືຖືທີ່ໃຊ້ງານຕໍ່ໄປ.",
+    "publishNextVersion": "ເຜີຍແຜ່ເວີຊັນຕໍ່ໄປ",
+    "versionLabel": "v{{version}}",
+    "newVersionLabel": "ເວີຊັນໃໝ່",
+    "kind": {
+      "ANIMAL": "ສັດ",
+      "HUMAN": "ປະຊາກອນ"
+    }
   },
   "status": {
     "test": "ທົດສອບ",
