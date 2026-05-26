@@ -1,3 +1,4 @@
+import { gql } from "@apollo/client";
 import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   CensusDefinitionAdminStateDocument,
@@ -26,7 +27,42 @@ export interface ICensusDefinitionService extends IService {
     schema: CensusSchema,
     enabled?: boolean
   ): Promise<SaveResult<CensusDefinitionVersion>>;
+  setEnabled(
+    kind: CensusKind,
+    enabled: boolean
+  ): Promise<SaveResult<CensusDefinitionVersion | undefined>>;
 }
+
+const CensusDefinitionSetEnabledDocument = gql`
+  mutation CensusDefinitionSetEnabled($kind: String!, $enabled: Boolean!) {
+    adminCensusDefinitionSetEnabled(kind: $kind, enabled: $enabled) {
+      definition {
+        id
+        kind
+        enabled
+        sortOrder
+      }
+      version {
+        id
+        definition {
+          id
+          kind
+          enabled
+          sortOrder
+        }
+        version
+        status
+        schema
+        runtimeSchema
+        publishedAt
+      }
+      fields {
+        name
+        message
+      }
+    }
+  }
+`;
 
 export class CensusDefinitionService implements ICensusDefinitionService {
   constructor(readonly client: LegacyApolloClient) {}
@@ -95,6 +131,31 @@ export class CensusDefinitionService implements ICensusDefinitionService {
         return problem;
       }
       return { success: true, data: this.toVersion(payload?.version) };
+    } catch (error) {
+      return { success: false, message: this.toErrorMessage(error) };
+    }
+  }
+
+  async setEnabled(
+    kind: CensusKind,
+    enabled: boolean
+  ): Promise<SaveResult<CensusDefinitionVersion | undefined>> {
+    try {
+      const result = await this.client.mutate({
+        mutation: CensusDefinitionSetEnabledDocument,
+        variables: { kind, enabled },
+        refetchQueries: [{ query: CensusDefinitionAdminStateDocument }],
+        awaitRefetchQueries: true,
+      });
+      const payload = result.data?.adminCensusDefinitionSetEnabled;
+      const problem = this.toProblem(payload?.fields);
+      if (problem) {
+        return problem;
+      }
+      return {
+        success: true,
+        data: payload?.version ? this.toVersion(payload.version) : undefined,
+      };
     } catch (error) {
       return { success: false, message: this.toErrorMessage(error) };
     }
@@ -178,7 +239,8 @@ export class CensusDefinitionService implements ICensusDefinitionService {
       (text.includes("censusDefinitions") ||
         text.includes("activeCensusDefinitionVersion") ||
         text.includes("adminCensusDefinitionsEnsureDefaults") ||
-        text.includes("adminCensusDefinitionVersionPublish"))
+        text.includes("adminCensusDefinitionVersionPublish") ||
+        text.includes("adminCensusDefinitionSetEnabled"))
     );
   }
 }

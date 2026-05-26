@@ -1,5 +1,6 @@
 import { BaseViewModel } from "lib/baseViewModel";
 import {
+  CensusDefinition,
   CensusDefinitionAdminState,
   CensusDefinitionVersion,
   CensusKind,
@@ -32,6 +33,13 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
       }
     | undefined = undefined;
 
+  statusSuccess:
+    | {
+        kind: CensusKind;
+        enabled: boolean;
+      }
+    | undefined = undefined;
+
   constructor(readonly censusDefinitionService: ICensusDefinitionService) {
     super();
     makeObservable(this, {
@@ -40,9 +48,11 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
       versions: computed,
       schemaText: observable,
       publishSuccess: observable,
+      statusSuccess: observable,
       fetch: action,
       ensureDefaults: action,
       publish: action,
+      setEnabled: action,
       setSchemaText: action,
     });
     this.fetch();
@@ -66,10 +76,23 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
   setSchemaText(kind: CensusKind, value: string) {
     this.schemaText[kind] = value;
     this.publishSuccess = undefined;
+    this.statusSuccess = undefined;
   }
 
   activeVersionFor(kind: CensusKind): CensusDefinitionVersion | undefined {
     return this.state.activeVersions[kind];
+  }
+
+  definitionFor(kind: CensusKind): CensusDefinition | undefined {
+    return this.state.definitions.find(definition => definition.kind === kind);
+  }
+
+  isKindEnabled(kind: CensusKind): boolean {
+    const definition = this.definitionFor(kind);
+    if (definition) {
+      return definition.enabled;
+    }
+    return Boolean(this.activeVersionFor(kind));
   }
 
   hasSchemaEdits(kind: CensusKind): boolean {
@@ -103,6 +126,7 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
         this.fetch(true);
         this.submitError = "";
         this.publishSuccess = undefined;
+        this.statusSuccess = undefined;
       } else {
         this.submitError = result.message ?? "";
       }
@@ -112,6 +136,12 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
 
   async publish(kind: CensusKind) {
     this.publishSuccess = undefined;
+    this.statusSuccess = undefined;
+    if (!this.isKindEnabled(kind)) {
+      this.submitError =
+        "Reactivate this census before publishing a new version.";
+      return;
+    }
     let parsedSchema: CensusSchema;
     try {
       parsedSchema = JSON.parse(this.schemaText[kind] || "{}");
@@ -134,6 +164,23 @@ export class CensusDefinitionViewViewModel extends BaseViewModel {
           kind,
           version: result.data?.version,
         };
+      } else {
+        this.submitError = result.message ?? "";
+      }
+      this.isSubmitting = false;
+    });
+  }
+
+  async setEnabled(kind: CensusKind, enabled: boolean) {
+    this.publishSuccess = undefined;
+    this.statusSuccess = undefined;
+    this.isSubmitting = true;
+    const result = await this.censusDefinitionService.setEnabled(kind, enabled);
+    runInAction(() => {
+      if (result.success) {
+        this.fetch(true);
+        this.submitError = "";
+        this.statusSuccess = { kind, enabled };
       } else {
         this.submitError = result.message ?? "";
       }

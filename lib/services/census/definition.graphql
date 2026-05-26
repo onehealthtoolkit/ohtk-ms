@@ -72,3 +72,18 @@ mutation CensusDefinitionVersionPublish(
     }
   }
 }
+
+mutation CensusDefinitionSetEnabled($kind: String!, $enabled: Boolean!) {
+  adminCensusDefinitionSetEnabled(kind: $kind, enabled: $enabled) {
+    definition {
+      ...CensusDefinitionFields
+    }
+    version {
+      ...CensusDefinitionVersionFields
+    }
+    fields {
+      name
+      message
+    }
+  }
+}

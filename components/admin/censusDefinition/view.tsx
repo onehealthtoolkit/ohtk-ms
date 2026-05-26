@@ -70,6 +70,21 @@ const CensusDefinitionView = () => {
           )}
         </div>
       )}
+      {viewModel.statusSuccess && (
+        <div className="mb-4 rounded border border-green-200 bg-green-50 p-4 text-sm text-green-800">
+          {t(
+            viewModel.statusSuccess.enabled
+              ? "censusDefinition.reactivateSuccess"
+              : "censusDefinition.deactivateSuccess",
+            viewModel.statusSuccess.enabled
+              ? "{{kind}} census is active again. Reporters can open it after the mobile app refreshes."
+              : "{{kind}} census is inactive. Reporter mobile apps will hide it, but existing submissions remain available.",
+            {
+              kind: formatCensusKind(t, viewModel.statusSuccess.kind),
+            }
+          )}
+        </div>
+      )}
 
       <Table
         columns={[
@@ -106,6 +121,7 @@ const CensusDefinitionView = () => {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mb-6">
         {kinds.map(kind => {
           const activeVersion = viewModel.activeVersionFor(kind);
+          const isEnabled = viewModel.isKindEnabled(kind);
           const kindLabel = formatCensusKind(t, kind);
           return (
             <div
@@ -114,7 +130,12 @@ const CensusDefinitionView = () => {
             >
               <div className="text-xs font-semibold uppercase tracking-wide text-gray-500">
                 {kindLabel}{" "}
-                {t("censusDefinition.mobileActiveLabel", "mobile active")}
+                {isEnabled
+                  ? t("censusDefinition.mobileActiveLabel", "mobile active")
+                  : t(
+                      "censusDefinition.mobileInactiveLabel",
+                      "mobile inactive"
+                    )}
               </div>
               {activeVersion ? (
                 <div className="mt-2 text-sm text-gray-700">
@@ -145,6 +166,39 @@ const CensusDefinitionView = () => {
                   )}
                 </div>
               )}
+              <div className="mt-4">
+                <button
+                  type="button"
+                  disabled={viewModel.isSubmitting}
+                  onClick={() => viewModel.setEnabled(kind, !isEnabled)}
+                  className={
+                    isEnabled
+                      ? "px-3 py-2 rounded border border-red-200 bg-red-50 text-sm font-semibold text-red-700 hover:border-red-300 disabled:opacity-60"
+                      : "px-3 py-2 rounded border border-green-200 bg-green-50 text-sm font-semibold text-green-700 hover:border-green-300 disabled:opacity-60"
+                  }
+                >
+                  {isEnabled
+                    ? t(
+                        "censusDefinition.deactivateMobileForm",
+                        "Deactivate mobile form"
+                      )
+                    : t(
+                        "censusDefinition.reactivateMobileForm",
+                        "Reactivate mobile form"
+                      )}
+                </button>
+                <div className="mt-2 text-xs text-gray-500">
+                  {isEnabled
+                    ? t(
+                        "censusDefinition.deactivateHelp",
+                        "Deactivating hides this census from reporter mobile apps. Existing submissions remain available."
+                      )
+                    : t(
+                        "censusDefinition.reactivateHelp",
+                        "Reactivating makes the latest published version available to reporter mobile apps again."
+                      )}
+                </div>
+              </div>
             </div>
           );
         })}
@@ -154,6 +208,7 @@ const CensusDefinitionView = () => {
         {kinds.map(kind => {
           const activeVersion = viewModel.activeVersionFor(kind);
           const hasSchemaEdits = viewModel.hasSchemaEdits(kind);
+          const isEnabled = viewModel.isKindEnabled(kind);
           const kindLabel = formatCensusKind(t, kind);
           return (
             <div key={kind} className="border border-gray-200 rounded p-4">
@@ -193,6 +248,14 @@ const CensusDefinitionView = () => {
                   )}
                 </div>
               )}
+              {!isEnabled && (
+                <div className="mb-3 rounded border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
+                  {t(
+                    "censusDefinition.inactiveHelp",
+                    "This census is inactive and hidden from reporter mobile apps. Reactivate it before publishing a new version."
+                  )}
+                </div>
+              )}
               <TextArea
                 rows={18}
                 value={viewModel.schemaText[kind]}
@@ -203,15 +266,20 @@ const CensusDefinitionView = () => {
               <div className="mt-4 flex">
                 <SaveButton
                   type="button"
-                  disabled={viewModel.isSubmitting}
+                  disabled={viewModel.isSubmitting || !isEnabled}
                   onClick={() => viewModel.publish(kind)}
                 >
-                  {activeVersion
+                  {!isEnabled
                     ? t(
-                        "censusDefinition.publishNextVersion",
-                        "Publish next version"
+                        "censusDefinition.publishDisabledUntilActive",
+                        "Reactivate before publishing"
                       )
-                    : t("form.button.publish", "Publish")}
+                    : activeVersion
+                      ? t(
+                          "censusDefinition.publishNextVersion",
+                          "Publish next version"
+                        )
+                      : t("form.button.publish", "Publish")}
                 </SaveButton>
               </div>
             </div>
