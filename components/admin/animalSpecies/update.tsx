@@ -14,6 +14,7 @@ import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import { useTranslation } from "react-i18next";
 import AnimalSpeciesFormFields from "./formFields";
+import AnimalSpeciesMobileImpactNotice from "./mobileImpactNotice";
 import { AnimalSpeciesUpdateViewModel } from "./updateViewModel";
 
 const AnimalSpeciesUpdate = () => {
@@ -30,13 +31,17 @@ const AnimalSpeciesUpdate = () => {
 
   const onSubmit = useCallback(async () => {
     if (await viewModel.save()) {
-      router.back();
+      router.push({
+        pathname: "/admin/animal_species",
+        query: { speciesSaved: "1" },
+      });
     }
   }, [router, viewModel]);
 
   return (
     <MaskingLoader loading={viewModel.isLoading}>
       <Form>
+        <AnimalSpeciesMobileImpactNotice />
         <FieldGroup>
           <AnimalSpeciesFormFields viewModel={viewModel} />
         </FieldGroup>

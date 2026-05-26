@@ -14,6 +14,9 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Filter from "./filter";
 import { AnimalSpeciesListViewModel } from "./listViewModel";
+import AnimalSpeciesMobileImpactNotice, {
+  AnimalSpeciesSavedNotice,
+} from "./mobileImpactNotice";
 
 const parseUrlParams = (query: ParsedUrlQuery) => ({
   q: query.q as string,
@@ -25,6 +28,7 @@ const AnimalSpeciesList = () => {
   const { t } = useTranslation();
   const { animalSpeciesService } = useServices();
   const { setUrl, query, resetUrl } = useUrlParams();
+  const showSavedNotice = query.speciesSaved === "1";
   const [viewModel] = useState(
     () => new AnimalSpeciesListViewModel(animalSpeciesService)
   );
@@ -55,6 +59,8 @@ const AnimalSpeciesList = () => {
     <Observer>
       {() => (
         <div>
+          <AnimalSpeciesMobileImpactNotice />
+          {showSavedNotice && <AnimalSpeciesSavedNotice />}
           <div className="flex items-center flex-wrap mb-4 gap-2">
             <TotalItem
               totalCount={viewModel.totalCount}

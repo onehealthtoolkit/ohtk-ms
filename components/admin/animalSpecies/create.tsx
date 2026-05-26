@@ -14,6 +14,7 @@ import useServices from "lib/services/provider";
 import { useTranslation } from "react-i18next";
 import { AnimalSpeciesCreateViewModel } from "./createViewModel";
 import AnimalSpeciesFormFields from "./formFields";
+import AnimalSpeciesMobileImpactNotice from "./mobileImpactNotice";
 
 const AnimalSpeciesCreate = () => {
   const router = useRouter();
@@ -25,12 +26,16 @@ const AnimalSpeciesCreate = () => {
 
   const onSubmit = useCallback(async () => {
     if (await viewModel.save()) {
-      router.back();
+      router.push({
+        pathname: "/admin/animal_species",
+        query: { speciesSaved: "1" },
+      });
     }
   }, [router, viewModel]);
 
   return (
     <Form>
+      <AnimalSpeciesMobileImpactNotice />
       <FieldGroup>
         <AnimalSpeciesFormFields viewModel={viewModel} />
       </FieldGroup>
