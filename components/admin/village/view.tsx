@@ -28,7 +28,8 @@ const VillageView = () => {
     () =>
       new VillageViewViewModel(
         parseInt(router.query.id as string),
-        services.villageService
+        services.villageService,
+        services.censusSnapshotService
       )
   );
   const hasLocation =

@@ -1,9 +1,6 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { BaseViewModel } from "lib/baseViewModel";
-import {
-  AnimalSpecies,
-  IAnimalSpeciesService,
-} from "lib/services/animalSpecies";
+import { AnimalSpecies, IAnimalSpeciesService } from "lib/services/census";
 
 export class AnimalSpeciesListViewModel extends BaseViewModel {
   data: AnimalSpecies[] = [];

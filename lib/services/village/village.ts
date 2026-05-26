@@ -1,5 +1,3 @@
-import { AnimalCensusFact } from "lib/services/animalSpecies";
-
 export type Village = {
   id: string;
   code: string;
@@ -9,12 +7,4 @@ export type Village = {
   longitude?: number;
   authorityId: number;
   authorityName?: string;
-};
-
-export type VillageCensusSnapshot = {
-  id: string;
-  censusDate: string;
-  submittedAt: string;
-  reporterUsername?: string;
-  facts: AnimalCensusFact[];
 };

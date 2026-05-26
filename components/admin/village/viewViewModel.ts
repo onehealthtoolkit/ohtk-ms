@@ -1,9 +1,9 @@
 import { BaseViewModel } from "lib/baseViewModel";
 import {
-  IVillageService,
-  Village,
+  ICensusSnapshotService,
   VillageCensusSnapshot,
-} from "lib/services/village";
+} from "lib/services/census";
+import { IVillageService, Village } from "lib/services/village";
 import { computed, makeObservable, observable, runInAction } from "mobx";
 
 export class VillageViewViewModel extends BaseViewModel {
@@ -12,7 +12,8 @@ export class VillageViewViewModel extends BaseViewModel {
 
   constructor(
     readonly id: number,
-    readonly villageService: IVillageService
+    readonly villageService: IVillageService,
+    readonly censusSnapshotService: ICensusSnapshotService
   ) {
     super();
     makeObservable(this, {
@@ -42,7 +43,7 @@ export class VillageViewViewModel extends BaseViewModel {
     this.isLoading = true;
     const [village, latestCensus] = await Promise.all([
       this.villageService.getVillage(this.id),
-      this.villageService.getLatestVillageCensus(this.id),
+      this.censusSnapshotService.getLatestVillageCensus(this.id),
     ]);
     runInAction(() => {
       if (village.data) {

@@ -495,6 +495,20 @@ export type AdminCategoryUpdateSuccess = {
   category?: Maybe<CategoryType>;
 };
 
+export type AdminCensusDefinitionSetupPayload = {
+  __typename?: "AdminCensusDefinitionSetupPayload";
+  definitions?: Maybe<Array<Maybe<CensusDefinitionType>>>;
+  fields?: Maybe<Array<Maybe<AdminFieldValidationProblem>>>;
+  versions?: Maybe<Array<Maybe<CensusDefinitionVersionType>>>;
+};
+
+export type AdminCensusDefinitionVersionPublishPayload = {
+  __typename?: "AdminCensusDefinitionVersionPublishPayload";
+  definition?: Maybe<CensusDefinitionType>;
+  fields?: Maybe<Array<Maybe<AdminFieldValidationProblem>>>;
+  version?: Maybe<CensusDefinitionVersionType>;
+};
+
 export type AdminClientCreateMutation = {
   __typename?: "AdminClientCreateMutation";
   result?: Maybe<AdminClientCreateResult>;
@@ -1626,10 +1640,14 @@ export type AnimalCensusFactInput = {
 
 export type AnimalCensusFactType = {
   __typename?: "AnimalCensusFactType";
-  animalQuantity: Scalars["Int"]["output"];
-  householdQuantity: Scalars["Int"]["output"];
+  animalQuantity?: Maybe<Scalars["Int"]["output"]>;
+  animalSpecies: AdminAnimalSpeciesUpdateSuccess;
+  extraDimensions?: Maybe<Scalars["GenericScalar"]["output"]>;
+  householdQuantity?: Maybe<Scalars["Int"]["output"]>;
   id: Scalars["ID"]["output"];
-  species: AdminAnimalSpeciesUpdateSuccess;
+  measures?: Maybe<Scalars["GenericScalar"]["output"]>;
+  rowKey: Scalars["String"]["output"];
+  species?: Maybe<AnimalSpeciesType>;
 };
 
 export type AnimalSpeciesType = {
@@ -1762,6 +1780,58 @@ export type CategoryType = {
   ordering: Scalars["Int"]["output"];
 };
 
+/** An enumeration. */
+export enum CensusCensusDefinitionKindChoices {
+  /** Animal */
+  Animal = "ANIMAL",
+  /** Human */
+  Human = "HUMAN",
+}
+
+/** An enumeration. */
+export enum CensusCensusDefinitionVersionStatusChoices {
+  /** Draft */
+  Draft = "DRAFT",
+  /** Published */
+  Published = "PUBLISHED",
+  /** Retired */
+  Retired = "RETIRED",
+}
+
+export type CensusDefinitionType = {
+  __typename?: "CensusDefinitionType";
+  enabled: Scalars["Boolean"]["output"];
+  id: Scalars["ID"]["output"];
+  kind: CensusCensusDefinitionKindChoices;
+  sortOrder: Scalars["Int"]["output"];
+};
+
+export type CensusDefinitionVersionType = {
+  __typename?: "CensusDefinitionVersionType";
+  definition: CensusDefinitionType;
+  id: Scalars["ID"]["output"];
+  publishedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  runtimeSchema?: Maybe<Scalars["GenericScalar"]["output"]>;
+  schema?: Maybe<Scalars["GenericScalar"]["output"]>;
+  status: CensusCensusDefinitionVersionStatusChoices;
+  version: Scalars["Int"]["output"];
+};
+
+export type CensusKindSummaryType = {
+  __typename?: "CensusKindSummaryType";
+  activeVersion?: Maybe<CensusDefinitionVersionType>;
+  enabled: Scalars["Boolean"]["output"];
+  kind: Scalars["String"]["output"];
+  latestSnapshot?: Maybe<VillageCensusSnapshotType>;
+  name: Scalars["String"]["output"];
+};
+
+/** An enumeration. */
+export enum CensusVillageCensusSnapshotStatusChoices {
+  /** Submitted */
+  Submitted = "SUBMITTED",
+}
+
 export type CheckInvitationCodeType = {
   __typename?: "CheckInvitationCodeType";
   authority: AdminAuthorityCreateSuccess;
@@ -1870,6 +1940,20 @@ export type ConvertToTestReportMutation = {
   report?: Maybe<IncidentReportType>;
 };
 
+export type CurrentAnimalCensusFactType = {
+  __typename?: "CurrentAnimalCensusFactType";
+  fact: AnimalCensusFactType;
+  id: Scalars["ID"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
+};
+
+export type CurrentHumanCensusFactType = {
+  __typename?: "CurrentHumanCensusFactType";
+  fact: HumanCensusFactType;
+  id: Scalars["ID"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
+};
+
 export type DeepStateDefinitionType = {
   __typename?: "DeepStateDefinitionType";
   id: Scalars["ID"]["output"];
@@ -1961,6 +2045,14 @@ export type FollowupType = {
 export type ForwardStateMutation = {
   __typename?: "ForwardStateMutation";
   result?: Maybe<CaseStateType>;
+};
+
+export type HumanCensusFactType = {
+  __typename?: "HumanCensusFactType";
+  dimensions?: Maybe<Scalars["GenericScalar"]["output"]>;
+  id: Scalars["ID"]["output"];
+  measures?: Maybe<Scalars["GenericScalar"]["output"]>;
+  rowKey: Scalars["String"]["output"];
 };
 
 export type ImageType = {
@@ -2057,6 +2149,8 @@ export type Mutation = {
   adminCategoryCreate?: Maybe<AdminCategoryCreateMutation>;
   adminCategoryDelete?: Maybe<AdminCategoryDeleteMutation>;
   adminCategoryUpdate?: Maybe<AdminCategoryUpdateMutation>;
+  adminCensusDefinitionVersionPublish?: Maybe<AdminCensusDefinitionVersionPublishPayload>;
+  adminCensusDefinitionsEnsureDefaults?: Maybe<AdminCensusDefinitionSetupPayload>;
   adminClientCreate?: Maybe<AdminClientCreateMutation>;
   adminClientUpdate?: Maybe<AdminClientUpdateMutation>;
   adminConfigurationCreate?: Maybe<AdminConfigurationCreateMutation>;
@@ -2132,6 +2226,7 @@ export type Mutation = {
   submitRecordUploadFile?: Maybe<SubmitRecordUploadFile>;
   submitUploadFile?: Maybe<SubmitUploadFile>;
   submitVillageCensusSnapshot?: Maybe<SubmitVillageCensusSnapshotMutation>;
+  submitVillageCensusSnapshotV2?: Maybe<SubmitVillageCensusSnapshotV2Mutation>;
   submitZeroReport?: Maybe<SubmitZeroReportMutation>;
   /** Obtain JSON Web Token mutation */
   tokenAuth?: Maybe<ObtainJsonWebToken>;
@@ -2257,6 +2352,17 @@ export type MutationAdminCategoryUpdateArgs = {
   id: Scalars["ID"]["input"];
   name: Scalars["String"]["input"];
   ordering: Scalars["Int"]["input"];
+};
+
+export type MutationAdminCensusDefinitionVersionPublishArgs = {
+  enabled?: InputMaybe<Scalars["Boolean"]["input"]>;
+  kind: Scalars["String"]["input"];
+  schema?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+};
+
+export type MutationAdminCensusDefinitionsEnsureDefaultsArgs = {
+  resetSchema?: InputMaybe<Scalars["Boolean"]["input"]>;
+  seedSpecies?: InputMaybe<Scalars["Boolean"]["input"]>;
 };
 
 export type MutationAdminClientCreateArgs = {
@@ -2734,6 +2840,13 @@ export type MutationSubmitVillageCensusSnapshotArgs = {
   villageId: Scalars["Int"]["input"];
 };
 
+export type MutationSubmitVillageCensusSnapshotV2Args = {
+  censusDate: Scalars["Date"]["input"];
+  definitionVersionId: Scalars["Int"]["input"];
+  formData: Scalars["GenericScalar"]["input"];
+  villageId: Scalars["Int"]["input"];
+};
+
 export type MutationTokenAuthArgs = {
   password: Scalars["String"]["input"];
   username: Scalars["String"]["input"];
@@ -2982,6 +3095,8 @@ export type PublishReportTypeMutation = {
 
 export type Query = {
   __typename?: "Query";
+  activeCensusDefinitionVersion?: Maybe<CensusDefinitionVersionType>;
+  activeVillageCensusDefinitions?: Maybe<Array<Maybe<CensusKindSummaryType>>>;
   adminAnimalSpeciesQuery?: Maybe<AdminAnimalSpeciesQueryTypeNodeConnection>;
   adminAuthorityGet?: Maybe<AdminAuthorityQueryType>;
   adminAuthorityInheritLookup?: Maybe<AdminAuthorityInheritLookupTypeNodeConnection>;
@@ -3022,10 +3137,13 @@ export type Query = {
   caseGet?: Maybe<CaseType>;
   casesQuery?: Maybe<CaseTypeNodeConnection>;
   category?: Maybe<CategoryType>;
+  censusDefinitions?: Maybe<Array<Maybe<CensusDefinitionType>>>;
   checkInvitationCode?: Maybe<CheckInvitationCodeType>;
   comments?: Maybe<Array<Maybe<CommentType>>>;
   configurationGet?: Maybe<ConfigurationType>;
   configurations?: Maybe<Array<Maybe<ConfigurationType>>>;
+  currentAnimalCensusFacts?: Maybe<Array<Maybe<CurrentAnimalCensusFactType>>>;
+  currentHumanCensusFacts?: Maybe<Array<Maybe<CurrentHumanCensusFactType>>>;
   deepStateDefinitionGet?: Maybe<DeepStateDefinitionType>;
   eventsQuery?: Maybe<EventType>;
   features?: Maybe<Array<Maybe<FeatureType>>>;
@@ -3038,6 +3156,7 @@ export type Query = {
   incidentReports?: Maybe<IncidentReportTypeNodeConnection>;
   invitationCode?: Maybe<InvitationCodeType>;
   latestVillageCensus?: Maybe<VillageCensusSnapshotType>;
+  latestVillageCensusV2?: Maybe<VillageCensusSnapshotType>;
   me?: Maybe<UserProfileType>;
   myIncidentReports?: Maybe<IncidentReportTypeNodeConnection>;
   myMessage?: Maybe<UserMessageType>;
@@ -3072,6 +3191,14 @@ export type Query = {
   syncReportTypes?: Maybe<ReportTypeSyncOutputType>;
   transitionListByReportType?: Maybe<Array<StateTransitionType>>;
   villageCapabilityEnabled: Scalars["Boolean"]["output"];
+};
+
+export type QueryActiveCensusDefinitionVersionArgs = {
+  kind: Scalars["String"]["input"];
+};
+
+export type QueryActiveVillageCensusDefinitionsArgs = {
+  villageId: Scalars["Int"]["input"];
 };
 
 export type QueryAdminAnimalSpeciesQueryArgs = {
@@ -3399,6 +3526,14 @@ export type QueryConfigurationGetArgs = {
   key: Scalars["String"]["input"];
 };
 
+export type QueryCurrentAnimalCensusFactsArgs = {
+  villageId: Scalars["Int"]["input"];
+};
+
+export type QueryCurrentHumanCensusFactsArgs = {
+  villageId: Scalars["Int"]["input"];
+};
+
 export type QueryDeepStateDefinitionGetArgs = {
   id: Scalars["ID"]["input"];
 };
@@ -3456,6 +3591,11 @@ export type QueryInvitationCodeArgs = {
 };
 
 export type QueryLatestVillageCensusArgs = {
+  villageId: Scalars["Int"]["input"];
+};
+
+export type QueryLatestVillageCensusV2Args = {
+  kind: Scalars["String"]["input"];
   villageId: Scalars["Int"]["input"];
 };
 
@@ -3878,6 +4018,11 @@ export type SubmitVillageCensusSnapshotMutation = {
   result?: Maybe<VillageCensusSnapshotResult>;
 };
 
+export type SubmitVillageCensusSnapshotV2Mutation = {
+  __typename?: "SubmitVillageCensusSnapshotV2Mutation";
+  result?: Maybe<VillageCensusSnapshotResult>;
+};
+
 export type SubmitZeroReportMutation = {
   __typename?: "SubmitZeroReportMutation";
   id?: Maybe<Scalars["UUID"]["output"]>;
@@ -3988,9 +4133,13 @@ export type VillageCensusSnapshotResult =
 export type VillageCensusSnapshotType = {
   __typename?: "VillageCensusSnapshotType";
   censusDate: Scalars["Date"]["output"];
+  definitionVersion?: Maybe<CensusDefinitionVersionType>;
   facts: Array<AnimalCensusFactType>;
+  formData?: Maybe<Scalars["GenericScalar"]["output"]>;
+  humanFacts: Array<HumanCensusFactType>;
   id: Scalars["ID"]["output"];
   reporter: AdminAuthorityUserCreateSuccess;
+  status: CensusVillageCensusSnapshotStatusChoices;
   submittedAt: Scalars["DateTime"]["output"];
   village: AdminVillageUpdateSuccess;
 };
@@ -4005,97 +4154,6 @@ export type VillageType = {
   location?: Maybe<Scalars["GeoJSON"]["output"]>;
   longitude?: Maybe<Scalars["Float"]["output"]>;
   name: Scalars["String"]["output"];
-};
-
-export type AnimalSpeciesQueryVariables = Exact<{
-  limit: Scalars["Int"]["input"];
-  offset: Scalars["Int"]["input"];
-  q?: InputMaybe<Scalars["String"]["input"]>;
-  active?: InputMaybe<Scalars["Boolean"]["input"]>;
-  ordering?: InputMaybe<Scalars["String"]["input"]>;
-}>;
-
-export type AnimalSpeciesQuery = {
-  __typename?: "Query";
-  adminAnimalSpeciesQuery?: {
-    __typename?: "AdminAnimalSpeciesQueryTypeNodeConnection";
-    totalCount?: number | null;
-    results: Array<{
-      __typename?: "AdminAnimalSpeciesQueryType";
-      id: string;
-      code: string;
-      name: string;
-      active: boolean;
-      sortOrder: number;
-    } | null>;
-  } | null;
-};
-
-export type AnimalSpeciesCreateMutationVariables = Exact<{
-  code: Scalars["String"]["input"];
-  name: Scalars["String"]["input"];
-  active?: InputMaybe<Scalars["Boolean"]["input"]>;
-  sortOrder?: InputMaybe<Scalars["Int"]["input"]>;
-}>;
-
-export type AnimalSpeciesCreateMutation = {
-  __typename?: "Mutation";
-  adminAnimalSpeciesCreate?: {
-    __typename?: "AdminAnimalSpeciesCreateMutation";
-    result?:
-      | {
-          __typename: "AdminAnimalSpeciesCreateProblem";
-          message?: string | null;
-          fields?: Array<{
-            __typename?: "AdminFieldValidationProblem";
-            name: string;
-            message: string;
-          }> | null;
-        }
-      | {
-          __typename: "AdminAnimalSpeciesCreateSuccess";
-          id: string;
-          code: string;
-          name: string;
-          active: boolean;
-          sortOrder: number;
-        }
-      | null;
-  } | null;
-};
-
-export type AnimalSpeciesUpdateMutationVariables = Exact<{
-  id: Scalars["Int"]["input"];
-  code: Scalars["String"]["input"];
-  name: Scalars["String"]["input"];
-  active: Scalars["Boolean"]["input"];
-  sortOrder?: InputMaybe<Scalars["Int"]["input"]>;
-}>;
-
-export type AnimalSpeciesUpdateMutation = {
-  __typename?: "Mutation";
-  adminAnimalSpeciesUpdate?: {
-    __typename?: "AdminAnimalSpeciesUpdateMutation";
-    result?:
-      | {
-          __typename: "AdminAnimalSpeciesUpdateProblem";
-          message?: string | null;
-          fields?: Array<{
-            __typename?: "AdminFieldValidationProblem";
-            name: string;
-            message: string;
-          }> | null;
-        }
-      | {
-          __typename: "AdminAnimalSpeciesUpdateSuccess";
-          id: string;
-          code: string;
-          name: string;
-          active: boolean;
-          sortOrder: number;
-        }
-      | null;
-  } | null;
 };
 
 export type DeleteTokenCookieMutationVariables = Exact<{
@@ -4734,6 +4792,279 @@ export type GetCaseDefinitionQuery = {
       id: any;
       name: string;
     };
+  } | null;
+};
+
+export type AnimalSpeciesQueryVariables = Exact<{
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  active?: InputMaybe<Scalars["Boolean"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type AnimalSpeciesQuery = {
+  __typename?: "Query";
+  adminAnimalSpeciesQuery?: {
+    __typename?: "AdminAnimalSpeciesQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminAnimalSpeciesQueryType";
+      id: string;
+      code: string;
+      name: string;
+      active: boolean;
+      sortOrder: number;
+    } | null>;
+  } | null;
+};
+
+export type AnimalSpeciesCreateMutationVariables = Exact<{
+  code: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  active?: InputMaybe<Scalars["Boolean"]["input"]>;
+  sortOrder?: InputMaybe<Scalars["Int"]["input"]>;
+}>;
+
+export type AnimalSpeciesCreateMutation = {
+  __typename?: "Mutation";
+  adminAnimalSpeciesCreate?: {
+    __typename?: "AdminAnimalSpeciesCreateMutation";
+    result?:
+      | {
+          __typename: "AdminAnimalSpeciesCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminAnimalSpeciesCreateSuccess";
+          id: string;
+          code: string;
+          name: string;
+          active: boolean;
+          sortOrder: number;
+        }
+      | null;
+  } | null;
+};
+
+export type AnimalSpeciesUpdateMutationVariables = Exact<{
+  id: Scalars["Int"]["input"];
+  code: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  active: Scalars["Boolean"]["input"];
+  sortOrder?: InputMaybe<Scalars["Int"]["input"]>;
+}>;
+
+export type AnimalSpeciesUpdateMutation = {
+  __typename?: "Mutation";
+  adminAnimalSpeciesUpdate?: {
+    __typename?: "AdminAnimalSpeciesUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminAnimalSpeciesUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminAnimalSpeciesUpdateSuccess";
+          id: string;
+          code: string;
+          name: string;
+          active: boolean;
+          sortOrder: number;
+        }
+      | null;
+  } | null;
+};
+
+export type CensusDefinitionFieldsFragment = {
+  __typename?: "CensusDefinitionType";
+  id: string;
+  kind: CensusCensusDefinitionKindChoices;
+  enabled: boolean;
+  sortOrder: number;
+};
+
+export type CensusDefinitionVersionFieldsFragment = {
+  __typename?: "CensusDefinitionVersionType";
+  id: string;
+  version: number;
+  status: CensusCensusDefinitionVersionStatusChoices;
+  schema?: any | null;
+  runtimeSchema?: any | null;
+  publishedAt?: any | null;
+  definition: {
+    __typename?: "CensusDefinitionType";
+    id: string;
+    kind: CensusCensusDefinitionKindChoices;
+    enabled: boolean;
+    sortOrder: number;
+  };
+};
+
+export type CensusDefinitionAdminStateQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type CensusDefinitionAdminStateQuery = {
+  __typename?: "Query";
+  censusDefinitions?: Array<{
+    __typename?: "CensusDefinitionType";
+    id: string;
+    kind: CensusCensusDefinitionKindChoices;
+    enabled: boolean;
+    sortOrder: number;
+  } | null> | null;
+  animal?: {
+    __typename?: "CensusDefinitionVersionType";
+    id: string;
+    version: number;
+    status: CensusCensusDefinitionVersionStatusChoices;
+    schema?: any | null;
+    runtimeSchema?: any | null;
+    publishedAt?: any | null;
+    definition: {
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    };
+  } | null;
+  human?: {
+    __typename?: "CensusDefinitionVersionType";
+    id: string;
+    version: number;
+    status: CensusCensusDefinitionVersionStatusChoices;
+    schema?: any | null;
+    runtimeSchema?: any | null;
+    publishedAt?: any | null;
+    definition: {
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    };
+  } | null;
+};
+
+export type CensusDefinitionsEnsureDefaultsMutationVariables = Exact<{
+  seedSpecies?: InputMaybe<Scalars["Boolean"]["input"]>;
+  resetSchema?: InputMaybe<Scalars["Boolean"]["input"]>;
+}>;
+
+export type CensusDefinitionsEnsureDefaultsMutation = {
+  __typename?: "Mutation";
+  adminCensusDefinitionsEnsureDefaults?: {
+    __typename?: "AdminCensusDefinitionSetupPayload";
+    definitions?: Array<{
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    } | null> | null;
+    versions?: Array<{
+      __typename?: "CensusDefinitionVersionType";
+      id: string;
+      version: number;
+      status: CensusCensusDefinitionVersionStatusChoices;
+      schema?: any | null;
+      runtimeSchema?: any | null;
+      publishedAt?: any | null;
+      definition: {
+        __typename?: "CensusDefinitionType";
+        id: string;
+        kind: CensusCensusDefinitionKindChoices;
+        enabled: boolean;
+        sortOrder: number;
+      };
+    } | null> | null;
+    fields?: Array<{
+      __typename?: "AdminFieldValidationProblem";
+      name: string;
+      message: string;
+    } | null> | null;
+  } | null;
+};
+
+export type CensusDefinitionVersionPublishMutationVariables = Exact<{
+  kind: Scalars["String"]["input"];
+  schema?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+  enabled?: InputMaybe<Scalars["Boolean"]["input"]>;
+}>;
+
+export type CensusDefinitionVersionPublishMutation = {
+  __typename?: "Mutation";
+  adminCensusDefinitionVersionPublish?: {
+    __typename?: "AdminCensusDefinitionVersionPublishPayload";
+    definition?: {
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    } | null;
+    version?: {
+      __typename?: "CensusDefinitionVersionType";
+      id: string;
+      version: number;
+      status: CensusCensusDefinitionVersionStatusChoices;
+      schema?: any | null;
+      runtimeSchema?: any | null;
+      publishedAt?: any | null;
+      definition: {
+        __typename?: "CensusDefinitionType";
+        id: string;
+        kind: CensusCensusDefinitionKindChoices;
+        enabled: boolean;
+        sortOrder: number;
+      };
+    } | null;
+    fields?: Array<{
+      __typename?: "AdminFieldValidationProblem";
+      name: string;
+      message: string;
+    } | null> | null;
+  } | null;
+};
+
+export type LatestVillageCensusQueryVariables = Exact<{
+  villageId: Scalars["Int"]["input"];
+}>;
+
+export type LatestVillageCensusQuery = {
+  __typename?: "Query";
+  latestVillageCensus?: {
+    __typename?: "VillageCensusSnapshotType";
+    id: string;
+    censusDate: any;
+    submittedAt: any;
+    reporter: {
+      __typename?: "AdminAuthorityUserCreateSuccess";
+      username: string;
+    };
+    facts: Array<{
+      __typename?: "AnimalCensusFactType";
+      animalQuantity?: number | null;
+      householdQuantity?: number | null;
+      species?: {
+        __typename?: "AnimalSpeciesType";
+        id: string;
+        code: string;
+        name: string;
+      } | null;
+    }>;
   } | null;
 };
 
@@ -7784,559 +8115,82 @@ export type VillageUpdateMutation = {
   } | null;
 };
 
-export type LatestVillageCensusQueryVariables = Exact<{
-  villageId: Scalars["Int"]["input"];
-}>;
-
-export type LatestVillageCensusQuery = {
-  __typename?: "Query";
-  latestVillageCensus?: {
-    __typename?: "VillageCensusSnapshotType";
-    id: string;
-    censusDate: any;
-    submittedAt: any;
-    reporter: {
-      __typename?: "AdminAuthorityUserCreateSuccess";
-      username: string;
-    };
-    facts: Array<{
-      __typename?: "AnimalCensusFactType";
-      animalQuantity: number;
-      householdQuantity: number;
-      species: {
-        __typename?: "AdminAnimalSpeciesUpdateSuccess";
-        id: string;
-        code: string;
-        name: string;
-      };
-    }>;
-  } | null;
-};
-
-export const AnimalSpeciesDocument = {
+export const CensusDefinitionFieldsFragmentDoc = {
   kind: "Document",
   definitions: [
     {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "animalSpecies" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "limit" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "offset" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "active" },
-          },
-          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "ordering" },
-          },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
-        },
-      ],
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionType" },
+      },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "adminAnimalSpeciesQuery" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "limit" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "limit" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "offset" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "offset" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "q" },
-                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "active" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "active" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "ordering" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "ordering" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "results" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      { kind: "Field", name: { kind: "Name", value: "code" } },
-                      { kind: "Field", name: { kind: "Name", value: "name" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "active" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "sortOrder" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "kind" } },
+          { kind: "Field", name: { kind: "Name", value: "enabled" } },
+          { kind: "Field", name: { kind: "Name", value: "sortOrder" } },
         ],
       },
     },
   ],
-} as unknown as DocumentNode<AnimalSpeciesQuery, AnimalSpeciesQueryVariables>;
-export const AnimalSpeciesCreateDocument = {
+} as unknown as DocumentNode<CensusDefinitionFieldsFragment, unknown>;
+export const CensusDefinitionVersionFieldsFragmentDoc = {
   kind: "Document",
   definitions: [
     {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "AnimalSpeciesCreate" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "code" } },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "active" },
-          },
-          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
-          defaultValue: { kind: "BooleanValue", value: true },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "sortOrder" },
-          },
-          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          defaultValue: { kind: "IntValue", value: "0" },
-        },
-      ],
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionVersionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionVersionType" },
+      },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
-            name: { kind: "Name", value: "adminAnimalSpeciesCreate" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "code" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "code" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "name" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "name" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "active" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "active" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "sortOrder" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "sortOrder" },
-                },
-              },
-            ],
+            name: { kind: "Name", value: "definition" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "result" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "__typename" },
-                      },
-                      {
-                        kind: "InlineFragment",
-                        typeCondition: {
-                          kind: "NamedType",
-                          name: {
-                            kind: "Name",
-                            value: "AdminAnimalSpeciesCreateSuccess",
-                          },
-                        },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "code" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "name" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "active" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "sortOrder" },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: "InlineFragment",
-                        typeCondition: {
-                          kind: "NamedType",
-                          name: {
-                            kind: "Name",
-                            value: "AdminAnimalSpeciesCreateProblem",
-                          },
-                        },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "fields" },
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "name" },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "message" },
-                                  },
-                                ],
-                              },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "message" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CensusDefinitionFields" },
                 },
               ],
             },
           },
+          { kind: "Field", name: { kind: "Name", value: "version" } },
+          { kind: "Field", name: { kind: "Name", value: "status" } },
+          { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
         ],
       },
     },
-  ],
-} as unknown as DocumentNode<
-  AnimalSpeciesCreateMutation,
-  AnimalSpeciesCreateMutationVariables
->;
-export const AnimalSpeciesUpdateDocument = {
-  kind: "Document",
-  definitions: [
     {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "AnimalSpeciesUpdate" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "code" } },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "active" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "Boolean" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "sortOrder" },
-          },
-          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          defaultValue: { kind: "IntValue", value: "0" },
-        },
-      ],
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionType" },
+      },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "adminAnimalSpeciesUpdate" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "id" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "id" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "code" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "code" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "name" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "name" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "active" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "active" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "sortOrder" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "sortOrder" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "result" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "__typename" },
-                      },
-                      {
-                        kind: "InlineFragment",
-                        typeCondition: {
-                          kind: "NamedType",
-                          name: {
-                            kind: "Name",
-                            value: "AdminAnimalSpeciesUpdateSuccess",
-                          },
-                        },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "code" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "name" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "active" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "sortOrder" },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: "InlineFragment",
-                        typeCondition: {
-                          kind: "NamedType",
-                          name: {
-                            kind: "Name",
-                            value: "AdminAnimalSpeciesUpdateProblem",
-                          },
-                        },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "fields" },
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "name" },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "message" },
-                                  },
-                                ],
-                              },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "message" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "kind" } },
+          { kind: "Field", name: { kind: "Name", value: "enabled" } },
+          { kind: "Field", name: { kind: "Name", value: "sortOrder" } },
         ],
       },
     },
   ],
-} as unknown as DocumentNode<
-  AnimalSpeciesUpdateMutation,
-  AnimalSpeciesUpdateMutationVariables
->;
+} as unknown as DocumentNode<CensusDefinitionVersionFieldsFragment, unknown>;
 export const DeleteTokenCookieDocument = {
   kind: "Document",
   definitions: [
@@ -11175,6 +11029,1103 @@ export const GetCaseDefinitionDocument = {
 } as unknown as DocumentNode<
   GetCaseDefinitionQuery,
   GetCaseDefinitionQueryVariables
+>;
+export const AnimalSpeciesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "animalSpecies" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "active" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAnimalSpeciesQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "active" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "active" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "active" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "sortOrder" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<AnimalSpeciesQuery, AnimalSpeciesQueryVariables>;
+export const AnimalSpeciesCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AnimalSpeciesCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "code" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "active" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+          defaultValue: { kind: "BooleanValue", value: true },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "sortOrder" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          defaultValue: { kind: "IntValue", value: "0" },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAnimalSpeciesCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "code" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "code" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "active" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "active" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "sortOrder" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "sortOrder" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminAnimalSpeciesCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "code" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "active" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "sortOrder" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminAnimalSpeciesCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AnimalSpeciesCreateMutation,
+  AnimalSpeciesCreateMutationVariables
+>;
+export const AnimalSpeciesUpdateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AnimalSpeciesUpdate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "code" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "active" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "sortOrder" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          defaultValue: { kind: "IntValue", value: "0" },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAnimalSpeciesUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "code" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "code" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "active" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "active" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "sortOrder" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "sortOrder" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminAnimalSpeciesUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "code" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "active" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "sortOrder" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminAnimalSpeciesUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AnimalSpeciesUpdateMutation,
+  AnimalSpeciesUpdateMutationVariables
+>;
+export const CensusDefinitionAdminStateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "CensusDefinitionAdminState" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "censusDefinitions" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CensusDefinitionFields" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "animal" },
+            name: { kind: "Name", value: "activeCensusDefinitionVersion" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: { kind: "StringValue", value: "ANIMAL", block: false },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "CensusDefinitionVersionFields",
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "human" },
+            name: { kind: "Name", value: "activeCensusDefinitionVersion" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: { kind: "StringValue", value: "HUMAN", block: false },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "CensusDefinitionVersionFields",
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "kind" } },
+          { kind: "Field", name: { kind: "Name", value: "enabled" } },
+          { kind: "Field", name: { kind: "Name", value: "sortOrder" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionVersionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionVersionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "definition" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CensusDefinitionFields" },
+                },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "version" } },
+          { kind: "Field", name: { kind: "Name", value: "status" } },
+          { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CensusDefinitionAdminStateQuery,
+  CensusDefinitionAdminStateQueryVariables
+>;
+export const CensusDefinitionsEnsureDefaultsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CensusDefinitionsEnsureDefaults" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "seedSpecies" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+          defaultValue: { kind: "BooleanValue", value: true },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "resetSchema" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+          defaultValue: { kind: "BooleanValue", value: false },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: {
+              kind: "Name",
+              value: "adminCensusDefinitionsEnsureDefaults",
+            },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "seedSpecies" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "seedSpecies" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "resetSchema" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "resetSchema" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "definitions" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "CensusDefinitionFields" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "versions" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: {
+                          kind: "Name",
+                          value: "CensusDefinitionVersionFields",
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "fields" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "kind" } },
+          { kind: "Field", name: { kind: "Name", value: "enabled" } },
+          { kind: "Field", name: { kind: "Name", value: "sortOrder" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionVersionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionVersionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "definition" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CensusDefinitionFields" },
+                },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "version" } },
+          { kind: "Field", name: { kind: "Name", value: "status" } },
+          { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CensusDefinitionsEnsureDefaultsMutation,
+  CensusDefinitionsEnsureDefaultsMutationVariables
+>;
+export const CensusDefinitionVersionPublishDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CensusDefinitionVersionPublish" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "kind" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "schema" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "GenericScalar" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "enabled" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+          defaultValue: { kind: "BooleanValue", value: true },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: {
+              kind: "Name",
+              value: "adminCensusDefinitionVersionPublish",
+            },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "kind" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "schema" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "schema" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "enabled" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "enabled" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "definition" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "CensusDefinitionFields" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "version" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: {
+                          kind: "Name",
+                          value: "CensusDefinitionVersionFields",
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "fields" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "kind" } },
+          { kind: "Field", name: { kind: "Name", value: "enabled" } },
+          { kind: "Field", name: { kind: "Name", value: "sortOrder" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionVersionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionVersionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "definition" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CensusDefinitionFields" },
+                },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "version" } },
+          { kind: "Field", name: { kind: "Name", value: "status" } },
+          { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CensusDefinitionVersionPublishMutation,
+  CensusDefinitionVersionPublishMutationVariables
+>;
+export const LatestVillageCensusDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "LatestVillageCensus" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "villageId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "latestVillageCensus" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "villageId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "villageId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "censusDate" } },
+                { kind: "Field", name: { kind: "Name", value: "submittedAt" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reporter" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "facts" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "species" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "code" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "animalQuantity" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "householdQuantity" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  LatestVillageCensusQuery,
+  LatestVillageCensusQueryVariables
 >;
 export const QueryCommentsDocument = {
   kind: "Document",
@@ -26598,108 +27549,4 @@ export const VillageUpdateDocument = {
 } as unknown as DocumentNode<
   VillageUpdateMutation,
   VillageUpdateMutationVariables
->;
-export const LatestVillageCensusDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "LatestVillageCensus" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "villageId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "latestVillageCensus" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "villageId" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "villageId" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "censusDate" } },
-                { kind: "Field", name: { kind: "Name", value: "submittedAt" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "reporter" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "username" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "facts" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "species" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "code" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "name" },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "animalQuantity" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "householdQuantity" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  LatestVillageCensusQuery,
-  LatestVillageCensusQueryVariables
 >;

@@ -1,0 +1,74 @@
+fragment CensusDefinitionFields on CensusDefinitionType {
+  id
+  kind
+  enabled
+  sortOrder
+}
+
+fragment CensusDefinitionVersionFields on CensusDefinitionVersionType {
+  id
+  definition {
+    ...CensusDefinitionFields
+  }
+  version
+  status
+  schema
+  runtimeSchema
+  publishedAt
+}
+
+query CensusDefinitionAdminState {
+  censusDefinitions {
+    ...CensusDefinitionFields
+  }
+  animal: activeCensusDefinitionVersion(kind: "ANIMAL") {
+    ...CensusDefinitionVersionFields
+  }
+  human: activeCensusDefinitionVersion(kind: "HUMAN") {
+    ...CensusDefinitionVersionFields
+  }
+}
+
+mutation CensusDefinitionsEnsureDefaults(
+  $seedSpecies: Boolean = true
+  $resetSchema: Boolean = false
+) {
+  adminCensusDefinitionsEnsureDefaults(
+    seedSpecies: $seedSpecies
+    resetSchema: $resetSchema
+  ) {
+    definitions {
+      ...CensusDefinitionFields
+    }
+    versions {
+      ...CensusDefinitionVersionFields
+    }
+    fields {
+      name
+      message
+    }
+  }
+}
+
+mutation CensusDefinitionVersionPublish(
+  $kind: String!
+  $schema: GenericScalar
+  $enabled: Boolean = true
+) {
+  adminCensusDefinitionVersionPublish(
+    kind: $kind
+    schema: $schema
+    enabled: $enabled
+  ) {
+    definition {
+      ...CensusDefinitionFields
+    }
+    version {
+      ...CensusDefinitionVersionFields
+    }
+    fields {
+      name
+      message
+    }
+  }
+}

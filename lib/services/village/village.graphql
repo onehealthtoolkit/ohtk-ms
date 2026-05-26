@@ -104,23 +104,3 @@ mutation VillageUpdate(
     }
   }
 }
-
-query LatestVillageCensus($villageId: Int!) {
-  latestVillageCensus(villageId: $villageId) {
-    id
-    censusDate
-    submittedAt
-    reporter {
-      username
-    }
-    facts {
-      species {
-        id
-        code
-        name
-      }
-      animalQuantity
-      householdQuantity
-    }
-  }
-}

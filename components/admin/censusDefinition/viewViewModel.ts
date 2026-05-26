@@ -5,7 +5,7 @@ import {
   CensusKind,
   CensusSchema,
   ICensusDefinitionService,
-} from "lib/services/censusDefinition";
+} from "lib/services/census";
 import {
   action,
   computed,

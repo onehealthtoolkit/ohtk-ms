@@ -1,5 +1,9 @@
-import { gql } from "@apollo/client";
 import type { LegacyApolloClient } from "lib/services/apolloClient";
+import {
+  CensusDefinitionAdminStateDocument,
+  CensusDefinitionsEnsureDefaultsDocument,
+  CensusDefinitionVersionPublishDocument,
+} from "lib/generated/graphql";
 import { GetResult, IService, SaveResult } from "lib/services/interface";
 import {
   CensusDefinition,
@@ -8,96 +12,7 @@ import {
   CensusDefinitionVersion,
   CensusKind,
   CensusSchema,
-} from "./censusDefinition";
-
-const CENSUS_DEFINITION_FIELDS = gql`
-  fragment CensusDefinitionFields on CensusDefinitionType {
-    id
-    kind
-    enabled
-    sortOrder
-  }
-`;
-
-const CENSUS_DEFINITION_VERSION_FIELDS = gql`
-  ${CENSUS_DEFINITION_FIELDS}
-  fragment CensusDefinitionVersionFields on CensusDefinitionVersionType {
-    id
-    definition {
-      ...CensusDefinitionFields
-    }
-    version
-    status
-    schema
-    runtimeSchema
-    publishedAt
-  }
-`;
-
-const CENSUS_DEFINITION_ADMIN_STATE = gql`
-  ${CENSUS_DEFINITION_VERSION_FIELDS}
-  query CensusDefinitionAdminState {
-    censusDefinitions {
-      ...CensusDefinitionFields
-    }
-    animal: activeCensusDefinitionVersion(kind: "ANIMAL") {
-      ...CensusDefinitionVersionFields
-    }
-    human: activeCensusDefinitionVersion(kind: "HUMAN") {
-      ...CensusDefinitionVersionFields
-    }
-  }
-`;
-
-const CENSUS_DEFINITIONS_ENSURE_DEFAULTS = gql`
-  ${CENSUS_DEFINITION_VERSION_FIELDS}
-  mutation CensusDefinitionsEnsureDefaults(
-    $seedSpecies: Boolean = true
-    $resetSchema: Boolean = false
-  ) {
-    adminCensusDefinitionsEnsureDefaults(
-      seedSpecies: $seedSpecies
-      resetSchema: $resetSchema
-    ) {
-      definitions {
-        ...CensusDefinitionFields
-      }
-      versions {
-        ...CensusDefinitionVersionFields
-      }
-      fields {
-        name
-        message
-      }
-    }
-  }
-`;
-
-const CENSUS_DEFINITION_VERSION_PUBLISH = gql`
-  ${CENSUS_DEFINITION_VERSION_FIELDS}
-  mutation CensusDefinitionVersionPublish(
-    $kind: String!
-    $schema: GenericScalar
-    $enabled: Boolean = true
-  ) {
-    adminCensusDefinitionVersionPublish(
-      kind: $kind
-      schema: $schema
-      enabled: $enabled
-    ) {
-      definition {
-        ...CensusDefinitionFields
-      }
-      version {
-        ...CensusDefinitionVersionFields
-      }
-      fields {
-        name
-        message
-      }
-    }
-  }
-`;
+} from "./definition";
 
 export interface ICensusDefinitionService extends IService {
   fetchAdminState(
@@ -121,7 +36,7 @@ export class CensusDefinitionService implements ICensusDefinitionService {
   ): Promise<GetResult<CensusDefinitionAdminState>> {
     try {
       const result = await this.client.query({
-        query: CENSUS_DEFINITION_ADMIN_STATE,
+        query: CensusDefinitionAdminStateDocument,
         fetchPolicy: force ? "network-only" : "cache-first",
       });
       return { data: this.toAdminState(result.data) };
@@ -135,9 +50,9 @@ export class CensusDefinitionService implements ICensusDefinitionService {
   ): Promise<SaveResult<CensusDefinitionAdminState>> {
     try {
       const result = await this.client.mutate({
-        mutation: CENSUS_DEFINITIONS_ENSURE_DEFAULTS,
+        mutation: CensusDefinitionsEnsureDefaultsDocument,
         variables: { seedSpecies: true, resetSchema },
-        refetchQueries: [{ query: CENSUS_DEFINITION_ADMIN_STATE }],
+        refetchQueries: [{ query: CensusDefinitionAdminStateDocument }],
         awaitRefetchQueries: true,
       });
       const payload = result.data?.adminCensusDefinitionsEnsureDefaults;
@@ -169,9 +84,9 @@ export class CensusDefinitionService implements ICensusDefinitionService {
   ): Promise<SaveResult<CensusDefinitionVersion>> {
     try {
       const result = await this.client.mutate({
-        mutation: CENSUS_DEFINITION_VERSION_PUBLISH,
+        mutation: CensusDefinitionVersionPublishDocument,
         variables: { kind, schema, enabled },
-        refetchQueries: [{ query: CENSUS_DEFINITION_ADMIN_STATE }],
+        refetchQueries: [{ query: CensusDefinitionAdminStateDocument }],
         awaitRefetchQueries: true,
       });
       const payload = result.data?.adminCensusDefinitionVersionPublish;

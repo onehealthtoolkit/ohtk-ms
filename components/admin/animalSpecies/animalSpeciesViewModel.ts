@@ -1,8 +1,5 @@
 import { BaseFormViewModel } from "lib/baseFormViewModel";
-import {
-  AnimalSpecies,
-  IAnimalSpeciesService,
-} from "lib/services/animalSpecies";
+import { AnimalSpecies, IAnimalSpeciesService } from "lib/services/census";
 import { SaveResult } from "lib/services/interface";
 import { action, computed, makeObservable, observable } from "mobx";
 

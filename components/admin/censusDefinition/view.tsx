@@ -2,7 +2,7 @@ import ErrorDisplay from "components/widgets/errorDisplay";
 import { SaveButton, TextArea } from "components/widgets/forms";
 import Table from "components/widgets/table";
 import useServices from "lib/services/provider";
-import { CensusKind } from "lib/services/censusDefinition";
+import { CensusKind } from "lib/services/census";
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";

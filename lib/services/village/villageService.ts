@@ -1,6 +1,5 @@
 import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
-  LatestVillageCensusDocument,
   VillageCreateDocument,
   VillagesDocument,
   VillageUpdateDocument,
@@ -11,7 +10,7 @@ import {
   QueryResult,
   SaveResult,
 } from "lib/services/interface";
-import { Village, VillageCensusSnapshot } from "./village";
+import { Village } from "./village";
 
 export interface IVillageService extends IService {
   fetchVillages(
@@ -22,10 +21,6 @@ export interface IVillageService extends IService {
   ): Promise<QueryResult<Village[]>>;
 
   getVillage(id: number): Promise<GetResult<Village>>;
-
-  getLatestVillageCensus(
-    villageId: number
-  ): Promise<GetResult<VillageCensusSnapshot>>;
 
   createVillage(
     code: string,
@@ -120,36 +115,6 @@ export class VillageService implements IVillageService {
     };
   }
 
-  async getLatestVillageCensus(
-    villageId: number
-  ): Promise<GetResult<VillageCensusSnapshot>> {
-    const getResult = await this.client.query({
-      query: LatestVillageCensusDocument,
-      variables: {
-        villageId,
-      },
-      fetchPolicy: "network-only",
-    });
-    const snapshot = getResult.data.latestVillageCensus;
-    return {
-      data: snapshot
-        ? {
-            id: snapshot.id,
-            censusDate: snapshot.censusDate,
-            submittedAt: snapshot.submittedAt,
-            reporterUsername: snapshot.reporter.username,
-            facts: snapshot.facts.map(fact => ({
-              speciesId: fact.species.id,
-              speciesCode: fact.species.code,
-              speciesName: fact.species.name,
-              animalQuantity: fact.animalQuantity,
-              householdQuantity: fact.householdQuantity,
-            })),
-          }
-        : undefined,
-    };
-  }
-
   async createVillage(
     code: string,
     name: string,
@@ -224,11 +189,6 @@ export class VillageService implements IVillageService {
         {
           query: VillagesDocument,
           variables: this.fetchVillagesQuery,
-          fetchPolicy: "network-only",
-        },
-        {
-          query: LatestVillageCensusDocument,
-          variables: { villageId: id },
           fetchPolicy: "network-only",
         },
       ],

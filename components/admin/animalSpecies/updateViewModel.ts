@@ -1,7 +1,4 @@
-import {
-  AnimalSpecies,
-  IAnimalSpeciesService,
-} from "lib/services/animalSpecies";
+import { AnimalSpecies, IAnimalSpeciesService } from "lib/services/census";
 import { SaveResult } from "lib/services/interface";
 import { AnimalSpeciesViewModel } from "./animalSpeciesViewModel";
 
