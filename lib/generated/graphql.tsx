@@ -3177,7 +3177,6 @@ export type Query = {
   incidentReport?: Maybe<IncidentReportType>;
   incidentReports?: Maybe<IncidentReportTypeNodeConnection>;
   invitationCode?: Maybe<InvitationCodeType>;
-  latestVillageCensus?: Maybe<VillageCensusSnapshotType>;
   latestVillageCensusV2?: Maybe<VillageCensusSnapshotType>;
   me?: Maybe<UserProfileType>;
   myIncidentReports?: Maybe<IncidentReportTypeNodeConnection>;
@@ -3614,10 +3613,6 @@ export type QueryIncidentReportsArgs = {
 
 export type QueryInvitationCodeArgs = {
   id: Scalars["ID"]["input"];
-};
-
-export type QueryLatestVillageCensusArgs = {
-  villageId: Scalars["Int"]["input"];
 };
 
 export type QueryLatestVillageCensusV2Args = {
