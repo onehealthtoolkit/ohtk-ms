@@ -120,8 +120,7 @@ const VillageView = () => {
               columns={[
                 {
                   label: t("form.label.species", "Species"),
-                  get: record =>
-                    `${record.speciesCode} - ${record.speciesName}`,
+                  get: record => record.rowLabel,
                 },
                 {
                   label: t("form.label.animals", "Animals"),
@@ -133,7 +132,7 @@ const VillageView = () => {
                 },
               ]}
               data={viewModel.latestCensus.facts.map(fact => ({
-                id: fact.speciesId,
+                id: fact.rowKey,
                 ...fact,
               }))}
               viewOnRowClick={false}

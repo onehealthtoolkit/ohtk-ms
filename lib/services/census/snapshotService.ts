@@ -31,9 +31,8 @@ export class CensusSnapshotService implements ICensusSnapshotService {
             submittedAt: snapshot.submittedAt,
             reporterUsername: snapshot.reporter.username,
             facts: snapshot.facts.map(fact => ({
-              speciesId: fact.species.id,
-              speciesCode: fact.species.code,
-              speciesName: fact.species.name,
+              rowKey: fact.rowKey,
+              rowLabel: fact.rowLabel,
               animalQuantity: fact.animalQuantity,
               householdQuantity: fact.householdQuantity,
             })),

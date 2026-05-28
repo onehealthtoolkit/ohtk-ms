@@ -1,7 +1,6 @@
 export type AnimalCensusFact = {
-  speciesId: string;
-  speciesCode: string;
-  speciesName: string;
+  rowKey: string;
+  rowLabel: string;
   animalQuantity: number;
   householdQuantity: number;
 };

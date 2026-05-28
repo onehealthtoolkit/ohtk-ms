@@ -1,7 +1,3 @@
-export { AnimalSpeciesService } from "./animalSpeciesService";
-export type { IAnimalSpeciesService } from "./animalSpeciesService";
-export type { AnimalSpecies } from "./animalSpecies";
-
 export { CensusDefinitionService } from "./definitionService";
 export type { ICensusDefinitionService } from "./definitionService";
 export type {

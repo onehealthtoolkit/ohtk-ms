@@ -7,11 +7,8 @@ query LatestAnimalVillageCensus($villageId: Int!) {
       username
     }
     facts {
-      species {
-        id
-        code
-        name
-      }
+      rowKey
+      rowLabel
       animalQuantity
       householdQuantity
     }

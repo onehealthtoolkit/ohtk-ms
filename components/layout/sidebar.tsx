@@ -348,14 +348,6 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                           />
                         }
                       />
-                      <Menu
-                        href="/admin/animal_species/"
-                        pathname={pathname}
-                        label={t("breadcrumb.animalSpecies", "Animal Species")}
-                        collapsed={store.menu.collapsed}
-                        display={store.isSuperUser}
-                        icon={<SwatchIcon className={iconClassName} />}
-                      />
                     </>
                   )}
                   <Menu
