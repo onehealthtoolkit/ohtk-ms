@@ -7,7 +7,10 @@ import { observer } from "mobx-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatCensusKind, formatPublishedAt } from "./format";
-import { CensusDefinitionViewViewModel } from "./viewViewModel";
+import {
+  CensusDefinitionViewViewModel,
+  normalizeAuthoredSchema,
+} from "./viewViewModel";
 
 type Props = {
   kind: CensusKind;
@@ -23,6 +26,13 @@ const CensusDefinitionDetail = ({ kind }: Props) => {
   const activeVersion = viewModel.activeVersionFor(kind);
   const isEnabled = viewModel.isKindEnabled(kind);
   const kindLabel = formatCensusKind(t, kind);
+  const authoredSchema = activeVersion
+    ? normalizeAuthoredSchema(
+        activeVersion.definitionSchema,
+        activeVersion.runtimeSchema,
+        activeVersion.definition.kind
+      )
+    : {};
 
   return (
     <MaskingLoader loading={viewModel.isLoading}>
@@ -80,11 +90,25 @@ const CensusDefinitionDetail = ({ kind }: Props) => {
 
         <div className="mt-6 rounded border border-gray-200 bg-white p-4">
           <div className="mb-3 font-semibold text-gray-800">
-            {t("censusDefinition.schemaJson", "Schema JSON")}
+            {t("censusDefinition.authoredSchemaJson", "Authored schema JSON")}
           </div>
           <TextArea
             rows={18}
-            value={JSON.stringify(activeVersion?.schema ?? {}, null, 2)}
+            value={JSON.stringify(authoredSchema, null, 2)}
+            readOnly
+          />
+        </div>
+
+        <div className="mt-6 rounded border border-gray-200 bg-white p-4">
+          <div className="mb-3 font-semibold text-gray-800">
+            {t(
+              "censusDefinition.runtimeSchemaJson",
+              "Generated mobile schema JSON"
+            )}
+          </div>
+          <TextArea
+            rows={18}
+            value={JSON.stringify(activeVersion?.runtimeSchema ?? {}, null, 2)}
             readOnly
           />
         </div>

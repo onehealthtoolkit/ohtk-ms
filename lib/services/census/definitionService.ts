@@ -1,18 +1,13 @@
 import { gql } from "@apollo/client";
 import type { LegacyApolloClient } from "lib/services/apolloClient";
-import {
-  CensusDefinitionAdminStateDocument,
-  CensusDefinitionsEnsureDefaultsDocument,
-  CensusDefinitionVersionPublishDocument,
-} from "lib/generated/graphql";
 import { GetResult, IService, SaveResult } from "lib/services/interface";
 import {
   CensusDefinition,
   CensusDefinitionAdminState,
+  CensusDefinitionAuthoredSchema,
   CensusDefinitionValidationProblem,
   CensusDefinitionVersion,
   CensusKind,
-  CensusSchema,
 } from "./definition";
 
 export interface ICensusDefinitionService extends IService {
@@ -24,8 +19,12 @@ export interface ICensusDefinitionService extends IService {
   ): Promise<SaveResult<CensusDefinitionAdminState>>;
   publishVersion(
     kind: CensusKind,
-    schema: CensusSchema,
+    definitionSchema: CensusDefinitionAuthoredSchema,
     enabled?: boolean
+  ): Promise<SaveResult<CensusDefinitionVersion>>;
+  saveDraft(
+    kind: CensusKind,
+    definitionSchema: CensusDefinitionAuthoredSchema
   ): Promise<SaveResult<CensusDefinitionVersion>>;
   setEnabled(
     kind: CensusKind,
@@ -33,28 +32,66 @@ export interface ICensusDefinitionService extends IService {
   ): Promise<SaveResult<CensusDefinitionVersion | undefined>>;
 }
 
-const CensusDefinitionSetEnabledDocument = gql`
-  mutation CensusDefinitionSetEnabled($kind: String!, $enabled: Boolean!) {
-    adminCensusDefinitionSetEnabled(kind: $kind, enabled: $enabled) {
-      definition {
-        id
-        kind
-        enabled
-        sortOrder
+const CensusDefinitionFields = gql`
+  fragment CensusDefinitionFields on CensusDefinitionType {
+    id
+    kind
+    enabled
+    sortOrder
+  }
+`;
+
+const CensusDefinitionVersionFields = gql`
+  fragment CensusDefinitionVersionFields on CensusDefinitionVersionType {
+    id
+    definition {
+      ...CensusDefinitionFields
+    }
+    version
+    status
+    schema
+    definitionSchema
+    runtimeSchema
+    publishedAt
+  }
+  ${CensusDefinitionFields}
+`;
+
+const CensusDefinitionAdminStateDocument = gql`
+  query CensusDefinitionAdminState {
+    censusDefinitions {
+      ...CensusDefinitionFields
+    }
+    animal: activeCensusDefinitionVersion(kind: "ANIMAL") {
+      ...CensusDefinitionVersionFields
+    }
+    human: activeCensusDefinitionVersion(kind: "HUMAN") {
+      ...CensusDefinitionVersionFields
+    }
+    animalDraft: draftCensusDefinitionVersion(kind: "ANIMAL") {
+      ...CensusDefinitionVersionFields
+    }
+    humanDraft: draftCensusDefinitionVersion(kind: "HUMAN") {
+      ...CensusDefinitionVersionFields
+    }
+  }
+  ${CensusDefinitionVersionFields}
+`;
+
+const CensusDefinitionsEnsureDefaultsDocument = gql`
+  mutation CensusDefinitionsEnsureDefaults(
+    $seedSpecies: Boolean = true
+    $resetSchema: Boolean = false
+  ) {
+    adminCensusDefinitionsEnsureDefaults(
+      seedSpecies: $seedSpecies
+      resetSchema: $resetSchema
+    ) {
+      definitions {
+        ...CensusDefinitionFields
       }
-      version {
-        id
-        definition {
-          id
-          kind
-          enabled
-          sortOrder
-        }
-        version
-        status
-        schema
-        runtimeSchema
-        publishedAt
+      versions {
+        ...CensusDefinitionVersionFields
       }
       fields {
         name
@@ -62,6 +99,75 @@ const CensusDefinitionSetEnabledDocument = gql`
       }
     }
   }
+  ${CensusDefinitionVersionFields}
+`;
+
+const CensusDefinitionVersionPublishDocument = gql`
+  mutation CensusDefinitionVersionPublish(
+    $kind: String!
+    $definitionSchema: GenericScalar
+    $enabled: Boolean = true
+  ) {
+    adminCensusDefinitionVersionPublish(
+      kind: $kind
+      definitionSchema: $definitionSchema
+      enabled: $enabled
+    ) {
+      definition {
+        ...CensusDefinitionFields
+      }
+      version {
+        ...CensusDefinitionVersionFields
+      }
+      fields {
+        name
+        message
+      }
+    }
+  }
+  ${CensusDefinitionVersionFields}
+`;
+
+const CensusDefinitionVersionSaveDraftDocument = gql`
+  mutation CensusDefinitionVersionSaveDraft(
+    $kind: String!
+    $definitionSchema: GenericScalar!
+  ) {
+    adminCensusDefinitionVersionSaveDraft(
+      kind: $kind
+      definitionSchema: $definitionSchema
+    ) {
+      definition {
+        ...CensusDefinitionFields
+      }
+      version {
+        ...CensusDefinitionVersionFields
+      }
+      fields {
+        name
+        message
+      }
+    }
+  }
+  ${CensusDefinitionVersionFields}
+`;
+
+const CensusDefinitionSetEnabledDocument = gql`
+  mutation CensusDefinitionSetEnabled($kind: String!, $enabled: Boolean!) {
+    adminCensusDefinitionSetEnabled(kind: $kind, enabled: $enabled) {
+      definition {
+        ...CensusDefinitionFields
+      }
+      version {
+        ...CensusDefinitionVersionFields
+      }
+      fields {
+        name
+        message
+      }
+    }
+  }
+  ${CensusDefinitionVersionFields}
 `;
 
 export class CensusDefinitionService implements ICensusDefinitionService {
@@ -106,6 +212,8 @@ export class CensusDefinitionService implements ICensusDefinitionService {
           human: payload?.versions?.find(
             (version: any) => version?.definition?.kind === "HUMAN"
           ),
+          animalDraft: undefined,
+          humanDraft: undefined,
         }),
       };
     } catch (error) {
@@ -115,17 +223,39 @@ export class CensusDefinitionService implements ICensusDefinitionService {
 
   async publishVersion(
     kind: CensusKind,
-    schema: CensusSchema,
+    definitionSchema: CensusDefinitionAuthoredSchema,
     enabled: boolean = true
   ): Promise<SaveResult<CensusDefinitionVersion>> {
     try {
       const result = await this.client.mutate({
         mutation: CensusDefinitionVersionPublishDocument,
-        variables: { kind, schema, enabled },
+        variables: { kind, definitionSchema, enabled },
         refetchQueries: [{ query: CensusDefinitionAdminStateDocument }],
         awaitRefetchQueries: true,
       });
       const payload = result.data?.adminCensusDefinitionVersionPublish;
+      const problem = this.toProblem(payload?.fields);
+      if (problem) {
+        return problem;
+      }
+      return { success: true, data: this.toVersion(payload?.version) };
+    } catch (error) {
+      return { success: false, message: this.toErrorMessage(error) };
+    }
+  }
+
+  async saveDraft(
+    kind: CensusKind,
+    definitionSchema: CensusDefinitionAuthoredSchema
+  ): Promise<SaveResult<CensusDefinitionVersion>> {
+    try {
+      const result = await this.client.mutate({
+        mutation: CensusDefinitionVersionSaveDraftDocument,
+        variables: { kind, definitionSchema },
+        refetchQueries: [{ query: CensusDefinitionAdminStateDocument }],
+        awaitRefetchQueries: true,
+      });
+      const payload = result.data?.adminCensusDefinitionVersionSaveDraft;
       const problem = this.toProblem(payload?.fields);
       if (problem) {
         return problem;
@@ -170,6 +300,12 @@ export class CensusDefinitionService implements ICensusDefinitionService {
         ANIMAL: data?.animal ? this.toVersion(data.animal) : undefined,
         HUMAN: data?.human ? this.toVersion(data.human) : undefined,
       },
+      draftVersions: {
+        ANIMAL: data?.animalDraft
+          ? this.toVersion(data.animalDraft)
+          : undefined,
+        HUMAN: data?.humanDraft ? this.toVersion(data.humanDraft) : undefined,
+      },
     };
   }
 
@@ -189,23 +325,26 @@ export class CensusDefinitionService implements ICensusDefinitionService {
       version: item.version,
       status: item.status,
       schema: this.normalizeSchema(item.schema),
+      definitionSchema: this.normalizeSchema<CensusDefinitionAuthoredSchema>(
+        item.definitionSchema
+      ),
       runtimeSchema: this.normalizeSchema(item.runtimeSchema),
       publishedAt: item.publishedAt,
     };
   }
 
-  private normalizeSchema(value: unknown): CensusSchema {
+  private normalizeSchema<T extends object = any>(value: unknown): T {
     if (!value) {
-      return {};
+      return {} as T;
     }
     if (typeof value === "string") {
       try {
         return JSON.parse(value);
       } catch {
-        return {};
+        return {} as T;
       }
     }
-    return value as CensusSchema;
+    return value as T;
   }
 
   private toProblem(
@@ -238,8 +377,10 @@ export class CensusDefinitionService implements ICensusDefinitionService {
       text.includes("Cannot query field") &&
       (text.includes("censusDefinitions") ||
         text.includes("activeCensusDefinitionVersion") ||
+        text.includes("draftCensusDefinitionVersion") ||
         text.includes("adminCensusDefinitionsEnsureDefaults") ||
         text.includes("adminCensusDefinitionVersionPublish") ||
+        text.includes("adminCensusDefinitionVersionSaveDraft") ||
         text.includes("adminCensusDefinitionSetEnabled"))
     );
   }

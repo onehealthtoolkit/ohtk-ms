@@ -13,6 +13,7 @@ fragment CensusDefinitionVersionFields on CensusDefinitionVersionType {
   version
   status
   schema
+  definitionSchema
   runtimeSchema
   publishedAt
 }
@@ -25,6 +26,12 @@ query CensusDefinitionAdminState {
     ...CensusDefinitionVersionFields
   }
   human: activeCensusDefinitionVersion(kind: "HUMAN") {
+    ...CensusDefinitionVersionFields
+  }
+  animalDraft: draftCensusDefinitionVersion(kind: "ANIMAL") {
+    ...CensusDefinitionVersionFields
+  }
+  humanDraft: draftCensusDefinitionVersion(kind: "HUMAN") {
     ...CensusDefinitionVersionFields
   }
 }
@@ -52,13 +59,34 @@ mutation CensusDefinitionsEnsureDefaults(
 
 mutation CensusDefinitionVersionPublish(
   $kind: String!
-  $schema: GenericScalar
+  $definitionSchema: GenericScalar
   $enabled: Boolean = true
 ) {
   adminCensusDefinitionVersionPublish(
     kind: $kind
-    schema: $schema
+    definitionSchema: $definitionSchema
     enabled: $enabled
+  ) {
+    definition {
+      ...CensusDefinitionFields
+    }
+    version {
+      ...CensusDefinitionVersionFields
+    }
+    fields {
+      name
+      message
+    }
+  }
+}
+
+mutation CensusDefinitionVersionSaveDraft(
+  $kind: String!
+  $definitionSchema: GenericScalar!
+) {
+  adminCensusDefinitionVersionSaveDraft(
+    kind: $kind
+    definitionSchema: $definitionSchema
   ) {
     definition {
       ...CensusDefinitionFields
