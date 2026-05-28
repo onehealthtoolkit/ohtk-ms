@@ -43,7 +43,7 @@ export class VillageViewViewModel extends BaseViewModel {
     this.isLoading = true;
     const [village, latestCensus] = await Promise.all([
       this.villageService.getVillage(this.id),
-      this.censusSnapshotService.getLatestVillageCensus(this.id),
+      this.censusSnapshotService.getLatestAnimalVillageCensus(this.id),
     ]);
     runInAction(() => {
       if (village.data) {

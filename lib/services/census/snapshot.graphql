@@ -1,5 +1,5 @@
-query LatestVillageCensus($villageId: Int!) {
-  latestVillageCensus(villageId: $villageId) {
+query LatestAnimalVillageCensus($villageId: Int!) {
+  latestVillageCensusV2(villageId: $villageId, kind: "ANIMAL") {
     id
     censusDate
     submittedAt

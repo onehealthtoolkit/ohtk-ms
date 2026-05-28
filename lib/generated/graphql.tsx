@@ -495,6 +495,13 @@ export type AdminCategoryUpdateSuccess = {
   category?: Maybe<CategoryType>;
 };
 
+export type AdminCensusDefinitionSetEnabledPayload = {
+  __typename?: "AdminCensusDefinitionSetEnabledPayload";
+  definition?: Maybe<CensusDefinitionType>;
+  fields?: Maybe<Array<Maybe<AdminFieldValidationProblem>>>;
+  version?: Maybe<CensusDefinitionVersionType>;
+};
+
 export type AdminCensusDefinitionSetupPayload = {
   __typename?: "AdminCensusDefinitionSetupPayload";
   definitions?: Maybe<Array<Maybe<CensusDefinitionType>>>;
@@ -1809,6 +1816,7 @@ export type CensusDefinitionType = {
 export type CensusDefinitionVersionType = {
   __typename?: "CensusDefinitionVersionType";
   definition: CensusDefinitionType;
+  definitionSchema?: Maybe<Scalars["GenericScalar"]["output"]>;
   id: Scalars["ID"]["output"];
   publishedAt?: Maybe<Scalars["DateTime"]["output"]>;
   runtimeSchema?: Maybe<Scalars["GenericScalar"]["output"]>;
@@ -2149,7 +2157,9 @@ export type Mutation = {
   adminCategoryCreate?: Maybe<AdminCategoryCreateMutation>;
   adminCategoryDelete?: Maybe<AdminCategoryDeleteMutation>;
   adminCategoryUpdate?: Maybe<AdminCategoryUpdateMutation>;
+  adminCensusDefinitionSetEnabled?: Maybe<AdminCensusDefinitionSetEnabledPayload>;
   adminCensusDefinitionVersionPublish?: Maybe<AdminCensusDefinitionVersionPublishPayload>;
+  adminCensusDefinitionVersionSaveDraft?: Maybe<AdminCensusDefinitionVersionPublishPayload>;
   adminCensusDefinitionsEnsureDefaults?: Maybe<AdminCensusDefinitionSetupPayload>;
   adminClientCreate?: Maybe<AdminClientCreateMutation>;
   adminClientUpdate?: Maybe<AdminClientUpdateMutation>;
@@ -2354,10 +2364,21 @@ export type MutationAdminCategoryUpdateArgs = {
   ordering: Scalars["Int"]["input"];
 };
 
+export type MutationAdminCensusDefinitionSetEnabledArgs = {
+  enabled: Scalars["Boolean"]["input"];
+  kind: Scalars["String"]["input"];
+};
+
 export type MutationAdminCensusDefinitionVersionPublishArgs = {
+  definitionSchema?: InputMaybe<Scalars["GenericScalar"]["input"]>;
   enabled?: InputMaybe<Scalars["Boolean"]["input"]>;
   kind: Scalars["String"]["input"];
   schema?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+};
+
+export type MutationAdminCensusDefinitionVersionSaveDraftArgs = {
+  definitionSchema: Scalars["GenericScalar"]["input"];
+  kind: Scalars["String"]["input"];
 };
 
 export type MutationAdminCensusDefinitionsEnsureDefaultsArgs = {
@@ -3145,6 +3166,7 @@ export type Query = {
   currentAnimalCensusFacts?: Maybe<Array<Maybe<CurrentAnimalCensusFactType>>>;
   currentHumanCensusFacts?: Maybe<Array<Maybe<CurrentHumanCensusFactType>>>;
   deepStateDefinitionGet?: Maybe<DeepStateDefinitionType>;
+  draftCensusDefinitionVersion?: Maybe<CensusDefinitionVersionType>;
   eventsQuery?: Maybe<EventType>;
   features?: Maybe<Array<Maybe<FeatureType>>>;
   followupReport?: Maybe<FollowupReportType>;
@@ -3536,6 +3558,10 @@ export type QueryCurrentHumanCensusFactsArgs = {
 
 export type QueryDeepStateDefinitionGetArgs = {
   id: Scalars["ID"]["input"];
+};
+
+export type QueryDraftCensusDefinitionVersionArgs = {
+  kind: Scalars["String"]["input"];
 };
 
 export type QueryEventsQueryArgs = {
@@ -4900,6 +4926,7 @@ export type CensusDefinitionVersionFieldsFragment = {
   version: number;
   status: CensusCensusDefinitionVersionStatusChoices;
   schema?: any | null;
+  definitionSchema?: any | null;
   runtimeSchema?: any | null;
   publishedAt?: any | null;
   definition: {
@@ -4930,6 +4957,7 @@ export type CensusDefinitionAdminStateQuery = {
     version: number;
     status: CensusCensusDefinitionVersionStatusChoices;
     schema?: any | null;
+    definitionSchema?: any | null;
     runtimeSchema?: any | null;
     publishedAt?: any | null;
     definition: {
@@ -4946,6 +4974,41 @@ export type CensusDefinitionAdminStateQuery = {
     version: number;
     status: CensusCensusDefinitionVersionStatusChoices;
     schema?: any | null;
+    definitionSchema?: any | null;
+    runtimeSchema?: any | null;
+    publishedAt?: any | null;
+    definition: {
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    };
+  } | null;
+  animalDraft?: {
+    __typename?: "CensusDefinitionVersionType";
+    id: string;
+    version: number;
+    status: CensusCensusDefinitionVersionStatusChoices;
+    schema?: any | null;
+    definitionSchema?: any | null;
+    runtimeSchema?: any | null;
+    publishedAt?: any | null;
+    definition: {
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    };
+  } | null;
+  humanDraft?: {
+    __typename?: "CensusDefinitionVersionType";
+    id: string;
+    version: number;
+    status: CensusCensusDefinitionVersionStatusChoices;
+    schema?: any | null;
+    definitionSchema?: any | null;
     runtimeSchema?: any | null;
     publishedAt?: any | null;
     definition: {
@@ -4980,6 +5043,7 @@ export type CensusDefinitionsEnsureDefaultsMutation = {
       version: number;
       status: CensusCensusDefinitionVersionStatusChoices;
       schema?: any | null;
+      definitionSchema?: any | null;
       runtimeSchema?: any | null;
       publishedAt?: any | null;
       definition: {
@@ -5000,7 +5064,7 @@ export type CensusDefinitionsEnsureDefaultsMutation = {
 
 export type CensusDefinitionVersionPublishMutationVariables = Exact<{
   kind: Scalars["String"]["input"];
-  schema?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+  definitionSchema?: InputMaybe<Scalars["GenericScalar"]["input"]>;
   enabled?: InputMaybe<Scalars["Boolean"]["input"]>;
 }>;
 
@@ -5021,6 +5085,7 @@ export type CensusDefinitionVersionPublishMutation = {
       version: number;
       status: CensusCensusDefinitionVersionStatusChoices;
       schema?: any | null;
+      definitionSchema?: any | null;
       runtimeSchema?: any | null;
       publishedAt?: any | null;
       definition: {
@@ -5039,13 +5104,95 @@ export type CensusDefinitionVersionPublishMutation = {
   } | null;
 };
 
-export type LatestVillageCensusQueryVariables = Exact<{
+export type CensusDefinitionVersionSaveDraftMutationVariables = Exact<{
+  kind: Scalars["String"]["input"];
+  definitionSchema: Scalars["GenericScalar"]["input"];
+}>;
+
+export type CensusDefinitionVersionSaveDraftMutation = {
+  __typename?: "Mutation";
+  adminCensusDefinitionVersionSaveDraft?: {
+    __typename?: "AdminCensusDefinitionVersionPublishPayload";
+    definition?: {
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    } | null;
+    version?: {
+      __typename?: "CensusDefinitionVersionType";
+      id: string;
+      version: number;
+      status: CensusCensusDefinitionVersionStatusChoices;
+      schema?: any | null;
+      definitionSchema?: any | null;
+      runtimeSchema?: any | null;
+      publishedAt?: any | null;
+      definition: {
+        __typename?: "CensusDefinitionType";
+        id: string;
+        kind: CensusCensusDefinitionKindChoices;
+        enabled: boolean;
+        sortOrder: number;
+      };
+    } | null;
+    fields?: Array<{
+      __typename?: "AdminFieldValidationProblem";
+      name: string;
+      message: string;
+    } | null> | null;
+  } | null;
+};
+
+export type CensusDefinitionSetEnabledMutationVariables = Exact<{
+  kind: Scalars["String"]["input"];
+  enabled: Scalars["Boolean"]["input"];
+}>;
+
+export type CensusDefinitionSetEnabledMutation = {
+  __typename?: "Mutation";
+  adminCensusDefinitionSetEnabled?: {
+    __typename?: "AdminCensusDefinitionSetEnabledPayload";
+    definition?: {
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    } | null;
+    version?: {
+      __typename?: "CensusDefinitionVersionType";
+      id: string;
+      version: number;
+      status: CensusCensusDefinitionVersionStatusChoices;
+      schema?: any | null;
+      definitionSchema?: any | null;
+      runtimeSchema?: any | null;
+      publishedAt?: any | null;
+      definition: {
+        __typename?: "CensusDefinitionType";
+        id: string;
+        kind: CensusCensusDefinitionKindChoices;
+        enabled: boolean;
+        sortOrder: number;
+      };
+    } | null;
+    fields?: Array<{
+      __typename?: "AdminFieldValidationProblem";
+      name: string;
+      message: string;
+    } | null> | null;
+  } | null;
+};
+
+export type LatestAnimalVillageCensusQueryVariables = Exact<{
   villageId: Scalars["Int"]["input"];
 }>;
 
-export type LatestVillageCensusQuery = {
+export type LatestAnimalVillageCensusQuery = {
   __typename?: "Query";
-  latestVillageCensus?: {
+  latestVillageCensusV2?: {
     __typename?: "VillageCensusSnapshotType";
     id: string;
     censusDate: any;
@@ -8167,6 +8314,7 @@ export const CensusDefinitionVersionFieldsFragmentDoc = {
           { kind: "Field", name: { kind: "Name", value: "version" } },
           { kind: "Field", name: { kind: "Name", value: "status" } },
           { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "definitionSchema" } },
           { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
           { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
         ],
@@ -11625,6 +11773,54 @@ export const CensusDefinitionAdminStateDocument = {
               ],
             },
           },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "animalDraft" },
+            name: { kind: "Name", value: "draftCensusDefinitionVersion" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: { kind: "StringValue", value: "ANIMAL", block: false },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "CensusDefinitionVersionFields",
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "humanDraft" },
+            name: { kind: "Name", value: "draftCensusDefinitionVersion" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: { kind: "StringValue", value: "HUMAN", block: false },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "CensusDefinitionVersionFields",
+                  },
+                },
+              ],
+            },
+          },
         ],
       },
     },
@@ -11672,6 +11868,7 @@ export const CensusDefinitionAdminStateDocument = {
           { kind: "Field", name: { kind: "Name", value: "version" } },
           { kind: "Field", name: { kind: "Name", value: "status" } },
           { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "definitionSchema" } },
           { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
           { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
         ],
@@ -11832,6 +12029,7 @@ export const CensusDefinitionsEnsureDefaultsDocument = {
           { kind: "Field", name: { kind: "Name", value: "version" } },
           { kind: "Field", name: { kind: "Name", value: "status" } },
           { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "definitionSchema" } },
           { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
           { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
         ],
@@ -11865,7 +12063,7 @@ export const CensusDefinitionVersionPublishDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "schema" },
+            name: { kind: "Name", value: "definitionSchema" },
           },
           type: {
             kind: "NamedType",
@@ -11902,10 +12100,10 @@ export const CensusDefinitionVersionPublishDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "schema" },
+                name: { kind: "Name", value: "definitionSchema" },
                 value: {
                   kind: "Variable",
-                  name: { kind: "Name", value: "schema" },
+                  name: { kind: "Name", value: "definitionSchema" },
                 },
               },
               {
@@ -12013,6 +12211,7 @@ export const CensusDefinitionVersionPublishDocument = {
           { kind: "Field", name: { kind: "Name", value: "version" } },
           { kind: "Field", name: { kind: "Name", value: "status" } },
           { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "definitionSchema" } },
           { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
           { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
         ],
@@ -12023,13 +12222,346 @@ export const CensusDefinitionVersionPublishDocument = {
   CensusDefinitionVersionPublishMutation,
   CensusDefinitionVersionPublishMutationVariables
 >;
-export const LatestVillageCensusDocument = {
+export const CensusDefinitionVersionSaveDraftDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CensusDefinitionVersionSaveDraft" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "kind" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "definitionSchema" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "GenericScalar" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: {
+              kind: "Name",
+              value: "adminCensusDefinitionVersionSaveDraft",
+            },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "kind" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "definitionSchema" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "definitionSchema" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "definition" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "CensusDefinitionFields" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "version" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: {
+                          kind: "Name",
+                          value: "CensusDefinitionVersionFields",
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "fields" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "kind" } },
+          { kind: "Field", name: { kind: "Name", value: "enabled" } },
+          { kind: "Field", name: { kind: "Name", value: "sortOrder" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionVersionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionVersionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "definition" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CensusDefinitionFields" },
+                },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "version" } },
+          { kind: "Field", name: { kind: "Name", value: "status" } },
+          { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "definitionSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CensusDefinitionVersionSaveDraftMutation,
+  CensusDefinitionVersionSaveDraftMutationVariables
+>;
+export const CensusDefinitionSetEnabledDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CensusDefinitionSetEnabled" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "kind" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "enabled" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminCensusDefinitionSetEnabled" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "kind" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "enabled" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "enabled" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "definition" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "CensusDefinitionFields" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "version" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: {
+                          kind: "Name",
+                          value: "CensusDefinitionVersionFields",
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "fields" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "kind" } },
+          { kind: "Field", name: { kind: "Name", value: "enabled" } },
+          { kind: "Field", name: { kind: "Name", value: "sortOrder" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionVersionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionVersionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "definition" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CensusDefinitionFields" },
+                },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "version" } },
+          { kind: "Field", name: { kind: "Name", value: "status" } },
+          { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "definitionSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CensusDefinitionSetEnabledMutation,
+  CensusDefinitionSetEnabledMutationVariables
+>;
+export const LatestAnimalVillageCensusDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "LatestVillageCensus" },
+      name: { kind: "Name", value: "LatestAnimalVillageCensus" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -12048,7 +12580,7 @@ export const LatestVillageCensusDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "latestVillageCensus" },
+            name: { kind: "Name", value: "latestVillageCensusV2" },
             arguments: [
               {
                 kind: "Argument",
@@ -12057,6 +12589,11 @@ export const LatestVillageCensusDocument = {
                   kind: "Variable",
                   name: { kind: "Name", value: "villageId" },
                 },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: { kind: "StringValue", value: "ANIMAL", block: false },
               },
             ],
             selectionSet: {
@@ -12124,8 +12661,8 @@ export const LatestVillageCensusDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  LatestVillageCensusQuery,
-  LatestVillageCensusQueryVariables
+  LatestAnimalVillageCensusQuery,
+  LatestAnimalVillageCensusQueryVariables
 >;
 export const QueryCommentsDocument = {
   kind: "Document",

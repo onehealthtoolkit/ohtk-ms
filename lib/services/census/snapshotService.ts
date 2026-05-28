@@ -1,10 +1,10 @@
 import type { LegacyApolloClient } from "lib/services/apolloClient";
-import { LatestVillageCensusDocument } from "lib/generated/graphql";
+import { LatestAnimalVillageCensusDocument } from "lib/generated/graphql";
 import { GetResult, IService } from "lib/services/interface";
 import { VillageCensusSnapshot } from "./census";
 
 export interface ICensusSnapshotService extends IService {
-  getLatestVillageCensus(
+  getLatestAnimalVillageCensus(
     villageId: number
   ): Promise<GetResult<VillageCensusSnapshot>>;
 }
@@ -12,17 +12,17 @@ export interface ICensusSnapshotService extends IService {
 export class CensusSnapshotService implements ICensusSnapshotService {
   constructor(readonly client: LegacyApolloClient) {}
 
-  async getLatestVillageCensus(
+  async getLatestAnimalVillageCensus(
     villageId: number
   ): Promise<GetResult<VillageCensusSnapshot>> {
     const getResult = await this.client.query({
-      query: LatestVillageCensusDocument,
+      query: LatestAnimalVillageCensusDocument,
       variables: {
         villageId,
       },
       fetchPolicy: "network-only",
     });
-    const snapshot = getResult.data.latestVillageCensus;
+    const snapshot = getResult.data.latestVillageCensusV2;
     return {
       data: snapshot
         ? {
