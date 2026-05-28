@@ -24,7 +24,11 @@ import { ForgotPasswordService } from "./forgotPassword/forgotPasswordService";
 import { OutbreakPlanService } from "./outbreakPlan";
 import { PlaceService } from "./place";
 import { VillageService } from "./village";
-import { CensusDefinitionService, CensusSnapshotService } from "./census";
+import {
+  CensusCapabilityService,
+  CensusDefinitionService,
+  CensusSnapshotService,
+} from "./census";
 import { ConfigurationService } from "./configuration";
 import { OutbreakService } from "./outbreak/outbreakService";
 import { ObservationDefinitionService } from "./observationDefinition/observationDefinitionService";
@@ -58,6 +62,7 @@ export interface IServiceProvider {
   get villageService(): VillageService;
   get censusSnapshotService(): CensusSnapshotService;
   get censusDefinitionService(): CensusDefinitionService;
+  get censusCapabilityService(): CensusCapabilityService;
   get configurationService(): ConfigurationService;
   get outbreakService(): OutbreakService;
   get observationDefinitionService(): ObservationDefinitionService;
@@ -94,6 +99,7 @@ export class ServicesProvider implements IServiceProvider {
   villageService: VillageService;
   censusSnapshotService: CensusSnapshotService;
   censusDefinitionService: CensusDefinitionService;
+  censusCapabilityService: CensusCapabilityService;
   configurationService: ConfigurationService;
   outbreakService: OutbreakService;
   observationDefinitionService: ObservationDefinitionService;
@@ -128,6 +134,7 @@ export class ServicesProvider implements IServiceProvider {
     this.villageService = new VillageService(client);
     this.censusSnapshotService = new CensusSnapshotService(client);
     this.censusDefinitionService = new CensusDefinitionService(client);
+    this.censusCapabilityService = new CensusCapabilityService(client);
     this.configurationService = new ConfigurationService(client);
     this.outbreakService = new OutbreakService(client);
     this.observationDefinitionService = new ObservationDefinitionService(

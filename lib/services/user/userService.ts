@@ -9,8 +9,9 @@ import {
   LoginQrTokenDocument,
   UserUpdatePasswordDocument,
   SummaryContributionQueryDocument,
+  VillageReporterAssignmentInput,
 } from "lib/generated/graphql";
-import { User } from "lib/services/user/user";
+import { User, UserVillageAssignment } from "lib/services/user/user";
 import {
   DeleteResult,
   GetResult,
@@ -20,6 +21,13 @@ import {
 } from "lib/services/interface";
 import { Contribution } from ".";
 import { Authority } from "../authority";
+
+const normalizeUserFieldErrorName = (name: string) => {
+  if (name === "village_assignments") {
+    return "villageAssignments";
+  }
+  return name;
+};
 
 export interface IUserService extends IService {
   fetchUsers(
@@ -56,7 +64,8 @@ export interface IUserService extends IService {
     email: string,
     telephone: string,
     address: string,
-    role: string
+    role: string,
+    villageAssignments?: UserVillageAssignment[]
   ): Promise<SaveResult<User>>;
 
   updateUserPassword(id: string, password: string): Promise<SaveResult<User>>;
@@ -155,6 +164,17 @@ export class UserService implements IUserService {
         address: user.address || "",
         role: user.role,
         authorityId: parseInt(user.authority.id),
+        villageAssignments:
+          user.assignedVillageAssignments
+            ?.filter(assignment => assignment)
+            .map(assignment => ({
+              id: assignment!.id,
+              villageId: parseInt(assignment!.village.id),
+              code: assignment!.village.code,
+              name: assignment!.village.name,
+              active: assignment!.village.active,
+              censusRole: assignment!.censusRole,
+            })) || [],
         assignedVillages:
           user.assignedVillages
             ?.filter(village => village)
@@ -246,8 +266,15 @@ export class UserService implements IUserService {
     email: string,
     telephone: string,
     address: string,
-    role: string
+    role: string,
+    villageAssignments?: UserVillageAssignment[]
   ): Promise<SaveResult<User>> {
+    const villageAssignmentInput: VillageReporterAssignmentInput[] | undefined =
+      villageAssignments?.map(assignment => ({
+        villageId: assignment.villageId,
+        censusRole: assignment.censusRole,
+      }));
+
     const updateResult = await this.client.mutate({
       mutation: UserUpdateDocument,
       variables: {
@@ -260,6 +287,7 @@ export class UserService implements IUserService {
         telephone,
         address,
         role,
+        villageAssignments: villageAssignmentInput,
       },
       refetchQueries: [
         {
@@ -312,7 +340,7 @@ export class UserService implements IUserService {
         console.log("problem", result);
         const fields: any = {};
         result.fields?.forEach(f => {
-          fields[f.name] = f.message;
+          fields[normalizeUserFieldErrorName(f.name)] = f.message;
         });
 
         return {

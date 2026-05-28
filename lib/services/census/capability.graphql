@@ -1,0 +1,14 @@
+query CensusCapabilities {
+  villageCapabilityEnabled
+  animalCensusCapabilityEnabled
+}
+
+mutation AnimalCensusCapabilityUpdate($enabled: Boolean!) {
+  adminAnimalCensusCapabilityUpdate(enabled: $enabled) {
+    enabled
+    fields {
+      name
+      message
+    }
+  }
+}

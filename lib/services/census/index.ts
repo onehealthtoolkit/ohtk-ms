@@ -17,3 +17,9 @@ export type {
 export { CensusSnapshotService } from "./snapshotService";
 export type { ICensusSnapshotService } from "./snapshotService";
 export type { AnimalCensusFact, VillageCensusSnapshot } from "./census";
+
+export { CensusCapabilityService } from "./capabilityService";
+export type {
+  CensusCapabilities,
+  ICensusCapabilityService,
+} from "./capabilityService";

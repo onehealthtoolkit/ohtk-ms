@@ -84,6 +84,7 @@ mutation UserUpdate(
   $username: String!
   $address: String = null
   $role: String
+  $villageAssignments: [VillageReporterAssignmentInput]
 ) {
   adminAuthorityUserUpdate(
     id: $id
@@ -95,6 +96,7 @@ mutation UserUpdate(
     username: $username
     address: $address
     role: $role
+    villageAssignments: $villageAssignments
   ) {
     result {
       __typename
@@ -110,6 +112,22 @@ mutation UserUpdate(
           address
           authority {
             id
+          }
+          assignedVillages {
+            id
+            code
+            name
+            active
+          }
+          assignedVillageAssignments {
+            id
+            censusRole
+            village {
+              id
+              code
+              name
+              active
+            }
           }
         }
       }
@@ -169,6 +187,16 @@ query GetUser($id: ID!) {
       code
       name
       active
+    }
+    assignedVillageAssignments {
+      id
+      censusRole
+      village {
+        id
+        code
+        name
+        active
+      }
     }
   }
 }

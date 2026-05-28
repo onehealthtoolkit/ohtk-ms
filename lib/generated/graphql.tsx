@@ -46,6 +46,14 @@ export enum AccountsAuthorityUserRoleChoices {
   Rep = "REP",
 }
 
+/** An enumeration. */
+export enum AccountsVillageReporterAssignmentCensusRoleChoices {
+  /** Official */
+  Off = "OFF",
+  /** Volunteer */
+  Vol = "VOL",
+}
+
 export type AdminAnimalCensusCapabilityUpdateMutation = {
   __typename?: "AdminAnimalCensusCapabilityUpdateMutation";
   enabled?: Maybe<Scalars["Boolean"]["output"]>;
@@ -229,6 +237,7 @@ export type AdminAuthorityUserCreateSuccess = {
   usermessageSet: Array<UserMessageType>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
   username: Scalars["String"]["output"];
+  villageAssignments: Array<VillageReporterAssignmentType>;
 };
 
 export type AdminAuthorityUserDeleteMutation = {
@@ -1509,6 +1518,7 @@ export type AdminVillageCreateSuccess = {
   location?: Maybe<Scalars["GeoJSON"]["output"]>;
   longitude?: Maybe<Scalars["Float"]["output"]>;
   name: Scalars["String"]["output"];
+  reporterAssignments: Array<VillageReporterAssignmentType>;
   updatedAt: Scalars["DateTime"]["output"];
 };
 
@@ -1562,6 +1572,7 @@ export type AdminVillageUpdateSuccess = {
   location?: Maybe<Scalars["GeoJSON"]["output"]>;
   longitude?: Maybe<Scalars["Float"]["output"]>;
   name: Scalars["String"]["output"];
+  reporterAssignments: Array<VillageReporterAssignmentType>;
   updatedAt: Scalars["DateTime"]["output"];
 };
 
@@ -1619,6 +1630,9 @@ export type AuthorityUserRegisterMutation = {
 export type AuthorityUserType = {
   __typename?: "AuthorityUserType";
   address?: Maybe<Scalars["String"]["output"]>;
+  assignedVillageAssignments?: Maybe<
+    Array<Maybe<VillageReporterAssignmentType>>
+  >;
   assignedVillages?: Maybe<Array<Maybe<VillageType>>>;
   authority: AdminAuthorityCreateSuccess;
   email: Scalars["String"]["output"];
@@ -2212,6 +2226,9 @@ export type MutationAdminAuthorityUserUpdateArgs = {
   role?: InputMaybe<Scalars["String"]["input"]>;
   telephone?: InputMaybe<Scalars["String"]["input"]>;
   username: Scalars["String"]["input"];
+  villageAssignments?: InputMaybe<
+    Array<InputMaybe<VillageReporterAssignmentInput>>
+  >;
 };
 
 export type MutationAdminAuthorityUserUpdatePasswordArgs = {
@@ -4032,6 +4049,18 @@ export type VillageCensusSnapshotType = {
   village: AdminVillageUpdateSuccess;
 };
 
+export type VillageReporterAssignmentInput = {
+  censusRole: Scalars["String"]["input"];
+  villageId: Scalars["Int"]["input"];
+};
+
+export type VillageReporterAssignmentType = {
+  __typename?: "VillageReporterAssignmentType";
+  censusRole: AccountsVillageReporterAssignmentCensusRoleChoices;
+  id: Scalars["ID"]["output"];
+  village: AdminVillageUpdateSuccess;
+};
+
 export type VillageType = {
   __typename?: "VillageType";
   active: Scalars["Boolean"]["output"];
@@ -4680,6 +4709,31 @@ export type GetCaseDefinitionQuery = {
       id: any;
       name: string;
     };
+  } | null;
+};
+
+export type CensusCapabilitiesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type CensusCapabilitiesQuery = {
+  __typename?: "Query";
+  villageCapabilityEnabled: boolean;
+  animalCensusCapabilityEnabled: boolean;
+};
+
+export type AnimalCensusCapabilityUpdateMutationVariables = Exact<{
+  enabled: Scalars["Boolean"]["input"];
+}>;
+
+export type AnimalCensusCapabilityUpdateMutation = {
+  __typename?: "Mutation";
+  adminAnimalCensusCapabilityUpdate?: {
+    __typename?: "AdminAnimalCensusCapabilityUpdateMutation";
+    enabled?: boolean | null;
+    fields?: Array<{
+      __typename?: "AdminFieldValidationProblem";
+      name: string;
+      message: string;
+    } | null> | null;
   } | null;
 };
 
@@ -7785,6 +7839,10 @@ export type UserUpdateMutationVariables = Exact<{
   username: Scalars["String"]["input"];
   address?: InputMaybe<Scalars["String"]["input"]>;
   role?: InputMaybe<Scalars["String"]["input"]>;
+  villageAssignments?: InputMaybe<
+    | Array<InputMaybe<VillageReporterAssignmentInput>>
+    | InputMaybe<VillageReporterAssignmentInput>
+  >;
 }>;
 
 export type UserUpdateMutation = {
@@ -7817,6 +7875,25 @@ export type UserUpdateMutation = {
               __typename?: "AdminAuthorityCreateSuccess";
               id: string;
             };
+            assignedVillages?: Array<{
+              __typename?: "VillageType";
+              id: string;
+              code: string;
+              name: string;
+              active: boolean;
+            } | null> | null;
+            assignedVillageAssignments?: Array<{
+              __typename?: "VillageReporterAssignmentType";
+              id: string;
+              censusRole: AccountsVillageReporterAssignmentCensusRoleChoices;
+              village: {
+                __typename?: "AdminVillageUpdateSuccess";
+                id: string;
+                code: string;
+                name: string;
+                active: boolean;
+              };
+            } | null> | null;
           } | null;
         }
       | null;
@@ -7889,6 +7966,18 @@ export type GetUserQuery = {
       code: string;
       name: string;
       active: boolean;
+    } | null> | null;
+    assignedVillageAssignments?: Array<{
+      __typename?: "VillageReporterAssignmentType";
+      id: string;
+      censusRole: AccountsVillageReporterAssignmentCensusRoleChoices;
+      village: {
+        __typename?: "AdminVillageUpdateSuccess";
+        id: string;
+        code: string;
+        name: string;
+        active: boolean;
+      };
     } | null> | null;
   } | null;
 };
@@ -10944,6 +11033,100 @@ export const GetCaseDefinitionDocument = {
 } as unknown as DocumentNode<
   GetCaseDefinitionQuery,
   GetCaseDefinitionQueryVariables
+>;
+export const CensusCapabilitiesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "CensusCapabilities" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "villageCapabilityEnabled" },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "animalCensusCapabilityEnabled" },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CensusCapabilitiesQuery,
+  CensusCapabilitiesQueryVariables
+>;
+export const AnimalCensusCapabilityUpdateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AnimalCensusCapabilityUpdate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "enabled" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAnimalCensusCapabilityUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "enabled" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "enabled" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "enabled" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "fields" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AnimalCensusCapabilityUpdateMutation,
+  AnimalCensusCapabilityUpdateMutationVariables
 >;
 export const CensusDefinitionAdminStateDocument = {
   kind: "Document",
@@ -26057,6 +26240,20 @@ export const UserUpdateDocument = {
           variable: { kind: "Variable", name: { kind: "Name", value: "role" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "villageAssignments" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "VillageReporterAssignmentInput" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -26137,6 +26334,14 @@ export const UserUpdateDocument = {
                   name: { kind: "Name", value: "role" },
                 },
               },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "villageAssignments" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "villageAssignments" },
+                },
+              },
             ],
             selectionSet: {
               kind: "SelectionSet",
@@ -26210,6 +26415,100 @@ export const UserUpdateDocument = {
                                         {
                                           kind: "Field",
                                           name: { kind: "Name", value: "id" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "assignedVillages",
+                                    },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "code" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "active",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "assignedVillageAssignments",
+                                    },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "censusRole",
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "village",
+                                          },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "id",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "code",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "name",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "active",
+                                                },
+                                              },
+                                            ],
+                                          },
                                         },
                                       ],
                                     },
@@ -26528,6 +26827,45 @@ export const GetUserDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "active" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "assignedVillageAssignments" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "censusRole" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "village" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "code" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "active" },
+                            },
+                          ],
+                        },
                       },
                     ],
                   },

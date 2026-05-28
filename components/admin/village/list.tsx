@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Filter from "./filter";
 import { VillageListViewModel } from "./listViewModel";
+import useStore from "lib/store";
 
 const parseUrlParams = (query: ParsedUrlQuery) => ({
   q: query.q as string,
@@ -23,9 +24,13 @@ const parseUrlParams = (query: ParsedUrlQuery) => ({
 const VillageList = () => {
   const router = useRouter();
   const { t } = useTranslation();
-  const { villageService } = useServices();
+  const services = useServices();
+  const { villageService, censusCapabilityService } = services;
+  const store = useStore();
   const { setUrl, query, resetUrl } = useUrlParams();
-  const [viewModel] = useState(() => new VillageListViewModel(villageService));
+  const [viewModel] = useState(
+    () => new VillageListViewModel(villageService, censusCapabilityService)
+  );
 
   useEffect(() => {
     if (router.isReady) {
@@ -53,6 +58,39 @@ const VillageList = () => {
     <Observer>
       {() => (
         <div>
+          {store.isSuperUser && store.isFeatureEnable("village") && (
+            <div className="mb-4 border rounded bg-white px-4 py-3 shadow-sm">
+              <div className="flex flex-wrap items-center gap-4">
+                <label className="inline-flex items-center gap-2 text-sm font-medium text-gray-800">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    checked={viewModel.animalCensusEnabled}
+                    disabled={
+                      viewModel.isUpdatingCapability ||
+                      !viewModel.villageEnabled
+                    }
+                    onChange={evt =>
+                      viewModel.setAnimalCensusEnabled(evt.target.checked)
+                    }
+                  />
+                  <span>
+                    {t(
+                      "form.label.animalCensusEnabled",
+                      "Animal census enabled"
+                    )}
+                  </span>
+                </label>
+                {viewModel.isUpdatingCapability && <Spinner />}
+                {viewModel.capabilityError && (
+                  <span className="text-sm text-red-600">
+                    {viewModel.capabilityError}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
           <div className="flex items-center flex-wrap mb-4 gap-2">
             <TotalItem
               totalCount={viewModel.totalCount}
