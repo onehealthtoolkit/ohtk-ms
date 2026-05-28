@@ -17,7 +17,8 @@ export interface IVillageService extends IService {
     limit: number,
     offset: number,
     searchText: string,
-    force?: boolean
+    force?: boolean,
+    authorityId?: number
   ): Promise<QueryResult<Village[]>>;
 
   getVillage(id: number): Promise<GetResult<Village>>;
@@ -50,6 +51,7 @@ export class VillageService implements IVillageService {
     offset: 0,
     q: "",
     ordering: "code,asc",
+    authorityId: undefined as number | undefined,
   };
 
   constructor(client: LegacyApolloClient) {
@@ -81,13 +83,15 @@ export class VillageService implements IVillageService {
     limit: number,
     offset: number,
     searchText: string,
-    force?: boolean
+    force?: boolean,
+    authorityId?: number
   ): Promise<QueryResult<Village[]>> {
     this.fetchVillagesQuery = {
       ...this.fetchVillagesQuery,
       limit,
       offset,
       q: searchText,
+      authorityId,
     };
     const fetchResult = await this.client.query({
       query: VillagesDocument,

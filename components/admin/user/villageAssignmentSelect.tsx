@@ -23,7 +23,7 @@ const VillageAssignmentSelect = ({
         active = false;
       };
     }
-    villageService.fetchVillages(200, 0, "", true).then(result => {
+    villageService.fetchVillages(200, 0, "", true, authorityId).then(result => {
       if (active) {
         setVillages(result.items || []);
       }
@@ -35,83 +35,103 @@ const VillageAssignmentSelect = ({
 
   return (
     <Observer>
-      {() => (
-        <div className="max-h-72 overflow-y-auto border rounded px-3 py-2">
-          {villages.map(village => {
-            const villageId = parseInt(village.id);
-            const assignment = viewModel.villageAssignments.find(
-              item => item.villageId === villageId
-            );
-            return (
-              <div
-                key={village.id}
-                className="grid grid-cols-[minmax(0,1fr)_10rem] gap-3 items-start border-b border-gray-100 last:border-b-0 py-2"
-              >
-                <Checkbox
-                  id={`village-assignment-${village.id}`}
-                  name="villageAssignments"
-                  value={village.id}
-                  label={`${village.code} - ${village.name}`}
-                  checked={Boolean(assignment)}
-                  disabled={viewModel.isSubmitting}
-                  onChange={evt =>
-                    viewModel.toggleVillageAssignment(
-                      {
-                        villageId,
-                        id: assignment?.id,
-                        code: village.code,
-                        name: village.name,
-                        active: village.active,
-                      },
-                      evt.target.checked
-                    )
-                  }
-                />
-                <Select
-                  aria-label={`${village.code} census role`}
-                  disabled={!assignment || viewModel.isSubmitting}
-                  value={
-                    assignment?.censusRole ||
-                    AccountsVillageReporterAssignmentCensusRoleChoices.Off
-                  }
-                  onChange={evt =>
-                    viewModel.setVillageAssignmentRole(
-                      villageId,
-                      evt.target
-                        .value as AccountsVillageReporterAssignmentCensusRoleChoices
-                    )
-                  }
+      {() => {
+        const assignableVillageIds = new Set(
+          villages.map(village => parseInt(village.id))
+        );
+        const assignedVillagesOutsideScope = viewModel.villageAssignments
+          .filter(assignment => !assignableVillageIds.has(assignment.villageId))
+          .map(assignment => ({
+            id: assignment.villageId.toString(),
+            code: assignment.code,
+            name: assignment.name,
+            active: assignment.active,
+            authorityId: 0,
+            authorityName: "",
+          }));
+        const visibleVillages = [...villages, ...assignedVillagesOutsideScope];
+
+        return (
+          <div className="max-h-72 overflow-y-auto border rounded px-3 py-2">
+            {visibleVillages.map(village => {
+              const villageId = parseInt(village.id);
+              const isAssignable = assignableVillageIds.has(villageId);
+              const assignment = viewModel.villageAssignments.find(
+                item => item.villageId === villageId
+              );
+              return (
+                <div
+                  key={village.id}
+                  className="grid grid-cols-[minmax(0,1fr)_10rem] gap-3 items-start border-b border-gray-100 last:border-b-0 py-2"
                 >
-                  <option
+                  <Checkbox
+                    id={`village-assignment-${village.id}`}
+                    name="villageAssignments"
+                    value={village.id}
+                    label={`${village.code} - ${village.name}`}
+                    checked={Boolean(assignment)}
+                    disabled={viewModel.isSubmitting}
+                    onChange={evt =>
+                      viewModel.toggleVillageAssignment(
+                        {
+                          villageId,
+                          id: assignment?.id,
+                          code: village.code,
+                          name: village.name,
+                          active: village.active,
+                        },
+                        evt.target.checked
+                      )
+                    }
+                  />
+                  <Select
+                    aria-label={`${village.code} census role`}
+                    disabled={
+                      !assignment || !isAssignable || viewModel.isSubmitting
+                    }
                     value={
+                      assignment?.censusRole ||
                       AccountsVillageReporterAssignmentCensusRoleChoices.Off
                     }
-                  >
-                    Official
-                  </option>
-                  <option
-                    value={
-                      AccountsVillageReporterAssignmentCensusRoleChoices.Vol
+                    onChange={evt =>
+                      viewModel.setVillageAssignmentRole(
+                        villageId,
+                        evt.target
+                          .value as AccountsVillageReporterAssignmentCensusRoleChoices
+                      )
                     }
                   >
-                    Volunteer
-                  </option>
-                </Select>
+                    <option
+                      value={
+                        AccountsVillageReporterAssignmentCensusRoleChoices.Off
+                      }
+                    >
+                      Official
+                    </option>
+                    <option
+                      value={
+                        AccountsVillageReporterAssignmentCensusRoleChoices.Vol
+                      }
+                    >
+                      Volunteer
+                    </option>
+                  </Select>
+                </div>
+              );
+            })}
+            {!authorityId && (
+              <div className="text-sm text-gray-500 py-2">
+                Select authority first
               </div>
-            );
-          })}
-          {!authorityId && (
-            <div className="text-sm text-gray-500 py-2">
-              Select authority first
-            </div>
-          )}
-          {authorityId > 0 && !villages.length && (
-            <div className="text-sm text-gray-500 py-2">
-              No villages found for selected authority
-            </div>
-          )}
-        </div>
-      )}
+            )}
+            {authorityId > 0 && !visibleVillages.length && (
+              <div className="text-sm text-gray-500 py-2">
+                No villages found for selected authority
+              </div>
+            )}
+          </div>
+        );
+      }}
     </Observer>
   );
 };

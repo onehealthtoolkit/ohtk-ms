@@ -1,9 +1,16 @@
-query villages($limit: Int!, $offset: Int!, $q: String, $ordering: String) {
+query villages(
+  $limit: Int!
+  $offset: Int!
+  $q: String
+  $ordering: String
+  $authorityId: Decimal
+) {
   adminVillageQuery(
     limit: $limit
     offset: $offset
     q: $q
     ordering: $ordering
+    authorityId: $authorityId
   ) {
     totalCount
     results {

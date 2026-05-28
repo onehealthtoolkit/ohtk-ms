@@ -8011,6 +8011,7 @@ export type VillagesQueryVariables = Exact<{
   offset: Scalars["Int"]["input"];
   q?: InputMaybe<Scalars["String"]["input"]>;
   ordering?: InputMaybe<Scalars["String"]["input"]>;
+  authorityId?: InputMaybe<Scalars["Decimal"]["input"]>;
 }>;
 
 export type VillagesQuery = {
@@ -27059,6 +27060,14 @@ export const VillagesDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorityId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Decimal" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -27094,6 +27103,14 @@ export const VillagesDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "ordering" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "authorityId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorityId" },
                 },
               },
             ],
