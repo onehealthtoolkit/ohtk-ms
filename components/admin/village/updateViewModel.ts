@@ -9,7 +9,6 @@ export class VillageUpdateViewModel extends VillageViewModel {
   constructor(id: number, villageService: IVillageService) {
     super(villageService);
     this.id = id;
-    this.fetch();
   }
 
   async fetch() {

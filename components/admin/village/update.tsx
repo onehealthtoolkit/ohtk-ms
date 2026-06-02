@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import {
@@ -23,10 +23,17 @@ const VillageUpdate = () => {
   const [viewModel] = useState(
     () =>
       new VillageUpdateViewModel(
-        parseInt(router.query.id as string),
+        router.query.id ? parseInt(router.query.id as string) : 0,
         services.villageService
       )
   );
+
+  useEffect(() => {
+    if (router.query.id) {
+      viewModel.id = parseInt(router.query.id as string);
+      viewModel.fetch();
+    }
+  }, [router.query.id, viewModel]);
 
   const onSubmit = useCallback(async () => {
     if (await viewModel.save()) {
