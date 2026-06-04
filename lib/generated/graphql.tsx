@@ -663,6 +663,130 @@ export type AdminFieldValidationProblem = {
   name: Scalars["String"]["output"];
 };
 
+export type AdminIntegrationClientCreateMutation = {
+  __typename?: "AdminIntegrationClientCreateMutation";
+  result?: Maybe<AdminIntegrationClientCreateResult>;
+};
+
+export type AdminIntegrationClientCreateProblem = {
+  __typename?: "AdminIntegrationClientCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type AdminIntegrationClientCreateResult =
+  | AdminIntegrationClientCreateProblem
+  | AdminIntegrationClientCreateSuccess;
+
+export type AdminIntegrationClientCreateSuccess = {
+  __typename?: "AdminIntegrationClientCreateSuccess";
+  clientSecret: Scalars["String"]["output"];
+  integrationClient: AdminIntegrationClientQueryType;
+};
+
+export type AdminIntegrationClientDisableMutation = {
+  __typename?: "AdminIntegrationClientDisableMutation";
+  result?: Maybe<AdminIntegrationClientUpdateResult>;
+};
+
+export type AdminIntegrationClientInput = {
+  allowedCallbackDomains?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  code: Scalars["String"]["input"];
+  integrationType?: InputMaybe<Scalars["String"]["input"]>;
+  name: Scalars["String"]["input"];
+  rateLimitPolicy?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+  scopeCodes?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  status?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type AdminIntegrationClientQueryType = {
+  __typename?: "AdminIntegrationClientQueryType";
+  allowedCallbackDomains: Scalars["GenericScalar"]["output"];
+  clientId: Scalars["String"]["output"];
+  code: Scalars["String"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
+  id: Scalars["ID"]["output"];
+  integrationType: IntegrationsIntegrationClientIntegrationTypeChoices;
+  name: Scalars["String"]["output"];
+  rateLimitPolicy: Scalars["GenericScalar"]["output"];
+  scopeCodes: Array<Scalars["String"]["output"]>;
+  status: IntegrationsIntegrationClientStatusChoices;
+  updatedAt: Scalars["DateTime"]["output"];
+};
+
+export type AdminIntegrationClientQueryTypeNodeConnection = {
+  __typename?: "AdminIntegrationClientQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminIntegrationClientQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
+};
+
+export type AdminIntegrationClientRotateSecretMutation = {
+  __typename?: "AdminIntegrationClientRotateSecretMutation";
+  result?: Maybe<AdminIntegrationClientRotateSecretResult>;
+};
+
+export type AdminIntegrationClientRotateSecretResult =
+  | AdminIntegrationClientRotateSecretSuccess
+  | AdminIntegrationClientUpdateProblem;
+
+export type AdminIntegrationClientRotateSecretSuccess = {
+  __typename?: "AdminIntegrationClientRotateSecretSuccess";
+  clientSecret: Scalars["String"]["output"];
+  integrationClient: AdminIntegrationClientQueryType;
+};
+
+export type AdminIntegrationClientUpdateMutation = {
+  __typename?: "AdminIntegrationClientUpdateMutation";
+  result?: Maybe<AdminIntegrationClientUpdateResult>;
+};
+
+export type AdminIntegrationClientUpdateProblem = {
+  __typename?: "AdminIntegrationClientUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type AdminIntegrationClientUpdateResult =
+  | AdminIntegrationClientUpdateProblem
+  | AdminIntegrationClientUpdateSuccess;
+
+export type AdminIntegrationClientUpdateSuccess = {
+  __typename?: "AdminIntegrationClientUpdateSuccess";
+  integrationClient: AdminIntegrationClientQueryType;
+};
+
+export type AdminIntegrationPolicyInput = {
+  aiDefaultCommentOwnerUserId?: InputMaybe<Scalars["ID"]["input"]>;
+  aiEnabled: Scalars["Boolean"]["input"];
+  clusterDetectorEnabled: Scalars["Boolean"]["input"];
+  dashboardRiskWindowDays: Scalars["Int"]["input"];
+  integrationEnabled: Scalars["Boolean"]["input"];
+  riskEvaluatorEnabled: Scalars["Boolean"]["input"];
+};
+
+export type AdminIntegrationPolicyUpdateMutation = {
+  __typename?: "AdminIntegrationPolicyUpdateMutation";
+  result?: Maybe<AdminIntegrationPolicyUpdateResult>;
+};
+
+export type AdminIntegrationPolicyUpdateProblem = {
+  __typename?: "AdminIntegrationPolicyUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type AdminIntegrationPolicyUpdateResult =
+  | AdminIntegrationPolicyUpdateProblem
+  | AdminIntegrationPolicyUpdateSuccess;
+
+export type AdminIntegrationPolicyUpdateSuccess = {
+  __typename?: "AdminIntegrationPolicyUpdateSuccess";
+  policy: IntegrationPolicyType;
+};
+
 export type AdminInvitationCodeCreateMutation = {
   __typename?: "AdminInvitationCodeCreateMutation";
   result?: Maybe<AdminInvitationCodeCreateResult>;
@@ -1576,6 +1700,99 @@ export type AdminVillageUpdateSuccess = {
   updatedAt: Scalars["DateTime"]["output"];
 };
 
+export type AdminWebhookEndpointCreateMutation = {
+  __typename?: "AdminWebhookEndpointCreateMutation";
+  result?: Maybe<AdminWebhookEndpointCreateResult>;
+};
+
+export type AdminWebhookEndpointCreateProblem = {
+  __typename?: "AdminWebhookEndpointCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type AdminWebhookEndpointCreateResult =
+  | AdminWebhookEndpointCreateProblem
+  | AdminWebhookEndpointCreateSuccess;
+
+export type AdminWebhookEndpointCreateSuccess = {
+  __typename?: "AdminWebhookEndpointCreateSuccess";
+  webhookEndpoint: AdminWebhookEndpointQueryType;
+};
+
+export type AdminWebhookEndpointDisableMutation = {
+  __typename?: "AdminWebhookEndpointDisableMutation";
+  result?: Maybe<AdminWebhookEndpointUpdateResult>;
+};
+
+export type AdminWebhookEndpointInput = {
+  activeSigningSecretRef?: InputMaybe<Scalars["String"]["input"]>;
+  activeSigningSecretVersion?: InputMaybe<Scalars["Int"]["input"]>;
+  customHeaders?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+  eventTypes?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  integrationClientId: Scalars["ID"]["input"];
+  maxAttempts?: InputMaybe<Scalars["Int"]["input"]>;
+  name: Scalars["String"]["input"];
+  nextSigningSecretRef?: InputMaybe<Scalars["String"]["input"]>;
+  nextSigningSecretVersion?: InputMaybe<Scalars["Int"]["input"]>;
+  retryPolicy?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+  schemaVersion?: InputMaybe<Scalars["String"]["input"]>;
+  status?: InputMaybe<Scalars["String"]["input"]>;
+  timeoutSeconds?: InputMaybe<Scalars["Int"]["input"]>;
+  url: Scalars["String"]["input"];
+};
+
+export type AdminWebhookEndpointQueryType = {
+  __typename?: "AdminWebhookEndpointQueryType";
+  activeSigningSecretRef: Scalars["String"]["output"];
+  activeSigningSecretVersion: Scalars["Int"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
+  customHeaders: Scalars["GenericScalar"]["output"];
+  eventTypes: Array<Scalars["String"]["output"]>;
+  id: Scalars["ID"]["output"];
+  integrationClient: AdminIntegrationClientQueryType;
+  lastRotatedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  maxAttempts: Scalars["Int"]["output"];
+  name: Scalars["String"]["output"];
+  nextSigningSecretRef: Scalars["String"]["output"];
+  nextSigningSecretVersion?: Maybe<Scalars["Int"]["output"]>;
+  retryPolicy: Scalars["GenericScalar"]["output"];
+  schemaVersion: Scalars["String"]["output"];
+  status: IntegrationsWebhookEndpointStatusChoices;
+  timeoutSeconds: Scalars["Int"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
+  url: Scalars["String"]["output"];
+};
+
+export type AdminWebhookEndpointQueryTypeNodeConnection = {
+  __typename?: "AdminWebhookEndpointQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminWebhookEndpointQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
+};
+
+export type AdminWebhookEndpointUpdateMutation = {
+  __typename?: "AdminWebhookEndpointUpdateMutation";
+  result?: Maybe<AdminWebhookEndpointUpdateResult>;
+};
+
+export type AdminWebhookEndpointUpdateProblem = {
+  __typename?: "AdminWebhookEndpointUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type AdminWebhookEndpointUpdateResult =
+  | AdminWebhookEndpointUpdateProblem
+  | AdminWebhookEndpointUpdateSuccess;
+
+export type AdminWebhookEndpointUpdateSuccess = {
+  __typename?: "AdminWebhookEndpointUpdateSuccess";
+  webhookEndpoint: AdminWebhookEndpointQueryType;
+};
+
 export type AnimalCensusFactType = {
   __typename?: "AnimalCensusFactType";
   animalQuantity?: Maybe<Scalars["Int"]["output"]>;
@@ -2037,6 +2254,53 @@ export type IncidentReportTypeNodeConnection = {
   totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
+export type IntegrationOptionType = {
+  __typename?: "IntegrationOptionType";
+  code: Scalars["String"]["output"];
+  label: Scalars["String"]["output"];
+};
+
+export type IntegrationPolicyType = {
+  __typename?: "IntegrationPolicyType";
+  aiDefaultCommentOwnerName?: Maybe<Scalars["String"]["output"]>;
+  aiDefaultCommentOwnerUserId?: Maybe<Scalars["String"]["output"]>;
+  aiEnabled: Scalars["Boolean"]["output"];
+  clusterDetectorEnabled: Scalars["Boolean"]["output"];
+  dashboardRiskWindowDays: Scalars["Int"]["output"];
+  integrationEnabled: Scalars["Boolean"]["output"];
+  riskEvaluatorEnabled: Scalars["Boolean"]["output"];
+};
+
+/** An enumeration. */
+export enum IntegrationsIntegrationClientIntegrationTypeChoices {
+  /** AI assistant */
+  AiAssistant = "AI_ASSISTANT",
+  /** Cluster detector */
+  ClusterDetector = "CLUSTER_DETECTOR",
+  /** Generic */
+  Generic = "GENERIC",
+  /** Risk evaluator */
+  RiskEvaluator = "RISK_EVALUATOR",
+}
+
+/** An enumeration. */
+export enum IntegrationsIntegrationClientStatusChoices {
+  /** Active */
+  Active = "ACTIVE",
+  /** Disabled */
+  Disabled = "DISABLED",
+  /** Revoked */
+  Revoked = "REVOKED",
+}
+
+/** An enumeration. */
+export enum IntegrationsWebhookEndpointStatusChoices {
+  /** Active */
+  Active = "ACTIVE",
+  /** Disabled */
+  Disabled = "DISABLED",
+}
+
 export type InvitationCodeType = {
   __typename?: "InvitationCodeType";
   authority: AdminAuthorityCreateSuccess;
@@ -2091,6 +2355,11 @@ export type Mutation = {
   adminDomainCreate?: Maybe<AdminDomainCreateMutation>;
   adminDomainDelete?: Maybe<AdminDomainDeleteMutation>;
   adminDomainUpdate?: Maybe<AdminDomainUpdateMutation>;
+  adminIntegrationClientCreate?: Maybe<AdminIntegrationClientCreateMutation>;
+  adminIntegrationClientDisable?: Maybe<AdminIntegrationClientDisableMutation>;
+  adminIntegrationClientRotateSecret?: Maybe<AdminIntegrationClientRotateSecretMutation>;
+  adminIntegrationClientUpdate?: Maybe<AdminIntegrationClientUpdateMutation>;
+  adminIntegrationPolicyUpdate?: Maybe<AdminIntegrationPolicyUpdateMutation>;
   adminInvitationCodeCreate?: Maybe<AdminInvitationCodeCreateMutation>;
   adminInvitationCodeDelete?: Maybe<AdminInvitationCodeDeleteMutation>;
   adminInvitationCodeUpdate?: Maybe<AdminInvitationCodeUpdateMutation>;
@@ -2131,6 +2400,9 @@ export type Mutation = {
   adminVillageCapabilityUpdate?: Maybe<AdminVillageCapabilityUpdateMutation>;
   adminVillageCreate?: Maybe<AdminVillageCreateMutation>;
   adminVillageUpdate?: Maybe<AdminVillageUpdateMutation>;
+  adminWebhookEndpointCreate?: Maybe<AdminWebhookEndpointCreateMutation>;
+  adminWebhookEndpointDisable?: Maybe<AdminWebhookEndpointDisableMutation>;
+  adminWebhookEndpointUpdate?: Maybe<AdminWebhookEndpointUpdateMutation>;
   authorityUserRegister?: Maybe<AuthorityUserRegisterMutation>;
   commentCreate?: Maybe<CommentCreateMutation>;
   commentDelete?: Maybe<CommentDeleteMutation>;
@@ -2334,6 +2606,27 @@ export type MutationAdminDomainUpdateArgs = {
   domain: Scalars["String"]["input"];
   id: Scalars["ID"]["input"];
   isPrimary: Scalars["Boolean"]["input"];
+};
+
+export type MutationAdminIntegrationClientCreateArgs = {
+  input: AdminIntegrationClientInput;
+};
+
+export type MutationAdminIntegrationClientDisableArgs = {
+  id: Scalars["ID"]["input"];
+};
+
+export type MutationAdminIntegrationClientRotateSecretArgs = {
+  id: Scalars["ID"]["input"];
+};
+
+export type MutationAdminIntegrationClientUpdateArgs = {
+  id: Scalars["ID"]["input"];
+  input: AdminIntegrationClientInput;
+};
+
+export type MutationAdminIntegrationPolicyUpdateArgs = {
+  input: AdminIntegrationPolicyInput;
 };
 
 export type MutationAdminInvitationCodeCreateArgs = {
@@ -2634,6 +2927,19 @@ export type MutationAdminVillageUpdateArgs = {
   latitude?: InputMaybe<Scalars["Float"]["input"]>;
   longitude?: InputMaybe<Scalars["Float"]["input"]>;
   name: Scalars["String"]["input"];
+};
+
+export type MutationAdminWebhookEndpointCreateArgs = {
+  input: AdminWebhookEndpointInput;
+};
+
+export type MutationAdminWebhookEndpointDisableArgs = {
+  id: Scalars["ID"]["input"];
+};
+
+export type MutationAdminWebhookEndpointUpdateArgs = {
+  id: Scalars["ID"]["input"];
+  input: AdminWebhookEndpointInput;
 };
 
 export type MutationAuthorityUserRegisterArgs = {
@@ -3031,6 +3337,8 @@ export type Query = {
   adminClientQuery?: Maybe<AdminClientQueryTypeNodeConnection>;
   adminConfigurationQuery?: Maybe<AdminConfigurationQueryTypeNodeConnection>;
   adminDomainGet?: Maybe<DomainType>;
+  adminIntegrationClientGet?: Maybe<AdminIntegrationClientQueryType>;
+  adminIntegrationClientQuery?: Maybe<AdminIntegrationClientQueryTypeNodeConnection>;
   adminInvitationCodeQuery?: Maybe<AdminInvitationCodeQueryTypeNodeConnection>;
   adminNotificationTemplateAuthorityQuery?: Maybe<
     Array<Maybe<AdminNotificationTemplateAuthorityType>>
@@ -3048,6 +3356,8 @@ export type Query = {
   adminStateStepQuery?: Maybe<Array<Maybe<StateStepType>>>;
   adminStateTransitionQuery?: Maybe<Array<Maybe<StateTransitionType>>>;
   adminVillageQuery?: Maybe<AdminVillageQueryTypeNodeConnection>;
+  adminWebhookEndpointGet?: Maybe<AdminWebhookEndpointQueryType>;
+  adminWebhookEndpointQuery?: Maybe<AdminWebhookEndpointQueryTypeNodeConnection>;
   animalCensusCapabilityEnabled: Scalars["Boolean"]["output"];
   authorities?: Maybe<AuthorityTypeNodeConnection>;
   authority?: Maybe<AuthorityType>;
@@ -3077,6 +3387,11 @@ export type Query = {
   healthCheck?: Maybe<Scalars["String"]["output"]>;
   incidentReport?: Maybe<IncidentReportType>;
   incidentReports?: Maybe<IncidentReportTypeNodeConnection>;
+  integrationClientStatusOptions: Array<IntegrationOptionType>;
+  integrationEventTypeOptions: Array<IntegrationOptionType>;
+  integrationPolicyGet: IntegrationPolicyType;
+  integrationScopeOptions: Array<IntegrationOptionType>;
+  integrationTypeOptions: Array<IntegrationOptionType>;
   invitationCode?: Maybe<InvitationCodeType>;
   latestVillageCensusV2?: Maybe<VillageCensusSnapshotType>;
   me?: Maybe<UserProfileType>;
@@ -3113,6 +3428,7 @@ export type Query = {
   syncReportTypes?: Maybe<ReportTypeSyncOutputType>;
   transitionListByReportType?: Maybe<Array<StateTransitionType>>;
   villageCapabilityEnabled: Scalars["Boolean"]["output"];
+  webhookEndpointStatusOptions: Array<IntegrationOptionType>;
 };
 
 export type QueryActiveCensusDefinitionVersionArgs = {
@@ -3218,6 +3534,23 @@ export type QueryAdminConfigurationQueryArgs = {
 
 export type QueryAdminDomainGetArgs = {
   id: Scalars["ID"]["input"];
+};
+
+export type QueryAdminIntegrationClientGetArgs = {
+  id: Scalars["ID"]["input"];
+};
+
+export type QueryAdminIntegrationClientQueryArgs = {
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  integrationType?: InputMaybe<Scalars["String"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  status?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminInvitationCodeQueryArgs = {
@@ -3341,6 +3674,24 @@ export type QueryAdminVillageQueryArgs = {
   offset?: InputMaybe<Scalars["Int"]["input"]>;
   ordering?: InputMaybe<Scalars["String"]["input"]>;
   q?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type QueryAdminWebhookEndpointGetArgs = {
+  id: Scalars["ID"]["input"];
+};
+
+export type QueryAdminWebhookEndpointQueryArgs = {
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  eventType?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  integrationClientId?: InputMaybe<Scalars["Decimal"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  status?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAuthoritiesArgs = {
@@ -4108,6 +4459,7 @@ export type TokenAuthMutation = {
   tokenAuth?: {
     __typename?: "ObtainJSONWebToken";
     refreshExpiresIn: number;
+    refreshToken: string;
     token: string;
     payload: any;
   } | null;
@@ -5397,6 +5749,495 @@ export type ResetPasswordCreateMutation = {
   resetPassword?: {
     __typename?: "ResetPasswordMutation";
     success?: boolean | null;
+  } | null;
+};
+
+export type AdminIntegrationClientsQueryVariables = Exact<{
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  status?: InputMaybe<Scalars["String"]["input"]>;
+  integrationType?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type AdminIntegrationClientsQuery = {
+  __typename?: "Query";
+  adminIntegrationClientQuery?: {
+    __typename?: "AdminIntegrationClientQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminIntegrationClientQueryType";
+      id: string;
+      name: string;
+      code: string;
+      integrationType: IntegrationsIntegrationClientIntegrationTypeChoices;
+      status: IntegrationsIntegrationClientStatusChoices;
+      clientId: string;
+      scopeCodes: Array<string>;
+      allowedCallbackDomains: any;
+      rateLimitPolicy: any;
+    } | null>;
+  } | null;
+};
+
+export type AdminIntegrationClientGetQueryVariables = Exact<{
+  id: Scalars["ID"]["input"];
+}>;
+
+export type AdminIntegrationClientGetQuery = {
+  __typename?: "Query";
+  adminIntegrationClientGet?: {
+    __typename?: "AdminIntegrationClientQueryType";
+    id: string;
+    name: string;
+    code: string;
+    integrationType: IntegrationsIntegrationClientIntegrationTypeChoices;
+    status: IntegrationsIntegrationClientStatusChoices;
+    clientId: string;
+    scopeCodes: Array<string>;
+    allowedCallbackDomains: any;
+    rateLimitPolicy: any;
+  } | null;
+};
+
+export type AdminIntegrationOptionsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type AdminIntegrationOptionsQuery = {
+  __typename?: "Query";
+  integrationScopeOptions: Array<{
+    __typename?: "IntegrationOptionType";
+    code: string;
+    label: string;
+  }>;
+  integrationClientStatusOptions: Array<{
+    __typename?: "IntegrationOptionType";
+    code: string;
+    label: string;
+  }>;
+  webhookEndpointStatusOptions: Array<{
+    __typename?: "IntegrationOptionType";
+    code: string;
+    label: string;
+  }>;
+  integrationTypeOptions: Array<{
+    __typename?: "IntegrationOptionType";
+    code: string;
+    label: string;
+  }>;
+  integrationEventTypeOptions: Array<{
+    __typename?: "IntegrationOptionType";
+    code: string;
+    label: string;
+  }>;
+};
+
+export type AdminIntegrationClientCreateOpMutationVariables = Exact<{
+  input: AdminIntegrationClientInput;
+}>;
+
+export type AdminIntegrationClientCreateOpMutation = {
+  __typename?: "Mutation";
+  adminIntegrationClientCreate?: {
+    __typename?: "AdminIntegrationClientCreateMutation";
+    result?:
+      | {
+          __typename: "AdminIntegrationClientCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminIntegrationClientCreateSuccess";
+          clientSecret: string;
+          integrationClient: {
+            __typename?: "AdminIntegrationClientQueryType";
+            id: string;
+            name: string;
+            code: string;
+            integrationType: IntegrationsIntegrationClientIntegrationTypeChoices;
+            status: IntegrationsIntegrationClientStatusChoices;
+            clientId: string;
+            scopeCodes: Array<string>;
+            allowedCallbackDomains: any;
+            rateLimitPolicy: any;
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type AdminIntegrationClientUpdateOpMutationVariables = Exact<{
+  id: Scalars["ID"]["input"];
+  input: AdminIntegrationClientInput;
+}>;
+
+export type AdminIntegrationClientUpdateOpMutation = {
+  __typename?: "Mutation";
+  adminIntegrationClientUpdate?: {
+    __typename?: "AdminIntegrationClientUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminIntegrationClientUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminIntegrationClientUpdateSuccess";
+          integrationClient: {
+            __typename?: "AdminIntegrationClientQueryType";
+            id: string;
+            name: string;
+            code: string;
+            integrationType: IntegrationsIntegrationClientIntegrationTypeChoices;
+            status: IntegrationsIntegrationClientStatusChoices;
+            clientId: string;
+            scopeCodes: Array<string>;
+            allowedCallbackDomains: any;
+            rateLimitPolicy: any;
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type AdminIntegrationClientDisableOpMutationVariables = Exact<{
+  id: Scalars["ID"]["input"];
+}>;
+
+export type AdminIntegrationClientDisableOpMutation = {
+  __typename?: "Mutation";
+  adminIntegrationClientDisable?: {
+    __typename?: "AdminIntegrationClientDisableMutation";
+    result?:
+      | {
+          __typename: "AdminIntegrationClientUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminIntegrationClientUpdateSuccess";
+          integrationClient: {
+            __typename?: "AdminIntegrationClientQueryType";
+            id: string;
+            status: IntegrationsIntegrationClientStatusChoices;
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type AdminIntegrationClientRotateSecretOpMutationVariables = Exact<{
+  id: Scalars["ID"]["input"];
+}>;
+
+export type AdminIntegrationClientRotateSecretOpMutation = {
+  __typename?: "Mutation";
+  adminIntegrationClientRotateSecret?: {
+    __typename?: "AdminIntegrationClientRotateSecretMutation";
+    result?:
+      | {
+          __typename: "AdminIntegrationClientRotateSecretSuccess";
+          clientSecret: string;
+          integrationClient: {
+            __typename?: "AdminIntegrationClientQueryType";
+            id: string;
+            status: IntegrationsIntegrationClientStatusChoices;
+          };
+        }
+      | {
+          __typename: "AdminIntegrationClientUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | null;
+  } | null;
+};
+
+export type AdminWebhookEndpointsQueryVariables = Exact<{
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  integrationClientId?: InputMaybe<Scalars["Decimal"]["input"]>;
+  status?: InputMaybe<Scalars["String"]["input"]>;
+  eventType?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type AdminWebhookEndpointsQuery = {
+  __typename?: "Query";
+  adminWebhookEndpointQuery?: {
+    __typename?: "AdminWebhookEndpointQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminWebhookEndpointQueryType";
+      id: string;
+      name: string;
+      url: string;
+      status: IntegrationsWebhookEndpointStatusChoices;
+      eventTypes: Array<string>;
+      schemaVersion: string;
+      activeSigningSecretRef: string;
+      activeSigningSecretVersion: number;
+      nextSigningSecretRef: string;
+      nextSigningSecretVersion?: number | null;
+      timeoutSeconds: number;
+      maxAttempts: number;
+      retryPolicy: any;
+      customHeaders: any;
+      integrationClient: {
+        __typename?: "AdminIntegrationClientQueryType";
+        id: string;
+        code: string;
+        name: string;
+      };
+    } | null>;
+  } | null;
+};
+
+export type AdminWebhookEndpointGetQueryVariables = Exact<{
+  id: Scalars["ID"]["input"];
+}>;
+
+export type AdminWebhookEndpointGetQuery = {
+  __typename?: "Query";
+  adminWebhookEndpointGet?: {
+    __typename?: "AdminWebhookEndpointQueryType";
+    id: string;
+    name: string;
+    url: string;
+    status: IntegrationsWebhookEndpointStatusChoices;
+    eventTypes: Array<string>;
+    schemaVersion: string;
+    activeSigningSecretRef: string;
+    activeSigningSecretVersion: number;
+    nextSigningSecretRef: string;
+    nextSigningSecretVersion?: number | null;
+    timeoutSeconds: number;
+    maxAttempts: number;
+    retryPolicy: any;
+    customHeaders: any;
+    integrationClient: {
+      __typename?: "AdminIntegrationClientQueryType";
+      id: string;
+      code: string;
+      name: string;
+    };
+  } | null;
+};
+
+export type AdminWebhookEndpointCreateOpMutationVariables = Exact<{
+  input: AdminWebhookEndpointInput;
+}>;
+
+export type AdminWebhookEndpointCreateOpMutation = {
+  __typename?: "Mutation";
+  adminWebhookEndpointCreate?: {
+    __typename?: "AdminWebhookEndpointCreateMutation";
+    result?:
+      | {
+          __typename: "AdminWebhookEndpointCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminWebhookEndpointCreateSuccess";
+          webhookEndpoint: {
+            __typename?: "AdminWebhookEndpointQueryType";
+            id: string;
+            name: string;
+            url: string;
+            status: IntegrationsWebhookEndpointStatusChoices;
+            eventTypes: Array<string>;
+            schemaVersion: string;
+            activeSigningSecretRef: string;
+            activeSigningSecretVersion: number;
+            nextSigningSecretRef: string;
+            nextSigningSecretVersion?: number | null;
+            timeoutSeconds: number;
+            maxAttempts: number;
+            retryPolicy: any;
+            customHeaders: any;
+            integrationClient: {
+              __typename?: "AdminIntegrationClientQueryType";
+              id: string;
+              code: string;
+              name: string;
+            };
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type AdminWebhookEndpointUpdateOpMutationVariables = Exact<{
+  id: Scalars["ID"]["input"];
+  input: AdminWebhookEndpointInput;
+}>;
+
+export type AdminWebhookEndpointUpdateOpMutation = {
+  __typename?: "Mutation";
+  adminWebhookEndpointUpdate?: {
+    __typename?: "AdminWebhookEndpointUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminWebhookEndpointUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminWebhookEndpointUpdateSuccess";
+          webhookEndpoint: {
+            __typename?: "AdminWebhookEndpointQueryType";
+            id: string;
+            name: string;
+            url: string;
+            status: IntegrationsWebhookEndpointStatusChoices;
+            eventTypes: Array<string>;
+            schemaVersion: string;
+            activeSigningSecretRef: string;
+            activeSigningSecretVersion: number;
+            nextSigningSecretRef: string;
+            nextSigningSecretVersion?: number | null;
+            timeoutSeconds: number;
+            maxAttempts: number;
+            retryPolicy: any;
+            customHeaders: any;
+            integrationClient: {
+              __typename?: "AdminIntegrationClientQueryType";
+              id: string;
+              code: string;
+              name: string;
+            };
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type AdminWebhookEndpointDisableOpMutationVariables = Exact<{
+  id: Scalars["ID"]["input"];
+}>;
+
+export type AdminWebhookEndpointDisableOpMutation = {
+  __typename?: "Mutation";
+  adminWebhookEndpointDisable?: {
+    __typename?: "AdminWebhookEndpointDisableMutation";
+    result?:
+      | {
+          __typename: "AdminWebhookEndpointUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminWebhookEndpointUpdateSuccess";
+          webhookEndpoint: {
+            __typename?: "AdminWebhookEndpointQueryType";
+            id: string;
+            status: IntegrationsWebhookEndpointStatusChoices;
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type IntegrationPolicyGetQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type IntegrationPolicyGetQuery = {
+  __typename?: "Query";
+  integrationPolicyGet: {
+    __typename?: "IntegrationPolicyType";
+    integrationEnabled: boolean;
+    aiEnabled: boolean;
+    riskEvaluatorEnabled: boolean;
+    clusterDetectorEnabled: boolean;
+    aiDefaultCommentOwnerUserId?: string | null;
+    aiDefaultCommentOwnerName?: string | null;
+    dashboardRiskWindowDays: number;
+  };
+};
+
+export type IntegrationPolicyAdminUsersQueryVariables = Exact<{
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type IntegrationPolicyAdminUsersQuery = {
+  __typename?: "Query";
+  adminAuthorityUserQuery?: {
+    __typename?: "AdminAuthorityUserQueryTypeNodeConnection";
+    results: Array<{
+      __typename?: "AdminAuthorityUserQueryType";
+      id: string;
+      username: string;
+      firstName: string;
+      lastName: string;
+    } | null>;
+  } | null;
+};
+
+export type AdminIntegrationPolicyUpdateOpMutationVariables = Exact<{
+  input: AdminIntegrationPolicyInput;
+}>;
+
+export type AdminIntegrationPolicyUpdateOpMutation = {
+  __typename?: "Mutation";
+  adminIntegrationPolicyUpdate?: {
+    __typename?: "AdminIntegrationPolicyUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminIntegrationPolicyUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminIntegrationPolicyUpdateSuccess";
+          policy: {
+            __typename?: "IntegrationPolicyType";
+            integrationEnabled: boolean;
+            aiEnabled: boolean;
+            riskEvaluatorEnabled: boolean;
+            clusterDetectorEnabled: boolean;
+            aiDefaultCommentOwnerUserId?: string | null;
+            aiDefaultCommentOwnerName?: string | null;
+            dashboardRiskWindowDays: number;
+          };
+        }
+      | null;
   } | null;
 };
 
@@ -8350,6 +9191,10 @@ export const TokenAuthDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "refreshExpiresIn" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "refreshToken" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "token" } },
                 { kind: "Field", name: { kind: "Name", value: "payload" } },
@@ -13664,6 +14509,2171 @@ export const ResetPasswordCreateDocument = {
 } as unknown as DocumentNode<
   ResetPasswordCreateMutation,
   ResetPasswordCreateMutationVariables
+>;
+export const AdminIntegrationClientsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AdminIntegrationClients" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "status" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "integrationType" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminIntegrationClientQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "status" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "status" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "integrationType" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "integrationType" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "integrationType" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "status" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "clientId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "scopeCodes" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "allowedCallbackDomains" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "rateLimitPolicy" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationClientsQuery,
+  AdminIntegrationClientsQueryVariables
+>;
+export const AdminIntegrationClientGetDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AdminIntegrationClientGet" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminIntegrationClientGet" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "integrationType" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "status" } },
+                { kind: "Field", name: { kind: "Name", value: "clientId" } },
+                { kind: "Field", name: { kind: "Name", value: "scopeCodes" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "allowedCallbackDomains" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "rateLimitPolicy" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationClientGetQuery,
+  AdminIntegrationClientGetQueryVariables
+>;
+export const AdminIntegrationOptionsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AdminIntegrationOptions" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationScopeOptions" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationClientStatusOptions" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "webhookEndpointStatusOptions" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationTypeOptions" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationEventTypeOptions" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationOptionsQuery,
+  AdminIntegrationOptionsQueryVariables
+>;
+export const AdminIntegrationClientCreateOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminIntegrationClientCreateOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "AdminIntegrationClientInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminIntegrationClientCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "clientSecret" },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "integrationClient",
+                              },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "code" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "integrationType",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "status" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "clientId" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "scopeCodes" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "allowedCallbackDomains",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "rateLimitPolicy",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationClientCreateOpMutation,
+  AdminIntegrationClientCreateOpMutationVariables
+>;
+export const AdminIntegrationClientUpdateOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminIntegrationClientUpdateOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "AdminIntegrationClientInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminIntegrationClientUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "integrationClient",
+                              },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "code" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "integrationType",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "status" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "clientId" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "scopeCodes" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "allowedCallbackDomains",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "rateLimitPolicy",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationClientUpdateOpMutation,
+  AdminIntegrationClientUpdateOpMutationVariables
+>;
+export const AdminIntegrationClientDisableOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminIntegrationClientDisableOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminIntegrationClientDisable" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "integrationClient",
+                              },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "status" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationClientDisableOpMutation,
+  AdminIntegrationClientDisableOpMutationVariables
+>;
+export const AdminIntegrationClientRotateSecretOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminIntegrationClientRotateSecretOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminIntegrationClientRotateSecret" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientRotateSecretSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "clientSecret" },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "integrationClient",
+                              },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "status" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationClientRotateSecretOpMutation,
+  AdminIntegrationClientRotateSecretOpMutationVariables
+>;
+export const AdminWebhookEndpointsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AdminWebhookEndpoints" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "integrationClientId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Decimal" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "status" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "eventType" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminWebhookEndpointQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "integrationClientId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "integrationClientId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "status" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "status" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "eventType" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "eventType" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "url" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "status" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "eventTypes" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "schemaVersion" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "activeSigningSecretRef" },
+                      },
+                      {
+                        kind: "Field",
+                        name: {
+                          kind: "Name",
+                          value: "activeSigningSecretVersion",
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "nextSigningSecretRef" },
+                      },
+                      {
+                        kind: "Field",
+                        name: {
+                          kind: "Name",
+                          value: "nextSigningSecretVersion",
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timeoutSeconds" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "maxAttempts" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "retryPolicy" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "customHeaders" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "integrationClient" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "code" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminWebhookEndpointsQuery,
+  AdminWebhookEndpointsQueryVariables
+>;
+export const AdminWebhookEndpointGetDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AdminWebhookEndpointGet" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminWebhookEndpointGet" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "url" } },
+                { kind: "Field", name: { kind: "Name", value: "status" } },
+                { kind: "Field", name: { kind: "Name", value: "eventTypes" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "schemaVersion" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "activeSigningSecretRef" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "activeSigningSecretVersion" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "nextSigningSecretRef" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "nextSigningSecretVersion" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "timeoutSeconds" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "maxAttempts" } },
+                { kind: "Field", name: { kind: "Name", value: "retryPolicy" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "customHeaders" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "integrationClient" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminWebhookEndpointGetQuery,
+  AdminWebhookEndpointGetQueryVariables
+>;
+export const AdminWebhookEndpointCreateOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminWebhookEndpointCreateOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "AdminWebhookEndpointInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminWebhookEndpointCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminWebhookEndpointCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "webhookEndpoint" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "url" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "status" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "eventTypes" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "schemaVersion",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "activeSigningSecretRef",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "activeSigningSecretVersion",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "nextSigningSecretRef",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "nextSigningSecretVersion",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "timeoutSeconds",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "maxAttempts",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "retryPolicy",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "customHeaders",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "integrationClient",
+                                    },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "code" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminWebhookEndpointCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminWebhookEndpointCreateOpMutation,
+  AdminWebhookEndpointCreateOpMutationVariables
+>;
+export const AdminWebhookEndpointUpdateOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminWebhookEndpointUpdateOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "AdminWebhookEndpointInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminWebhookEndpointUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminWebhookEndpointUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "webhookEndpoint" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "url" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "status" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "eventTypes" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "schemaVersion",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "activeSigningSecretRef",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "activeSigningSecretVersion",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "nextSigningSecretRef",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "nextSigningSecretVersion",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "timeoutSeconds",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "maxAttempts",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "retryPolicy",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "customHeaders",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "integrationClient",
+                                    },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "code" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminWebhookEndpointUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminWebhookEndpointUpdateOpMutation,
+  AdminWebhookEndpointUpdateOpMutationVariables
+>;
+export const AdminWebhookEndpointDisableOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminWebhookEndpointDisableOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminWebhookEndpointDisable" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminWebhookEndpointUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "webhookEndpoint" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "status" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminWebhookEndpointUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminWebhookEndpointDisableOpMutation,
+  AdminWebhookEndpointDisableOpMutationVariables
+>;
+export const IntegrationPolicyGetDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "IntegrationPolicyGet" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationPolicyGet" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "integrationEnabled" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "aiEnabled" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "riskEvaluatorEnabled" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "clusterDetectorEnabled" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aiDefaultCommentOwnerUserId" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aiDefaultCommentOwnerName" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "dashboardRiskWindowDays" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  IntegrationPolicyGetQuery,
+  IntegrationPolicyGetQueryVariables
+>;
+export const IntegrationPolicyAdminUsersDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "IntegrationPolicyAdminUsers" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAuthorityUserQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "role" },
+                value: { kind: "StringValue", value: "ADM", block: false },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "firstName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "lastName" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  IntegrationPolicyAdminUsersQuery,
+  IntegrationPolicyAdminUsersQueryVariables
+>;
+export const AdminIntegrationPolicyUpdateOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminIntegrationPolicyUpdateOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "AdminIntegrationPolicyInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminIntegrationPolicyUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationPolicyUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "policy" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "integrationEnabled",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "aiEnabled" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "riskEvaluatorEnabled",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "clusterDetectorEnabled",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "aiDefaultCommentOwnerUserId",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "aiDefaultCommentOwnerName",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "dashboardRiskWindowDays",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationPolicyUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationPolicyUpdateOpMutation,
+  AdminIntegrationPolicyUpdateOpMutationVariables
 >;
 export const InvitationCodesDocument = {
   kind: "Document",

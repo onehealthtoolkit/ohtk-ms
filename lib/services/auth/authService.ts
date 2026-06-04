@@ -5,36 +5,11 @@ import {
   TokenAuthDocument,
 } from "lib/generated/graphql";
 import { IService } from "../interface";
-import { clearAccessToken, setAccessToken } from "lib/client";
 
 const REFRESH_EXPIRES_IN = "refreshExpiresIn";
 
 export function setRefreshExpiresIn(value: number) {
   localStorage.setItem(REFRESH_EXPIRES_IN, value.toString());
-}
-
-function getPayloadExp(payload: unknown): number {
-  if (!payload) {
-    return 0;
-  }
-
-  let parsedPayload: unknown;
-  try {
-    parsedPayload = typeof payload === "string" ? JSON.parse(payload) : payload;
-  } catch (_) {
-    return 0;
-  }
-
-  if (
-    typeof parsedPayload === "object" &&
-    parsedPayload !== null &&
-    "exp" in parsedPayload
-  ) {
-    const exp = Number(parsedPayload.exp);
-    return Number.isFinite(exp) ? exp : 0;
-  }
-
-  return 0;
 }
 
 export function clearRefreshExpiresIn() {
@@ -133,11 +108,7 @@ export class AuthService implements IAuthService {
     if (result.errors) {
       return false;
     } else {
-      const token = result.data?.refreshToken?.token;
-      if (token) {
-        setAccessToken(token);
-      }
-      setRefreshExpiresIn(getPayloadExp(result.data?.refreshToken?.payload));
+      setRefreshExpiresIn(result.data?.refreshToken?.payload.exp || 0);
     }
     return true;
   }
@@ -156,19 +127,14 @@ export class AuthService implements IAuthService {
         message: fetchResult.errors.map(o => o.message).join(","),
       };
     }
-    const refreshExpiresIn =
-      fetchResult.data?.tokenAuth?.refreshExpiresIn ||
-      getPayloadExp(fetchResult.data?.tokenAuth?.payload);
-    const token = fetchResult.data?.tokenAuth?.token!;
-    console.log("tokenAuth exp", refreshExpiresIn);
-    setAccessToken(token);
-    setRefreshExpiresIn(refreshExpiresIn);
+    console.log("tokenAuth exp", fetchResult.data?.tokenAuth?.payload.exp);
+    setRefreshExpiresIn(fetchResult.data?.tokenAuth?.payload.exp!);
 
     return {
       success: true,
       tokenAuth: {
-        token,
-        refreshExpiresIn,
+        token: fetchResult.data?.tokenAuth?.token!,
+        refreshExpiresIn: fetchResult.data?.tokenAuth?.refreshExpiresIn!,
       },
     };
   }
@@ -180,7 +146,6 @@ export class AuthService implements IAuthService {
     if (deleteTokenResult.errors) {
       throw new Error(deleteTokenResult.errors.map(o => o.message).join(","));
     }
-    clearAccessToken();
     clearRefreshExpiresIn();
     this.clearAutoRefreshToken();
     this.client.resetStore();

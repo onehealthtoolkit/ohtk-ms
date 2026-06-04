@@ -373,6 +373,53 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   )}
                 </ul>
               </div>
+
+              <div>
+                <h3
+                  className={`text-xs uppercase text-slate-500 font-semibold pl-3 ${
+                    store.menu.collapsed ? "hidden" : ""
+                  }`}
+                >
+                  <span className="md:sidebar-expanded:block 2xl:block">
+                    {t("breadcrumb.integrationCategory", "Integration")}
+                  </span>
+                </h3>
+                <ul className="mt-3">
+                  <Menu
+                    href="/admin/integrations/clients/"
+                    pathname={pathname}
+                    label={t(
+                      "breadcrumb.integrationClients",
+                      "Integration Clients"
+                    )}
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser}
+                    icon={<CubeIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/integrations/webhook_endpoints/"
+                    pathname={pathname}
+                    label={t(
+                      "breadcrumb.webhookEndpoints",
+                      "Webhook Endpoints"
+                    )}
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser}
+                    icon={<BellIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/integrations/settings"
+                    pathname={pathname}
+                    label={t(
+                      "breadcrumb.integrationSettings",
+                      "Integration Settings"
+                    )}
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser}
+                    icon={<CogIcon className={iconClassName} />}
+                  />
+                </ul>
+              </div>
             </div>
             <div className="flex-grow"></div>
             <div className="divide-y-2 divide-gray-600 mb-16">
