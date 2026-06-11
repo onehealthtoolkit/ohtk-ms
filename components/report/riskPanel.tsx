@@ -14,8 +14,11 @@ import RiskBadge, {
   RISK_LEVEL_OPTIONS,
 } from "components/risk/RiskBadge";
 import { formatDateTime } from "lib/datetime";
-import { RiskAssessment, RiskFilterLevel } from "lib/services/report/report";
-import { ReportViewModel } from "./reportViewModel";
+import {
+  ReportRiskState,
+  RiskAssessment,
+  RiskFilterLevel,
+} from "lib/services/report/report";
 
 const riskSourceLabel = (source?: string | null) => {
   if (!source) return "";
@@ -52,7 +55,13 @@ const riskMetaLabel = (
     .join(" - ");
 };
 
-const ReportRiskPanel = ({ viewModel }: { viewModel: ReportViewModel }) => {
+type RiskPanelViewModel = {
+  data: ReportRiskState;
+  riskSaving: boolean;
+  setRiskLevel: (level: RiskFilterLevel) => Promise<boolean>;
+};
+
+const ReportRiskPanel = ({ viewModel }: { viewModel: RiskPanelViewModel }) => {
   const { t, i18n } = useTranslation();
   const currentRisk = viewModel.data.currentRiskAssessment;
   const [isEditing, setIsEditing] = useState(false);

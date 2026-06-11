@@ -20,6 +20,7 @@ import { CaseDayEvents } from "components/case/dayEvents";
 import Calendar from "components/widgets/calendar";
 import TotalItem from "components/widgets/table/totalItem";
 import { useTranslation } from "react-i18next";
+import RiskBadge, { getRiskRowStyle } from "components/risk/RiskBadge";
 
 const JSURL = require("jsurl");
 
@@ -181,6 +182,14 @@ const CaseList = () => {
                       get: record => record.authorityName,
                     },
                     {
+                      label: t("risk.title", "Risk"),
+                      get: record => (
+                        <RiskBadge
+                          level={record.currentRiskAssessment?.level}
+                        />
+                      ),
+                    },
+                    {
                       label: t("form.label.data", "Data"),
                       get: record => record.rendererData,
                     },
@@ -197,6 +206,9 @@ const CaseList = () => {
                   onLoading={viewModel.isLoading}
                   data={viewModel.data || []}
                   onView={record => router.push(`/cases/${record.id}`)}
+                  getRowStyle={record =>
+                    getRiskRowStyle(record?.currentRiskAssessment?.level)
+                  }
                 />
                 <ErrorDisplay message={viewModel.errorMessage} />
 

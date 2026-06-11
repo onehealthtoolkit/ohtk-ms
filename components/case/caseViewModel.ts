@@ -16,6 +16,8 @@ import { ICommentService } from "lib/services/comment/commentService";
 import { ReportMapDialogViewModel } from "components/case/reportMapDialogViewModel";
 import { IOutbreakService } from "lib/services/outbreak/outbreakService";
 import { OutbreakPlace } from "lib/services/outbreak/outbreak";
+import { IReportService } from "lib/services/report";
+import { RiskFilterLevel } from "lib/services/report/report";
 
 export type OutbreakZone = {
   color: string;
@@ -30,11 +32,13 @@ export class CaseViewModel extends BaseViewModel {
   galleryViewModel?: GalleryDialogViewModel = undefined;
   reportMapViewModel?: ReportMapDialogViewModel = undefined;
   outbreakPlaces: OutbreakPlace[] = [];
+  _riskSaving: boolean = false;
 
   constructor(
     id: string,
     readonly me: Me,
     readonly caseService: ICaseService,
+    readonly reportService: IReportService,
     readonly commentService: ICommentService,
     readonly outbreakService: IOutbreakService
   ) {
@@ -50,6 +54,9 @@ export class CaseViewModel extends BaseViewModel {
       reportMapViewModel: observable,
       openReportMap: action,
       outbreakPlaces: observable,
+      _riskSaving: observable,
+      riskSaving: computed,
+      setRiskLevel: action,
       imageUrlMap: computed,
       fileUrlMap: computed,
     });
@@ -69,6 +76,14 @@ export class CaseViewModel extends BaseViewModel {
 
   get reportId() {
     return this.data.reportId ? String(this.data.reportId) : "";
+  }
+
+  public get riskSaving(): boolean {
+    return this._riskSaving;
+  }
+
+  public set riskSaving(value: boolean) {
+    this._riskSaving = value;
   }
 
   get imageUrlMap(): Record<string, string> {
@@ -120,6 +135,40 @@ export class CaseViewModel extends BaseViewModel {
       if (result.items) {
         this.outbreakPlaces = result.items;
       }
+    }
+  }
+
+  public async setRiskLevel(level: RiskFilterLevel): Promise<boolean> {
+    if (!this.reportId) {
+      this.setErrorMessage("Unable to save risk level without report id");
+      return false;
+    }
+
+    this.riskSaving = true;
+    try {
+      const result = await this.reportService.setReportRisk(
+        this.reportId,
+        level
+      );
+      runInAction(() => {
+        if (result.data) {
+          this.data.currentRiskAssessment = result.data.currentRiskAssessment;
+          this.data.riskAssessmentHistory = result.data.riskAssessmentHistory;
+        }
+        if (result.error) {
+          this.setErrorMessage(result.error);
+        }
+        this.riskSaving = false;
+      });
+      return !result.error;
+    } catch (error) {
+      runInAction(() => {
+        this.setErrorMessage(
+          error instanceof Error ? error.message : "Unable to save risk level"
+        );
+        this.riskSaving = false;
+      });
+      return false;
     }
   }
 

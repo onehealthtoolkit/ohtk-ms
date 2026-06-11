@@ -4788,6 +4788,25 @@ export type CasesQuery = {
           __typename?: "AuthorityType";
           name: string;
         } | null> | null;
+        currentRiskAssessment?: {
+          __typename?: "RiskAssessmentProjectionType";
+          id: string;
+          level: IntegrationsRiskAssessmentLevelChoices;
+          source: IntegrationsRiskAssessmentSourceChoices;
+          score?: number | null;
+          factors?: any | null;
+          evaluatorVersion: string;
+          externalAssessmentId: string;
+          isCurrent: boolean;
+          createdAt: any;
+          createdBy?: {
+            __typename?: "UserType";
+            id: string;
+            username: string;
+            firstName: string;
+            lastName: string;
+          } | null;
+        } | null;
       } | null;
     } | null>;
   } | null;
@@ -4858,6 +4877,44 @@ export type GetCaseQuery = {
       authorities?: Array<{
         __typename?: "AuthorityType";
         name: string;
+      } | null> | null;
+      currentRiskAssessment?: {
+        __typename?: "RiskAssessmentProjectionType";
+        id: string;
+        level: IntegrationsRiskAssessmentLevelChoices;
+        source: IntegrationsRiskAssessmentSourceChoices;
+        score?: number | null;
+        factors?: any | null;
+        evaluatorVersion: string;
+        externalAssessmentId: string;
+        isCurrent: boolean;
+        createdAt: any;
+        createdBy?: {
+          __typename?: "UserType";
+          id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+        } | null;
+      } | null;
+      riskAssessmentHistory?: Array<{
+        __typename?: "RiskAssessmentProjectionType";
+        id: string;
+        level: IntegrationsRiskAssessmentLevelChoices;
+        source: IntegrationsRiskAssessmentSourceChoices;
+        score?: number | null;
+        factors?: any | null;
+        evaluatorVersion: string;
+        externalAssessmentId: string;
+        isCurrent: boolean;
+        createdAt: any;
+        createdBy?: {
+          __typename?: "UserType";
+          id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+        } | null;
       } | null> | null;
     } | null;
     stateDefinition?: {
@@ -10715,12 +10772,69 @@ export const CasesDocument = {
                                 ],
                               },
                             },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "currentRiskAssessment",
+                              },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "FragmentSpread",
+                                    name: {
+                                      kind: "Name",
+                                      value: "RiskAssessmentFields",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
                           ],
                         },
                       },
                     ],
                   },
                 },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
               ],
             },
           },
@@ -10943,6 +11057,45 @@ export const GetCaseDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "currentRiskAssessment" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "FragmentSpread",
+                              name: {
+                                kind: "Name",
+                                value: "RiskAssessmentFields",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "riskAssessmentHistory" },
+                        arguments: [
+                          {
+                            kind: "Argument",
+                            name: { kind: "Name", value: "limit" },
+                            value: { kind: "IntValue", value: "3" },
+                          },
+                        ],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "FragmentSpread",
+                              name: {
+                                kind: "Name",
+                                value: "RiskAssessmentFields",
+                              },
                             },
                           ],
                         },
@@ -11313,6 +11466,44 @@ export const GetCaseDocument = {
                     ],
                   },
                 },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
               ],
             },
           },

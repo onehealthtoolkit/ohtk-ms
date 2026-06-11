@@ -303,7 +303,7 @@ export class ReportService implements IReportService {
   }
 }
 
-const mapRiskAssessment = (
+export const mapRiskAssessment = (
   item?: RiskAssessmentFieldsFragment | null
 ): RiskAssessment | null => {
   if (!item) return null;
@@ -328,6 +328,6 @@ const mapRiskAssessment = (
   };
 };
 
-const isRiskAssessment = (
+export const isRiskAssessment = (
   item: RiskAssessment | null
 ): item is RiskAssessment => item !== null;

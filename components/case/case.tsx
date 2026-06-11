@@ -28,6 +28,7 @@ import { useRouter } from "next/router";
 import ReportLocationMapDialog from "components/case/reportMapDialog";
 import { toJS } from "mobx";
 import { useTranslation } from "react-i18next";
+import ReportRiskPanel from "components/report/riskPanel";
 
 const ReportMap = dynamic(() => import("./reportMap"), {
   loading: () => <p>A map is loading</p>,
@@ -102,12 +103,14 @@ const Case = (props: { id: string }) => {
   const { id } = props;
   const router = useRouter();
   const { me } = useStore();
-  const { caseService, commentService, outbreakService } = useServices();
+  const { caseService, commentService, outbreakService, reportService } =
+    useServices();
   const [viewModel] = useState(
     new CaseViewModel(
       id as string,
       me!,
       caseService,
+      reportService,
       commentService,
       outbreakService
     )
@@ -154,6 +157,9 @@ const Case = (props: { id: string }) => {
                 </p>
               </div>
               <Divide hilight={true} />
+
+              <ReportRiskPanel viewModel={viewModel} />
+              <Divide />
 
               <div className="flex flex-row gap-2 md:flex-nowrap flex-wrap ">
                 <ReportInformation viewModel={viewModel} />
