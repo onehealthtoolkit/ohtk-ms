@@ -229,6 +229,7 @@ export type AdminAuthorityUserCreateSuccess = {
   lastName: Scalars["String"]["output"];
   monitoringrecord: Array<ObservationSubjectMonitoringRecordType>;
   password: Scalars["String"]["output"];
+  riskAssessments: Array<RiskAssessmentProjectionType>;
   role?: Maybe<AccountsAuthorityUserRoleChoices>;
   subjectrecord: Array<ObservationSubjectType>;
   telephone?: Maybe<Scalars["String"]["output"]>;
@@ -2224,6 +2225,7 @@ export type IncidentReportType = {
   caseId?: Maybe<Scalars["UUID"]["output"]>;
   coverImage?: Maybe<ImageType>;
   createdAt: Scalars["DateTime"]["output"];
+  currentRiskAssessment?: Maybe<RiskAssessmentProjectionType>;
   data?: Maybe<Scalars["GenericScalar"]["output"]>;
   definition?: Maybe<Scalars["GenericScalar"]["output"]>;
   followups?: Maybe<Array<Maybe<FollowupType>>>;
@@ -2239,10 +2241,15 @@ export type IncidentReportType = {
   rendererData: Scalars["String"]["output"];
   reportType?: Maybe<ReportTypeType>;
   reportedBy?: Maybe<UserType>;
+  riskAssessmentHistory?: Maybe<Array<Maybe<RiskAssessmentProjectionType>>>;
   testFlag: Scalars["Boolean"]["output"];
   threadId?: Maybe<Scalars["Int"]["output"]>;
   updatedAt: Scalars["DateTime"]["output"];
   uploadFiles?: Maybe<Array<Maybe<UploadFileType>>>;
+};
+
+export type IncidentReportTypeRiskAssessmentHistoryArgs = {
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type IncidentReportTypeNodeConnection = {
@@ -2291,6 +2298,30 @@ export enum IntegrationsIntegrationClientStatusChoices {
   Disabled = "DISABLED",
   /** Revoked */
   Revoked = "REVOKED",
+}
+
+/** An enumeration. */
+export enum IntegrationsRiskAssessmentLevelChoices {
+  /** Critical */
+  Critical = "CRITICAL",
+  /** High */
+  High = "HIGH",
+  /** Low */
+  Low = "LOW",
+  /** Medium */
+  Medium = "MEDIUM",
+}
+
+/** An enumeration. */
+export enum IntegrationsRiskAssessmentSourceChoices {
+  /** AI */
+  Ai = "AI",
+  /** External risk evaluator */
+  ExternalRiskEvaluator = "EXTERNAL_RISK_EVALUATOR",
+  /** Human */
+  Human = "HUMAN",
+  /** Rule engine */
+  RuleEngine = "RULE_ENGINE",
 }
 
 /** An enumeration. */
@@ -2421,6 +2452,7 @@ export type Mutation = {
   resetPassword?: Maybe<ResetPasswordMutation>;
   resetPasswordRequest?: Maybe<ResetPasswordRequestMutation>;
   revokeToken?: Maybe<Revoke>;
+  setReportRisk?: Maybe<SetReportRiskMutation>;
   submitFollowupReport?: Maybe<SubmitFollowupReport>;
   submitImage?: Maybe<SubmitImage>;
   submitIncidentReport?: Maybe<SubmitIncidentReport>;
@@ -3013,6 +3045,11 @@ export type MutationResetPasswordRequestArgs = {
 
 export type MutationRevokeTokenArgs = {
   refreshToken?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type MutationSetReportRiskArgs = {
+  level?: InputMaybe<Scalars["String"]["input"]>;
+  reportId: Scalars["UUID"]["input"];
 };
 
 export type MutationSubmitFollowupReportArgs = {
@@ -3727,6 +3764,7 @@ export type QueryBoundaryConnectedIncidentReportsArgs = {
   before?: InputMaybe<Scalars["String"]["input"]>;
   createdAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
   createdAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  currentRiskLevels?: InputMaybe<Scalars["String"]["input"]>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
   incidentDate_Gte?: InputMaybe<Scalars["Date"]["input"]>;
   incidentDate_Lte?: InputMaybe<Scalars["Date"]["input"]>;
@@ -3834,6 +3872,7 @@ export type QueryIncidentReportsArgs = {
   before?: InputMaybe<Scalars["String"]["input"]>;
   createdAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
   createdAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  currentRiskLevels?: InputMaybe<Scalars["String"]["input"]>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
   incidentDate_Gte?: InputMaybe<Scalars["Date"]["input"]>;
   incidentDate_Lte?: InputMaybe<Scalars["Date"]["input"]>;
@@ -3865,6 +3904,7 @@ export type QueryMyIncidentReportsArgs = {
   before?: InputMaybe<Scalars["String"]["input"]>;
   createdAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
   createdAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  currentRiskLevels?: InputMaybe<Scalars["String"]["input"]>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
   incidentDate_Gte?: InputMaybe<Scalars["Date"]["input"]>;
   incidentDate_Lte?: InputMaybe<Scalars["Date"]["input"]>;
@@ -4160,6 +4200,26 @@ export type ResetPasswordRequestMutation = {
 export type Revoke = {
   __typename?: "Revoke";
   revoked: Scalars["Int"]["output"];
+};
+
+export type RiskAssessmentProjectionType = {
+  __typename?: "RiskAssessmentProjectionType";
+  createdAt: Scalars["DateTime"]["output"];
+  createdBy?: Maybe<UserType>;
+  evaluatorVersion: Scalars["String"]["output"];
+  externalAssessmentId: Scalars["String"]["output"];
+  factors?: Maybe<Scalars["GenericScalar"]["output"]>;
+  id: Scalars["ID"]["output"];
+  isCurrent: Scalars["Boolean"]["output"];
+  level: IntegrationsRiskAssessmentLevelChoices;
+  score?: Maybe<Scalars["Float"]["output"]>;
+  source: IntegrationsRiskAssessmentSourceChoices;
+};
+
+export type SetReportRiskMutation = {
+  __typename?: "SetReportRiskMutation";
+  report?: Maybe<IncidentReportType>;
+  riskAssessment?: Maybe<RiskAssessmentProjectionType>;
 };
 
 export type SimulationCaseDefinitionType = {
@@ -7439,6 +7499,26 @@ export type UserRegisterMutation = {
   } | null;
 };
 
+export type RiskAssessmentFieldsFragment = {
+  __typename?: "RiskAssessmentProjectionType";
+  id: string;
+  level: IntegrationsRiskAssessmentLevelChoices;
+  source: IntegrationsRiskAssessmentSourceChoices;
+  score?: number | null;
+  factors?: any | null;
+  evaluatorVersion: string;
+  externalAssessmentId: string;
+  isCurrent: boolean;
+  createdAt: any;
+  createdBy?: {
+    __typename?: "UserType";
+    id: string;
+    username: string;
+    firstName: string;
+    lastName: string;
+  } | null;
+};
+
 export type ReportsQueryVariables = Exact<{
   limit: Scalars["Int"]["input"];
   offset: Scalars["Int"]["input"];
@@ -7454,6 +7534,7 @@ export type ReportsQueryVariables = Exact<{
   >;
   testFlag?: InputMaybe<Scalars["Boolean"]["input"]>;
   includeChildAuthorities?: InputMaybe<Scalars["Boolean"]["input"]>;
+  currentRiskLevels?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type ReportsQuery = {
@@ -7496,6 +7577,25 @@ export type ReportsQuery = {
         __typename?: "AuthorityType";
         name: string;
       } | null> | null;
+      currentRiskAssessment?: {
+        __typename?: "RiskAssessmentProjectionType";
+        id: string;
+        level: IntegrationsRiskAssessmentLevelChoices;
+        source: IntegrationsRiskAssessmentSourceChoices;
+        score?: number | null;
+        factors?: any | null;
+        evaluatorVersion: string;
+        externalAssessmentId: string;
+        isCurrent: boolean;
+        createdAt: any;
+        createdBy?: {
+          __typename?: "UserType";
+          id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+        } | null;
+      } | null;
     } | null>;
   } | null;
 };
@@ -7552,6 +7652,25 @@ export type BoundaryConnectedReportsQuery = {
         __typename?: "ImageType";
         thumbnail?: string | null;
       } | null> | null;
+      currentRiskAssessment?: {
+        __typename?: "RiskAssessmentProjectionType";
+        id: string;
+        level: IntegrationsRiskAssessmentLevelChoices;
+        source: IntegrationsRiskAssessmentSourceChoices;
+        score?: number | null;
+        factors?: any | null;
+        evaluatorVersion: string;
+        externalAssessmentId: string;
+        isCurrent: boolean;
+        createdAt: any;
+        createdBy?: {
+          __typename?: "UserType";
+          id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+        } | null;
+      } | null;
     } | null>;
   } | null;
 };
@@ -7613,6 +7732,44 @@ export type GetReportQuery = {
       __typename?: "AuthorityType";
       name: string;
     } | null> | null;
+    currentRiskAssessment?: {
+      __typename?: "RiskAssessmentProjectionType";
+      id: string;
+      level: IntegrationsRiskAssessmentLevelChoices;
+      source: IntegrationsRiskAssessmentSourceChoices;
+      score?: number | null;
+      factors?: any | null;
+      evaluatorVersion: string;
+      externalAssessmentId: string;
+      isCurrent: boolean;
+      createdAt: any;
+      createdBy?: {
+        __typename?: "UserType";
+        id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+      } | null;
+    } | null;
+    riskAssessmentHistory?: Array<{
+      __typename?: "RiskAssessmentProjectionType";
+      id: string;
+      level: IntegrationsRiskAssessmentLevelChoices;
+      source: IntegrationsRiskAssessmentSourceChoices;
+      score?: number | null;
+      factors?: any | null;
+      evaluatorVersion: string;
+      externalAssessmentId: string;
+      isCurrent: boolean;
+      createdAt: any;
+      createdBy?: {
+        __typename?: "UserType";
+        id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+      } | null;
+    } | null> | null;
   } | null;
 };
 
@@ -7637,6 +7794,79 @@ export type ConvertReportToTestReportMutation = {
   convertToTestReport?: {
     __typename?: "ConvertToTestReportMutation";
     report?: { __typename?: "IncidentReportType"; id: any } | null;
+  } | null;
+};
+
+export type SetReportRiskValueMutationVariables = Exact<{
+  reportId: Scalars["UUID"]["input"];
+  level?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type SetReportRiskValueMutation = {
+  __typename?: "Mutation";
+  setReportRisk?: {
+    __typename?: "SetReportRiskMutation";
+    report?: {
+      __typename?: "IncidentReportType";
+      id: any;
+      currentRiskAssessment?: {
+        __typename?: "RiskAssessmentProjectionType";
+        id: string;
+        level: IntegrationsRiskAssessmentLevelChoices;
+        source: IntegrationsRiskAssessmentSourceChoices;
+        score?: number | null;
+        factors?: any | null;
+        evaluatorVersion: string;
+        externalAssessmentId: string;
+        isCurrent: boolean;
+        createdAt: any;
+        createdBy?: {
+          __typename?: "UserType";
+          id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+        } | null;
+      } | null;
+      riskAssessmentHistory?: Array<{
+        __typename?: "RiskAssessmentProjectionType";
+        id: string;
+        level: IntegrationsRiskAssessmentLevelChoices;
+        source: IntegrationsRiskAssessmentSourceChoices;
+        score?: number | null;
+        factors?: any | null;
+        evaluatorVersion: string;
+        externalAssessmentId: string;
+        isCurrent: boolean;
+        createdAt: any;
+        createdBy?: {
+          __typename?: "UserType";
+          id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+        } | null;
+      } | null> | null;
+    } | null;
+    riskAssessment?: {
+      __typename?: "RiskAssessmentProjectionType";
+      id: string;
+      level: IntegrationsRiskAssessmentLevelChoices;
+      source: IntegrationsRiskAssessmentSourceChoices;
+      score?: number | null;
+      factors?: any | null;
+      evaluatorVersion: string;
+      externalAssessmentId: string;
+      isCurrent: boolean;
+      createdAt: any;
+      createdBy?: {
+        __typename?: "UserType";
+        id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+      } | null;
+    } | null;
   } | null;
 };
 
@@ -9037,6 +9267,49 @@ export const CensusDefinitionVersionFieldsFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<CensusDefinitionVersionFieldsFragment, unknown>;
+export const RiskAssessmentFieldsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<RiskAssessmentFieldsFragment, unknown>;
 export const DeleteTokenCookieDocument = {
   kind: "Document",
   definitions: [
@@ -23058,6 +23331,14 @@ export const ReportsDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "currentRiskLevels" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -23112,6 +23393,14 @@ export const ReportsDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "includeChildAuthorities" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "currentRiskLevels" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "currentRiskLevels" },
                 },
               },
               {
@@ -23253,11 +23542,65 @@ export const ReportsDocument = {
                       },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "currentRiskAssessment" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "FragmentSpread",
+                              name: {
+                                kind: "Name",
+                                value: "RiskAssessmentFields",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "testFlag" },
                       },
                     ],
                   },
                 },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
               ],
             },
           },
@@ -23522,11 +23865,65 @@ export const BoundaryConnectedReportsDocument = {
                       },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "currentRiskAssessment" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "FragmentSpread",
+                              name: {
+                                kind: "Name",
+                                value: "RiskAssessmentFields",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "testFlag" },
                       },
                     ],
                   },
                 },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
               ],
             },
           },
@@ -23693,6 +24090,77 @@ export const GetReportDocument = {
                     ],
                   },
                 },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "currentRiskAssessment" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "RiskAssessmentFields" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "riskAssessmentHistory" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "3" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "RiskAssessmentFields" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
               ],
             },
           },
@@ -23820,6 +24288,172 @@ export const ConvertReportToTestReportDocument = {
 } as unknown as DocumentNode<
   ConvertReportToTestReportMutation,
   ConvertReportToTestReportMutationVariables
+>;
+export const SetReportRiskValueDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "SetReportRiskValue" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "level" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "setReportRisk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "level" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "level" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "report" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "currentRiskAssessment" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "FragmentSpread",
+                              name: {
+                                kind: "Name",
+                                value: "RiskAssessmentFields",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "riskAssessmentHistory" },
+                        arguments: [
+                          {
+                            kind: "Argument",
+                            name: { kind: "Name", value: "limit" },
+                            value: { kind: "IntValue", value: "3" },
+                          },
+                        ],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "FragmentSpread",
+                              name: {
+                                kind: "Name",
+                                value: "RiskAssessmentFields",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "riskAssessment" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "RiskAssessmentFields" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SetReportRiskValueMutation,
+  SetReportRiskValueMutationVariables
 >;
 export const ReportCategoriesDocument = {
   kind: "Document",

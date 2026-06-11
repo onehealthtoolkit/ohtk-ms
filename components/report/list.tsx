@@ -21,6 +21,7 @@ import { ReportDayEvents } from "components/report/dayEvents";
 import { useTranslation } from "react-i18next";
 import TotalItem from "components/widgets/table/totalItem";
 import TestLabel from "./testLabel";
+import RiskBadge, { getRiskRowStyle } from "components/risk/RiskBadge";
 
 const JSURL = require("jsurl");
 
@@ -46,6 +47,7 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
     includeChildAuthorities: query.includeChildAuthorities
       ? query.includeChildAuthorities === "true"
       : undefined,
+    riskLevels: query.riskLevels ? JSURL.parse(query.riskLevels) : [],
   };
 };
 
@@ -115,6 +117,7 @@ const ReportList = () => {
       calendarYear: viewModel.calendarViewModel.year,
       includeChildAuthorities: viewModel.filter.includeChildAuthorities,
       includeTest: viewModel.filter.includeTest,
+      riskLevels: JSURL.stringify(viewModel.filter.riskLevels),
     });
   };
 
@@ -185,6 +188,14 @@ const ReportList = () => {
                       get: record => record.authorityName,
                     },
                     {
+                      label: t("form.label.risk", "Risk"),
+                      get: record => (
+                        <RiskBadge
+                          level={record.currentRiskAssessment?.level}
+                        />
+                      ),
+                    },
+                    {
                       label: t("form.label.data", "Data"),
                       get: record => record.rendererData,
                     },
@@ -200,6 +211,9 @@ const ReportList = () => {
                   ]}
                   onLoading={viewModel.isLoading}
                   data={viewModel.data || []}
+                  getRowStyle={record =>
+                    getRiskRowStyle(record?.currentRiskAssessment?.level)
+                  }
                   onView={record => router.push(`/reports/${record.id}`)}
                 />
                 <ErrorDisplay message={viewModel.errorMessage} />

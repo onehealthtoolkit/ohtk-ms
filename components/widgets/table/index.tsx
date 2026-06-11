@@ -74,6 +74,8 @@ interface TableProps<T> {
   onLoading?: boolean;
   tableTestId?: string;
   getRowTestId?: (record: T) => string | undefined;
+  getRowClassName?: (record: T) => string | undefined;
+  getRowStyle?: (record: T) => React.CSSProperties | undefined;
   getActionTestId?: (
     record: T,
     action: "edit" | "view" | "delete"
@@ -91,6 +93,8 @@ const Table = <T extends ItemWithId | null>({
   actions,
   tableTestId,
   getRowTestId,
+  getRowClassName,
+  getRowStyle,
   getActionTestId,
 }: TableProps<T>) => {
   const actionVisible =
@@ -98,7 +102,13 @@ const Table = <T extends ItemWithId | null>({
 
   const rows = data.map(record => (
     <tr
-      className="hover:bg-gray-50 dark:hover:bg-gray-600 even:bg-[#F6F7F9]"
+      className={[
+        "hover:bg-gray-50 dark:hover:bg-gray-600 even:bg-[#F6F7F9]",
+        getRowClassName?.(record),
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      style={getRowStyle?.(record)}
       key={record?.id}
       data-testid={getRowTestId?.(record)}
       onClick={evt => {
