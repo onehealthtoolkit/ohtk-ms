@@ -1,7 +1,5 @@
 import { RiskLevel } from "lib/services/report/report";
 
-export type ClusterStatus = "NEW" | "REVIEWED" | "WATCHING" | "CLOSED" | string;
-
 export type ClusterIntegrationClient = {
   code: string;
   name: string;
@@ -34,7 +32,6 @@ export type ClusterResult = {
   score?: number | null;
   riskLevel?: RiskLevel | null;
   reportCount: number;
-  status: ClusterStatus;
   explanation: string;
   metadata: Record<string, unknown>;
   createdAt: string;

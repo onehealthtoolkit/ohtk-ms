@@ -76,6 +76,7 @@ interface TableProps<T> {
   getRowTestId?: (record: T) => string | undefined;
   getRowClassName?: (record: T) => string | undefined;
   getRowStyle?: (record: T) => React.CSSProperties | undefined;
+  contained?: boolean;
   getActionTestId?: (
     record: T,
     action: "edit" | "view" | "delete"
@@ -95,10 +96,14 @@ const Table = <T extends ItemWithId | null>({
   getRowTestId,
   getRowClassName,
   getRowStyle,
+  contained = false,
   getActionTestId,
 }: TableProps<T>) => {
   const actionVisible =
     onEdit || (onView && !viewOnRowClick) || onDelete || actions;
+  const tableWrapperClass = contained
+    ? "mb-4 overflow-x-auto"
+    : "mb-4 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8";
 
   const rows = data.map(record => (
     <tr
@@ -153,7 +158,7 @@ const Table = <T extends ItemWithId | null>({
     </tr>
   ));
   return (
-    <div className="mb-4 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+    <div className={tableWrapperClass}>
       <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
         <table className="min-w-full" data-testid={tableTestId}>
           <thead>

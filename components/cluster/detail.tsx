@@ -4,7 +4,7 @@ import { TR } from "components/widgets/renderData";
 import Table from "components/widgets/table";
 import ViewActionButtons from "components/widgets/viewActionButtons";
 import RiskBadge, { getRiskRowStyle } from "components/risk/RiskBadge";
-import { formatDate, formatDateTime, formatYmdt } from "lib/datetime";
+import { formatDate, formatYmdt } from "lib/datetime";
 import useServices from "lib/services/provider";
 import { Observer } from "mobx-react";
 import dynamic from "next/dynamic";
@@ -23,15 +23,6 @@ const scoreText = (score?: number | null) => {
   return score.toFixed(2);
 };
 
-const statusText = (status?: string) => {
-  if (!status) return "New";
-  return status
-    .toLowerCase()
-    .split("_")
-    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
-};
-
 const windowText = (start?: string, end?: string, locale?: string) => {
   const from = formatDate(start, locale);
   const through = formatDate(end, locale);
@@ -42,7 +33,10 @@ const windowText = (start?: string, end?: string, locale?: string) => {
 
 const metadataText = (metadata?: Record<string, unknown>) => {
   if (!metadata || Object.keys(metadata).length === 0) return "{}";
-  return JSON.stringify(metadata, null, 2);
+  const visibleMetadata = { ...metadata };
+  delete visibleMetadata.status;
+  if (Object.keys(visibleMetadata).length === 0) return "{}";
+  return JSON.stringify(visibleMetadata, null, 2);
 };
 
 const ClusterDetail = ({ id }: { id: string }) => {
@@ -75,16 +69,10 @@ const ClusterDetail = ({ id }: { id: string }) => {
                       {data.externalClusterId || id}
                     </h1>
                     <RiskBadge level={data.riskLevel} />
-                    <span className="inline-flex rounded bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700">
-                      {statusText(data.status)}
-                    </span>
                   </div>
                   <p className="pt-1 text-sm text-gray-600">
                     {data.integrationClient?.code} - {data.algorithmVersion}
                   </p>
-                </div>
-                <div className="text-sm text-gray-500">
-                  {formatDateTime(data.updatedAt, router.locale)}
                 </div>
               </div>
 
@@ -139,18 +127,18 @@ const ClusterDetail = ({ id }: { id: string }) => {
 
               <Divide />
 
-              <section>
+              <div>
                 <h2 className="mb-3 text-sm font-bold uppercase text-gray-500">
                   {t("cluster.label.explanation", "Explanation")}
                 </h2>
                 <p className="text-sm leading-6 text-gray-700">
                   {data.explanation || "-"}
                 </p>
-              </section>
+              </div>
 
               <Divide />
 
-              <section>
+              <div>
                 <h2 className="mb-3 text-sm font-bold uppercase text-gray-500">
                   {t("cluster.label.linkedReports", "Linked Reports")}
                 </h2>
@@ -182,19 +170,20 @@ const ClusterDetail = ({ id }: { id: string }) => {
                   onLoading={viewModel.isLoading}
                   getRowStyle={record => getRiskRowStyle(record?.riskLevel)}
                   onView={record => router.push(`/reports/${record.id}`)}
+                  contained
                 />
-              </section>
+              </div>
 
               <Divide />
 
-              <section>
+              <div>
                 <h2 className="mb-3 text-sm font-bold uppercase text-gray-500">
                   {t("cluster.label.metadata", "Metadata")}
                 </h2>
                 <pre className="overflow-x-auto rounded border border-gray-200 bg-gray-50 p-4 text-xs text-gray-700">
                   {metadataText(data.metadata)}
                 </pre>
-              </section>
+              </div>
 
               <ErrorDisplay message={viewModel.errorMessage} />
               <ViewActionButtons />

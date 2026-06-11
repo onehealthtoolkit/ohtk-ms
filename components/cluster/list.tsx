@@ -43,15 +43,6 @@ const windowText = (start: string, end: string, locale?: string) => {
   return `${from} - ${through}`;
 };
 
-const statusText = (status?: string) => {
-  if (!status) return "New";
-  return status
-    .toLowerCase()
-    .split("_")
-    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
-};
-
 const ClusterList = () => {
   const router = useRouter();
   const { clusterService } = useServices();
@@ -136,14 +127,6 @@ const ClusterList = () => {
                 {
                   label: t("cluster.label.score", "Score"),
                   get: record => scoreText(record.score),
-                },
-                {
-                  label: t("cluster.label.status", "Status"),
-                  get: record => (
-                    <span className="inline-flex rounded bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700">
-                      {statusText(record.status)}
-                    </span>
-                  ),
                 },
                 {
                   label: t("form.label.updatedAt", "Updated At"),

@@ -117,11 +117,6 @@ const metadataFromGraphql = (metadata: unknown): Record<string, unknown> => {
   return {};
 };
 
-const statusFromMetadata = (metadata: Record<string, unknown>) => {
-  const status = metadata.status;
-  return typeof status === "string" && status.trim() ? status : "NEW";
-};
-
 const riskLevelFromGraphql = (level?: string | null): RiskLevel | null => {
   if (
     level === "LOW" ||
@@ -167,7 +162,6 @@ const clusterFromGraphql = (
     score: item.score,
     riskLevel: riskLevelFromGraphql(item.riskLevel),
     reportCount: item.reportCount,
-    status: statusFromMetadata(metadata),
     explanation: item.explanation || "",
     metadata,
     createdAt: item.createdAt,
