@@ -35,6 +35,7 @@ import { ObservationDefinitionService } from "./observationDefinition/observatio
 import { ObservationMonitoringDefinitionService } from "./observationMonitoringDefinition";
 import { ObservationService } from "./observation";
 import { IntegrationService } from "./integration";
+import { ClusterService } from "./cluster";
 
 export interface IServiceProvider {
   get authService(): IAuthService;
@@ -70,6 +71,7 @@ export interface IServiceProvider {
   get observationMonitoringDefinitionService(): ObservationMonitoringDefinitionService;
   get observationService(): ObservationService;
   get integrationService(): IntegrationService;
+  get clusterService(): ClusterService;
 }
 
 export class ServicesProvider implements IServiceProvider {
@@ -108,6 +110,7 @@ export class ServicesProvider implements IServiceProvider {
   observationMonitoringDefinitionService: ObservationMonitoringDefinitionService;
   observationService: ObservationService;
   integrationService: IntegrationService;
+  clusterService: ClusterService;
 
   constructor(client: LegacyApolloClient) {
     this.client = client;
@@ -150,6 +153,7 @@ export class ServicesProvider implements IServiceProvider {
     );
     this.observationService = new ObservationService(client);
     this.integrationService = new IntegrationService(client);
+    this.clusterService = new ClusterService(client);
   }
 }
 

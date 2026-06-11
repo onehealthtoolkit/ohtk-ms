@@ -2261,6 +2261,44 @@ export type IncidentReportTypeNodeConnection = {
   totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
+export type IntegrationClusterClientType = {
+  __typename?: "IntegrationClusterClientType";
+  code: Scalars["String"]["output"];
+  name: Scalars["String"]["output"];
+};
+
+export type IntegrationClusterResultDashboardType = {
+  __typename?: "IntegrationClusterResultDashboardType";
+  algorithmVersion: Scalars["String"]["output"];
+  authorityIds: Array<Scalars["Int"]["output"]>;
+  createdAt: Scalars["DateTime"]["output"];
+  explanation: Scalars["String"]["output"];
+  externalClusterId: Scalars["String"]["output"];
+  geometry?: Maybe<Scalars["GenericScalar"]["output"]>;
+  id: Scalars["UUID"]["output"];
+  incidentIds: Array<Scalars["String"]["output"]>;
+  integrationClient: IntegrationClusterClientType;
+  linkedReports: Array<IncidentReportType>;
+  metadata: Scalars["GenericScalar"]["output"];
+  radiusMeters?: Maybe<Scalars["Float"]["output"]>;
+  reportCount: Scalars["Int"]["output"];
+  riskLevel?: Maybe<Scalars["String"]["output"]>;
+  score?: Maybe<Scalars["Float"]["output"]>;
+  updatedAt: Scalars["DateTime"]["output"];
+  villageIds: Array<Scalars["Int"]["output"]>;
+  windowEnd: Scalars["Date"]["output"];
+  windowStart: Scalars["Date"]["output"];
+};
+
+export type IntegrationClusterResultDashboardTypeNodeConnection = {
+  __typename?: "IntegrationClusterResultDashboardTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<IntegrationClusterResultDashboardType>>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
+};
+
 export type IntegrationOptionType = {
   __typename?: "IntegrationOptionType";
   code: Scalars["String"]["output"];
@@ -3408,6 +3446,8 @@ export type Query = {
   category?: Maybe<CategoryType>;
   censusDefinitions?: Maybe<Array<Maybe<CensusDefinitionType>>>;
   checkInvitationCode?: Maybe<CheckInvitationCodeType>;
+  clusterResult?: Maybe<IntegrationClusterResultDashboardType>;
+  clusterResults?: Maybe<IntegrationClusterResultDashboardTypeNodeConnection>;
   comments?: Maybe<Array<Maybe<CommentType>>>;
   configurationGet?: Maybe<ConfigurationType>;
   configurations?: Maybe<Array<Maybe<ConfigurationType>>>;
@@ -3815,6 +3855,24 @@ export type QueryCategoryArgs = {
 
 export type QueryCheckInvitationCodeArgs = {
   code: Scalars["String"]["input"];
+};
+
+export type QueryClusterResultArgs = {
+  id: Scalars["UUID"]["input"];
+};
+
+export type QueryClusterResultsArgs = {
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  fromDate?: InputMaybe<Scalars["Date"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  riskLevels?: InputMaybe<Scalars["String"]["input"]>;
+  throughDate?: InputMaybe<Scalars["Date"]["input"]>;
 };
 
 export type QueryCommentsArgs = {
@@ -5501,6 +5559,276 @@ export type LatestAnimalVillageCensusQuery = {
       rowLabel: string;
       animalQuantity?: number | null;
       householdQuantity?: number | null;
+    }>;
+  } | null;
+};
+
+export type ClusterLinkedReportFieldsFragment = {
+  __typename?: "IncidentReportType";
+  id: any;
+  createdAt: any;
+  incidentDate: any;
+  rendererData: string;
+  gpsLocation?: string | null;
+  reportType?: {
+    __typename?: "ReportTypeType";
+    id: any;
+    name: string;
+    category?: {
+      __typename?: "CategoryType";
+      id: string;
+      name: string;
+      icon?: string | null;
+    } | null;
+  } | null;
+  authorities?: Array<{
+    __typename?: "AuthorityType";
+    name: string;
+  } | null> | null;
+  currentRiskAssessment?: {
+    __typename?: "RiskAssessmentProjectionType";
+    id: string;
+    level: IntegrationsRiskAssessmentLevelChoices;
+    source: IntegrationsRiskAssessmentSourceChoices;
+    score?: number | null;
+    factors?: any | null;
+    evaluatorVersion: string;
+    externalAssessmentId: string;
+    isCurrent: boolean;
+    createdAt: any;
+    createdBy?: {
+      __typename?: "UserType";
+      id: string;
+      username: string;
+      firstName: string;
+      lastName: string;
+    } | null;
+  } | null;
+};
+
+export type ClusterResultFieldsFragment = {
+  __typename?: "IntegrationClusterResultDashboardType";
+  id: any;
+  externalClusterId: string;
+  algorithmVersion: string;
+  windowStart: any;
+  windowEnd: any;
+  incidentIds: Array<string>;
+  authorityIds: Array<number>;
+  villageIds: Array<number>;
+  geometry?: any | null;
+  radiusMeters?: number | null;
+  score?: number | null;
+  riskLevel?: string | null;
+  reportCount: number;
+  explanation: string;
+  metadata: any;
+  createdAt: any;
+  updatedAt: any;
+  integrationClient: {
+    __typename?: "IntegrationClusterClientType";
+    code: string;
+    name: string;
+  };
+  linkedReports: Array<{
+    __typename?: "IncidentReportType";
+    id: any;
+    createdAt: any;
+    incidentDate: any;
+    rendererData: string;
+    gpsLocation?: string | null;
+    reportType?: {
+      __typename?: "ReportTypeType";
+      id: any;
+      name: string;
+      category?: {
+        __typename?: "CategoryType";
+        id: string;
+        name: string;
+        icon?: string | null;
+      } | null;
+    } | null;
+    authorities?: Array<{
+      __typename?: "AuthorityType";
+      name: string;
+    } | null> | null;
+    currentRiskAssessment?: {
+      __typename?: "RiskAssessmentProjectionType";
+      id: string;
+      level: IntegrationsRiskAssessmentLevelChoices;
+      source: IntegrationsRiskAssessmentSourceChoices;
+      score?: number | null;
+      factors?: any | null;
+      evaluatorVersion: string;
+      externalAssessmentId: string;
+      isCurrent: boolean;
+      createdAt: any;
+      createdBy?: {
+        __typename?: "UserType";
+        id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+      } | null;
+    } | null;
+  }>;
+};
+
+export type ClusterResultsQueryVariables = Exact<{
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  fromDate?: InputMaybe<Scalars["Date"]["input"]>;
+  throughDate?: InputMaybe<Scalars["Date"]["input"]>;
+  riskLevels?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type ClusterResultsQuery = {
+  __typename?: "Query";
+  clusterResults?: {
+    __typename?: "IntegrationClusterResultDashboardTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "IntegrationClusterResultDashboardType";
+      id: any;
+      externalClusterId: string;
+      algorithmVersion: string;
+      windowStart: any;
+      windowEnd: any;
+      incidentIds: Array<string>;
+      authorityIds: Array<number>;
+      villageIds: Array<number>;
+      geometry?: any | null;
+      radiusMeters?: number | null;
+      score?: number | null;
+      riskLevel?: string | null;
+      reportCount: number;
+      explanation: string;
+      metadata: any;
+      createdAt: any;
+      updatedAt: any;
+      integrationClient: {
+        __typename?: "IntegrationClusterClientType";
+        code: string;
+        name: string;
+      };
+      linkedReports: Array<{
+        __typename?: "IncidentReportType";
+        id: any;
+        createdAt: any;
+        incidentDate: any;
+        rendererData: string;
+        gpsLocation?: string | null;
+        reportType?: {
+          __typename?: "ReportTypeType";
+          id: any;
+          name: string;
+          category?: {
+            __typename?: "CategoryType";
+            id: string;
+            name: string;
+            icon?: string | null;
+          } | null;
+        } | null;
+        authorities?: Array<{
+          __typename?: "AuthorityType";
+          name: string;
+        } | null> | null;
+        currentRiskAssessment?: {
+          __typename?: "RiskAssessmentProjectionType";
+          id: string;
+          level: IntegrationsRiskAssessmentLevelChoices;
+          source: IntegrationsRiskAssessmentSourceChoices;
+          score?: number | null;
+          factors?: any | null;
+          evaluatorVersion: string;
+          externalAssessmentId: string;
+          isCurrent: boolean;
+          createdAt: any;
+          createdBy?: {
+            __typename?: "UserType";
+            id: string;
+            username: string;
+            firstName: string;
+            lastName: string;
+          } | null;
+        } | null;
+      }>;
+    } | null>;
+  } | null;
+};
+
+export type GetClusterResultQueryVariables = Exact<{
+  id: Scalars["UUID"]["input"];
+}>;
+
+export type GetClusterResultQuery = {
+  __typename?: "Query";
+  clusterResult?: {
+    __typename?: "IntegrationClusterResultDashboardType";
+    id: any;
+    externalClusterId: string;
+    algorithmVersion: string;
+    windowStart: any;
+    windowEnd: any;
+    incidentIds: Array<string>;
+    authorityIds: Array<number>;
+    villageIds: Array<number>;
+    geometry?: any | null;
+    radiusMeters?: number | null;
+    score?: number | null;
+    riskLevel?: string | null;
+    reportCount: number;
+    explanation: string;
+    metadata: any;
+    createdAt: any;
+    updatedAt: any;
+    integrationClient: {
+      __typename?: "IntegrationClusterClientType";
+      code: string;
+      name: string;
+    };
+    linkedReports: Array<{
+      __typename?: "IncidentReportType";
+      id: any;
+      createdAt: any;
+      incidentDate: any;
+      rendererData: string;
+      gpsLocation?: string | null;
+      reportType?: {
+        __typename?: "ReportTypeType";
+        id: any;
+        name: string;
+        category?: {
+          __typename?: "CategoryType";
+          id: string;
+          name: string;
+          icon?: string | null;
+        } | null;
+      } | null;
+      authorities?: Array<{
+        __typename?: "AuthorityType";
+        name: string;
+      } | null> | null;
+      currentRiskAssessment?: {
+        __typename?: "RiskAssessmentProjectionType";
+        id: string;
+        level: IntegrationsRiskAssessmentLevelChoices;
+        source: IntegrationsRiskAssessmentSourceChoices;
+        score?: number | null;
+        factors?: any | null;
+        evaluatorVersion: string;
+        externalAssessmentId: string;
+        isCurrent: boolean;
+        createdAt: any;
+        createdBy?: {
+          __typename?: "UserType";
+          id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+        } | null;
+      } | null;
     }>;
   } | null;
 };
@@ -9367,6 +9695,274 @@ export const RiskAssessmentFieldsFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<RiskAssessmentFieldsFragment, unknown>;
+export const ClusterLinkedReportFieldsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ClusterLinkedReportFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "IncidentReportType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          { kind: "Field", name: { kind: "Name", value: "incidentDate" } },
+          { kind: "Field", name: { kind: "Name", value: "rendererData" } },
+          { kind: "Field", name: { kind: "Name", value: "gpsLocation" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "reportType" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "icon" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "authorities" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "currentRiskAssessment" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "RiskAssessmentFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ClusterLinkedReportFieldsFragment, unknown>;
+export const ClusterResultFieldsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ClusterResultFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "IntegrationClusterResultDashboardType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "externalClusterId" } },
+          { kind: "Field", name: { kind: "Name", value: "algorithmVersion" } },
+          { kind: "Field", name: { kind: "Name", value: "windowStart" } },
+          { kind: "Field", name: { kind: "Name", value: "windowEnd" } },
+          { kind: "Field", name: { kind: "Name", value: "incidentIds" } },
+          { kind: "Field", name: { kind: "Name", value: "authorityIds" } },
+          { kind: "Field", name: { kind: "Name", value: "villageIds" } },
+          { kind: "Field", name: { kind: "Name", value: "geometry" } },
+          { kind: "Field", name: { kind: "Name", value: "radiusMeters" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "riskLevel" } },
+          { kind: "Field", name: { kind: "Name", value: "reportCount" } },
+          { kind: "Field", name: { kind: "Name", value: "explanation" } },
+          { kind: "Field", name: { kind: "Name", value: "metadata" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          { kind: "Field", name: { kind: "Name", value: "updatedAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationClient" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "linkedReports" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ClusterLinkedReportFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ClusterLinkedReportFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "IncidentReportType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          { kind: "Field", name: { kind: "Name", value: "incidentDate" } },
+          { kind: "Field", name: { kind: "Name", value: "rendererData" } },
+          { kind: "Field", name: { kind: "Name", value: "gpsLocation" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "reportType" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "icon" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "authorities" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "currentRiskAssessment" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "RiskAssessmentFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ClusterResultFieldsFragment, unknown>;
 export const DeleteTokenCookieDocument = {
   kind: "Document",
   definitions: [
@@ -13386,6 +13982,507 @@ export const LatestAnimalVillageCensusDocument = {
 } as unknown as DocumentNode<
   LatestAnimalVillageCensusQuery,
   LatestAnimalVillageCensusQueryVariables
+>;
+export const ClusterResultsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ClusterResults" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "fromDate" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Date" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "throughDate" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Date" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "riskLevels" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "clusterResults" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "fromDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "fromDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "throughDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "throughDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "riskLevels" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "riskLevels" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "ClusterResultFields" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ClusterLinkedReportFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "IncidentReportType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          { kind: "Field", name: { kind: "Name", value: "incidentDate" } },
+          { kind: "Field", name: { kind: "Name", value: "rendererData" } },
+          { kind: "Field", name: { kind: "Name", value: "gpsLocation" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "reportType" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "icon" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "authorities" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "currentRiskAssessment" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "RiskAssessmentFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ClusterResultFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "IntegrationClusterResultDashboardType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "externalClusterId" } },
+          { kind: "Field", name: { kind: "Name", value: "algorithmVersion" } },
+          { kind: "Field", name: { kind: "Name", value: "windowStart" } },
+          { kind: "Field", name: { kind: "Name", value: "windowEnd" } },
+          { kind: "Field", name: { kind: "Name", value: "incidentIds" } },
+          { kind: "Field", name: { kind: "Name", value: "authorityIds" } },
+          { kind: "Field", name: { kind: "Name", value: "villageIds" } },
+          { kind: "Field", name: { kind: "Name", value: "geometry" } },
+          { kind: "Field", name: { kind: "Name", value: "radiusMeters" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "riskLevel" } },
+          { kind: "Field", name: { kind: "Name", value: "reportCount" } },
+          { kind: "Field", name: { kind: "Name", value: "explanation" } },
+          { kind: "Field", name: { kind: "Name", value: "metadata" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          { kind: "Field", name: { kind: "Name", value: "updatedAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationClient" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "linkedReports" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ClusterLinkedReportFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ClusterResultsQuery, ClusterResultsQueryVariables>;
+export const GetClusterResultDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetClusterResult" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "clusterResult" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ClusterResultFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ClusterLinkedReportFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "IncidentReportType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          { kind: "Field", name: { kind: "Name", value: "incidentDate" } },
+          { kind: "Field", name: { kind: "Name", value: "rendererData" } },
+          { kind: "Field", name: { kind: "Name", value: "gpsLocation" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "reportType" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "icon" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "authorities" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "currentRiskAssessment" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "RiskAssessmentFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ClusterResultFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "IntegrationClusterResultDashboardType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "externalClusterId" } },
+          { kind: "Field", name: { kind: "Name", value: "algorithmVersion" } },
+          { kind: "Field", name: { kind: "Name", value: "windowStart" } },
+          { kind: "Field", name: { kind: "Name", value: "windowEnd" } },
+          { kind: "Field", name: { kind: "Name", value: "incidentIds" } },
+          { kind: "Field", name: { kind: "Name", value: "authorityIds" } },
+          { kind: "Field", name: { kind: "Name", value: "villageIds" } },
+          { kind: "Field", name: { kind: "Name", value: "geometry" } },
+          { kind: "Field", name: { kind: "Name", value: "radiusMeters" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "riskLevel" } },
+          { kind: "Field", name: { kind: "Name", value: "reportCount" } },
+          { kind: "Field", name: { kind: "Name", value: "explanation" } },
+          { kind: "Field", name: { kind: "Name", value: "metadata" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          { kind: "Field", name: { kind: "Name", value: "updatedAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationClient" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "linkedReports" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ClusterLinkedReportFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetClusterResultQuery,
+  GetClusterResultQueryVariables
 >;
 export const QueryCommentsDocument = {
   kind: "Document",

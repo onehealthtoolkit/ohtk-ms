@@ -102,6 +102,15 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   />
 
                   <Menu
+                    href="/clusters/"
+                    pathname={pathname}
+                    label={t("breadcrumb.clusters", "Clusters")}
+                    collapsed={store.menu.collapsed}
+                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    icon={<RectangleGroupIcon className={iconClassName} />}
+                  />
+
+                  <Menu
                     href="/cases/"
                     pathname={pathname}
                     label={t("breadcrumb.cases", "Cases")}
