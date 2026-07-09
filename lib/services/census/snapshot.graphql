@@ -3,6 +3,8 @@ query LatestAnimalVillageCensus($villageId: Int!) {
     id
     censusDate
     submittedAt
+    villageHouseholdQuantity
+    animalHouseholdQuantity
     reporter {
       username
     }

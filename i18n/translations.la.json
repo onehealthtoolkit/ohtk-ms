@@ -155,6 +155,8 @@
       "species": "ຊະນິດສັດ",
       "animals": "ສັດ",
       "households": "ຄົວເຮືອນ",
+      "villageHouseholdQuantity": "ຈຳນວນຄົວເຮືອນໃນບ້ານ",
+      "animalHouseholdQuantity": "ຈຳນວນຄົວເຮືອນທີ່ມີສັດ",
       "kind": "ປະເພດ",
       "version": "ເວີຊັນ",
       "status": "ສະຖານະ",

@@ -154,6 +154,8 @@
       "species": "Species",
       "animals": "Animals",
       "households": "Households",
+      "villageHouseholdQuantity": "Village households",
+      "animalHouseholdQuantity": "Households with animals",
       "kind": "Kind",
       "version": "Version",
       "status": "Status",

@@ -11102,6 +11102,30 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
+              "name": "villageHouseholdQuantity",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": null,
+              "isDeprecated": false,
+              "name": "animalHouseholdQuantity",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": null,
+              "isDeprecated": false,
               "name": "status",
               "type": {
                 "kind": "NON_NULL",

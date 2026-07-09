@@ -9,6 +9,8 @@ export type VillageCensusSnapshot = {
   id: string;
   censusDate: string;
   submittedAt: string;
+  villageHouseholdQuantity?: number | null;
+  animalHouseholdQuantity?: number | null;
   reporterUsername?: string;
   facts: AnimalCensusFact[];
 };

@@ -4506,6 +4506,7 @@ export type VillageCensusSnapshotResult =
 
 export type VillageCensusSnapshotType = {
   __typename?: "VillageCensusSnapshotType";
+  animalHouseholdQuantity?: Maybe<Scalars["Int"]["output"]>;
   censusDate: Scalars["Date"]["output"];
   definitionVersion?: Maybe<CensusDefinitionVersionType>;
   facts: Array<AnimalCensusFactType>;
@@ -4516,6 +4517,7 @@ export type VillageCensusSnapshotType = {
   status: CensusVillageCensusSnapshotStatusChoices;
   submittedAt: Scalars["DateTime"]["output"];
   village: AdminVillageUpdateSuccess;
+  villageHouseholdQuantity?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type VillageReporterAssignmentInput = {
@@ -5549,6 +5551,8 @@ export type LatestAnimalVillageCensusQuery = {
     id: string;
     censusDate: any;
     submittedAt: any;
+    villageHouseholdQuantity?: number | null;
+    animalHouseholdQuantity?: number | null;
     reporter: {
       __typename?: "AdminAuthorityUserCreateSuccess";
       username: string;
@@ -13934,6 +13938,14 @@ export const LatestAnimalVillageCensusDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "censusDate" } },
                 { kind: "Field", name: { kind: "Name", value: "submittedAt" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "villageHouseholdQuantity" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "animalHouseholdQuantity" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "reporter" },

@@ -27,6 +27,7 @@ import { VillageService } from "./village";
 import {
   CensusCapabilityService,
   CensusDefinitionService,
+  CensusRoundService,
   CensusSnapshotService,
 } from "./census";
 import { ConfigurationService } from "./configuration";
@@ -63,6 +64,7 @@ export interface IServiceProvider {
   get placeService(): PlaceService;
   get villageService(): VillageService;
   get censusSnapshotService(): CensusSnapshotService;
+  get censusRoundService(): CensusRoundService;
   get censusDefinitionService(): CensusDefinitionService;
   get censusCapabilityService(): CensusCapabilityService;
   get configurationService(): ConfigurationService;
@@ -102,6 +104,7 @@ export class ServicesProvider implements IServiceProvider {
   placeService: PlaceService;
   villageService: VillageService;
   censusSnapshotService: CensusSnapshotService;
+  censusRoundService: CensusRoundService;
   censusDefinitionService: CensusDefinitionService;
   censusCapabilityService: CensusCapabilityService;
   configurationService: ConfigurationService;
@@ -139,6 +142,7 @@ export class ServicesProvider implements IServiceProvider {
     this.placeService = new PlaceService(client);
     this.villageService = new VillageService(client);
     this.censusSnapshotService = new CensusSnapshotService(client);
+    this.censusRoundService = new CensusRoundService(client);
     this.censusDefinitionService = new CensusDefinitionService(client);
     this.censusCapabilityService = new CensusCapabilityService(client);
     this.configurationService = new ConfigurationService(client);

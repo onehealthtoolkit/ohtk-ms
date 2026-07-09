@@ -20,6 +20,9 @@ const rowClass =
 const labelClass =
   "w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap";
 
+const formatQuantity = (value?: number | null) =>
+  typeof value === "number" ? value.toString() : "-";
+
 const VillageView = () => {
   const router = useRouter();
   const { t } = useTranslation();
@@ -115,6 +118,38 @@ const VillageView = () => {
           <div>
             <div className="mb-3 text-sm text-gray-600">
               {viewModel.latestCensus.censusDate}
+            </div>
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg mb-4">
+              <table className="table-fixed w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <tbody>
+                  <tr className={rowClass}>
+                    <th scope="row" className={labelClass}>
+                      {t(
+                        "form.label.villageHouseholdQuantity",
+                        "Village households"
+                      )}
+                    </th>
+                    <td className="px-6 py-4">
+                      {formatQuantity(
+                        viewModel.latestCensus.villageHouseholdQuantity
+                      )}
+                    </td>
+                  </tr>
+                  <tr className={rowClass}>
+                    <th scope="row" className={labelClass}>
+                      {t(
+                        "form.label.animalHouseholdQuantity",
+                        "Households with animals"
+                      )}
+                    </th>
+                    <td className="px-6 py-4">
+                      {formatQuantity(
+                        viewModel.latestCensus.animalHouseholdQuantity
+                      )}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             <Table
               columns={[
