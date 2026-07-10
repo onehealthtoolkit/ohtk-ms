@@ -44,7 +44,7 @@ export type SimpleConditionType = {
   value: string;
 };
 
-export type ConditionOperatorType = "=" | "contains";
+export type ConditionOperatorType = "=" | "contains" | "!=" | "in";
 
 export type FieldType =
   | TextFieldType

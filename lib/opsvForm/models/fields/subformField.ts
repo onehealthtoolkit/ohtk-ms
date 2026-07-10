@@ -63,6 +63,9 @@ export default class SubformField extends PrimitiveField<string> {
         return this.value == value;
       case "!=":
         return this.value != value;
+      case "in":
+        const allowedValues = value.split(',').map(v => v.trim());
+        return this.value ? allowedValues.includes(this.value) : false;
       default:
         return this.value!.indexOf(value) >= 0;
     }

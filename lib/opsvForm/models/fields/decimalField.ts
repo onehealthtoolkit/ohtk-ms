@@ -39,15 +39,19 @@ export default class DecimalField extends PrimitiveField<Decimal> {
   evaluate(operator: ConditionOperator, value: string): boolean {
     if (this._value == undefined) {
       return false;
-    } else {
-      switch (operator) {
-        case "=":
-          return this._value.eq(new Decimal(value));
-        case "contains":
-          return this._value.toString().indexOf(value) >= 0;
-        default:
-          return false;
-      }
+    }
+    switch (operator) {
+      case "=":
+        return this._value.eq(new Decimal(value));
+      case "!=":
+        return !this._value.eq(new Decimal(value));
+      case "in":
+        const allowedValues = value.split(',').map(v => v.trim());
+        return allowedValues.some(v => this._value!.eq(new Decimal(v)));
+      case "contains":
+        return this._value.toString().indexOf(value) >= 0;
+      default:
+        return false;
     }
   }
 

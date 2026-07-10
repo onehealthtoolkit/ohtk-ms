@@ -200,23 +200,39 @@ export default class DateField extends Field {
   };
 
   evaluate(operator: ConditionOperator, value: string): boolean {
-    if (operator === "=") {
-      try {
-        // expect value to be in yyyy-dd-mm
-        const date = new Date(value);
-        const day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
-
-        if (this.day == day && this.month == month && this.year == year) {
-          return true;
-        }
-      } catch (e) {
-        console.error(e);
-      }
+    if (this.value === null || this.value === undefined) {
+      return false;
     }
 
-    return false;
+    const currentDateStr = formatYmd(this.value); // Format as yyyy-mm-dd
+
+    switch (operator) {
+      case "=":
+        try {
+          // expect value to be in yyyy-mm-dd format
+          return currentDateStr === value;
+        } catch (e) {
+          console.error(e);
+          return false;
+        }
+      case "!=":
+        try {
+          return currentDateStr !== value;
+        } catch (e) {
+          console.error(e);
+          return false;
+        }
+      case "in":
+        try {
+          const allowedDates = value.split(',').map(v => v.trim());
+          return allowedDates.includes(currentDateStr);
+        } catch (e) {
+          console.error(e);
+          return false;
+        }
+      default:
+        return false;
+    }
   }
 
   get renderedValue(): string {

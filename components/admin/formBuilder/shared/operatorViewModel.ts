@@ -20,7 +20,6 @@ export const comparableOperatorLabelValues = [
   { label: "is in", value: "in" },
   { label: "contains", value: "contain" },
   { label: "is between", value: "between" },
-  { label: "has one of", value: "has_one_of" },
 ] as const;
 
 export const comparableOperatorKeys = comparableOperatorLabelValues.map(

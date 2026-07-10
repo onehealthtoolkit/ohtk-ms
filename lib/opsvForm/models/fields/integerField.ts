@@ -76,6 +76,11 @@ export default class IntegerField extends PrimitiveField<number> {
       switch (operator) {
         case "=":
           return this._value.toString() == value;
+        case "!=":
+          return this._value.toString() != value;
+        case "in":
+          const allowedValues = value.split(',').map(v => v.trim());
+          return allowedValues.includes(this._value.toString());
         case "contains":
           return this._value.toString().indexOf(value) >= 0;
         default:

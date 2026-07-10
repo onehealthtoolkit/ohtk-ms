@@ -2,7 +2,7 @@ import { Values } from "./values";
 
 export type ConditionSource = {};
 
-export type ConditionOperator = "=" | "contains" | "!=";
+export type ConditionOperator = "=" | "contains" | "!=" | "in";
 
 export interface Condition {
   source?: ConditionSource;

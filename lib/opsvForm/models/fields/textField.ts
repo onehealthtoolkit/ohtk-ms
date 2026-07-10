@@ -84,6 +84,9 @@ export default class TextField extends PrimitiveField<string> {
           return this._value == value;
         case "!=":
           return this._value != value;
+        case "in":
+          const allowedValues = value.split(',').map(v => v.trim());
+          return allowedValues.includes(this._value);
         default:
           return this._value.indexOf(value) >= 0;
       }
