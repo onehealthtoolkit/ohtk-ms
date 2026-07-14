@@ -22,30 +22,34 @@ export const TableCell = tw.td`
 
 interface ActionHandlerProps {
   onClick: () => void;
+  testId?: string;
 }
 
-export const EditAction = (props: ActionHandlerProps) => (
+export const EditAction = ({ testId, ...props }: ActionHandlerProps) => (
   <Tooltip text={`${t("form.button.edit", "Edit.")}`}>
     <PencilSquareIcon
       type="edit"
+      data-testid={testId}
       className="w-5 h-5 text-[#ADC7FF] hover:text-indigo-900 cursor-pointer"
       {...props}
     />
   </Tooltip>
 );
 
-const ClickAction = (props: ActionHandlerProps) => (
+const ClickAction = ({ testId, ...props }: ActionHandlerProps) => (
   <Tooltip text={`${t("form.button.view", "View.")}`}>
     <EyeIcon
+      data-testid={testId}
       className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer"
       {...props}
     />
   </Tooltip>
 );
 
-const DeleteAction = (props: ActionHandlerProps) => (
+const DeleteAction = ({ testId, ...props }: ActionHandlerProps) => (
   <Tooltip text={`${t("form.button.delete", "Delete.")}`}>
     <TrashIcon
+      data-testid={testId}
       className="w-5 h-5 text-[#DA3535] hover:text-red-800 cursor-pointer"
       {...props}
     />
@@ -68,6 +72,15 @@ interface TableProps<T> {
   viewOnRowClick?: boolean;
   actions?: (record: T) => string | JSX.Element;
   onLoading?: boolean;
+  tableTestId?: string;
+  getRowTestId?: (record: T) => string | undefined;
+  getRowClassName?: (record: T) => string | undefined;
+  getRowStyle?: (record: T) => React.CSSProperties | undefined;
+  contained?: boolean;
+  getActionTestId?: (
+    record: T,
+    action: "edit" | "view" | "delete"
+  ) => string | undefined;
 }
 
 const Table = <T extends ItemWithId | null>({
@@ -79,14 +92,30 @@ const Table = <T extends ItemWithId | null>({
   viewOnRowClick = true,
   onLoading,
   actions,
+  tableTestId,
+  getRowTestId,
+  getRowClassName,
+  getRowStyle,
+  contained = false,
+  getActionTestId,
 }: TableProps<T>) => {
   const actionVisible =
     onEdit || (onView && !viewOnRowClick) || onDelete || actions;
+  const tableWrapperClass = contained
+    ? "mb-4 overflow-x-auto"
+    : "mb-4 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8";
 
   const rows = data.map(record => (
     <tr
-      className="hover:bg-gray-50 dark:hover:bg-gray-600 even:bg-[#F6F7F9]"
+      className={[
+        "hover:bg-gray-50 dark:hover:bg-gray-600 even:bg-[#F6F7F9]",
+        getRowClassName?.(record),
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      style={getRowStyle?.(record)}
       key={record?.id}
+      data-testid={getRowTestId?.(record)}
       onClick={evt => {
         if ((evt.target as HTMLElement).nodeName == "TD")
           viewOnRowClick && onView && onView(record);
@@ -100,6 +129,7 @@ const Table = <T extends ItemWithId | null>({
           <div className="flex gap-2 justify-center">
             {onEdit && (
               <EditAction
+                testId={getActionTestId?.(record, "edit")}
                 onClick={() => {
                   onEdit && onEdit(record);
                 }}
@@ -108,6 +138,7 @@ const Table = <T extends ItemWithId | null>({
             {actions && actions(record)}
             {!viewOnRowClick && (
               <ClickAction
+                testId={getActionTestId?.(record, "view")}
                 onClick={() => {
                   onView && onView(record);
                 }}
@@ -115,6 +146,7 @@ const Table = <T extends ItemWithId | null>({
             )}
             {onDelete && (
               <DeleteAction
+                testId={getActionTestId?.(record, "delete")}
                 onClick={() => {
                   onDelete && onDelete(record);
                 }}
@@ -126,9 +158,9 @@ const Table = <T extends ItemWithId | null>({
     </tr>
   ));
   return (
-    <div className="mb-4 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+    <div className={tableWrapperClass}>
       <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
-        <table className="min-w-full">
+        <table className="min-w-full" data-testid={tableTestId}>
           <thead>
             <tr>
               {columns.map(column => (

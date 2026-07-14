@@ -25,6 +25,7 @@ import TestLabel from "./testLabel";
 import { useTranslation } from "react-i18next";
 import { ArrowsPointingOutIcon } from "@heroicons/react/24/solid";
 import ReportLocationMapDialog from "components/case/reportMapDialog";
+import ReportRiskPanel from "./riskPanel";
 
 export const PromoteToCaseButton = tw.button`
   px-4 
@@ -219,6 +220,9 @@ const Report = (props: { id: string }) => {
                 </p>
               </div>
               <Divide hilight={true} />
+
+              <ReportRiskPanel viewModel={viewModel} />
+              <Divide />
 
               <div className="flex flex-row gap-2 md:flex-nowrap flex-wrap ">
                 <ReportInformation viewModel={viewModel} />

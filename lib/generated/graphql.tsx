@@ -46,6 +46,20 @@ export enum AccountsAuthorityUserRoleChoices {
   Rep = "REP",
 }
 
+/** An enumeration. */
+export enum AccountsVillageReporterAssignmentCensusRoleChoices {
+  /** Official */
+  Off = "OFF",
+  /** Volunteer */
+  Vol = "VOL",
+}
+
+export type AdminAnimalCensusCapabilityUpdateMutation = {
+  __typename?: "AdminAnimalCensusCapabilityUpdateMutation";
+  enabled?: Maybe<Scalars["Boolean"]["output"]>;
+  fields?: Maybe<Array<Maybe<AdminFieldValidationProblem>>>;
+};
+
 export type AdminAuthorityCreateMutation = {
   __typename?: "AdminAuthorityCreateMutation";
   result?: Maybe<AdminAuthorityCreateResult>;
@@ -81,6 +95,7 @@ export type AdminAuthorityCreateSuccess = {
   reportTypes: Array<AdminReportTypeCreateSuccess>;
   updatedAt: Scalars["DateTime"]["output"];
   users: Array<AdminAuthorityUserCreateSuccess>;
+  villages: Array<AdminVillageUpdateSuccess>;
 };
 
 export type AdminAuthorityDeleteMutation = {
@@ -194,6 +209,7 @@ export type AdminAuthorityUserCreateSuccess = {
   avatar?: Maybe<Scalars["String"]["output"]>;
   avatarUrl?: Maybe<Scalars["String"]["output"]>;
   casestatetransitionSet: Array<CaseStateTransitionType>;
+  censusSnapshots: Array<VillageCensusSnapshotType>;
   commentSet: Array<CommentUpdateSuccess>;
   consent: Scalars["Boolean"]["output"];
   dateJoined: Scalars["DateTime"]["output"];
@@ -213,6 +229,7 @@ export type AdminAuthorityUserCreateSuccess = {
   lastName: Scalars["String"]["output"];
   monitoringrecord: Array<ObservationSubjectMonitoringRecordType>;
   password: Scalars["String"]["output"];
+  riskAssessments: Array<RiskAssessmentProjectionType>;
   role?: Maybe<AccountsAuthorityUserRoleChoices>;
   subjectrecord: Array<ObservationSubjectType>;
   telephone?: Maybe<Scalars["String"]["output"]>;
@@ -221,6 +238,7 @@ export type AdminAuthorityUserCreateSuccess = {
   usermessageSet: Array<UserMessageType>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
   username: Scalars["String"]["output"];
+  villageAssignments: Array<VillageReporterAssignmentType>;
 };
 
 export type AdminAuthorityUserDeleteMutation = {
@@ -411,6 +429,27 @@ export type AdminCategoryUpdateResult =
 export type AdminCategoryUpdateSuccess = {
   __typename?: "AdminCategoryUpdateSuccess";
   category?: Maybe<CategoryType>;
+};
+
+export type AdminCensusDefinitionSetEnabledPayload = {
+  __typename?: "AdminCensusDefinitionSetEnabledPayload";
+  definition?: Maybe<CensusDefinitionType>;
+  fields?: Maybe<Array<Maybe<AdminFieldValidationProblem>>>;
+  version?: Maybe<CensusDefinitionVersionType>;
+};
+
+export type AdminCensusDefinitionSetupPayload = {
+  __typename?: "AdminCensusDefinitionSetupPayload";
+  definitions?: Maybe<Array<Maybe<CensusDefinitionType>>>;
+  fields?: Maybe<Array<Maybe<AdminFieldValidationProblem>>>;
+  versions?: Maybe<Array<Maybe<CensusDefinitionVersionType>>>;
+};
+
+export type AdminCensusDefinitionVersionPublishPayload = {
+  __typename?: "AdminCensusDefinitionVersionPublishPayload";
+  definition?: Maybe<CensusDefinitionType>;
+  fields?: Maybe<Array<Maybe<AdminFieldValidationProblem>>>;
+  version?: Maybe<CensusDefinitionVersionType>;
 };
 
 export type AdminClientCreateMutation = {
@@ -625,6 +664,130 @@ export type AdminFieldValidationProblem = {
   name: Scalars["String"]["output"];
 };
 
+export type AdminIntegrationClientCreateMutation = {
+  __typename?: "AdminIntegrationClientCreateMutation";
+  result?: Maybe<AdminIntegrationClientCreateResult>;
+};
+
+export type AdminIntegrationClientCreateProblem = {
+  __typename?: "AdminIntegrationClientCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type AdminIntegrationClientCreateResult =
+  | AdminIntegrationClientCreateProblem
+  | AdminIntegrationClientCreateSuccess;
+
+export type AdminIntegrationClientCreateSuccess = {
+  __typename?: "AdminIntegrationClientCreateSuccess";
+  clientSecret: Scalars["String"]["output"];
+  integrationClient: AdminIntegrationClientQueryType;
+};
+
+export type AdminIntegrationClientDisableMutation = {
+  __typename?: "AdminIntegrationClientDisableMutation";
+  result?: Maybe<AdminIntegrationClientUpdateResult>;
+};
+
+export type AdminIntegrationClientInput = {
+  allowedCallbackDomains?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  code: Scalars["String"]["input"];
+  integrationType?: InputMaybe<Scalars["String"]["input"]>;
+  name: Scalars["String"]["input"];
+  rateLimitPolicy?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+  scopeCodes?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  status?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type AdminIntegrationClientQueryType = {
+  __typename?: "AdminIntegrationClientQueryType";
+  allowedCallbackDomains: Scalars["GenericScalar"]["output"];
+  clientId: Scalars["String"]["output"];
+  code: Scalars["String"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
+  id: Scalars["ID"]["output"];
+  integrationType: IntegrationsIntegrationClientIntegrationTypeChoices;
+  name: Scalars["String"]["output"];
+  rateLimitPolicy: Scalars["GenericScalar"]["output"];
+  scopeCodes: Array<Scalars["String"]["output"]>;
+  status: IntegrationsIntegrationClientStatusChoices;
+  updatedAt: Scalars["DateTime"]["output"];
+};
+
+export type AdminIntegrationClientQueryTypeNodeConnection = {
+  __typename?: "AdminIntegrationClientQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminIntegrationClientQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
+};
+
+export type AdminIntegrationClientRotateSecretMutation = {
+  __typename?: "AdminIntegrationClientRotateSecretMutation";
+  result?: Maybe<AdminIntegrationClientRotateSecretResult>;
+};
+
+export type AdminIntegrationClientRotateSecretResult =
+  | AdminIntegrationClientRotateSecretSuccess
+  | AdminIntegrationClientUpdateProblem;
+
+export type AdminIntegrationClientRotateSecretSuccess = {
+  __typename?: "AdminIntegrationClientRotateSecretSuccess";
+  clientSecret: Scalars["String"]["output"];
+  integrationClient: AdminIntegrationClientQueryType;
+};
+
+export type AdminIntegrationClientUpdateMutation = {
+  __typename?: "AdminIntegrationClientUpdateMutation";
+  result?: Maybe<AdminIntegrationClientUpdateResult>;
+};
+
+export type AdminIntegrationClientUpdateProblem = {
+  __typename?: "AdminIntegrationClientUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type AdminIntegrationClientUpdateResult =
+  | AdminIntegrationClientUpdateProblem
+  | AdminIntegrationClientUpdateSuccess;
+
+export type AdminIntegrationClientUpdateSuccess = {
+  __typename?: "AdminIntegrationClientUpdateSuccess";
+  integrationClient: AdminIntegrationClientQueryType;
+};
+
+export type AdminIntegrationPolicyInput = {
+  aiDefaultCommentOwnerUserId?: InputMaybe<Scalars["ID"]["input"]>;
+  aiEnabled: Scalars["Boolean"]["input"];
+  clusterDetectorEnabled: Scalars["Boolean"]["input"];
+  dashboardRiskWindowDays: Scalars["Int"]["input"];
+  integrationEnabled: Scalars["Boolean"]["input"];
+  riskEvaluatorEnabled: Scalars["Boolean"]["input"];
+};
+
+export type AdminIntegrationPolicyUpdateMutation = {
+  __typename?: "AdminIntegrationPolicyUpdateMutation";
+  result?: Maybe<AdminIntegrationPolicyUpdateResult>;
+};
+
+export type AdminIntegrationPolicyUpdateProblem = {
+  __typename?: "AdminIntegrationPolicyUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type AdminIntegrationPolicyUpdateResult =
+  | AdminIntegrationPolicyUpdateProblem
+  | AdminIntegrationPolicyUpdateSuccess;
+
+export type AdminIntegrationPolicyUpdateSuccess = {
+  __typename?: "AdminIntegrationPolicyUpdateSuccess";
+  policy: IntegrationPolicyType;
+};
+
 export type AdminInvitationCodeCreateMutation = {
   __typename?: "AdminInvitationCodeCreateMutation";
   result?: Maybe<AdminInvitationCodeCreateResult>;
@@ -651,6 +814,7 @@ export type AdminInvitationCodeCreateSuccess = {
   role: Scalars["String"]["output"];
   throughDate: Scalars["DateTime"]["output"];
   updatedAt: Scalars["DateTime"]["output"];
+  villages: Array<AdminVillageUpdateSuccess>;
 };
 
 export type AdminInvitationCodeDeleteMutation = {
@@ -666,6 +830,7 @@ export type AdminInvitationCodeQueryType = {
   id: Scalars["ID"]["output"];
   role: Scalars["String"]["output"];
   throughDate: Scalars["DateTime"]["output"];
+  villages: Array<AdminVillageUpdateSuccess>;
 };
 
 export type AdminInvitationCodeQueryTypeNodeConnection = {
@@ -1444,6 +1609,202 @@ export type AdminUserUploadAvatarMutation = {
   success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
+export type AdminVillageCapabilityUpdateMutation = {
+  __typename?: "AdminVillageCapabilityUpdateMutation";
+  enabled: Scalars["Boolean"]["output"];
+};
+
+export type AdminVillageCreateMutation = {
+  __typename?: "AdminVillageCreateMutation";
+  result?: Maybe<AdminVillageCreateResult>;
+};
+
+export type AdminVillageCreateProblem = {
+  __typename?: "AdminVillageCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type AdminVillageCreateResult =
+  | AdminVillageCreateProblem
+  | AdminVillageCreateSuccess;
+
+export type AdminVillageCreateSuccess = {
+  __typename?: "AdminVillageCreateSuccess";
+  active: Scalars["Boolean"]["output"];
+  authority: AdminAuthorityCreateSuccess;
+  censusSnapshots: Array<VillageCensusSnapshotType>;
+  code: Scalars["String"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  id: Scalars["ID"]["output"];
+  invitations: Array<AdminInvitationCodeCreateSuccess>;
+  latitude?: Maybe<Scalars["Float"]["output"]>;
+  location?: Maybe<Scalars["GeoJSON"]["output"]>;
+  longitude?: Maybe<Scalars["Float"]["output"]>;
+  name: Scalars["String"]["output"];
+  reporterAssignments: Array<VillageReporterAssignmentType>;
+  updatedAt: Scalars["DateTime"]["output"];
+};
+
+export type AdminVillageQueryType = {
+  __typename?: "AdminVillageQueryType";
+  active: Scalars["Boolean"]["output"];
+  authority: AdminAuthorityCreateSuccess;
+  code: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  latitude?: Maybe<Scalars["Float"]["output"]>;
+  location?: Maybe<Scalars["GeoJSON"]["output"]>;
+  longitude?: Maybe<Scalars["Float"]["output"]>;
+  name: Scalars["String"]["output"];
+};
+
+export type AdminVillageQueryTypeNodeConnection = {
+  __typename?: "AdminVillageQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminVillageQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
+};
+
+export type AdminVillageUpdateMutation = {
+  __typename?: "AdminVillageUpdateMutation";
+  result?: Maybe<AdminVillageUpdateResult>;
+};
+
+export type AdminVillageUpdateProblem = {
+  __typename?: "AdminVillageUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type AdminVillageUpdateResult =
+  | AdminVillageUpdateProblem
+  | AdminVillageUpdateSuccess;
+
+export type AdminVillageUpdateSuccess = {
+  __typename?: "AdminVillageUpdateSuccess";
+  active: Scalars["Boolean"]["output"];
+  authority: AdminAuthorityCreateSuccess;
+  censusSnapshots: Array<VillageCensusSnapshotType>;
+  code: Scalars["String"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
+  deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  id: Scalars["ID"]["output"];
+  invitations: Array<AdminInvitationCodeCreateSuccess>;
+  latitude?: Maybe<Scalars["Float"]["output"]>;
+  location?: Maybe<Scalars["GeoJSON"]["output"]>;
+  longitude?: Maybe<Scalars["Float"]["output"]>;
+  name: Scalars["String"]["output"];
+  reporterAssignments: Array<VillageReporterAssignmentType>;
+  updatedAt: Scalars["DateTime"]["output"];
+};
+
+export type AdminWebhookEndpointCreateMutation = {
+  __typename?: "AdminWebhookEndpointCreateMutation";
+  result?: Maybe<AdminWebhookEndpointCreateResult>;
+};
+
+export type AdminWebhookEndpointCreateProblem = {
+  __typename?: "AdminWebhookEndpointCreateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type AdminWebhookEndpointCreateResult =
+  | AdminWebhookEndpointCreateProblem
+  | AdminWebhookEndpointCreateSuccess;
+
+export type AdminWebhookEndpointCreateSuccess = {
+  __typename?: "AdminWebhookEndpointCreateSuccess";
+  webhookEndpoint: AdminWebhookEndpointQueryType;
+};
+
+export type AdminWebhookEndpointDisableMutation = {
+  __typename?: "AdminWebhookEndpointDisableMutation";
+  result?: Maybe<AdminWebhookEndpointUpdateResult>;
+};
+
+export type AdminWebhookEndpointInput = {
+  activeSigningSecretRef?: InputMaybe<Scalars["String"]["input"]>;
+  activeSigningSecretVersion?: InputMaybe<Scalars["Int"]["input"]>;
+  customHeaders?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+  eventTypes?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  integrationClientId: Scalars["ID"]["input"];
+  maxAttempts?: InputMaybe<Scalars["Int"]["input"]>;
+  name: Scalars["String"]["input"];
+  nextSigningSecretRef?: InputMaybe<Scalars["String"]["input"]>;
+  nextSigningSecretVersion?: InputMaybe<Scalars["Int"]["input"]>;
+  retryPolicy?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+  schemaVersion?: InputMaybe<Scalars["String"]["input"]>;
+  status?: InputMaybe<Scalars["String"]["input"]>;
+  timeoutSeconds?: InputMaybe<Scalars["Int"]["input"]>;
+  url: Scalars["String"]["input"];
+};
+
+export type AdminWebhookEndpointQueryType = {
+  __typename?: "AdminWebhookEndpointQueryType";
+  activeSigningSecretRef: Scalars["String"]["output"];
+  activeSigningSecretVersion: Scalars["Int"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
+  customHeaders: Scalars["GenericScalar"]["output"];
+  eventTypes: Array<Scalars["String"]["output"]>;
+  id: Scalars["ID"]["output"];
+  integrationClient: AdminIntegrationClientQueryType;
+  lastRotatedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  maxAttempts: Scalars["Int"]["output"];
+  name: Scalars["String"]["output"];
+  nextSigningSecretRef: Scalars["String"]["output"];
+  nextSigningSecretVersion?: Maybe<Scalars["Int"]["output"]>;
+  retryPolicy: Scalars["GenericScalar"]["output"];
+  schemaVersion: Scalars["String"]["output"];
+  status: IntegrationsWebhookEndpointStatusChoices;
+  timeoutSeconds: Scalars["Int"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
+  url: Scalars["String"]["output"];
+};
+
+export type AdminWebhookEndpointQueryTypeNodeConnection = {
+  __typename?: "AdminWebhookEndpointQueryTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<AdminWebhookEndpointQueryType>>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
+};
+
+export type AdminWebhookEndpointUpdateMutation = {
+  __typename?: "AdminWebhookEndpointUpdateMutation";
+  result?: Maybe<AdminWebhookEndpointUpdateResult>;
+};
+
+export type AdminWebhookEndpointUpdateProblem = {
+  __typename?: "AdminWebhookEndpointUpdateProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type AdminWebhookEndpointUpdateResult =
+  | AdminWebhookEndpointUpdateProblem
+  | AdminWebhookEndpointUpdateSuccess;
+
+export type AdminWebhookEndpointUpdateSuccess = {
+  __typename?: "AdminWebhookEndpointUpdateSuccess";
+  webhookEndpoint: AdminWebhookEndpointQueryType;
+};
+
+export type AnimalCensusFactType = {
+  __typename?: "AnimalCensusFactType";
+  animalQuantity?: Maybe<Scalars["Int"]["output"]>;
+  extraDimensions?: Maybe<Scalars["GenericScalar"]["output"]>;
+  householdQuantity?: Maybe<Scalars["Int"]["output"]>;
+  id: Scalars["ID"]["output"];
+  measures?: Maybe<Scalars["GenericScalar"]["output"]>;
+  rowKey: Scalars["String"]["output"];
+  rowLabel: Scalars["String"]["output"];
+};
+
 export type AuthorityBoundaryConnectType = {
   __typename?: "AuthorityBoundaryConnectType";
   code: Scalars["String"]["output"];
@@ -1487,6 +1848,10 @@ export type AuthorityUserRegisterMutation = {
 export type AuthorityUserType = {
   __typename?: "AuthorityUserType";
   address?: Maybe<Scalars["String"]["output"]>;
+  assignedVillageAssignments?: Maybe<
+    Array<Maybe<VillageReporterAssignmentType>>
+  >;
+  assignedVillages?: Maybe<Array<Maybe<VillageType>>>;
   authority: AdminAuthorityCreateSuccess;
   email: Scalars["String"]["output"];
   firstName: Scalars["String"]["output"];
@@ -1564,12 +1929,66 @@ export type CategoryType = {
   ordering: Scalars["Int"]["output"];
 };
 
+/** An enumeration. */
+export enum CensusCensusDefinitionKindChoices {
+  /** Animal */
+  Animal = "ANIMAL",
+  /** Human */
+  Human = "HUMAN",
+}
+
+/** An enumeration. */
+export enum CensusCensusDefinitionVersionStatusChoices {
+  /** Draft */
+  Draft = "DRAFT",
+  /** Published */
+  Published = "PUBLISHED",
+  /** Retired */
+  Retired = "RETIRED",
+}
+
+export type CensusDefinitionType = {
+  __typename?: "CensusDefinitionType";
+  enabled: Scalars["Boolean"]["output"];
+  id: Scalars["ID"]["output"];
+  kind: CensusCensusDefinitionKindChoices;
+  sortOrder: Scalars["Int"]["output"];
+};
+
+export type CensusDefinitionVersionType = {
+  __typename?: "CensusDefinitionVersionType";
+  definition: CensusDefinitionType;
+  definitionSchema?: Maybe<Scalars["GenericScalar"]["output"]>;
+  id: Scalars["ID"]["output"];
+  publishedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  runtimeSchema?: Maybe<Scalars["GenericScalar"]["output"]>;
+  schema?: Maybe<Scalars["GenericScalar"]["output"]>;
+  status: CensusCensusDefinitionVersionStatusChoices;
+  version: Scalars["Int"]["output"];
+};
+
+export type CensusKindSummaryType = {
+  __typename?: "CensusKindSummaryType";
+  activeVersion?: Maybe<CensusDefinitionVersionType>;
+  enabled: Scalars["Boolean"]["output"];
+  kind: Scalars["String"]["output"];
+  latestSnapshot?: Maybe<VillageCensusSnapshotType>;
+  name: Scalars["String"]["output"];
+};
+
+/** An enumeration. */
+export enum CensusVillageCensusSnapshotStatusChoices {
+  /** Submitted */
+  Submitted = "SUBMITTED",
+}
+
 export type CheckInvitationCodeType = {
   __typename?: "CheckInvitationCodeType";
   authority: AdminAuthorityCreateSuccess;
   code: Scalars["String"]["output"];
   generatedEmail?: Maybe<Scalars["String"]["output"]>;
   generatedUsername?: Maybe<Scalars["String"]["output"]>;
+  villages: Array<AdminVillageUpdateSuccess>;
 };
 
 export type ClientType = {
@@ -1671,6 +2090,20 @@ export type ConvertToTestReportMutation = {
   report?: Maybe<IncidentReportType>;
 };
 
+export type CurrentAnimalCensusFactType = {
+  __typename?: "CurrentAnimalCensusFactType";
+  fact: AnimalCensusFactType;
+  id: Scalars["ID"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
+};
+
+export type CurrentHumanCensusFactType = {
+  __typename?: "CurrentHumanCensusFactType";
+  fact: HumanCensusFactType;
+  id: Scalars["ID"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
+};
+
 export type DeepStateDefinitionType = {
   __typename?: "DeepStateDefinitionType";
   id: Scalars["ID"]["output"];
@@ -1764,6 +2197,14 @@ export type ForwardStateMutation = {
   result?: Maybe<CaseStateType>;
 };
 
+export type HumanCensusFactType = {
+  __typename?: "HumanCensusFactType";
+  dimensions?: Maybe<Scalars["GenericScalar"]["output"]>;
+  id: Scalars["ID"]["output"];
+  measures?: Maybe<Scalars["GenericScalar"]["output"]>;
+  rowKey: Scalars["String"]["output"];
+};
+
 export type ImageType = {
   __typename?: "ImageType";
   createdAt: Scalars["DateTime"]["output"];
@@ -1784,6 +2225,7 @@ export type IncidentReportType = {
   caseId?: Maybe<Scalars["UUID"]["output"]>;
   coverImage?: Maybe<ImageType>;
   createdAt: Scalars["DateTime"]["output"];
+  currentRiskAssessment?: Maybe<RiskAssessmentProjectionType>;
   data?: Maybe<Scalars["GenericScalar"]["output"]>;
   definition?: Maybe<Scalars["GenericScalar"]["output"]>;
   followups?: Maybe<Array<Maybe<FollowupType>>>;
@@ -1799,10 +2241,15 @@ export type IncidentReportType = {
   rendererData: Scalars["String"]["output"];
   reportType?: Maybe<ReportTypeType>;
   reportedBy?: Maybe<UserType>;
+  riskAssessmentHistory?: Maybe<Array<Maybe<RiskAssessmentProjectionType>>>;
   testFlag: Scalars["Boolean"]["output"];
   threadId?: Maybe<Scalars["Int"]["output"]>;
   updatedAt: Scalars["DateTime"]["output"];
   uploadFiles?: Maybe<Array<Maybe<UploadFileType>>>;
+};
+
+export type IncidentReportTypeRiskAssessmentHistoryArgs = {
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type IncidentReportTypeNodeConnection = {
@@ -1814,6 +2261,115 @@ export type IncidentReportTypeNodeConnection = {
   totalCount?: Maybe<Scalars["Int"]["output"]>;
 };
 
+export type IntegrationClusterClientType = {
+  __typename?: "IntegrationClusterClientType";
+  code: Scalars["String"]["output"];
+  name: Scalars["String"]["output"];
+};
+
+export type IntegrationClusterResultDashboardType = {
+  __typename?: "IntegrationClusterResultDashboardType";
+  algorithmVersion: Scalars["String"]["output"];
+  authorityIds: Array<Scalars["Int"]["output"]>;
+  createdAt: Scalars["DateTime"]["output"];
+  explanation: Scalars["String"]["output"];
+  externalClusterId: Scalars["String"]["output"];
+  geometry?: Maybe<Scalars["GenericScalar"]["output"]>;
+  id: Scalars["UUID"]["output"];
+  incidentIds: Array<Scalars["String"]["output"]>;
+  integrationClient: IntegrationClusterClientType;
+  linkedReports: Array<IncidentReportType>;
+  metadata: Scalars["GenericScalar"]["output"];
+  radiusMeters?: Maybe<Scalars["Float"]["output"]>;
+  reportCount: Scalars["Int"]["output"];
+  riskLevel?: Maybe<Scalars["String"]["output"]>;
+  score?: Maybe<Scalars["Float"]["output"]>;
+  updatedAt: Scalars["DateTime"]["output"];
+  villageIds: Array<Scalars["Int"]["output"]>;
+  windowEnd: Scalars["Date"]["output"];
+  windowStart: Scalars["Date"]["output"];
+};
+
+export type IntegrationClusterResultDashboardTypeNodeConnection = {
+  __typename?: "IntegrationClusterResultDashboardTypeNodeConnection";
+  /** Pagination data for this connection. */
+  pageInfo: PageInfoExtra;
+  /** Contains the nodes in this connection. */
+  results: Array<Maybe<IntegrationClusterResultDashboardType>>;
+  totalCount?: Maybe<Scalars["Int"]["output"]>;
+};
+
+export type IntegrationOptionType = {
+  __typename?: "IntegrationOptionType";
+  code: Scalars["String"]["output"];
+  label: Scalars["String"]["output"];
+};
+
+export type IntegrationPolicyType = {
+  __typename?: "IntegrationPolicyType";
+  aiDefaultCommentOwnerName?: Maybe<Scalars["String"]["output"]>;
+  aiDefaultCommentOwnerUserId?: Maybe<Scalars["String"]["output"]>;
+  aiEnabled: Scalars["Boolean"]["output"];
+  clusterDetectorEnabled: Scalars["Boolean"]["output"];
+  dashboardRiskWindowDays: Scalars["Int"]["output"];
+  integrationEnabled: Scalars["Boolean"]["output"];
+  riskEvaluatorEnabled: Scalars["Boolean"]["output"];
+};
+
+/** An enumeration. */
+export enum IntegrationsIntegrationClientIntegrationTypeChoices {
+  /** AI assistant */
+  AiAssistant = "AI_ASSISTANT",
+  /** Cluster detector */
+  ClusterDetector = "CLUSTER_DETECTOR",
+  /** Generic */
+  Generic = "GENERIC",
+  /** Risk evaluator */
+  RiskEvaluator = "RISK_EVALUATOR",
+}
+
+/** An enumeration. */
+export enum IntegrationsIntegrationClientStatusChoices {
+  /** Active */
+  Active = "ACTIVE",
+  /** Disabled */
+  Disabled = "DISABLED",
+  /** Revoked */
+  Revoked = "REVOKED",
+}
+
+/** An enumeration. */
+export enum IntegrationsRiskAssessmentLevelChoices {
+  /** Critical */
+  Critical = "CRITICAL",
+  /** High */
+  High = "HIGH",
+  /** Low */
+  Low = "LOW",
+  /** Medium */
+  Medium = "MEDIUM",
+}
+
+/** An enumeration. */
+export enum IntegrationsRiskAssessmentSourceChoices {
+  /** AI */
+  Ai = "AI",
+  /** External risk evaluator */
+  ExternalRiskEvaluator = "EXTERNAL_RISK_EVALUATOR",
+  /** Human */
+  Human = "HUMAN",
+  /** Rule engine */
+  RuleEngine = "RULE_ENGINE",
+}
+
+/** An enumeration. */
+export enum IntegrationsWebhookEndpointStatusChoices {
+  /** Active */
+  Active = "ACTIVE",
+  /** Disabled */
+  Disabled = "DISABLED",
+}
+
 export type InvitationCodeType = {
   __typename?: "InvitationCodeType";
   authority: AdminAuthorityCreateSuccess;
@@ -1822,6 +2378,7 @@ export type InvitationCodeType = {
   id: Scalars["ID"]["output"];
   role: Scalars["String"]["output"];
   throughDate: Scalars["DateTime"]["output"];
+  villages: Array<AdminVillageUpdateSuccess>;
 };
 
 export type LoginQrTokenType = {
@@ -1839,6 +2396,7 @@ export type MessageType = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  adminAnimalCensusCapabilityUpdate?: Maybe<AdminAnimalCensusCapabilityUpdateMutation>;
   adminAuthorityCreate?: Maybe<AdminAuthorityCreateMutation>;
   adminAuthorityDelete?: Maybe<AdminAuthorityDeleteMutation>;
   adminAuthorityNotificationDelete?: Maybe<AdminAuthorityNotificationDeleteMutation>;
@@ -1854,6 +2412,10 @@ export type Mutation = {
   adminCategoryCreate?: Maybe<AdminCategoryCreateMutation>;
   adminCategoryDelete?: Maybe<AdminCategoryDeleteMutation>;
   adminCategoryUpdate?: Maybe<AdminCategoryUpdateMutation>;
+  adminCensusDefinitionSetEnabled?: Maybe<AdminCensusDefinitionSetEnabledPayload>;
+  adminCensusDefinitionVersionPublish?: Maybe<AdminCensusDefinitionVersionPublishPayload>;
+  adminCensusDefinitionVersionSaveDraft?: Maybe<AdminCensusDefinitionVersionPublishPayload>;
+  adminCensusDefinitionsEnsureDefaults?: Maybe<AdminCensusDefinitionSetupPayload>;
   adminClientCreate?: Maybe<AdminClientCreateMutation>;
   adminClientUpdate?: Maybe<AdminClientUpdateMutation>;
   adminConfigurationCreate?: Maybe<AdminConfigurationCreateMutation>;
@@ -1862,6 +2424,11 @@ export type Mutation = {
   adminDomainCreate?: Maybe<AdminDomainCreateMutation>;
   adminDomainDelete?: Maybe<AdminDomainDeleteMutation>;
   adminDomainUpdate?: Maybe<AdminDomainUpdateMutation>;
+  adminIntegrationClientCreate?: Maybe<AdminIntegrationClientCreateMutation>;
+  adminIntegrationClientDisable?: Maybe<AdminIntegrationClientDisableMutation>;
+  adminIntegrationClientRotateSecret?: Maybe<AdminIntegrationClientRotateSecretMutation>;
+  adminIntegrationClientUpdate?: Maybe<AdminIntegrationClientUpdateMutation>;
+  adminIntegrationPolicyUpdate?: Maybe<AdminIntegrationPolicyUpdateMutation>;
   adminInvitationCodeCreate?: Maybe<AdminInvitationCodeCreateMutation>;
   adminInvitationCodeDelete?: Maybe<AdminInvitationCodeDeleteMutation>;
   adminInvitationCodeUpdate?: Maybe<AdminInvitationCodeUpdateMutation>;
@@ -1899,6 +2466,12 @@ export type Mutation = {
   adminUserChangePassword?: Maybe<AdminUserChangePasswordMutation>;
   adminUserUpdateProfile?: Maybe<AdminUserUpdateProfileMutation>;
   adminUserUploadAvatar?: Maybe<AdminUserUploadAvatarMutation>;
+  adminVillageCapabilityUpdate?: Maybe<AdminVillageCapabilityUpdateMutation>;
+  adminVillageCreate?: Maybe<AdminVillageCreateMutation>;
+  adminVillageUpdate?: Maybe<AdminVillageUpdateMutation>;
+  adminWebhookEndpointCreate?: Maybe<AdminWebhookEndpointCreateMutation>;
+  adminWebhookEndpointDisable?: Maybe<AdminWebhookEndpointDisableMutation>;
+  adminWebhookEndpointUpdate?: Maybe<AdminWebhookEndpointUpdateMutation>;
   authorityUserRegister?: Maybe<AuthorityUserRegisterMutation>;
   commentCreate?: Maybe<CommentCreateMutation>;
   commentDelete?: Maybe<CommentDeleteMutation>;
@@ -1917,6 +2490,7 @@ export type Mutation = {
   resetPassword?: Maybe<ResetPasswordMutation>;
   resetPasswordRequest?: Maybe<ResetPasswordRequestMutation>;
   revokeToken?: Maybe<Revoke>;
+  setReportRisk?: Maybe<SetReportRiskMutation>;
   submitFollowupReport?: Maybe<SubmitFollowupReport>;
   submitImage?: Maybe<SubmitImage>;
   submitIncidentReport?: Maybe<SubmitIncidentReport>;
@@ -1925,12 +2499,17 @@ export type Mutation = {
   submitRecordImage?: Maybe<SubmitRecordImage>;
   submitRecordUploadFile?: Maybe<SubmitRecordUploadFile>;
   submitUploadFile?: Maybe<SubmitUploadFile>;
+  submitVillageCensusSnapshotV2?: Maybe<SubmitVillageCensusSnapshotV2Mutation>;
   submitZeroReport?: Maybe<SubmitZeroReportMutation>;
   /** Obtain JSON Web Token mutation */
   tokenAuth?: Maybe<ObtainJsonWebToken>;
   unpublishReportType?: Maybe<UnPublishReportTypeMutation>;
   verifyLoginQrToken?: Maybe<VerifyLoginQrTokenMutation>;
   verifyToken?: Maybe<Verify>;
+};
+
+export type MutationAdminAnimalCensusCapabilityUpdateArgs = {
+  enabled: Scalars["Boolean"]["input"];
 };
 
 export type MutationAdminAuthorityCreateArgs = {
@@ -1989,6 +2568,9 @@ export type MutationAdminAuthorityUserUpdateArgs = {
   role?: InputMaybe<Scalars["String"]["input"]>;
   telephone?: InputMaybe<Scalars["String"]["input"]>;
   username: Scalars["String"]["input"];
+  villageAssignments?: InputMaybe<
+    Array<InputMaybe<VillageReporterAssignmentInput>>
+  >;
 };
 
 export type MutationAdminAuthorityUserUpdatePasswordArgs = {
@@ -2033,6 +2615,28 @@ export type MutationAdminCategoryUpdateArgs = {
   ordering: Scalars["Int"]["input"];
 };
 
+export type MutationAdminCensusDefinitionSetEnabledArgs = {
+  enabled: Scalars["Boolean"]["input"];
+  kind: Scalars["String"]["input"];
+};
+
+export type MutationAdminCensusDefinitionVersionPublishArgs = {
+  definitionSchema?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+  enabled?: InputMaybe<Scalars["Boolean"]["input"]>;
+  kind: Scalars["String"]["input"];
+  schema?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+};
+
+export type MutationAdminCensusDefinitionVersionSaveDraftArgs = {
+  definitionSchema: Scalars["GenericScalar"]["input"];
+  kind: Scalars["String"]["input"];
+};
+
+export type MutationAdminCensusDefinitionsEnsureDefaultsArgs = {
+  resetSchema?: InputMaybe<Scalars["Boolean"]["input"]>;
+  seedSpecies?: InputMaybe<Scalars["Boolean"]["input"]>;
+};
+
 export type MutationAdminClientCreateArgs = {
   name: Scalars["String"]["input"];
   schemaName: Scalars["String"]["input"];
@@ -2074,6 +2678,27 @@ export type MutationAdminDomainUpdateArgs = {
   isPrimary: Scalars["Boolean"]["input"];
 };
 
+export type MutationAdminIntegrationClientCreateArgs = {
+  input: AdminIntegrationClientInput;
+};
+
+export type MutationAdminIntegrationClientDisableArgs = {
+  id: Scalars["ID"]["input"];
+};
+
+export type MutationAdminIntegrationClientRotateSecretArgs = {
+  id: Scalars["ID"]["input"];
+};
+
+export type MutationAdminIntegrationClientUpdateArgs = {
+  id: Scalars["ID"]["input"];
+  input: AdminIntegrationClientInput;
+};
+
+export type MutationAdminIntegrationPolicyUpdateArgs = {
+  input: AdminIntegrationPolicyInput;
+};
+
 export type MutationAdminInvitationCodeCreateArgs = {
   authorityId: Scalars["Int"]["input"];
   code: Scalars["String"]["input"];
@@ -2081,6 +2706,7 @@ export type MutationAdminInvitationCodeCreateArgs = {
   inherits?: InputMaybe<Array<InputMaybe<Scalars["Int"]["input"]>>>;
   role?: InputMaybe<Scalars["String"]["input"]>;
   throughDate: Scalars["DateTime"]["input"];
+  villageIds?: InputMaybe<Array<InputMaybe<Scalars["Int"]["input"]>>>;
 };
 
 export type MutationAdminInvitationCodeDeleteArgs = {
@@ -2094,6 +2720,7 @@ export type MutationAdminInvitationCodeUpdateArgs = {
   id: Scalars["ID"]["input"];
   role?: InputMaybe<Scalars["String"]["input"]>;
   throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  villageIds?: InputMaybe<Array<InputMaybe<Scalars["Int"]["input"]>>>;
 };
 
 export type MutationAdminNotificationTemplateCreateArgs = {
@@ -2349,6 +2976,42 @@ export type MutationAdminUserUploadAvatarArgs = {
   image?: InputMaybe<Scalars["Upload"]["input"]>;
 };
 
+export type MutationAdminVillageCapabilityUpdateArgs = {
+  enabled: Scalars["Boolean"]["input"];
+};
+
+export type MutationAdminVillageCreateArgs = {
+  active?: InputMaybe<Scalars["Boolean"]["input"]>;
+  authorityId: Scalars["Int"]["input"];
+  code: Scalars["String"]["input"];
+  latitude?: InputMaybe<Scalars["Float"]["input"]>;
+  longitude?: InputMaybe<Scalars["Float"]["input"]>;
+  name: Scalars["String"]["input"];
+};
+
+export type MutationAdminVillageUpdateArgs = {
+  active: Scalars["Boolean"]["input"];
+  authorityId: Scalars["Int"]["input"];
+  code: Scalars["String"]["input"];
+  id: Scalars["Int"]["input"];
+  latitude?: InputMaybe<Scalars["Float"]["input"]>;
+  longitude?: InputMaybe<Scalars["Float"]["input"]>;
+  name: Scalars["String"]["input"];
+};
+
+export type MutationAdminWebhookEndpointCreateArgs = {
+  input: AdminWebhookEndpointInput;
+};
+
+export type MutationAdminWebhookEndpointDisableArgs = {
+  id: Scalars["ID"]["input"];
+};
+
+export type MutationAdminWebhookEndpointUpdateArgs = {
+  id: Scalars["ID"]["input"];
+  input: AdminWebhookEndpointInput;
+};
+
 export type MutationAuthorityUserRegisterArgs = {
   address?: InputMaybe<Scalars["String"]["input"]>;
   email: Scalars["String"]["input"];
@@ -2422,6 +3085,11 @@ export type MutationRevokeTokenArgs = {
   refreshToken?: InputMaybe<Scalars["String"]["input"]>;
 };
 
+export type MutationSetReportRiskArgs = {
+  level?: InputMaybe<Scalars["String"]["input"]>;
+  reportId: Scalars["UUID"]["input"];
+};
+
 export type MutationSubmitFollowupReportArgs = {
   data: Scalars["GenericScalar"]["input"];
   followupId?: InputMaybe<Scalars["UUID"]["input"]>;
@@ -2475,6 +3143,13 @@ export type MutationSubmitUploadFileArgs = {
   file: Scalars["Upload"]["input"];
   fileId?: InputMaybe<Scalars["UUID"]["input"]>;
   reportId: Scalars["UUID"]["input"];
+};
+
+export type MutationSubmitVillageCensusSnapshotV2Args = {
+  censusDate: Scalars["Date"]["input"];
+  definitionVersionId: Scalars["Int"]["input"];
+  formData: Scalars["GenericScalar"]["input"];
+  villageId: Scalars["Int"]["input"];
 };
 
 export type MutationTokenAuthArgs = {
@@ -2725,6 +3400,8 @@ export type PublishReportTypeMutation = {
 
 export type Query = {
   __typename?: "Query";
+  activeCensusDefinitionVersion?: Maybe<CensusDefinitionVersionType>;
+  activeVillageCensusDefinitions?: Maybe<Array<Maybe<CensusKindSummaryType>>>;
   adminAuthorityGet?: Maybe<AdminAuthorityQueryType>;
   adminAuthorityInheritLookup?: Maybe<AdminAuthorityInheritLookupTypeNodeConnection>;
   adminAuthorityQuery?: Maybe<AdminAuthorityQueryTypeNodeConnection>;
@@ -2735,6 +3412,8 @@ export type Query = {
   adminClientQuery?: Maybe<AdminClientQueryTypeNodeConnection>;
   adminConfigurationQuery?: Maybe<AdminConfigurationQueryTypeNodeConnection>;
   adminDomainGet?: Maybe<DomainType>;
+  adminIntegrationClientGet?: Maybe<AdminIntegrationClientQueryType>;
+  adminIntegrationClientQuery?: Maybe<AdminIntegrationClientQueryTypeNodeConnection>;
   adminInvitationCodeQuery?: Maybe<AdminInvitationCodeQueryTypeNodeConnection>;
   adminNotificationTemplateAuthorityQuery?: Maybe<
     Array<Maybe<AdminNotificationTemplateAuthorityType>>
@@ -2751,6 +3430,10 @@ export type Query = {
   adminStateDefinitionQuery?: Maybe<AdminStateDefinitionQueryTypeNodeConnection>;
   adminStateStepQuery?: Maybe<Array<Maybe<StateStepType>>>;
   adminStateTransitionQuery?: Maybe<Array<Maybe<StateTransitionType>>>;
+  adminVillageQuery?: Maybe<AdminVillageQueryTypeNodeConnection>;
+  adminWebhookEndpointGet?: Maybe<AdminWebhookEndpointQueryType>;
+  adminWebhookEndpointQuery?: Maybe<AdminWebhookEndpointQueryTypeNodeConnection>;
+  animalCensusCapabilityEnabled: Scalars["Boolean"]["output"];
   authorities?: Maybe<AuthorityTypeNodeConnection>;
   authority?: Maybe<AuthorityType>;
   authorityInheritsDown?: Maybe<Array<AuthorityType>>;
@@ -2761,11 +3444,17 @@ export type Query = {
   caseGet?: Maybe<CaseType>;
   casesQuery?: Maybe<CaseTypeNodeConnection>;
   category?: Maybe<CategoryType>;
+  censusDefinitions?: Maybe<Array<Maybe<CensusDefinitionType>>>;
   checkInvitationCode?: Maybe<CheckInvitationCodeType>;
+  clusterResult?: Maybe<IntegrationClusterResultDashboardType>;
+  clusterResults?: Maybe<IntegrationClusterResultDashboardTypeNodeConnection>;
   comments?: Maybe<Array<Maybe<CommentType>>>;
   configurationGet?: Maybe<ConfigurationType>;
   configurations?: Maybe<Array<Maybe<ConfigurationType>>>;
+  currentAnimalCensusFacts?: Maybe<Array<Maybe<CurrentAnimalCensusFactType>>>;
+  currentHumanCensusFacts?: Maybe<Array<Maybe<CurrentHumanCensusFactType>>>;
   deepStateDefinitionGet?: Maybe<DeepStateDefinitionType>;
+  draftCensusDefinitionVersion?: Maybe<CensusDefinitionVersionType>;
   eventsQuery?: Maybe<EventType>;
   features?: Maybe<Array<Maybe<FeatureType>>>;
   followupReport?: Maybe<FollowupReportType>;
@@ -2775,7 +3464,13 @@ export type Query = {
   healthCheck?: Maybe<Scalars["String"]["output"]>;
   incidentReport?: Maybe<IncidentReportType>;
   incidentReports?: Maybe<IncidentReportTypeNodeConnection>;
+  integrationClientStatusOptions: Array<IntegrationOptionType>;
+  integrationEventTypeOptions: Array<IntegrationOptionType>;
+  integrationPolicyGet: IntegrationPolicyType;
+  integrationScopeOptions: Array<IntegrationOptionType>;
+  integrationTypeOptions: Array<IntegrationOptionType>;
   invitationCode?: Maybe<InvitationCodeType>;
+  latestVillageCensusV2?: Maybe<VillageCensusSnapshotType>;
   me?: Maybe<UserProfileType>;
   myIncidentReports?: Maybe<IncidentReportTypeNodeConnection>;
   myMessage?: Maybe<UserMessageType>;
@@ -2809,6 +3504,16 @@ export type Query = {
   syncObservationDefinitions?: Maybe<ObservationDefinitionSyncOutputType>;
   syncReportTypes?: Maybe<ReportTypeSyncOutputType>;
   transitionListByReportType?: Maybe<Array<StateTransitionType>>;
+  villageCapabilityEnabled: Scalars["Boolean"]["output"];
+  webhookEndpointStatusOptions: Array<IntegrationOptionType>;
+};
+
+export type QueryActiveCensusDefinitionVersionArgs = {
+  kind: Scalars["String"]["input"];
+};
+
+export type QueryActiveVillageCensusDefinitionsArgs = {
+  villageId: Scalars["Int"]["input"];
 };
 
 export type QueryAdminAuthorityGetArgs = {
@@ -2906,6 +3611,23 @@ export type QueryAdminConfigurationQueryArgs = {
 
 export type QueryAdminDomainGetArgs = {
   id: Scalars["ID"]["input"];
+};
+
+export type QueryAdminIntegrationClientGetArgs = {
+  id: Scalars["ID"]["input"];
+};
+
+export type QueryAdminIntegrationClientQueryArgs = {
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  integrationType?: InputMaybe<Scalars["String"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  status?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type QueryAdminInvitationCodeQueryArgs = {
@@ -3018,6 +3740,37 @@ export type QueryAdminStateTransitionQueryArgs = {
   definitionId: Scalars["ID"]["input"];
 };
 
+export type QueryAdminVillageQueryArgs = {
+  active?: InputMaybe<Scalars["Boolean"]["input"]>;
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  authorityId?: InputMaybe<Scalars["Decimal"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type QueryAdminWebhookEndpointGetArgs = {
+  id: Scalars["ID"]["input"];
+};
+
+export type QueryAdminWebhookEndpointQueryArgs = {
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  eventType?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  integrationClientId?: InputMaybe<Scalars["Decimal"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  status?: InputMaybe<Scalars["String"]["input"]>;
+};
+
 export type QueryAuthoritiesArgs = {
   after?: InputMaybe<Scalars["String"]["input"]>;
   before?: InputMaybe<Scalars["String"]["input"]>;
@@ -3051,6 +3804,7 @@ export type QueryBoundaryConnectedIncidentReportsArgs = {
   before?: InputMaybe<Scalars["String"]["input"]>;
   createdAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
   createdAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  currentRiskLevels?: InputMaybe<Scalars["String"]["input"]>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
   incidentDate_Gte?: InputMaybe<Scalars["Date"]["input"]>;
   incidentDate_Lte?: InputMaybe<Scalars["Date"]["input"]>;
@@ -3103,6 +3857,24 @@ export type QueryCheckInvitationCodeArgs = {
   code: Scalars["String"]["input"];
 };
 
+export type QueryClusterResultArgs = {
+  id: Scalars["UUID"]["input"];
+};
+
+export type QueryClusterResultsArgs = {
+  after?: InputMaybe<Scalars["String"]["input"]>;
+  before?: InputMaybe<Scalars["String"]["input"]>;
+  first?: InputMaybe<Scalars["Int"]["input"]>;
+  fromDate?: InputMaybe<Scalars["Date"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  riskLevels?: InputMaybe<Scalars["String"]["input"]>;
+  throughDate?: InputMaybe<Scalars["Date"]["input"]>;
+};
+
 export type QueryCommentsArgs = {
   threadId: Scalars["ID"]["input"];
 };
@@ -3111,8 +3883,20 @@ export type QueryConfigurationGetArgs = {
   key: Scalars["String"]["input"];
 };
 
+export type QueryCurrentAnimalCensusFactsArgs = {
+  villageId: Scalars["Int"]["input"];
+};
+
+export type QueryCurrentHumanCensusFactsArgs = {
+  villageId: Scalars["Int"]["input"];
+};
+
 export type QueryDeepStateDefinitionGetArgs = {
   id: Scalars["ID"]["input"];
+};
+
+export type QueryDraftCensusDefinitionVersionArgs = {
+  kind: Scalars["String"]["input"];
 };
 
 export type QueryEventsQueryArgs = {
@@ -3146,6 +3930,7 @@ export type QueryIncidentReportsArgs = {
   before?: InputMaybe<Scalars["String"]["input"]>;
   createdAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
   createdAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  currentRiskLevels?: InputMaybe<Scalars["String"]["input"]>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
   incidentDate_Gte?: InputMaybe<Scalars["Date"]["input"]>;
   incidentDate_Lte?: InputMaybe<Scalars["Date"]["input"]>;
@@ -3167,11 +3952,17 @@ export type QueryInvitationCodeArgs = {
   id: Scalars["ID"]["input"];
 };
 
+export type QueryLatestVillageCensusV2Args = {
+  kind: Scalars["String"]["input"];
+  villageId: Scalars["Int"]["input"];
+};
+
 export type QueryMyIncidentReportsArgs = {
   after?: InputMaybe<Scalars["String"]["input"]>;
   before?: InputMaybe<Scalars["String"]["input"]>;
   createdAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
   createdAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  currentRiskLevels?: InputMaybe<Scalars["String"]["input"]>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
   incidentDate_Gte?: InputMaybe<Scalars["Date"]["input"]>;
   incidentDate_Lte?: InputMaybe<Scalars["Date"]["input"]>;
@@ -3242,7 +4033,7 @@ export type QueryObservationSubjectsArgs = {
   createdAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
   createdAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
   definition_Id?: InputMaybe<Scalars["ID"]["input"]>;
-  definition_Id_In?: InputMaybe<Array<InputMaybe<Scalars["ID"]["input"]>>>;
+  definition_Id_In?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
   last?: InputMaybe<Scalars["Int"]["input"]>;
   limit?: InputMaybe<Scalars["Int"]["input"]>;
@@ -3469,6 +4260,26 @@ export type Revoke = {
   revoked: Scalars["Int"]["output"];
 };
 
+export type RiskAssessmentProjectionType = {
+  __typename?: "RiskAssessmentProjectionType";
+  createdAt: Scalars["DateTime"]["output"];
+  createdBy?: Maybe<UserType>;
+  evaluatorVersion: Scalars["String"]["output"];
+  externalAssessmentId: Scalars["String"]["output"];
+  factors?: Maybe<Scalars["GenericScalar"]["output"]>;
+  id: Scalars["ID"]["output"];
+  isCurrent: Scalars["Boolean"]["output"];
+  level: IntegrationsRiskAssessmentLevelChoices;
+  score?: Maybe<Scalars["Float"]["output"]>;
+  source: IntegrationsRiskAssessmentSourceChoices;
+};
+
+export type SetReportRiskMutation = {
+  __typename?: "SetReportRiskMutation";
+  report?: Maybe<IncidentReportType>;
+  riskAssessment?: Maybe<RiskAssessmentProjectionType>;
+};
+
 export type SimulationCaseDefinitionType = {
   __typename?: "SimulationCaseDefinitionType";
   description?: Maybe<Scalars["String"]["output"]>;
@@ -3581,6 +4392,11 @@ export type SubmitUploadFile = {
   id?: Maybe<Scalars["UUID"]["output"]>;
 };
 
+export type SubmitVillageCensusSnapshotV2Mutation = {
+  __typename?: "SubmitVillageCensusSnapshotV2Mutation";
+  result?: Maybe<VillageCensusSnapshotResult>;
+};
+
 export type SubmitZeroReportMutation = {
   __typename?: "SubmitZeroReportMutation";
   id?: Maybe<Scalars["UUID"]["output"]>;
@@ -3638,6 +4454,7 @@ export type UserMessageTypeNodeConnection = {
 export type UserProfileType = {
   __typename?: "UserProfileType";
   address?: Maybe<Scalars["String"]["output"]>;
+  assignedVillages?: Maybe<Array<Maybe<VillageType>>>;
   authorityId?: Maybe<Scalars["Int"]["output"]>;
   authorityName?: Maybe<Scalars["String"]["output"]>;
   avatarUrl?: Maybe<Scalars["String"]["output"]>;
@@ -3677,6 +4494,56 @@ export type VerifyLoginQrTokenMutation = {
   token?: Maybe<Scalars["String"]["output"]>;
 };
 
+export type VillageCensusSnapshotProblem = {
+  __typename?: "VillageCensusSnapshotProblem";
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type VillageCensusSnapshotResult =
+  | VillageCensusSnapshotProblem
+  | VillageCensusSnapshotType;
+
+export type VillageCensusSnapshotType = {
+  __typename?: "VillageCensusSnapshotType";
+  animalHouseholdQuantity?: Maybe<Scalars["Int"]["output"]>;
+  censusDate: Scalars["Date"]["output"];
+  definitionVersion?: Maybe<CensusDefinitionVersionType>;
+  facts: Array<AnimalCensusFactType>;
+  formData?: Maybe<Scalars["GenericScalar"]["output"]>;
+  humanFacts: Array<HumanCensusFactType>;
+  id: Scalars["ID"]["output"];
+  reporter: AdminAuthorityUserCreateSuccess;
+  status: CensusVillageCensusSnapshotStatusChoices;
+  submittedAt: Scalars["DateTime"]["output"];
+  village: AdminVillageUpdateSuccess;
+  villageHouseholdQuantity?: Maybe<Scalars["Int"]["output"]>;
+};
+
+export type VillageReporterAssignmentInput = {
+  censusRole: Scalars["String"]["input"];
+  villageId: Scalars["Int"]["input"];
+};
+
+export type VillageReporterAssignmentType = {
+  __typename?: "VillageReporterAssignmentType";
+  censusRole: AccountsVillageReporterAssignmentCensusRoleChoices;
+  id: Scalars["ID"]["output"];
+  village: AdminVillageUpdateSuccess;
+};
+
+export type VillageType = {
+  __typename?: "VillageType";
+  active: Scalars["Boolean"]["output"];
+  authority: AdminAuthorityCreateSuccess;
+  code: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  latitude?: Maybe<Scalars["Float"]["output"]>;
+  location?: Maybe<Scalars["GeoJSON"]["output"]>;
+  longitude?: Maybe<Scalars["Float"]["output"]>;
+  name: Scalars["String"]["output"];
+};
+
 export type DeleteTokenCookieMutationVariables = Exact<{
   [key: string]: never;
 }>;
@@ -3712,6 +4579,7 @@ export type TokenAuthMutation = {
   tokenAuth?: {
     __typename?: "ObtainJSONWebToken";
     refreshExpiresIn: number;
+    refreshToken: string;
     token: string;
     payload: any;
   } | null;
@@ -3980,6 +4848,25 @@ export type CasesQuery = {
           __typename?: "AuthorityType";
           name: string;
         } | null> | null;
+        currentRiskAssessment?: {
+          __typename?: "RiskAssessmentProjectionType";
+          id: string;
+          level: IntegrationsRiskAssessmentLevelChoices;
+          source: IntegrationsRiskAssessmentSourceChoices;
+          score?: number | null;
+          factors?: any | null;
+          evaluatorVersion: string;
+          externalAssessmentId: string;
+          isCurrent: boolean;
+          createdAt: any;
+          createdBy?: {
+            __typename?: "UserType";
+            id: string;
+            username: string;
+            firstName: string;
+            lastName: string;
+          } | null;
+        } | null;
       } | null;
     } | null>;
   } | null;
@@ -4050,6 +4937,44 @@ export type GetCaseQuery = {
       authorities?: Array<{
         __typename?: "AuthorityType";
         name: string;
+      } | null> | null;
+      currentRiskAssessment?: {
+        __typename?: "RiskAssessmentProjectionType";
+        id: string;
+        level: IntegrationsRiskAssessmentLevelChoices;
+        source: IntegrationsRiskAssessmentSourceChoices;
+        score?: number | null;
+        factors?: any | null;
+        evaluatorVersion: string;
+        externalAssessmentId: string;
+        isCurrent: boolean;
+        createdAt: any;
+        createdBy?: {
+          __typename?: "UserType";
+          id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+        } | null;
+      } | null;
+      riskAssessmentHistory?: Array<{
+        __typename?: "RiskAssessmentProjectionType";
+        id: string;
+        level: IntegrationsRiskAssessmentLevelChoices;
+        source: IntegrationsRiskAssessmentSourceChoices;
+        score?: number | null;
+        factors?: any | null;
+        evaluatorVersion: string;
+        externalAssessmentId: string;
+        isCurrent: boolean;
+        createdAt: any;
+        createdBy?: {
+          __typename?: "UserType";
+          id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+        } | null;
       } | null> | null;
     } | null;
     stateDefinition?: {
@@ -4313,6 +5238,602 @@ export type GetCaseDefinitionQuery = {
       id: any;
       name: string;
     };
+  } | null;
+};
+
+export type CensusCapabilitiesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type CensusCapabilitiesQuery = {
+  __typename?: "Query";
+  villageCapabilityEnabled: boolean;
+  animalCensusCapabilityEnabled: boolean;
+};
+
+export type AnimalCensusCapabilityUpdateMutationVariables = Exact<{
+  enabled: Scalars["Boolean"]["input"];
+}>;
+
+export type AnimalCensusCapabilityUpdateMutation = {
+  __typename?: "Mutation";
+  adminAnimalCensusCapabilityUpdate?: {
+    __typename?: "AdminAnimalCensusCapabilityUpdateMutation";
+    enabled?: boolean | null;
+    fields?: Array<{
+      __typename?: "AdminFieldValidationProblem";
+      name: string;
+      message: string;
+    } | null> | null;
+  } | null;
+};
+
+export type CensusDefinitionFieldsFragment = {
+  __typename?: "CensusDefinitionType";
+  id: string;
+  kind: CensusCensusDefinitionKindChoices;
+  enabled: boolean;
+  sortOrder: number;
+};
+
+export type CensusDefinitionVersionFieldsFragment = {
+  __typename?: "CensusDefinitionVersionType";
+  id: string;
+  version: number;
+  status: CensusCensusDefinitionVersionStatusChoices;
+  schema?: any | null;
+  definitionSchema?: any | null;
+  runtimeSchema?: any | null;
+  publishedAt?: any | null;
+  definition: {
+    __typename?: "CensusDefinitionType";
+    id: string;
+    kind: CensusCensusDefinitionKindChoices;
+    enabled: boolean;
+    sortOrder: number;
+  };
+};
+
+export type CensusDefinitionAdminStateQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type CensusDefinitionAdminStateQuery = {
+  __typename?: "Query";
+  censusDefinitions?: Array<{
+    __typename?: "CensusDefinitionType";
+    id: string;
+    kind: CensusCensusDefinitionKindChoices;
+    enabled: boolean;
+    sortOrder: number;
+  } | null> | null;
+  animal?: {
+    __typename?: "CensusDefinitionVersionType";
+    id: string;
+    version: number;
+    status: CensusCensusDefinitionVersionStatusChoices;
+    schema?: any | null;
+    definitionSchema?: any | null;
+    runtimeSchema?: any | null;
+    publishedAt?: any | null;
+    definition: {
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    };
+  } | null;
+  human?: {
+    __typename?: "CensusDefinitionVersionType";
+    id: string;
+    version: number;
+    status: CensusCensusDefinitionVersionStatusChoices;
+    schema?: any | null;
+    definitionSchema?: any | null;
+    runtimeSchema?: any | null;
+    publishedAt?: any | null;
+    definition: {
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    };
+  } | null;
+  animalDraft?: {
+    __typename?: "CensusDefinitionVersionType";
+    id: string;
+    version: number;
+    status: CensusCensusDefinitionVersionStatusChoices;
+    schema?: any | null;
+    definitionSchema?: any | null;
+    runtimeSchema?: any | null;
+    publishedAt?: any | null;
+    definition: {
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    };
+  } | null;
+  humanDraft?: {
+    __typename?: "CensusDefinitionVersionType";
+    id: string;
+    version: number;
+    status: CensusCensusDefinitionVersionStatusChoices;
+    schema?: any | null;
+    definitionSchema?: any | null;
+    runtimeSchema?: any | null;
+    publishedAt?: any | null;
+    definition: {
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    };
+  } | null;
+};
+
+export type CensusDefinitionsEnsureDefaultsMutationVariables = Exact<{
+  seedSpecies?: InputMaybe<Scalars["Boolean"]["input"]>;
+  resetSchema?: InputMaybe<Scalars["Boolean"]["input"]>;
+}>;
+
+export type CensusDefinitionsEnsureDefaultsMutation = {
+  __typename?: "Mutation";
+  adminCensusDefinitionsEnsureDefaults?: {
+    __typename?: "AdminCensusDefinitionSetupPayload";
+    definitions?: Array<{
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    } | null> | null;
+    versions?: Array<{
+      __typename?: "CensusDefinitionVersionType";
+      id: string;
+      version: number;
+      status: CensusCensusDefinitionVersionStatusChoices;
+      schema?: any | null;
+      definitionSchema?: any | null;
+      runtimeSchema?: any | null;
+      publishedAt?: any | null;
+      definition: {
+        __typename?: "CensusDefinitionType";
+        id: string;
+        kind: CensusCensusDefinitionKindChoices;
+        enabled: boolean;
+        sortOrder: number;
+      };
+    } | null> | null;
+    fields?: Array<{
+      __typename?: "AdminFieldValidationProblem";
+      name: string;
+      message: string;
+    } | null> | null;
+  } | null;
+};
+
+export type CensusDefinitionVersionPublishMutationVariables = Exact<{
+  kind: Scalars["String"]["input"];
+  definitionSchema?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+  enabled?: InputMaybe<Scalars["Boolean"]["input"]>;
+}>;
+
+export type CensusDefinitionVersionPublishMutation = {
+  __typename?: "Mutation";
+  adminCensusDefinitionVersionPublish?: {
+    __typename?: "AdminCensusDefinitionVersionPublishPayload";
+    definition?: {
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    } | null;
+    version?: {
+      __typename?: "CensusDefinitionVersionType";
+      id: string;
+      version: number;
+      status: CensusCensusDefinitionVersionStatusChoices;
+      schema?: any | null;
+      definitionSchema?: any | null;
+      runtimeSchema?: any | null;
+      publishedAt?: any | null;
+      definition: {
+        __typename?: "CensusDefinitionType";
+        id: string;
+        kind: CensusCensusDefinitionKindChoices;
+        enabled: boolean;
+        sortOrder: number;
+      };
+    } | null;
+    fields?: Array<{
+      __typename?: "AdminFieldValidationProblem";
+      name: string;
+      message: string;
+    } | null> | null;
+  } | null;
+};
+
+export type CensusDefinitionVersionSaveDraftMutationVariables = Exact<{
+  kind: Scalars["String"]["input"];
+  definitionSchema: Scalars["GenericScalar"]["input"];
+}>;
+
+export type CensusDefinitionVersionSaveDraftMutation = {
+  __typename?: "Mutation";
+  adminCensusDefinitionVersionSaveDraft?: {
+    __typename?: "AdminCensusDefinitionVersionPublishPayload";
+    definition?: {
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    } | null;
+    version?: {
+      __typename?: "CensusDefinitionVersionType";
+      id: string;
+      version: number;
+      status: CensusCensusDefinitionVersionStatusChoices;
+      schema?: any | null;
+      definitionSchema?: any | null;
+      runtimeSchema?: any | null;
+      publishedAt?: any | null;
+      definition: {
+        __typename?: "CensusDefinitionType";
+        id: string;
+        kind: CensusCensusDefinitionKindChoices;
+        enabled: boolean;
+        sortOrder: number;
+      };
+    } | null;
+    fields?: Array<{
+      __typename?: "AdminFieldValidationProblem";
+      name: string;
+      message: string;
+    } | null> | null;
+  } | null;
+};
+
+export type CensusDefinitionSetEnabledMutationVariables = Exact<{
+  kind: Scalars["String"]["input"];
+  enabled: Scalars["Boolean"]["input"];
+}>;
+
+export type CensusDefinitionSetEnabledMutation = {
+  __typename?: "Mutation";
+  adminCensusDefinitionSetEnabled?: {
+    __typename?: "AdminCensusDefinitionSetEnabledPayload";
+    definition?: {
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    } | null;
+    version?: {
+      __typename?: "CensusDefinitionVersionType";
+      id: string;
+      version: number;
+      status: CensusCensusDefinitionVersionStatusChoices;
+      schema?: any | null;
+      definitionSchema?: any | null;
+      runtimeSchema?: any | null;
+      publishedAt?: any | null;
+      definition: {
+        __typename?: "CensusDefinitionType";
+        id: string;
+        kind: CensusCensusDefinitionKindChoices;
+        enabled: boolean;
+        sortOrder: number;
+      };
+    } | null;
+    fields?: Array<{
+      __typename?: "AdminFieldValidationProblem";
+      name: string;
+      message: string;
+    } | null> | null;
+  } | null;
+};
+
+export type LatestAnimalVillageCensusQueryVariables = Exact<{
+  villageId: Scalars["Int"]["input"];
+}>;
+
+export type LatestAnimalVillageCensusQuery = {
+  __typename?: "Query";
+  latestVillageCensusV2?: {
+    __typename?: "VillageCensusSnapshotType";
+    id: string;
+    censusDate: any;
+    submittedAt: any;
+    villageHouseholdQuantity?: number | null;
+    animalHouseholdQuantity?: number | null;
+    reporter: {
+      __typename?: "AdminAuthorityUserCreateSuccess";
+      username: string;
+    };
+    facts: Array<{
+      __typename?: "AnimalCensusFactType";
+      rowKey: string;
+      rowLabel: string;
+      animalQuantity?: number | null;
+      householdQuantity?: number | null;
+    }>;
+  } | null;
+};
+
+export type ClusterLinkedReportFieldsFragment = {
+  __typename?: "IncidentReportType";
+  id: any;
+  createdAt: any;
+  incidentDate: any;
+  rendererData: string;
+  gpsLocation?: string | null;
+  reportType?: {
+    __typename?: "ReportTypeType";
+    id: any;
+    name: string;
+    category?: {
+      __typename?: "CategoryType";
+      id: string;
+      name: string;
+      icon?: string | null;
+    } | null;
+  } | null;
+  authorities?: Array<{
+    __typename?: "AuthorityType";
+    name: string;
+  } | null> | null;
+  currentRiskAssessment?: {
+    __typename?: "RiskAssessmentProjectionType";
+    id: string;
+    level: IntegrationsRiskAssessmentLevelChoices;
+    source: IntegrationsRiskAssessmentSourceChoices;
+    score?: number | null;
+    factors?: any | null;
+    evaluatorVersion: string;
+    externalAssessmentId: string;
+    isCurrent: boolean;
+    createdAt: any;
+    createdBy?: {
+      __typename?: "UserType";
+      id: string;
+      username: string;
+      firstName: string;
+      lastName: string;
+    } | null;
+  } | null;
+};
+
+export type ClusterResultFieldsFragment = {
+  __typename?: "IntegrationClusterResultDashboardType";
+  id: any;
+  externalClusterId: string;
+  algorithmVersion: string;
+  windowStart: any;
+  windowEnd: any;
+  incidentIds: Array<string>;
+  authorityIds: Array<number>;
+  villageIds: Array<number>;
+  geometry?: any | null;
+  radiusMeters?: number | null;
+  score?: number | null;
+  riskLevel?: string | null;
+  reportCount: number;
+  explanation: string;
+  metadata: any;
+  createdAt: any;
+  updatedAt: any;
+  integrationClient: {
+    __typename?: "IntegrationClusterClientType";
+    code: string;
+    name: string;
+  };
+  linkedReports: Array<{
+    __typename?: "IncidentReportType";
+    id: any;
+    createdAt: any;
+    incidentDate: any;
+    rendererData: string;
+    gpsLocation?: string | null;
+    reportType?: {
+      __typename?: "ReportTypeType";
+      id: any;
+      name: string;
+      category?: {
+        __typename?: "CategoryType";
+        id: string;
+        name: string;
+        icon?: string | null;
+      } | null;
+    } | null;
+    authorities?: Array<{
+      __typename?: "AuthorityType";
+      name: string;
+    } | null> | null;
+    currentRiskAssessment?: {
+      __typename?: "RiskAssessmentProjectionType";
+      id: string;
+      level: IntegrationsRiskAssessmentLevelChoices;
+      source: IntegrationsRiskAssessmentSourceChoices;
+      score?: number | null;
+      factors?: any | null;
+      evaluatorVersion: string;
+      externalAssessmentId: string;
+      isCurrent: boolean;
+      createdAt: any;
+      createdBy?: {
+        __typename?: "UserType";
+        id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+      } | null;
+    } | null;
+  }>;
+};
+
+export type ClusterResultsQueryVariables = Exact<{
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  fromDate?: InputMaybe<Scalars["Date"]["input"]>;
+  throughDate?: InputMaybe<Scalars["Date"]["input"]>;
+  riskLevels?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type ClusterResultsQuery = {
+  __typename?: "Query";
+  clusterResults?: {
+    __typename?: "IntegrationClusterResultDashboardTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "IntegrationClusterResultDashboardType";
+      id: any;
+      externalClusterId: string;
+      algorithmVersion: string;
+      windowStart: any;
+      windowEnd: any;
+      incidentIds: Array<string>;
+      authorityIds: Array<number>;
+      villageIds: Array<number>;
+      geometry?: any | null;
+      radiusMeters?: number | null;
+      score?: number | null;
+      riskLevel?: string | null;
+      reportCount: number;
+      explanation: string;
+      metadata: any;
+      createdAt: any;
+      updatedAt: any;
+      integrationClient: {
+        __typename?: "IntegrationClusterClientType";
+        code: string;
+        name: string;
+      };
+      linkedReports: Array<{
+        __typename?: "IncidentReportType";
+        id: any;
+        createdAt: any;
+        incidentDate: any;
+        rendererData: string;
+        gpsLocation?: string | null;
+        reportType?: {
+          __typename?: "ReportTypeType";
+          id: any;
+          name: string;
+          category?: {
+            __typename?: "CategoryType";
+            id: string;
+            name: string;
+            icon?: string | null;
+          } | null;
+        } | null;
+        authorities?: Array<{
+          __typename?: "AuthorityType";
+          name: string;
+        } | null> | null;
+        currentRiskAssessment?: {
+          __typename?: "RiskAssessmentProjectionType";
+          id: string;
+          level: IntegrationsRiskAssessmentLevelChoices;
+          source: IntegrationsRiskAssessmentSourceChoices;
+          score?: number | null;
+          factors?: any | null;
+          evaluatorVersion: string;
+          externalAssessmentId: string;
+          isCurrent: boolean;
+          createdAt: any;
+          createdBy?: {
+            __typename?: "UserType";
+            id: string;
+            username: string;
+            firstName: string;
+            lastName: string;
+          } | null;
+        } | null;
+      }>;
+    } | null>;
+  } | null;
+};
+
+export type GetClusterResultQueryVariables = Exact<{
+  id: Scalars["UUID"]["input"];
+}>;
+
+export type GetClusterResultQuery = {
+  __typename?: "Query";
+  clusterResult?: {
+    __typename?: "IntegrationClusterResultDashboardType";
+    id: any;
+    externalClusterId: string;
+    algorithmVersion: string;
+    windowStart: any;
+    windowEnd: any;
+    incidentIds: Array<string>;
+    authorityIds: Array<number>;
+    villageIds: Array<number>;
+    geometry?: any | null;
+    radiusMeters?: number | null;
+    score?: number | null;
+    riskLevel?: string | null;
+    reportCount: number;
+    explanation: string;
+    metadata: any;
+    createdAt: any;
+    updatedAt: any;
+    integrationClient: {
+      __typename?: "IntegrationClusterClientType";
+      code: string;
+      name: string;
+    };
+    linkedReports: Array<{
+      __typename?: "IncidentReportType";
+      id: any;
+      createdAt: any;
+      incidentDate: any;
+      rendererData: string;
+      gpsLocation?: string | null;
+      reportType?: {
+        __typename?: "ReportTypeType";
+        id: any;
+        name: string;
+        category?: {
+          __typename?: "CategoryType";
+          id: string;
+          name: string;
+          icon?: string | null;
+        } | null;
+      } | null;
+      authorities?: Array<{
+        __typename?: "AuthorityType";
+        name: string;
+      } | null> | null;
+      currentRiskAssessment?: {
+        __typename?: "RiskAssessmentProjectionType";
+        id: string;
+        level: IntegrationsRiskAssessmentLevelChoices;
+        source: IntegrationsRiskAssessmentSourceChoices;
+        score?: number | null;
+        factors?: any | null;
+        evaluatorVersion: string;
+        externalAssessmentId: string;
+        isCurrent: boolean;
+        createdAt: any;
+        createdBy?: {
+          __typename?: "UserType";
+          id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+        } | null;
+      } | null;
+    }>;
   } | null;
 };
 
@@ -4680,6 +6201,495 @@ export type ResetPasswordCreateMutation = {
   } | null;
 };
 
+export type AdminIntegrationClientsQueryVariables = Exact<{
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  status?: InputMaybe<Scalars["String"]["input"]>;
+  integrationType?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type AdminIntegrationClientsQuery = {
+  __typename?: "Query";
+  adminIntegrationClientQuery?: {
+    __typename?: "AdminIntegrationClientQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminIntegrationClientQueryType";
+      id: string;
+      name: string;
+      code: string;
+      integrationType: IntegrationsIntegrationClientIntegrationTypeChoices;
+      status: IntegrationsIntegrationClientStatusChoices;
+      clientId: string;
+      scopeCodes: Array<string>;
+      allowedCallbackDomains: any;
+      rateLimitPolicy: any;
+    } | null>;
+  } | null;
+};
+
+export type AdminIntegrationClientGetQueryVariables = Exact<{
+  id: Scalars["ID"]["input"];
+}>;
+
+export type AdminIntegrationClientGetQuery = {
+  __typename?: "Query";
+  adminIntegrationClientGet?: {
+    __typename?: "AdminIntegrationClientQueryType";
+    id: string;
+    name: string;
+    code: string;
+    integrationType: IntegrationsIntegrationClientIntegrationTypeChoices;
+    status: IntegrationsIntegrationClientStatusChoices;
+    clientId: string;
+    scopeCodes: Array<string>;
+    allowedCallbackDomains: any;
+    rateLimitPolicy: any;
+  } | null;
+};
+
+export type AdminIntegrationOptionsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type AdminIntegrationOptionsQuery = {
+  __typename?: "Query";
+  integrationScopeOptions: Array<{
+    __typename?: "IntegrationOptionType";
+    code: string;
+    label: string;
+  }>;
+  integrationClientStatusOptions: Array<{
+    __typename?: "IntegrationOptionType";
+    code: string;
+    label: string;
+  }>;
+  webhookEndpointStatusOptions: Array<{
+    __typename?: "IntegrationOptionType";
+    code: string;
+    label: string;
+  }>;
+  integrationTypeOptions: Array<{
+    __typename?: "IntegrationOptionType";
+    code: string;
+    label: string;
+  }>;
+  integrationEventTypeOptions: Array<{
+    __typename?: "IntegrationOptionType";
+    code: string;
+    label: string;
+  }>;
+};
+
+export type AdminIntegrationClientCreateOpMutationVariables = Exact<{
+  input: AdminIntegrationClientInput;
+}>;
+
+export type AdminIntegrationClientCreateOpMutation = {
+  __typename?: "Mutation";
+  adminIntegrationClientCreate?: {
+    __typename?: "AdminIntegrationClientCreateMutation";
+    result?:
+      | {
+          __typename: "AdminIntegrationClientCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminIntegrationClientCreateSuccess";
+          clientSecret: string;
+          integrationClient: {
+            __typename?: "AdminIntegrationClientQueryType";
+            id: string;
+            name: string;
+            code: string;
+            integrationType: IntegrationsIntegrationClientIntegrationTypeChoices;
+            status: IntegrationsIntegrationClientStatusChoices;
+            clientId: string;
+            scopeCodes: Array<string>;
+            allowedCallbackDomains: any;
+            rateLimitPolicy: any;
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type AdminIntegrationClientUpdateOpMutationVariables = Exact<{
+  id: Scalars["ID"]["input"];
+  input: AdminIntegrationClientInput;
+}>;
+
+export type AdminIntegrationClientUpdateOpMutation = {
+  __typename?: "Mutation";
+  adminIntegrationClientUpdate?: {
+    __typename?: "AdminIntegrationClientUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminIntegrationClientUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminIntegrationClientUpdateSuccess";
+          integrationClient: {
+            __typename?: "AdminIntegrationClientQueryType";
+            id: string;
+            name: string;
+            code: string;
+            integrationType: IntegrationsIntegrationClientIntegrationTypeChoices;
+            status: IntegrationsIntegrationClientStatusChoices;
+            clientId: string;
+            scopeCodes: Array<string>;
+            allowedCallbackDomains: any;
+            rateLimitPolicy: any;
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type AdminIntegrationClientDisableOpMutationVariables = Exact<{
+  id: Scalars["ID"]["input"];
+}>;
+
+export type AdminIntegrationClientDisableOpMutation = {
+  __typename?: "Mutation";
+  adminIntegrationClientDisable?: {
+    __typename?: "AdminIntegrationClientDisableMutation";
+    result?:
+      | {
+          __typename: "AdminIntegrationClientUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminIntegrationClientUpdateSuccess";
+          integrationClient: {
+            __typename?: "AdminIntegrationClientQueryType";
+            id: string;
+            status: IntegrationsIntegrationClientStatusChoices;
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type AdminIntegrationClientRotateSecretOpMutationVariables = Exact<{
+  id: Scalars["ID"]["input"];
+}>;
+
+export type AdminIntegrationClientRotateSecretOpMutation = {
+  __typename?: "Mutation";
+  adminIntegrationClientRotateSecret?: {
+    __typename?: "AdminIntegrationClientRotateSecretMutation";
+    result?:
+      | {
+          __typename: "AdminIntegrationClientRotateSecretSuccess";
+          clientSecret: string;
+          integrationClient: {
+            __typename?: "AdminIntegrationClientQueryType";
+            id: string;
+            status: IntegrationsIntegrationClientStatusChoices;
+          };
+        }
+      | {
+          __typename: "AdminIntegrationClientUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | null;
+  } | null;
+};
+
+export type AdminWebhookEndpointsQueryVariables = Exact<{
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  integrationClientId?: InputMaybe<Scalars["Decimal"]["input"]>;
+  status?: InputMaybe<Scalars["String"]["input"]>;
+  eventType?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type AdminWebhookEndpointsQuery = {
+  __typename?: "Query";
+  adminWebhookEndpointQuery?: {
+    __typename?: "AdminWebhookEndpointQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminWebhookEndpointQueryType";
+      id: string;
+      name: string;
+      url: string;
+      status: IntegrationsWebhookEndpointStatusChoices;
+      eventTypes: Array<string>;
+      schemaVersion: string;
+      activeSigningSecretRef: string;
+      activeSigningSecretVersion: number;
+      nextSigningSecretRef: string;
+      nextSigningSecretVersion?: number | null;
+      timeoutSeconds: number;
+      maxAttempts: number;
+      retryPolicy: any;
+      customHeaders: any;
+      integrationClient: {
+        __typename?: "AdminIntegrationClientQueryType";
+        id: string;
+        code: string;
+        name: string;
+      };
+    } | null>;
+  } | null;
+};
+
+export type AdminWebhookEndpointGetQueryVariables = Exact<{
+  id: Scalars["ID"]["input"];
+}>;
+
+export type AdminWebhookEndpointGetQuery = {
+  __typename?: "Query";
+  adminWebhookEndpointGet?: {
+    __typename?: "AdminWebhookEndpointQueryType";
+    id: string;
+    name: string;
+    url: string;
+    status: IntegrationsWebhookEndpointStatusChoices;
+    eventTypes: Array<string>;
+    schemaVersion: string;
+    activeSigningSecretRef: string;
+    activeSigningSecretVersion: number;
+    nextSigningSecretRef: string;
+    nextSigningSecretVersion?: number | null;
+    timeoutSeconds: number;
+    maxAttempts: number;
+    retryPolicy: any;
+    customHeaders: any;
+    integrationClient: {
+      __typename?: "AdminIntegrationClientQueryType";
+      id: string;
+      code: string;
+      name: string;
+    };
+  } | null;
+};
+
+export type AdminWebhookEndpointCreateOpMutationVariables = Exact<{
+  input: AdminWebhookEndpointInput;
+}>;
+
+export type AdminWebhookEndpointCreateOpMutation = {
+  __typename?: "Mutation";
+  adminWebhookEndpointCreate?: {
+    __typename?: "AdminWebhookEndpointCreateMutation";
+    result?:
+      | {
+          __typename: "AdminWebhookEndpointCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminWebhookEndpointCreateSuccess";
+          webhookEndpoint: {
+            __typename?: "AdminWebhookEndpointQueryType";
+            id: string;
+            name: string;
+            url: string;
+            status: IntegrationsWebhookEndpointStatusChoices;
+            eventTypes: Array<string>;
+            schemaVersion: string;
+            activeSigningSecretRef: string;
+            activeSigningSecretVersion: number;
+            nextSigningSecretRef: string;
+            nextSigningSecretVersion?: number | null;
+            timeoutSeconds: number;
+            maxAttempts: number;
+            retryPolicy: any;
+            customHeaders: any;
+            integrationClient: {
+              __typename?: "AdminIntegrationClientQueryType";
+              id: string;
+              code: string;
+              name: string;
+            };
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type AdminWebhookEndpointUpdateOpMutationVariables = Exact<{
+  id: Scalars["ID"]["input"];
+  input: AdminWebhookEndpointInput;
+}>;
+
+export type AdminWebhookEndpointUpdateOpMutation = {
+  __typename?: "Mutation";
+  adminWebhookEndpointUpdate?: {
+    __typename?: "AdminWebhookEndpointUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminWebhookEndpointUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminWebhookEndpointUpdateSuccess";
+          webhookEndpoint: {
+            __typename?: "AdminWebhookEndpointQueryType";
+            id: string;
+            name: string;
+            url: string;
+            status: IntegrationsWebhookEndpointStatusChoices;
+            eventTypes: Array<string>;
+            schemaVersion: string;
+            activeSigningSecretRef: string;
+            activeSigningSecretVersion: number;
+            nextSigningSecretRef: string;
+            nextSigningSecretVersion?: number | null;
+            timeoutSeconds: number;
+            maxAttempts: number;
+            retryPolicy: any;
+            customHeaders: any;
+            integrationClient: {
+              __typename?: "AdminIntegrationClientQueryType";
+              id: string;
+              code: string;
+              name: string;
+            };
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type AdminWebhookEndpointDisableOpMutationVariables = Exact<{
+  id: Scalars["ID"]["input"];
+}>;
+
+export type AdminWebhookEndpointDisableOpMutation = {
+  __typename?: "Mutation";
+  adminWebhookEndpointDisable?: {
+    __typename?: "AdminWebhookEndpointDisableMutation";
+    result?:
+      | {
+          __typename: "AdminWebhookEndpointUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminWebhookEndpointUpdateSuccess";
+          webhookEndpoint: {
+            __typename?: "AdminWebhookEndpointQueryType";
+            id: string;
+            status: IntegrationsWebhookEndpointStatusChoices;
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type IntegrationPolicyGetQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type IntegrationPolicyGetQuery = {
+  __typename?: "Query";
+  integrationPolicyGet: {
+    __typename?: "IntegrationPolicyType";
+    integrationEnabled: boolean;
+    aiEnabled: boolean;
+    riskEvaluatorEnabled: boolean;
+    clusterDetectorEnabled: boolean;
+    aiDefaultCommentOwnerUserId?: string | null;
+    aiDefaultCommentOwnerName?: string | null;
+    dashboardRiskWindowDays: number;
+  };
+};
+
+export type IntegrationPolicyAdminUsersQueryVariables = Exact<{
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type IntegrationPolicyAdminUsersQuery = {
+  __typename?: "Query";
+  adminAuthorityUserQuery?: {
+    __typename?: "AdminAuthorityUserQueryTypeNodeConnection";
+    results: Array<{
+      __typename?: "AdminAuthorityUserQueryType";
+      id: string;
+      username: string;
+      firstName: string;
+      lastName: string;
+    } | null>;
+  } | null;
+};
+
+export type AdminIntegrationPolicyUpdateOpMutationVariables = Exact<{
+  input: AdminIntegrationPolicyInput;
+}>;
+
+export type AdminIntegrationPolicyUpdateOpMutation = {
+  __typename?: "Mutation";
+  adminIntegrationPolicyUpdate?: {
+    __typename?: "AdminIntegrationPolicyUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminIntegrationPolicyUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminIntegrationPolicyUpdateSuccess";
+          policy: {
+            __typename?: "IntegrationPolicyType";
+            integrationEnabled: boolean;
+            aiEnabled: boolean;
+            riskEvaluatorEnabled: boolean;
+            clusterDetectorEnabled: boolean;
+            aiDefaultCommentOwnerUserId?: string | null;
+            aiDefaultCommentOwnerName?: string | null;
+            dashboardRiskWindowDays: number;
+          };
+        }
+      | null;
+  } | null;
+};
+
 export type InvitationCodesQueryVariables = Exact<{
   limit: Scalars["Int"]["input"];
   offset: Scalars["Int"]["input"];
@@ -4700,6 +6710,12 @@ export type InvitationCodesQuery = {
       throughDate: any;
       role: string;
       authority: { __typename?: "AdminAuthorityCreateSuccess"; name: string };
+      villages: Array<{
+        __typename?: "AdminVillageUpdateSuccess";
+        id: string;
+        code: string;
+        name: string;
+      }>;
     } | null>;
   } | null;
 };
@@ -4710,6 +6726,10 @@ export type InvitationCodeCreateMutationVariables = Exact<{
   fromDate: Scalars["DateTime"]["input"];
   throughDate: Scalars["DateTime"]["input"];
   role?: InputMaybe<Scalars["String"]["input"]>;
+  villageIds?: InputMaybe<
+    | Array<InputMaybe<Scalars["Int"]["input"]>>
+    | InputMaybe<Scalars["Int"]["input"]>
+  >;
 }>;
 
 export type InvitationCodeCreateMutation = {
@@ -4730,6 +6750,12 @@ export type InvitationCodeCreateMutation = {
           __typename: "AdminInvitationCodeCreateSuccess";
           id: string;
           code: string;
+          villages: Array<{
+            __typename?: "AdminVillageUpdateSuccess";
+            id: string;
+            code: string;
+            name: string;
+          }>;
         }
       | null;
   } | null;
@@ -4742,6 +6768,10 @@ export type InvitationCodeUpdateMutationVariables = Exact<{
   fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   role?: InputMaybe<Scalars["String"]["input"]>;
+  villageIds?: InputMaybe<
+    | Array<InputMaybe<Scalars["Int"]["input"]>>
+    | InputMaybe<Scalars["Int"]["input"]>
+  >;
 }>;
 
 export type InvitationCodeUpdateMutation = {
@@ -4772,6 +6802,12 @@ export type InvitationCodeUpdateMutation = {
               id: string;
               name: string;
             };
+            villages: Array<{
+              __typename?: "AdminVillageUpdateSuccess";
+              id: string;
+              code: string;
+              name: string;
+            }>;
           } | null;
         }
       | null;
@@ -4808,6 +6844,12 @@ export type GetInvitationCodeQuery = {
       id: string;
       name: string;
     };
+    villages: Array<{
+      __typename?: "AdminVillageUpdateSuccess";
+      id: string;
+      code: string;
+      name: string;
+    }>;
   } | null;
 };
 
@@ -5846,6 +7888,26 @@ export type UserRegisterMutation = {
   } | null;
 };
 
+export type RiskAssessmentFieldsFragment = {
+  __typename?: "RiskAssessmentProjectionType";
+  id: string;
+  level: IntegrationsRiskAssessmentLevelChoices;
+  source: IntegrationsRiskAssessmentSourceChoices;
+  score?: number | null;
+  factors?: any | null;
+  evaluatorVersion: string;
+  externalAssessmentId: string;
+  isCurrent: boolean;
+  createdAt: any;
+  createdBy?: {
+    __typename?: "UserType";
+    id: string;
+    username: string;
+    firstName: string;
+    lastName: string;
+  } | null;
+};
+
 export type ReportsQueryVariables = Exact<{
   limit: Scalars["Int"]["input"];
   offset: Scalars["Int"]["input"];
@@ -5861,6 +7923,7 @@ export type ReportsQueryVariables = Exact<{
   >;
   testFlag?: InputMaybe<Scalars["Boolean"]["input"]>;
   includeChildAuthorities?: InputMaybe<Scalars["Boolean"]["input"]>;
+  currentRiskLevels?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type ReportsQuery = {
@@ -5903,6 +7966,25 @@ export type ReportsQuery = {
         __typename?: "AuthorityType";
         name: string;
       } | null> | null;
+      currentRiskAssessment?: {
+        __typename?: "RiskAssessmentProjectionType";
+        id: string;
+        level: IntegrationsRiskAssessmentLevelChoices;
+        source: IntegrationsRiskAssessmentSourceChoices;
+        score?: number | null;
+        factors?: any | null;
+        evaluatorVersion: string;
+        externalAssessmentId: string;
+        isCurrent: boolean;
+        createdAt: any;
+        createdBy?: {
+          __typename?: "UserType";
+          id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+        } | null;
+      } | null;
     } | null>;
   } | null;
 };
@@ -5959,6 +8041,25 @@ export type BoundaryConnectedReportsQuery = {
         __typename?: "ImageType";
         thumbnail?: string | null;
       } | null> | null;
+      currentRiskAssessment?: {
+        __typename?: "RiskAssessmentProjectionType";
+        id: string;
+        level: IntegrationsRiskAssessmentLevelChoices;
+        source: IntegrationsRiskAssessmentSourceChoices;
+        score?: number | null;
+        factors?: any | null;
+        evaluatorVersion: string;
+        externalAssessmentId: string;
+        isCurrent: boolean;
+        createdAt: any;
+        createdBy?: {
+          __typename?: "UserType";
+          id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+        } | null;
+      } | null;
     } | null>;
   } | null;
 };
@@ -6020,6 +8121,44 @@ export type GetReportQuery = {
       __typename?: "AuthorityType";
       name: string;
     } | null> | null;
+    currentRiskAssessment?: {
+      __typename?: "RiskAssessmentProjectionType";
+      id: string;
+      level: IntegrationsRiskAssessmentLevelChoices;
+      source: IntegrationsRiskAssessmentSourceChoices;
+      score?: number | null;
+      factors?: any | null;
+      evaluatorVersion: string;
+      externalAssessmentId: string;
+      isCurrent: boolean;
+      createdAt: any;
+      createdBy?: {
+        __typename?: "UserType";
+        id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+      } | null;
+    } | null;
+    riskAssessmentHistory?: Array<{
+      __typename?: "RiskAssessmentProjectionType";
+      id: string;
+      level: IntegrationsRiskAssessmentLevelChoices;
+      source: IntegrationsRiskAssessmentSourceChoices;
+      score?: number | null;
+      factors?: any | null;
+      evaluatorVersion: string;
+      externalAssessmentId: string;
+      isCurrent: boolean;
+      createdAt: any;
+      createdBy?: {
+        __typename?: "UserType";
+        id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+      } | null;
+    } | null> | null;
   } | null;
 };
 
@@ -6044,6 +8183,79 @@ export type ConvertReportToTestReportMutation = {
   convertToTestReport?: {
     __typename?: "ConvertToTestReportMutation";
     report?: { __typename?: "IncidentReportType"; id: any } | null;
+  } | null;
+};
+
+export type SetReportRiskValueMutationVariables = Exact<{
+  reportId: Scalars["UUID"]["input"];
+  level?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type SetReportRiskValueMutation = {
+  __typename?: "Mutation";
+  setReportRisk?: {
+    __typename?: "SetReportRiskMutation";
+    report?: {
+      __typename?: "IncidentReportType";
+      id: any;
+      currentRiskAssessment?: {
+        __typename?: "RiskAssessmentProjectionType";
+        id: string;
+        level: IntegrationsRiskAssessmentLevelChoices;
+        source: IntegrationsRiskAssessmentSourceChoices;
+        score?: number | null;
+        factors?: any | null;
+        evaluatorVersion: string;
+        externalAssessmentId: string;
+        isCurrent: boolean;
+        createdAt: any;
+        createdBy?: {
+          __typename?: "UserType";
+          id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+        } | null;
+      } | null;
+      riskAssessmentHistory?: Array<{
+        __typename?: "RiskAssessmentProjectionType";
+        id: string;
+        level: IntegrationsRiskAssessmentLevelChoices;
+        source: IntegrationsRiskAssessmentSourceChoices;
+        score?: number | null;
+        factors?: any | null;
+        evaluatorVersion: string;
+        externalAssessmentId: string;
+        isCurrent: boolean;
+        createdAt: any;
+        createdBy?: {
+          __typename?: "UserType";
+          id: string;
+          username: string;
+          firstName: string;
+          lastName: string;
+        } | null;
+      } | null> | null;
+    } | null;
+    riskAssessment?: {
+      __typename?: "RiskAssessmentProjectionType";
+      id: string;
+      level: IntegrationsRiskAssessmentLevelChoices;
+      source: IntegrationsRiskAssessmentSourceChoices;
+      score?: number | null;
+      factors?: any | null;
+      evaluatorVersion: string;
+      externalAssessmentId: string;
+      isCurrent: boolean;
+      createdAt: any;
+      createdBy?: {
+        __typename?: "UserType";
+        id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+      } | null;
+    } | null;
   } | null;
 };
 
@@ -7087,6 +9299,10 @@ export type UserUpdateMutationVariables = Exact<{
   username: Scalars["String"]["input"];
   address?: InputMaybe<Scalars["String"]["input"]>;
   role?: InputMaybe<Scalars["String"]["input"]>;
+  villageAssignments?: InputMaybe<
+    | Array<InputMaybe<VillageReporterAssignmentInput>>
+    | InputMaybe<VillageReporterAssignmentInput>
+  >;
 }>;
 
 export type UserUpdateMutation = {
@@ -7119,6 +9335,25 @@ export type UserUpdateMutation = {
               __typename?: "AdminAuthorityCreateSuccess";
               id: string;
             };
+            assignedVillages?: Array<{
+              __typename?: "VillageType";
+              id: string;
+              code: string;
+              name: string;
+              active: boolean;
+            } | null> | null;
+            assignedVillageAssignments?: Array<{
+              __typename?: "VillageReporterAssignmentType";
+              id: string;
+              censusRole: AccountsVillageReporterAssignmentCensusRoleChoices;
+              village: {
+                __typename?: "AdminVillageUpdateSuccess";
+                id: string;
+                code: string;
+                name: string;
+                active: boolean;
+              };
+            } | null> | null;
           } | null;
         }
       | null;
@@ -7185,6 +9420,25 @@ export type GetUserQuery = {
     address?: string | null;
     role?: AccountsAuthorityUserRoleChoices | null;
     authority: { __typename?: "AdminAuthorityCreateSuccess"; id: string };
+    assignedVillages?: Array<{
+      __typename?: "VillageType";
+      id: string;
+      code: string;
+      name: string;
+      active: boolean;
+    } | null> | null;
+    assignedVillageAssignments?: Array<{
+      __typename?: "VillageReporterAssignmentType";
+      id: string;
+      censusRole: AccountsVillageReporterAssignmentCensusRoleChoices;
+      village: {
+        __typename?: "AdminVillageUpdateSuccess";
+        id: string;
+        code: string;
+        name: string;
+        active: boolean;
+      };
+    } | null> | null;
   } | null;
 };
 
@@ -7212,6 +9466,507 @@ export type SummaryContributionQueryQuery = {
   }> | null;
 };
 
+export type VillagesQueryVariables = Exact<{
+  limit: Scalars["Int"]["input"];
+  offset: Scalars["Int"]["input"];
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  ordering?: InputMaybe<Scalars["String"]["input"]>;
+  authorityId?: InputMaybe<Scalars["Decimal"]["input"]>;
+}>;
+
+export type VillagesQuery = {
+  __typename?: "Query";
+  adminVillageQuery?: {
+    __typename?: "AdminVillageQueryTypeNodeConnection";
+    totalCount?: number | null;
+    results: Array<{
+      __typename?: "AdminVillageQueryType";
+      id: string;
+      code: string;
+      name: string;
+      active: boolean;
+      latitude?: number | null;
+      longitude?: number | null;
+      authority: {
+        __typename?: "AdminAuthorityCreateSuccess";
+        id: string;
+        name: string;
+      };
+    } | null>;
+  } | null;
+};
+
+export type VillageCreateMutationVariables = Exact<{
+  code: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  authorityId: Scalars["Int"]["input"];
+  latitude?: InputMaybe<Scalars["Float"]["input"]>;
+  longitude?: InputMaybe<Scalars["Float"]["input"]>;
+  active?: InputMaybe<Scalars["Boolean"]["input"]>;
+}>;
+
+export type VillageCreateMutation = {
+  __typename?: "Mutation";
+  adminVillageCreate?: {
+    __typename?: "AdminVillageCreateMutation";
+    result?:
+      | {
+          __typename: "AdminVillageCreateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminVillageCreateSuccess";
+          id: string;
+          code: string;
+          name: string;
+          active: boolean;
+          latitude?: number | null;
+          longitude?: number | null;
+          authority: {
+            __typename?: "AdminAuthorityCreateSuccess";
+            id: string;
+            name: string;
+          };
+        }
+      | null;
+  } | null;
+};
+
+export type VillageUpdateMutationVariables = Exact<{
+  id: Scalars["Int"]["input"];
+  code: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  authorityId: Scalars["Int"]["input"];
+  latitude?: InputMaybe<Scalars["Float"]["input"]>;
+  longitude?: InputMaybe<Scalars["Float"]["input"]>;
+  active: Scalars["Boolean"]["input"];
+}>;
+
+export type VillageUpdateMutation = {
+  __typename?: "Mutation";
+  adminVillageUpdate?: {
+    __typename?: "AdminVillageUpdateMutation";
+    result?:
+      | {
+          __typename: "AdminVillageUpdateProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "AdminVillageUpdateSuccess";
+          id: string;
+          code: string;
+          name: string;
+          active: boolean;
+          latitude?: number | null;
+          longitude?: number | null;
+          authority: {
+            __typename?: "AdminAuthorityCreateSuccess";
+            id: string;
+            name: string;
+          };
+        }
+      | null;
+  } | null;
+};
+
+export const CensusDefinitionFieldsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "kind" } },
+          { kind: "Field", name: { kind: "Name", value: "enabled" } },
+          { kind: "Field", name: { kind: "Name", value: "sortOrder" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CensusDefinitionFieldsFragment, unknown>;
+export const CensusDefinitionVersionFieldsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionVersionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionVersionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "definition" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CensusDefinitionFields" },
+                },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "version" } },
+          { kind: "Field", name: { kind: "Name", value: "status" } },
+          { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "definitionSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "kind" } },
+          { kind: "Field", name: { kind: "Name", value: "enabled" } },
+          { kind: "Field", name: { kind: "Name", value: "sortOrder" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CensusDefinitionVersionFieldsFragment, unknown>;
+export const RiskAssessmentFieldsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<RiskAssessmentFieldsFragment, unknown>;
+export const ClusterLinkedReportFieldsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ClusterLinkedReportFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "IncidentReportType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          { kind: "Field", name: { kind: "Name", value: "incidentDate" } },
+          { kind: "Field", name: { kind: "Name", value: "rendererData" } },
+          { kind: "Field", name: { kind: "Name", value: "gpsLocation" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "reportType" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "icon" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "authorities" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "currentRiskAssessment" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "RiskAssessmentFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ClusterLinkedReportFieldsFragment, unknown>;
+export const ClusterResultFieldsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ClusterResultFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "IntegrationClusterResultDashboardType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "externalClusterId" } },
+          { kind: "Field", name: { kind: "Name", value: "algorithmVersion" } },
+          { kind: "Field", name: { kind: "Name", value: "windowStart" } },
+          { kind: "Field", name: { kind: "Name", value: "windowEnd" } },
+          { kind: "Field", name: { kind: "Name", value: "incidentIds" } },
+          { kind: "Field", name: { kind: "Name", value: "authorityIds" } },
+          { kind: "Field", name: { kind: "Name", value: "villageIds" } },
+          { kind: "Field", name: { kind: "Name", value: "geometry" } },
+          { kind: "Field", name: { kind: "Name", value: "radiusMeters" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "riskLevel" } },
+          { kind: "Field", name: { kind: "Name", value: "reportCount" } },
+          { kind: "Field", name: { kind: "Name", value: "explanation" } },
+          { kind: "Field", name: { kind: "Name", value: "metadata" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          { kind: "Field", name: { kind: "Name", value: "updatedAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationClient" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "linkedReports" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ClusterLinkedReportFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ClusterLinkedReportFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "IncidentReportType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          { kind: "Field", name: { kind: "Name", value: "incidentDate" } },
+          { kind: "Field", name: { kind: "Name", value: "rendererData" } },
+          { kind: "Field", name: { kind: "Name", value: "gpsLocation" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "reportType" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "icon" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "authorities" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "currentRiskAssessment" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "RiskAssessmentFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ClusterResultFieldsFragment, unknown>;
 export const DeleteTokenCookieDocument = {
   kind: "Document",
   definitions: [
@@ -7366,6 +10121,10 @@ export const TokenAuthDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "refreshExpiresIn" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "refreshToken" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "token" } },
                 { kind: "Field", name: { kind: "Name", value: "payload" } },
@@ -8613,12 +11372,69 @@ export const CasesDocument = {
                                 ],
                               },
                             },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "currentRiskAssessment",
+                              },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "FragmentSpread",
+                                    name: {
+                                      kind: "Name",
+                                      value: "RiskAssessmentFields",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
                           ],
                         },
                       },
                     ],
                   },
                 },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
               ],
             },
           },
@@ -8841,6 +11657,45 @@ export const GetCaseDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "currentRiskAssessment" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "FragmentSpread",
+                              name: {
+                                kind: "Name",
+                                value: "RiskAssessmentFields",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "riskAssessmentHistory" },
+                        arguments: [
+                          {
+                            kind: "Argument",
+                            name: { kind: "Name", value: "limit" },
+                            value: { kind: "IntValue", value: "3" },
+                          },
+                        ],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "FragmentSpread",
+                              name: {
+                                kind: "Name",
+                                value: "RiskAssessmentFields",
+                              },
                             },
                           ],
                         },
@@ -9211,6 +12066,44 @@ export const GetCaseDocument = {
                     ],
                   },
                 },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
               ],
             },
           },
@@ -10050,6 +12943,1558 @@ export const GetCaseDefinitionDocument = {
 } as unknown as DocumentNode<
   GetCaseDefinitionQuery,
   GetCaseDefinitionQueryVariables
+>;
+export const CensusCapabilitiesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "CensusCapabilities" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "villageCapabilityEnabled" },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "animalCensusCapabilityEnabled" },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CensusCapabilitiesQuery,
+  CensusCapabilitiesQueryVariables
+>;
+export const AnimalCensusCapabilityUpdateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AnimalCensusCapabilityUpdate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "enabled" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAnimalCensusCapabilityUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "enabled" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "enabled" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "enabled" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "fields" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AnimalCensusCapabilityUpdateMutation,
+  AnimalCensusCapabilityUpdateMutationVariables
+>;
+export const CensusDefinitionAdminStateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "CensusDefinitionAdminState" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "censusDefinitions" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CensusDefinitionFields" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "animal" },
+            name: { kind: "Name", value: "activeCensusDefinitionVersion" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: { kind: "StringValue", value: "ANIMAL", block: false },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "CensusDefinitionVersionFields",
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "human" },
+            name: { kind: "Name", value: "activeCensusDefinitionVersion" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: { kind: "StringValue", value: "HUMAN", block: false },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "CensusDefinitionVersionFields",
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "animalDraft" },
+            name: { kind: "Name", value: "draftCensusDefinitionVersion" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: { kind: "StringValue", value: "ANIMAL", block: false },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "CensusDefinitionVersionFields",
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "humanDraft" },
+            name: { kind: "Name", value: "draftCensusDefinitionVersion" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: { kind: "StringValue", value: "HUMAN", block: false },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "CensusDefinitionVersionFields",
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "kind" } },
+          { kind: "Field", name: { kind: "Name", value: "enabled" } },
+          { kind: "Field", name: { kind: "Name", value: "sortOrder" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionVersionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionVersionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "definition" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CensusDefinitionFields" },
+                },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "version" } },
+          { kind: "Field", name: { kind: "Name", value: "status" } },
+          { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "definitionSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CensusDefinitionAdminStateQuery,
+  CensusDefinitionAdminStateQueryVariables
+>;
+export const CensusDefinitionsEnsureDefaultsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CensusDefinitionsEnsureDefaults" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "seedSpecies" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+          defaultValue: { kind: "BooleanValue", value: true },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "resetSchema" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+          defaultValue: { kind: "BooleanValue", value: false },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: {
+              kind: "Name",
+              value: "adminCensusDefinitionsEnsureDefaults",
+            },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "seedSpecies" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "seedSpecies" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "resetSchema" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "resetSchema" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "definitions" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "CensusDefinitionFields" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "versions" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: {
+                          kind: "Name",
+                          value: "CensusDefinitionVersionFields",
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "fields" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "kind" } },
+          { kind: "Field", name: { kind: "Name", value: "enabled" } },
+          { kind: "Field", name: { kind: "Name", value: "sortOrder" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionVersionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionVersionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "definition" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CensusDefinitionFields" },
+                },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "version" } },
+          { kind: "Field", name: { kind: "Name", value: "status" } },
+          { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "definitionSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CensusDefinitionsEnsureDefaultsMutation,
+  CensusDefinitionsEnsureDefaultsMutationVariables
+>;
+export const CensusDefinitionVersionPublishDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CensusDefinitionVersionPublish" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "kind" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "definitionSchema" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "GenericScalar" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "enabled" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+          defaultValue: { kind: "BooleanValue", value: true },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: {
+              kind: "Name",
+              value: "adminCensusDefinitionVersionPublish",
+            },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "kind" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "definitionSchema" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "definitionSchema" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "enabled" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "enabled" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "definition" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "CensusDefinitionFields" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "version" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: {
+                          kind: "Name",
+                          value: "CensusDefinitionVersionFields",
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "fields" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "kind" } },
+          { kind: "Field", name: { kind: "Name", value: "enabled" } },
+          { kind: "Field", name: { kind: "Name", value: "sortOrder" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionVersionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionVersionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "definition" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CensusDefinitionFields" },
+                },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "version" } },
+          { kind: "Field", name: { kind: "Name", value: "status" } },
+          { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "definitionSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CensusDefinitionVersionPublishMutation,
+  CensusDefinitionVersionPublishMutationVariables
+>;
+export const CensusDefinitionVersionSaveDraftDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CensusDefinitionVersionSaveDraft" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "kind" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "definitionSchema" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "GenericScalar" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: {
+              kind: "Name",
+              value: "adminCensusDefinitionVersionSaveDraft",
+            },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "kind" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "definitionSchema" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "definitionSchema" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "definition" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "CensusDefinitionFields" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "version" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: {
+                          kind: "Name",
+                          value: "CensusDefinitionVersionFields",
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "fields" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "kind" } },
+          { kind: "Field", name: { kind: "Name", value: "enabled" } },
+          { kind: "Field", name: { kind: "Name", value: "sortOrder" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionVersionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionVersionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "definition" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CensusDefinitionFields" },
+                },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "version" } },
+          { kind: "Field", name: { kind: "Name", value: "status" } },
+          { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "definitionSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CensusDefinitionVersionSaveDraftMutation,
+  CensusDefinitionVersionSaveDraftMutationVariables
+>;
+export const CensusDefinitionSetEnabledDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CensusDefinitionSetEnabled" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "kind" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "enabled" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminCensusDefinitionSetEnabled" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "kind" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "enabled" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "enabled" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "definition" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "CensusDefinitionFields" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "version" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: {
+                          kind: "Name",
+                          value: "CensusDefinitionVersionFields",
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "fields" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "kind" } },
+          { kind: "Field", name: { kind: "Name", value: "enabled" } },
+          { kind: "Field", name: { kind: "Name", value: "sortOrder" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionVersionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionVersionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "definition" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CensusDefinitionFields" },
+                },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "version" } },
+          { kind: "Field", name: { kind: "Name", value: "status" } },
+          { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "definitionSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CensusDefinitionSetEnabledMutation,
+  CensusDefinitionSetEnabledMutationVariables
+>;
+export const LatestAnimalVillageCensusDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "LatestAnimalVillageCensus" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "villageId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "latestVillageCensusV2" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "villageId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "villageId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: { kind: "StringValue", value: "ANIMAL", block: false },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "censusDate" } },
+                { kind: "Field", name: { kind: "Name", value: "submittedAt" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "villageHouseholdQuantity" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "animalHouseholdQuantity" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reporter" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "facts" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "rowKey" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "rowLabel" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "animalQuantity" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "householdQuantity" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  LatestAnimalVillageCensusQuery,
+  LatestAnimalVillageCensusQueryVariables
+>;
+export const ClusterResultsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ClusterResults" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "fromDate" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Date" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "throughDate" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Date" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "riskLevels" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "clusterResults" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "fromDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "fromDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "throughDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "throughDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "riskLevels" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "riskLevels" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "ClusterResultFields" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ClusterLinkedReportFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "IncidentReportType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          { kind: "Field", name: { kind: "Name", value: "incidentDate" } },
+          { kind: "Field", name: { kind: "Name", value: "rendererData" } },
+          { kind: "Field", name: { kind: "Name", value: "gpsLocation" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "reportType" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "icon" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "authorities" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "currentRiskAssessment" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "RiskAssessmentFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ClusterResultFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "IntegrationClusterResultDashboardType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "externalClusterId" } },
+          { kind: "Field", name: { kind: "Name", value: "algorithmVersion" } },
+          { kind: "Field", name: { kind: "Name", value: "windowStart" } },
+          { kind: "Field", name: { kind: "Name", value: "windowEnd" } },
+          { kind: "Field", name: { kind: "Name", value: "incidentIds" } },
+          { kind: "Field", name: { kind: "Name", value: "authorityIds" } },
+          { kind: "Field", name: { kind: "Name", value: "villageIds" } },
+          { kind: "Field", name: { kind: "Name", value: "geometry" } },
+          { kind: "Field", name: { kind: "Name", value: "radiusMeters" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "riskLevel" } },
+          { kind: "Field", name: { kind: "Name", value: "reportCount" } },
+          { kind: "Field", name: { kind: "Name", value: "explanation" } },
+          { kind: "Field", name: { kind: "Name", value: "metadata" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          { kind: "Field", name: { kind: "Name", value: "updatedAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationClient" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "linkedReports" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ClusterLinkedReportFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ClusterResultsQuery, ClusterResultsQueryVariables>;
+export const GetClusterResultDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetClusterResult" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "clusterResult" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ClusterResultFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ClusterLinkedReportFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "IncidentReportType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          { kind: "Field", name: { kind: "Name", value: "incidentDate" } },
+          { kind: "Field", name: { kind: "Name", value: "rendererData" } },
+          { kind: "Field", name: { kind: "Name", value: "gpsLocation" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "reportType" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "icon" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "authorities" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "currentRiskAssessment" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "RiskAssessmentFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ClusterResultFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "IntegrationClusterResultDashboardType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "externalClusterId" } },
+          { kind: "Field", name: { kind: "Name", value: "algorithmVersion" } },
+          { kind: "Field", name: { kind: "Name", value: "windowStart" } },
+          { kind: "Field", name: { kind: "Name", value: "windowEnd" } },
+          { kind: "Field", name: { kind: "Name", value: "incidentIds" } },
+          { kind: "Field", name: { kind: "Name", value: "authorityIds" } },
+          { kind: "Field", name: { kind: "Name", value: "villageIds" } },
+          { kind: "Field", name: { kind: "Name", value: "geometry" } },
+          { kind: "Field", name: { kind: "Name", value: "radiusMeters" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "riskLevel" } },
+          { kind: "Field", name: { kind: "Name", value: "reportCount" } },
+          { kind: "Field", name: { kind: "Name", value: "explanation" } },
+          { kind: "Field", name: { kind: "Name", value: "metadata" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          { kind: "Field", name: { kind: "Name", value: "updatedAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationClient" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "linkedReports" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ClusterLinkedReportFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetClusterResultQuery,
+  GetClusterResultQueryVariables
 >;
 export const QueryCommentsDocument = {
   kind: "Document",
@@ -11638,6 +16083,2171 @@ export const ResetPasswordCreateDocument = {
   ResetPasswordCreateMutation,
   ResetPasswordCreateMutationVariables
 >;
+export const AdminIntegrationClientsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AdminIntegrationClients" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "status" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "integrationType" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminIntegrationClientQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "status" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "status" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "integrationType" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "integrationType" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "integrationType" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "status" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "clientId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "scopeCodes" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "allowedCallbackDomains" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "rateLimitPolicy" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationClientsQuery,
+  AdminIntegrationClientsQueryVariables
+>;
+export const AdminIntegrationClientGetDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AdminIntegrationClientGet" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminIntegrationClientGet" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "integrationType" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "status" } },
+                { kind: "Field", name: { kind: "Name", value: "clientId" } },
+                { kind: "Field", name: { kind: "Name", value: "scopeCodes" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "allowedCallbackDomains" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "rateLimitPolicy" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationClientGetQuery,
+  AdminIntegrationClientGetQueryVariables
+>;
+export const AdminIntegrationOptionsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AdminIntegrationOptions" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationScopeOptions" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationClientStatusOptions" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "webhookEndpointStatusOptions" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationTypeOptions" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationEventTypeOptions" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "code" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationOptionsQuery,
+  AdminIntegrationOptionsQueryVariables
+>;
+export const AdminIntegrationClientCreateOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminIntegrationClientCreateOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "AdminIntegrationClientInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminIntegrationClientCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "clientSecret" },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "integrationClient",
+                              },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "code" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "integrationType",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "status" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "clientId" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "scopeCodes" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "allowedCallbackDomains",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "rateLimitPolicy",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationClientCreateOpMutation,
+  AdminIntegrationClientCreateOpMutationVariables
+>;
+export const AdminIntegrationClientUpdateOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminIntegrationClientUpdateOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "AdminIntegrationClientInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminIntegrationClientUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "integrationClient",
+                              },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "code" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "integrationType",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "status" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "clientId" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "scopeCodes" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "allowedCallbackDomains",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "rateLimitPolicy",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationClientUpdateOpMutation,
+  AdminIntegrationClientUpdateOpMutationVariables
+>;
+export const AdminIntegrationClientDisableOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminIntegrationClientDisableOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminIntegrationClientDisable" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "integrationClient",
+                              },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "status" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationClientDisableOpMutation,
+  AdminIntegrationClientDisableOpMutationVariables
+>;
+export const AdminIntegrationClientRotateSecretOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminIntegrationClientRotateSecretOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminIntegrationClientRotateSecret" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientRotateSecretSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "clientSecret" },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "integrationClient",
+                              },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "status" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationClientUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationClientRotateSecretOpMutation,
+  AdminIntegrationClientRotateSecretOpMutationVariables
+>;
+export const AdminWebhookEndpointsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AdminWebhookEndpoints" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "integrationClientId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Decimal" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "status" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "eventType" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminWebhookEndpointQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "integrationClientId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "integrationClientId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "status" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "status" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "eventType" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "eventType" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "url" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "status" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "eventTypes" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "schemaVersion" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "activeSigningSecretRef" },
+                      },
+                      {
+                        kind: "Field",
+                        name: {
+                          kind: "Name",
+                          value: "activeSigningSecretVersion",
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "nextSigningSecretRef" },
+                      },
+                      {
+                        kind: "Field",
+                        name: {
+                          kind: "Name",
+                          value: "nextSigningSecretVersion",
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timeoutSeconds" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "maxAttempts" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "retryPolicy" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "customHeaders" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "integrationClient" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "code" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminWebhookEndpointsQuery,
+  AdminWebhookEndpointsQueryVariables
+>;
+export const AdminWebhookEndpointGetDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AdminWebhookEndpointGet" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminWebhookEndpointGet" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "url" } },
+                { kind: "Field", name: { kind: "Name", value: "status" } },
+                { kind: "Field", name: { kind: "Name", value: "eventTypes" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "schemaVersion" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "activeSigningSecretRef" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "activeSigningSecretVersion" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "nextSigningSecretRef" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "nextSigningSecretVersion" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "timeoutSeconds" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "maxAttempts" } },
+                { kind: "Field", name: { kind: "Name", value: "retryPolicy" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "customHeaders" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "integrationClient" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminWebhookEndpointGetQuery,
+  AdminWebhookEndpointGetQueryVariables
+>;
+export const AdminWebhookEndpointCreateOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminWebhookEndpointCreateOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "AdminWebhookEndpointInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminWebhookEndpointCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminWebhookEndpointCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "webhookEndpoint" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "url" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "status" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "eventTypes" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "schemaVersion",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "activeSigningSecretRef",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "activeSigningSecretVersion",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "nextSigningSecretRef",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "nextSigningSecretVersion",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "timeoutSeconds",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "maxAttempts",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "retryPolicy",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "customHeaders",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "integrationClient",
+                                    },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "code" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminWebhookEndpointCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminWebhookEndpointCreateOpMutation,
+  AdminWebhookEndpointCreateOpMutationVariables
+>;
+export const AdminWebhookEndpointUpdateOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminWebhookEndpointUpdateOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "AdminWebhookEndpointInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminWebhookEndpointUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminWebhookEndpointUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "webhookEndpoint" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "url" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "status" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "eventTypes" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "schemaVersion",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "activeSigningSecretRef",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "activeSigningSecretVersion",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "nextSigningSecretRef",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "nextSigningSecretVersion",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "timeoutSeconds",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "maxAttempts",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "retryPolicy",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "customHeaders",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "integrationClient",
+                                    },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "code" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminWebhookEndpointUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminWebhookEndpointUpdateOpMutation,
+  AdminWebhookEndpointUpdateOpMutationVariables
+>;
+export const AdminWebhookEndpointDisableOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminWebhookEndpointDisableOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminWebhookEndpointDisable" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminWebhookEndpointUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "webhookEndpoint" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "status" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminWebhookEndpointUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminWebhookEndpointDisableOpMutation,
+  AdminWebhookEndpointDisableOpMutationVariables
+>;
+export const IntegrationPolicyGetDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "IntegrationPolicyGet" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "integrationPolicyGet" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "integrationEnabled" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "aiEnabled" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "riskEvaluatorEnabled" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "clusterDetectorEnabled" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aiDefaultCommentOwnerUserId" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aiDefaultCommentOwnerName" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "dashboardRiskWindowDays" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  IntegrationPolicyGetQuery,
+  IntegrationPolicyGetQueryVariables
+>;
+export const IntegrationPolicyAdminUsersDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "IntegrationPolicyAdminUsers" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAuthorityUserQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "role" },
+                value: { kind: "StringValue", value: "ADM", block: false },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "firstName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "lastName" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  IntegrationPolicyAdminUsersQuery,
+  IntegrationPolicyAdminUsersQueryVariables
+>;
+export const AdminIntegrationPolicyUpdateOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AdminIntegrationPolicyUpdateOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "AdminIntegrationPolicyInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminIntegrationPolicyUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationPolicyUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "policy" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "integrationEnabled",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "aiEnabled" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "riskEvaluatorEnabled",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "clusterDetectorEnabled",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "aiDefaultCommentOwnerUserId",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "aiDefaultCommentOwnerName",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "dashboardRiskWindowDays",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminIntegrationPolicyUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AdminIntegrationPolicyUpdateOpMutation,
+  AdminIntegrationPolicyUpdateOpMutationVariables
+>;
 export const InvitationCodesDocument = {
   kind: "Document",
   definitions: [
@@ -11759,6 +18369,27 @@ export const InvitationCodesDocument = {
                           ],
                         },
                       },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "villages" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "code" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
                     ],
                   },
                 },
@@ -11836,6 +18467,17 @@ export const InvitationCodeCreateDocument = {
           variable: { kind: "Variable", name: { kind: "Name", value: "role" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "villageIds" },
+          },
+          type: {
+            kind: "ListType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -11884,6 +18526,14 @@ export const InvitationCodeCreateDocument = {
                   name: { kind: "Name", value: "role" },
                 },
               },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "villageIds" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "villageIds" },
+                },
+              },
             ],
             selectionSet: {
               kind: "SelectionSet",
@@ -11917,6 +18567,27 @@ export const InvitationCodeCreateDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "code" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "villages" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "code" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                ],
+                              },
                             },
                           ],
                         },
@@ -12033,6 +18704,17 @@ export const InvitationCodeUpdateDocument = {
           variable: { kind: "Variable", name: { kind: "Name", value: "role" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "villageIds" },
+          },
+          type: {
+            kind: "ListType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -12087,6 +18769,14 @@ export const InvitationCodeUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "role" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "villageIds" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "villageIds" },
                 },
               },
             ],
@@ -12149,6 +18839,27 @@ export const InvitationCodeUpdateDocument = {
                                         {
                                           kind: "Field",
                                           name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "villages" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "code" },
                                         },
                                         {
                                           kind: "Field",
@@ -12317,6 +19028,18 @@ export const GetInvitationCodeDocument = {
                 { kind: "Field", name: { kind: "Name", value: "fromDate" } },
                 { kind: "Field", name: { kind: "Name", value: "throughDate" } },
                 { kind: "Field", name: { kind: "Name", value: "role" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "villages" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -17908,6 +24631,14 @@ export const ReportsDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "currentRiskLevels" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -17962,6 +24693,14 @@ export const ReportsDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "includeChildAuthorities" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "currentRiskLevels" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "currentRiskLevels" },
                 },
               },
               {
@@ -18103,11 +24842,65 @@ export const ReportsDocument = {
                       },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "currentRiskAssessment" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "FragmentSpread",
+                              name: {
+                                kind: "Name",
+                                value: "RiskAssessmentFields",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "testFlag" },
                       },
                     ],
                   },
                 },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
               ],
             },
           },
@@ -18372,11 +25165,65 @@ export const BoundaryConnectedReportsDocument = {
                       },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "currentRiskAssessment" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "FragmentSpread",
+                              name: {
+                                kind: "Name",
+                                value: "RiskAssessmentFields",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "testFlag" },
                       },
                     ],
                   },
                 },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
               ],
             },
           },
@@ -18543,6 +25390,77 @@ export const GetReportDocument = {
                     ],
                   },
                 },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "currentRiskAssessment" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "RiskAssessmentFields" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "riskAssessmentHistory" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "3" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "RiskAssessmentFields" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
               ],
             },
           },
@@ -18670,6 +25588,172 @@ export const ConvertReportToTestReportDocument = {
 } as unknown as DocumentNode<
   ConvertReportToTestReportMutation,
   ConvertReportToTestReportMutationVariables
+>;
+export const SetReportRiskValueDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "SetReportRiskValue" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "level" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "setReportRisk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "level" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "level" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "report" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "currentRiskAssessment" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "FragmentSpread",
+                              name: {
+                                kind: "Name",
+                                value: "RiskAssessmentFields",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "riskAssessmentHistory" },
+                        arguments: [
+                          {
+                            kind: "Argument",
+                            name: { kind: "Name", value: "limit" },
+                            value: { kind: "IntValue", value: "3" },
+                          },
+                        ],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "FragmentSpread",
+                              name: {
+                                kind: "Name",
+                                value: "RiskAssessmentFields",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "riskAssessment" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "RiskAssessmentFields" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RiskAssessmentFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "RiskAssessmentProjectionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "level" } },
+          { kind: "Field", name: { kind: "Name", value: "source" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "factors" } },
+          { kind: "Field", name: { kind: "Name", value: "evaluatorVersion" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "externalAssessmentId" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "isCurrent" } },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createdBy" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "firstName" } },
+                { kind: "Field", name: { kind: "Name", value: "lastName" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SetReportRiskValueMutation,
+  SetReportRiskValueMutationVariables
 >;
 export const ReportCategoriesDocument = {
   kind: "Document",
@@ -24101,6 +31185,20 @@ export const UserUpdateDocument = {
           variable: { kind: "Variable", name: { kind: "Name", value: "role" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "villageAssignments" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "VillageReporterAssignmentInput" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -24181,6 +31279,14 @@ export const UserUpdateDocument = {
                   name: { kind: "Name", value: "role" },
                 },
               },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "villageAssignments" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "villageAssignments" },
+                },
+              },
             ],
             selectionSet: {
               kind: "SelectionSet",
@@ -24254,6 +31360,100 @@ export const UserUpdateDocument = {
                                         {
                                           kind: "Field",
                                           name: { kind: "Name", value: "id" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "assignedVillages",
+                                    },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "code" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "active",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "assignedVillageAssignments",
+                                    },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "censusRole",
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "village",
+                                          },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "id",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "code",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "name",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "active",
+                                                },
+                                              },
+                                            ],
+                                          },
                                         },
                                       ],
                                     },
@@ -24560,6 +31760,61 @@ export const GetUserDocument = {
                     ],
                   },
                 },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "assignedVillages" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "active" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "assignedVillageAssignments" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "censusRole" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "village" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "code" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "active" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -24705,4 +31960,659 @@ export const SummaryContributionQueryDocument = {
 } as unknown as DocumentNode<
   SummaryContributionQueryQuery,
   SummaryContributionQueryQueryVariables
+>;
+export const VillagesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "villages" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ordering" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorityId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Decimal" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminVillageQuery" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ordering" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ordering" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "authorityId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorityId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "results" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "active" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "latitude" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "longitude" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "authority" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<VillagesQuery, VillagesQueryVariables>;
+export const VillageCreateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "VillageCreate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "code" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorityId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "latitude" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "longitude" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "active" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+          defaultValue: { kind: "BooleanValue", value: true },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminVillageCreate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "code" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "code" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "authorityId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorityId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "latitude" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "latitude" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "longitude" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "longitude" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "active" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "active" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminVillageCreateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "code" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "active" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "latitude" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "longitude" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "authority" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminVillageCreateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  VillageCreateMutation,
+  VillageCreateMutationVariables
+>;
+export const VillageUpdateDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "VillageUpdate" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "code" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "authorityId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "latitude" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "longitude" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "active" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminVillageUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "code" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "code" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "authorityId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "authorityId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "latitude" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "latitude" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "longitude" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "longitude" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "active" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "active" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminVillageUpdateSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "code" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "active" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "latitude" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "longitude" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "authority" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "AdminVillageUpdateProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  VillageUpdateMutation,
+  VillageUpdateMutationVariables
 >;

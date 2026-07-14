@@ -1,16 +1,19 @@
 import { BaseViewModel } from "lib/baseViewModel";
 import { Authority } from "lib/services/authority";
 import { IAuthorityService } from "lib/services/authority/authorityService";
+import { IVillageService, Village } from "lib/services/village";
 import { computed, makeObservable, observable } from "mobx";
 
 export class AuthorityViewViewModel extends BaseViewModel {
   _id: string = "";
   _data: Authority = {} as Authority;
   _inheritsDown?: Authority[] = undefined;
+  _villages: Village[] = [];
 
   constructor(
     id: string,
-    readonly authorityService: IAuthorityService
+    readonly authorityService: IAuthorityService,
+    readonly villageService: IVillageService
   ) {
     super();
     makeObservable(this, {
@@ -20,6 +23,8 @@ export class AuthorityViewViewModel extends BaseViewModel {
       data: computed,
       _inheritsDown: observable,
       inheritsDown: computed,
+      _villages: observable,
+      villages: computed,
     });
     this.id = id;
   }
@@ -45,7 +50,14 @@ export class AuthorityViewViewModel extends BaseViewModel {
     this._inheritsDown = value;
   }
 
-  async fetch() {
+  get villages(): Village[] {
+    return this._villages;
+  }
+  set villages(value: Village[]) {
+    this._villages = value;
+  }
+
+  async fetch(includeVillages = false) {
     this.isLoading = true;
     const data = await (await this.authorityService.getAuthority(this.id)).data;
     if (data) {
@@ -54,6 +66,15 @@ export class AuthorityViewViewModel extends BaseViewModel {
 
     this.inheritsDown =
       await this.authorityService.lookupAuthorityInheritsDownShallow(this.id);
+    if (includeVillages) {
+      const result = await this.villageService.fetchVillages(500, 0, "", true);
+      const authorityId = parseInt(this.id);
+      this.villages = (result.items || []).filter(
+        village => village.authorityId === authorityId
+      );
+    } else {
+      this.villages = [];
+    }
     this.isLoading = false;
   }
 }

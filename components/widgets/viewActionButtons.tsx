@@ -34,21 +34,30 @@ border
 
 type ViewActionButtonsProps = {
   editUrl?: string;
+  testIdPrefix?: string;
 };
 
-const ViewActionButtons: React.FC<ViewActionButtonsProps> = ({ editUrl }) => {
+const ViewActionButtons: React.FC<ViewActionButtonsProps> = ({
+  editUrl,
+  testIdPrefix,
+}) => {
   const router = useRouter();
   const { t } = useTranslation();
 
   return (
     <div className="mt-6 md:mt-14 col-span-full flex items-center justify-start">
-      <BackButton type="button" onClick={() => router.back()}>
+      <BackButton
+        type="button"
+        data-testid={testIdPrefix ? `${testIdPrefix}-back` : undefined}
+        onClick={() => router.back()}
+      >
         <ChevronLeftIcon className="mr-2 -ml-1 w-5 h-5" />
         {t("form.button.back", "Back")}
       </BackButton>
       {editUrl && (
         <EditButton
           type="button"
+          data-testid={testIdPrefix ? `${testIdPrefix}-edit` : undefined}
           onClick={() => {
             if (editUrl) router.push(editUrl);
           }}

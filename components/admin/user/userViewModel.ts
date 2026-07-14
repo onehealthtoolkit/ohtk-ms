@@ -1,8 +1,11 @@
 import { BaseFormViewModel } from "lib/baseFormViewModel";
-import { User, IUserService } from "lib/services/user";
+import { User, IUserService, UserVillageAssignment } from "lib/services/user";
 import { SaveResult } from "lib/services/interface";
 import { action, computed, makeObservable, observable } from "mobx";
-import { AccountsAuthorityUserRoleChoices } from "lib/generated/graphql";
+import {
+  AccountsAuthorityUserRoleChoices,
+  AccountsVillageReporterAssignmentCensusRoleChoices,
+} from "lib/generated/graphql";
 
 export abstract class UserViewModel extends BaseFormViewModel {
   userService: IUserService;
@@ -16,6 +19,9 @@ export abstract class UserViewModel extends BaseFormViewModel {
   _telephone: string = "";
   _address: string = "";
   _role: string = AccountsAuthorityUserRoleChoices.Rep;
+  _villageAssignments: UserVillageAssignment[] = [];
+  manageVillageAssignments: boolean = false;
+
   constructor(userService: IUserService) {
     super();
     makeObservable(this, {
@@ -35,6 +41,10 @@ export abstract class UserViewModel extends BaseFormViewModel {
       address: computed,
       _role: observable,
       role: computed,
+      _villageAssignments: observable,
+      villageAssignments: computed,
+      toggleVillageAssignment: action,
+      setVillageAssignmentRole: action,
       save: action,
       validate: action,
     });
@@ -127,6 +137,54 @@ export abstract class UserViewModel extends BaseFormViewModel {
     if (this.submitError.length > 0) {
       this.submitError = "";
     }
+  }
+
+  public get villageAssignments(): UserVillageAssignment[] {
+    return this._villageAssignments;
+  }
+
+  public set villageAssignments(value: UserVillageAssignment[]) {
+    this._villageAssignments = value;
+    delete this.fieldErrors["villageAssignments"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public toggleVillageAssignment(
+    village: Omit<UserVillageAssignment, "censusRole">,
+    selected: boolean
+  ) {
+    if (selected) {
+      if (
+        !this.villageAssignments.some(
+          assignment => assignment.villageId === village.villageId
+        )
+      ) {
+        this.villageAssignments = [
+          ...this.villageAssignments,
+          {
+            ...village,
+            censusRole: AccountsVillageReporterAssignmentCensusRoleChoices.Off,
+          },
+        ];
+      }
+    } else {
+      this.villageAssignments = this.villageAssignments.filter(
+        assignment => assignment.villageId !== village.villageId
+      );
+    }
+  }
+
+  public setVillageAssignmentRole(
+    villageId: number,
+    censusRole: AccountsVillageReporterAssignmentCensusRoleChoices
+  ) {
+    this.villageAssignments = this.villageAssignments.map(assignment =>
+      assignment.villageId === villageId
+        ? { ...assignment, censusRole }
+        : assignment
+    );
   }
 
   public abstract _save(): Promise<SaveResult<User>>;

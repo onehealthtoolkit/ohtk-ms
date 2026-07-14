@@ -39,28 +39,32 @@ export class ProfileService implements IProfileService {
       fetchPolicy: "network-only",
     });
 
-    if (!result.errors) {
-      const me = result.data.me!;
-      return {
-        username: me.username,
-        firstName: me.firstName,
-        lastName: me.lastName,
-        id: me.id,
-        authorityId: me.authorityId || 0,
-        authorityName: me.authorityName || "",
-        avatarUrl: me.avatarUrl || "",
-        role: me.role || "",
-        isReporter: me.role === "REP",
-        isStaff: me.isStaff || false,
-        isSuperUser: me.isSuperuser || false,
-        email: me.email || "",
-        telephone: me.telephone || "",
-        address: me.address || "",
-        features: me.features as Array<string>,
-      };
-    } else {
-      throw new Error("Method not implemented.");
+    if (result.errors?.length) {
+      throw new Error(result.errors.map(error => error.message).join(", "));
     }
+
+    const me = result.data?.me;
+    if (!me) {
+      throw new Error("Unable to load current user profile.");
+    }
+
+    return {
+      username: me.username,
+      firstName: me.firstName,
+      lastName: me.lastName,
+      id: me.id,
+      authorityId: me.authorityId || 0,
+      authorityName: me.authorityName || "",
+      avatarUrl: me.avatarUrl || "",
+      role: me.role || "",
+      isReporter: me.role === "REP",
+      isStaff: me.isStaff || false,
+      isSuperUser: me.isSuperuser || false,
+      email: me.email || "",
+      telephone: me.telephone || "",
+      address: me.address || "",
+      features: me.features as Array<string>,
+    };
   }
 
   async uploadAvatar(image: File): Promise<SaveResult<ProfileUpdate>> {

@@ -4,11 +4,16 @@ import {
   ConvertReportToTestReportDocument,
   GetReportDocument,
   ReportsDocument,
+  RiskAssessmentFieldsFragment,
+  SetReportRiskValueDocument,
 } from "lib/generated/graphql";
 import {
   Image,
   Report,
   ReportDetail,
+  ReportRiskState,
+  RiskAssessment,
+  RiskFilterLevel,
   UploadFile,
 } from "lib/services/report/report";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
@@ -22,6 +27,7 @@ export type ReportFilterData = {
   reportTypes?: Pick<ReportType, "id" | "name">[];
   includeChildAuthorities?: boolean;
   includeTest?: boolean;
+  riskLevels?: RiskFilterLevel[];
 };
 
 export type ReportFilter = {
@@ -33,6 +39,7 @@ export type ReportFilter = {
   offset: number;
   testFlag?: boolean;
   includeChildAuthorities?: boolean;
+  currentRiskLevels?: string;
 };
 
 export interface IReportService extends IService {
@@ -53,6 +60,11 @@ export interface IReportService extends IService {
   getReport(id: string): Promise<GetResult<ReportDetail>>;
 
   convertToTestReport(reportId: string): Promise<String>;
+
+  setReportRisk(
+    reportId: string,
+    level: RiskFilterLevel | null
+  ): Promise<GetResult<ReportRiskState>>;
 }
 
 export class ReportService implements IReportService {
@@ -66,6 +78,7 @@ export class ReportService implements IReportService {
     reportTypes: undefined,
     testFlag: undefined,
     includeChildAuthorities: undefined,
+    currentRiskLevels: undefined,
   };
 
   constructor(client: LegacyApolloClient) {
@@ -88,6 +101,10 @@ export class ReportService implements IReportService {
       throughDate: filter.throughDate,
       testFlag: filter.includeTest ? undefined : false,
       includeChildAuthorities: filter.includeChildAuthorities,
+      currentRiskLevels:
+        filter.riskLevels && filter.riskLevels.length > 0
+          ? filter.riskLevels.join(",")
+          : undefined,
     };
     const fetchResult = await this.client.query({
       query: ReportsDocument,
@@ -114,6 +131,7 @@ export class ReportService implements IReportService {
               : null,
           authorityName: item.authorities?.map(item => item?.name).join(", "),
           testFlag: item.testFlag,
+          currentRiskAssessment: mapRiskAssessment(item.currentRiskAssessment),
         });
       }
     });
@@ -163,6 +181,7 @@ export class ReportService implements IReportService {
               ? item.images[0]?.thumbnail
               : null,
           testFlag: item.testFlag,
+          currentRiskAssessment: mapRiskAssessment(item.currentRiskAssessment),
         });
       }
     });
@@ -203,6 +222,13 @@ export class ReportService implements IReportService {
           ?.map(item => item?.name)
           .join(", "),
         testFlag: incidentReport.testFlag,
+        currentRiskAssessment: mapRiskAssessment(
+          incidentReport.currentRiskAssessment
+        ),
+        riskAssessmentHistory:
+          incidentReport.riskAssessmentHistory
+            ?.map(mapRiskAssessment)
+            .filter(isRiskAssessment) || [],
       };
     }
     return {
@@ -233,4 +259,75 @@ export class ReportService implements IReportService {
     });
     return result.data?.convertToTestReport?.report?.id;
   }
+
+  async setReportRisk(
+    reportId: string,
+    level: RiskFilterLevel | null
+  ): Promise<GetResult<ReportRiskState>> {
+    const result = await this.client.mutate({
+      mutation: SetReportRiskValueDocument,
+      variables: {
+        reportId,
+        level,
+      },
+      refetchQueries: [
+        {
+          query: ReportsDocument,
+          variables: this.fetchReportsQuery,
+          fetchPolicy: "network-only",
+        },
+      ],
+      awaitRefetchQueries: true,
+    });
+
+    if (result.errors) {
+      return {
+        data: undefined,
+        error: result.errors.map(error => error.message).join(","),
+      };
+    }
+
+    const report = result.data?.setReportRisk?.report;
+    return {
+      data: {
+        currentRiskAssessment: mapRiskAssessment(
+          report?.currentRiskAssessment ||
+            result.data?.setReportRisk?.riskAssessment
+        ),
+        riskAssessmentHistory:
+          report?.riskAssessmentHistory
+            ?.map(mapRiskAssessment)
+            .filter(isRiskAssessment) || [],
+      },
+    };
+  }
 }
+
+export const mapRiskAssessment = (
+  item?: RiskAssessmentFieldsFragment | null
+): RiskAssessment | null => {
+  if (!item) return null;
+  return {
+    id: item.id,
+    level: item.level as RiskAssessment["level"],
+    source: item.source,
+    score: item.score,
+    factors: item.factors,
+    evaluatorVersion: item.evaluatorVersion,
+    externalAssessmentId: item.externalAssessmentId,
+    isCurrent: item.isCurrent,
+    createdAt: item.createdAt,
+    createdBy: item.createdBy
+      ? {
+          id: item.createdBy.id,
+          username: item.createdBy.username,
+          firstName: item.createdBy.firstName,
+          lastName: item.createdBy.lastName,
+        }
+      : null,
+  };
+};
+
+export const isRiskAssessment = (
+  item: RiskAssessment | null
+): item is RiskAssessment => item !== null;

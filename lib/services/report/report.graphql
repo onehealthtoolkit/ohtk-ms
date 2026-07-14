@@ -1,3 +1,21 @@
+fragment RiskAssessmentFields on RiskAssessmentProjectionType {
+  id
+  level
+  source
+  score
+  factors
+  evaluatorVersion
+  externalAssessmentId
+  isCurrent
+  createdAt
+  createdBy {
+    id
+    username
+    firstName
+    lastName
+  }
+}
+
 query Reports(
   $limit: Int!
   $offset: Int!
@@ -7,6 +25,7 @@ query Reports(
   $reportTypes: [UUID]
   $testFlag: Boolean
   $includeChildAuthorities: Boolean
+  $currentRiskLevels: String
 ) {
   incidentReports(
     createdAt_Gte: $fromDate
@@ -15,6 +34,7 @@ query Reports(
     reportType_Id_In: $reportTypes
     testFlag: $testFlag
     includeChildAuthorities: $includeChildAuthorities
+    currentRiskLevels: $currentRiskLevels
     limit: $limit
     offset: $offset
   ) {
@@ -46,6 +66,9 @@ query Reports(
       }
       authorities {
         name
+      }
+      currentRiskAssessment {
+        ...RiskAssessmentFields
       }
       testFlag
     }
@@ -95,6 +118,9 @@ query BoundaryConnectedReports(
       }
       images {
         thumbnail
+      }
+      currentRiskAssessment {
+        ...RiskAssessmentFields
       }
       testFlag
     }
@@ -147,6 +173,12 @@ query GetReport($id: ID!) {
     authorities {
       name
     }
+    currentRiskAssessment {
+      ...RiskAssessmentFields
+    }
+    riskAssessmentHistory(limit: 3) {
+      ...RiskAssessmentFields
+    }
   }
 }
 
@@ -162,6 +194,23 @@ mutation ConvertReportToTestReport($reportId: UUID!) {
   convertToTestReport(reportId: $reportId) {
     report {
       id
+    }
+  }
+}
+
+mutation SetReportRiskValue($reportId: UUID!, $level: String) {
+  setReportRisk(reportId: $reportId, level: $level) {
+    report {
+      id
+      currentRiskAssessment {
+        ...RiskAssessmentFields
+      }
+      riskAssessmentHistory(limit: 3) {
+        ...RiskAssessmentFields
+      }
+    }
+    riskAssessment {
+      ...RiskAssessmentFields
     }
   }
 }

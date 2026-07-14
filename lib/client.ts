@@ -71,15 +71,17 @@ export function getSubDomain() {
 }
 
 const refreshToken = async (): Promise<boolean> => {
+  // No variables: the refresh token rides in the HTTP-only cookie
+  // (credentials: "include"); the backend rotates the cookie on each call.
   const result = await client.mutate({
     mutation: RefreshTokenDocument,
   });
 
-  if (!result.error) {
-    setRefreshExpiresIn(result.data?.refreshToken?.payload.exp || 0);
+  if (result.error || !result.data?.refreshToken?.token) {
     return false;
   }
 
+  setRefreshExpiresIn(result.data?.refreshToken?.payload?.exp || 0);
   return true;
 };
 

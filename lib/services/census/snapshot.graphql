@@ -1,0 +1,18 @@
+query LatestAnimalVillageCensus($villageId: Int!) {
+  latestVillageCensusV2(villageId: $villageId, kind: "ANIMAL") {
+    id
+    censusDate
+    submittedAt
+    villageHouseholdQuantity
+    animalHouseholdQuantity
+    reporter {
+      username
+    }
+    facts {
+      rowKey
+      rowLabel
+      animalQuantity
+      householdQuantity
+    }
+  }
+}

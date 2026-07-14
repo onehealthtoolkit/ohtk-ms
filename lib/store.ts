@@ -72,7 +72,17 @@ export class Store {
     const result = await this.authService.signIn(username, password);
 
     if (result.success) {
-      await this.fetchMe();
+      try {
+        await this.fetchMe();
+      } catch (e) {
+        return {
+          success: false,
+          message:
+            e instanceof Error
+              ? e.message
+              : "Unable to load current user profile.",
+        };
+      }
       this.authService.startAutoRefreshToken();
       runInAction(() => {
         this.isLogin = true;

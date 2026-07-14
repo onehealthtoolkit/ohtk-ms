@@ -22,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import { AccountsAuthorityUserRoleChoices } from "lib/generated/graphql";
 import AuthroitySelect from "components/widgets/authoritySelect";
 import useStore from "lib/store";
+import VillageAssignmentSelect from "./villageAssignmentSelect";
 
 const UserUpdate = () => {
   const router = useRouter();
@@ -232,10 +233,34 @@ const UserUpdate = () => {
   );
 
   const onSubmit = useCallback(async () => {
+    viewModel.manageVillageAssignments = store.isFeatureEnable("village");
     if (await viewModel.save()) {
       router.back();
     }
-  }, [router, viewModel]);
+  }, [router, viewModel, store]);
+
+  const villageAssignmentsField = useMemo(
+    () => (
+      <Observer>
+        {() =>
+          store.isFeatureEnable("village") &&
+          viewModel.role === AccountsAuthorityUserRoleChoices.Rep ? (
+            <Field $size="full">
+              <Label htmlFor="villageAssignments">
+                {t("form.label.villages", "Villages")}
+              </Label>
+              <VillageAssignmentSelect
+                viewModel={viewModel}
+                villageService={services.villageService}
+              />
+              <ErrorText>{viewModel.fieldErrors.villageAssignments}</ErrorText>
+            </Field>
+          ) : null
+        }
+      </Observer>
+    ),
+    [t, viewModel, store, services]
+  );
 
   return (
     <MaskingLoader loading={viewModel.isLoading}>
@@ -249,6 +274,7 @@ const UserUpdate = () => {
           {telephoneField}
           {addressField}
           {roleField}
+          {villageAssignmentsField}
         </FieldGroup>
         {viewModel.submitError.length > 0 && (
           <FormMessage>{viewModel.submitError}</FormMessage>

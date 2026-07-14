@@ -1,4 +1,4 @@
-import { Image, UploadFile } from "lib/services/report/report";
+import { Image, RiskAssessment, UploadFile } from "lib/services/report/report";
 import { DeepStateDefinition } from "lib/services/stateDefinition/stateDefinition";
 import { DeepStateStep } from "lib/services/stateStep/stateStep";
 import { StateTransitionRef } from "lib/services/stateTransition/stateTransition";
@@ -16,8 +16,9 @@ export type Case = {
   statusLabel: string;
   threadId?: number | null;
   gpsLocation?: string | null;
-  reportId?: number;
+  reportId?: string;
   authorityName?: string;
+  currentRiskAssessment?: RiskAssessment | null;
 };
 
 export type CaseDetail = Case & {
@@ -28,6 +29,7 @@ export type CaseDetail = Case & {
   stateDefinition?: DeepStateDefinition | null;
   states?: Array<CaseState | null> | null;
   outbreakInfo?: string | null;
+  riskAssessmentHistory?: RiskAssessment[];
 };
 
 export type CaseState = {

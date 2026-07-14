@@ -11,6 +11,10 @@ import { GetResult, IService, QueryResult } from "lib/services/interface";
 import { Authority } from "../authority";
 import { ReportType } from "../reportType";
 import { Image, UploadFile } from "lib/services/report/report";
+import {
+  isRiskAssessment,
+  mapRiskAssessment,
+} from "lib/services/report/reportService";
 
 export type CaseFilterData = {
   fromDate?: Date;
@@ -104,6 +108,9 @@ export class CaseService implements ICaseService {
           authorityName: item.report?.authorities
             ?.map(item => item?.name)
             .join(", "),
+          currentRiskAssessment: mapRiskAssessment(
+            item.report?.currentRiskAssessment
+          ),
         });
       }
     });
@@ -164,6 +171,13 @@ export class CaseService implements ICaseService {
         reportByName: `${incidentCase.report?.reportedBy?.firstName} ${incidentCase.report?.reportedBy?.lastName}`,
         reportByTelephone: incidentCase.report?.reportedBy?.telephone || "",
         gpsLocation: incidentCase.report?.gpsLocation,
+        currentRiskAssessment: mapRiskAssessment(
+          incidentCase.report?.currentRiskAssessment
+        ),
+        riskAssessmentHistory:
+          incidentCase.report?.riskAssessmentHistory
+            ?.map(mapRiskAssessment)
+            .filter(isRiskAssessment) || [],
         stateDefinition: incidentCase.stateDefinition,
         states: incidentCase.states,
         outbreakInfo: incidentCase.outbreakPlanInfo,

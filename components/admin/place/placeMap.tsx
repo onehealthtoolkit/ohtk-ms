@@ -10,10 +10,16 @@ import { MapPin } from "components/widgets/mapPin";
 type MapViewProps = {
   lat: number;
   lng: number;
-  onMarkerChange: (latLng: L.LatLng) => void;
+  draggable?: boolean;
+  onMarkerChange?: (latLng: L.LatLng) => void;
 };
 
-const PlaceMap: React.FC<MapViewProps> = ({ lat, lng, onMarkerChange }) => {
+const PlaceMap: React.FC<MapViewProps> = ({
+  lat,
+  lng,
+  draggable = true,
+  onMarkerChange,
+}) => {
   const markerRef = useRef<L.Marker>(null);
   const icon = L.divIcon({
     html: renderToStaticMarkup(MarkerIcon()),
@@ -26,7 +32,7 @@ const PlaceMap: React.FC<MapViewProps> = ({ lat, lng, onMarkerChange }) => {
     () => ({
       dragend() {
         const marker = markerRef.current;
-        if (marker != null) {
+        if (marker != null && onMarkerChange) {
           onMarkerChange(marker.getLatLng());
         }
       },
@@ -50,8 +56,8 @@ const PlaceMap: React.FC<MapViewProps> = ({ lat, lng, onMarkerChange }) => {
           <Marker
             position={[latitude, longitude]}
             icon={icon}
-            draggable={true}
-            eventHandlers={eventHandlers}
+            draggable={draggable}
+            eventHandlers={draggable ? eventHandlers : undefined}
             ref={markerRef}
           ></Marker>
         </MapContainer>

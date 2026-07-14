@@ -18,7 +18,7 @@ export const AreaFieldNoSSR = dynamic(() => import("./areaField"), {
 });
 
 export const AddButton = forwardRef(function AddButton(
-  props: React.PropsWithoutRef<{ onClick?: () => void }>,
+  props: React.ComponentPropsWithoutRef<"a">,
   ref: React.Ref<HTMLAnchorElement>
 ) {
   const { t } = useTranslation();
@@ -222,6 +222,7 @@ const CheckboxInput = (
     defaultChecked?: boolean;
     disabled: boolean;
     name?: string;
+    "data-testid"?: string;
     onChange?: ChangeEventHandler<HTMLInputElement>;
   },
   ref: React.Ref<HTMLInputElement>

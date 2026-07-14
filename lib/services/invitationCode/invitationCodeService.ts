@@ -31,7 +31,8 @@ export interface IInvitationCodeService extends IService {
     authorityId: number,
     fromDate: string,
     throughDate: string,
-    role: string
+    role: string,
+    villageIds: number[]
   ): Promise<SaveResult<InvitationCode>>;
 
   updateInvitationCode(
@@ -40,7 +41,8 @@ export interface IInvitationCodeService extends IService {
     authorityId: number,
     fromDate: string,
     throughDate: string,
-    role: string
+    role: string,
+    villageIds: number[]
   ): Promise<SaveResult<InvitationCode>>;
 
   deleteInvitationCode(id: string): Promise<DeleteResult>;
@@ -97,6 +99,11 @@ export class InvitationCodeService implements IInvitationCodeService {
           throughDate: item.throughDate,
           role: item.role,
           authorityName: item.authority.name,
+          villages: item.villages.map(village => ({
+            id: village.id,
+            code: village.code,
+            name: village.name,
+          })),
         });
       }
     });
@@ -125,6 +132,11 @@ export class InvitationCodeService implements IInvitationCodeService {
         role: invitationCode.role,
         authorityId: parseInt(invitationCode.authority.id),
         authorityName: invitationCode.authority.name,
+        villages: invitationCode.villages.map(village => ({
+          id: village.id,
+          code: village.code,
+          name: village.name,
+        })),
       };
     }
     return {
@@ -137,7 +149,8 @@ export class InvitationCodeService implements IInvitationCodeService {
     authorityId: number,
     fromDate: string,
     throughDate: string,
-    role: string
+    role: string,
+    villageIds: number[]
   ): Promise<SaveResult<InvitationCode>> {
     const createResult = await this.client.mutate({
       mutation: InvitationCodeCreateDocument,
@@ -147,6 +160,7 @@ export class InvitationCodeService implements IInvitationCodeService {
         fromDate: fromDate,
         throughDate: throughDate,
         role: role,
+        villageIds,
       },
       refetchQueries: [
         {
@@ -196,7 +210,8 @@ export class InvitationCodeService implements IInvitationCodeService {
     authorityId: number,
     fromDate: string,
     throughDate: string,
-    role: string
+    role: string,
+    villageIds: number[]
   ): Promise<SaveResult<InvitationCode>> {
     const updateResult = await this.client.mutate({
       mutation: InvitationCodeUpdateDocument,
@@ -207,6 +222,7 @@ export class InvitationCodeService implements IInvitationCodeService {
         fromDate,
         throughDate,
         role,
+        villageIds,
       },
       refetchQueries: [
         {
