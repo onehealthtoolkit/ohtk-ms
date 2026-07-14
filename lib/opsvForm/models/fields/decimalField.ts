@@ -1,6 +1,6 @@
 import Decimal from "decimal.js";
 import { FieldParams } from ".";
-import { ConditionOperator } from "../condition";
+import { ConditionOperator, normalizeConditionOperator } from "../condition";
 import { decimalEquals, decimalValueInList } from "../conditionList";
 import PrimitiveField from "./primitiveField";
 
@@ -42,7 +42,7 @@ export default class DecimalField extends PrimitiveField<Decimal> {
       return false;
     }
     try {
-      switch (operator) {
+      switch (normalizeConditionOperator(operator)) {
         case "=":
           return decimalEquals(this._value, value);
         case "!=":

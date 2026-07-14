@@ -1,5 +1,5 @@
 import { FieldParams } from ".";
-import { ConditionOperator } from "../condition";
+import { ConditionOperator, normalizeConditionOperator } from "../condition";
 import { stringValueInList } from "../conditionList";
 import { valueIsUndefinedAndNotRequiredGuard } from "./helpers";
 import PrimitiveField from "./primitiveField";
@@ -83,7 +83,7 @@ export default class TextAreaField extends PrimitiveField<string> {
       return false;
     }
     try {
-      switch (operator) {
+      switch (normalizeConditionOperator(operator)) {
         case "=":
           return this._value == value;
         case "!=":

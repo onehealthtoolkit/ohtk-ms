@@ -17,6 +17,8 @@ export const comparableOperatorLabelValues = [
   { label: "is greater or equal to", value: ">=" },
   { label: "is less than", value: "<" },
   { label: "is less or equal to", value: "<=" },
+  // Canonical UI value is "in". Wire aliases has_one_of / hasOneOf / isOneOf
+  // are accepted when parsing existing definitions (see normalizeComparableOperator).
   { label: "is in", value: "in" },
   { label: "contains", value: "contain" },
   { label: "is between", value: "between" },
@@ -28,17 +30,35 @@ export const comparableOperatorKeys = comparableOperatorLabelValues.map(
 
 export type TOperatorValue = string | number | Array<string | number>;
 
+export type TLogicalOperatorKey = (typeof logicalOperatorKeys)[number];
+export type TComparableOperatorKey = (typeof comparableOperatorKeys)[number];
+export type TOperatorKey = TLogicalOperatorKey | TComparableOperatorKey;
+
+/** Mobile/legacy list-membership operator names → form-builder "in". */
+const LIST_MEMBERSHIP_ALIASES = new Set([
+  "in",
+  "has_one_of",
+  "hasOneOf",
+  "isOneOf",
+]);
+
+export function normalizeComparableOperator(
+  operator: string
+): TComparableOperatorKey | string {
+  if (LIST_MEMBERSHIP_ALIASES.has(operator)) {
+    return "in";
+  }
+  return operator;
+}
+
 export interface ConditionDefinition {
-  operator?: TLogicalOperatorKey | TComparableOperatorKey;
+  /** May include wire aliases such as has_one_of / isOneOf; normalized on parse. */
+  operator?: string;
   left?: ConditionDefinition;
   right?: ConditionDefinition;
   name?: string;
   value?: TOperatorValue;
 }
-
-export type TLogicalOperatorKey = (typeof logicalOperatorKeys)[number];
-export type TComparableOperatorKey = (typeof comparableOperatorKeys)[number];
-export type TOperatorKey = TLogicalOperatorKey | TComparableOperatorKey;
 
 /**
  * Condition definition can be any of 2 types of operator:
@@ -82,8 +102,12 @@ export class OperatorViewModel extends AbstractDefinitionViewModel {
         ) {
           if (definition.left && definition.right) {
             if (definition.left.operator && definition.right.operator) {
-              const left = new OperatorViewModel(definition.left.operator);
-              const right = new OperatorViewModel(definition.right.operator);
+              const left = new OperatorViewModel(
+                definition.left.operator as TOperatorKey
+              );
+              const right = new OperatorViewModel(
+                definition.right.operator as TOperatorKey
+              );
 
               this.instance = new LogicalOperatorViewModel(
                 definition.operator as TLogicalOperatorKey,
@@ -101,8 +125,11 @@ export class OperatorViewModel extends AbstractDefinitionViewModel {
           }
         } else {
           if (definition.name && definition.value) {
+            const comparableOp = normalizeComparableOperator(
+              definition.operator
+            ) as TComparableOperatorKey;
             this.instance = new ComparableOperatorViewModel(
-              definition.operator as TComparableOperatorKey,
+              comparableOp,
               definition.name,
               definition.value
             );

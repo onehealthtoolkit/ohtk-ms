@@ -2,7 +2,7 @@ import { formatYmd, formatYmdt } from "lib/datetime";
 import { stringValueInList } from "../conditionList";
 import { computed, makeObservable, observable } from "mobx";
 import Field, { FieldParams } from ".";
-import { ConditionOperator } from "../condition";
+import { ConditionOperator, normalizeConditionOperator } from "../condition";
 
 export type DateFieldParams = {
   withTime?: boolean;
@@ -207,7 +207,7 @@ export default class DateField extends Field {
     try {
       // Format as yyyy-mm-dd
       const currentDateStr = formatYmd(this.value);
-      switch (operator) {
+      switch (normalizeConditionOperator(operator)) {
         case "=":
           return currentDateStr === value;
         case "!=":

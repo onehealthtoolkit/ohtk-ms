@@ -1,5 +1,5 @@
 import { FieldParams } from ".";
-import { ConditionOperator } from "../condition";
+import { ConditionOperator, normalizeConditionOperator } from "../condition";
 import { stringValueInList } from "../conditionList";
 import PrimitiveField from "./primitiveField";
 
@@ -76,7 +76,7 @@ export default class IntegerField extends PrimitiveField<number> {
     }
     try {
       const current = this._value.toString();
-      switch (operator) {
+      switch (normalizeConditionOperator(operator)) {
         case "=":
           return current == value;
         case "!=":

@@ -2,7 +2,7 @@ import Decimal from "decimal.js";
 
 /**
  * Helpers for condition operators that take a comma-separated list
- * (e.g. operator "in" with value "cat,dog,elephant").
+ * (e.g. operator "in" / "has_one_of" / "isOneOf" with value "cat,dog,elephant").
  * Never throws: bad tokens / values evaluate as non-match.
  */
 

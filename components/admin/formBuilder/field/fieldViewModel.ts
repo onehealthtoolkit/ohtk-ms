@@ -18,7 +18,9 @@ import {
 import {
   ComparableOperatorViewModel,
   ConditionDefinition,
+  normalizeComparableOperator,
   OperatorViewModel,
+  TOperatorKey,
 } from "components/admin/formBuilder/shared/operatorViewModel";
 import { action, computed, makeObservable, observable } from "mobx";
 import { TextAreaFieldViewModel } from "./extensions/textareaFieldViewModel";
@@ -261,7 +263,9 @@ export class FieldViewModel extends BaseViewModel {
         if (definition.condition !== undefined) {
           const condition = definition.condition as ConditionDefinition;
           if (condition.operator !== undefined) {
-            this.condition = new OperatorViewModel(condition.operator);
+            this.condition = new OperatorViewModel(
+              normalizeComparableOperator(condition.operator) as TOperatorKey
+            );
             this.condition.parse(condition);
           } else {
             throw new ParseError(

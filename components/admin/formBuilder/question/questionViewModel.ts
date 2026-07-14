@@ -8,8 +8,10 @@ import {
   ConditionDefinition,
   Definition,
   MovableItemsViewModel,
+  normalizeComparableOperator,
   OperatorViewModel,
   ParseError,
+  TOperatorKey,
 } from "components/admin/formBuilder/shared";
 import { action, computed, makeObservable, observable } from "mobx";
 import { v4 as uuidv4 } from "uuid";
@@ -145,7 +147,9 @@ export class QuestionViewModel extends MovableItemsViewModel<FieldViewModel> {
       if (definition.condition !== undefined) {
         const condition = definition.condition as ConditionDefinition;
         if (condition.operator !== undefined) {
-          this.condition = new OperatorViewModel(condition.operator);
+          this.condition = new OperatorViewModel(
+            normalizeComparableOperator(condition.operator) as TOperatorKey
+          );
           this.condition.parse(condition);
         } else {
           throw new ParseError(

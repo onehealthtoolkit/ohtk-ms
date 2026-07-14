@@ -1,4 +1,8 @@
 import Decimal from "decimal.js";
+import SimpleCondition, {
+  isListMembershipOperator,
+  normalizeConditionOperator,
+} from "lib/opsvForm/models/condition";
 import DateField from "lib/opsvForm/models/fields/dateField";
 import DecimalField from "lib/opsvForm/models/fields/decimalField";
 import IntegerField from "lib/opsvForm/models/fields/integerField";
@@ -14,6 +18,8 @@ import {
   splitConditionList,
   stringValueInList,
 } from "lib/opsvForm/models/conditionList";
+import { parseCondition } from "lib/opsvForm/models/json";
+import { normalizeComparableOperator } from "components/admin/formBuilder/shared/operatorViewModel";
 
 describe("conditionList helpers", () => {
   it("splits and trims comma-separated tokens", () => {
@@ -38,6 +44,52 @@ describe("conditionList helpers", () => {
     expect(decimalValueInList(d, "1, 1.5, x")).toBe(true);
     expect(decimalValueInList(d, "x,y")).toBe(false);
     expect(decimalValueInList(undefined, "1")).toBe(false);
+  });
+});
+
+describe("list-membership operator aliases", () => {
+  it("normalizes has_one_of / hasOneOf / isOneOf to in", () => {
+    for (const op of ["in", "has_one_of", "hasOneOf", "isOneOf"] as const) {
+      expect(isListMembershipOperator(op)).toBe(true);
+      expect(normalizeConditionOperator(op)).toBe("in");
+      expect(normalizeComparableOperator(op)).toBe("in");
+    }
+    expect(normalizeConditionOperator("=")).toBe("=");
+    expect(isListMembershipOperator("=")).toBe(false);
+  });
+
+  it("parseCondition folds aliases to in", () => {
+    const c = parseCondition({
+      name: "species",
+      operator: "has_one_of",
+      value: "cat,dog",
+    }) as SimpleCondition;
+    expect(c.operator).toBe("in");
+    expect(c.name).toBe("species");
+    expect(c.value).toBe("cat,dog");
+  });
+
+  it("field evaluate treats aliases the same as in", () => {
+    const field = new TextField("id", "animal", {});
+    field.value = "dog";
+    expect(field.evaluate("has_one_of", "cat, dog, elephant")).toBe(true);
+    expect(field.evaluate("hasOneOf", "cat, dog")).toBe(true);
+    expect(field.evaluate("isOneOf", "cat, dog")).toBe(true);
+    expect(field.evaluate("has_one_of", "cat,elephant")).toBe(false);
+
+    const choices = new SingleChoicesField(
+      "id",
+      "species",
+      [
+        { label: "Cat", value: "cat", textInput: false },
+        { label: "Dog", value: "dog", textInput: false },
+      ],
+      {}
+    );
+    choices.value = "cat";
+    // Staging-style condition on animal sick/death form
+    expect(choices.evaluate("has_one_of", "พิษสุนัขบ้า, หัดแมว")).toBe(false);
+    expect(choices.evaluate("has_one_of", "cat, dog")).toBe(true);
   });
 });
 

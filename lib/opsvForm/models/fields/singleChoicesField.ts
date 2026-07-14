@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable, toJS } from "mobx";
 import Field, { FieldParams } from ".";
-import { ConditionOperator } from "../condition";
+import { ConditionOperator, normalizeConditionOperator } from "../condition";
 import { stringValueInList } from "../conditionList";
 import { valueIsUndefinedAndNotRequiredGuard } from "./helpers";
 
@@ -108,7 +108,7 @@ export default class SingleChoicesField extends Field {
       return false;
     }
     try {
-      switch (operator) {
+      switch (normalizeConditionOperator(operator)) {
         case "=":
           return this.value == value;
         case "!=":

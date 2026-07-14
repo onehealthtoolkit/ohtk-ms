@@ -15,7 +15,7 @@ Successfully implemented the "in" operator for form field conditions, allowing f
 
 #### FormBuilder (1 file)
 
-3. `components/admin/formBuilder/shared/operatorViewModel.ts` - Removed `"has_one_of"` operator
+3. `components/admin/formBuilder/shared/operatorViewModel.ts` - UI canonical operator is `"in"` ("is in"); wire aliases `has_one_of` / `hasOneOf` / `isOneOf` are normalized on parse so existing definitions load into the dropdown
 
 #### Field Implementations (7 files)
 
@@ -70,6 +70,22 @@ Successfully implemented the "in" operator for form field conditions, allowing f
 ### Hardening (uncaught exceptions)
 
 `Decimal` comparisons used to throw on bad list tokens (`new Decimal("xyz")`). Shared helpers in `lib/opsvForm/models/conditionList.ts` never throw; each field `evaluate()` also wraps in try/catch and returns `false` on unexpected errors.
+
+### Operator aliases (mobile + staging compatibility)
+
+List membership is one feature with several wire names:
+
+| Wire / JSON operator | Treated as |
+|----------------------|------------|
+| `in` | list membership (canonical in MS UI / runtime) |
+| `has_one_of` | same (staging DB + older form builder) |
+| `hasOneOf` | same (mobile) |
+| `isOneOf` | same (mobile) |
+
+- Runtime: `normalizeConditionOperator()` folds aliases → `"in"` before field switches.
+- `parseCondition()` stores the canonical `"in"` on `SimpleCondition`.
+- Form builder: `normalizeComparableOperator()` maps aliases → `"in"` so the select shows "is in".
+- **Note:** ohtk-mobile currently parses `has_one_of` / `hasOneOf` / `isOneOf` but not `"in"`. Existing staging forms using `has_one_of` keep working on both clients. New MS-authored forms that save `"in"` need a mobile follow-up to accept `"in"` (or re-save as `has_one_of`) for app parity.
 
 ### Documentation
 

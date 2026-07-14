@@ -1,4 +1,8 @@
-import SimpleCondition, { Condition } from "./condition";
+import SimpleCondition, {
+  Condition,
+  ConditionOperator,
+  normalizeConditionOperator,
+} from "./condition";
 import Field, { FieldParams } from "./fields";
 import TextField from "./fields/textField";
 import IntegerField from "./fields/integerField";
@@ -44,7 +48,15 @@ export type SimpleConditionType = {
   value: string;
 };
 
-export type ConditionOperatorType = "=" | "contains" | "!=" | "in";
+/** Wire-format operators; list membership aliases normalize to "in" at parse. */
+export type ConditionOperatorType =
+  | "="
+  | "contains"
+  | "!="
+  | "in"
+  | "has_one_of"
+  | "hasOneOf"
+  | "isOneOf";
 
 export type FieldType =
   | TextFieldType
@@ -281,7 +293,12 @@ export function parseField(json: FieldType): Field {
 
 export function parseCondition(json?: ConditionType): Condition | undefined {
   if (json) {
-    return new SimpleCondition(json["name"], json["operator"], json["value"]);
+    // Fold list-membership aliases (has_one_of / hasOneOf / isOneOf) to "in"
+    // so field evaluate() and new form definitions share one code path.
+    const operator = normalizeConditionOperator(
+      json["operator"]
+    ) as ConditionOperator;
+    return new SimpleCondition(json["name"], operator, json["value"]);
   }
   return undefined;
 }
