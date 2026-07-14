@@ -1,5 +1,6 @@
 import ErrorDisplay from "components/widgets/errorDisplay";
 import Table from "components/widgets/table";
+import Paginate from "components/widgets/table/paginate";
 import TotalItem from "components/widgets/table/totalItem";
 import useServices from "lib/services/provider";
 import {
@@ -149,7 +150,7 @@ const AnimalCensusCoverageView = () => {
             onChange={event => viewModel.setSearch(event.target.value)}
             onKeyDown={event => {
               if (event.key === "Enter") {
-                viewModel.fetchCoverage();
+                viewModel.setOffset(0);
               }
             }}
             className="min-w-[220px] rounded border border-gray-300 px-3 py-2 text-sm"
@@ -157,7 +158,7 @@ const AnimalCensusCoverageView = () => {
         </div>
         <button
           type="button"
-          onClick={() => viewModel.fetchCoverage()}
+          onClick={() => viewModel.setOffset(0)}
           className="rounded border border-blue-300 bg-[#4C81F1] px-4 py-2 text-sm text-white hover:border-blue-500"
         >
           {t("form.button.refresh", "Refresh")}
@@ -219,6 +220,12 @@ const AnimalCensusCoverageView = () => {
         onLoading={viewModel.isLoading}
         onView={row => viewModel.selectRow(row)}
         viewOnRowClick={false}
+      />
+      <Paginate
+        limit={viewModel.limit}
+        offset={viewModel.offset}
+        totalCount={viewModel.coverage.totalCount}
+        onChange={value => viewModel.setOffset(value)}
       />
 
       {viewModel.selectedRow && (

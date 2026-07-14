@@ -343,6 +343,22 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   {store.isFeatureEnable("animal_census") && (
                     <>
                       <Menu
+                        href="/admin/census/animal/"
+                        pathname={pathname}
+                        label={t("breadcrumb.animalCensus", "Animal Census")}
+                        collapsed={store.menu.collapsed}
+                        display={
+                          store.isSuperUser ||
+                          store.isRoleAdmin ||
+                          store.isRoleOfficer
+                        }
+                        icon={
+                          <ClipboardDocumentListIcon
+                            className={iconClassName}
+                          />
+                        }
+                      />
+                      <Menu
                         href="/admin/census_definitions/"
                         pathname={pathname}
                         label={t(

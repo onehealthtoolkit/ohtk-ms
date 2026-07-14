@@ -50,6 +50,7 @@ export class AnimalCensusCoverageViewModel extends BaseViewModel {
       setOccurrence: action,
       setStatus: action,
       setSearch: action,
+      setOffset: action,
       selectRow: action,
       closeDetail: action,
     });
@@ -122,6 +123,7 @@ export class AnimalCensusCoverageViewModel extends BaseViewModel {
     }
     this.mode = value;
     this.selectedOccurrenceId = "";
+    this.offset = 0;
     this.coverage = {
       totalCount: 0,
       submittedCount: 0,
@@ -134,16 +136,23 @@ export class AnimalCensusCoverageViewModel extends BaseViewModel {
 
   setOccurrence(value: string) {
     this.selectedOccurrenceId = value;
+    this.offset = 0;
     this.fetchCoverage();
   }
 
   setStatus(value: CensusCoverageFilter) {
     this.status = value;
+    this.offset = 0;
     this.fetchCoverage();
   }
 
   setSearch(value: string) {
     this.q = value;
+  }
+
+  setOffset(value: number) {
+    this.offset = value;
+    this.fetchCoverage();
   }
 
   selectRow(row: CensusRoundCoverageRow) {

@@ -107,9 +107,11 @@ const VillageList = () => {
               }}
             />
             <div className="flex-grow md:flex-none"></div>
-            <Link href="/admin/villages/create" passHref>
-              <AddButton />
-            </Link>
+            {(store.isSuperUser || store.isRoleAdmin) && (
+              <Link href="/admin/villages/create" passHref>
+                <AddButton />
+              </Link>
+            )}
           </div>
 
           <Table
