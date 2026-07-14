@@ -169,8 +169,8 @@ const VillageView = () => {
                     isGroupCensusRowKey(record.rowKey)
                       ? t("census.rowKind.group", "Group HH")
                       : isSpeciesCensusRowKey(record.rowKey)
-                      ? t("census.rowKind.species", "Species")
-                      : t("census.rowKind.legacy", "Species"),
+                        ? t("census.rowKind.species", "Species")
+                        : t("census.rowKind.legacy", "Species"),
                 },
                 {
                   label: t("form.label.animals", "Animals"),

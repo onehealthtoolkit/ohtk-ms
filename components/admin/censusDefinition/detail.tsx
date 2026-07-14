@@ -95,25 +95,31 @@ const CensusDefinitionDetail = ({ kind }: Props) => {
               {Array.isArray(
                 (authoredSchema as { groups?: unknown[] }).groups
               ) &&
-                (authoredSchema as { groups: Array<{ key: string; label: any; species?: Array<{ key: string; label: any }> }> }).groups.map(
-                  group => (
-                    <DetailRow
-                      key={group.key}
-                      label={`${t("censusDefinition.group", "Group")}: ${
-                        typeof group.label === "object"
-                          ? group.label?.default ?? group.key
-                          : group.label ?? group.key
-                      }`}
-                      value={(group.species ?? [])
-                        .map(s =>
-                          typeof s.label === "object"
-                            ? s.label?.default ?? s.key
-                            : s.label ?? s.key
-                        )
-                        .join(", ")}
-                    />
-                  )
-                )}
+                (
+                  authoredSchema as {
+                    groups: Array<{
+                      key: string;
+                      label: any;
+                      species?: Array<{ key: string; label: any }>;
+                    }>;
+                  }
+                ).groups.map(group => (
+                  <DetailRow
+                    key={group.key}
+                    label={`${t("censusDefinition.group", "Group")}: ${
+                      typeof group.label === "object"
+                        ? (group.label?.default ?? group.key)
+                        : (group.label ?? group.key)
+                    }`}
+                    value={(group.species ?? [])
+                      .map(s =>
+                        typeof s.label === "object"
+                          ? (s.label?.default ?? s.key)
+                          : (s.label ?? s.key)
+                      )
+                      .join(", ")}
+                  />
+                ))}
               <DetailRow
                 label={t("form.label.publishedAt", "Published At")}
                 value={formatPublishedAt(activeVersion?.publishedAt) || "-"}
