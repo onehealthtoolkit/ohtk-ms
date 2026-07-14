@@ -105,15 +105,18 @@ describe("field evaluate() operators in / !=", () => {
         field.day
       ).padStart(2, "0")}`;
       // evaluate formats via formatYmd(this.value); value is ISO of local midnight
-      expect(field.evaluate("=", ymd) || field.evaluate("=", field.value!.slice(0, 10))).toBe(
-        true
-      );
+      expect(
+        field.evaluate("=", ymd) ||
+          field.evaluate("=", field.value!.slice(0, 10))
+      ).toBe(true);
       // prefer the string that evaluate actually uses
-      const matchValue = field.evaluate("=", ymd) ? ymd : field.value!.slice(0, 10);
+      const matchValue = field.evaluate("=", ymd)
+        ? ymd
+        : field.value!.slice(0, 10);
       expect(field.evaluate("!=", "2000-01-01")).toBe(true);
-      expect(field.evaluate("in", `2000-01-01, ${matchValue}, 2099-12-31`)).toBe(
-        true
-      );
+      expect(
+        field.evaluate("in", `2000-01-01, ${matchValue}, 2099-12-31`)
+      ).toBe(true);
       expect(field.evaluate("in", "2000-01-01, 2001-01-01")).toBe(false);
       field.year = undefined;
       expect(field.evaluate("in", matchValue)).toBe(false);

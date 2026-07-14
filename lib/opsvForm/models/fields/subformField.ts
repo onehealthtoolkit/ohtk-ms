@@ -68,9 +68,7 @@ export default class SubformField extends PrimitiveField<string> {
         case "in":
           return stringValueInList(this.value, value);
         default:
-          return this.value != null
-            ? this.value.indexOf(value) >= 0
-            : false;
+          return this.value != null ? this.value.indexOf(value) >= 0 : false;
       }
     } catch {
       return false;

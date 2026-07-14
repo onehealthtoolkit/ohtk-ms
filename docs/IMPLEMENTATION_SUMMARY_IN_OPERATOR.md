@@ -9,13 +9,16 @@ Successfully implemented the "in" operator for form field conditions, allowing f
 ### Files Changed
 
 #### Type Definitions (2 files)
+
 1. `lib/opsvForm/models/json.ts` - Added `"in"` to `ConditionOperatorType`
 2. `lib/opsvForm/models/condition.ts` - Added `"in"` to `ConditionOperator` type
 
 #### FormBuilder (1 file)
+
 3. `components/admin/formBuilder/shared/operatorViewModel.ts` - Removed `"has_one_of"` operator
 
 #### Field Implementations (7 files)
+
 4. `lib/opsvForm/models/fields/textField.ts` - Added "in" case to evaluate()
 5. `lib/opsvForm/models/fields/textareaField.ts` - Added "in" case to evaluate()
 6. `lib/opsvForm/models/fields/integerField.ts` - Added "in" and "!=" cases to evaluate()
@@ -29,11 +32,13 @@ Successfully implemented the "in" operator for form field conditions, allowing f
 ### How It Works
 
 **FormBuilder (Admin Side)**:
+
 - Admin selects "is in" operator from dropdown
 - Admin enters comma-separated values: `cat,dog,elephant`
 - Condition saved to form definition JSON
 
 **Form Renderer (Runtime)**:
+
 - When form loads, condition is evaluated
 - Field value is checked against comma-separated list
 - Field shows/hides based on match result
@@ -52,7 +57,8 @@ Successfully implemented the "in" operator for form field conditions, allowing f
 }
 ```
 
-**Behavior**: 
+**Behavior**:
+
 - `animalName` field only displays when `item` field has value "cat" OR "dog"
 
 ### Testing Status
@@ -83,8 +89,9 @@ Successfully implemented the "in" operator for form field conditions, allowing f
 ## Quick Reference
 
 ### Supported Field Types for "in" Operator
+
 - ✅ Text
-- ✅ Textarea  
+- ✅ Textarea
 - ✅ Integer
 - ✅ Decimal
 - ✅ Date (format: yyyy-mm-dd)
@@ -92,12 +99,14 @@ Successfully implemented the "in" operator for form field conditions, allowing f
 - ✅ Subform
 
 ### Not Supported
+
 - ❌ Multiple Choices (multiple values field)
 - ❌ Images (array field)
 - ❌ Files (array field)
 - ❌ Location (complex object)
 
 ### Value Format
+
 - Comma-separated string
 - Whitespace is trimmed automatically
 - Case-sensitive matching
@@ -109,7 +118,6 @@ Successfully implemented the "in" operator for form field conditions, allowing f
 **Hardening + unit tests**: 2026-07-14  
 **Implemented By**: AI Assistant  
 **Status**: ✅ Code complete with unit tests
-
 
 ### Filename note: `village-animal-sick-death-definition.json`
 
