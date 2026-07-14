@@ -75,12 +75,12 @@ Successfully implemented the "in" operator for form field conditions, allowing f
 
 List membership is one feature with several wire names:
 
-| Wire / JSON operator | Treated as |
-|----------------------|------------|
-| `in` | list membership (canonical in MS UI / runtime) |
-| `has_one_of` | same (staging DB + older form builder) |
-| `hasOneOf` | same (mobile) |
-| `isOneOf` | same (mobile) |
+| Wire / JSON operator | Treated as                                     |
+| -------------------- | ---------------------------------------------- |
+| `in`                 | list membership (canonical in MS UI / runtime) |
+| `has_one_of`         | same (staging DB + older form builder)         |
+| `hasOneOf`           | same (mobile)                                  |
+| `isOneOf`            | same (mobile)                                  |
 
 - Runtime: `normalizeConditionOperator()` folds aliases → `"in"` before field switches.
 - `parseCondition()` stores the canonical `"in"` on `SimpleCondition`.
