@@ -5,6 +5,8 @@ export type {
   CensusDefinitionAdminState,
   CensusDefinitionAuthoredSchema,
   CensusDefinitionSchemaDimension,
+  CensusDefinitionSchemaGroup,
+  CensusDefinitionSchemaSpecies,
   CensusDefinitionSchemaValue,
   CensusDefinitionVersion,
   CensusKind,

@@ -1,9 +1,16 @@
-import { PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  PlusIcon,
+  TrashIcon,
+} from "@heroicons/react/24/solid";
 import { TextArea } from "components/widgets/forms";
 import { resources } from "i18n";
 import {
   CensusDefinitionAuthoredSchema,
   CensusDefinitionSchemaDimension,
+  CensusDefinitionSchemaGroup,
+  CensusDefinitionSchemaSpecies,
   CensusDefinitionSchemaValue,
   CensusKind,
   CensusSchemaMeasure,
@@ -29,7 +36,14 @@ type DeleteTarget =
       valueIndex: number;
       label: string;
     }
-  | { type: "measure"; index: number; label: string };
+  | { type: "measure"; index: number; label: string }
+  | { type: "group"; index: number; label: string }
+  | {
+      type: "species";
+      groupIndex: number;
+      speciesIndex: number;
+      label: string;
+    };
 
 const keyPattern = /^[a-z0-9_]+$/;
 const supportedLabelLocales = Object.keys(resources).filter(
@@ -123,11 +137,23 @@ const CensusDefinitionBuilder = ({
           deleteTarget.valueIndex
         )
       );
+    } else if (deleteTarget.type === "group") {
+      update(removeGroup(schema, deleteTarget.index));
+    } else if (deleteTarget.type === "species") {
+      update(
+        removeSpecies(
+          schema,
+          deleteTarget.groupIndex,
+          deleteTarget.speciesIndex
+        )
+      );
     } else {
       update(removeMeasure(schema, deleteTarget.index));
     }
     setDeleteTarget(undefined);
   };
+
+  const showGroupedBuilder = kind === "ANIMAL" && isGroupedAnimalSchema(schema);
 
   return (
     <div>
@@ -141,11 +167,11 @@ const CensusDefinitionBuilder = ({
               "censusDefinition.builder.help",
               "Define breakdowns and numeric measures. Rows are generated for mobile when this definition is published."
             )}
-            {kind === "ANIMAL" && isGroupedAnimalSchema(schema) && (
+            {showGroupedBuilder && (
               <div className="mt-2 rounded border border-blue-200 bg-blue-50 px-3 py-2 text-blue-800">
                 {t(
                   "censusDefinition.builder.groupedHelp",
-                  "Grouped animal form (Option A): each group has one household count; each species has headcount only (including Pig HH on group:PIG). Prefer JSON mode to edit groups."
+                  "Grouped animal form (Option A): each group collects one shared household count; each species under the group collects headcount only. Pig households belong on group:PIG, not species:PIG."
                 )}
               </div>
             )}
@@ -175,6 +201,24 @@ const CensusDefinitionBuilder = ({
             onChange={event => applyRawText(event.target.value)}
           />
           {rawError && <FieldError message={rawError} />}
+        </div>
+      ) : showGroupedBuilder ? (
+        <div className="space-y-4">
+          <GroupedSummaryPanel schema={schema} onChange={update} />
+          <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+            <GroupsPanel
+              schema={schema}
+              errorFor={errorFor}
+              onChange={update}
+              onDelete={setDeleteTarget}
+            />
+            <GroupedMeasuresPanel
+              schema={schema}
+              errorFor={errorFor}
+              onChange={update}
+            />
+          </div>
+          <GroupedPreviewPanel schema={schema} />
         </div>
       ) : (
         <div className="space-y-4">
@@ -227,6 +271,583 @@ const ModeButton = ({
     }
   >
     {children}
+  </button>
+);
+
+const GroupedSummaryPanel = ({
+  schema,
+  onChange,
+}: {
+  schema: CensusDefinitionAuthoredSchema;
+  onChange: (schema: CensusDefinitionAuthoredSchema) => void;
+}) => {
+  const { t } = useTranslation();
+  const summaryFields = schema.summary_fields ?? [];
+  return (
+    <section className="rounded border border-gray-200 bg-white p-4">
+      <div className="mb-3">
+        <div className="font-semibold text-gray-800">
+          {t(
+            "censusDefinition.builder.summaryFieldsTitle",
+            "Snapshot summary fields"
+          )}
+        </div>
+        <div className="mt-1 text-xs text-gray-500">
+          {t(
+            "censusDefinition.builder.summaryFieldsHelp",
+            "Collected once per village snapshot (not per group or species)."
+          )}
+        </div>
+      </div>
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        {summaryFields.map((field, index) => (
+          <div
+            key={`${field.key}-${index}`}
+            className="rounded border border-gray-200 bg-gray-50 p-3"
+          >
+            <LocalizedLabelInputs
+              label={t(
+                "censusDefinition.builder.summaryFieldLabel",
+                "Summary field label"
+              )}
+              value={field.label}
+              onChange={label =>
+                onChange(
+                  updateSummaryField(schema, index, {
+                    ...field,
+                    label,
+                    type: "integer",
+                    required: true,
+                  })
+                )
+              }
+            />
+            <div className="mt-2">
+              <ReadOnlyReference
+                label={t("form.label.key", "Key")}
+                value={field.key}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const GroupsPanel = ({
+  schema,
+  errorFor,
+  onChange,
+  onDelete,
+}: {
+  schema: CensusDefinitionAuthoredSchema;
+  errorFor: (path: string) => string | undefined;
+  onChange: (schema: CensusDefinitionAuthoredSchema) => void;
+  onDelete: (target: DeleteTarget) => void;
+}) => {
+  const { t } = useTranslation();
+  const groups = schema.groups ?? [];
+  return (
+    <section className="rounded border border-gray-200 bg-white p-4">
+      <div className="mb-4">
+        <div className="font-semibold text-gray-800">
+          {t("censusDefinition.builder.groupsTitle", "Species groups")}
+        </div>
+        <div className="mt-1 text-xs text-gray-500">
+          {t(
+            "censusDefinition.builder.groupsHelp",
+            "Each group has one household count row. Species under the group only collect animal headcounts."
+          )}
+        </div>
+      </div>
+
+      {groups.length === 0 ? (
+        <div className="mb-3 rounded border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          {t(
+            "censusDefinition.builder.noGroups",
+            "No groups yet. Add at least one group with one or more species."
+          )}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {groups.map((group, index) => (
+            <GroupCard
+              key={`${group.key}-${index}`}
+              group={group}
+              index={index}
+              total={groups.length}
+              existingSpeciesKeys={collectSpeciesKeys(groups)}
+              errorFor={errorFor}
+              onChange={nextGroup =>
+                onChange(updateGroup(schema, index, nextGroup))
+              }
+              onMove={direction =>
+                onChange(moveGroup(schema, index, direction))
+              }
+              onDelete={() =>
+                onDelete({
+                  type: "group",
+                  index,
+                  label: labelText(group.label, group.key),
+                })
+              }
+              onDeleteSpecies={(speciesIndex, label) =>
+                onDelete({
+                  type: "species",
+                  groupIndex: index,
+                  speciesIndex,
+                  label,
+                })
+              }
+              onReorderSpecies={(speciesIndex, direction) =>
+                onChange(moveSpecies(schema, index, speciesIndex, direction))
+              }
+            />
+          ))}
+        </div>
+      )}
+      {errorFor("groups") && <FieldError message={errorFor("groups")!} />}
+
+      <button
+        type="button"
+        className="mt-3 flex w-full items-center justify-center rounded border border-dashed border-gray-300 px-4 py-3 text-sm font-semibold text-gray-700 hover:border-blue-300 hover:text-blue-700"
+        onClick={() => onChange(addGroup(schema))}
+      >
+        <PlusIcon className="mr-2 h-4 w-4" />
+        {t("censusDefinition.builder.addGroup", "Add group")}
+      </button>
+    </section>
+  );
+};
+
+const GroupCard = ({
+  group,
+  index,
+  total,
+  existingSpeciesKeys,
+  errorFor,
+  onChange,
+  onMove,
+  onDelete,
+  onDeleteSpecies,
+  onReorderSpecies,
+}: {
+  group: CensusDefinitionSchemaGroup;
+  index: number;
+  total: number;
+  existingSpeciesKeys: string[];
+  errorFor: (path: string) => string | undefined;
+  onChange: (group: CensusDefinitionSchemaGroup) => void;
+  onMove: (direction: -1 | 1) => void;
+  onDelete: () => void;
+  onDeleteSpecies: (speciesIndex: number, label: string) => void;
+  onReorderSpecies: (speciesIndex: number, direction: -1 | 1) => void;
+}) => {
+  const { t } = useTranslation();
+  const species = group.species ?? [];
+  return (
+    <div className="rounded border border-gray-200 bg-gray-50 p-3">
+      <div className="mb-2 flex flex-wrap items-center gap-2">
+        <span className="rounded bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-800">
+          {t(
+            "censusDefinition.builder.groupHouseholdBadge",
+            "Group household count"
+          )}
+        </span>
+        <span className="font-mono text-xs text-gray-500">
+          group:{group.key || "…"}
+        </span>
+        <div className="ml-auto flex items-center gap-1">
+          <ReorderButton
+            direction="up"
+            disabled={index === 0}
+            label={t("censusDefinition.builder.moveUp", "Move up")}
+            onClick={() => onMove(-1)}
+          />
+          <ReorderButton
+            direction="down"
+            disabled={index >= total - 1}
+            label={t("censusDefinition.builder.moveDown", "Move down")}
+            onClick={() => onMove(1)}
+          />
+          <IconButton
+            label={t("form.button.delete", "Delete")}
+            onClick={onDelete}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <LocalizedLabelInputs
+          label={t("censusDefinition.builder.groupLabel", "Group label")}
+          value={group.label}
+          error={errorFor(`groups.${index}.label`)}
+          onChange={label => onChange({ ...group, label })}
+        />
+        <ReadOnlyReference
+          label={t("form.label.key", "Key")}
+          value={group.key}
+          help={t(
+            "censusDefinition.builder.keyReadOnlyHelp",
+            "Generated when added. Use Raw JSON mode to override."
+          )}
+        />
+        {errorFor(`groups.${index}.key`) && (
+          <FieldError message={errorFor(`groups.${index}.key`)!} />
+        )}
+      </div>
+
+      <div className="mt-4 border-t border-gray-200 pt-3">
+        <div className="mb-1 text-sm font-semibold text-gray-800">
+          {t("censusDefinition.builder.speciesTitle", "Species (headcounts)")}
+        </div>
+        <div className="mb-2 text-xs text-gray-500">
+          {t(
+            "censusDefinition.builder.speciesHelp",
+            "Each species row collects animal quantity only. Households stay on the group row above."
+          )}
+        </div>
+        <div className="space-y-2">
+          {species.map((item, speciesIndex) => (
+            <div
+              key={`${item.key}-${speciesIndex}`}
+              className="rounded border border-gray-200 bg-white p-2"
+            >
+              <div className="mb-2 flex flex-wrap items-center gap-2">
+                <span className="rounded bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-800">
+                  {t(
+                    "censusDefinition.builder.speciesHeadsBadge",
+                    "Animal heads"
+                  )}
+                </span>
+                <span className="font-mono text-xs text-gray-500">
+                  species:{item.key || "…"}
+                </span>
+                <div className="ml-auto flex items-center gap-1">
+                  <ReorderButton
+                    direction="up"
+                    disabled={speciesIndex === 0}
+                    label={t("censusDefinition.builder.moveUp", "Move up")}
+                    onClick={() => onReorderSpecies(speciesIndex, -1)}
+                  />
+                  <ReorderButton
+                    direction="down"
+                    disabled={speciesIndex >= species.length - 1}
+                    label={t("censusDefinition.builder.moveDown", "Move down")}
+                    onClick={() => onReorderSpecies(speciesIndex, 1)}
+                  />
+                  <IconButton
+                    label={t("form.button.delete", "Delete")}
+                    onClick={() =>
+                      onDeleteSpecies(
+                        speciesIndex,
+                        labelText(item.label, item.key)
+                      )
+                    }
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <LocalizedLabelInputs
+                  label={t(
+                    "censusDefinition.builder.speciesLabel",
+                    "Species label"
+                  )}
+                  value={item.label}
+                  error={errorFor(
+                    `groups.${index}.species.${speciesIndex}.label`
+                  )}
+                  onChange={label =>
+                    onChange(
+                      updateSpeciesInGroup(group, speciesIndex, {
+                        ...item,
+                        label,
+                      })
+                    )
+                  }
+                />
+                <ReadOnlyReference
+                  label={t("form.label.key", "Key")}
+                  value={item.key}
+                />
+                {errorFor(`groups.${index}.species.${speciesIndex}.key`) && (
+                  <FieldError
+                    message={
+                      errorFor(`groups.${index}.species.${speciesIndex}.key`)!
+                    }
+                  />
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+        {errorFor(`groups.${index}.species`) && (
+          <FieldError message={errorFor(`groups.${index}.species`)!} />
+        )}
+        <button
+          type="button"
+          className="mt-2 inline-flex items-center rounded border border-gray-300 bg-white px-3 py-2 text-xs font-semibold text-gray-700 hover:border-blue-300 hover:text-blue-700"
+          onClick={() =>
+            onChange(addSpeciesToGroup(group, existingSpeciesKeys))
+          }
+        >
+          <PlusIcon className="mr-1 h-3 w-3" />
+          {t("censusDefinition.builder.addSpecies", "Add species")}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const GroupedMeasuresPanel = ({
+  schema,
+  errorFor,
+  onChange,
+}: {
+  schema: CensusDefinitionAuthoredSchema;
+  errorFor: (path: string) => string | undefined;
+  onChange: (schema: CensusDefinitionAuthoredSchema) => void;
+}) => {
+  const { t } = useTranslation();
+  const groupMeasures = schema.group_measures ?? [];
+  const speciesMeasures = schema.species_measures ?? [];
+  return (
+    <section className="rounded border border-gray-200 bg-white p-4">
+      <div className="mb-4">
+        <div className="font-semibold text-gray-800">
+          {t("censusDefinition.builder.groupedMeasuresTitle", "Row measures")}
+        </div>
+        <div className="mt-1 text-xs text-gray-500">
+          {t(
+            "censusDefinition.builder.groupedMeasuresHelp",
+            "Group rows use household quantity. Species rows use animal quantity (heads)."
+          )}
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <div>
+          <div className="mb-2 text-sm font-semibold text-gray-800">
+            {t(
+              "censusDefinition.builder.groupMeasuresTitle",
+              "Group row (households)"
+            )}
+          </div>
+          <div className="space-y-3">
+            {groupMeasures.map((item, index) => (
+              <div
+                key={`group-measure-${item.key}-${index}`}
+                className="rounded border border-blue-100 bg-blue-50/50 p-3"
+              >
+                <LocalizedLabelInputs
+                  label={t(
+                    "censusDefinition.builder.measureLabel",
+                    "Measure label"
+                  )}
+                  value={item.label}
+                  error={errorFor(`group_measures.${index}.label`)}
+                  onChange={label =>
+                    onChange(
+                      updateGroupMeasure(schema, index, {
+                        ...item,
+                        label,
+                        type: "integer",
+                        required: true,
+                      })
+                    )
+                  }
+                />
+                <div className="mt-2">
+                  <ReadOnlyReference
+                    label={t("form.label.key", "Key")}
+                    value={item.key}
+                  />
+                </div>
+              </div>
+            ))}
+            {errorFor("group_measures") && (
+              <FieldError message={errorFor("group_measures")!} />
+            )}
+          </div>
+        </div>
+
+        <div>
+          <div className="mb-2 text-sm font-semibold text-gray-800">
+            {t(
+              "censusDefinition.builder.speciesMeasuresTitle",
+              "Species row (heads)"
+            )}
+          </div>
+          <div className="space-y-3">
+            {speciesMeasures.map((item, index) => (
+              <div
+                key={`species-measure-${item.key}-${index}`}
+                className="rounded border border-emerald-100 bg-emerald-50/50 p-3"
+              >
+                <LocalizedLabelInputs
+                  label={t(
+                    "censusDefinition.builder.measureLabel",
+                    "Measure label"
+                  )}
+                  value={item.label}
+                  error={errorFor(`species_measures.${index}.label`)}
+                  onChange={label =>
+                    onChange(
+                      updateSpeciesMeasure(schema, index, {
+                        ...item,
+                        label,
+                        type: "integer",
+                        required: true,
+                      })
+                    )
+                  }
+                />
+                <div className="mt-2">
+                  <ReadOnlyReference
+                    label={t("form.label.key", "Key")}
+                    value={item.key}
+                  />
+                </div>
+              </div>
+            ))}
+            {errorFor("species_measures") && (
+              <FieldError message={errorFor("species_measures")!} />
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const GroupedPreviewPanel = ({
+  schema,
+}: {
+  schema: CensusDefinitionAuthoredSchema;
+}) => {
+  const { t } = useTranslation();
+  const groups = schema.groups ?? [];
+  const summaryFields = schema.summary_fields ?? [];
+  const groupMeasureLabel = labelText(
+    schema.group_measures?.[0]?.label,
+    schema.group_measures?.[0]?.key ?? "Households"
+  );
+  const speciesMeasureLabel = labelText(
+    schema.species_measures?.[0]?.label,
+    schema.species_measures?.[0]?.key ?? "Animal quantity"
+  );
+  return (
+    <section className="rounded border border-gray-200 bg-white p-4">
+      <div className="mb-3">
+        <div className="font-semibold text-gray-800">
+          {t(
+            "censusDefinition.builder.previewTitle",
+            "Generated mobile form preview"
+          )}
+        </div>
+        <div className="mt-1 text-xs text-gray-500">
+          {t(
+            "censusDefinition.builder.groupedPreviewHelp",
+            "Read-only preview: summary once, then each group household row and its species headcount rows."
+          )}
+        </div>
+      </div>
+      <div className="mx-auto w-full max-w-[390px] rounded border border-gray-200 bg-[#f8f4ed] p-4">
+        <div className="space-y-4">
+          {summaryFields.length > 0 && (
+            <div>
+              <div className="mb-2 text-base font-semibold text-gray-900">
+                {t("censusDefinition.builder.previewSummary", "Summary")}
+              </div>
+              <div className="divide-y divide-gray-200 rounded bg-white shadow-sm ring-1 ring-gray-200">
+                {summaryFields.map(field => (
+                  <div
+                    key={field.key}
+                    className="flex min-h-[64px] items-center justify-between gap-3 px-4 py-3"
+                  >
+                    <span className="min-w-0 text-sm font-medium text-gray-700">
+                      {labelText(field.label, field.key)}
+                    </span>
+                    <span className="h-10 w-24 shrink-0 rounded border border-gray-300 bg-gray-50" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {groups.map((group, groupIndex) => (
+            <div key={`${group.key}-${groupIndex}`} className="space-y-3">
+              <div>
+                <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-blue-700">
+                  {t(
+                    "censusDefinition.builder.previewGroupHousehold",
+                    "Group households"
+                  )}
+                </div>
+                <div className="mb-2 text-base font-semibold text-gray-900">
+                  {labelText(group.label, group.key)}
+                </div>
+                <div className="divide-y divide-gray-200 rounded bg-white shadow-sm ring-1 ring-gray-200">
+                  <div className="flex min-h-[64px] items-center justify-between gap-3 px-4 py-3">
+                    <span className="min-w-0 text-sm font-medium text-gray-700">
+                      {groupMeasureLabel}
+                    </span>
+                    <span className="h-10 w-24 shrink-0 rounded border border-gray-300 bg-gray-50" />
+                  </div>
+                </div>
+              </div>
+              {(group.species ?? []).map((species, speciesIndex) => (
+                <div key={`${species.key}-${speciesIndex}`}>
+                  <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                    {t(
+                      "censusDefinition.builder.previewSpeciesHeads",
+                      "Species heads"
+                    )}
+                  </div>
+                  <div className="mb-2 text-base font-semibold text-gray-900">
+                    {labelText(species.label, species.key)}
+                  </div>
+                  <div className="divide-y divide-gray-200 rounded bg-white shadow-sm ring-1 ring-gray-200">
+                    <div className="flex min-h-[64px] items-center justify-between gap-3 px-4 py-3">
+                      <span className="min-w-0 text-sm font-medium text-gray-700">
+                        {speciesMeasureLabel}
+                      </span>
+                      <span className="h-10 w-24 shrink-0 rounded border border-gray-300 bg-gray-50" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ReorderButton = ({
+  direction,
+  disabled,
+  label,
+  onClick,
+}: {
+  direction: "up" | "down";
+  disabled?: boolean;
+  label: string;
+  onClick: () => void;
+}) => (
+  <button
+    type="button"
+    disabled={disabled}
+    className="rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-800 disabled:opacity-30"
+    onClick={onClick}
+    title={label}
+  >
+    {direction === "up" ? (
+      <ChevronUpIcon className="h-4 w-4" />
+    ) : (
+      <ChevronDownIcon className="h-4 w-4" />
+    )}
   </button>
 );
 
@@ -1090,12 +1711,210 @@ function removeMeasure(schema: CensusDefinitionAuthoredSchema, index: number) {
   };
 }
 
+function collectSpeciesKeys(groups: CensusDefinitionSchemaGroup[]) {
+  return groups.flatMap(group => (group.species ?? []).map(item => item.key));
+}
+
+function addGroup(schema: CensusDefinitionAuthoredSchema) {
+  const groups = schema.groups ?? [];
+  const groupKey = nextUpperKey(
+    "GROUP",
+    groups.map(group => group.key)
+  );
+  const speciesKey = nextUpperKey("SPECIES", collectSpeciesKeys(groups));
+  return {
+    ...schema,
+    schema_version: schema.schema_version ?? 2,
+    groups: [
+      ...groups,
+      {
+        key: groupKey,
+        label: { default: "Group" },
+        species: [
+          {
+            key: speciesKey,
+            label: { default: "Species" },
+          },
+        ],
+      },
+    ],
+  };
+}
+
+function updateGroup(
+  schema: CensusDefinitionAuthoredSchema,
+  index: number,
+  group: CensusDefinitionSchemaGroup
+) {
+  return {
+    ...schema,
+    groups: (schema.groups ?? []).map((item, itemIndex) =>
+      itemIndex === index ? group : item
+    ),
+  };
+}
+
+function removeGroup(schema: CensusDefinitionAuthoredSchema, index: number) {
+  return {
+    ...schema,
+    groups: (schema.groups ?? []).filter(
+      (_item, itemIndex) => itemIndex !== index
+    ),
+  };
+}
+
+function moveGroup(
+  schema: CensusDefinitionAuthoredSchema,
+  index: number,
+  direction: -1 | 1
+) {
+  const groups = [...(schema.groups ?? [])];
+  const target = index + direction;
+  if (target < 0 || target >= groups.length) return schema;
+  const [item] = groups.splice(index, 1);
+  groups.splice(target, 0, item);
+  return { ...schema, groups };
+}
+
+function addSpeciesToGroup(
+  group: CensusDefinitionSchemaGroup,
+  existingSpeciesKeys: string[]
+) {
+  const species = group.species ?? [];
+  return {
+    ...group,
+    species: [
+      ...species,
+      {
+        key: nextUpperKey("SPECIES", existingSpeciesKeys),
+        label: { default: "Species" },
+      },
+    ],
+  };
+}
+
+function updateSpeciesInGroup(
+  group: CensusDefinitionSchemaGroup,
+  index: number,
+  species: CensusDefinitionSchemaSpecies
+) {
+  return {
+    ...group,
+    species: (group.species ?? []).map((item, itemIndex) =>
+      itemIndex === index ? species : item
+    ),
+  };
+}
+
+function removeSpecies(
+  schema: CensusDefinitionAuthoredSchema,
+  groupIndex: number,
+  speciesIndex: number
+) {
+  const group = schema.groups?.[groupIndex];
+  if (!group) return schema;
+  return updateGroup(schema, groupIndex, {
+    ...group,
+    species: (group.species ?? []).filter(
+      (_item, index) => index !== speciesIndex
+    ),
+  });
+}
+
+function moveSpecies(
+  schema: CensusDefinitionAuthoredSchema,
+  groupIndex: number,
+  speciesIndex: number,
+  direction: -1 | 1
+) {
+  const group = schema.groups?.[groupIndex];
+  if (!group) return schema;
+  const species = [...(group.species ?? [])];
+  const target = speciesIndex + direction;
+  if (target < 0 || target >= species.length) return schema;
+  const [item] = species.splice(speciesIndex, 1);
+  species.splice(target, 0, item);
+  return updateGroup(schema, groupIndex, { ...group, species });
+}
+
+function updateSummaryField(
+  schema: CensusDefinitionAuthoredSchema,
+  index: number,
+  field: CensusSchemaMeasure
+) {
+  return {
+    ...schema,
+    summary_fields: (schema.summary_fields ?? []).map((item, itemIndex) =>
+      itemIndex === index ? field : item
+    ),
+  };
+}
+
+function updateGroupMeasure(
+  schema: CensusDefinitionAuthoredSchema,
+  index: number,
+  measure: CensusSchemaMeasure
+) {
+  return {
+    ...schema,
+    group_measures: (schema.group_measures ?? []).map((item, itemIndex) =>
+      itemIndex === index ? measure : item
+    ),
+  };
+}
+
+function updateSpeciesMeasure(
+  schema: CensusDefinitionAuthoredSchema,
+  index: number,
+  measure: CensusSchemaMeasure
+) {
+  return {
+    ...schema,
+    species_measures: (schema.species_measures ?? []).map((item, itemIndex) =>
+      itemIndex === index ? measure : item
+    ),
+  };
+}
+
+function validateMeasures(
+  measures: CensusSchemaMeasure[] | undefined,
+  path: string,
+  errors: ValidationError[]
+) {
+  const items = measures ?? [];
+  if (items.length === 0) {
+    errors.push({
+      path,
+      key: "measuresRequired",
+      fallback: "At least one measure is required.",
+    });
+    return;
+  }
+  validateUniqueKeys(items, path, errors);
+  items.forEach((measure, index) => {
+    if (!labelText(measure.label, "").trim()) {
+      errors.push({
+        path: `${path}.${index}.label`,
+        key: "labelRequired",
+        fallback: "Label is required.",
+      });
+    }
+    if ((measure.type ?? "integer") !== "integer") {
+      errors.push({
+        path: `${path}.${index}.key`,
+        key: "integerOnly",
+        fallback: "Only integer measures are supported.",
+      });
+    }
+  });
+}
+
 function validateSchema(
   schema: CensusDefinitionAuthoredSchema
 ): ValidationError[] {
   const errors: ValidationError[] = [];
 
-  // Option A grouped animal schema (edit primarily via JSON mode for now)
+  // Option A grouped animal schema
   if (isGroupedAnimalSchema(schema)) {
     const groups = schema.groups ?? [];
     if (groups.length === 0) {
@@ -1146,6 +1965,9 @@ function validateSchema(
         }
       });
     });
+    validateMeasures(schema.group_measures, "group_measures", errors);
+    validateMeasures(schema.species_measures, "species_measures", errors);
+    validateMeasures(schema.summary_fields, "summary_fields", errors);
     return errors;
   }
 
@@ -1259,6 +2081,18 @@ function nextKey(prefix: string, existingKeys: string[]) {
     if (!existing.has(key)) return key;
   }
   return `${prefix}_${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function nextUpperKey(prefix: string, existingKeys: string[]) {
+  const existing = new Set(
+    existingKeys.map(key => key.toUpperCase()).filter(Boolean)
+  );
+  const upperPrefix = prefix.toUpperCase();
+  for (let number = 1; number < 10000; number += 1) {
+    const key = `${upperPrefix}_${number.toString().padStart(3, "0")}`;
+    if (!existing.has(key)) return key;
+  }
+  return `${upperPrefix}_${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
 }
 
 function localizedLabel(value?: LocalizedLabel): {
