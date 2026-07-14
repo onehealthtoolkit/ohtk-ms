@@ -1,0 +1,667 @@
+{
+  "subforms": {},
+  "sections": [
+    {
+      "label": "Animals",
+      "questions": [
+        {
+          "label": "Species",
+          "description": "",
+          "fields": [
+            {
+              "id": "animal_species",
+              "label": "",
+              "name": "animal_species",
+              "type": "singlechoices",
+              "required": true,
+              "options": [
+                {
+                  "label": "Cattle",
+                  "value": "Cattle"
+                },
+                {
+                  "label": "Buffalo",
+                  "value": "Buffalo"
+                },
+                {
+                  "label": "Pig",
+                  "value": "Pig"
+                },
+                {
+                  "label": "Sheep",
+                  "value": "Sheep"
+                },
+                {
+                  "label": "Goat",
+                  "value": "Goat"
+                },
+                {
+                  "label": "Chicken",
+                  "value": "Chicken"
+                },
+                {
+                  "label": "Duck",
+                  "value": "Duck"
+                },
+                {
+                  "label": "Goose",
+                  "value": "Goose"
+                },
+                {
+                  "label": "Other",
+                  "value": "Other"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Age",
+          "description": "",
+          "fields": [
+            {
+              "id": "animal_age",
+              "label": "",
+              "name": "animal_age",
+              "type": "integer",
+              "required": true,
+              "min": 0
+            },
+            {
+              "id": "age_unit",
+              "label": "",
+              "name": "age_unit",
+              "type": "singlechoices",
+              "required": true,
+              "options": [
+                {
+                  "label": "Year",
+                  "value": "Year"
+                },
+                {
+                  "label": "Month",
+                  "value": "Month"
+                },
+                {
+                  "label": "Day",
+                  "value": "Day"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Suspected Disease",
+      "questions": [
+        {
+          "label": "Disease",
+          "description": "Cattle | Buffalo | Sheep | Goat",
+          "fields": [
+            {
+              "id": "suspected_disease",
+              "label": "",
+              "name": "suspected_disease",
+              "type": "singlechoices",
+              "required": true,
+              "options": [
+                {
+                  "label": "Hemorrhagic Septicemia / Anthrax",
+                  "value": "Hemorrhagic Septicemia / Anthrax"
+                },
+                {
+                  "label": "Foot-and-Mouth Disease",
+                  "value": "Foot-and-Mouth Disease"
+                },
+                {
+                  "label": "Influenza",
+                  "value": "Influenza"
+                },
+                {
+                  "label": "Cholera",
+                  "value": "Cholera"
+                },
+                {
+                  "label": "Swollen Neck",
+                  "value": "Swollen Neck"
+                },
+                {
+                  "label": "Rabies",
+                  "value": "Rabies"
+                },
+                {
+                  "label": "Leptospirosis",
+                  "value": "Leptospirosis"
+                },
+                {
+                  "label": "Unknown Disease",
+                  "value": "Unknown Disease"
+                }
+              ]
+            }
+          ],
+          "condition": {
+            "name": "animal_species",
+            "value": "Cattle, Buffalo, Sheep, Goat",
+            "operator": "in"
+          }
+        },
+        {
+          "label": "Disease",
+          "description": "Pig",
+          "fields": [
+            {
+              "id": "suspected_disease",
+              "label": "",
+              "name": "suspected_disease",
+              "type": "singlechoices",
+              "required": true,
+              "options": [
+                {
+                  "label": "Foot-and-Mouth Disease",
+                  "value": "Foot-and-Mouth Disease"
+                },
+                {
+                  "label": "Influenza",
+                  "value": "Influenza"
+                },
+                {
+                  "label": "Cholera",
+                  "value": "Cholera"
+                },
+                {
+                  "label": "Rabies",
+                  "value": "Rabies"
+                },
+                {
+                  "label": "Leptospirosis",
+                  "value": "Leptospirosis"
+                },
+                {
+                  "label": "Unknown Disease",
+                  "value": "Unknown Disease"
+                }
+              ]
+            }
+          ],
+          "condition": {
+            "name": "animal_species",
+            "value": "Pig",
+            "operator": "in"
+          }
+        },
+        {
+          "label": "Disease",
+          "description": "Chicken | Duck | Goose",
+          "fields": [
+            {
+              "id": "suspected_disease",
+              "label": "",
+              "name": "suspected_disease",
+              "type": "singlechoices",
+              "required": true,
+              "options": [
+                {
+                  "label": "Newcastle Disease",
+                  "value": "Newcastle Disease"
+                },
+                {
+                  "label": "Skin Disease",
+                  "value": "Skin Disease"
+                },
+                {
+                  "label": "Influenza",
+                  "value": "Influenza"
+                },
+                {
+                  "label": "Rabies",
+                  "value": "Rabies"
+                },
+                {
+                  "label": "Leptospirosis",
+                  "value": "Leptospirosis"
+                },
+                {
+                  "label": "Unknown Disease",
+                  "value": "Unknown Disease"
+                }
+              ]
+            }
+          ],
+          "condition": {
+            "name": "animal_species",
+            "value": "Chicken, Duck, Goose",
+            "operator": "in"
+          }
+        },
+        {
+          "label": "Disease",
+          "description": "Other",
+          "fields": [
+            {
+              "id": "suspected_disease",
+              "label": "",
+              "name": "suspected_disease",
+              "type": "singlechoices",
+              "required": true,
+              "options": [
+                {
+                  "label": "Unknown Disease",
+                  "value": "Unknown Disease"
+                }
+              ]
+            }
+          ],
+          "condition": {
+            "name": "animal_species",
+            "value": "Other",
+            "operator": "="
+          }
+        }
+      ]
+    },
+    {
+      "label": "Symptoms",
+      "questions": [
+        {
+          "label": "Digestive System",
+          "description": "",
+          "fields": [
+            {
+              "id": "digestive_symptoms",
+              "label": "",
+              "name": "digestive_symptoms",
+              "type": "multiplechoices",
+              "required": false,
+              "options": [
+                {
+                  "label": "Diarrhea",
+                  "value": "Diarrhea"
+                },
+                {
+                  "label": "Bloated stomach",
+                  "value": "Bloated stomach"
+                },
+                {
+                  "label": "Watery stool",
+                  "value": "Watery stool"
+                },
+                {
+                  "label": "Stool with blood/mucus",
+                  "value": "Stool with blood/mucus"
+                },
+                {
+                  "label": "White stool",
+                  "value": "White stool"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Skin / External Signs",
+          "description": "",
+          "fields": [
+            {
+              "id": "skin_external_symptoms",
+              "label": "",
+              "name": "skin_external_symptoms",
+              "type": "multiplechoices",
+              "required": false,
+              "options": [
+                {
+                  "label": "Dry skin/Rough hair coat",
+                  "value": "Dry skin/Rough hair coat"
+                },
+                {
+                  "label": "Blisters/sores on mouth, feet, or udder",
+                  "value": "Blisters/sores on mouth, feet, or udder"
+                },
+                {
+                  "label": "Swelling of neck/face",
+                  "value": "Swelling of neck/face"
+                },
+                {
+                  "label": "Pale mucous membranes",
+                  "value": "Pale mucous membranes"
+                },
+                {
+                  "label": "Skin/linings sores or yellow mouth",
+                  "value": "Skin/linings sores or yellow mouth"
+                },
+                {
+                  "label": "Lymphadenopathy",
+                  "value": "Lymphadenopathy"
+                },
+                {
+                  "label": "Bleeding under skin",
+                  "value": "Bleeding under skin"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Symptoms",
+      "questions": [
+        {
+          "label": "Respiratory System",
+          "description": "",
+          "fields": [
+            {
+              "id": "respiratory_symptoms",
+              "label": "",
+              "name": "respiratory_symptoms",
+              "type": "multiplechoices",
+              "required": false,
+              "options": [
+                {
+                  "label": "Coughing/Sneezing",
+                  "value": "Coughing/Sneezing"
+                },
+                {
+                  "label": "Nasal discharge",
+                  "value": "Nasal discharge"
+                },
+                {
+                  "label": "Having trouble breathing",
+                  "value": "Having trouble breathing"
+                },
+                {
+                  "label": "Struggling to breathe",
+                  "value": "Struggling to breathe"
+                },
+                {
+                  "label": "Panting/Short of breath",
+                  "value": "Panting/Short of breath"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Reproductive System",
+          "description": "",
+          "fields": [
+            {
+              "id": "reproductive_symptoms",
+              "label": "",
+              "name": "reproductive_symptoms",
+              "type": "multiplechoices",
+              "required": false,
+              "options": [
+                {
+                  "label": "Threatened Miscarriage",
+                  "value": "Threatened Miscarriage"
+                },
+                {
+                  "label": "Hard to get pregnant",
+                  "value": "Hard to get pregnant"
+                },
+                {
+                  "label": "Swollen testicles",
+                  "value": "Swollen testicles"
+                },
+                {
+                  "label": "Bloody urine",
+                  "value": "Bloody urine"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Nervous System",
+          "description": "",
+          "fields": [
+            {
+              "id": "nervous_symptoms",
+              "label": "",
+              "name": "nervous_symptoms",
+              "type": "multiplechoices",
+              "required": false,
+              "options": [
+                {
+                  "label": "Walking unsteadily",
+                  "value": "Walking unsteadily"
+                },
+                {
+                  "label": "Limb rigidity",
+                  "value": "Limb rigidity"
+                },
+                {
+                  "label": "Having a seizure/Shaking",
+                  "value": "Having a seizure/Shaking"
+                },
+                {
+                  "label": "Easily scared by light/noise",
+                  "value": "Easily scared by light/noise"
+                },
+                {
+                  "label": "Losing balance",
+                  "value": "Losing balance"
+                },
+                {
+                  "label": "Paralysis/cannot move",
+                  "value": "Paralysis/cannot move"
+                },
+                {
+                  "label": "Walking in circles",
+                  "value": "Walking in circles"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Symptoms",
+      "questions": [
+        {
+          "label": "General Symptoms",
+          "description": "",
+          "fields": [
+            {
+              "id": "general_symptoms",
+              "label": "",
+              "name": "general_symptoms",
+              "type": "multiplechoices",
+              "required": false,
+              "options": [
+                {
+                  "label": "Sudden death",
+                  "value": "Sudden death"
+                },
+                {
+                  "label": "Cannot stand up",
+                  "value": "Cannot stand up"
+                },
+                {
+                  "label": "Fever/Sad/Not eating",
+                  "value": "Fever/Sad/Not eating"
+                },
+                {
+                  "label": "Very skinny",
+                  "value": "Very skinny"
+                },
+                {
+                  "label": "Giving birth problems",
+                  "value": "Giving birth problems"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Abnormalities in the Carcass",
+          "description": "",
+          "fields": [
+            {
+              "id": "abnormalities_carcass",
+              "label": "",
+              "name": "abnormalities_carcass",
+              "type": "multiplechoices",
+              "required": false,
+              "options": [
+                {
+                  "label": "Blood does not clot",
+                  "value": "Blood does not clot"
+                },
+                {
+                  "label": "Internal bleeding",
+                  "value": "Internal bleeding"
+                },
+                {
+                  "label": "Abscesses scattered in body",
+                  "value": "Abscesses scattered in body"
+                },
+                {
+                  "label": "Enlarged liver/spleen",
+                  "value": "Enlarged liver/spleen"
+                },
+                {
+                  "label": "Bloody urine in bladder",
+                  "value": "Bloody urine in bladder"
+                },
+                {
+                  "label": "Carcass pallor/jaundice",
+                  "value": "Carcass pallor/jaundice"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Photos",
+      "questions": [
+        {
+          "label": "Photos of animals",
+          "description": "",
+          "fields": [
+            {
+              "id": "animal_photos",
+              "label": "",
+              "name": "animal_photos",
+              "type": "images",
+              "required": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Incident Details",
+      "questions": [
+        {
+          "label": "Incident date",
+          "description": "",
+          "fields": [
+            {
+              "id": "incident_date",
+              "label": "",
+              "name": "incident_date",
+              "type": "date",
+              "required": false,
+              "withTime": false,
+              "separatedFields": false
+            }
+          ]
+        },
+        {
+          "label": "Location",
+          "description": "",
+          "fields": [
+            {
+              "id": "incident_location",
+              "label": "",
+              "name": "incident_location",
+              "type": "location",
+              "required": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Number of Animals",
+      "questions": [
+        {
+          "label": "Number of households",
+          "description": "",
+          "fields": [
+            {
+              "id": "num_household",
+              "label": "",
+              "name": "num_household",
+              "type": "integer",
+              "required": false,
+              "min": 0
+            }
+          ]
+        },
+        {
+          "label": "Number of animals",
+          "description": "Total animal from all affected housholds",
+          "fields": [
+            {
+              "id": "num_total_animal",
+              "label": "",
+              "name": "num_total_animal",
+              "type": "integer",
+              "required": false,
+              "min": 0
+            }
+          ]
+        },
+        {
+          "label": "Number of sick",
+          "description": "",
+          "fields": [
+            {
+              "id": "num_sick",
+              "label": "",
+              "name": "num_sick",
+              "type": "integer",
+              "required": false,
+              "min": 0
+            }
+          ]
+        },
+        {
+          "label": "Number of dead",
+          "description": "",
+          "fields": [
+            {
+              "id": "num_dead",
+              "label": "",
+              "name": "num_dead",
+              "type": "integer",
+              "required": false,
+              "min": 0
+            }
+          ]
+        },
+        {
+          "label": "Number of recover",
+          "description": "",
+          "fields": [
+            {
+              "id": "num_recover",
+              "label": "",
+              "name": "num_recover",
+              "type": "integer",
+              "required": false,
+              "min": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
