@@ -1,4 +1,5 @@
 import Decimal from "decimal.js";
+import { formatYmd } from "lib/datetime";
 import SimpleCondition, {
   isListMembershipOperator,
   normalizeConditionOperator,
@@ -35,6 +36,18 @@ describe("conditionList helpers", () => {
     expect(stringValueInList("bird", "cat, dog")).toBe(false);
     expect(stringValueInList("", "cat, dog")).toBe(false);
     expect(stringValueInList(undefined, "cat")).toBe(false);
+  });
+
+  it("empty list and empty tokens never match", () => {
+    expect(splitConditionList("")).toEqual([]);
+    expect(splitConditionList(",,,")).toEqual([]);
+    expect(stringValueInList("dog", "")).toBe(false);
+    expect(stringValueInList("dog", ",,,")).toBe(false);
+  });
+
+  it("list membership is case-sensitive", () => {
+    expect(stringValueInList("Dog", "dog,cat")).toBe(false);
+    expect(stringValueInList("dog", "dog,cat")).toBe(true);
   });
 
   it("decimalEquals and decimalValueInList never throw on bad tokens", () => {
@@ -129,6 +142,14 @@ describe("field evaluate() operators in / !=", () => {
       expect(field.evaluate("in", "1, 3, 5")).toBe(true);
       expect(field.evaluate("in", "1,2")).toBe(false);
     });
+
+    it("uses exact decimal-less digit strings (not numeric coercion)", () => {
+      field.value = 3;
+      // Matches Number.toString() / mobile string isOneOf — not "03" or "3.0"
+      expect(field.evaluate("in", "03")).toBe(false);
+      expect(field.evaluate("in", "3.0")).toBe(false);
+      expect(field.evaluate("in", "3")).toBe(true);
+    });
   });
 
   describe("DecimalField", () => {
@@ -144,34 +165,31 @@ describe("field evaluate() operators in / !=", () => {
       expect(() => field.evaluate("=", "xyz")).not.toThrow();
       expect(field.evaluate("=", "xyz")).toBe(false);
     });
+
+    it("!= is true when RHS is non-numeric (value is not equal to that token)", () => {
+      field.value = new Decimal("2.5");
+      expect(field.evaluate("!=", "xyz")).toBe(true);
+      expect(field.evaluate("!=", "2.5")).toBe(false);
+    });
   });
 
   describe("DateField", () => {
-    it("supports =, !=, in on yyyy-mm-dd", () => {
+    it("supports =, !=, in on yyyy-mm-dd via formatYmd", () => {
       const field = new DateField("id", "day", {});
       field.year = 2026;
       field.month = 6;
       field.day = 15;
-      // formatYmd uses local getters from ISO value
-      const ymd = `${field.year}-${String(field.month).padStart(2, "0")}-${String(
-        field.day
-      ).padStart(2, "0")}`;
-      // evaluate formats via formatYmd(this.value); value is ISO of local midnight
-      expect(
-        field.evaluate("=", ymd) ||
-          field.evaluate("=", field.value!.slice(0, 10))
-      ).toBe(true);
-      // prefer the string that evaluate actually uses
-      const matchValue = field.evaluate("=", ymd)
-        ? ymd
-        : field.value!.slice(0, 10);
+      // Contract: evaluate compares formatYmd(this.value), not free-form Date parse
+      const expected = formatYmd(field.value!);
+      expect(expected).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(field.evaluate("=", expected)).toBe(true);
       expect(field.evaluate("!=", "2000-01-01")).toBe(true);
       expect(
-        field.evaluate("in", `2000-01-01, ${matchValue}, 2099-12-31`)
+        field.evaluate("in", `2000-01-01, ${expected}, 2099-12-31`)
       ).toBe(true);
       expect(field.evaluate("in", "2000-01-01, 2001-01-01")).toBe(false);
       field.year = undefined;
-      expect(field.evaluate("in", matchValue)).toBe(false);
+      expect(field.evaluate("in", expected)).toBe(false);
     });
   });
 

@@ -63,9 +63,9 @@ Successfully implemented the "in" operator for form field conditions, allowing f
 
 ### Testing Status
 
-✅ All TypeScript compilation errors resolved  
-✅ Unit tests: `tests/opsvForm/models/conditionOperators.test.ts` (11 cases: helpers + in/!= across field types, including Decimal bad-token non-throw)  
-⏳ Manual testing still useful (see `TESTING_IN_OPERATOR.md`)
+✅ TypeScript compile clean for this change set  
+✅ Unit tests: `tests/opsvForm/models/conditionOperators.test.ts` (helpers, aliases, in/!= across field types, empty list, case sensitivity, integer string tokens, Decimal non-throw / `!=` bad RHS, Date via `formatYmd`)  
+⏳ Optional manual smoke in form simulator when editing real report types
 
 ### Hardening (uncaught exceptions)
 
@@ -85,20 +85,28 @@ List membership is one feature with several wire names:
 - Runtime: `normalizeConditionOperator()` folds aliases → `"in"` before field switches.
 - `parseCondition()` stores the canonical `"in"` on `SimpleCondition`.
 - Form builder: `normalizeComparableOperator()` maps aliases → `"in"` so the select shows "is in".
-- **Note:** ohtk-mobile currently parses `has_one_of` / `hasOneOf` / `isOneOf` but not `"in"`. Existing staging forms using `has_one_of` keep working on both clients. New MS-authored forms that save `"in"` need a mobile follow-up to accept `"in"` (or re-save as `has_one_of`) for app parity.
+- **Mobile follow-up (separate PR):** ohtk-mobile still does not parse `"in"`. Existing staging forms using `has_one_of` work on both clients. New MS-authored conditions that save `"in"` need a mobile PR (or a later MS choice to emit `has_one_of` on save).
+
+### Semantics intentionally kept
+
+| Topic | Behavior | Why not changed |
+| ----- | -------- | --------------- |
+| Integer `"in"` | Exact digit string after `n.toString()` (`3` matches `"3"`, not `"03"` / `"3.0"`) | Same as mobile string `isOneOf`; numeric coercion would diverge clients |
+| Decimal `"!="` with non-numeric RHS | Returns **true** when field has a value (`2.5 != "xyz"`) | Value is not equal to an invalid number; never throws (old path threw) |
+| Date condition value | Strict `yyyy-mm-dd` via `formatYmd` | Clear authoring contract; free-form `Date` parse was ambiguous |
+| List token trim | List side trimmed; current field value not auto-trimmed | Matches mobile; values come from controlled choice/inputs |
+| Sample form JSON under `formBuilder/` | Not imported by runtime | Template/reference only; not a production load path |
 
 ### Documentation
 
-- 📄 **Implementation Plan**: `docs/CONDITION_OPERATORS_IMPLEMENTATION.md`
-- 📄 **Testing Guide**: `docs/TESTING_IN_OPERATOR.md`
-- 📄 **This Summary**: `docs/IMPLEMENTATION_SUMMARY_IN_OPERATOR.md`
+- 📄 **This Summary**: `docs/IMPLEMENTATION_SUMMARY_IN_OPERATOR.md` (authoritative notes for this feature)
 
 ### Next Steps
 
-1. **Immediate**: Optional manual smoke of "in" in form simulator
-2. **Phase 2**: Implement comparison operators (`>`, `>=`, `<`, `<=`)
-3. **Phase 3**: Implement "between" operator
-4. **Phase 4**: Fix "contain" vs "contains" naming inconsistency
+1. **Mobile PR (later)**: parse `"in"` as list membership (same as `isOneOf`)
+2. Phase 2: comparison operators (`>`, `>=`, `<`, `<=`) if product needs them
+3. Phase 3: `"between"` if product needs it
+4. Phase 4: `contain` vs `contains` naming consistency
 
 ---
 
@@ -110,7 +118,7 @@ List membership is one feature with several wire names:
 - ✅ Textarea
 - ✅ Integer
 - ✅ Decimal
-- ✅ Date (format: yyyy-mm-dd)
+- ✅ Date (condition value format: **yyyy-mm-dd**)
 - ✅ Single Choices
 - ✅ Subform
 
@@ -124,16 +132,17 @@ List membership is one feature with several wire names:
 ### Value Format
 
 - Comma-separated string
-- Whitespace is trimmed automatically
+- List tokens: whitespace trimmed automatically
 - Case-sensitive matching
+- Integer tokens: exact decimal-less digit form of the number (e.g. `"3"`, not `"03"`)
+- Date tokens: `yyyy-mm-dd` only
 - Examples: `"cat,dog"` or `"cat, dog"` or `"1,2,3"`
 
 ---
 
 **Implementation Completed**: 2026-07-09  
-**Hardening + unit tests**: 2026-07-14  
-**Implemented By**: AI Assistant  
-**Status**: ✅ Code complete with unit tests
+**Hardening + unit tests + aliases**: 2026-07-14  
+**Status**: ✅ MS complete for this PR; mobile `"in"` deferred
 
 ### Filename note: `village-animal-sick-death-definition.json`
 
@@ -143,4 +152,4 @@ The original commit (`ea2144f` message: "form **definiton** - village animal sic
 - Other sample files use the correct spelling (`testdefinition.json`).
 - The typo appears only in the human-chosen path/commit subject (`definiton` missing an `i`).
 
-It was a human/file naming typo only. The file was renamed to `village-animal-sick-death-definition.json`.
+It was a human/file naming typo only. The file was renamed to `village-animal-sick-death-definition.json`. It is a **sample/template**, not loaded by app code at runtime.
