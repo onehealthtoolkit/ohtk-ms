@@ -141,6 +141,14 @@ const CensusDefinitionBuilder = ({
               "censusDefinition.builder.help",
               "Define breakdowns and numeric measures. Rows are generated for mobile when this definition is published."
             )}
+            {kind === "ANIMAL" && isGroupedAnimalSchema(schema) && (
+              <div className="mt-2 rounded border border-blue-200 bg-blue-50 px-3 py-2 text-blue-800">
+                {t(
+                  "censusDefinition.builder.groupedHelp",
+                  "Grouped animal form (Option A): each group has one household count; each species has headcount only (including Pig HH on group:PIG). Prefer JSON mode to edit groups."
+                )}
+              </div>
+            )}
           </div>
         </div>
         <div className="inline-flex overflow-hidden rounded border border-gray-300">
@@ -875,11 +883,41 @@ type ValidationError = {
   fallback: string;
 };
 
+function isGroupedAnimalSchema(schema: CensusDefinitionAuthoredSchema) {
+  return (
+    schema.schema_version === 2 ||
+    (Array.isArray(schema.groups) && schema.groups.length > 0)
+  );
+}
+
 function normalizeSchema(
   schema: CensusDefinitionAuthoredSchema,
   kind: CensusKind
 ): CensusDefinitionAuthoredSchema {
-  const normalized = {
+  // Option A: preserve group HH + species heads schema end-to-end
+  if (kind === "ANIMAL" && isGroupedAnimalSchema(schema)) {
+    return {
+      ...schema,
+      schema_version: schema.schema_version ?? 2,
+      groups: Array.isArray(schema.groups) ? schema.groups : [],
+      group_measures: Array.isArray(schema.group_measures)
+        ? schema.group_measures
+        : [measure("household_quantity", "Households")],
+      species_measures: Array.isArray(schema.species_measures)
+        ? schema.species_measures
+        : Array.isArray(schema.measures) && schema.measures.length
+        ? schema.measures.filter(m => m.key === "animal_quantity")
+        : [measure("animal_quantity", "Animal quantity")],
+      summary_fields: Array.isArray(schema.summary_fields)
+        ? schema.summary_fields
+        : [
+            measure("village_household_quantity", "HH No."),
+            measure("animal_household_quantity", "Animal HH No."),
+          ],
+    };
+  }
+
+  const normalized: CensusDefinitionAuthoredSchema = {
     schema_version: schema.schema_version ?? 1,
     display: schema.display ?? {
       single_row_label: { default: "Total" },
@@ -887,7 +925,7 @@ function normalizeSchema(
     dimensions: Array.isArray(schema.dimensions) ? schema.dimensions : [],
     measures: Array.isArray(schema.measures) ? schema.measures : [],
   };
-  if (normalized.measures.length === 0) {
+  if (!normalized.measures || normalized.measures.length === 0) {
     normalized.measures =
       kind === "ANIMAL"
         ? [
@@ -1056,6 +1094,61 @@ function validateSchema(
   schema: CensusDefinitionAuthoredSchema
 ): ValidationError[] {
   const errors: ValidationError[] = [];
+
+  // Option A grouped animal schema (edit primarily via JSON mode for now)
+  if (isGroupedAnimalSchema(schema)) {
+    const groups = schema.groups ?? [];
+    if (groups.length === 0) {
+      errors.push({
+        path: "groups",
+        key: "groupsRequired",
+        fallback: "At least one group is required.",
+      });
+    }
+    validateUniqueKeys(groups, "groups", errors);
+    const seenSpecies = new Set<string>();
+    groups.forEach((group, index) => {
+      if (!labelText(group.label, "").trim()) {
+        errors.push({
+          path: `groups.${index}.label`,
+          key: "labelRequired",
+          fallback: "Label is required.",
+        });
+      }
+      if (!group.species?.length) {
+        errors.push({
+          path: `groups.${index}.species`,
+          key: "valuesRequired",
+          fallback: "At least one species is required.",
+        });
+      }
+      (group.species ?? []).forEach((species, speciesIndex) => {
+        if (!species.key) {
+          errors.push({
+            path: `groups.${index}.species.${speciesIndex}.key`,
+            key: "keyRequired",
+            fallback: "Key is required.",
+          });
+        } else if (seenSpecies.has(species.key)) {
+          errors.push({
+            path: `groups.${index}.species.${speciesIndex}.key`,
+            key: "keyUnique",
+            fallback: "Species key must be unique.",
+          });
+        }
+        seenSpecies.add(species.key);
+        if (!labelText(species.label, "").trim()) {
+          errors.push({
+            path: `groups.${index}.species.${speciesIndex}.label`,
+            key: "labelRequired",
+            fallback: "Label is required.",
+          });
+        }
+      });
+    });
+    return errors;
+  }
+
   const dimensions = schema.dimensions ?? [];
   const measures = schema.measures ?? [];
   validateUniqueKeys(dimensions, "dimensions", errors);
