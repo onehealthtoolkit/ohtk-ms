@@ -906,8 +906,8 @@ function normalizeSchema(
       species_measures: Array.isArray(schema.species_measures)
         ? schema.species_measures
         : Array.isArray(schema.measures) && schema.measures.length
-        ? schema.measures.filter(m => m.key === "animal_quantity")
-        : [measure("animal_quantity", "Animal quantity")],
+          ? schema.measures.filter(m => m.key === "animal_quantity")
+          : [measure("animal_quantity", "Animal quantity")],
       summary_fields: Array.isArray(schema.summary_fields)
         ? schema.summary_fields
         : [
