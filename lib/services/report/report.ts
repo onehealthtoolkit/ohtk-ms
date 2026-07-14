@@ -1,3 +1,32 @@
+export type RiskLevel = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+
+export type RiskFilterLevel = RiskLevel | "NO_ASSESSMENT";
+
+export type RiskAssessmentActor = {
+  id: string;
+  username?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+};
+
+export type RiskAssessment = {
+  id: string;
+  level: RiskLevel;
+  source?: string | null;
+  score?: number | null;
+  factors?: unknown;
+  evaluatorVersion?: string | null;
+  externalAssessmentId?: string | null;
+  isCurrent?: boolean | null;
+  createdAt?: string | null;
+  createdBy?: RiskAssessmentActor | null;
+};
+
+export type ReportRiskState = {
+  currentRiskAssessment?: RiskAssessment | null;
+  riskAssessmentHistory?: RiskAssessment[];
+};
+
 export type Report = {
   id: string;
   createdAt: string;
@@ -14,6 +43,7 @@ export type Report = {
   imageUrl?: string | null;
   authorityName?: string;
   testFlag: boolean;
+  currentRiskAssessment?: RiskAssessment | null;
 };
 
 export type Image = {
@@ -35,4 +65,5 @@ export type ReportDetail = Report & {
   images: Array<Image>;
   files: Array<UploadFile>;
   reportTypeDefinition?: Record<string, any>;
+  riskAssessmentHistory?: RiskAssessment[];
 };

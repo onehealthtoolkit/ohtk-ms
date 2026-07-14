@@ -7,11 +7,15 @@ import { UserViewViewModel } from "./viewViewModel";
 import { useTranslation } from "react-i18next";
 import ViewActionButtons from "components/widgets/viewActionButtons";
 import Calendar from "react-github-contribution-calendar";
+import useStore from "lib/store";
+import Link from "next/link";
 
 const UserView = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const services = useServices();
+  const store = useStore();
+  const villageEnabled = store.isFeatureEnable("village");
   const [viewModel] = useState(
     () => new UserViewViewModel(router.query.id as string, services.userService)
   );
@@ -116,7 +120,61 @@ const UserView = () => {
             </tbody>
           </table>
         </div>
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4"></div>
+
+        {villageEnabled && (
+          <div className="mt-4">
+            <div className="mb-3 font-semibold text-gray-800">
+              {t("breadcrumb.villages", "Villages")}
+            </div>
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+              <table className="table-fixed w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <tr>
+                    <th scope="col" className="px-6 py-3">
+                      {t("form.label.code", "Code")}
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      {t("form.label.name", "Name")}
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      {t("form.label.active", "Active")}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {viewModel.data.assignedVillages?.length ? (
+                    viewModel.data.assignedVillages.map(village => (
+                      <tr
+                        key={village.id}
+                        className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700"
+                      >
+                        <td className="px-6 py-4 text-blue-700 underline">
+                          <Link href={`/admin/villages/${village.id}/view`}>
+                            {village.code}
+                          </Link>
+                        </td>
+                        <td className="px-6 py-4 text-blue-700 underline">
+                          <Link href={`/admin/villages/${village.id}/view`}>
+                            {village.name}
+                          </Link>
+                        </td>
+                        <td className="px-6 py-4">
+                          {village.active ? "Yes" : "No"}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                      <td className="px-6 py-4" colSpan={3}>
+                        {t("table.notFound", "Data not found.")}
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
 
         <ViewActionButtons
           editUrl={`/admin/users/${viewModel.data.id}/update`}

@@ -14,6 +14,7 @@ export abstract class InvitationCodeViewModel extends BaseFormViewModel {
   _fromDate: string = "";
   _throughDate: string = "";
   _role: string = "REP";
+  _villageIds: number[] = [];
 
   constructor(invitationCodeService: IInvitationCodeService) {
     super();
@@ -28,6 +29,9 @@ export abstract class InvitationCodeViewModel extends BaseFormViewModel {
       throughDate: computed,
       _role: observable,
       role: computed,
+      _villageIds: observable,
+      villageIds: computed,
+      toggleVillage: action,
       save: action,
       validate: action,
     });
@@ -49,7 +53,11 @@ export abstract class InvitationCodeViewModel extends BaseFormViewModel {
     return this._authorityId;
   }
   public set authorityId(value: number) {
+    const changed = this._authorityId !== value;
     this._authorityId = value;
+    if (changed) {
+      this.villageIds = [];
+    }
     delete this.fieldErrors["authorityId"];
     if (this.submitError.length > 0) {
       this.submitError = "";
@@ -87,6 +95,26 @@ export abstract class InvitationCodeViewModel extends BaseFormViewModel {
     delete this.fieldErrors["role"];
     if (this.submitError.length > 0) {
       this.submitError = "";
+    }
+  }
+
+  public get villageIds(): number[] {
+    return this._villageIds;
+  }
+
+  public set villageIds(value: number[]) {
+    this._villageIds = value;
+    delete this.fieldErrors["villageIds"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public toggleVillage(id: number, selected: boolean) {
+    if (selected) {
+      this.villageIds = Array.from(new Set([...this.villageIds, id]));
+    } else {
+      this.villageIds = this.villageIds.filter(villageId => villageId !== id);
     }
   }
 

@@ -21,11 +21,13 @@ import RoleSelect from "./roleSelect";
 import { useTranslation } from "react-i18next";
 import useStore from "lib/store";
 import AuthroitySelect from "components/widgets/authoritySelect";
+import VillageSelect from "./villageSelect";
 
 const InvitationCodeUpdate = () => {
   const router = useRouter();
   const { t } = useTranslation();
-  const { me } = useStore();
+  const store = useStore();
+  const { me } = store;
   const services = useServices();
   const [viewModel] = useState(
     () =>
@@ -141,6 +143,28 @@ const InvitationCodeUpdate = () => {
     [t, viewModel]
   );
 
+  const villagesField = useMemo(
+    () => (
+      <Observer>
+        {() =>
+          store.isFeatureEnable("village") && viewModel.role === "REP" ? (
+            <Field $size="half">
+              <Label htmlFor="villages">
+                {t("form.label.villages", "Villages")}
+              </Label>
+              <VillageSelect
+                viewModel={viewModel}
+                villageService={services.villageService}
+              />
+              <ErrorText>{viewModel.fieldErrors.villageIds}</ErrorText>
+            </Field>
+          ) : null
+        }
+      </Observer>
+    ),
+    [t, viewModel, store, services]
+  );
+
   const onSubmit = useCallback(async () => {
     if (await viewModel.save()) {
       router.back();
@@ -156,6 +180,7 @@ const InvitationCodeUpdate = () => {
           {fromDateField}
           {throughDateField}
           {roleField}
+          {villagesField}
         </FieldGroup>
         {viewModel.submitError.length > 0 && (
           <FormMessage>{viewModel.submitError}</FormMessage>

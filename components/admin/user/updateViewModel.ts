@@ -2,6 +2,7 @@ import { User } from "lib/services/user";
 import { IUserService } from "lib/services/user/userService";
 import { SaveResult } from "lib/services/interface";
 import { UserViewModel } from "./userViewModel";
+import { AccountsAuthorityUserRoleChoices } from "lib/generated/graphql";
 
 export class UserUpdateViewModel extends UserViewModel {
   id: string;
@@ -23,6 +24,7 @@ export class UserUpdateViewModel extends UserViewModel {
       this.address = data.address || "";
       this.role = data.role || "";
       this.authorityId = data.authorityId || 0;
+      this.villageAssignments = data.villageAssignments || [];
     }
     this.isLoading = false;
   }
@@ -37,7 +39,12 @@ export class UserUpdateViewModel extends UserViewModel {
       this.email,
       this.telephone,
       this.address,
-      this.role
+      this.role,
+      this.manageVillageAssignments
+        ? this.role === AccountsAuthorityUserRoleChoices.Rep
+          ? this.villageAssignments
+          : []
+        : undefined
     );
   }
 }

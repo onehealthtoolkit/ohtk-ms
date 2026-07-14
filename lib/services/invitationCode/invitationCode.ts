@@ -6,4 +6,9 @@ export type InvitationCode = {
   fromDate?: string;
   throughDate?: string;
   role?: string;
+  villages?: {
+    id: string;
+    code: string;
+    name: string;
+  }[];
 };

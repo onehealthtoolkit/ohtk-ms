@@ -9,7 +9,8 @@ export class InvitationCodeCreateViewModel extends InvitationCodeViewModel {
       this.authorityId,
       new Date(this.fromDate).toISOString(),
       new Date(this.throughDate).toISOString(),
-      this.role
+      this.role,
+      this.role === "REP" ? this.villageIds : []
     );
   }
 }

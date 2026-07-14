@@ -127,8 +127,8 @@ export class AuthService implements IAuthService {
         message: fetchResult.errors.map(o => o.message).join(","),
       };
     }
-    console.log("tokenAuth exp", fetchResult.data?.tokenAuth?.payload.exp);
-    setRefreshExpiresIn(fetchResult.data?.tokenAuth?.payload.exp!);
+    console.log("tokenAuth exp", fetchResult.data?.tokenAuth?.payload?.exp);
+    setRefreshExpiresIn(fetchResult.data?.tokenAuth?.payload?.exp || 0);
 
     return {
       success: true,

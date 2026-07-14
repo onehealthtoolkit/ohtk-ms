@@ -17,6 +17,8 @@ import {
   MapIcon,
   CogIcon,
   DocumentIcon,
+  HomeModernIcon,
+  ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline";
 import useStore from "lib/store";
 import CollapsIcon from "components/layout/CollapsIcon";
@@ -97,6 +99,15 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     collapsed={store.menu.collapsed}
                     display={store.isRoleOfficer || store.isRoleAdmin}
                     icon={<DocumentChartBarIcon className={iconClassName} />}
+                  />
+
+                  <Menu
+                    href="/clusters/"
+                    pathname={pathname}
+                    label={t("breadcrumb.clusters", "Clusters")}
+                    collapsed={store.menu.collapsed}
+                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    icon={<RectangleGroupIcon className={iconClassName} />}
                   />
 
                   <Menu
@@ -315,6 +326,55 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     }
                     icon={<MapIcon className={iconClassName} />}
                   />
+                  {store.isFeatureEnable("village") && (
+                    <Menu
+                      href="/admin/villages/"
+                      pathname={pathname}
+                      label={t("breadcrumb.villages", "Villages")}
+                      collapsed={store.menu.collapsed}
+                      display={
+                        store.isSuperUser ||
+                        store.isRoleOfficer ||
+                        store.isRoleAdmin
+                      }
+                      icon={<HomeModernIcon className={iconClassName} />}
+                    />
+                  )}
+                  {store.isFeatureEnable("animal_census") && (
+                    <>
+                      <Menu
+                        href="/admin/census/animal/"
+                        pathname={pathname}
+                        label={t("breadcrumb.animalCensus", "Animal Census")}
+                        collapsed={store.menu.collapsed}
+                        display={
+                          store.isSuperUser ||
+                          store.isRoleAdmin ||
+                          store.isRoleOfficer
+                        }
+                        icon={
+                          <ClipboardDocumentListIcon
+                            className={iconClassName}
+                          />
+                        }
+                      />
+                      <Menu
+                        href="/admin/census_definitions/"
+                        pathname={pathname}
+                        label={t(
+                          "breadcrumb.censusDefinition",
+                          "Census Definition"
+                        )}
+                        collapsed={store.menu.collapsed}
+                        display={store.isSuperUser}
+                        icon={
+                          <ClipboardDocumentListIcon
+                            className={iconClassName}
+                          />
+                        }
+                      />
+                    </>
+                  )}
                   <Menu
                     href="/admin/configurations/"
                     pathname={pathname}
@@ -336,6 +396,53 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                       icon={<SwatchIcon className={iconClassName} />}
                     />
                   )}
+                </ul>
+              </div>
+
+              <div>
+                <h3
+                  className={`text-xs uppercase text-slate-500 font-semibold pl-3 ${
+                    store.menu.collapsed ? "hidden" : ""
+                  }`}
+                >
+                  <span className="md:sidebar-expanded:block 2xl:block">
+                    {t("breadcrumb.integrationCategory", "Integration")}
+                  </span>
+                </h3>
+                <ul className="mt-3">
+                  <Menu
+                    href="/admin/integrations/clients/"
+                    pathname={pathname}
+                    label={t(
+                      "breadcrumb.integrationClients",
+                      "Integration Clients"
+                    )}
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser}
+                    icon={<CubeIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/integrations/webhook_endpoints/"
+                    pathname={pathname}
+                    label={t(
+                      "breadcrumb.webhookEndpoints",
+                      "Webhook Endpoints"
+                    )}
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser}
+                    icon={<BellIcon className={iconClassName} />}
+                  />
+                  <Menu
+                    href="/admin/integrations/settings"
+                    pathname={pathname}
+                    label={t(
+                      "breadcrumb.integrationSettings",
+                      "Integration Settings"
+                    )}
+                    collapsed={store.menu.collapsed}
+                    display={store.isSuperUser}
+                    icon={<CogIcon className={iconClassName} />}
+                  />
                 </ul>
               </div>
             </div>

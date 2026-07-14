@@ -1,0 +1,78 @@
+fragment ClusterLinkedReportFields on IncidentReportType {
+  id
+  createdAt
+  incidentDate
+  rendererData
+  gpsLocation
+  reportType {
+    id
+    name
+    category {
+      id
+      name
+      icon
+    }
+  }
+  authorities {
+    name
+  }
+  currentRiskAssessment {
+    ...RiskAssessmentFields
+  }
+}
+
+fragment ClusterResultFields on IntegrationClusterResultDashboardType {
+  id
+  externalClusterId
+  algorithmVersion
+  windowStart
+  windowEnd
+  incidentIds
+  authorityIds
+  villageIds
+  geometry
+  radiusMeters
+  score
+  riskLevel
+  reportCount
+  explanation
+  metadata
+  createdAt
+  updatedAt
+  integrationClient {
+    code
+    name
+  }
+  linkedReports {
+    ...ClusterLinkedReportFields
+  }
+}
+
+query ClusterResults(
+  $limit: Int!
+  $offset: Int!
+  $fromDate: Date
+  $throughDate: Date
+  $riskLevels: String
+  $q: String
+) {
+  clusterResults(
+    limit: $limit
+    offset: $offset
+    fromDate: $fromDate
+    throughDate: $throughDate
+    riskLevels: $riskLevels
+    q: $q
+  ) {
+    totalCount
+    results {
+      ...ClusterResultFields
+    }
+  }
+}
+
+query GetClusterResult($id: UUID!) {
+  clusterResult(id: $id) {
+    ...ClusterResultFields
+  }
+}

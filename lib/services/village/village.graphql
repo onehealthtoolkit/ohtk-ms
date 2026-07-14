@@ -1,0 +1,113 @@
+query villages(
+  $limit: Int!
+  $offset: Int!
+  $q: String
+  $ordering: String
+  $authorityId: Decimal
+) {
+  adminVillageQuery(
+    limit: $limit
+    offset: $offset
+    q: $q
+    ordering: $ordering
+    authorityId: $authorityId
+  ) {
+    totalCount
+    results {
+      id
+      code
+      name
+      active
+      latitude
+      longitude
+      authority {
+        id
+        name
+      }
+    }
+  }
+}
+
+mutation VillageCreate(
+  $code: String!
+  $name: String!
+  $authorityId: Int!
+  $latitude: Float
+  $longitude: Float
+  $active: Boolean = true
+) {
+  adminVillageCreate(
+    code: $code
+    name: $name
+    authorityId: $authorityId
+    latitude: $latitude
+    longitude: $longitude
+    active: $active
+  ) {
+    result {
+      __typename
+      ... on AdminVillageCreateSuccess {
+        id
+        code
+        name
+        active
+        latitude
+        longitude
+        authority {
+          id
+          name
+        }
+      }
+      ... on AdminVillageCreateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}
+
+mutation VillageUpdate(
+  $id: Int!
+  $code: String!
+  $name: String!
+  $authorityId: Int!
+  $latitude: Float
+  $longitude: Float
+  $active: Boolean!
+) {
+  adminVillageUpdate(
+    id: $id
+    code: $code
+    name: $name
+    authorityId: $authorityId
+    latitude: $latitude
+    longitude: $longitude
+    active: $active
+  ) {
+    result {
+      __typename
+      ... on AdminVillageUpdateSuccess {
+        id
+        code
+        name
+        active
+        latitude
+        longitude
+        authority {
+          id
+          name
+        }
+      }
+      ... on AdminVillageUpdateProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
+    }
+  }
+}

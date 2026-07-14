@@ -1,0 +1,382 @@
+query AdminIntegrationClients(
+  $limit: Int!
+  $offset: Int!
+  $q: String
+  $status: String
+  $integrationType: String
+) {
+  adminIntegrationClientQuery(
+    limit: $limit
+    offset: $offset
+    q: $q
+    status: $status
+    integrationType: $integrationType
+  ) {
+    totalCount
+    results {
+      id
+      name
+      code
+      integrationType
+      status
+      clientId
+      scopeCodes
+      allowedCallbackDomains
+      rateLimitPolicy
+    }
+  }
+}
+
+query AdminIntegrationClientGet($id: ID!) {
+  adminIntegrationClientGet(id: $id) {
+    id
+    name
+    code
+    integrationType
+    status
+    clientId
+    scopeCodes
+    allowedCallbackDomains
+    rateLimitPolicy
+  }
+}
+
+query AdminIntegrationOptions {
+  integrationScopeOptions {
+    code
+    label
+  }
+  integrationClientStatusOptions {
+    code
+    label
+  }
+  webhookEndpointStatusOptions {
+    code
+    label
+  }
+  integrationTypeOptions {
+    code
+    label
+  }
+  integrationEventTypeOptions {
+    code
+    label
+  }
+}
+
+mutation AdminIntegrationClientCreateOp($input: AdminIntegrationClientInput!) {
+  adminIntegrationClientCreate(input: $input) {
+    result {
+      __typename
+      ... on AdminIntegrationClientCreateSuccess {
+        clientSecret
+        integrationClient {
+          id
+          name
+          code
+          integrationType
+          status
+          clientId
+          scopeCodes
+          allowedCallbackDomains
+          rateLimitPolicy
+        }
+      }
+      ... on AdminIntegrationClientCreateProblem {
+        message
+        fields {
+          name
+          message
+        }
+      }
+    }
+  }
+}
+
+mutation AdminIntegrationClientUpdateOp(
+  $id: ID!
+  $input: AdminIntegrationClientInput!
+) {
+  adminIntegrationClientUpdate(id: $id, input: $input) {
+    result {
+      __typename
+      ... on AdminIntegrationClientUpdateSuccess {
+        integrationClient {
+          id
+          name
+          code
+          integrationType
+          status
+          clientId
+          scopeCodes
+          allowedCallbackDomains
+          rateLimitPolicy
+        }
+      }
+      ... on AdminIntegrationClientUpdateProblem {
+        message
+        fields {
+          name
+          message
+        }
+      }
+    }
+  }
+}
+
+mutation AdminIntegrationClientDisableOp($id: ID!) {
+  adminIntegrationClientDisable(id: $id) {
+    result {
+      __typename
+      ... on AdminIntegrationClientUpdateSuccess {
+        integrationClient {
+          id
+          status
+        }
+      }
+      ... on AdminIntegrationClientUpdateProblem {
+        message
+        fields {
+          name
+          message
+        }
+      }
+    }
+  }
+}
+
+mutation AdminIntegrationClientRotateSecretOp($id: ID!) {
+  adminIntegrationClientRotateSecret(id: $id) {
+    result {
+      __typename
+      ... on AdminIntegrationClientRotateSecretSuccess {
+        clientSecret
+        integrationClient {
+          id
+          status
+        }
+      }
+      ... on AdminIntegrationClientUpdateProblem {
+        message
+        fields {
+          name
+          message
+        }
+      }
+    }
+  }
+}
+
+query AdminWebhookEndpoints(
+  $limit: Int!
+  $offset: Int!
+  $q: String
+  $integrationClientId: Decimal
+  $status: String
+  $eventType: String
+) {
+  adminWebhookEndpointQuery(
+    limit: $limit
+    offset: $offset
+    q: $q
+    integrationClientId: $integrationClientId
+    status: $status
+    eventType: $eventType
+  ) {
+    totalCount
+    results {
+      id
+      name
+      url
+      status
+      eventTypes
+      schemaVersion
+      activeSigningSecretRef
+      activeSigningSecretVersion
+      nextSigningSecretRef
+      nextSigningSecretVersion
+      timeoutSeconds
+      maxAttempts
+      retryPolicy
+      customHeaders
+      integrationClient {
+        id
+        code
+        name
+      }
+    }
+  }
+}
+
+query AdminWebhookEndpointGet($id: ID!) {
+  adminWebhookEndpointGet(id: $id) {
+    id
+    name
+    url
+    status
+    eventTypes
+    schemaVersion
+    activeSigningSecretRef
+    activeSigningSecretVersion
+    nextSigningSecretRef
+    nextSigningSecretVersion
+    timeoutSeconds
+    maxAttempts
+    retryPolicy
+    customHeaders
+    integrationClient {
+      id
+      code
+      name
+    }
+  }
+}
+
+mutation AdminWebhookEndpointCreateOp($input: AdminWebhookEndpointInput!) {
+  adminWebhookEndpointCreate(input: $input) {
+    result {
+      __typename
+      ... on AdminWebhookEndpointCreateSuccess {
+        webhookEndpoint {
+          id
+          name
+          url
+          status
+          eventTypes
+          schemaVersion
+          activeSigningSecretRef
+          activeSigningSecretVersion
+          nextSigningSecretRef
+          nextSigningSecretVersion
+          timeoutSeconds
+          maxAttempts
+          retryPolicy
+          customHeaders
+          integrationClient {
+            id
+            code
+            name
+          }
+        }
+      }
+      ... on AdminWebhookEndpointCreateProblem {
+        message
+        fields {
+          name
+          message
+        }
+      }
+    }
+  }
+}
+
+mutation AdminWebhookEndpointUpdateOp(
+  $id: ID!
+  $input: AdminWebhookEndpointInput!
+) {
+  adminWebhookEndpointUpdate(id: $id, input: $input) {
+    result {
+      __typename
+      ... on AdminWebhookEndpointUpdateSuccess {
+        webhookEndpoint {
+          id
+          name
+          url
+          status
+          eventTypes
+          schemaVersion
+          activeSigningSecretRef
+          activeSigningSecretVersion
+          nextSigningSecretRef
+          nextSigningSecretVersion
+          timeoutSeconds
+          maxAttempts
+          retryPolicy
+          customHeaders
+          integrationClient {
+            id
+            code
+            name
+          }
+        }
+      }
+      ... on AdminWebhookEndpointUpdateProblem {
+        message
+        fields {
+          name
+          message
+        }
+      }
+    }
+  }
+}
+
+mutation AdminWebhookEndpointDisableOp($id: ID!) {
+  adminWebhookEndpointDisable(id: $id) {
+    result {
+      __typename
+      ... on AdminWebhookEndpointUpdateSuccess {
+        webhookEndpoint {
+          id
+          status
+        }
+      }
+      ... on AdminWebhookEndpointUpdateProblem {
+        message
+        fields {
+          name
+          message
+        }
+      }
+    }
+  }
+}
+
+query IntegrationPolicyGet {
+  integrationPolicyGet {
+    integrationEnabled
+    aiEnabled
+    riskEvaluatorEnabled
+    clusterDetectorEnabled
+    aiDefaultCommentOwnerUserId
+    aiDefaultCommentOwnerName
+    dashboardRiskWindowDays
+  }
+}
+
+query IntegrationPolicyAdminUsers($limit: Int!, $offset: Int!, $q: String) {
+  adminAuthorityUserQuery(limit: $limit, offset: $offset, q: $q, role: "ADM") {
+    results {
+      id
+      username
+      firstName
+      lastName
+    }
+  }
+}
+
+mutation AdminIntegrationPolicyUpdateOp($input: AdminIntegrationPolicyInput!) {
+  adminIntegrationPolicyUpdate(input: $input) {
+    result {
+      __typename
+      ... on AdminIntegrationPolicyUpdateSuccess {
+        policy {
+          integrationEnabled
+          aiEnabled
+          riskEvaluatorEnabled
+          clusterDetectorEnabled
+          aiDefaultCommentOwnerUserId
+          aiDefaultCommentOwnerName
+          dashboardRiskWindowDays
+        }
+      }
+      ... on AdminIntegrationPolicyUpdateProblem {
+        message
+        fields {
+          name
+          message
+        }
+      }
+    }
+  }
+}

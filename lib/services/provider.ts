@@ -23,11 +23,20 @@ import { FollowupService } from "./followup/followupService";
 import { ForgotPasswordService } from "./forgotPassword/forgotPasswordService";
 import { OutbreakPlanService } from "./outbreakPlan";
 import { PlaceService } from "./place";
+import { VillageService } from "./village";
+import {
+  CensusCapabilityService,
+  CensusDefinitionService,
+  CensusRoundService,
+  CensusSnapshotService,
+} from "./census";
 import { ConfigurationService } from "./configuration";
 import { OutbreakService } from "./outbreak/outbreakService";
 import { ObservationDefinitionService } from "./observationDefinition/observationDefinitionService";
 import { ObservationMonitoringDefinitionService } from "./observationMonitoringDefinition";
 import { ObservationService } from "./observation";
+import { IntegrationService } from "./integration";
+import { ClusterService } from "./cluster";
 
 export interface IServiceProvider {
   get authService(): IAuthService;
@@ -53,11 +62,18 @@ export interface IServiceProvider {
   get followupService(): FollowupService;
   get outbreakPlanService(): OutbreakPlanService;
   get placeService(): PlaceService;
+  get villageService(): VillageService;
+  get censusSnapshotService(): CensusSnapshotService;
+  get censusRoundService(): CensusRoundService;
+  get censusDefinitionService(): CensusDefinitionService;
+  get censusCapabilityService(): CensusCapabilityService;
   get configurationService(): ConfigurationService;
   get outbreakService(): OutbreakService;
   get observationDefinitionService(): ObservationDefinitionService;
   get observationMonitoringDefinitionService(): ObservationMonitoringDefinitionService;
   get observationService(): ObservationService;
+  get integrationService(): IntegrationService;
+  get clusterService(): ClusterService;
 }
 
 export class ServicesProvider implements IServiceProvider {
@@ -86,11 +102,18 @@ export class ServicesProvider implements IServiceProvider {
   followupService: FollowupService;
   outbreakPlanService: OutbreakPlanService;
   placeService: PlaceService;
+  villageService: VillageService;
+  censusSnapshotService: CensusSnapshotService;
+  censusRoundService: CensusRoundService;
+  censusDefinitionService: CensusDefinitionService;
+  censusCapabilityService: CensusCapabilityService;
   configurationService: ConfigurationService;
   outbreakService: OutbreakService;
   observationDefinitionService: ObservationDefinitionService;
   observationMonitoringDefinitionService: ObservationMonitoringDefinitionService;
   observationService: ObservationService;
+  integrationService: IntegrationService;
+  clusterService: ClusterService;
 
   constructor(client: LegacyApolloClient) {
     this.client = client;
@@ -117,6 +140,11 @@ export class ServicesProvider implements IServiceProvider {
     this.followupService = new FollowupService(client);
     this.outbreakPlanService = new OutbreakPlanService(client);
     this.placeService = new PlaceService(client);
+    this.villageService = new VillageService(client);
+    this.censusSnapshotService = new CensusSnapshotService(client);
+    this.censusRoundService = new CensusRoundService(client);
+    this.censusDefinitionService = new CensusDefinitionService(client);
+    this.censusCapabilityService = new CensusCapabilityService(client);
     this.configurationService = new ConfigurationService(client);
     this.outbreakService = new OutbreakService(client);
     this.observationDefinitionService = new ObservationDefinitionService(
@@ -128,6 +156,8 @@ export class ServicesProvider implements IServiceProvider {
       client
     );
     this.observationService = new ObservationService(client);
+    this.integrationService = new IntegrationService(client);
+    this.clusterService = new ClusterService(client);
   }
 }
 

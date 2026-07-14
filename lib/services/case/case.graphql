@@ -38,6 +38,9 @@ query Cases(
         authorities {
           name
         }
+        currentRiskAssessment {
+          ...RiskAssessmentFields
+        }
       }
     }
   }
@@ -94,6 +97,12 @@ query GetCase($id: UUID!) {
       }
       authorities {
         name
+      }
+      currentRiskAssessment {
+        ...RiskAssessmentFields
+      }
+      riskAssessmentHistory(limit: 3) {
+        ...RiskAssessmentFields
       }
     }
     stateDefinition {
