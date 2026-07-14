@@ -306,7 +306,7 @@ const CoverageDetailDrawer = ({
           contained
           columns={[
             {
-              label: t("form.label.species", "Species"),
+              label: t("form.label.species", "Species (heads)"),
               get: record => record.rowLabel,
             },
             {
@@ -314,10 +314,13 @@ const CoverageDetailDrawer = ({
               get: record => record.animalQuantity.toString(),
             },
           ]}
-          data={row.speciesSummary.map(item => ({
-            id: item.rowKey,
-            ...item,
-          }))}
+          data={row.speciesSummary
+            // Backend species_summary already skips group HH rows; filter as safety.
+            .filter(item => !item.rowKey.startsWith("group:"))
+            .map(item => ({
+              id: item.rowKey,
+              ...item,
+            }))}
           viewOnRowClick={false}
         />
       </div>

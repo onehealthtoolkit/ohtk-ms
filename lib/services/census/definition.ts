@@ -18,6 +18,14 @@ export type CensusSchemaRow = {
 };
 
 export type CensusSchema = {
+  schema_version?: number;
+  layout?: "flat" | "grouped_species" | string;
+  groups?: Array<{
+    key?: string;
+    label?: LocalizedLabel | string;
+    household_row_key?: string;
+    species_row_keys?: string[];
+  }>;
   rows?: CensusSchemaRow[];
   measures?: CensusSchemaMeasure[];
   row_source?: "ACTIVE_ANIMAL_SPECIES" | string;
@@ -44,13 +52,31 @@ export type CensusDefinitionSchemaDimension = {
   values: CensusDefinitionSchemaValue[];
 };
 
+/** Option A: shared group HH row + per-species headcount rows. */
+export type CensusDefinitionSchemaSpecies = {
+  key: string;
+  label: LocalizedLabel;
+};
+
+export type CensusDefinitionSchemaGroup = {
+  key: string;
+  label: LocalizedLabel;
+  species: CensusDefinitionSchemaSpecies[];
+};
+
 export type CensusDefinitionAuthoredSchema = {
   schema_version?: number;
   display?: {
     single_row_label?: LocalizedLabel;
   };
+  /** v1 flat Cartesian breakdowns */
   dimensions?: CensusDefinitionSchemaDimension[];
   measures?: CensusSchemaMeasure[];
+  /** v2 Option A: group HH + species heads */
+  summary_fields?: CensusSchemaMeasure[];
+  group_measures?: CensusSchemaMeasure[];
+  species_measures?: CensusSchemaMeasure[];
+  groups?: CensusDefinitionSchemaGroup[];
   [key: string]: unknown;
 };
 
