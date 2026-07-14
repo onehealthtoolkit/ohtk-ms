@@ -1,6 +1,7 @@
 import { action, computed, makeObservable, observable, toJS } from "mobx";
 import Field, { FieldParams } from ".";
-import { ConditionOperator } from "../condition";
+import { ConditionOperator, normalizeConditionOperator } from "../condition";
+import { stringValueInList } from "../conditionList";
 import { valueIsUndefinedAndNotRequiredGuard } from "./helpers";
 
 export type ChoiceOption = {
@@ -106,13 +107,19 @@ export default class SingleChoicesField extends Field {
     if (this._value == undefined) {
       return false;
     }
-    switch (operator) {
-      case "=":
-        return this.value == value;
-      case "!=":
-        return this.value != value;
-      default:
-        return this.value!.indexOf(value) >= 0;
+    try {
+      switch (normalizeConditionOperator(operator)) {
+        case "=":
+          return this.value == value;
+        case "!=":
+          return this.value != value;
+        case "in":
+          return stringValueInList(this.value, value);
+        default:
+          return this.value != null ? this.value.indexOf(value) >= 0 : false;
+      }
+    } catch {
+      return false;
     }
   }
 

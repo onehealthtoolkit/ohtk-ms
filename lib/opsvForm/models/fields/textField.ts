@@ -1,5 +1,6 @@
 import { FieldParams } from ".";
-import { ConditionOperator } from "../condition";
+import { ConditionOperator, normalizeConditionOperator } from "../condition";
+import { stringValueInList } from "../conditionList";
 import { valueIsUndefinedAndNotRequiredGuard } from "./helpers";
 import PrimitiveField from "./primitiveField";
 
@@ -75,18 +76,22 @@ export default class TextField extends PrimitiveField<string> {
   };
 
   evaluate(operator: ConditionOperator, value: string): boolean {
-    console.debug("evaluate", operator, value);
     if (this._value == undefined) {
       return false;
-    } else {
-      switch (operator) {
+    }
+    try {
+      switch (normalizeConditionOperator(operator)) {
         case "=":
           return this._value == value;
         case "!=":
           return this._value != value;
+        case "in":
+          return stringValueInList(this._value, value);
         default:
           return this._value.indexOf(value) >= 0;
       }
+    } catch {
+      return false;
     }
   }
 }

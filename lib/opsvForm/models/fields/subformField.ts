@@ -1,5 +1,6 @@
 import { FieldParams } from ".";
-import { ConditionOperator } from "../condition";
+import { ConditionOperator, normalizeConditionOperator } from "../condition";
+import { stringValueInList } from "../conditionList";
 import { valueIsUndefinedAndNotRequiredGuard } from "./helpers";
 import PrimitiveField from "./primitiveField";
 
@@ -58,13 +59,19 @@ export default class SubformField extends PrimitiveField<string> {
     if (this._value == undefined) {
       return false;
     }
-    switch (operator) {
-      case "=":
-        return this.value == value;
-      case "!=":
-        return this.value != value;
-      default:
-        return this.value!.indexOf(value) >= 0;
+    try {
+      switch (normalizeConditionOperator(operator)) {
+        case "=":
+          return this.value == value;
+        case "!=":
+          return this.value != value;
+        case "in":
+          return stringValueInList(this.value, value);
+        default:
+          return this.value != null ? this.value.indexOf(value) >= 0 : false;
+      }
+    } catch {
+      return false;
     }
   }
 }

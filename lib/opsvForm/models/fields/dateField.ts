@@ -1,7 +1,8 @@
 import { formatYmd, formatYmdt } from "lib/datetime";
+import { stringValueInList } from "../conditionList";
 import { computed, makeObservable, observable } from "mobx";
 import Field, { FieldParams } from ".";
-import { ConditionOperator } from "../condition";
+import { ConditionOperator, normalizeConditionOperator } from "../condition";
 
 export type DateFieldParams = {
   withTime?: boolean;
@@ -200,23 +201,25 @@ export default class DateField extends Field {
   };
 
   evaluate(operator: ConditionOperator, value: string): boolean {
-    if (operator === "=") {
-      try {
-        // expect value to be in yyyy-dd-mm
-        const date = new Date(value);
-        const day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
-
-        if (this.day == day && this.month == month && this.year == year) {
-          return true;
-        }
-      } catch (e) {
-        console.error(e);
-      }
+    if (this.value === null || this.value === undefined) {
+      return false;
     }
-
-    return false;
+    try {
+      // Format as yyyy-mm-dd
+      const currentDateStr = formatYmd(this.value);
+      switch (normalizeConditionOperator(operator)) {
+        case "=":
+          return currentDateStr === value;
+        case "!=":
+          return currentDateStr !== value;
+        case "in":
+          return stringValueInList(currentDateStr, value);
+        default:
+          return false;
+      }
+    } catch {
+      return false;
+    }
   }
 
   get renderedValue(): string {
