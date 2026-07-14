@@ -7,6 +7,12 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  formatCensusFactAnimals,
+  formatCensusFactHouseholds,
+  isGroupCensusRowKey,
+  isSpeciesCensusRowKey,
+} from "lib/services/census/rowKind";
 import { roundCoordinate } from "./coordinates";
 import { VillageViewViewModel } from "./viewViewModel";
 
@@ -154,16 +160,33 @@ const VillageView = () => {
             <Table
               columns={[
                 {
-                  label: t("form.label.species", "Species"),
+                  label: t("form.label.row", "Row"),
                   get: record => record.rowLabel,
                 },
                 {
+                  label: t("form.label.kind", "Kind"),
+                  get: record =>
+                    isGroupCensusRowKey(record.rowKey)
+                      ? t("census.rowKind.group", "Group HH")
+                      : isSpeciesCensusRowKey(record.rowKey)
+                      ? t("census.rowKind.species", "Species")
+                      : t("census.rowKind.legacy", "Species"),
+                },
+                {
                   label: t("form.label.animals", "Animals"),
-                  get: record => record.animalQuantity.toString(),
+                  get: record =>
+                    formatCensusFactAnimals(
+                      record.rowKey,
+                      record.animalQuantity
+                    ),
                 },
                 {
                   label: t("form.label.households", "Households"),
-                  get: record => record.householdQuantity.toString(),
+                  get: record =>
+                    formatCensusFactHouseholds(
+                      record.rowKey,
+                      record.householdQuantity
+                    ),
                 },
               ]}
               data={viewModel.latestCensus.facts.map(fact => ({

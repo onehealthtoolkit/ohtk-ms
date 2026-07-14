@@ -18,6 +18,14 @@ export type CensusSchemaRow = {
 };
 
 export type CensusSchema = {
+  schema_version?: number;
+  layout?: "flat" | "grouped_species" | string;
+  groups?: Array<{
+    key?: string;
+    label?: LocalizedLabel | string;
+    household_row_key?: string;
+    species_row_keys?: string[];
+  }>;
   rows?: CensusSchemaRow[];
   measures?: CensusSchemaMeasure[];
   row_source?: "ACTIVE_ANIMAL_SPECIES" | string;

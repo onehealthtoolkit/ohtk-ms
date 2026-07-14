@@ -34,3 +34,11 @@ export type {
   CensusCapabilities,
   ICensusCapabilityService,
 } from "./capabilityService";
+
+export {
+  censusRowKindLabel,
+  formatCensusFactAnimals,
+  formatCensusFactHouseholds,
+  isGroupCensusRowKey,
+  isSpeciesCensusRowKey,
+} from "./rowKind";

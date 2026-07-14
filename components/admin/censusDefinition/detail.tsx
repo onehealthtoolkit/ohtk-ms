@@ -69,6 +69,18 @@ const CensusDefinitionDetail = ({ kind }: Props) => {
                 value={activeVersion?.status ?? "-"}
               />
               <DetailRow
+                label={t("form.label.layout", "Layout")}
+                value={
+                  (activeVersion?.runtimeSchema as { layout?: string })
+                    ?.layout === "grouped_species"
+                    ? t(
+                        "censusDefinition.layout.grouped",
+                        "Grouped (group HH + species heads)"
+                      )
+                    : t("censusDefinition.layout.flat", "Flat")
+                }
+              />
+              <DetailRow
                 label={t("form.label.rows", "Rows")}
                 value={(
                   activeVersion?.runtimeSchema.rows?.length ?? 0
@@ -80,6 +92,28 @@ const CensusDefinitionDetail = ({ kind }: Props) => {
                   activeVersion?.runtimeSchema.measures?.length ?? 0
                 ).toString()}
               />
+              {Array.isArray(
+                (authoredSchema as { groups?: unknown[] }).groups
+              ) &&
+                (authoredSchema as { groups: Array<{ key: string; label: any; species?: Array<{ key: string; label: any }> }> }).groups.map(
+                  group => (
+                    <DetailRow
+                      key={group.key}
+                      label={`${t("censusDefinition.group", "Group")}: ${
+                        typeof group.label === "object"
+                          ? group.label?.default ?? group.key
+                          : group.label ?? group.key
+                      }`}
+                      value={(group.species ?? [])
+                        .map(s =>
+                          typeof s.label === "object"
+                            ? s.label?.default ?? s.key
+                            : s.label ?? s.key
+                        )
+                        .join(", ")}
+                    />
+                  )
+                )}
               <DetailRow
                 label={t("form.label.publishedAt", "Published At")}
                 value={formatPublishedAt(activeVersion?.publishedAt) || "-"}
