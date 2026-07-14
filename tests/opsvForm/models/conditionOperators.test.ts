@@ -184,9 +184,9 @@ describe("field evaluate() operators in / !=", () => {
       expect(expected).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       expect(field.evaluate("=", expected)).toBe(true);
       expect(field.evaluate("!=", "2000-01-01")).toBe(true);
-      expect(
-        field.evaluate("in", `2000-01-01, ${expected}, 2099-12-31`)
-      ).toBe(true);
+      expect(field.evaluate("in", `2000-01-01, ${expected}, 2099-12-31`)).toBe(
+        true
+      );
       expect(field.evaluate("in", "2000-01-01, 2001-01-01")).toBe(false);
       field.year = undefined;
       expect(field.evaluate("in", expected)).toBe(false);

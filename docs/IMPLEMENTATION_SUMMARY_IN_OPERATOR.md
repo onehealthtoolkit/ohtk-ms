@@ -89,13 +89,13 @@ List membership is one feature with several wire names:
 
 ### Semantics intentionally kept
 
-| Topic | Behavior | Why not changed |
-| ----- | -------- | --------------- |
-| Integer `"in"` | Exact digit string after `n.toString()` (`3` matches `"3"`, not `"03"` / `"3.0"`) | Same as mobile string `isOneOf`; numeric coercion would diverge clients |
-| Decimal `"!="` with non-numeric RHS | Returns **true** when field has a value (`2.5 != "xyz"`) | Value is not equal to an invalid number; never throws (old path threw) |
-| Date condition value | Strict `yyyy-mm-dd` via `formatYmd` | Clear authoring contract; free-form `Date` parse was ambiguous |
-| List token trim | List side trimmed; current field value not auto-trimmed | Matches mobile; values come from controlled choice/inputs |
-| Sample form JSON under `formBuilder/` | Not imported by runtime | Template/reference only; not a production load path |
+| Topic                                 | Behavior                                                                          | Why not changed                                                         |
+| ------------------------------------- | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Integer `"in"`                        | Exact digit string after `n.toString()` (`3` matches `"3"`, not `"03"` / `"3.0"`) | Same as mobile string `isOneOf`; numeric coercion would diverge clients |
+| Decimal `"!="` with non-numeric RHS   | Returns **true** when field has a value (`2.5 != "xyz"`)                          | Value is not equal to an invalid number; never throws (old path threw)  |
+| Date condition value                  | Strict `yyyy-mm-dd` via `formatYmd`                                               | Clear authoring contract; free-form `Date` parse was ambiguous          |
+| List token trim                       | List side trimmed; current field value not auto-trimmed                           | Matches mobile; values come from controlled choice/inputs               |
+| Sample form JSON under `formBuilder/` | Not imported by runtime                                                           | Template/reference only; not a production load path                     |
 
 ### Documentation
 
