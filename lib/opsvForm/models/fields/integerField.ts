@@ -1,5 +1,6 @@
 import { FieldParams } from ".";
 import { ConditionOperator } from "../condition";
+import { stringValueInList } from "../conditionList";
 import PrimitiveField from "./primitiveField";
 
 export type IntegerFieldParams = {
@@ -72,20 +73,23 @@ export default class IntegerField extends PrimitiveField<number> {
   evaluate(operator: ConditionOperator, value: string): boolean {
     if (this._value == undefined) {
       return false;
-    } else {
+    }
+    try {
+      const current = this._value.toString();
       switch (operator) {
         case "=":
-          return this._value.toString() == value;
+          return current == value;
         case "!=":
-          return this._value.toString() != value;
+          return current != value;
         case "in":
-          const allowedValues = value.split(',').map(v => v.trim());
-          return allowedValues.includes(this._value.toString());
+          return stringValueInList(current, value);
         case "contains":
-          return this._value.toString().indexOf(value) >= 0;
+          return current.indexOf(value) >= 0;
         default:
           return false;
       }
+    } catch {
+      return false;
     }
   }
 }

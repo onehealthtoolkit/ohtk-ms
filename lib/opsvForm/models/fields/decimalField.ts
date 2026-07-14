@@ -1,6 +1,7 @@
 import Decimal from "decimal.js";
 import { FieldParams } from ".";
 import { ConditionOperator } from "../condition";
+import { decimalEquals, decimalValueInList } from "../conditionList";
 import PrimitiveField from "./primitiveField";
 
 export default class DecimalField extends PrimitiveField<Decimal> {
@@ -40,18 +41,22 @@ export default class DecimalField extends PrimitiveField<Decimal> {
     if (this._value == undefined) {
       return false;
     }
-    switch (operator) {
-      case "=":
-        return this._value.eq(new Decimal(value));
-      case "!=":
-        return !this._value.eq(new Decimal(value));
-      case "in":
-        const allowedValues = value.split(',').map(v => v.trim());
-        return allowedValues.some(v => this._value!.eq(new Decimal(v)));
-      case "contains":
-        return this._value.toString().indexOf(value) >= 0;
-      default:
-        return false;
+    try {
+      switch (operator) {
+        case "=":
+          return decimalEquals(this._value, value);
+        case "!=":
+          // if RHS is not a number, treat as not equal only when current is defined
+          return !decimalEquals(this._value, value);
+        case "in":
+          return decimalValueInList(this._value, value);
+        case "contains":
+          return this._value.toString().indexOf(value) >= 0;
+        default:
+          return false;
+      }
+    } catch {
+      return false;
     }
   }
 

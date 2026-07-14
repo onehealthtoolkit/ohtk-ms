@@ -1,4 +1,5 @@
 import { formatYmd, formatYmdt } from "lib/datetime";
+import { stringValueInList } from "../conditionList";
 import { computed, makeObservable, observable } from "mobx";
 import Field, { FieldParams } from ".";
 import { ConditionOperator } from "../condition";
@@ -203,35 +204,21 @@ export default class DateField extends Field {
     if (this.value === null || this.value === undefined) {
       return false;
     }
-
-    const currentDateStr = formatYmd(this.value); // Format as yyyy-mm-dd
-
-    switch (operator) {
-      case "=":
-        try {
-          // expect value to be in yyyy-mm-dd format
+    try {
+      // Format as yyyy-mm-dd
+      const currentDateStr = formatYmd(this.value);
+      switch (operator) {
+        case "=":
           return currentDateStr === value;
-        } catch (e) {
-          console.error(e);
-          return false;
-        }
-      case "!=":
-        try {
+        case "!=":
           return currentDateStr !== value;
-        } catch (e) {
-          console.error(e);
+        case "in":
+          return stringValueInList(currentDateStr, value);
+        default:
           return false;
-        }
-      case "in":
-        try {
-          const allowedDates = value.split(',').map(v => v.trim());
-          return allowedDates.includes(currentDateStr);
-        } catch (e) {
-          console.error(e);
-          return false;
-        }
-      default:
-        return false;
+      }
+    } catch {
+      return false;
     }
   }
 

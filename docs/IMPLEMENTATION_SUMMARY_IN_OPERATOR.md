@@ -58,7 +58,12 @@ Successfully implemented the "in" operator for form field conditions, allowing f
 ### Testing Status
 
 ✅ All TypeScript compilation errors resolved  
-⏳ Manual testing required (see `TESTING_IN_OPERATOR.md`)
+✅ Unit tests: `tests/opsvForm/models/conditionOperators.test.ts` (11 cases: helpers + in/!= across field types, including Decimal bad-token non-throw)  
+⏳ Manual testing still useful (see `TESTING_IN_OPERATOR.md`)
+
+### Hardening (uncaught exceptions)
+
+`Decimal` comparisons used to throw on bad list tokens (`new Decimal("xyz")`). Shared helpers in `lib/opsvForm/models/conditionList.ts` never throw; each field `evaluate()` also wraps in try/catch and returns `false` on unexpected errors.
 
 ### Documentation
 
@@ -68,7 +73,7 @@ Successfully implemented the "in" operator for form field conditions, allowing f
 
 ### Next Steps
 
-1. **Immediate**: Manual testing of "in" operator across all field types
+1. **Immediate**: Optional manual smoke of "in" in form simulator
 2. **Phase 2**: Implement comparison operators (`>`, `>=`, `<`, `<=`)
 3. **Phase 3**: Implement "between" operator
 4. **Phase 4**: Fix "contain" vs "contains" naming inconsistency
@@ -101,5 +106,17 @@ Successfully implemented the "in" operator for form field conditions, allowing f
 ---
 
 **Implementation Completed**: 2026-07-09  
+**Hardening + unit tests**: 2026-07-14  
 **Implemented By**: AI Assistant  
-**Status**: ✅ Code Complete, ⏳ Testing Pending
+**Status**: ✅ Code complete with unit tests
+
+
+### Filename note: `village-animal-sick-death-definition.json`
+
+The original commit (`ea2144f` message: "form **definiton** - village animal sick/death") used a typo in the **filename** (`…-definiton.json`). That is **not** produced by the form parser:
+
+- FormBuilder APIs use the parameter name `definition` correctly (`formViewModel.parse(definition)`, field `parse(definition)`, etc.).
+- Other sample files use the correct spelling (`testdefinition.json`).
+- The typo appears only in the human-chosen path/commit subject (`definiton` missing an `i`).
+
+It was a human/file naming typo only. The file was renamed to `village-animal-sick-death-definition.json`.

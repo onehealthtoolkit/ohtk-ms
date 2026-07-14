@@ -1,5 +1,6 @@
 import { FieldParams } from ".";
 import { ConditionOperator } from "../condition";
+import { stringValueInList } from "../conditionList";
 import { valueIsUndefinedAndNotRequiredGuard } from "./helpers";
 import PrimitiveField from "./primitiveField";
 
@@ -78,21 +79,22 @@ export default class TextAreaField extends PrimitiveField<string> {
   };
 
   evaluate(operator: ConditionOperator, value: string): boolean {
-    console.debug("evaluate", operator, value);
     if (this._value == undefined) {
       return false;
-    } else {
+    }
+    try {
       switch (operator) {
         case "=":
           return this._value == value;
         case "!=":
           return this._value != value;
         case "in":
-          const allowedValues = value.split(',').map(v => v.trim());
-          return allowedValues.includes(this._value);
+          return stringValueInList(this._value, value);
         default:
           return this._value.indexOf(value) >= 0;
       }
+    } catch {
+      return false;
     }
   }
 }
