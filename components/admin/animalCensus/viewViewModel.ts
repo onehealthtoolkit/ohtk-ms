@@ -30,7 +30,7 @@ export class AnimalCensusCoverageViewModel extends BaseViewModel {
     lateCount: 0,
     rows: [],
   };
-  selectedRow?: CensusRoundCoverageRow;
+  selectedRow: CensusRoundCoverageRow | undefined = undefined;
 
   constructor(readonly censusRoundService: ICensusRoundService) {
     super();
