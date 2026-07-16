@@ -131,9 +131,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                         store.isRoleOfficer
                       }
                       icon={
-                        <ClipboardDocumentListIcon
-                          className={iconClassName}
-                        />
+                        <ClipboardDocumentListIcon className={iconClassName} />
                       }
                     />
                   )}

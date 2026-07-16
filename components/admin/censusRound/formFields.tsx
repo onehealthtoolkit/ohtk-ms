@@ -1,10 +1,5 @@
 import { Observer } from "mobx-react";
-import {
-  ErrorText,
-  Field,
-  Label,
-  TextInput,
-} from "components/widgets/forms";
+import { ErrorText, Field, Label, TextInput } from "components/widgets/forms";
 import { useTranslation } from "react-i18next";
 import { CensusRoundViewModel } from "./censusRoundViewModel";
 import AuthroitySelect from "components/widgets/authoritySelect";
@@ -117,9 +112,7 @@ const CensusRoundFormFields = ({ viewModel }: Props) => {
               className="w-full border border-gray-300 rounded px-3 py-2"
               value={viewModel.mode}
               onChange={evt =>
-                (viewModel.mode = evt.target.value as
-                  | "PRODUCTION"
-                  | "TRAINING")
+                (viewModel.mode = evt.target.value as "PRODUCTION" | "TRAINING")
               }
               disabled={isSubmitting}
             >
@@ -181,10 +174,7 @@ const CensusRoundFormFields = ({ viewModel }: Props) => {
           {store.isSuperUser && (
             <Field $size="half">
               <Label htmlFor="authority">
-                {t(
-                  "form.label.targetAuthority",
-                  "Target authority (optional)"
-                )}
+                {t("form.label.targetAuthority", "Target authority (optional)")}
               </Label>
               <AuthroitySelect
                 value={viewModel.targetAuthorityId ?? undefined}

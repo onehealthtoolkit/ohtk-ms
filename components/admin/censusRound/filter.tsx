@@ -11,10 +11,7 @@ import { CensusRoundMode } from "lib/services/census";
 type Props = {
   codeSearch: string;
   modeFilter: CensusRoundMode | "ALL";
-  onChange?: (value: {
-    q: string;
-    mode: CensusRoundMode | "ALL";
-  }) => void;
+  onChange?: (value: { q: string; mode: CensusRoundMode | "ALL" }) => void;
 };
 
 const Filter = ({ codeSearch, modeFilter, onChange }: Props) => {
@@ -54,9 +51,7 @@ const Filter = ({ codeSearch, modeFilter, onChange }: Props) => {
         <option value="PRODUCTION">
           {t("form.label.production", "Production")}
         </option>
-        <option value="TRAINING">
-          {t("form.label.training", "Training")}
-        </option>
+        <option value="TRAINING">{t("form.label.training", "Training")}</option>
       </select>
       <SearchButton
         onClick={() => {

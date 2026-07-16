@@ -43,11 +43,7 @@ const CensusRoundCreate = () => {
           disabled={viewModel.isSubmitting}
           onClick={onSubmit}
         >
-          {viewModel.isSubmitting ? (
-            <Spinner />
-          ) : (
-            t("form.button.save", "Save")
-          )}
+          {viewModel.isSubmitting ? <Spinner /> : t("form.button.save", "Save")}
         </SaveButton>
         <CancelButton type="button" onClick={() => router.back()}>
           {t("form.button.cancel", "Cancel")}

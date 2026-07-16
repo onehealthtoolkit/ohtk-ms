@@ -194,9 +194,7 @@ export abstract class CensusRoundViewModel extends BaseFormViewModel {
     this.enabled = data.enabled;
   }
 
-  protected buildSaveInput(
-    id?: number
-  ): CensusRoundDefinitionSaveInput {
+  protected buildSaveInput(id?: number): CensusRoundDefinitionSaveInput {
     return {
       id,
       code: this.code.trim(),

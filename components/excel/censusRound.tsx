@@ -14,10 +14,7 @@ import useStore from "lib/store";
 import { useRouter } from "next/router";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
-import {
-  CensusRoundMode,
-  CensusRoundOccurrence,
-} from "lib/services/census";
+import { CensusRoundMode, CensusRoundOccurrence } from "lib/services/census";
 import { currentExcelEndpoint } from "components/excel/filter";
 import i18n from "i18n";
 
@@ -96,9 +93,7 @@ const CensusRoundExcel: React.FC = () => {
         >
           <FieldGroup>
             <Field $size="half">
-              <Label htmlFor="mode">
-                {t("censusCoverage.mode", "Mode")}
-              </Label>
+              <Label htmlFor="mode">{t("censusCoverage.mode", "Mode")}</Label>
               <Select
                 id="mode"
                 value={mode}

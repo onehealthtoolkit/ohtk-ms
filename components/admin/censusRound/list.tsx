@@ -11,10 +11,7 @@ import Link from "next/link";
 import { AddButton } from "components/widgets/forms";
 import Paginate from "components/widgets/table/paginate";
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
-import {
-  CensusRoundDefinition,
-  CensusRoundMode,
-} from "lib/services/census";
+import { CensusRoundDefinition, CensusRoundMode } from "lib/services/census";
 import TotalItem from "components/widgets/table/totalItem";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { ParsedUrlQuery } from "querystring";
@@ -123,8 +120,7 @@ const CensusRoundList = () => {
               },
               {
                 label: t("form.label.submissionWindow", "Submission window"),
-                get: record =>
-                  `${record.startDate} → ${record.hardFinishDate}`,
+                get: record => `${record.startDate} → ${record.hardFinishDate}`,
               },
               {
                 label: t("form.label.censusPeriod", "Census period"),
@@ -169,9 +165,7 @@ const CensusRoundList = () => {
               "dialog.content.confirmDisableCensusRound",
               "Disable this census round definition? Yearly occurrences will stop being used for new production materialization."
             )}
-            onYes={(record: CensusRoundDefinition) =>
-              viewModel.disable(record)
-            }
+            onYes={(record: CensusRoundDefinition) => viewModel.disable(record)}
             onNo={() => viewModel.dialog("confirmDisable")?.close()}
           />
         </div>

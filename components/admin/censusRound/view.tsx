@@ -8,13 +8,7 @@ import { useTranslation } from "react-i18next";
 import ViewActionButtons from "components/widgets/viewActionButtons";
 import ErrorDisplay from "components/widgets/errorDisplay";
 
-const Row = ({
-  label,
-  value,
-}: {
-  label: string;
-  value: React.ReactNode;
-}) => (
+const Row = ({ label, value }: { label: string; value: React.ReactNode }) => (
   <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
     <th
       scope="row"
@@ -44,10 +38,7 @@ const CensusRoundView = () => {
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="table-fixed w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <tbody>
-              <Row
-                label={t("form.label.id", "Id")}
-                value={viewModel.data.id}
-              />
+              <Row label={t("form.label.id", "Id")} value={viewModel.data.id} />
               <Row
                 label={t("form.label.code", "Code")}
                 value={viewModel.data.code}

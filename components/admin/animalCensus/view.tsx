@@ -171,9 +171,7 @@ const AnimalCensusCoverageView = () => {
             value={viewModel.authorityId ?? undefined}
             onChange={value => {
               const id = parseInt(String(value.id), 10);
-              viewModel.setAuthorityId(
-                !Number.isNaN(id) ? id : null
-              );
+              viewModel.setAuthorityId(!Number.isNaN(id) ? id : null);
             }}
             onClear={() => viewModel.setAuthorityId(null)}
           />
@@ -207,9 +205,7 @@ const AnimalCensusCoverageView = () => {
           {t("form.button.refresh", "Refresh")}
         </button>
         <a
-          href={
-            viewModel.selectedOccurrenceId ? exportUrl : undefined
-          }
+          href={viewModel.selectedOccurrenceId ? exportUrl : undefined}
           className={`inline-flex h-10 items-center rounded border border-blue-300 bg-[#4C81F1] px-4 text-sm text-white hover:border-blue-500 ${
             !viewModel.selectedOccurrenceId
               ? "pointer-events-none opacity-50"
