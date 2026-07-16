@@ -92,6 +92,10 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
                 followupDefinition: JSON.parse(data.followupDefinition || "{}"),
                 rendererFollowupDataTemplate:
                   data.rendererFollowupDataTemplate || "",
+                isFollowable: data.isFollowable || false,
+                metricAccumulation: data.metricAccumulation
+                  ? JSON.parse(data.metricAccumulation || "{}")
+                  : null,
               },
               null,
               2
@@ -151,6 +155,18 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
     return result.success;
   }
 
+  _normalizeMetricAccumulation(
+    value: ReportType["metricAccumulation"] | Record<string, unknown> | null
+  ): string | undefined {
+    if (value == null || value === "") {
+      return undefined;
+    }
+    if (typeof value === "string") {
+      return value;
+    }
+    return JSON.stringify(value, null, 2);
+  }
+
   _createReportType(data: ReportType): Promise<SaveResult<ReportType>> {
     return this.reportTypeService.createReportType(
       data.name,
@@ -162,7 +178,7 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
       JSON.stringify(data.followupDefinition, null, 2),
       data.rendererFollowupDataTemplate,
       data.isFollowable,
-      data.metricAccumulation
+      this._normalizeMetricAccumulation(data.metricAccumulation)
     );
   }
 
@@ -178,7 +194,7 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
       JSON.stringify(data.followupDefinition, null, 2),
       data.rendererFollowupDataTemplate,
       data.isFollowable,
-      data.metricAccumulation
+      this._normalizeMetricAccumulation(data.metricAccumulation)
     );
   }
 

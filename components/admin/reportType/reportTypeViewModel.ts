@@ -270,6 +270,25 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
       this.fieldErrors["categoryId"] = "this field is required";
     }
 
+    if (this.metricAccumulation && this.metricAccumulation.trim().length > 0) {
+      try {
+        const parsed = JSON.parse(this.metricAccumulation);
+        if (
+          parsed != null &&
+          typeof parsed === "object" &&
+          parsed.metrics != null &&
+          !Array.isArray(parsed.metrics)
+        ) {
+          isValid = false;
+          this.fieldErrors["metricAccumulation"] =
+            "metrics must be an array when present";
+        }
+      } catch {
+        isValid = false;
+        this.fieldErrors["metricAccumulation"] = "must be valid JSON";
+      }
+    }
+
     return isValid;
   }
 }
