@@ -1,8 +1,10 @@
 import type { LegacyApolloClient } from "lib/services/apolloClient";
 import { gql } from "@apollo/client";
-import { GetResult, IService } from "lib/services/interface";
+import { GetResult, IService, SaveResult } from "lib/services/interface";
 
 export type CensusRoundMode = "PRODUCTION" | "TRAINING";
+export type CensusRoundKind = "ANIMAL" | "HUMAN";
+export type CensusRoundRepeat = "ANNUAL";
 export type CensusCoverageStatus =
   | "MISSING"
   | "SUBMITTED_ON_TIME"
@@ -13,12 +15,52 @@ export type CensusRoundOccurrence = {
   occurrenceKey: string;
   kind: string;
   mode: CensusRoundMode;
+  year?: number;
   censusPeriodStart: string;
   censusPeriodEnd: string;
   startDate: string;
   softFinishDate: string;
   hardFinishDate: string;
   status: string;
+};
+
+export type CensusRoundDefinition = {
+  id: string;
+  code: string;
+  name: string;
+  kind: CensusRoundKind;
+  mode: CensusRoundMode;
+  repeat: CensusRoundRepeat;
+  censusPeriodStart: string;
+  censusPeriodEnd: string;
+  startDate: string;
+  softFinishDate: string;
+  hardFinishDate: string;
+  targetAuthorityId?: number | null;
+  targetAuthorityName?: string | null;
+  enabled: boolean;
+};
+
+export type CensusRoundDefinitionSaveInput = {
+  id?: number;
+  code: string;
+  name: string;
+  kind: CensusRoundKind;
+  mode: CensusRoundMode;
+  censusPeriodStart: string;
+  censusPeriodEnd: string;
+  startDate: string;
+  softFinishDate: string;
+  hardFinishDate: string;
+  targetAuthorityId?: number | null;
+  enabled?: boolean;
+  materializeFromYear?: number | null;
+  materializeYears?: number;
+};
+
+export type CensusRoundDefinitionSaveResult = {
+  definition: CensusRoundDefinition;
+  occurrences: CensusRoundOccurrence[];
 };
 
 export type CensusCoverageSpeciesSummary = {
@@ -58,11 +100,20 @@ export interface ICensusRoundService extends IService {
   ): Promise<GetResult<CensusRoundOccurrence[]>>;
   getCoverage(params: {
     occurrenceId: number;
+    authorityId?: number | null;
     status?: CensusCoverageStatus | "ALL";
     q?: string;
     offset?: number;
     limit?: number;
   }): Promise<GetResult<CensusRoundCoverage>>;
+  getDefinitions(params?: {
+    kind?: CensusRoundKind;
+    mode?: CensusRoundMode;
+  }): Promise<GetResult<CensusRoundDefinition[]>>;
+  getDefinition(id: string): Promise<GetResult<CensusRoundDefinition>>;
+  saveDefinition(
+    input: CensusRoundDefinitionSaveInput
+  ): Promise<SaveResult<CensusRoundDefinitionSaveResult>>;
 }
 
 const CensusRoundOccurrenceFields = gql`
@@ -71,12 +122,34 @@ const CensusRoundOccurrenceFields = gql`
     occurrenceKey
     kind
     mode
+    year
     censusPeriodStart
     censusPeriodEnd
     startDate
     softFinishDate
     hardFinishDate
     status
+  }
+`;
+
+const CensusRoundDefinitionFields = gql`
+  fragment CensusRoundDefinitionFields on CensusRoundDefinitionType {
+    id
+    code
+    name
+    kind
+    mode
+    repeat
+    censusPeriodStart
+    censusPeriodEnd
+    startDate
+    softFinishDate
+    hardFinishDate
+    enabled
+    targetAuthority {
+      id
+      name
+    }
   }
 `;
 
@@ -92,6 +165,7 @@ const AnimalCensusOccurrencesDocument = gql`
 const AnimalCensusCoverageDocument = gql`
   query AnimalCensusCoverage(
     $occurrenceId: Int!
+    $authorityId: Int
     $status: String
     $q: String
     $offset: Int = 0
@@ -99,6 +173,7 @@ const AnimalCensusCoverageDocument = gql`
   ) {
     censusRoundCoverage(
       occurrenceId: $occurrenceId
+      authorityId: $authorityId
       status: $status
       q: $q
       offset: $offset
@@ -139,6 +214,75 @@ const AnimalCensusCoverageDocument = gql`
   ${CensusRoundOccurrenceFields}
 `;
 
+const CensusRoundDefinitionsDocument = gql`
+  query CensusRoundDefinitions($kind: String, $mode: String) {
+    censusRoundDefinitions(kind: $kind, mode: $mode) {
+      ...CensusRoundDefinitionFields
+    }
+  }
+  ${CensusRoundDefinitionFields}
+`;
+
+const AdminCensusRoundDefinitionSaveDocument = gql`
+  mutation AdminCensusRoundDefinitionSave(
+    $id: Int
+    $code: String!
+    $name: String!
+    $kind: String!
+    $mode: String
+    $censusPeriodStart: String!
+    $censusPeriodEnd: String!
+    $startDate: String!
+    $softFinishDate: String!
+    $hardFinishDate: String!
+    $targetAuthorityId: Int
+    $enabled: Boolean
+    $materializeFromYear: Int
+    $materializeYears: Int
+  ) {
+    adminCensusRoundDefinitionSave(
+      id: $id
+      code: $code
+      name: $name
+      kind: $kind
+      mode: $mode
+      censusPeriodStart: $censusPeriodStart
+      censusPeriodEnd: $censusPeriodEnd
+      startDate: $startDate
+      softFinishDate: $softFinishDate
+      hardFinishDate: $hardFinishDate
+      targetAuthorityId: $targetAuthorityId
+      enabled: $enabled
+      materializeFromYear: $materializeFromYear
+      materializeYears: $materializeYears
+    ) {
+      definition {
+        ...CensusRoundDefinitionFields
+      }
+      occurrences {
+        ...CensusRoundOccurrenceFields
+      }
+      fields {
+        name
+        message
+      }
+    }
+  }
+  ${CensusRoundDefinitionFields}
+  ${CensusRoundOccurrenceFields}
+`;
+
+const FIELD_NAME_MAP: Record<string, string> = {
+  census_period_start: "censusPeriodStart",
+  census_period_end: "censusPeriodEnd",
+  start_date: "startDate",
+  soft_finish_date: "softFinishDate",
+  hard_finish_date: "hardFinishDate",
+  target_authority_id: "targetAuthorityId",
+  materialize_from_year: "materializeFromYear",
+  materialize_years: "materializeYears",
+};
+
 export class CensusRoundService implements ICensusRoundService {
   constructor(readonly client: LegacyApolloClient) {}
 
@@ -163,6 +307,7 @@ export class CensusRoundService implements ICensusRoundService {
 
   async getCoverage(params: {
     occurrenceId: number;
+    authorityId?: number | null;
     status?: CensusCoverageStatus | "ALL";
     q?: string;
     offset?: number;
@@ -173,6 +318,7 @@ export class CensusRoundService implements ICensusRoundService {
         query: AnimalCensusCoverageDocument,
         variables: {
           occurrenceId: params.occurrenceId,
+          authorityId: params.authorityId ?? null,
           status: params.status === "ALL" ? undefined : params.status,
           q: params.q || undefined,
           offset: params.offset ?? 0,
@@ -183,6 +329,118 @@ export class CensusRoundService implements ICensusRoundService {
       return { data: this.toCoverage(result.data?.censusRoundCoverage) };
     } catch (error) {
       return { data: undefined, error: this.toErrorMessage(error) };
+    }
+  }
+
+  async getDefinitions(params?: {
+    kind?: CensusRoundKind;
+    mode?: CensusRoundMode;
+  }): Promise<GetResult<CensusRoundDefinition[]>> {
+    try {
+      const result = await this.client.query({
+        query: CensusRoundDefinitionsDocument,
+        variables: {
+          kind: params?.kind,
+          mode: params?.mode,
+        },
+        fetchPolicy: "network-only",
+      });
+      return {
+        data: (result.data?.censusRoundDefinitions ?? []).map(
+          this.toDefinition
+        ),
+      };
+    } catch (error) {
+      return { data: undefined, error: this.toErrorMessage(error) };
+    }
+  }
+
+  async getDefinition(id: string): Promise<GetResult<CensusRoundDefinition>> {
+    const result = await this.getDefinitions();
+    if (result.error) {
+      return { data: undefined, error: result.error };
+    }
+    const definition = (result.data ?? []).find(item => item.id === String(id));
+    if (!definition) {
+      return { data: undefined, error: "Census round definition not found." };
+    }
+    return { data: definition };
+  }
+
+  async saveDefinition(
+    input: CensusRoundDefinitionSaveInput
+  ): Promise<SaveResult<CensusRoundDefinitionSaveResult>> {
+    try {
+      const result = await this.client.mutate({
+        mutation: AdminCensusRoundDefinitionSaveDocument,
+        variables: {
+          id: input.id,
+          code: input.code,
+          name: input.name,
+          kind: input.kind,
+          mode: input.mode,
+          censusPeriodStart: input.censusPeriodStart,
+          censusPeriodEnd: input.censusPeriodEnd,
+          startDate: input.startDate,
+          softFinishDate: input.softFinishDate,
+          hardFinishDate: input.hardFinishDate,
+          targetAuthorityId: input.targetAuthorityId ?? null,
+          enabled: input.enabled ?? true,
+          materializeFromYear: input.materializeFromYear ?? null,
+          materializeYears: input.materializeYears ?? 2,
+        },
+        refetchQueries: [{ query: CensusRoundDefinitionsDocument }],
+        awaitRefetchQueries: true,
+      });
+
+      if (result.errors?.length) {
+        return {
+          success: false,
+          message: result.errors.map(error => error.message).join(", "),
+        };
+      }
+
+      const payload = result.data?.adminCensusRoundDefinitionSave;
+      if (payload?.fields?.length) {
+        const fields: Record<string, string> = {};
+        payload.fields.forEach((field: { name?: string; message?: string }) => {
+          if (!field?.name) {
+            return;
+          }
+          const key = FIELD_NAME_MAP[field.name] ?? field.name;
+          fields[key] = field.message ?? "Invalid value";
+        });
+        return {
+          success: false,
+          fields,
+          message: payload.fields
+            .map(
+              (field: { name?: string; message?: string }) =>
+                `${field.name}: ${field.message}`
+            )
+            .join("; "),
+        };
+      }
+
+      if (!payload?.definition) {
+        return {
+          success: false,
+          message: "Unable to save census round definition.",
+        };
+      }
+
+      return {
+        success: true,
+        data: {
+          definition: this.toDefinition(payload.definition),
+          occurrences: (payload.occurrences ?? []).map(this.toOccurrence),
+        },
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: this.toErrorMessage(error),
+      };
     }
   }
 
@@ -222,12 +480,34 @@ export class CensusRoundService implements ICensusRoundService {
     };
   }
 
-  private toOccurrence(payload: any): CensusRoundOccurrence {
+  private toDefinition = (payload: any): CensusRoundDefinition => {
     return {
-      id: payload.id,
+      id: String(payload.id),
+      code: payload.code,
+      name: payload.name,
+      kind: payload.kind,
+      mode: payload.mode,
+      repeat: payload.repeat ?? "ANNUAL",
+      censusPeriodStart: payload.censusPeriodStart,
+      censusPeriodEnd: payload.censusPeriodEnd,
+      startDate: payload.startDate,
+      softFinishDate: payload.softFinishDate,
+      hardFinishDate: payload.hardFinishDate,
+      targetAuthorityId: payload.targetAuthority?.id
+        ? parseInt(String(payload.targetAuthority.id), 10)
+        : null,
+      targetAuthorityName: payload.targetAuthority?.name ?? null,
+      enabled: Boolean(payload.enabled),
+    };
+  };
+
+  private toOccurrence = (payload: any): CensusRoundOccurrence => {
+    return {
+      id: String(payload.id),
       occurrenceKey: payload.occurrenceKey,
       kind: payload.kind,
       mode: payload.mode,
+      year: payload.year,
       censusPeriodStart: payload.censusPeriodStart,
       censusPeriodEnd: payload.censusPeriodEnd,
       startDate: payload.startDate,
@@ -235,7 +515,7 @@ export class CensusRoundService implements ICensusRoundService {
       hardFinishDate: payload.hardFinishDate,
       status: payload.status,
     };
-  }
+  };
 
   private toErrorMessage(error: any): string {
     return error?.message ?? "Unable to load census round data.";

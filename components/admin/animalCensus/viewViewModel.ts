@@ -21,6 +21,8 @@ export class AnimalCensusCoverageViewModel extends BaseViewModel {
   occurrences: CensusRoundOccurrence[] = [];
   mode: CensusRoundMode = "PRODUCTION";
   selectedOccurrenceId: string = "";
+  /** Optional drill-down within the viewer's authority inherits-down tree. */
+  authorityId: number | null = null;
   status: CensusCoverageFilter = "MISSING";
   q: string = "";
   coverage: CensusRoundCoverage = {
@@ -38,6 +40,7 @@ export class AnimalCensusCoverageViewModel extends BaseViewModel {
       occurrences: observable,
       mode: observable,
       selectedOccurrenceId: observable,
+      authorityId: observable,
       status: observable,
       q: observable,
       coverage: observable,
@@ -48,6 +51,7 @@ export class AnimalCensusCoverageViewModel extends BaseViewModel {
       fetchCoverage: action,
       setMode: action,
       setOccurrence: action,
+      setAuthorityId: action,
       setStatus: action,
       setSearch: action,
       setOffset: action,
@@ -101,6 +105,7 @@ export class AnimalCensusCoverageViewModel extends BaseViewModel {
     this.isLoading = true;
     const result = await this.censusRoundService.getCoverage({
       occurrenceId: Number(this.selectedOccurrenceId),
+      authorityId: this.authorityId,
       status: this.status,
       q: this.q,
       limit: this.limit,
@@ -136,6 +141,12 @@ export class AnimalCensusCoverageViewModel extends BaseViewModel {
 
   setOccurrence(value: string) {
     this.selectedOccurrenceId = value;
+    this.offset = 0;
+    this.fetchCoverage();
+  }
+
+  setAuthorityId(value: number | null) {
+    this.authorityId = value;
     this.offset = 0;
     this.fetchCoverage();
   }

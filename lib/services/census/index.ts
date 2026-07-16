@@ -26,8 +26,13 @@ export type {
   CensusCoverageStatus,
   CensusRoundCoverage,
   CensusRoundCoverageRow,
+  CensusRoundDefinition,
+  CensusRoundDefinitionSaveInput,
+  CensusRoundDefinitionSaveResult,
+  CensusRoundKind,
   CensusRoundMode,
   CensusRoundOccurrence,
+  CensusRoundRepeat,
   ICensusRoundService,
 } from "./round";
 

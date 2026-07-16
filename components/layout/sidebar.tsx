@@ -119,6 +119,25 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     icon={<DocumentTextIcon className={iconClassName} />}
                   />
 
+                  {store.isFeatureEnable("animal_census") && (
+                    <Menu
+                      href="/admin/census/animal/"
+                      pathname={pathname}
+                      label={t("breadcrumb.animalCensus", "Animal Census")}
+                      collapsed={store.menu.collapsed}
+                      display={
+                        store.isSuperUser ||
+                        store.isRoleAdmin ||
+                        store.isRoleOfficer
+                      }
+                      icon={
+                        <ClipboardDocumentListIcon
+                          className={iconClassName}
+                        />
+                      }
+                    />
+                  )}
+
                   <Menu
                     href="/map/"
                     pathname={pathname}
@@ -187,6 +206,23 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     display={store.isRoleOfficer || store.isRoleAdmin}
                     icon={<DocumentIcon className={iconClassName} />}
                   />
+                  {store.isFeatureEnable("animal_census") && (
+                    <Menu
+                      href="/excels/census_round"
+                      pathname={pathname}
+                      label={t(
+                        "breadcrumb.censusRoundExport",
+                        "Census Round Export"
+                      )}
+                      collapsed={store.menu.collapsed}
+                      display={
+                        store.isSuperUser ||
+                        store.isRoleOfficer ||
+                        store.isRoleAdmin
+                      }
+                      icon={<DocumentIcon className={iconClassName} />}
+                    />
+                  )}
                 </ul>
               </div>
 
@@ -343,15 +379,14 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                   {store.isFeatureEnable("animal_census") && (
                     <>
                       <Menu
-                        href="/admin/census/animal/"
+                        href="/admin/census_definitions/"
                         pathname={pathname}
-                        label={t("breadcrumb.animalCensus", "Animal Census")}
+                        label={t(
+                          "breadcrumb.censusDefinition",
+                          "Census Definition"
+                        )}
                         collapsed={store.menu.collapsed}
-                        display={
-                          store.isSuperUser ||
-                          store.isRoleAdmin ||
-                          store.isRoleOfficer
-                        }
+                        display={store.isSuperUser}
                         icon={
                           <ClipboardDocumentListIcon
                             className={iconClassName}
@@ -359,12 +394,9 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                         }
                       />
                       <Menu
-                        href="/admin/census_definitions/"
+                        href="/admin/census_rounds/"
                         pathname={pathname}
-                        label={t(
-                          "breadcrumb.censusDefinition",
-                          "Census Definition"
-                        )}
+                        label={t("breadcrumb.censusRounds", "Census Rounds")}
                         collapsed={store.menu.collapsed}
                         display={store.isSuperUser}
                         icon={

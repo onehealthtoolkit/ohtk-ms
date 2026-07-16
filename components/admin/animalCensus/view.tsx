@@ -2,16 +2,20 @@ import ErrorDisplay from "components/widgets/errorDisplay";
 import Table from "components/widgets/table";
 import Paginate from "components/widgets/table/paginate";
 import TotalItem from "components/widgets/table/totalItem";
+import AuthroitySelect from "components/widgets/authoritySelect";
 import useServices from "lib/services/provider";
+import useStore from "lib/store";
 import {
   CensusCoverageStatus,
   CensusRoundCoverageRow,
   CensusRoundMode,
 } from "lib/services/census";
+import { currentExcelEndpoint } from "components/excel/filter";
 import { observer } from "mobx-react";
 import type React from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import i18n from "i18n";
 import {
   AnimalCensusCoverageViewModel,
   CensusCoverageFilter,
@@ -46,10 +50,26 @@ const formatStatus = (status: CensusCoverageStatus) => {
 
 const AnimalCensusCoverageView = () => {
   const { t } = useTranslation();
+  const store = useStore();
   const services = useServices();
   const [viewModel] = useState(
     () => new AnimalCensusCoverageViewModel(services.censusRoundService)
   );
+
+  const exportUrl = (() => {
+    let base = `${currentExcelEndpoint()}/excels/census_round`;
+    if (i18n.language === "la") {
+      base = `${currentExcelEndpoint()}/la/excels/census_round`;
+    }
+    const params = new URLSearchParams();
+    if (viewModel.selectedOccurrenceId) {
+      params.set("occurrenceId", viewModel.selectedOccurrenceId);
+    }
+    if (viewModel.authorityId) {
+      params.set("authorityId", String(viewModel.authorityId));
+    }
+    return `${base}?${params.toString()}`;
+  })();
 
   return (
     <div>
@@ -141,6 +161,29 @@ const AnimalCensusCoverageView = () => {
             ))}
           </select>
         </div>
+        <div className="min-w-[220px]">
+          <label className="mb-1 block text-sm font-medium text-gray-700">
+            {t("form.label.authority", "Authority")}
+          </label>
+          <AuthroitySelect
+            roleRequired={!store.isSuperUser}
+            isClearable
+            value={viewModel.authorityId ?? undefined}
+            onChange={value => {
+              const id = parseInt(String(value.id), 10);
+              viewModel.setAuthorityId(
+                !Number.isNaN(id) ? id : null
+              );
+            }}
+            onClear={() => viewModel.setAuthorityId(null)}
+          />
+          <p className="mt-1 text-xs text-gray-500">
+            {t(
+              "censusCoverage.authorityHelp",
+              "Optional. Leave empty for your full authority hierarchy. Villages outside your inherits permission are never shown."
+            )}
+          </p>
+        </div>
         <div>
           <label className="mb-1 block text-sm font-medium text-gray-700">
             {t("form.label.search", "Search")}
@@ -163,6 +206,18 @@ const AnimalCensusCoverageView = () => {
         >
           {t("form.button.refresh", "Refresh")}
         </button>
+        <a
+          href={
+            viewModel.selectedOccurrenceId ? exportUrl : undefined
+          }
+          className={`inline-flex h-10 items-center rounded border border-blue-300 bg-[#4C81F1] px-4 text-sm text-white hover:border-blue-500 ${
+            !viewModel.selectedOccurrenceId
+              ? "pointer-events-none opacity-50"
+              : ""
+          }`}
+        >
+          {t("form.button.downloadExcel", "Download Excel")}
+        </a>
         <TotalItem
           totalCount={viewModel.coverage.totalCount}
           onRefresh={() => viewModel.fetchCoverage()}
