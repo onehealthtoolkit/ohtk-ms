@@ -220,28 +220,43 @@ const Report = (props: { id: string }) => {
                 </p>
                 {viewModel.data.accumulatedMetrics?.metrics &&
                   viewModel.data.accumulatedMetrics.metrics.length > 0 && (
-                    <div className="mt-3 p-3 rounded border border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-                      <p className="text-sm font-semibold mb-2">
-                        {t(
-                          "form.label.accumulatedTotals",
-                          "Totals (report + follow-ups)"
-                        )}
-                      </p>
-                      <ul className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm">
+                    <div className="mt-4 rounded-xl border border-slate-200/90 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900 overflow-hidden">
+                      <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white dark:from-slate-800/80 dark:to-slate-900 dark:border-slate-700">
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 tracking-tight">
+                            {t(
+                              "form.label.accumulatedTotals",
+                              "Totals (report + follow-ups)"
+                            )}
+                          </p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                            {t(
+                              "form.label.accumulatedTotalsHint",
+                              "Combined metrics from the original report and all follow-ups"
+                            )}
+                          </p>
+                        </div>
+                        <span className="shrink-0 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200 px-2.5 py-1 text-[11px] font-semibold tabular-nums">
+                          {viewModel.data.accumulatedMetrics.metrics.length}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px bg-slate-100 dark:bg-slate-800">
                         {viewModel.data.accumulatedMetrics.metrics.map(
                           metric => (
-                            <li
+                            <div
                               key={metric.id}
-                              className="flex justify-between gap-2 border-b border-gray-100 dark:border-gray-700 pb-1"
+                              className="bg-white dark:bg-slate-900 px-4 py-3.5 flex flex-col gap-1 min-h-[4.5rem] justify-center"
                             >
-                              <span className="text-gray-600 dark:text-gray-300">
+                              <span className="text-[11px] font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400 leading-snug">
                                 {metric.label || metric.id}
                               </span>
-                              <span className="font-bold">{metric.value}</span>
-                            </li>
+                              <span className="text-2xl font-bold tabular-nums tracking-tight text-slate-900 dark:text-white">
+                                {metric.value}
+                              </span>
+                            </div>
                           )
                         )}
-                      </ul>
+                      </div>
                     </div>
                   )}
               </div>
