@@ -29,6 +29,7 @@ export class ReportTypeUpdateViewModel extends ReportTypeViewModel {
       this.rendererFollowupDataTemplate =
         data.rendererFollowupDataTemplate || "";
       this.isFollowable = data.isFollowable || false;
+      this.metricAccumulation = data.metricAccumulation || "";
     }
     this.isLoading = false;
   }
@@ -45,7 +46,8 @@ export class ReportTypeUpdateViewModel extends ReportTypeViewModel {
       this.rendererDataTemplate,
       this.followupDefinition,
       this.rendererFollowupDataTemplate,
-      this.isFollowable
+      this.isFollowable,
+      this.metricAccumulation
     );
   }
 }

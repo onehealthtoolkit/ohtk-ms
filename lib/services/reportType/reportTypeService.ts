@@ -53,7 +53,8 @@ export interface IReportTypeService extends IService {
     rendererDataTemplate?: string,
     followupDefinition?: string,
     rendererFollowupDataTemplate?: string,
-    isFollowable?: boolean
+    isFollowable?: boolean,
+    metricAccumulation?: string
   ): Promise<SaveResult<ReportType>>;
 
   updateReportType(
@@ -66,7 +67,8 @@ export interface IReportTypeService extends IService {
     rendererDataTemplate?: string,
     followupDefinition?: string,
     rendererFollowupDataTemplate?: string,
-    isFollowable?: boolean
+    isFollowable?: boolean,
+    metricAccumulation?: string
   ): Promise<SaveResult<ReportType>>;
 
   deleteReportType(id: string): Promise<DeleteResult>;
@@ -223,6 +225,9 @@ export class ReportTypeService implements IReportTypeService {
         rendererFollowupDataTemplate:
           reportType.rendererFollowupDataTemplate || undefined,
         isFollowable: reportType.isFollowable,
+        metricAccumulation: reportType.metricAccumulation
+          ? JSON.stringify(reportType.metricAccumulation, null, 2)
+          : "",
       };
     }
     return {
@@ -259,7 +264,8 @@ export class ReportTypeService implements IReportTypeService {
     rendererDataTemplate?: string,
     followupDefinition?: string,
     rendererFollowupDataTemplate?: string,
-    isFollowable?: boolean
+    isFollowable?: boolean,
+    metricAccumulation?: string
   ): Promise<SaveResult<ReportType>> {
     const createResult = await this.client.mutate({
       mutation: ReportTypeCreateDocument,
@@ -273,6 +279,7 @@ export class ReportTypeService implements IReportTypeService {
         followupDefinition,
         rendererFollowupDataTemplate,
         isFollowable,
+        metricAccumulation: metricAccumulation || undefined,
       },
       refetchQueries: [
         {
@@ -326,7 +333,8 @@ export class ReportTypeService implements IReportTypeService {
     rendererDataTemplate?: string,
     followupDefinition?: string,
     rendererFollowupDataTemplate?: string,
-    isFollowable?: boolean
+    isFollowable?: boolean,
+    metricAccumulation?: string
   ): Promise<SaveResult<ReportType>> {
     const updateResult = await this.client.mutate({
       mutation: ReportTypeUpdateDocument,
@@ -341,6 +349,7 @@ export class ReportTypeService implements IReportTypeService {
         followupDefinition,
         rendererFollowupDataTemplate,
         isFollowable,
+        metricAccumulation: metricAccumulation || undefined,
       },
       refetchQueries: [
         {
