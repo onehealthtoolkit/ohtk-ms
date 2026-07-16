@@ -95,6 +95,34 @@ const UserView = () => {
                 </th>
                 <td className="px-6 py-4">{viewModel.data.address}</td>
               </tr>
+              <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                >
+                  {t("form.label.gender", "Gender")}
+                </th>
+                <td className="px-6 py-4">
+                  {viewModel.data.gender === "male"
+                    ? t("form.label.genderMale", "Male")
+                    : viewModel.data.gender === "female"
+                      ? t("form.label.genderFemale", "Female")
+                      : viewModel.data.gender === "other"
+                        ? t("form.label.genderOther", "Other")
+                        : "—"}
+                </td>
+              </tr>
+              <tr className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                >
+                  {t("form.label.age", "Age")}
+                </th>
+                <td className="px-6 py-4">
+                  {viewModel.data.age != null ? viewModel.data.age : "—"}
+                </td>
+              </tr>
               <tr>
                 <th
                   scope="row"

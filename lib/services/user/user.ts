@@ -10,6 +10,8 @@ export type UserVillageAssignment = {
   censusRole: AccountsVillageReporterAssignmentCensusRoleChoices;
 };
 
+export type UserGender = "male" | "female" | "other" | "";
+
 export type User = {
   id: string;
   username: string;
@@ -18,6 +20,8 @@ export type User = {
   email: string;
   telephone?: string;
   address?: string;
+  gender?: UserGender | string | null;
+  age?: number | null;
   avatarUrl?: string;
   role?: string | null;
   authorityId?: number;

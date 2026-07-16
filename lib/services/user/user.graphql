@@ -31,6 +31,8 @@ query Users(
         name
       }
       telephone
+      gender
+      age
     }
   }
 }
@@ -44,6 +46,8 @@ mutation UserCreate(
   $telephone: String = null
   $username: String!
   $address: String = null
+  $gender: String = null
+  $age: Int = null
   $role: String
 ) {
   adminAuthorityUserCreate(
@@ -55,6 +59,8 @@ mutation UserCreate(
     telephone: $telephone
     username: $username
     address: $address
+    gender: $gender
+    age: $age
     role: $role
   ) {
     result {
@@ -83,6 +89,8 @@ mutation UserUpdate(
   $telephone: String = null
   $username: String!
   $address: String = null
+  $gender: String = null
+  $age: Int = null
   $role: String
   $villageAssignments: [VillageReporterAssignmentInput]
 ) {
@@ -95,6 +103,8 @@ mutation UserUpdate(
     telephone: $telephone
     username: $username
     address: $address
+    gender: $gender
+    age: $age
     role: $role
     villageAssignments: $villageAssignments
   ) {
@@ -108,6 +118,8 @@ mutation UserUpdate(
           lastName
           email
           telephone
+          gender
+          age
           role
           address
           authority {
@@ -178,6 +190,8 @@ query GetUser($id: ID!) {
     email
     telephone
     address
+    gender
+    age
     role
     authority {
       id

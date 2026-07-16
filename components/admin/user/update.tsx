@@ -197,6 +197,63 @@ const UserUpdate = () => {
     [t, viewModel]
   );
 
+  const genderField = useMemo(
+    () => (
+      <Observer>
+        {() => (
+          <Field $size="half">
+            <Label htmlFor="gender">{t("form.label.gender", "Gender")}</Label>
+            <Select
+              id="gender"
+              onChange={evt => {
+                viewModel.gender = evt.target.value;
+              }}
+              disabled={viewModel.isSubmitting}
+              value={viewModel.gender}
+            >
+              <option value="">
+                {t("form.label.notSpecified", "Not specified")}
+              </option>
+              <option value="male">{t("form.label.genderMale", "Male")}</option>
+              <option value="female">
+                {t("form.label.genderFemale", "Female")}
+              </option>
+              <option value="other">
+                {t("form.label.genderOther", "Other")}
+              </option>
+            </Select>
+            <ErrorText>{viewModel.fieldErrors.gender}</ErrorText>
+          </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
+  const ageField = useMemo(
+    () => (
+      <Observer>
+        {() => (
+          <Field $size="half">
+            <Label htmlFor="age">{t("form.label.age", "Age")}</Label>
+            <TextInput
+              id="age"
+              type="number"
+              min={1}
+              max={120}
+              placeholder={t("form.placeholder.age", "Age")}
+              onChange={evt => (viewModel.age = evt.target.value)}
+              disabled={viewModel.isSubmitting}
+              value={viewModel.age}
+            />
+            <ErrorText>{viewModel.fieldErrors.age}</ErrorText>
+          </Field>
+        )}
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
   const roleField = useMemo(
     () => (
       <Observer>
@@ -273,6 +330,8 @@ const UserUpdate = () => {
           {emailField}
           {telephoneField}
           {addressField}
+          {genderField}
+          {ageField}
           {roleField}
           {villageAssignmentsField}
         </FieldGroup>

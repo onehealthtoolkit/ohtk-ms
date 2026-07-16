@@ -13,7 +13,9 @@ export class UserCreateViewModel extends UserViewModel {
       this.email,
       this.telephone,
       this.address,
-      this.role
+      this.role,
+      this.gender || null,
+      this.parsedAge
     );
   }
 }

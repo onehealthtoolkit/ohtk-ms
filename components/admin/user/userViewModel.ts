@@ -18,6 +18,8 @@ export abstract class UserViewModel extends BaseFormViewModel {
   _email: string = "";
   _telephone: string = "";
   _address: string = "";
+  _gender: string = "";
+  _age: string = "";
   _role: string = AccountsAuthorityUserRoleChoices.Rep;
   _villageAssignments: UserVillageAssignment[] = [];
   manageVillageAssignments: boolean = false;
@@ -39,6 +41,10 @@ export abstract class UserViewModel extends BaseFormViewModel {
       telephone: computed,
       _address: observable,
       address: computed,
+      _gender: observable,
+      gender: computed,
+      _age: observable,
+      age: computed,
       _role: observable,
       role: computed,
       _villageAssignments: observable,
@@ -126,6 +132,36 @@ export abstract class UserViewModel extends BaseFormViewModel {
     if (this.submitError.length > 0) {
       this.submitError = "";
     }
+  }
+
+  public get gender(): string {
+    return this._gender;
+  }
+  public set gender(value: string) {
+    this._gender = value;
+    delete this.fieldErrors["gender"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public get age(): string {
+    return this._age;
+  }
+  public set age(value: string) {
+    this._age = value;
+    delete this.fieldErrors["age"];
+    if (this.submitError.length > 0) {
+      this.submitError = "";
+    }
+  }
+
+  public get parsedAge(): number | null {
+    if (!this._age || this._age.trim() === "") {
+      return null;
+    }
+    const value = parseInt(this._age, 10);
+    return Number.isNaN(value) ? null : value;
   }
 
   public get role(): string {

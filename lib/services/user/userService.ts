@@ -52,7 +52,9 @@ export interface IUserService extends IService {
     email: string,
     telephone: string,
     address: string,
-    role: string
+    role: string,
+    gender?: string | null,
+    age?: number | null
   ): Promise<SaveResult<User>>;
 
   updateUser(
@@ -65,7 +67,9 @@ export interface IUserService extends IService {
     telephone: string,
     address: string,
     role: string,
-    villageAssignments?: UserVillageAssignment[]
+    villageAssignments?: UserVillageAssignment[],
+    gender?: string | null,
+    age?: number | null
   ): Promise<SaveResult<User>>;
 
   updateUserPassword(id: string, password: string): Promise<SaveResult<User>>;
@@ -134,6 +138,8 @@ export class UserService implements IUserService {
           role: item.role,
           authorityName: item.authority.name,
           telephone: item.telephone || undefined,
+          gender: item.gender || undefined,
+          age: item.age ?? undefined,
         });
       }
     });
@@ -162,6 +168,8 @@ export class UserService implements IUserService {
         email: user.email,
         telephone: user.telephone || "",
         address: user.address || "",
+        gender: user.gender || "",
+        age: user.age ?? null,
         role: user.role,
         authorityId: parseInt(user.authority.id),
         villageAssignments:
@@ -200,7 +208,9 @@ export class UserService implements IUserService {
     email: string,
     telephone: string,
     address: string,
-    role: string
+    role: string,
+    gender?: string | null,
+    age?: number | null
   ): Promise<SaveResult<User>> {
     const createResult = await this.client.mutate({
       mutation: UserCreateDocument,
@@ -213,6 +223,8 @@ export class UserService implements IUserService {
         email,
         telephone,
         address,
+        gender: gender || null,
+        age: age ?? null,
         role,
       },
       refetchQueries: [
@@ -267,7 +279,9 @@ export class UserService implements IUserService {
     telephone: string,
     address: string,
     role: string,
-    villageAssignments?: UserVillageAssignment[]
+    villageAssignments?: UserVillageAssignment[],
+    gender?: string | null,
+    age?: number | null
   ): Promise<SaveResult<User>> {
     const villageAssignmentInput: VillageReporterAssignmentInput[] | undefined =
       villageAssignments?.map(assignment => ({
@@ -286,6 +300,8 @@ export class UserService implements IUserService {
         email,
         telephone,
         address,
+        gender: gender || null,
+        age: age ?? null,
         role,
         villageAssignments: villageAssignmentInput,
       },
