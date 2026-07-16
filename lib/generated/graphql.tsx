@@ -37,6 +37,16 @@ export type Scalars = {
 };
 
 /** An enumeration. */
+export enum AccountsAuthorityUserGenderChoices {
+  /** Female */
+  Female = "FEMALE",
+  /** Male */
+  Male = "MALE",
+  /** Other */
+  Other = "OTHER",
+}
+
+/** An enumeration. */
 export enum AccountsAuthorityUserRoleChoices {
   /** Admin */
   Adm = "ADM",
@@ -83,6 +93,8 @@ export type AdminAuthorityCreateSuccess = {
   authoritynotificationSet: Array<AdminAuthorityNotificationUpsertSuccess>;
   boundaryConnects: Array<AdminAuthorityCreateSuccess>;
   cases: Array<CaseType>;
+  censusRoundDefinitions: Array<CensusRoundDefinitionType>;
+  censusRoundOccurrences: Array<CensusRoundOccurrenceType>;
   code: Scalars["String"]["output"];
   createdAt: Scalars["DateTime"]["output"];
   deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
@@ -204,6 +216,7 @@ export type AdminAuthorityUserCreateResult =
 export type AdminAuthorityUserCreateSuccess = {
   __typename?: "AdminAuthorityUserCreateSuccess";
   address?: Maybe<Scalars["String"]["output"]>;
+  age?: Maybe<Scalars["Int"]["output"]>;
   authority: AdminAuthorityCreateSuccess;
   authorityuser?: Maybe<AdminAuthorityUserCreateSuccess>;
   avatar?: Maybe<Scalars["String"]["output"]>;
@@ -217,6 +230,7 @@ export type AdminAuthorityUserCreateSuccess = {
   fcmToken: Scalars["String"]["output"];
   firstName: Scalars["String"]["output"];
   followupreport: Array<FollowupReportType>;
+  gender?: Maybe<AccountsAuthorityUserGenderChoices>;
   id: Scalars["ID"]["output"];
   incidentreport: Array<IncidentReportType>;
   /** Designates whether this user should be treated as active. Unselect this instead of deleting accounts. */
@@ -248,9 +262,12 @@ export type AdminAuthorityUserDeleteMutation = {
 
 export type AdminAuthorityUserQueryType = {
   __typename?: "AdminAuthorityUserQueryType";
+  age?: Maybe<Scalars["Int"]["output"]>;
   authority: AdminAuthorityCreateSuccess;
+  consent: Scalars["Boolean"]["output"];
   email: Scalars["String"]["output"];
   firstName: Scalars["String"]["output"];
+  gender?: Maybe<AccountsAuthorityUserGenderChoices>;
   id: Scalars["ID"]["output"];
   lastName: Scalars["String"]["output"];
   role?: Maybe<AccountsAuthorityUserRoleChoices>;
@@ -450,6 +467,13 @@ export type AdminCensusDefinitionVersionPublishPayload = {
   definition?: Maybe<CensusDefinitionType>;
   fields?: Maybe<Array<Maybe<AdminFieldValidationProblem>>>;
   version?: Maybe<CensusDefinitionVersionType>;
+};
+
+export type AdminCensusRoundDefinitionSavePayload = {
+  __typename?: "AdminCensusRoundDefinitionSavePayload";
+  definition?: Maybe<CensusRoundDefinitionType>;
+  fields?: Maybe<Array<Maybe<AdminFieldValidationProblem>>>;
+  occurrences?: Maybe<Array<Maybe<CensusRoundOccurrenceType>>>;
 };
 
 export type AdminClientCreateMutation = {
@@ -1848,13 +1872,16 @@ export type AuthorityUserRegisterMutation = {
 export type AuthorityUserType = {
   __typename?: "AuthorityUserType";
   address?: Maybe<Scalars["String"]["output"]>;
+  age?: Maybe<Scalars["Int"]["output"]>;
   assignedVillageAssignments?: Maybe<
     Array<Maybe<VillageReporterAssignmentType>>
   >;
   assignedVillages?: Maybe<Array<Maybe<VillageType>>>;
   authority: AdminAuthorityCreateSuccess;
+  consent: Scalars["Boolean"]["output"];
   email: Scalars["String"]["output"];
   firstName: Scalars["String"]["output"];
+  gender?: Maybe<AccountsAuthorityUserGenderChoices>;
   id: Scalars["ID"]["output"];
   lastName: Scalars["String"]["output"];
   role?: Maybe<AccountsAuthorityUserRoleChoices>;
@@ -1947,6 +1974,44 @@ export enum CensusCensusDefinitionVersionStatusChoices {
   Retired = "RETIRED",
 }
 
+/** An enumeration. */
+export enum CensusCensusRoundDefinitionKindChoices {
+  /** Animal */
+  Animal = "ANIMAL",
+  /** Human */
+  Human = "HUMAN",
+}
+
+/** An enumeration. */
+export enum CensusCensusRoundDefinitionModeChoices {
+  /** Production */
+  Production = "PRODUCTION",
+  /** Training */
+  Training = "TRAINING",
+}
+
+/** An enumeration. */
+export enum CensusCensusRoundDefinitionRepeatChoices {
+  /** Annual */
+  Annual = "ANNUAL",
+}
+
+/** An enumeration. */
+export enum CensusCensusRoundOccurrenceKindChoices {
+  /** Animal */
+  Animal = "ANIMAL",
+  /** Human */
+  Human = "HUMAN",
+}
+
+/** An enumeration. */
+export enum CensusCensusRoundOccurrenceModeChoices {
+  /** Production */
+  Production = "PRODUCTION",
+  /** Training */
+  Training = "TRAINING",
+}
+
 export type CensusDefinitionType = {
   __typename?: "CensusDefinitionType";
   enabled: Scalars["Boolean"]["output"];
@@ -1975,6 +2040,71 @@ export type CensusKindSummaryType = {
   latestSnapshot?: Maybe<VillageCensusSnapshotType>;
   name: Scalars["String"]["output"];
 };
+
+export type CensusRoundCoverageRowType = {
+  __typename?: "CensusRoundCoverageRowType";
+  animalHouseholdQuantity?: Maybe<Scalars["Int"]["output"]>;
+  occurrence: CensusRoundOccurrenceType;
+  snapshot?: Maybe<VillageCensusSnapshotType>;
+  speciesSummary?: Maybe<Scalars["GenericScalar"]["output"]>;
+  status: Scalars["String"]["output"];
+  totalAnimalQuantity?: Maybe<Scalars["Int"]["output"]>;
+  village: VillageType;
+  villageHouseholdQuantity?: Maybe<Scalars["Int"]["output"]>;
+};
+
+export type CensusRoundCoverageType = {
+  __typename?: "CensusRoundCoverageType";
+  lateCount: Scalars["Int"]["output"];
+  missingCount: Scalars["Int"]["output"];
+  rows: Array<Maybe<CensusRoundCoverageRowType>>;
+  submittedCount: Scalars["Int"]["output"];
+  totalCount: Scalars["Int"]["output"];
+};
+
+export type CensusRoundDefinitionType = {
+  __typename?: "CensusRoundDefinitionType";
+  censusPeriodEnd: Scalars["String"]["output"];
+  censusPeriodStart: Scalars["String"]["output"];
+  code: Scalars["String"]["output"];
+  enabled: Scalars["Boolean"]["output"];
+  hardFinishDate: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  kind: CensusCensusRoundDefinitionKindChoices;
+  mode: CensusCensusRoundDefinitionModeChoices;
+  name: Scalars["String"]["output"];
+  repeat: CensusCensusRoundDefinitionRepeatChoices;
+  softFinishDate: Scalars["String"]["output"];
+  startDate: Scalars["String"]["output"];
+  targetAuthority?: Maybe<AdminAuthorityCreateSuccess>;
+};
+
+export type CensusRoundOccurrenceType = {
+  __typename?: "CensusRoundOccurrenceType";
+  censusPeriodEnd: Scalars["Date"]["output"];
+  censusPeriodStart: Scalars["Date"]["output"];
+  definition: CensusRoundDefinitionType;
+  hardFinishDate: Scalars["Date"]["output"];
+  id: Scalars["ID"]["output"];
+  kind: CensusCensusRoundOccurrenceKindChoices;
+  mode: CensusCensusRoundOccurrenceModeChoices;
+  occurrenceKey: Scalars["String"]["output"];
+  softFinishDate: Scalars["Date"]["output"];
+  startDate: Scalars["Date"]["output"];
+  status: Scalars["String"]["output"];
+  targetAuthority?: Maybe<AdminAuthorityCreateSuccess>;
+  year: Scalars["Int"]["output"];
+};
+
+/** An enumeration. */
+export enum CensusVillageCensusSnapshotRoundResolutionChoices {
+  /** Admin override */
+  AdminOverride = "ADMIN_OVERRIDE",
+  /** Explicit */
+  Explicit = "EXPLICIT",
+  /** Inferred */
+  Inferred = "INFERRED",
+}
 
 /** An enumeration. */
 export enum CensusVillageCensusSnapshotStatusChoices {
@@ -2416,6 +2546,7 @@ export type Mutation = {
   adminCensusDefinitionVersionPublish?: Maybe<AdminCensusDefinitionVersionPublishPayload>;
   adminCensusDefinitionVersionSaveDraft?: Maybe<AdminCensusDefinitionVersionPublishPayload>;
   adminCensusDefinitionsEnsureDefaults?: Maybe<AdminCensusDefinitionSetupPayload>;
+  adminCensusRoundDefinitionSave?: Maybe<AdminCensusRoundDefinitionSavePayload>;
   adminClientCreate?: Maybe<AdminClientCreateMutation>;
   adminClientUpdate?: Maybe<AdminClientUpdateMutation>;
   adminConfigurationCreate?: Maybe<AdminConfigurationCreateMutation>;
@@ -2544,9 +2675,11 @@ export type MutationAdminAuthorityUpdateArgs = {
 
 export type MutationAdminAuthorityUserCreateArgs = {
   address?: InputMaybe<Scalars["String"]["input"]>;
+  age?: InputMaybe<Scalars["Int"]["input"]>;
   authorityId?: InputMaybe<Scalars["Int"]["input"]>;
   email: Scalars["String"]["input"];
   firstName: Scalars["String"]["input"];
+  gender?: InputMaybe<Scalars["String"]["input"]>;
   lastName: Scalars["String"]["input"];
   password: Scalars["String"]["input"];
   role?: InputMaybe<Scalars["String"]["input"]>;
@@ -2560,9 +2693,11 @@ export type MutationAdminAuthorityUserDeleteArgs = {
 
 export type MutationAdminAuthorityUserUpdateArgs = {
   address?: InputMaybe<Scalars["String"]["input"]>;
+  age?: InputMaybe<Scalars["Int"]["input"]>;
   authorityId?: InputMaybe<Scalars["Int"]["input"]>;
   email: Scalars["String"]["input"];
   firstName: Scalars["String"]["input"];
+  gender?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["ID"]["input"];
   lastName: Scalars["String"]["input"];
   role?: InputMaybe<Scalars["String"]["input"]>;
@@ -2635,6 +2770,23 @@ export type MutationAdminCensusDefinitionVersionSaveDraftArgs = {
 export type MutationAdminCensusDefinitionsEnsureDefaultsArgs = {
   resetSchema?: InputMaybe<Scalars["Boolean"]["input"]>;
   seedSpecies?: InputMaybe<Scalars["Boolean"]["input"]>;
+};
+
+export type MutationAdminCensusRoundDefinitionSaveArgs = {
+  censusPeriodEnd: Scalars["String"]["input"];
+  censusPeriodStart: Scalars["String"]["input"];
+  code: Scalars["String"]["input"];
+  enabled?: InputMaybe<Scalars["Boolean"]["input"]>;
+  hardFinishDate: Scalars["String"]["input"];
+  id?: InputMaybe<Scalars["Int"]["input"]>;
+  kind: Scalars["String"]["input"];
+  materializeFromYear?: InputMaybe<Scalars["Int"]["input"]>;
+  materializeYears?: InputMaybe<Scalars["Int"]["input"]>;
+  mode?: InputMaybe<Scalars["String"]["input"]>;
+  name: Scalars["String"]["input"];
+  softFinishDate: Scalars["String"]["input"];
+  startDate: Scalars["String"]["input"];
+  targetAuthorityId?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type MutationAdminClientCreateArgs = {
@@ -3014,8 +3166,11 @@ export type MutationAdminWebhookEndpointUpdateArgs = {
 
 export type MutationAuthorityUserRegisterArgs = {
   address?: InputMaybe<Scalars["String"]["input"]>;
+  age?: InputMaybe<Scalars["Int"]["input"]>;
+  consent?: InputMaybe<Scalars["Boolean"]["input"]>;
   email: Scalars["String"]["input"];
   firstName: Scalars["String"]["input"];
+  gender?: InputMaybe<Scalars["String"]["input"]>;
   invitationCode: Scalars["String"]["input"];
   lastName: Scalars["String"]["input"];
   telephone?: InputMaybe<Scalars["String"]["input"]>;
@@ -3149,6 +3304,7 @@ export type MutationSubmitVillageCensusSnapshotV2Args = {
   censusDate: Scalars["Date"]["input"];
   definitionVersionId: Scalars["Int"]["input"];
   formData: Scalars["GenericScalar"]["input"];
+  occurrenceId?: InputMaybe<Scalars["Int"]["input"]>;
   villageId: Scalars["Int"]["input"];
 };
 
@@ -3445,6 +3601,9 @@ export type Query = {
   casesQuery?: Maybe<CaseTypeNodeConnection>;
   category?: Maybe<CategoryType>;
   censusDefinitions?: Maybe<Array<Maybe<CensusDefinitionType>>>;
+  censusRoundCoverage?: Maybe<CensusRoundCoverageType>;
+  censusRoundDefinitions?: Maybe<Array<Maybe<CensusRoundDefinitionType>>>;
+  censusRoundOccurrences?: Maybe<Array<Maybe<CensusRoundOccurrenceType>>>;
   checkInvitationCode?: Maybe<CheckInvitationCodeType>;
   clusterResult?: Maybe<IntegrationClusterResultDashboardType>;
   clusterResults?: Maybe<IntegrationClusterResultDashboardTypeNodeConnection>;
@@ -3484,6 +3643,9 @@ export type Query = {
   observationSubjectMonitoringRecords?: Maybe<ObservationSubjectMonitoringRecordTypeNodeConnection>;
   observationSubjects?: Maybe<ObservationSubjectTypeNodeConnection>;
   observationSubjectsInBounded?: Maybe<Array<Maybe<ObservationSubjectType>>>;
+  openVillageCensusRoundOccurrences?: Maybe<
+    Array<Maybe<CensusRoundOccurrenceType>>
+  >;
   outbreakPlaces?: Maybe<Array<Maybe<OutbreakPlaceType>>>;
   outbreakPlanGet?: Maybe<OutbreakPlanType>;
   placeGet?: Maybe<PlaceType>;
@@ -3853,6 +4015,26 @@ export type QueryCategoryArgs = {
   id: Scalars["ID"]["input"];
 };
 
+export type QueryCensusRoundCoverageArgs = {
+  authorityId?: InputMaybe<Scalars["Int"]["input"]>;
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  occurrenceId: Scalars["Int"]["input"];
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  status?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type QueryCensusRoundDefinitionsArgs = {
+  kind?: InputMaybe<Scalars["String"]["input"]>;
+  mode?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type QueryCensusRoundOccurrencesArgs = {
+  kind?: InputMaybe<Scalars["String"]["input"]>;
+  mode?: InputMaybe<Scalars["String"]["input"]>;
+  year?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
 export type QueryCheckInvitationCodeArgs = {
   code: Scalars["String"]["input"];
 };
@@ -4048,6 +4230,12 @@ export type QueryObservationSubjectsInBoundedArgs = {
   definitionId: Scalars["Int"]["input"];
   topLeftX: Scalars["Float"]["input"];
   topLeftY: Scalars["Float"]["input"];
+};
+
+export type QueryOpenVillageCensusRoundOccurrencesArgs = {
+  kind: Scalars["String"]["input"];
+  mode?: InputMaybe<Scalars["String"]["input"]>;
+  villageId: Scalars["Int"]["input"];
 };
 
 export type QueryOutbreakPlacesArgs = {
@@ -4454,6 +4642,7 @@ export type UserMessageTypeNodeConnection = {
 export type UserProfileType = {
   __typename?: "UserProfileType";
   address?: Maybe<Scalars["String"]["output"]>;
+  age?: Maybe<Scalars["Int"]["output"]>;
   assignedVillages?: Maybe<Array<Maybe<VillageType>>>;
   authorityId?: Maybe<Scalars["Int"]["output"]>;
   authorityName?: Maybe<Scalars["String"]["output"]>;
@@ -4462,6 +4651,7 @@ export type UserProfileType = {
   email?: Maybe<Scalars["String"]["output"]>;
   features?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   firstName: Scalars["String"]["output"];
+  gender?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["Int"]["output"];
   isStaff?: Maybe<Scalars["Boolean"]["output"]>;
   isSuperuser?: Maybe<Scalars["Boolean"]["output"]>;
@@ -4514,6 +4704,8 @@ export type VillageCensusSnapshotType = {
   humanFacts: Array<HumanCensusFactType>;
   id: Scalars["ID"]["output"];
   reporter: AdminAuthorityUserCreateSuccess;
+  roundOccurrence?: Maybe<CensusRoundOccurrenceType>;
+  roundResolution?: Maybe<CensusVillageCensusSnapshotRoundResolutionChoices>;
   status: CensusVillageCensusSnapshotStatusChoices;
   submittedAt: Scalars["DateTime"]["output"];
   village: AdminVillageUpdateSuccess;
@@ -9249,6 +9441,8 @@ export type UsersQuery = {
       lastName: string;
       role?: AccountsAuthorityUserRoleChoices | null;
       telephone?: string | null;
+      gender?: AccountsAuthorityUserGenderChoices | null;
+      age?: number | null;
       authority: { __typename?: "AdminAuthorityCreateSuccess"; name: string };
     } | null>;
   } | null;
@@ -9263,6 +9457,8 @@ export type UserCreateMutationVariables = Exact<{
   telephone?: InputMaybe<Scalars["String"]["input"]>;
   username: Scalars["String"]["input"];
   address?: InputMaybe<Scalars["String"]["input"]>;
+  gender?: InputMaybe<Scalars["String"]["input"]>;
+  age?: InputMaybe<Scalars["Int"]["input"]>;
   role?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
@@ -9298,6 +9494,8 @@ export type UserUpdateMutationVariables = Exact<{
   telephone?: InputMaybe<Scalars["String"]["input"]>;
   username: Scalars["String"]["input"];
   address?: InputMaybe<Scalars["String"]["input"]>;
+  gender?: InputMaybe<Scalars["String"]["input"]>;
+  age?: InputMaybe<Scalars["Int"]["input"]>;
   role?: InputMaybe<Scalars["String"]["input"]>;
   villageAssignments?: InputMaybe<
     | Array<InputMaybe<VillageReporterAssignmentInput>>
@@ -9329,6 +9527,8 @@ export type UserUpdateMutation = {
             lastName: string;
             email: string;
             telephone?: string | null;
+            gender?: AccountsAuthorityUserGenderChoices | null;
+            age?: number | null;
             role?: AccountsAuthorityUserRoleChoices | null;
             address?: string | null;
             authority: {
@@ -9418,6 +9618,8 @@ export type GetUserQuery = {
     email: string;
     telephone?: string | null;
     address?: string | null;
+    gender?: AccountsAuthorityUserGenderChoices | null;
+    age?: number | null;
     role?: AccountsAuthorityUserRoleChoices | null;
     authority: { __typename?: "AdminAuthorityCreateSuccess"; id: string };
     assignedVillages?: Array<{
@@ -30792,6 +30994,11 @@ export const UsersDocument = {
                         kind: "Field",
                         name: { kind: "Name", value: "telephone" },
                       },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "gender" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "age" } },
                     ],
                   },
                 },
@@ -30912,6 +31119,21 @@ export const UserCreateDocument = {
         },
         {
           kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "gender" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "NullValue" },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "age" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          defaultValue: { kind: "NullValue" },
+        },
+        {
+          kind: "VariableDefinition",
           variable: { kind: "Variable", name: { kind: "Name", value: "role" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
@@ -30985,6 +31207,22 @@ export const UserCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "address" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gender" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "gender" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "age" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "age" },
                 },
               },
               {
@@ -31182,6 +31420,21 @@ export const UserUpdateDocument = {
         },
         {
           kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "gender" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "NullValue" },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "age" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          defaultValue: { kind: "NullValue" },
+        },
+        {
+          kind: "VariableDefinition",
           variable: { kind: "Variable", name: { kind: "Name", value: "role" } },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
@@ -31273,6 +31526,22 @@ export const UserUpdateDocument = {
               },
               {
                 kind: "Argument",
+                name: { kind: "Name", value: "gender" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "gender" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "age" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "age" },
+                },
+              },
+              {
+                kind: "Argument",
                 name: { kind: "Name", value: "role" },
                 value: {
                   kind: "Variable",
@@ -31342,6 +31611,14 @@ export const UserUpdateDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "telephone" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "gender" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "age" },
                                   },
                                   {
                                     kind: "Field",
@@ -31749,6 +32026,8 @@ export const GetUserDocument = {
                 { kind: "Field", name: { kind: "Name", value: "email" } },
                 { kind: "Field", name: { kind: "Name", value: "telephone" } },
                 { kind: "Field", name: { kind: "Name", value: "address" } },
+                { kind: "Field", name: { kind: "Name", value: "gender" } },
+                { kind: "Field", name: { kind: "Name", value: "age" } },
                 { kind: "Field", name: { kind: "Name", value: "role" } },
                 {
                   kind: "Field",

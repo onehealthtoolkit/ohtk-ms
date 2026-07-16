@@ -22,6 +22,8 @@ export class UserUpdateViewModel extends UserViewModel {
       this.email = data.email;
       this.telephone = data.telephone || "";
       this.address = data.address || "";
+      this.gender = data.gender || "";
+      this.age = data.age != null ? String(data.age) : "";
       this.role = data.role || "";
       this.authorityId = data.authorityId || 0;
       this.villageAssignments = data.villageAssignments || [];
@@ -44,7 +46,9 @@ export class UserUpdateViewModel extends UserViewModel {
         ? this.role === AccountsAuthorityUserRoleChoices.Rep
           ? this.villageAssignments
           : []
-        : undefined
+        : undefined,
+      this.gender || null,
+      this.parsedAge
     );
   }
 }

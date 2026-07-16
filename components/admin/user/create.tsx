@@ -135,6 +135,42 @@ const UserCreate = () => {
           <ErrorText>{errors.address}</ErrorText>
         </Field>
         <Field $size="half">
+          <Label htmlFor="gender">{t("form.label.gender", "Gender")}</Label>
+          <Select
+            id="gender"
+            onChange={evt => {
+              viewModel.gender = evt.target.value;
+            }}
+            disabled={isSubmitting}
+            defaultValue=""
+          >
+            <option value="">
+              {t("form.label.notSpecified", "Not specified")}
+            </option>
+            <option value="male">{t("form.label.genderMale", "Male")}</option>
+            <option value="female">
+              {t("form.label.genderFemale", "Female")}
+            </option>
+            <option value="other">
+              {t("form.label.genderOther", "Other")}
+            </option>
+          </Select>
+          <ErrorText>{errors.gender}</ErrorText>
+        </Field>
+        <Field $size="half">
+          <Label htmlFor="age">{t("form.label.age", "Age")}</Label>
+          <TextInput
+            id="age"
+            type="number"
+            min={1}
+            max={120}
+            placeholder={t("form.placeholder.age", "Age")}
+            onChange={evt => (viewModel.age = evt.target.value)}
+            disabled={isSubmitting}
+          />
+          <ErrorText>{errors.age}</ErrorText>
+        </Field>
+        <Field $size="half">
           <Label htmlFor="role">{t("form.label.role", "Role")}</Label>
           <Select
             id="role"
