@@ -60,10 +60,25 @@ export type UploadFile = {
   fileUrl: string;
 };
 
+export type AccumulatedMetric = {
+  id: string;
+  label?: string;
+  op?: string;
+  reportValue?: number;
+  followupValues?: number[];
+  value: number;
+};
+
+export type AccumulatedMetrics = {
+  version?: number;
+  metrics?: AccumulatedMetric[];
+};
+
 export type ReportDetail = Report & {
   data: Record<string, string> | Record<string, Record<string, string>>;
   images: Array<Image>;
   files: Array<UploadFile>;
   reportTypeDefinition?: Record<string, any>;
   riskAssessmentHistory?: RiskAssessment[];
+  accumulatedMetrics?: AccumulatedMetrics | null;
 };

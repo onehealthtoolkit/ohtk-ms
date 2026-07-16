@@ -264,6 +264,31 @@ const ReportTypeCreate = () => {
           </>
           {rendererDataTemplateField}
           <>{viewModel.isFollowable && rendererFollowupDataTemplateField}</>
+          <>
+            {viewModel.isFollowable && (
+              <Field $size="half">
+                <Label htmlFor="metricAccumulation">
+                  {t(
+                    "form.label.metricAccumulation",
+                    "Metric accumulation (JSON)"
+                  )}
+                </Label>
+                <TextArea
+                  id="metricAccumulation"
+                  placeholder='{"version":1,"metrics":[{"id":"num_sick","reportField":"num_sick","followupField":"num_sick","op":"sum"}]}'
+                  rows={12}
+                  onChange={evt =>
+                    (viewModel.metricAccumulation = evt.target.value)
+                  }
+                  disabled={viewModel.isSubmitting}
+                  value={viewModel.metricAccumulation}
+                />
+                <ErrorText>
+                  {viewModel.fieldErrors.metricAccumulation}
+                </ErrorText>
+              </Field>
+            )}
+          </>
           <Field $size="half">
             <Label htmlFor="stateDefinitionId">State definition</Label>
             <Select

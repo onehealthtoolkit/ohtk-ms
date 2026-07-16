@@ -17,6 +17,7 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   _followupDefinition: string = "";
   _rendererFollowupDataTemplate: string = "";
   _isFollowable: boolean = false;
+  _metricAccumulation: string = "";
 
   definitionFormViewModel: FormViewModel;
   followupDefinitionFormViewModel: FormViewModel;
@@ -98,6 +99,8 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
       rendererFollowupDataTemplate: computed,
       _isFollowable: observable,
       isFollowable: computed,
+      _metricAccumulation: observable,
+      metricAccumulation: computed,
       save: action,
       validate: action,
       definitionFormViewModel: observable,
@@ -154,6 +157,14 @@ export abstract class ReportTypeViewModel extends BaseFormViewModel {
   }
   public set isFollowable(value: boolean) {
     this._isFollowable = value;
+  }
+
+  public get metricAccumulation(): string {
+    return this._metricAccumulation;
+  }
+  public set metricAccumulation(value: string) {
+    this._metricAccumulation = value;
+    this.clearError("metricAccumulation");
   }
 
   public parseFollowupDefinition(value: string): boolean {

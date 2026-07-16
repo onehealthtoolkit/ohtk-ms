@@ -1307,6 +1307,7 @@ export type AdminReportTypeCreateSuccess = {
   id: Scalars["UUID"]["output"];
   incidentreports: Array<IncidentReportType>;
   isFollowable: Scalars["Boolean"]["output"];
+  metricAccumulation?: Maybe<Scalars["JSONString"]["output"]>;
   name: Scalars["String"]["output"];
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   ordering: Scalars["Int"]["output"];
@@ -1331,6 +1332,7 @@ export type AdminReportTypeQueryType = {
   definition: Scalars["JSONString"]["output"];
   id: Scalars["UUID"]["output"];
   isFollowable: Scalars["Boolean"]["output"];
+  metricAccumulation?: Maybe<Scalars["GenericScalar"]["output"]>;
   name: Scalars["String"]["output"];
   ordering: Scalars["Int"]["output"];
   published: Scalars["Boolean"]["output"];
@@ -2351,6 +2353,7 @@ export type ImageType = {
 
 export type IncidentReportType = {
   __typename?: "IncidentReportType";
+  accumulatedMetrics?: Maybe<Scalars["GenericScalar"]["output"]>;
   authorities?: Maybe<Array<Maybe<AuthorityType>>>;
   caseId?: Maybe<Scalars["UUID"]["output"]>;
   coverImage?: Maybe<ImageType>;
@@ -3015,6 +3018,7 @@ export type MutationAdminReportTypeCreateArgs = {
   definition: Scalars["String"]["input"];
   followupDefinition?: InputMaybe<Scalars["String"]["input"]>;
   isFollowable?: InputMaybe<Scalars["Boolean"]["input"]>;
+  metricAccumulation?: InputMaybe<Scalars["String"]["input"]>;
   name: Scalars["String"]["input"];
   ordering: Scalars["Int"]["input"];
   rendererDataTemplate?: InputMaybe<Scalars["String"]["input"]>;
@@ -3032,6 +3036,7 @@ export type MutationAdminReportTypeUpdateArgs = {
   followupDefinition?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["ID"]["input"];
   isFollowable?: InputMaybe<Scalars["Boolean"]["input"]>;
+  metricAccumulation?: InputMaybe<Scalars["String"]["input"]>;
   name: Scalars["String"]["input"];
   ordering: Scalars["Int"]["input"];
   rendererDataTemplate?: InputMaybe<Scalars["String"]["input"]>;
@@ -4384,6 +4389,7 @@ export type ReportTypeType = {
   id: Scalars["UUID"]["output"];
   incidentreports: Array<IncidentReportType>;
   isFollowable: Scalars["Boolean"]["output"];
+  metricAccumulation?: Maybe<Scalars["GenericScalar"]["output"]>;
   name: Scalars["String"]["output"];
   notificationtemplateSet: Array<AdminNotificationTemplateCreateSuccess>;
   ordering: Scalars["Int"]["output"];
@@ -8273,6 +8279,7 @@ export type GetReportQuery = {
     caseId?: any | null;
     threadId?: number | null;
     data?: any | null;
+    accumulatedMetrics?: any | null;
     platform?: string | null;
     testFlag: boolean;
     definition?: any | null;
@@ -8281,6 +8288,7 @@ export type GetReportQuery = {
       id: any;
       name: string;
       definition?: any | null;
+      metricAccumulation?: any | null;
     } | null;
     coverImage?: {
       __typename?: "ImageType";
@@ -8667,6 +8675,7 @@ export type ReportTypeCreateMutationVariables = Exact<{
   followupDefinition?: InputMaybe<Scalars["String"]["input"]>;
   rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]["input"]>;
   isFollowable?: InputMaybe<Scalars["Boolean"]["input"]>;
+  metricAccumulation?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type ReportTypeCreateMutation = {
@@ -8699,6 +8708,7 @@ export type ReportTypeUpdateMutationVariables = Exact<{
   followupDefinition?: InputMaybe<Scalars["String"]["input"]>;
   rendererFollowupDataTemplate?: InputMaybe<Scalars["String"]["input"]>;
   isFollowable?: InputMaybe<Scalars["Boolean"]["input"]>;
+  metricAccumulation?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type ReportTypeUpdateMutation = {
@@ -8726,6 +8736,7 @@ export type ReportTypeUpdateMutation = {
             followupDefinition?: any | null;
             rendererFollowupDataTemplate?: string | null;
             isFollowable: boolean;
+            metricAccumulation?: any | null;
             ordering: number;
             category?: {
               __typename?: "CategoryType";
@@ -8794,6 +8805,7 @@ export type GetReportTypeQuery = {
     followupDefinition?: any | null;
     rendererFollowupDataTemplate?: string | null;
     isFollowable: boolean;
+    metricAccumulation?: any | null;
     ordering: number;
     category?: { __typename?: "CategoryType"; id: string; name: string } | null;
     stateDefinition?: {
@@ -25491,6 +25503,10 @@ export const GetReportDocument = {
                 { kind: "Field", name: { kind: "Name", value: "data" } },
                 {
                   kind: "Field",
+                  name: { kind: "Name", value: "accumulatedMetrics" },
+                },
+                {
+                  kind: "Field",
                   name: { kind: "Name", value: "reportType" },
                   selectionSet: {
                     kind: "SelectionSet",
@@ -25500,6 +25516,10 @@ export const GetReportDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "definition" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "metricAccumulation" },
                       },
                     ],
                   },
@@ -27035,6 +27055,14 @@ export const ReportTypeCreateDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "metricAccumulation" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -27113,6 +27141,14 @@ export const ReportTypeCreateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "isFollowable" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "metricAccumulation" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "metricAccumulation" },
                 },
               },
             ],
@@ -27305,6 +27341,14 @@ export const ReportTypeUpdateDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "metricAccumulation" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -27391,6 +27435,14 @@ export const ReportTypeUpdateDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "isFollowable" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "metricAccumulation" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "metricAccumulation" },
                 },
               },
             ],
@@ -27500,6 +27552,13 @@ export const ReportTypeUpdateDocument = {
                                     name: {
                                       kind: "Name",
                                       value: "isFollowable",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "metricAccumulation",
                                     },
                                   },
                                   {
@@ -27806,6 +27865,10 @@ export const GetReportTypeDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "isFollowable" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "metricAccumulation" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "ordering" } },
               ],

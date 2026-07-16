@@ -218,6 +218,32 @@ const Report = (props: { id: string }) => {
                 <p className="text-sm pt-1 font-bold">
                   {viewModel.data.rendererData}
                 </p>
+                {viewModel.data.accumulatedMetrics?.metrics &&
+                  viewModel.data.accumulatedMetrics.metrics.length > 0 && (
+                    <div className="mt-3 p-3 rounded border border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+                      <p className="text-sm font-semibold mb-2">
+                        {t(
+                          "form.label.accumulatedTotals",
+                          "Totals (report + follow-ups)"
+                        )}
+                      </p>
+                      <ul className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm">
+                        {viewModel.data.accumulatedMetrics.metrics.map(
+                          metric => (
+                            <li
+                              key={metric.id}
+                              className="flex justify-between gap-2 border-b border-gray-100 dark:border-gray-700 pb-1"
+                            >
+                              <span className="text-gray-600 dark:text-gray-300">
+                                {metric.label || metric.id}
+                              </span>
+                              <span className="font-bold">{metric.value}</span>
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </div>
+                  )}
               </div>
               <Divide hilight={true} />
 

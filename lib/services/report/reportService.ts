@@ -229,6 +229,7 @@ export class ReportService implements IReportService {
           incidentReport.riskAssessmentHistory
             ?.map(mapRiskAssessment)
             .filter(isRiskAssessment) || [],
+        accumulatedMetrics: incidentReport.accumulatedMetrics || null,
       };
     }
     return {

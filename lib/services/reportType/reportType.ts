@@ -12,6 +12,8 @@ export type ReportType = {
   rendererFollowupDataTemplate?: string;
   published?: boolean;
   isFollowable?: boolean;
+  /** JSON string of metric accumulation config (ReportType.metric_accumulation). */
+  metricAccumulation?: string;
 };
 
 export type SimulationReportType = {

@@ -13,7 +13,8 @@ export class ReportTypeCreateViewModel extends ReportTypeViewModel {
       this.rendererDataTemplate,
       this.followupDefinition,
       this.rendererFollowupDataTemplate,
-      this.isFollowable
+      this.isFollowable,
+      this.metricAccumulation
     );
   }
 }

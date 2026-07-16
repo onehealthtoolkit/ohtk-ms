@@ -139,10 +139,12 @@ query GetReport($id: ID!) {
     gpsLocation
     threadId
     data
+    accumulatedMetrics
     reportType {
       id
       name
       definition
+      metricAccumulation
     }
     platform
     coverImage {

@@ -174,6 +174,37 @@ const ReportTypeUpdateForm = () => {
     [t, viewModel]
   );
 
+  const metricAccumulationField = useMemo(
+    () => (
+      <Observer>
+        {() =>
+          viewModel.isFollowable ? (
+            <Field $size="half">
+              <Label htmlFor="metricAccumulation">
+                {t(
+                  "form.label.metricAccumulation",
+                  "Metric accumulation (JSON)"
+                )}
+              </Label>
+              <TextArea
+                id="metricAccumulation"
+                placeholder='{"version":1,"metrics":[{"id":"num_sick","reportField":"num_sick","followupField":"num_sick","op":"sum"}]}'
+                rows={12}
+                onChange={evt =>
+                  (viewModel.metricAccumulation = evt.target.value)
+                }
+                disabled={viewModel.isSubmitting}
+                value={viewModel.metricAccumulation}
+              />
+              <ErrorText>{viewModel.fieldErrors.metricAccumulation}</ErrorText>
+            </Field>
+          ) : null
+        }
+      </Observer>
+    ),
+    [t, viewModel]
+  );
+
   const followupDefinitionField = useMemo(
     () => (
       <Observer>
@@ -355,6 +386,7 @@ const ReportTypeUpdateForm = () => {
             <>{viewModel.isFollowable && followupDefinitionField}</>
             {rendererDataTemplateField}
             <>{viewModel.isFollowable && rendererFollowupDataTemplateField}</>
+            {metricAccumulationField}
             {stateDefinitionIdField}
             {orderingField}
           </FieldGroup>

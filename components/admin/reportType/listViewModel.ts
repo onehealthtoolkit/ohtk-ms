@@ -160,7 +160,9 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
       data.stateDefinitionId,
       data.rendererDataTemplate,
       JSON.stringify(data.followupDefinition, null, 2),
-      data.rendererFollowupDataTemplate
+      data.rendererFollowupDataTemplate,
+      data.isFollowable,
+      data.metricAccumulation
     );
   }
 
@@ -174,7 +176,9 @@ export class AdminReportTypeListViewModel extends BaseViewModel {
       data.stateDefinitionId,
       data.rendererDataTemplate,
       JSON.stringify(data.followupDefinition, null, 2),
-      data.rendererFollowupDataTemplate
+      data.rendererFollowupDataTemplate,
+      data.isFollowable,
+      data.metricAccumulation
     );
   }
 
