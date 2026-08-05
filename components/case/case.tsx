@@ -29,6 +29,8 @@ import ReportLocationMapDialog from "components/case/reportMapDialog";
 import { toJS } from "mobx";
 import { useTranslation } from "react-i18next";
 import ReportRiskPanel from "components/report/riskPanel";
+import DiseaseResultPanel from "components/case/diseaseResultPanel";
+import CaseClosePanel from "components/case/caseClosePanel";
 
 const ReportMap = dynamic(() => import("./reportMap"), {
   loading: () => <p>A map is loading</p>,
@@ -159,6 +161,12 @@ const Case = (props: { id: string }) => {
               <Divide hilight={true} />
 
               <ReportRiskPanel viewModel={viewModel} />
+              <Divide />
+
+              <DiseaseResultPanel viewModel={viewModel} />
+              <Divide />
+
+              <CaseClosePanel viewModel={viewModel} />
               <Divide />
 
               <div className="flex flex-row gap-2 md:flex-nowrap flex-wrap ">
