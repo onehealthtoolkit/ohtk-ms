@@ -11,7 +11,6 @@ const CaseClosePanel = ({ viewModel }: { viewModel: CaseViewModel }) => {
   const router = useRouter();
   const [error, setError] = useState<string | undefined>();
   const [confirming, setConfirming] = useState(false);
-  const [newSpecies, setNewSpecies] = useState("");
 
   if (viewModel.isCaseClosed) {
     const source =
@@ -19,10 +18,12 @@ const CaseClosePanel = ({ viewModel }: { viewModel: CaseViewModel }) => {
         ? t("case.close.sourceSystem", "System")
         : t("case.close.sourceOfficer", "Officer");
     const stampOut = viewModel.data.closePayload?.stamp_out;
-    const stampOutEntries =
-      stampOut && typeof stampOut === "object" && !Array.isArray(stampOut)
-        ? Object.entries(stampOut as Record<string, number>)
-        : [];
+    const stampOutDisplay =
+      typeof stampOut === "number"
+        ? String(stampOut)
+        : typeof stampOut === "string" && stampOut.trim() !== ""
+          ? stampOut
+          : null;
     return (
       <section className="relative my-4 bg-white px-4 py-3 md:px-8">
         <div className="text-xs font-bold uppercase tracking-wider text-green-700">
@@ -51,14 +52,12 @@ const CaseClosePanel = ({ viewModel }: { viewModel: CaseViewModel }) => {
               {viewModel.data.closedByName}
             </div>
           ) : null}
-          {stampOutEntries.length > 0 ? (
+          {stampOutDisplay !== null ? (
             <div>
               <span className="font-medium">
                 {viewModel.stampOutFieldLabel}:{" "}
               </span>
-              {stampOutEntries
-                .map(([species, count]) => `${species}: ${count}`)
-                .join(", ")}
+              {stampOutDisplay}
             </div>
           ) : null}
         </dl>
@@ -81,8 +80,6 @@ const CaseClosePanel = ({ viewModel }: { viewModel: CaseViewModel }) => {
     }
   };
 
-  const stampOutEntries = Object.entries(viewModel.stampOutDraft);
-
   return (
     <section className="relative my-4 bg-white px-4 py-3 md:px-8">
       <div className="text-xs font-bold uppercase tracking-wider text-gray-500">
@@ -97,82 +94,33 @@ const CaseClosePanel = ({ viewModel }: { viewModel: CaseViewModel }) => {
 
       {viewModel.hasStampOutField && (
         <div className="mt-4">
-          <div className="text-sm font-semibold text-gray-700">
+          <label
+            className="text-sm font-semibold text-gray-700"
+            htmlFor="case-stamp-out"
+          >
             {viewModel.stampOutFieldLabel}
             {viewModel.requiresStampOut ? (
               <span className="ml-1 text-red-600">*</span>
             ) : null}
-          </div>
+          </label>
           <p className="mt-1 text-xs text-gray-500">
             {t(
               "case.close.stampOutHelp",
-              "Enter animals stamped out by species (count ≥ 0)."
+              "Number of animals terminated for this report species (integer ≥ 0)."
             )}
           </p>
-          <ul className="mt-2 space-y-2">
-            {stampOutEntries.map(([species, count]) => (
-              <li
-                key={species}
-                className="flex flex-wrap items-center gap-2 text-sm"
-              >
-                <span className="min-w-[6rem] font-medium text-gray-800">
-                  {species}
-                </span>
-                <input
-                  type="number"
-                  min={0}
-                  step={1}
-                  className="w-24 rounded border border-gray-300 px-2 py-1"
-                  value={count}
-                  disabled={viewModel.caseClosing}
-                  onChange={e =>
-                    viewModel.setStampOutCount(species, Number(e.target.value))
-                  }
-                  aria-label={`${species} count`}
-                />
-                <button
-                  type="button"
-                  className="text-xs text-gray-600 underline"
-                  disabled={viewModel.caseClosing}
-                  onClick={() => viewModel.removeStampOutSpecies(species)}
-                >
-                  {t("form.button.remove", "Remove")}
-                </button>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-2 flex flex-wrap items-center gap-2">
-            <input
-              type="text"
-              className="min-w-[8rem] flex-1 rounded border border-gray-300 px-2 py-1 text-sm"
-              placeholder={t("case.close.speciesPlaceholder", "Species name")}
-              value={newSpecies}
-              disabled={viewModel.caseClosing}
-              onChange={e => setNewSpecies(e.target.value)}
-              onKeyDown={e => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  const name = newSpecies.trim();
-                  if (!name) return;
-                  viewModel.setStampOutCount(name, 0);
-                  setNewSpecies("");
-                }
-              }}
-            />
-            <button
-              type="button"
-              className="rounded border border-gray-300 px-2 py-1 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-              disabled={viewModel.caseClosing || !newSpecies.trim()}
-              onClick={() => {
-                const name = newSpecies.trim();
-                if (!name) return;
-                viewModel.setStampOutCount(name, 0);
-                setNewSpecies("");
-              }}
-            >
-              {t("case.close.addSpecies", "Add species")}
-            </button>
-          </div>
+          <input
+            id="case-stamp-out"
+            type="number"
+            min={0}
+            step={1}
+            inputMode="numeric"
+            className="mt-2 w-32 rounded border border-gray-300 px-2 py-1.5 text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            value={viewModel.stampOutDraft}
+            disabled={viewModel.caseClosing}
+            onChange={e => viewModel.setStampOutDraft(e.target.value)}
+            aria-label={viewModel.stampOutFieldLabel}
+          />
         </div>
       )}
 

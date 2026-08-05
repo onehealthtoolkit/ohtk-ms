@@ -34,8 +34,11 @@ export class CaseViewModel extends BaseViewModel {
   outbreakPlaces: OutbreakPlace[] = [];
   _riskSaving: boolean = false;
   testResultDraft: string = "";
-  /** Layer2 stamp_out draft: species -> count */
-  stampOutDraft: Record<string, number> = {};
+  /**
+   * Layer2 stamp_out draft: animals terminated (integer).
+   * Empty string while typing; validated as >= 0 integer on close.
+   */
+  stampOutDraft: string = "";
   _testResultSaving: boolean = false;
   _caseClosing: boolean = false;
 
@@ -67,8 +70,7 @@ export class CaseViewModel extends BaseViewModel {
       _testResultSaving: observable,
       testResultSaving: computed,
       setTestResultDraft: action,
-      setStampOutCount: action,
-      removeStampOutSpecies: action,
+      setStampOutDraft: action,
       saveTestResult: action,
       testResultDirty: computed,
       closeCase: action,
@@ -136,16 +138,9 @@ export class CaseViewModel extends BaseViewModel {
       runInAction(() => {
         this.data = data;
         this.testResultDraft = data.testResult || "";
-        const stampOut = data.closePayload?.stamp_out;
-        this.stampOutDraft =
-          stampOut && typeof stampOut === "object" && !Array.isArray(stampOut)
-            ? Object.fromEntries(
-                Object.entries(stampOut).map(([species, count]) => [
-                  species,
-                  Number(count) || 0,
-                ])
-              )
-            : {};
+        this.stampOutDraft = this.formatStampOutDraft(
+          data.closePayload?.stamp_out
+        );
         if (data.stateDefinition && data.states) {
           this.stateViewViewModel?.init(
             data.id,
@@ -204,22 +199,33 @@ export class CaseViewModel extends BaseViewModel {
     return !!this.getCloseField("stamp_out");
   }
 
-  setStampOutCount(species: string, count: number) {
-    const key = (species || "").trim();
-    if (!key) {
-      return;
+  private formatStampOutDraft(value: unknown): string {
+    if (value === null || value === undefined || value === "") {
+      return "";
     }
-    const n = Math.max(0, Math.floor(Number(count) || 0));
-    this.stampOutDraft = {
-      ...this.stampOutDraft,
-      [key]: n,
-    };
+    if (typeof value === "number" && Number.isFinite(value)) {
+      return String(Math.trunc(value));
+    }
+    if (typeof value === "string" && value.trim() !== "") {
+      return value.trim();
+    }
+    return "";
   }
 
-  removeStampOutSpecies(species: string) {
-    const next = { ...this.stampOutDraft };
-    delete next[species];
-    this.stampOutDraft = next;
+  setStampOutDraft(value: string) {
+    this.stampOutDraft = value;
+  }
+
+  /** Parse draft to non-negative integer, or null if empty/invalid. */
+  private parseStampOutDraft(): number | null {
+    const raw = (this.stampOutDraft || "").trim();
+    if (raw === "") {
+      return null;
+    }
+    if (!/^\d+$/.test(raw)) {
+      return null;
+    }
+    return parseInt(raw, 10);
   }
 
   public async saveTestResult(): Promise<boolean> {
@@ -274,7 +280,17 @@ export class CaseViewModel extends BaseViewModel {
         test_result: this.testResultDraft,
       };
       if (this.hasStampOutField) {
-        payload.stamp_out = { ...this.stampOutDraft };
+        const raw = (this.stampOutDraft || "").trim();
+        if (raw !== "") {
+          const stampOut = this.parseStampOutDraft();
+          if (stampOut === null) {
+            this.setErrorMessage("Stamped out must be a whole number ≥ 0");
+            this.caseClosing = false;
+            return false;
+          }
+          payload.stamp_out = stampOut;
+        }
+        // empty + required: omit and let server validation reject
       }
       const result = await this.caseService.closeCase(this.id, payload);
       runInAction(() => {
@@ -287,16 +303,9 @@ export class CaseViewModel extends BaseViewModel {
             files: this.data.files || [],
           };
           this.testResultDraft = result.data.testResult || "";
-          const stampOut = result.data.closePayload?.stamp_out;
-          this.stampOutDraft =
-            stampOut && typeof stampOut === "object" && !Array.isArray(stampOut)
-              ? Object.fromEntries(
-                  Object.entries(stampOut).map(([species, count]) => [
-                    species,
-                    Number(count) || 0,
-                  ])
-                )
-              : {};
+          this.stampOutDraft = this.formatStampOutDraft(
+            result.data.closePayload?.stamp_out
+          );
         }
         if (result.error) {
           this.setErrorMessage(result.error);
