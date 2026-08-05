@@ -223,6 +223,7 @@ export type AdminAuthorityUserCreateSuccess = {
   avatarUrl?: Maybe<Scalars["String"]["output"]>;
   casestatetransitionSet: Array<CaseStateTransitionType>;
   censusSnapshots: Array<VillageCensusSnapshotType>;
+  closedCases: Array<CaseType>;
   commentSet: Array<CommentUpdateSuccess>;
   consent: Scalars["Boolean"]["output"];
   dateJoined: Scalars["DateTime"]["output"];
@@ -310,6 +311,12 @@ export type AdminAuthorityUserUpdateSuccess = {
   authorityUser?: Maybe<AuthorityUserType>;
 };
 
+/** Officer close: Layer1 completion + Layer2 payload (validated). */
+export type AdminCaseCloseMutation = {
+  __typename?: "AdminCaseCloseMutation";
+  result?: Maybe<CaseType>;
+};
+
 export type AdminCaseDefinitionCreateMutation = {
   __typename?: "AdminCaseDefinitionCreateMutation";
   result?: Maybe<AdminCaseDefinitionCreateResult>;
@@ -377,6 +384,15 @@ export type AdminCaseDefinitionUpdateResult =
 export type AdminCaseDefinitionUpdateSuccess = {
   __typename?: "AdminCaseDefinitionUpdateSuccess";
   caseDefinition?: Maybe<CaseDefinitionType>;
+};
+
+/**
+ * Write Layer2 test_result key while case is open.
+ * Never writes report.ai_suspected. Closed cases rejected.
+ */
+export type AdminCaseTestResultUpdateMutation = {
+  __typename?: "AdminCaseTestResultUpdateMutation";
+  result?: Maybe<CaseType>;
 };
 
 export type AdminCategoryCreateMutation = {
@@ -1299,6 +1315,7 @@ export type AdminReportTypeCreateSuccess = {
   authorities: Array<AdminAuthorityCreateSuccess>;
   casedefinitionSet: Array<AdminCaseDefinitionCreateSuccess>;
   category: AdminCategoryCreateSuccess;
+  closeDefinition?: Maybe<Scalars["JSONString"]["output"]>;
   createdAt: Scalars["DateTime"]["output"];
   definition: Scalars["JSONString"]["output"];
   deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
@@ -1366,6 +1383,11 @@ export type AdminReportTypeUpdateResult =
 export type AdminReportTypeUpdateSuccess = {
   __typename?: "AdminReportTypeUpdateSuccess";
   reportType?: Maybe<ReportTypeType>;
+};
+
+export type AdminReportUseVillageLocationFallbackUpdateMutation = {
+  __typename?: "AdminReportUseVillageLocationFallbackUpdateMutation";
+  enabled: Scalars["Boolean"]["output"];
 };
 
 export type AdminReporterNotificationCreateMutation = {
@@ -1919,7 +1941,11 @@ export type CaseStateType = {
 
 export type CaseType = {
   __typename?: "CaseType";
+  aiSuspected: Scalars["String"]["output"];
   authorities?: Maybe<Array<Maybe<AuthorityType>>>;
+  closePayload: Scalars["GenericScalar"]["output"];
+  closeSource?: Maybe<Scalars["String"]["output"]>;
+  closedBy?: Maybe<UserType>;
   description: Scalars["String"]["output"];
   id: Scalars["UUID"]["output"];
   isFinished: Scalars["Boolean"]["output"];
@@ -1928,6 +1954,8 @@ export type CaseType = {
   stateDefinition?: Maybe<DeepStateDefinitionType>;
   states?: Maybe<Array<Maybe<CaseStateType>>>;
   statusLabel?: Maybe<Scalars["String"]["output"]>;
+  stoppedAt?: Maybe<Scalars["DateTime"]["output"]>;
+  testResult: Scalars["String"]["output"];
   threadId?: Maybe<Scalars["Int"]["output"]>;
 };
 
@@ -2354,6 +2382,7 @@ export type ImageType = {
 export type IncidentReportType = {
   __typename?: "IncidentReportType";
   accumulatedMetrics?: Maybe<Scalars["GenericScalar"]["output"]>;
+  aiSuspected: Scalars["String"]["output"];
   authorities?: Maybe<Array<Maybe<AuthorityType>>>;
   caseId?: Maybe<Scalars["UUID"]["output"]>;
   coverImage?: Maybe<ImageType>;
@@ -2539,9 +2568,16 @@ export type Mutation = {
   adminAuthorityUserDelete?: Maybe<AdminAuthorityUserDeleteMutation>;
   adminAuthorityUserUpdate?: Maybe<AdminAuthorityUserUpdateMutation>;
   adminAuthorityUserUpdatePassword?: Maybe<AdminAuthorityUserUpdatePasswordMutation>;
+  /** Officer close: Layer1 completion + Layer2 payload (validated). */
+  adminCaseClose?: Maybe<AdminCaseCloseMutation>;
   adminCaseDefinitionCreate?: Maybe<AdminCaseDefinitionCreateMutation>;
   adminCaseDefinitionDelete?: Maybe<AdminCaseDefinitionDeleteMutation>;
   adminCaseDefinitionUpdate?: Maybe<AdminCaseDefinitionUpdateMutation>;
+  /**
+   * Write Layer2 test_result key while case is open.
+   * Never writes report.ai_suspected. Closed cases rejected.
+   */
+  adminCaseTestResultUpdate?: Maybe<AdminCaseTestResultUpdateMutation>;
   adminCategoryCreate?: Maybe<AdminCategoryCreateMutation>;
   adminCategoryDelete?: Maybe<AdminCategoryDeleteMutation>;
   adminCategoryUpdate?: Maybe<AdminCategoryUpdateMutation>;
@@ -2585,6 +2621,7 @@ export type Mutation = {
   adminReportTypeCreate?: Maybe<AdminReportTypeCreateMutation>;
   adminReportTypeDelete?: Maybe<AdminReportTypeDeleteMutation>;
   adminReportTypeUpdate?: Maybe<AdminReportTypeUpdateMutation>;
+  adminReportUseVillageLocationFallbackUpdate?: Maybe<AdminReportUseVillageLocationFallbackUpdateMutation>;
   adminReporterNotificationCreate?: Maybe<AdminReporterNotificationCreateMutation>;
   adminReporterNotificationDelete?: Maybe<AdminReporterNotificationDeleteMutation>;
   adminReporterNotificationUpdate?: Maybe<AdminReporterNotificationUpdateMutation>;
@@ -2716,6 +2753,11 @@ export type MutationAdminAuthorityUserUpdatePasswordArgs = {
   password: Scalars["String"]["input"];
 };
 
+export type MutationAdminCaseCloseArgs = {
+  caseId: Scalars["UUID"]["input"];
+  payload?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+};
+
 export type MutationAdminCaseDefinitionCreateArgs = {
   condition: Scalars["String"]["input"];
   description: Scalars["String"]["input"];
@@ -2733,6 +2775,11 @@ export type MutationAdminCaseDefinitionUpdateArgs = {
   id: Scalars["ID"]["input"];
   isActive?: InputMaybe<Scalars["Boolean"]["input"]>;
   reportTypeId: Scalars["UUID"]["input"];
+};
+
+export type MutationAdminCaseTestResultUpdateArgs = {
+  caseId: Scalars["UUID"]["input"];
+  testResult: Scalars["String"]["input"];
 };
 
 export type MutationAdminCategoryCreateArgs = {
@@ -3044,6 +3091,10 @@ export type MutationAdminReportTypeUpdateArgs = {
   stateDefinitionId?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+export type MutationAdminReportUseVillageLocationFallbackUpdateArgs = {
+  enabled: Scalars["Boolean"]["input"];
+};
+
 export type MutationAdminReporterNotificationCreateArgs = {
   condition: Scalars["String"]["input"];
   description: Scalars["String"]["input"];
@@ -3124,7 +3175,9 @@ export type MutationAdminUserChangePasswordArgs = {
 
 export type MutationAdminUserUpdateProfileArgs = {
   address?: InputMaybe<Scalars["String"]["input"]>;
+  age?: InputMaybe<Scalars["Int"]["input"]>;
   firstName: Scalars["String"]["input"];
+  gender?: InputMaybe<Scalars["String"]["input"]>;
   lastName: Scalars["String"]["input"];
   telephone?: InputMaybe<Scalars["String"]["input"]>;
 };
@@ -3657,6 +3710,7 @@ export type Query = {
   reportDataSummary?: Maybe<ReportDataSummaryType>;
   reportType?: Maybe<ReportTypeType>;
   reportTypeByName?: Maybe<ReportTypeType>;
+  reportUseVillageLocationFallbackEnabled: Scalars["Boolean"]["output"];
   reporterNotification?: Maybe<ReporterNotificationType>;
   statQuery?: Maybe<StatType>;
   stateDefinitionGet?: Maybe<StateDefinitionType>;
@@ -4381,6 +4435,7 @@ export type ReportTypeType = {
   authorities: Array<AdminAuthorityCreateSuccess>;
   casedefinitionSet: Array<AdminCaseDefinitionCreateSuccess>;
   category?: Maybe<CategoryType>;
+  closeDefinition?: Maybe<Scalars["GenericScalar"]["output"]>;
   createdAt: Scalars["DateTime"]["output"];
   definition?: Maybe<Scalars["GenericScalar"]["output"]>;
   deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
@@ -5084,6 +5139,18 @@ export type GetCaseQuery = {
     statusLabel?: string | null;
     threadId?: number | null;
     outbreakPlanInfo?: any | null;
+    aiSuspected: string;
+    testResult: string;
+    stoppedAt?: any | null;
+    closeSource?: string | null;
+    closePayload: any;
+    closedBy?: {
+      __typename?: "UserType";
+      id: string;
+      firstName: string;
+      lastName: string;
+      username: string;
+    } | null;
     authorities?: Array<{
       __typename?: "AuthorityType";
       id: string;
@@ -5098,12 +5165,14 @@ export type GetCaseQuery = {
       updatedAt: any;
       rendererData: string;
       data?: any | null;
+      aiSuspected: string;
       platform?: string | null;
       reportType?: {
         __typename?: "ReportTypeType";
         id: any;
         name: string;
         definition?: any | null;
+        closeDefinition?: any | null;
       } | null;
       coverImage?: {
         __typename?: "ImageType";
@@ -5310,6 +5379,55 @@ export type StateForwardMutation = {
           } | null;
         } | null> | null;
       };
+    } | null;
+  } | null;
+};
+
+export type UpdateCaseTestResultMutationVariables = Exact<{
+  caseId: Scalars["UUID"]["input"];
+  testResult: Scalars["String"]["input"];
+}>;
+
+export type UpdateCaseTestResultMutation = {
+  __typename?: "Mutation";
+  adminCaseTestResultUpdate?: {
+    __typename?: "AdminCaseTestResultUpdateMutation";
+    result?: {
+      __typename?: "CaseType";
+      id: any;
+      testResult: string;
+      aiSuspected: string;
+      closePayload: any;
+    } | null;
+  } | null;
+};
+
+export type CloseCaseMutationVariables = Exact<{
+  caseId: Scalars["UUID"]["input"];
+  payload?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+}>;
+
+export type CloseCaseMutation = {
+  __typename?: "Mutation";
+  adminCaseClose?: {
+    __typename?: "AdminCaseCloseMutation";
+    result?: {
+      __typename?: "CaseType";
+      id: any;
+      isFinished: boolean;
+      statusLabel?: string | null;
+      testResult: string;
+      aiSuspected: string;
+      stoppedAt?: any | null;
+      closeSource?: string | null;
+      closePayload: any;
+      closedBy?: {
+        __typename?: "UserType";
+        id: string;
+        firstName: string;
+        lastName: string;
+        username: string;
+      } | null;
     } | null;
   } | null;
 };
@@ -11702,6 +11820,36 @@ export const GetCaseDocument = {
                   kind: "Field",
                   name: { kind: "Name", value: "outbreakPlanInfo" },
                 },
+                { kind: "Field", name: { kind: "Name", value: "aiSuspected" } },
+                { kind: "Field", name: { kind: "Name", value: "testResult" } },
+                { kind: "Field", name: { kind: "Name", value: "stoppedAt" } },
+                { kind: "Field", name: { kind: "Name", value: "closeSource" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "closePayload" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "closedBy" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "firstName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "lastName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
+                      },
+                    ],
+                  },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "authorities" },
@@ -11743,6 +11891,10 @@ export const GetCaseDocument = {
                       { kind: "Field", name: { kind: "Name", value: "data" } },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "aiSuspected" },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "reportType" },
                         selectionSet: {
                           kind: "SelectionSet",
@@ -11758,6 +11910,10 @@ export const GetCaseDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "definition" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "closeDefinition" },
                             },
                           ],
                         },
@@ -12531,6 +12687,229 @@ export const StateForwardDocument = {
   StateForwardMutation,
   StateForwardMutationVariables
 >;
+export const UpdateCaseTestResultDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateCaseTestResult" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "caseId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "testResult" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminCaseTestResultUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "caseId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "caseId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "testResult" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "testResult" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "testResult" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "aiSuspected" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closePayload" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateCaseTestResultMutation,
+  UpdateCaseTestResultMutationVariables
+>;
+export const CloseCaseDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CloseCase" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "caseId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "payload" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "GenericScalar" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminCaseClose" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "caseId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "caseId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "payload" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "payload" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isFinished" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "statusLabel" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "testResult" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "aiSuspected" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "stoppedAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closeSource" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closePayload" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closedBy" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "firstName" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "lastName" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "username" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CloseCaseMutation, CloseCaseMutationVariables>;
 export const CaseDefinitionsDocument = {
   kind: "Document",
   definitions: [

@@ -5,8 +5,15 @@ import {
   CasesDocument,
   PromoteReportToCaseDocument,
   StateForwardDocument,
+  UpdateCaseTestResultDocument,
+  CloseCaseDocument,
 } from "lib/generated/graphql";
-import { Case, CaseDetail, CaseState } from "lib/services/case/case";
+import {
+  Case,
+  CaseDetail,
+  CaseState,
+  CloseDefinition,
+} from "lib/services/case/case";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
 import { Authority } from "../authority";
 import { ReportType } from "../reportType";
@@ -15,6 +22,30 @@ import {
   isRiskAssessment,
   mapRiskAssessment,
 } from "lib/services/report/reportService";
+
+function parseCloseDefinition(raw: unknown): CloseDefinition | null {
+  if (raw == null || raw === "") {
+    return null;
+  }
+  let value: unknown = raw;
+  if (typeof raw === "string") {
+    try {
+      value = JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  }
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return null;
+  }
+  return value as CloseDefinition;
+}
+
+export type CaseTestResultUpdate = {
+  id: string;
+  testResult: string;
+  aiSuspected: string;
+};
 
 export type CaseFilterData = {
   fromDate?: Date;
@@ -47,6 +78,16 @@ export interface ICaseService extends IService {
   getCase(
     id: string,
     fetchPolicy?: FetchPolicy
+  ): Promise<GetResult<CaseDetail>>;
+
+  updateCaseTestResult(
+    caseId: string,
+    testResult: string
+  ): Promise<GetResult<CaseTestResultUpdate>>;
+
+  closeCase(
+    caseId: string,
+    payload?: Record<string, any>
   ): Promise<GetResult<CaseDetail>>;
 
   forwardState(
@@ -185,10 +226,105 @@ export class CaseService implements ICaseService {
         authorityName: incidentCase.report?.authorities
           ?.map(item => item?.name)
           .join(", "),
+        aiSuspected:
+          incidentCase.aiSuspected || incidentCase.report?.aiSuspected || "",
+        testResult: incidentCase.testResult || "",
+        stoppedAt: incidentCase.stoppedAt,
+        closeSource: incidentCase.closeSource || "",
+        closePayload: (incidentCase.closePayload as Record<string, any>) || {},
+        closeDefinition: parseCloseDefinition(
+          incidentCase.report?.reportType?.closeDefinition
+        ),
+        closedByName: incidentCase.closedBy
+          ? [incidentCase.closedBy.firstName, incidentCase.closedBy.lastName]
+              .filter(Boolean)
+              .join(" ")
+              .trim() ||
+            incidentCase.closedBy.username ||
+            ""
+          : "",
       };
     }
     return {
       data,
+    };
+  }
+
+  async updateCaseTestResult(
+    caseId: string,
+    testResult: string
+  ): Promise<GetResult<CaseTestResultUpdate>> {
+    const result = await this.client.mutate({
+      mutation: UpdateCaseTestResultDocument,
+      variables: {
+        caseId,
+        testResult,
+      },
+    });
+
+    const payload = result.data?.adminCaseTestResultUpdate?.result;
+    if (!payload) {
+      return {
+        data: undefined,
+        error:
+          result.errors?.map(e => e.message).join(", ") ||
+          "Unable to save test result",
+      };
+    }
+
+    return {
+      data: {
+        id: payload.id,
+        testResult: payload.testResult || "",
+        aiSuspected: payload.aiSuspected || "",
+      },
+      error: result.errors?.map(e => e.message).join(", "),
+    };
+  }
+
+  async closeCase(
+    caseId: string,
+    payload?: Record<string, any>
+  ): Promise<GetResult<CaseDetail>> {
+    const result = await this.client.mutate({
+      mutation: CloseCaseDocument,
+      variables: {
+        caseId,
+        payload: payload ?? null,
+      },
+    });
+
+    const closed = result.data?.adminCaseClose?.result;
+    if (!closed) {
+      return {
+        data: undefined,
+        error:
+          result.errors?.map(e => e.message).join(", ") ||
+          "Unable to close case",
+      };
+    }
+
+    return {
+      data: {
+        id: closed.id,
+        isFinished: closed.isFinished,
+        statusLabel: closed.statusLabel || "",
+        testResult: closed.testResult || "",
+        aiSuspected: closed.aiSuspected || "",
+        stoppedAt: closed.stoppedAt,
+        closeSource: closed.closeSource || "",
+        closePayload: (closed.closePayload as Record<string, any>) || {},
+        closedByName: closed.closedBy
+          ? [closed.closedBy.firstName, closed.closedBy.lastName]
+              .filter(Boolean)
+              .join(" ")
+              .trim() ||
+            closed.closedBy.username ||
+            ""
+          : "",
+        files: [],
+      },
+      error: result.errors?.map(e => e.message).join(", "),
     };
   }
 

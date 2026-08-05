@@ -30,6 +30,28 @@ export type CaseDetail = Case & {
   states?: Array<CaseState | null> | null;
   outbreakInfo?: string | null;
   riskAssessmentHistory?: RiskAssessment[];
+  /** Excel "suspected" — AI comment body; read-only in UI */
+  aiSuspected?: string;
+  /** Layer2 projection — officer free text (close_payload.test_result) */
+  testResult?: string;
+  stoppedAt?: string | null;
+  closeSource?: string;
+  closePayload?: Record<string, any>;
+  /** ReportType.close_definition (Layer2 schema); null/empty = no required close fields */
+  closeDefinition?: CloseDefinition | null;
+  closedByName?: string;
+};
+
+export type CloseDefinitionField = {
+  id: string;
+  type?: string;
+  label?: string;
+  requiredOn?: string[];
+};
+
+export type CloseDefinition = {
+  version?: number;
+  fields?: CloseDefinitionField[];
 };
 
 export type CaseState = {

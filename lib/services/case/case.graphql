@@ -54,6 +54,17 @@ query GetCase($id: UUID!) {
     statusLabel
     threadId
     outbreakPlanInfo
+    aiSuspected
+    testResult
+    stoppedAt
+    closeSource
+    closePayload
+    closedBy {
+      id
+      firstName
+      lastName
+      username
+    }
     authorities {
       id
       name
@@ -66,10 +77,12 @@ query GetCase($id: UUID!) {
       updatedAt
       rendererData
       data
+      aiSuspected
       reportType {
         id
         name
         definition
+        closeDefinition
       }
       platform
       coverImage {
@@ -219,6 +232,38 @@ mutation StateForward(
           }
           formDefinition
         }
+      }
+    }
+  }
+}
+
+mutation UpdateCaseTestResult($caseId: UUID!, $testResult: String!) {
+  adminCaseTestResultUpdate(caseId: $caseId, testResult: $testResult) {
+    result {
+      id
+      testResult
+      aiSuspected
+      closePayload
+    }
+  }
+}
+
+mutation CloseCase($caseId: UUID!, $payload: GenericScalar) {
+  adminCaseClose(caseId: $caseId, payload: $payload) {
+    result {
+      id
+      isFinished
+      statusLabel
+      testResult
+      aiSuspected
+      stoppedAt
+      closeSource
+      closePayload
+      closedBy {
+        id
+        firstName
+        lastName
+        username
       }
     }
   }
