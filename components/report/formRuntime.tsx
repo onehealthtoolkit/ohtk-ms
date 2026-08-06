@@ -49,9 +49,7 @@ const FormRuntime = ({
       <Footer
         viewModel={form}
         onSubmit={onSubmit}
-        submitLabel={
-          submitLabel || t("form.button.submit", "Submit")
-        }
+        submitLabel={submitLabel || t("form.button.submit", "Submit")}
       />
     </div>
   );

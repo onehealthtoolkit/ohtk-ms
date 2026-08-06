@@ -11,9 +11,7 @@ const ReportCreatePage: NextPage = () => {
   const store = useStore();
 
   return (
-    <Protect
-      guard={s => !!(s.isRoleOfficer || s.isRoleAdmin || s.isSuperUser)}
-    >
+    <Protect guard={s => !!(s.isRoleOfficer || s.isRoleAdmin || s.isSuperUser)}>
       <Layout>
         <Breadcrumb
           crumbs={[
