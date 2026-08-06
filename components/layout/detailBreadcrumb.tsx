@@ -74,10 +74,7 @@ const DetailBreadcrumb = ({
             </a>
           </Link>
         </li>
-        <li
-          className="select-none text-base text-[#5F7FAE]"
-          aria-hidden="true"
-        >
+        <li className="select-none text-base text-[#5F7FAE]" aria-hidden="true">
           /
         </li>
         <li

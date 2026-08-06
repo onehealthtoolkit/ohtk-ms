@@ -169,230 +169,232 @@ const Report = (props: { id: string }) => {
               authorityName={viewModel.data.authorityName}
             />
             <MaskingLoader loading={viewModel.isLoading}>
-            <>
-              {viewModel.shouldDisplayActions && (
-                <div className="flex items-center flex-wrap gap-1 px-[26px] pt-4">
-                  <div className="flex-grow"></div>
-                  {viewModel.shouldDisplayPromoteToCase && (
-                    <PromoteToCaseButton
-                      disabled={viewModel.isLoading}
-                      type="button"
-                      onClick={() =>
-                        viewModel.dialog("confirmToPromoteToCase")?.open(null)
-                      }
-                    >
-                      {viewModel.isLoading && <Spinner />}
-                      &nbsp;
-                      {t("status.actions.promoteToCase", "Promote to case")}
-                    </PromoteToCaseButton>
-                  )}
-                  {viewModel.shouldDisplayConvertToTestReport && (
-                    <ConvertToTestReportButton
-                      disabled={viewModel.converting}
-                      type="button"
-                      onClick={async () => {
-                        viewModel.dialog("confirmToTest")?.open(null);
-                      }}
-                    >
-                      {viewModel.converting && <Spinner />}
-                      &nbsp;
-                      {t(
-                        "status.actions.convertToTest",
-                        "Convert to test report"
-                      )}
-                    </ConvertToTestReportButton>
-                  )}
-                </div>
-              )}
-
-              {viewModel.data.testFlag && (
-                <div className="flex fixed w-full h-full top-0 left-0 z-[999] pointer-events-none">
-                  <div className="absolute top-[20%] sm:left-[20%] md:left-[40%] translate-y-[50%] text-center text-[6em] opacity-20 origin-center -rotate-[25deg]">
-                    Test Report
+              <>
+                {viewModel.shouldDisplayActions && (
+                  <div className="flex items-center flex-wrap gap-1 px-[26px] pt-4">
+                    <div className="flex-grow"></div>
+                    {viewModel.shouldDisplayPromoteToCase && (
+                      <PromoteToCaseButton
+                        disabled={viewModel.isLoading}
+                        type="button"
+                        onClick={() =>
+                          viewModel.dialog("confirmToPromoteToCase")?.open(null)
+                        }
+                      >
+                        {viewModel.isLoading && <Spinner />}
+                        &nbsp;
+                        {t("status.actions.promoteToCase", "Promote to case")}
+                      </PromoteToCaseButton>
+                    )}
+                    {viewModel.shouldDisplayConvertToTestReport && (
+                      <ConvertToTestReportButton
+                        disabled={viewModel.converting}
+                        type="button"
+                        onClick={async () => {
+                          viewModel.dialog("confirmToTest")?.open(null);
+                        }}
+                      >
+                        {viewModel.converting && <Spinner />}
+                        &nbsp;
+                        {t(
+                          "status.actions.convertToTest",
+                          "Convert to test report"
+                        )}
+                      </ConvertToTestReportButton>
+                    )}
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Header: type + description only */}
-              <div className="px-[26px] py-6">
-                <div className="flex flex-wrap items-center gap-2">
-                  <p className="text-md dark:text-gray-400 ">
-                    {t("form.label.reportType", "Report Type")}:{" "}
-                    {viewModel.data.reportTypeName}
+                {viewModel.data.testFlag && (
+                  <div className="flex fixed w-full h-full top-0 left-0 z-[999] pointer-events-none">
+                    <div className="absolute top-[20%] sm:left-[20%] md:left-[40%] translate-y-[50%] text-center text-[6em] opacity-20 origin-center -rotate-[25deg]">
+                      Test Report
+                    </div>
+                  </div>
+                )}
+
+                {/* Header: type + description only */}
+                <div className="px-[26px] py-6">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="text-md dark:text-gray-400 ">
+                      {t("form.label.reportType", "Report Type")}:{" "}
+                      {viewModel.data.reportTypeName}
+                    </p>
+                    <CaseLink caseId={viewModel.data.caseId} />
+                    <TestLabel isTest={viewModel.data.testFlag} />
+                  </div>
+                  <p className="pt-1 text-base font-normal leading-relaxed text-gray-800">
+                    {viewModel.data.rendererData}
                   </p>
-                  <CaseLink caseId={viewModel.data.caseId} />
-                  <TestLabel isTest={viewModel.data.testFlag} />
                 </div>
-                <p className="pt-1 text-base font-normal leading-relaxed text-gray-800">
-                  {viewModel.data.rendererData}
-                </p>
-              </div>
 
-              {/* Brand divider between header and follow-up summary */}
-              <Divide hilight={true} />
+                {/* Brand divider between header and follow-up summary */}
+                <Divide hilight={true} />
 
-              {viewModel.data.accumulatedMetrics?.metrics &&
-                viewModel.data.accumulatedMetrics.metrics.length > 0 && (
-                  <div className="mx-[26px] mt-4 rounded-xl border border-slate-200/90 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900 overflow-hidden">
-                    <div className="px-4 py-3 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white dark:from-slate-800/80 dark:to-slate-900 dark:border-slate-700">
-                      <div className="min-w-0">
-                        <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 tracking-tight">
-                          {t(
-                            "form.label.accumulatedTotals",
-                            "Totals (report + follow-ups)"
-                          )}
-                        </p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                          {t(
-                            "form.label.accumulatedTotalsHint",
-                            "Combined metrics from the original report and all follow-ups"
-                          )}
-                        </p>
+                {viewModel.data.accumulatedMetrics?.metrics &&
+                  viewModel.data.accumulatedMetrics.metrics.length > 0 && (
+                    <div className="mx-[26px] mt-4 rounded-xl border border-slate-200/90 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900 overflow-hidden">
+                      <div className="px-4 py-3 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white dark:from-slate-800/80 dark:to-slate-900 dark:border-slate-700">
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 tracking-tight">
+                            {t(
+                              "form.label.accumulatedTotals",
+                              "Totals (report + follow-ups)"
+                            )}
+                          </p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                            {t(
+                              "form.label.accumulatedTotalsHint",
+                              "Combined metrics from the original report and all follow-ups"
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px bg-slate-100 dark:bg-slate-800">
+                        {viewModel.data.accumulatedMetrics.metrics.map(
+                          metric => (
+                            <div
+                              key={metric.id}
+                              className="bg-white dark:bg-slate-900 px-4 py-3.5 flex flex-col gap-1 min-h-[4.5rem] justify-center"
+                            >
+                              <span className="text-[11px] font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400 leading-snug">
+                                {metric.label || metric.id}
+                              </span>
+                              <span className="text-2xl font-bold tabular-nums tracking-tight text-slate-900 dark:text-white">
+                                {metric.value}
+                              </span>
+                            </div>
+                          )
+                        )}
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px bg-slate-100 dark:bg-slate-800">
-                      {viewModel.data.accumulatedMetrics.metrics.map(
-                        metric => (
-                          <div
-                            key={metric.id}
-                            className="bg-white dark:bg-slate-900 px-4 py-3.5 flex flex-col gap-1 min-h-[4.5rem] justify-center"
-                          >
-                            <span className="text-[11px] font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400 leading-snug">
-                              {metric.label || metric.id}
-                            </span>
-                            <span className="text-2xl font-bold tabular-nums tracking-tight text-slate-900 dark:text-white">
-                              {metric.value}
-                            </span>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
-                )}
+                  )}
 
-              <ReportAssessmentSection
-                riskViewModel={viewModel}
-                aiSuspected={viewModel.data.aiSuspected}
-              />
+                <ReportAssessmentSection
+                  riskViewModel={viewModel}
+                  aiSuspected={viewModel.data.aiSuspected}
+                />
 
-              <div className="flex flex-row gap-2 md:flex-nowrap flex-wrap ">
-                <ReportInformation viewModel={viewModel} />
-                <div className="md:w-1/2 w-full h-[300px] md:h-auto relative">
-                  <ReportLocation lnglat={viewModel.data.gpsLocation} />
-                  <div
-                    className={`bg-red absolute top-3 right-3 p-2 z-[1001] hover:bg-gray-50
+                <div className="flex flex-row gap-2 md:flex-nowrap flex-wrap ">
+                  <ReportInformation viewModel={viewModel} />
+                  <div className="md:w-1/2 w-full h-[300px] md:h-auto relative">
+                    <ReportLocation lnglat={viewModel.data.gpsLocation} />
+                    <div
+                      className={`bg-red absolute top-3 right-3 p-2 z-[1001] hover:bg-gray-50
                       border border-gray-400 rounded bg-white cursor-pointer
                     `}
-                    onClick={() =>
-                      viewModel.openReportMap(viewModel.data.caseId || "")
-                    }
-                  >
-                    <ArrowsPointingOutIcon className="w-5 h-5 " />
+                      onClick={() =>
+                        viewModel.openReportMap(viewModel.data.caseId || "")
+                      }
+                    >
+                      <ArrowsPointingOutIcon className="w-5 h-5 " />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <ConfirmDialog
-                store={viewModel.dialog("confirmToTest")}
-                content={t(
-                  "dialog.content.confirmConvertToTest",
-                  "Would you like to convert this report to test report?.?"
-                )}
-                onYes={() => viewModel.convertToTestReport()}
-                onNo={() => viewModel.dialog("confirmDelete")?.close()}
-              />
-
-              <ConfirmDialog
-                store={viewModel.dialog("confirmToPromoteToCase")}
-                content={t(
-                  "dialog.content.confirmToPromoteToCase",
-                  "Would you like to promote this report to case?.?"
-                )}
-                onYes={async () => {
-                  const caseId = await viewModel.promoteToCase();
-                  if (caseId) router.push(`/cases/${caseId}`);
-                }}
-                onNo={() => viewModel.dialog("confirmToPromoteToCase")?.close()}
-              />
-
-              <ReportImage viewModel={viewModel} />
-
-              <Divide />
-              <TabBar>
-                <TabItem
-                  id="formData"
-                  active={viewModel.activeTabIndex == 0}
-                  onTab={() => {
-                    viewModel.activeTabIndex = 0;
-                    router.push(
-                      {
-                        pathname: router.pathname,
-                        query: { ...router.query, activeTabIndex: 0 },
-                      },
-                      undefined,
-                      { shallow: true }
-                    );
-                  }}
-                >
-                  {() => (
-                    <>
-                      <span>{t("form.label.formData", "Form Data")}</span>
-                    </>
+                <ConfirmDialog
+                  store={viewModel.dialog("confirmToTest")}
+                  content={t(
+                    "dialog.content.confirmConvertToTest",
+                    "Would you like to convert this report to test report?.?"
                   )}
-                </TabItem>
-                <TabItem
-                  id="followup"
-                  active={viewModel.activeTabIndex == 1}
-                  onTab={() => {
-                    viewModel.activeTabIndex = 1;
-                    router.push(
-                      {
-                        pathname: router.pathname,
-                        query: { ...router.query, activeTabIndex: 1 },
-                      },
-                      undefined,
-                      { shallow: true }
-                    );
-                  }}
-                >
-                  {() => (
-                    <>
-                      <span>{t("form.label.followup", "Followup")}</span>
-                    </>
+                  onYes={() => viewModel.convertToTestReport()}
+                  onNo={() => viewModel.dialog("confirmDelete")?.close()}
+                />
+
+                <ConfirmDialog
+                  store={viewModel.dialog("confirmToPromoteToCase")}
+                  content={t(
+                    "dialog.content.confirmToPromoteToCase",
+                    "Would you like to promote this report to case?.?"
                   )}
-                </TabItem>
-              </TabBar>
+                  onYes={async () => {
+                    const caseId = await viewModel.promoteToCase();
+                    if (caseId) router.push(`/cases/${caseId}`);
+                  }}
+                  onNo={() =>
+                    viewModel.dialog("confirmToPromoteToCase")?.close()
+                  }
+                />
 
-              <div className="mb-4">
-                {viewModel.activeTabIndex == 0 && (
-                  <RenderData
-                    data={viewModel.data.data}
-                    definition={viewModel.data.reportTypeDefinition}
-                    imageUrlMap={viewModel.imageUrlMap}
-                    fileUrlMap={viewModel.fileUrlMap}
-                  />
+                <ReportImage viewModel={viewModel} />
+
+                <Divide />
+                <TabBar>
+                  <TabItem
+                    id="formData"
+                    active={viewModel.activeTabIndex == 0}
+                    onTab={() => {
+                      viewModel.activeTabIndex = 0;
+                      router.push(
+                        {
+                          pathname: router.pathname,
+                          query: { ...router.query, activeTabIndex: 0 },
+                        },
+                        undefined,
+                        { shallow: true }
+                      );
+                    }}
+                  >
+                    {() => (
+                      <>
+                        <span>{t("form.label.formData", "Form Data")}</span>
+                      </>
+                    )}
+                  </TabItem>
+                  <TabItem
+                    id="followup"
+                    active={viewModel.activeTabIndex == 1}
+                    onTab={() => {
+                      viewModel.activeTabIndex = 1;
+                      router.push(
+                        {
+                          pathname: router.pathname,
+                          query: { ...router.query, activeTabIndex: 1 },
+                        },
+                        undefined,
+                        { shallow: true }
+                      );
+                    }}
+                  >
+                    {() => (
+                      <>
+                        <span>{t("form.label.followup", "Followup")}</span>
+                      </>
+                    )}
+                  </TabItem>
+                </TabBar>
+
+                <div className="mb-4">
+                  {viewModel.activeTabIndex == 0 && (
+                    <RenderData
+                      data={viewModel.data.data}
+                      definition={viewModel.data.reportTypeDefinition}
+                      imageUrlMap={viewModel.imageUrlMap}
+                      fileUrlMap={viewModel.fileUrlMap}
+                    />
+                  )}
+                  {viewModel.activeTabIndex == 1 && (
+                    <div className="">
+                      <FollowupList incidentId={viewModel.id} />
+                    </div>
+                  )}
+                </div>
+
+                <Divide />
+
+                {viewModel.data.threadId && (
+                  <Comments threadId={viewModel.data.threadId} />
                 )}
-                {viewModel.activeTabIndex == 1 && (
-                  <div className="">
-                    <FollowupList incidentId={viewModel.id} />
-                  </div>
-                )}
-              </div>
 
-              <Divide />
-
-              {viewModel.data.threadId && (
-                <Comments threadId={viewModel.data.threadId} />
-              )}
-
-              <GalleryDialog viewModel={viewModel.galleryViewModel} />
-              <ReportLocationMapDialog
-                viewModel={viewModel.reportMapViewModel}
-                lnglat={viewModel.data.gpsLocation}
-                zones={viewModel.outbreakInfo}
-              />
-              <ViewActionButtons />
-            </>
+                <GalleryDialog viewModel={viewModel.galleryViewModel} />
+                <ReportLocationMapDialog
+                  viewModel={viewModel.reportMapViewModel}
+                  lnglat={viewModel.data.gpsLocation}
+                  zones={viewModel.outbreakInfo}
+                />
+                <ViewActionButtons />
+              </>
             </MaskingLoader>
           </>
         );

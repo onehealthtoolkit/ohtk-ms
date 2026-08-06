@@ -2,10 +2,7 @@ import { observer } from "mobx-react";
 import { useTranslation } from "react-i18next";
 import ReportRiskPanel from "components/report/riskPanel";
 import AiSuspectedPanel from "components/case/aiSuspectedPanel";
-import {
-  ReportRiskState,
-  RiskFilterLevel,
-} from "lib/services/report/report";
+import { ReportRiskState, RiskFilterLevel } from "lib/services/report/report";
 
 type AssessmentRiskViewModel = {
   data: ReportRiskState;
