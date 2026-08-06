@@ -199,6 +199,8 @@ const CaseList = () => {
                         <CaseStatus
                           isFinished={record.isFinished}
                           statusLabel={record.statusLabel}
+                          closeOutcome={record.closeOutcome}
+                          closeSource={record.closeSource}
                         />
                       ),
                     },

@@ -19,7 +19,7 @@ export const RISK_LEVEL_OPTIONS: RiskFilterLevel[] = [
   "CRITICAL",
 ];
 
-const RISK_BADGE_TONES: Record<RiskFilterLevel, RiskBadgeTone> = {
+export const RISK_BADGE_TONES: Record<RiskFilterLevel, RiskBadgeTone> = {
   NO_ASSESSMENT: {
     label: "No assessment",
     text: "#64748b",

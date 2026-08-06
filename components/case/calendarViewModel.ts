@@ -12,6 +12,8 @@ export type CaseEvent = {
   id: string;
   name: string;
   isFinished: boolean;
+  closeOutcome?: string;
+  closeSource?: string;
   day: number;
   month: number;
   year: number;
@@ -47,6 +49,8 @@ export class CaseCalendarViewModel extends CalendarViewModel<CaseEvent> {
       return {
         id: reportCase.id,
         isFinished: reportCase.isFinished,
+        closeOutcome: reportCase.closeOutcome,
+        closeSource: reportCase.closeSource,
         name: reportCase.reportTypeName || "",
         day,
         month,

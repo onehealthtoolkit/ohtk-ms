@@ -453,7 +453,8 @@ export const Divide: FC<DivideProps> = tw.hr`
   ${(p: DivideProps) => {
     const results: string[] = [];
     if (p.hilight) {
-      results.push("border-[#1a8297]");
+      // LAHIS brand navy (not legacy OHTK teal #1a8297)
+      results.push("border-[#13396B]");
     }
     if (p.thin) {
       results.push("border-1");

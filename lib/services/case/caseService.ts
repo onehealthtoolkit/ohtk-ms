@@ -153,6 +153,8 @@ export class CaseService implements ICaseService {
           reportTypeName: item.report?.reportType?.name,
           isFinished: item.isFinished,
           statusLabel: item.statusLabel || "",
+          closeOutcome: (item as any).closeOutcome || "",
+          closeSource: (item as any).closeSource || "",
           authorityName: item.report?.authorities
             ?.map(item => item?.name)
             .join(", "),

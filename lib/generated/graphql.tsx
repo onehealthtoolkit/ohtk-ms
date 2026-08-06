@@ -11636,6 +11636,14 @@ export const CasesDocument = {
                       },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "closeOutcome" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closeSource" },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "report" },
                         selectionSet: {
                           kind: "SelectionSet",

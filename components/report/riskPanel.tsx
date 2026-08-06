@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import {
-  ChevronDownIcon,
-  ChevronRightIcon,
   CheckIcon,
   PencilSquareIcon,
   XMarkIcon,
@@ -12,6 +10,7 @@ import Spinner from "components/widgets/spinner";
 import RiskBadge, {
   getRiskLabel,
   RISK_LEVEL_OPTIONS,
+  RISK_BADGE_TONES,
 } from "components/risk/RiskBadge";
 import { formatDateTime } from "lib/datetime";
 import {
@@ -45,14 +44,27 @@ const riskActorLabel = (assessment?: RiskAssessment | null) => {
 
 const riskMetaLabel = (
   assessment: RiskAssessment | null | undefined,
-  locale?: string
+  locale?: string,
+  emptyLabel?: string
 ) => {
-  if (!assessment) return "No risk level has been set";
+  if (!assessment) {
+    return emptyLabel || "No risk level has been set.";
+  }
   const actor = riskActorLabel(assessment);
   const timestamp = formatDateTime(assessment.createdAt || undefined, locale);
   return [actor ? `Set by ${actor}` : "", timestamp]
     .filter(Boolean)
-    .join(" - ");
+    .join(" · ");
+};
+
+/** Design handoff: click-to-save levels (no separate Save). */
+const EDITABLE_LEVELS: RiskFilterLevel[] = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
+
+const LEVEL_HINTS: Record<string, string> = {
+  LOW: "monitor only",
+  MEDIUM: "follow up",
+  HIGH: "act within 24h",
+  CRITICAL: "escalate now",
 };
 
 type RiskPanelViewModel = {
@@ -61,7 +73,16 @@ type RiskPanelViewModel = {
   setRiskLevel: (level: RiskFilterLevel) => Promise<boolean>;
 };
 
-const ReportRiskPanel = ({ viewModel }: { viewModel: RiskPanelViewModel }) => {
+type ReportRiskPanelProps = {
+  viewModel: RiskPanelViewModel;
+  /** case = assessment card (handoff); stack = report page / legacy */
+  variant?: "case" | "stack";
+};
+
+const ReportRiskPanel = ({
+  viewModel,
+  variant = "stack",
+}: ReportRiskPanelProps) => {
   const { t, i18n } = useTranslation();
   const currentRisk = viewModel.data.currentRiskAssessment;
   const [isEditing, setIsEditing] = useState(false);
@@ -78,6 +99,22 @@ const ReportRiskPanel = ({ viewModel }: { viewModel: RiskPanelViewModel }) => {
     setDraftLevel(currentRisk?.level || "NO_ASSESSMENT");
   }, [currentRisk?.level]);
 
+  const emptyMeta = t(
+    "risk.notSet",
+    "No risk level has been set."
+  );
+
+  const pickLevel = async (level: RiskFilterLevel) => {
+    setSaveError(undefined);
+    setDraftLevel(level);
+    const saved = await viewModel.setRiskLevel(level);
+    if (saved) {
+      setIsEditing(false);
+      return;
+    }
+    setSaveError(t("risk.saveError", "Unable to save risk level"));
+  };
+
   const saveRisk = async () => {
     setSaveError(undefined);
     const saved = await viewModel.setRiskLevel(draftLevel);
@@ -88,6 +125,131 @@ const ReportRiskPanel = ({ viewModel }: { viewModel: RiskPanelViewModel }) => {
     setSaveError(t("risk.saveError", "Unable to save risk level"));
   };
 
+  if (variant === "case") {
+    return (
+      <div className="rounded-lg border border-gray-200 bg-white px-4 py-[15px]">
+        <div className="flex items-start justify-between gap-3">
+          <div className="text-[13px] font-medium text-gray-700">
+            {t("risk.levelLabel", "Risk level")}
+            <span className="font-light text-gray-400">
+              {" "}
+              · {t("risk.editable", "editable")}
+            </span>
+          </div>
+          {!isEditing ? (
+            <button
+              type="button"
+              className="shrink-0 rounded-md border border-blue-200 bg-white px-[11px] py-[7px] text-xs font-medium text-blue-700 hover:bg-blue-50"
+              onClick={() => {
+                setDraftLevel(currentRisk?.level || "NO_ASSESSMENT");
+                setSaveError(undefined);
+                setIsEditing(true);
+              }}
+            >
+              {t("risk.edit", "Edit risk")}
+            </button>
+          ) : null}
+        </div>
+
+        {!isEditing ? (
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <RiskBadge level={currentRisk?.level} />
+            <span className="text-[12.5px] font-light text-gray-500">
+              {riskMetaLabel(currentRisk, i18n.language, emptyMeta)}
+            </span>
+          </div>
+        ) : (
+          <div className="mt-3 animate-[fadein_0.15s_ease]">
+            <div className="flex flex-col gap-[7px]">
+              {EDITABLE_LEVELS.map(level => {
+                const tone = RISK_BADGE_TONES[level];
+                return (
+                  <button
+                    key={level}
+                    type="button"
+                    disabled={viewModel.riskSaving}
+                    onClick={() => pickLevel(level)}
+                    className="flex w-full items-center gap-2 rounded-md border px-3 py-2 text-left disabled:opacity-60"
+                    style={{
+                      color: tone.text,
+                      background: tone.background,
+                      borderColor: tone.border,
+                    }}
+                  >
+                    <span
+                      className="inline-block h-[9px] w-[9px] shrink-0 rounded-full"
+                      style={{ background: tone.dot }}
+                    />
+                    <span className="flex-1 text-[13px] font-medium">
+                      {getRiskLabel(t, level)}
+                    </span>
+                    <span className="text-[11px] font-light opacity-75">
+                      {t(`risk.hint.${level.toLowerCase()}`, LEVEL_HINTS[level])}
+                    </span>
+                    {viewModel.riskSaving && draftLevel === level ? (
+                      <Spinner />
+                    ) : null}
+                  </button>
+                );
+              })}
+            </div>
+            {saveError ? (
+              <p className="mt-2 text-sm text-red-600" role="alert">
+                {saveError}
+              </p>
+            ) : null}
+            <button
+              type="button"
+              className="mt-2 rounded-md border border-gray-200 bg-white px-3 py-2 text-xs font-normal text-gray-500 hover:bg-gray-50"
+              onClick={() => setIsEditing(false)}
+              disabled={viewModel.riskSaving}
+            >
+              {t("form.button.cancel", "Cancel")}
+            </button>
+          </div>
+        )}
+
+        {!isEditing && recentChanges.length > 0 ? (
+          <div className="mt-3">
+            <button
+              type="button"
+              className="text-xs font-normal text-blue-700 hover:underline"
+              aria-expanded={isHistoryExpanded}
+              onClick={() => setIsHistoryExpanded(v => !v)}
+            >
+              {isHistoryExpanded
+                ? t("risk.hideHistory", "Hide history")
+                : t("risk.showHistory", "Show {{count}} earlier assessments", {
+                    count: recentChanges.length,
+                  })}
+            </button>
+            {isHistoryExpanded ? (
+              <div className="mt-2 border-t border-dashed border-gray-200 pt-2">
+                {recentChanges.slice(0, 5).map(item => (
+                  <div
+                    key={item.id}
+                    className="flex flex-wrap items-baseline gap-2 py-1 text-xs font-light text-gray-500"
+                  >
+                    <span className="min-w-[58px] font-normal text-gray-700">
+                      {getRiskLabel(t, item.level)}
+                    </span>
+                    <span className="flex-1">
+                      {riskActorLabel(item) || riskSourceLabel(item.source)}
+                    </span>
+                    <span className="ml-auto">
+                      {formatDateTime(item.createdAt || undefined, i18n.language)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
+  // —— stack (report detail / legacy) ——
   return (
     <section className="relative my-4 bg-white px-4 py-3 md:px-8">
       <div className="flex flex-wrap items-start gap-3">
@@ -98,7 +260,7 @@ const ReportRiskPanel = ({ viewModel }: { viewModel: RiskPanelViewModel }) => {
           <div className="mt-2 flex flex-wrap items-center gap-3">
             <RiskBadge level={currentRisk?.level} />
             <span className="text-sm text-gray-500">
-              {riskMetaLabel(currentRisk, i18n.language)}
+              {riskMetaLabel(currentRisk, i18n.language, emptyMeta)}
             </span>
           </div>
         </div>
@@ -120,23 +282,19 @@ const ReportRiskPanel = ({ viewModel }: { viewModel: RiskPanelViewModel }) => {
         <div className="mt-3">
           <button
             type="button"
-            className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-500 hover:text-gray-700"
+            className="text-xs font-normal text-blue-700 hover:underline"
             aria-expanded={isHistoryExpanded}
             onClick={() => setIsHistoryExpanded(value => !value)}
           >
-            {isHistoryExpanded ? (
-              <ChevronDownIcon className="h-4 w-4" />
-            ) : (
-              <ChevronRightIcon className="h-4 w-4" />
-            )}
-            {t("risk.recentChanges", "Recent changes")}
-            <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[11px] font-semibold text-gray-500">
-              {recentChanges.length}
-            </span>
+            {isHistoryExpanded
+              ? t("risk.hideHistory", "Hide history")
+              : t("risk.showHistory", "Show {{count}} earlier assessments", {
+                  count: recentChanges.length,
+                })}
           </button>
 
           {isHistoryExpanded && (
-            <div className="flex flex-col gap-2">
+            <div className="mt-2 flex flex-col gap-2 border-t border-dashed border-gray-200 pt-2">
               {recentChanges.slice(0, 3).map(item => (
                 <div
                   key={item.id}
