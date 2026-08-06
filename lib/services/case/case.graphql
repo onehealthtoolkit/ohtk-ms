@@ -21,6 +21,8 @@ query Cases(
       id
       isFinished
       statusLabel
+      closeOutcome
+      closeSource
       report {
         createdAt
         incidentDate

@@ -15,6 +15,9 @@ export type Case = {
   reportByTelephone?: string;
   isFinished: boolean;
   statusLabel: string;
+  /** Officer finish outcome: close_case | false_positive | "" */
+  closeOutcome?: string;
+  closeSource?: string;
   threadId?: number | null;
   gpsLocation?: string | null;
   reportId?: string;

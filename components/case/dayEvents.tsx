@@ -4,6 +4,39 @@ import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
+function finishedBadgeClass(
+  closeOutcome?: string,
+  closeSource?: string
+): string {
+  if (closeSource === "system") {
+    return "bg-amber-50 text-amber-800 border border-amber-200";
+  }
+  if (closeOutcome === "false_positive") {
+    return "bg-slate-100 text-slate-600 border border-slate-300";
+  }
+  if (closeOutcome === "close_case") {
+    return "bg-green-500 text-white";
+  }
+  return "bg-green-400 text-white";
+}
+
+function finishedBadgeLabel(
+  t: (k: string, d: string) => string,
+  closeOutcome?: string,
+  closeSource?: string
+): string {
+  if (closeSource === "system") {
+    return t("case.finish.systemTimeout", "System timeout");
+  }
+  if (closeOutcome === "false_positive") {
+    return t("case.finish.falsePositive", "False positive");
+  }
+  if (closeOutcome === "close_case") {
+    return t("case.finish.closeCase", "Close case");
+  }
+  return t("status.finished", "Finished");
+}
+
 export const CaseDayEvents = observer(
   ({ date, viewModel }: DayEventsProps<CaseEvent>) => {
     const { t } = useTranslation();
@@ -20,11 +53,12 @@ export const CaseDayEvents = observer(
             {event.name}
             {event.isFinished && (
               <span
-                className="float-right bg-green-400 text-white 
-                  font-normal rounded px-1
-                "
+                className={`float-right font-normal rounded px-1 text-xs ${finishedBadgeClass(
+                  event.closeOutcome,
+                  event.closeSource
+                )}`}
               >
-                {t("status.finished", "finished")}
+                {finishedBadgeLabel(t, event.closeOutcome, event.closeSource)}
               </span>
             )}
           </p>

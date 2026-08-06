@@ -17,6 +17,7 @@ import {
 } from "@heroicons/react/24/solid";
 import useStore from "lib/store";
 import CaseStatus from "./caseStatus";
+import CaseBreadcrumb from "./caseBreadcrumb";
 import { RenderData, TR } from "components/widgets/renderData";
 import Comments from "components/widgets/comments";
 import dynamic from "next/dynamic";
@@ -28,9 +29,9 @@ import { useRouter } from "next/router";
 import ReportLocationMapDialog from "components/case/reportMapDialog";
 import { toJS } from "mobx";
 import { useTranslation } from "react-i18next";
-import ReportRiskPanel from "components/report/riskPanel";
-import AiSuspectedPanel from "components/case/aiSuspectedPanel";
+import CaseAssessmentSection from "components/case/caseAssessmentSection";
 import CaseClosePanel from "components/case/caseClosePanel";
+import CaseHeaderAside from "components/case/caseHeaderAside";
 
 const ReportMap = dynamic(() => import("./reportMap"), {
   loading: () => <p>A map is loading</p>,
@@ -141,30 +142,37 @@ const Case = (props: { id: string }) => {
     <Observer>
       {() => {
         return (
-          <MaskingLoader loading={viewModel.isLoading}>
+          <>
+            <CaseBreadcrumb
+              caseId={id}
+              reportTypeName={viewModel.data.reportTypeName}
+              authorityName={viewModel.data.authorityName}
+            />
+            <MaskingLoader loading={viewModel.isLoading}>
             <>
-              <div>
-                <div className="flex gap-2">
-                  <p className="text-md dark:text-gray-400 ">
-                    {t("form.label.reportType", "Report Type")}:{" "}
-                    {viewModel.data.reportTypeName}
+              <div className="flex flex-col gap-7 px-[26px] py-6 md:flex-row md:items-start md:justify-between">
+                <div className="min-w-0 flex-1">
+                  <div className="mb-2.5 flex flex-wrap items-center gap-2.5">
+                    <p className="text-md dark:text-gray-400 ">
+                      {t("form.label.reportType", "Report Type")}:{" "}
+                      {viewModel.data.reportTypeName}
+                    </p>
+                    <CaseStatus
+                      isFinished={viewModel.data.isFinished}
+                      statusLabel={viewModel.data.statusLabel}
+                      closeOutcome={viewModel.data.closeOutcome}
+                      closeSource={viewModel.data.closeSource}
+                    />
+                  </div>
+                  <p className="pt-1 text-base font-normal leading-relaxed text-gray-800">
+                    {viewModel.data.description}
                   </p>
-                  <CaseStatus
-                    isFinished={viewModel.data.isFinished}
-                    statusLabel={viewModel.data.statusLabel}
-                  />
                 </div>
-                <p className="text-sm pt-1 font-bold">
-                  {viewModel.data.description}
-                </p>
+                <CaseHeaderAside viewModel={viewModel} />
               </div>
               <Divide hilight={true} />
 
-              <ReportRiskPanel viewModel={viewModel} />
-              <Divide />
-
-              <AiSuspectedPanel viewModel={viewModel} />
-              <Divide />
+              <CaseAssessmentSection viewModel={viewModel} />
 
               <CaseClosePanel viewModel={viewModel} />
               <Divide />
@@ -286,7 +294,8 @@ const Case = (props: { id: string }) => {
 
               <ViewActionButtons />
             </>
-          </MaskingLoader>
+            </MaskingLoader>
+          </>
         );
       }}
     </Observer>
