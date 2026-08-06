@@ -176,6 +176,11 @@ query GetReport($id: ID!) {
     authorities {
       name
     }
+    village {
+      id
+      name
+      code
+    }
     currentRiskAssessment {
       ...RiskAssessmentFields
     }

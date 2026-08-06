@@ -6,9 +6,10 @@ export type DetailBreadcrumbProps = {
   parentLabel: string;
   parentHref: string;
   entityId: string;
-  /** Optional context after short id, e.g. report type · authority */
+  /** Optional context after short id, e.g. report type · authority · village */
   reportTypeName?: string;
   authorityName?: string;
+  villageName?: string;
 };
 
 /** Short id = first 6 hex chars of UUID (case/report detail chrome). */
@@ -27,12 +28,13 @@ const DetailBreadcrumb = ({
   entityId,
   reportTypeName,
   authorityName,
+  villageName,
 }: DetailBreadcrumbProps) => {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
   const short = shortEntityId(entityId);
 
-  const contextParts = [reportTypeName, authorityName].filter(
+  const contextParts = [reportTypeName, authorityName, villageName].filter(
     (p): p is string => !!(p && p.trim())
   );
   const contextLabel = contextParts.join(" · ");

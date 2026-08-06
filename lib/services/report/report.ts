@@ -42,6 +42,8 @@ export type Report = {
   categoryIcon?: string | null;
   imageUrl?: string | null;
   authorityName?: string;
+  /** Set when report is linked to a village (OP1 dashboard create) */
+  villageName?: string;
   testFlag: boolean;
   currentRiskAssessment?: RiskAssessment | null;
   /** AI narrative on IncidentReport.ai_suspected (read-only in UI) */

@@ -5,12 +5,14 @@ export type ReportBreadcrumbProps = {
   reportId: string;
   reportTypeName?: string;
   authorityName?: string;
+  villageName?: string;
 };
 
 const ReportBreadcrumb = ({
   reportId,
   reportTypeName,
   authorityName,
+  villageName,
 }: ReportBreadcrumbProps) => {
   const { t } = useTranslation();
   return (
@@ -20,6 +22,7 @@ const ReportBreadcrumb = ({
       entityId={reportId}
       reportTypeName={reportTypeName}
       authorityName={authorityName}
+      villageName={villageName}
     />
   );
 };

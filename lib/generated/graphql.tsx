@@ -1689,6 +1689,7 @@ export type AdminVillageCreateSuccess = {
   createdAt: Scalars["DateTime"]["output"];
   deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
   id: Scalars["ID"]["output"];
+  incidentReports: Array<IncidentReportType>;
   invitations: Array<AdminInvitationCodeCreateSuccess>;
   latitude?: Maybe<Scalars["Float"]["output"]>;
   location?: Maybe<Scalars["GeoJSON"]["output"]>;
@@ -1743,6 +1744,7 @@ export type AdminVillageUpdateSuccess = {
   createdAt: Scalars["DateTime"]["output"];
   deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
   id: Scalars["ID"]["output"];
+  incidentReports: Array<IncidentReportType>;
   invitations: Array<AdminInvitationCodeCreateSuccess>;
   latitude?: Maybe<Scalars["Float"]["output"]>;
   location?: Maybe<Scalars["GeoJSON"]["output"]>;
@@ -2412,6 +2414,7 @@ export type IncidentReportType = {
   threadId?: Maybe<Scalars["Int"]["output"]>;
   updatedAt: Scalars["DateTime"]["output"];
   uploadFiles?: Maybe<Array<Maybe<UploadFileType>>>;
+  village?: Maybe<IncidentReportVillageType>;
 };
 
 export type IncidentReportTypeRiskAssessmentHistoryArgs = {
@@ -2425,6 +2428,14 @@ export type IncidentReportTypeNodeConnection = {
   /** Contains the nodes in this connection. */
   results: Array<Maybe<IncidentReportType>>;
   totalCount?: Maybe<Scalars["Int"]["output"]>;
+};
+
+/** Lightweight village projection for report/case detail (OP1). */
+export type IncidentReportVillageType = {
+  __typename?: "IncidentReportVillageType";
+  code?: Maybe<Scalars["String"]["output"]>;
+  id?: Maybe<Scalars["Int"]["output"]>;
+  name?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type IntegrationClusterClientType = {
@@ -5217,6 +5228,12 @@ export type GetCaseQuery = {
         __typename?: "AuthorityType";
         name: string;
       } | null> | null;
+      village?: {
+        __typename?: "IncidentReportVillageType";
+        id?: number | null;
+        name?: string | null;
+        code?: string | null;
+      } | null;
       currentRiskAssessment?: {
         __typename?: "RiskAssessmentProjectionType";
         id: string;
@@ -8454,6 +8471,12 @@ export type GetReportQuery = {
       __typename?: "AuthorityType";
       name: string;
     } | null> | null;
+    village?: {
+      __typename?: "IncidentReportVillageType";
+      id?: number | null;
+      name?: string | null;
+      code?: string | null;
+    } | null;
     currentRiskAssessment?: {
       __typename?: "RiskAssessmentProjectionType";
       id: string;
@@ -12076,6 +12099,27 @@ export const GetCaseDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "village" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "code" },
                             },
                           ],
                         },
@@ -26058,6 +26102,18 @@ export const GetReportDocument = {
                     kind: "SelectionSet",
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "village" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "code" } },
                     ],
                   },
                 },

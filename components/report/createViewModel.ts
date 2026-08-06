@@ -25,7 +25,6 @@ export class ReportCreateViewModel {
   selectedVillageId = "";
   villagesLoading = false;
 
-  incidentDate: string = new Date().toISOString().slice(0, 10);
   testFlag = false;
 
   formRuntime?: FormRuntimeViewModel = undefined;
@@ -52,7 +51,6 @@ export class ReportCreateViewModel {
       villages: observable,
       selectedVillageId: observable,
       villagesLoading: observable,
-      incidentDate: observable,
       testFlag: observable,
       formRuntime: observable,
       loadingDefinition: observable,
@@ -69,9 +67,31 @@ export class ReportCreateViewModel {
 
   get canContinueToForm(): boolean {
     if (!this.selectedReportTypeId) return false;
-    if (!this.incidentDate) return false;
     if (this.villageRequired && !this.selectedVillageId) return false;
     return true;
+  }
+
+  /**
+   * GraphQL incidentDate comes from the form field (usually incident_date),
+   * not a separate setup control.
+   */
+  extractIncidentDate(data: Record<string, unknown>): string | null {
+    const raw =
+      data["incident_date"] ??
+      data["incidentDate"] ??
+      data["incident_date__value"];
+    if (raw == null || raw === "") return null;
+    if (typeof raw === "string") {
+      // YYYY-MM-DD or ISO datetime
+      const m = raw.match(/^(\d{4}-\d{2}-\d{2})/);
+      if (m) return m[1];
+      const d = new Date(raw);
+      if (!Number.isNaN(d.getTime())) {
+        return d.toISOString().slice(0, 10);
+      }
+      return null;
+    }
+    return null;
   }
 
   async init() {
@@ -185,11 +205,23 @@ export class ReportCreateViewModel {
       }
     }
 
+    const incidentDate = this.extractIncidentDate(data);
+    if (!incidentDate) {
+      const msg =
+        "Incident date is required in the form (field incident_date).";
+      this.formRuntime.setSubmitting(false);
+      this.formRuntime.setSubmitError(msg);
+      runInAction(() => {
+        this.submitError = msg;
+      });
+      return null;
+    }
+
     try {
       const result = await this.reportService.submitIncidentReport({
         data,
         reportTypeId: this.selectedReportTypeId,
-        incidentDate: this.incidentDate,
+        incidentDate,
         gpsLocation,
         villageId,
         incidentInAuthority: !villageId,

@@ -241,6 +241,9 @@ export class ReportService implements IReportService {
         authorityName: incidentReport.authorities
           ?.map(item => item?.name)
           .join(", "),
+        villageName:
+          (incidentReport as { village?: { name?: string | null } | null })
+            .village?.name || undefined,
         testFlag: incidentReport.testFlag,
         aiSuspected: (incidentReport as any).aiSuspected || "",
         currentRiskAssessment: mapRiskAssessment(
@@ -256,6 +259,30 @@ export class ReportService implements IReportService {
     return {
       data,
     };
+  }
+
+  async convertToTestReport(reportId: string): Promise<String> {
+    const result = await this.client.mutate({
+      mutation: ConvertReportToTestReportDocument,
+      variables: {
+        reportId,
+      },
+      refetchQueries: [
+        {
+          query: ReportsDocument,
+          variables: this.fetchReportsQuery,
+          fetchPolicy: "network-only",
+        },
+        {
+          query: GetReportDocument,
+          variables: {
+            id: reportId,
+          },
+        },
+      ],
+      awaitRefetchQueries: true,
+    });
+    return result.data?.convertToTestReport?.report?.id;
   }
 
   async submitIncidentReport(
@@ -299,30 +326,6 @@ export class ReportService implements IReportService {
         caseId: created.caseId,
       },
     };
-  }
-
-  async convertToTestReport(reportId: string): Promise<String> {
-    const result = await this.client.mutate({
-      mutation: ConvertReportToTestReportDocument,
-      variables: {
-        reportId,
-      },
-      refetchQueries: [
-        {
-          query: ReportsDocument,
-          variables: this.fetchReportsQuery,
-          fetchPolicy: "network-only",
-        },
-        {
-          query: GetReportDocument,
-          variables: {
-            id: reportId,
-          },
-        },
-      ],
-      awaitRefetchQueries: true,
-    });
-    return result.data?.convertToTestReport?.report?.id;
   }
 
   async setReportRisk(

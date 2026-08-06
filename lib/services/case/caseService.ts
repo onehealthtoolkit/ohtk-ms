@@ -235,6 +235,12 @@ export class CaseService implements ICaseService {
         authorityName: incidentCase.report?.authorities
           ?.map(item => item?.name)
           .join(", "),
+        villageName:
+          (
+            incidentCase.report as {
+              village?: { name?: string | null } | null;
+            } | null
+          )?.village?.name || undefined,
         aiSuspected:
           incidentCase.aiSuspected || incidentCase.report?.aiSuspected || "",
         testResult: incidentCase.testResult || "",

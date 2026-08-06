@@ -105,7 +105,8 @@ const ReportImage = observer(({ viewModel }: { viewModel: CaseViewModel }) => {
 const Case = (props: { id: string }) => {
   const { id } = props;
   const router = useRouter();
-  const { me } = useStore();
+  const store = useStore();
+  const { me } = store;
   const { caseService, commentService, outbreakService, reportService } =
     useServices();
   const [viewModel] = useState(
@@ -147,6 +148,11 @@ const Case = (props: { id: string }) => {
               caseId={id}
               reportTypeName={viewModel.data.reportTypeName}
               authorityName={viewModel.data.authorityName}
+              villageName={
+                store.isFeatureEnable("village")
+                  ? viewModel.data.villageName
+                  : undefined
+              }
             />
             <MaskingLoader loading={viewModel.isLoading}>
               <>
@@ -171,8 +177,12 @@ const Case = (props: { id: string }) => {
                   <CaseHeaderAside viewModel={viewModel} />
                 </div>
                 <Divide hilight={true} />
+
                 <CaseAssessmentSection viewModel={viewModel} />
-                <CaseClosePanel viewModel={viewModel} /> <Divide />
+
+                <CaseClosePanel viewModel={viewModel} />
+                <Divide />
+
                 <div className="flex flex-row gap-2 md:flex-nowrap flex-wrap ">
                   <ReportInformation viewModel={viewModel} />
                   <div className="md:w-1/2 w-full h-[300px] md:h-auto relative">
@@ -191,8 +201,11 @@ const Case = (props: { id: string }) => {
                     </div>
                   </div>
                 </div>
+
                 <ReportImage viewModel={viewModel} />
+
                 <Divide />
+
                 <div className="mb-4">
                   <TabBar>
                     <TabItem
@@ -274,14 +287,19 @@ const Case = (props: { id: string }) => {
                     </div>
                   )}
                 </div>
+
                 <Divide />
+
                 <Comments threadId={viewModel.data.threadId} />
+
                 <GalleryDialog viewModel={viewModel.galleryViewModel} />
+
                 <ReportLocationMapDialog
                   viewModel={viewModel.reportMapViewModel}
                   lnglat={viewModel.data.gpsLocation}
                   zones={viewModel.outbreakInfo}
                 />
+
                 <ViewActionButtons />
               </>
             </MaskingLoader>
