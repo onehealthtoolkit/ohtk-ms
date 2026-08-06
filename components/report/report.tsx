@@ -179,9 +179,7 @@ const Report = (props: { id: string }) => {
               reportId={id}
               reportTypeName={viewModel.data.reportTypeName}
               authorityName={viewModel.data.authorityName}
-              villageName={
-                showVillage ? viewModel.data.villageName : undefined
-              }
+              villageName={showVillage ? viewModel.data.villageName : undefined}
             />
             <MaskingLoader loading={viewModel.isLoading}>
               <>

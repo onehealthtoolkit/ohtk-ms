@@ -137,7 +137,9 @@ const ReportCreate = () => {
               </FieldGroup>
 
               {viewModel.loadError && (
-                <p className="text-red-600 text-sm mt-2">{viewModel.loadError}</p>
+                <p className="text-red-600 text-sm mt-2">
+                  {viewModel.loadError}
+                </p>
               )}
 
               <div className="mt-6 flex gap-3">
