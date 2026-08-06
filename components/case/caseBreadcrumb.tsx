@@ -7,6 +7,7 @@ export type CaseBreadcrumbProps = {
   caseId: string;
   reportTypeName?: string;
   authorityName?: string;
+  villageName?: string;
 };
 
 /** @deprecated use shortEntityId — kept for existing imports */
@@ -19,6 +20,7 @@ const CaseBreadcrumb = ({
   caseId,
   reportTypeName,
   authorityName,
+  villageName,
 }: CaseBreadcrumbProps) => {
   const { t } = useTranslation();
   return (
@@ -28,6 +30,7 @@ const CaseBreadcrumb = ({
       entityId={caseId}
       reportTypeName={reportTypeName}
       authorityName={authorityName}
+      villageName={villageName}
     />
   );
 };

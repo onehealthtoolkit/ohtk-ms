@@ -27,6 +27,7 @@ import { ArrowsPointingOutIcon } from "@heroicons/react/24/solid";
 import ReportLocationMapDialog from "components/case/reportMapDialog";
 import ReportBreadcrumb from "./reportBreadcrumb";
 import ReportAssessmentSection from "./reportAssessmentSection";
+import useStore from "lib/store";
 
 export const PromoteToCaseButton = tw.button`
   px-4 
@@ -60,6 +61,8 @@ const ReportLocation = dynamic(() => import("../case/reportMap"), {
 const ReportInformation = observer(
   ({ viewModel }: { viewModel: ReportViewModel }) => {
     const { t } = useTranslation();
+    const store = useStore();
+    const showVillage = store.isFeatureEnable("village");
 
     return (
       <div className="relative overflow-x-auto md:w-1/2 w-full">
@@ -89,6 +92,13 @@ const ReportInformation = observer(
               label={t("form.label.authorityName", "Authority Name")}
               value={viewModel.data?.authorityName || ""}
             />
+
+            {showVillage ? (
+              <TR
+                label={t("form.label.village", "Village")}
+                value={viewModel.data?.villageName || ""}
+              />
+            ) : null}
 
             <TR
               label={t("form.label.phoneNumber", "Phone number")}
@@ -133,9 +143,11 @@ const Report = (props: { id: string }) => {
   const { id } = props;
   const router = useRouter();
   const services = useServices();
+  const store = useStore();
   const [viewModel, setViewModel] = useState<ReportViewModel | undefined>();
 
   const { t } = useTranslation();
+  const showVillage = store.isFeatureEnable("village");
 
   useEffect(() => {
     const model = new ReportViewModel(
@@ -167,6 +179,9 @@ const Report = (props: { id: string }) => {
               reportId={id}
               reportTypeName={viewModel.data.reportTypeName}
               authorityName={viewModel.data.authorityName}
+              villageName={
+                showVillage ? viewModel.data.villageName : undefined
+              }
             />
             <MaskingLoader loading={viewModel.isLoading}>
               <>

@@ -241,6 +241,9 @@ export class ReportService implements IReportService {
         authorityName: incidentReport.authorities
           ?.map(item => item?.name)
           .join(", "),
+        villageName:
+          (incidentReport as { village?: { name?: string | null } | null })
+            .village?.name || undefined,
         testFlag: incidentReport.testFlag,
         aiSuspected: (incidentReport as any).aiSuspected || "",
         currentRiskAssessment: mapRiskAssessment(

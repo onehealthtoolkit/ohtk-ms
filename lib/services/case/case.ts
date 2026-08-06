@@ -22,6 +22,7 @@ export type Case = {
   gpsLocation?: string | null;
   reportId?: string;
   authorityName?: string;
+  villageName?: string;
   currentRiskAssessment?: RiskAssessment | null;
 };
 

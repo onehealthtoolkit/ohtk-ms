@@ -120,23 +120,7 @@ const ReportCreate = () => {
                   <></>
                 )}
 
-                <Field $size="half">
-                  <Label htmlFor="incidentDate">
-                    {t("form.label.incidentDate", "Incident date")}
-                  </Label>
-                  <input
-                    id="incidentDate"
-                    type="date"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border px-3 py-2"
-                    value={viewModel.incidentDate}
-                    onChange={e => {
-                      viewModel.incidentDate = e.target.value;
-                    }}
-                    required
-                  />
-                </Field>
-
-                <Field $size="half">
+                <Field $size="full">
                   <Label htmlFor="testFlag" className="flex items-center gap-2">
                     <input
                       id="testFlag"
@@ -189,19 +173,14 @@ const ReportCreate = () => {
                     {viewModel.selectedReportType?.name ||
                       t("report.create.formTitle", "Report form")}
                   </h2>
-                  <p className="text-sm text-slate-500">
-                    {t("form.label.incidentDate", "Incident date")}:{" "}
-                    {viewModel.incidentDate}
-                    {viewModel.selectedVillageId && (
-                      <>
-                        {" · "}
-                        {t("form.label.village", "Village")}:{" "}
-                        {viewModel.villages.find(
-                          v => String(v.id) === viewModel.selectedVillageId
-                        )?.name || viewModel.selectedVillageId}
-                      </>
-                    )}
-                  </p>
+                  {viewModel.selectedVillageId ? (
+                    <p className="text-sm text-slate-500">
+                      {t("form.label.village", "Village")}:{" "}
+                      {viewModel.villages.find(
+                        v => String(v.id) === viewModel.selectedVillageId
+                      )?.name || viewModel.selectedVillageId}
+                    </p>
+                  ) : null}
                 </div>
                 <button
                   type="button"

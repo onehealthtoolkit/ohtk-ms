@@ -105,7 +105,8 @@ const ReportImage = observer(({ viewModel }: { viewModel: CaseViewModel }) => {
 const Case = (props: { id: string }) => {
   const { id } = props;
   const router = useRouter();
-  const { me } = useStore();
+  const store = useStore();
+  const { me } = store;
   const { caseService, commentService, outbreakService, reportService } =
     useServices();
   const [viewModel] = useState(
@@ -147,6 +148,11 @@ const Case = (props: { id: string }) => {
               caseId={id}
               reportTypeName={viewModel.data.reportTypeName}
               authorityName={viewModel.data.authorityName}
+              villageName={
+                store.isFeatureEnable("village")
+                  ? viewModel.data.villageName
+                  : undefined
+              }
             />
             <MaskingLoader loading={viewModel.isLoading}>
               <>

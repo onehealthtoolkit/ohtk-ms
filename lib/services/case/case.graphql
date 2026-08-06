@@ -114,6 +114,11 @@ query GetCase($id: UUID!) {
       authorities {
         name
       }
+      village {
+        id
+        name
+        code
+      }
       currentRiskAssessment {
         ...RiskAssessmentFields
       }
