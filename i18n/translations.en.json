@@ -36,7 +36,8 @@
     "requestToDelete": "Request to Delete My Account",
     "pagesCategory": "Pages",
     "reportsCategory": "Reports",
-    "settingsCategory": "Settings"
+    "settingsCategory": "Settings",
+    "newReport": "New report"
   },
   "filter": {
     "searchButton": "Search",
@@ -183,7 +184,11 @@
       "allVillages": "All villages",
       "materializeOccurrences": "Materialize yearly occurrences",
       "materializeFromYear": "Materialize from year",
-      "materializeYears": "Number of years"
+      "materializeYears": "Number of years",
+      "village": "Village",
+      "risk": "Risk",
+      "testReport": "Test report",
+      "optional": "optional"
     },
     "help": {
       "monthDayRule": "Annual month-day rule (MM-DD). Leap day 02-29 is not allowed.",
@@ -431,7 +436,9 @@
     "actions": {
       "promoteToCase": "Promote to case",
       "convertToTest": "Convert to test report"
-    }
+    },
+    "open": "Open",
+    "test": "test"
   },
   "dashboard": {
     "reportingTrends": "Reporting trends",
@@ -444,5 +451,124 @@
     "incidentDate": "Incident date",
     "reportType": "Report type",
     "data": "Data"
+  },
+  "case": {
+    "assessment": {
+      "title": "Assessment"
+    },
+    "aiSuspected": {
+      "title": "AI suspected",
+      "readOnly": "read-only",
+      "show": "Show AI note",
+      "hide": "Hide AI note",
+      "empty": "No AI assessment for this report.",
+      "footnote": "Informational only — not part of close data."
+    },
+    "breadcrumb": {
+      "copied": "Copied",
+      "copyId": "Copy full ID"
+    },
+    "close": {
+      "source": "Source",
+      "sourceSystem": "System",
+      "sourceOfficer": "Officer",
+      "closedBy": "Finished by",
+      "dataBy": "Close data by",
+      "stoppedAt": "Finished at",
+      "dataTitle": "Close data",
+      "dataReadonly": "Close data · read-only",
+      "dataUpdateTitle": "Close data · you can update",
+      "formError": "Error reading close form definition for this report type.",
+      "noFields": "No close fields are required for this report type.",
+      "storedOnCase": "Close data is stored on the case. It does not change the original report in the Detail tab.",
+      "editData": "Edit close data",
+      "editReason": "Edit reason",
+      "editEyebrow": "Superuser · edit close data",
+      "editTitle": "Edit close data",
+      "editTitleFp": "Edit false positive reason",
+      "editBody": "The case stays finished. Only close form data is updated. Original finish time and source are kept.",
+      "editError": "Unable to update close data",
+      "saveEdit": "Save changes"
+    },
+    "finish": {
+      "title": "Finish case",
+      "button": "Finish case",
+      "jumpButton": "Finish case ↓",
+      "jumpCaption": "Ends the case for good. Workflow steps do not close a case.",
+      "ledePrefix": "This is the only place a case ends. Finishing is",
+      "notReversible": "not reversible",
+      "ledeSuffix": "from this screen.",
+      "chooseOutcome": "Choose an outcome",
+      "chooseFirst": "Choose an outcome first.",
+      "closeCase": "Close case",
+      "closeCaseHelp": "Real investigation end. Requires the close fields for this report type.",
+      "falsePositive": "False positive",
+      "falsePositiveHelp": "Not a real case. Optional reason only — no lab or stamp-out data.",
+      "fpNoLab": "False positive needs no lab or stamp-out data.",
+      "fpNoLabRequired": "No lab result or stamp-out required for a false positive.",
+      "fpPlaceholder": "Why is this not a real case?",
+      "reason": "Reason",
+      "reasonEmpty": "— (optional, not given)",
+      "outcome": "Outcome",
+      "willConfirm": "You will be asked to confirm before the case is finished.",
+      "formIncomplete": "Please complete the close form before finishing.",
+      "error": "Unable to finish case",
+      "completeError": "Unable to save close data",
+      "workflowDoneLead": "Workflow finished — case still open.",
+      "workflowDoneBody": "All work steps are done, but the case stays open until an officer finishes it here.",
+      "systemTimeout": "Automatic close",
+      "systemBody": "This case was closed automatically after no activity.",
+      "systemCanAddData": "You can still enter test result and stamp-out below. The case stays finished.",
+      "systemNoReopen": "The case stays finished (automatic close). Only close data can be added or updated here.",
+      "systemNoData": "No officer outcome and no close data were recorded.",
+      "cannotReopen": "Finished cases cannot be reopened here. Contact an administrator if this was a mistake.",
+      "saveCloseData": "Save close data",
+      "updateCloseData": "Update close data",
+      "confirmEyebrow": "Confirm — cannot be undone",
+      "confirmTitleClose": "Finish and close this case?",
+      "confirmTitleFp": "Finish this case as a false positive?",
+      "confirmBodyClose": "The case will be marked Finished · Close case and the close data below will be stored on the case. It cannot be reopened from this screen.",
+      "confirmBodyFp": "The case will be marked Finished · False positive. It cannot be reopened from this screen.",
+      "confirmCtaClose": "Finish case",
+      "confirmCtaFp": "Finish as false positive",
+      "aside": {
+        "closed": "Case closed",
+        "discarded": "Discarded — false positive",
+        "system": "Automatically closed",
+        "by": "By {{name}}",
+        "dataBy": "data by {{name}}"
+      },
+      "theme": {
+        "Finish case": "Finish case",
+        "Finished · Automatic close": "Finished · Automatic close",
+        "Finished · Close case": "Finished · Close case",
+        "Finished · False positive — no investigation outcome": "Finished · False positive — no investigation outcome"
+      }
+    }
+  },
+  "report": {
+    "create": {
+      "title": "New report",
+      "continue": "Continue to form",
+      "formTitle": "Report form",
+      "changeSetup": "Change setup",
+      "help": "Officer entry for any published report type. When villages are enabled, select a village under your authority first.",
+      "noVillages": "No villages under your authority. Add villages or contact an admin."
+    },
+    "form": {
+      "errorDefinition": "Error reading form definition!",
+      "blank": "Blank Form",
+      "noQuestions": "No questions"
+    }
+  },
+  "risk": {
+    "title": "Risk",
+    "levelLabel": "Risk level",
+    "edit": "Edit risk",
+    "editable": "editable",
+    "notSet": "No risk level has been set.",
+    "saveError": "Unable to save risk level",
+    "hideHistory": "Hide history",
+    "showHistory": "Show {{count}} earlier assessments"
   }
 }
