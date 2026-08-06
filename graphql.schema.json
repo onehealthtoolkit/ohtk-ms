@@ -2395,7 +2395,7 @@
       {
         "kind": "OBJECT",
         "name": "AdminCaseCloseMutation",
-        "description": "Officer close: Layer1 completion + Layer2 payload (validated).",
+        "description": "Officer Finish: Layer1 completion + outcome-scoped Layer2 payload.\noutcome: close_case (default) | false_positive",
         "isOneOf": null,
         "fields": [
           {
@@ -15750,6 +15750,18 @@
             "deprecationReason": null
           },
           {
+            "name": "closeOutcome",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "closePayload",
             "description": null,
             "args": [],
@@ -21681,7 +21693,7 @@
           },
           {
             "name": "adminCaseClose",
-            "description": "Officer close: Layer1 completion + Layer2 payload (validated).",
+            "description": "Officer Finish: Layer1 completion + outcome-scoped Layer2 payload.\noutcome: close_case (default) | false_positive",
             "args": [
               {
                 "name": "caseId",
@@ -21696,6 +21708,18 @@
                   }
                 },
                 "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "outcome",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": "null",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -27430,6 +27454,18 @@
                   "ofType": null
                 },
                 "defaultValue": "false",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "villageId",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": "null",
                 "isDeprecated": false,
                 "deprecationReason": null
               }

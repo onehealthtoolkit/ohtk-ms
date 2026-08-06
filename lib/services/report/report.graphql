@@ -217,3 +217,28 @@ mutation SetReportRiskValue($reportId: UUID!, $level: String) {
     }
   }
 }
+
+mutation SubmitIncidentReport(
+  $data: GenericScalar!
+  $reportTypeId: UUID!
+  $incidentDate: Date!
+  $gpsLocation: String
+  $incidentInAuthority: Boolean
+  $testFlag: Boolean
+  $villageId: Int
+) {
+  submitIncidentReport(
+    data: $data
+    reportTypeId: $reportTypeId
+    incidentDate: $incidentDate
+    gpsLocation: $gpsLocation
+    incidentInAuthority: $incidentInAuthority
+    testFlag: $testFlag
+    villageId: $villageId
+  ) {
+    result {
+      id
+      caseId
+    }
+  }
+}
