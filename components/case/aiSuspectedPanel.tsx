@@ -45,10 +45,7 @@ const AiSuspectedPanel = ({
 
         {!hasNote ? (
           <p className="mt-2 text-[12.5px] font-light leading-snug text-gray-400">
-            {t(
-              "case.aiSuspected.empty",
-              "No AI assessment for this report."
-            )}
+            {t("case.aiSuspected.empty", "No AI assessment for this report.")}
           </p>
         ) : expanded ? (
           <div className="mt-2 animate-[fadein_0.15s_ease]">

@@ -56,10 +56,7 @@ const CaseHeaderAside = ({ viewModel }: { viewModel: CaseViewModel }) => {
       bg: "#F8FAFC",
       border: "#E2E8F0",
       titleColor: "#64748B",
-      title: t(
-        "case.finish.aside.discarded",
-        "Discarded — false positive"
-      ),
+      title: t("case.finish.aside.discarded", "Discarded — false positive"),
     },
     system: {
       bg: "#FFFBEB",
@@ -71,9 +68,7 @@ const CaseHeaderAside = ({ viewModel }: { viewModel: CaseViewModel }) => {
 
   const s = styles[variant];
   const byName =
-    variant === "system"
-      ? null
-      : viewModel.data.closedByName?.trim() || null;
+    variant === "system" ? null : viewModel.data.closedByName?.trim() || null;
   const outcomeLine =
     variant === "system"
       ? t("case.finish.systemTimeout", "System timeout")
@@ -111,7 +106,9 @@ const CaseHeaderAside = ({ viewModel }: { viewModel: CaseViewModel }) => {
           </>
         )}
       </div>
-      <div className="mt-0.5 text-[12.5px] font-light text-gray-700">{when}</div>
+      <div className="mt-0.5 text-[12.5px] font-light text-gray-700">
+        {when}
+      </div>
     </div>
   );
 };

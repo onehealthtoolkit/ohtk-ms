@@ -149,151 +149,153 @@ const Case = (props: { id: string }) => {
               authorityName={viewModel.data.authorityName}
             />
             <MaskingLoader loading={viewModel.isLoading}>
-            <>
-              <div className="flex flex-col gap-7 px-[26px] py-6 md:flex-row md:items-start md:justify-between">
-                <div className="min-w-0 flex-1">
-                  <div className="mb-2.5 flex flex-wrap items-center gap-2.5">
-                    <p className="text-md dark:text-gray-400 ">
-                      {t("form.label.reportType", "Report Type")}:{" "}
-                      {viewModel.data.reportTypeName}
+              <>
+                <div className="flex flex-col gap-7 px-[26px] py-6 md:flex-row md:items-start md:justify-between">
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-2.5 flex flex-wrap items-center gap-2.5">
+                      <p className="text-md dark:text-gray-400 ">
+                        {t("form.label.reportType", "Report Type")}:{" "}
+                        {viewModel.data.reportTypeName}
+                      </p>
+                      <CaseStatus
+                        isFinished={viewModel.data.isFinished}
+                        statusLabel={viewModel.data.statusLabel}
+                        closeOutcome={viewModel.data.closeOutcome}
+                        closeSource={viewModel.data.closeSource}
+                      />
+                    </div>
+                    <p className="pt-1 text-base font-normal leading-relaxed text-gray-800">
+                      {viewModel.data.description}
                     </p>
-                    <CaseStatus
-                      isFinished={viewModel.data.isFinished}
-                      statusLabel={viewModel.data.statusLabel}
-                      closeOutcome={viewModel.data.closeOutcome}
-                      closeSource={viewModel.data.closeSource}
-                    />
                   </div>
-                  <p className="pt-1 text-base font-normal leading-relaxed text-gray-800">
-                    {viewModel.data.description}
-                  </p>
+                  <CaseHeaderAside viewModel={viewModel} />
                 </div>
-                <CaseHeaderAside viewModel={viewModel} />
-              </div>
-              <Divide hilight={true} />
+                <Divide hilight={true} />
 
-              <CaseAssessmentSection viewModel={viewModel} />
+                <CaseAssessmentSection viewModel={viewModel} />
 
-              <CaseClosePanel viewModel={viewModel} />
-              <Divide />
+                <CaseClosePanel viewModel={viewModel} />
+                <Divide />
 
-              <div className="flex flex-row gap-2 md:flex-nowrap flex-wrap ">
-                <ReportInformation viewModel={viewModel} />
-                <div className="md:w-1/2 w-full h-[300px] md:h-auto relative">
-                  <ReportMap
-                    lnglat={viewModel.data.gpsLocation}
-                    zones={viewModel.outbreakInfo}
-                    places={toJS(viewModel.outbreakPlaces)}
-                  />
-                  <div
-                    className={`bg-red absolute top-3 right-3 p-2 z-[1001] hover:bg-gray-50
+                <div className="flex flex-row gap-2 md:flex-nowrap flex-wrap ">
+                  <ReportInformation viewModel={viewModel} />
+                  <div className="md:w-1/2 w-full h-[300px] md:h-auto relative">
+                    <ReportMap
+                      lnglat={viewModel.data.gpsLocation}
+                      zones={viewModel.outbreakInfo}
+                      places={toJS(viewModel.outbreakPlaces)}
+                    />
+                    <div
+                      className={`bg-red absolute top-3 right-3 p-2 z-[1001] hover:bg-gray-50
                       border border-gray-400 rounded bg-white cursor-pointer
                     `}
-                    onClick={() => viewModel.openReportMap(viewModel.data.id)}
-                  >
-                    <ArrowsPointingOutIcon className="w-5 h-5 " />
+                      onClick={() => viewModel.openReportMap(viewModel.data.id)}
+                    >
+                      <ArrowsPointingOutIcon className="w-5 h-5 " />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <ReportImage viewModel={viewModel} />
+                <ReportImage viewModel={viewModel} />
 
-              <Divide />
+                <Divide />
 
-              <div className="mb-4">
-                <TabBar>
-                  <TabItem
-                    id="state"
-                    active={viewModel.activeTabIndex == 0}
-                    onTab={() => {
-                      viewModel.activeTabIndex = 0;
-                      setUrl({ activeTabIndex: "0" });
-                    }}
-                  >
-                    {({ activeCss }) => (
-                      <>
-                        <RectangleGroupIcon
-                          className={`mr-2 w-5 h-5 ${activeCss}`}
-                        />
-                        <span>{t("form.label.state", "State")}</span>
-                      </>
-                    )}
-                  </TabItem>
-                  <TabItem
-                    id="detail"
-                    active={viewModel.activeTabIndex == 1}
-                    onTab={() => {
-                      viewModel.activeTabIndex = 1;
-                      setUrl({ activeTabIndex: "1" });
-                    }}
-                  >
-                    {({ activeCss }) => (
-                      <>
-                        <AdjustmentsHorizontalIcon
-                          className={`mr-2 w-5 h-5 ${activeCss}`}
-                        />
-                        <span>{t("form.label.detail", "Detail")}</span>
-                      </>
-                    )}
-                  </TabItem>
-                  <TabItem
-                    id="followup"
-                    active={viewModel.activeTabIndex == 2}
-                    onTab={() => {
-                      viewModel.activeTabIndex = 2;
-                      setUrl({ activeTabIndex: "2" });
-                    }}
-                  >
-                    {() => (
-                      <>
-                        <span>{t("form.label.followup", "Followup")}</span>
-                      </>
-                    )}
-                  </TabItem>
-                </TabBar>
-                <div className="h-10"></div>
-                {viewModel.activeTabIndex == 0 && (
-                  <CaseStateView
-                    viewModel={viewModel.stateViewViewModel}
-                    onTransitionComplete={() => viewModel.fetch("network-only")}
-                  />
-                )}
-                {viewModel.activeTabIndex == 1 && (
-                  <>
-                    <div className="">
-                      <p className="text-md dark:text-gray-400">
-                        {t("form.label.formData", "Form Data")}
-                      </p>
-                    </div>
-                    <RenderData
-                      data={viewModel.data.data}
-                      definition={viewModel.data.reportTypeDefinition}
-                      imageUrlMap={viewModel.imageUrlMap}
-                      fileUrlMap={viewModel.fileUrlMap}
+                <div className="mb-4">
+                  <TabBar>
+                    <TabItem
+                      id="state"
+                      active={viewModel.activeTabIndex == 0}
+                      onTab={() => {
+                        viewModel.activeTabIndex = 0;
+                        setUrl({ activeTabIndex: "0" });
+                      }}
+                    >
+                      {({ activeCss }) => (
+                        <>
+                          <RectangleGroupIcon
+                            className={`mr-2 w-5 h-5 ${activeCss}`}
+                          />
+                          <span>{t("form.label.state", "State")}</span>
+                        </>
+                      )}
+                    </TabItem>
+                    <TabItem
+                      id="detail"
+                      active={viewModel.activeTabIndex == 1}
+                      onTab={() => {
+                        viewModel.activeTabIndex = 1;
+                        setUrl({ activeTabIndex: "1" });
+                      }}
+                    >
+                      {({ activeCss }) => (
+                        <>
+                          <AdjustmentsHorizontalIcon
+                            className={`mr-2 w-5 h-5 ${activeCss}`}
+                          />
+                          <span>{t("form.label.detail", "Detail")}</span>
+                        </>
+                      )}
+                    </TabItem>
+                    <TabItem
+                      id="followup"
+                      active={viewModel.activeTabIndex == 2}
+                      onTab={() => {
+                        viewModel.activeTabIndex = 2;
+                        setUrl({ activeTabIndex: "2" });
+                      }}
+                    >
+                      {() => (
+                        <>
+                          <span>{t("form.label.followup", "Followup")}</span>
+                        </>
+                      )}
+                    </TabItem>
+                  </TabBar>
+                  <div className="h-10"></div>
+                  {viewModel.activeTabIndex == 0 && (
+                    <CaseStateView
+                      viewModel={viewModel.stateViewViewModel}
+                      onTransitionComplete={() =>
+                        viewModel.fetch("network-only")
+                      }
                     />
-                  </>
-                )}
-                {viewModel.activeTabIndex == 2 && viewModel.reportId && (
-                  <div className="">
-                    <FollowupList incidentId={viewModel.reportId} />
-                  </div>
-                )}
-              </div>
+                  )}
+                  {viewModel.activeTabIndex == 1 && (
+                    <>
+                      <div className="">
+                        <p className="text-md dark:text-gray-400">
+                          {t("form.label.formData", "Form Data")}
+                        </p>
+                      </div>
+                      <RenderData
+                        data={viewModel.data.data}
+                        definition={viewModel.data.reportTypeDefinition}
+                        imageUrlMap={viewModel.imageUrlMap}
+                        fileUrlMap={viewModel.fileUrlMap}
+                      />
+                    </>
+                  )}
+                  {viewModel.activeTabIndex == 2 && viewModel.reportId && (
+                    <div className="">
+                      <FollowupList incidentId={viewModel.reportId} />
+                    </div>
+                  )}
+                </div>
 
-              <Divide />
+                <Divide />
 
-              <Comments threadId={viewModel.data.threadId} />
+                <Comments threadId={viewModel.data.threadId} />
 
-              <GalleryDialog viewModel={viewModel.galleryViewModel} />
+                <GalleryDialog viewModel={viewModel.galleryViewModel} />
 
-              <ReportLocationMapDialog
-                viewModel={viewModel.reportMapViewModel}
-                lnglat={viewModel.data.gpsLocation}
-                zones={viewModel.outbreakInfo}
-              />
+                <ReportLocationMapDialog
+                  viewModel={viewModel.reportMapViewModel}
+                  lnglat={viewModel.data.gpsLocation}
+                  zones={viewModel.outbreakInfo}
+                />
 
-              <ViewActionButtons />
-            </>
+                <ViewActionButtons />
+              </>
             </MaskingLoader>
           </>
         );

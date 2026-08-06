@@ -58,7 +58,12 @@ const riskMetaLabel = (
 };
 
 /** Design handoff: click-to-save levels (no separate Save). */
-const EDITABLE_LEVELS: RiskFilterLevel[] = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
+const EDITABLE_LEVELS: RiskFilterLevel[] = [
+  "LOW",
+  "MEDIUM",
+  "HIGH",
+  "CRITICAL",
+];
 
 const LEVEL_HINTS: Record<string, string> = {
   LOW: "monitor only",
@@ -99,10 +104,7 @@ const ReportRiskPanel = ({
     setDraftLevel(currentRisk?.level || "NO_ASSESSMENT");
   }, [currentRisk?.level]);
 
-  const emptyMeta = t(
-    "risk.notSet",
-    "No risk level has been set."
-  );
+  const emptyMeta = t("risk.notSet", "No risk level has been set.");
 
   const pickLevel = async (level: RiskFilterLevel) => {
     setSaveError(undefined);
@@ -184,7 +186,10 @@ const ReportRiskPanel = ({
                       {getRiskLabel(t, level)}
                     </span>
                     <span className="text-[11px] font-light opacity-75">
-                      {t(`risk.hint.${level.toLowerCase()}`, LEVEL_HINTS[level])}
+                      {t(
+                        `risk.hint.${level.toLowerCase()}`,
+                        LEVEL_HINTS[level]
+                      )}
                     </span>
                     {viewModel.riskSaving && draftLevel === level ? (
                       <Spinner />
@@ -237,7 +242,10 @@ const ReportRiskPanel = ({
                       {riskActorLabel(item) || riskSourceLabel(item.source)}
                     </span>
                     <span className="ml-auto">
-                      {formatDateTime(item.createdAt || undefined, i18n.language)}
+                      {formatDateTime(
+                        item.createdAt || undefined,
+                        i18n.language
+                      )}
                     </span>
                   </div>
                 ))}

@@ -203,11 +203,7 @@ const CaseClosePanel = ({ viewModel }: { viewModel: CaseViewModel }) => {
             />
             <SummaryCell
               label={t("case.close.closedBy", "Finished by")}
-              value={
-                isSystem
-                  ? "—"
-                  : viewModel.data.closedByName || "—"
-              }
+              value={isSystem ? "—" : viewModel.data.closedByName || "—"}
             />
             <SummaryCell
               label={t("case.close.stoppedAt", "Finished at")}
@@ -300,7 +296,10 @@ const CaseClosePanel = ({ viewModel }: { viewModel: CaseViewModel }) => {
 
       <div className="ml-3.5 mt-4">
         <p className="max-w-[660px] text-[13px] font-light leading-relaxed text-gray-600">
-          {t("case.finish.ledePrefix", "This is the only place a case ends. Finishing is")}{" "}
+          {t(
+            "case.finish.ledePrefix",
+            "This is the only place a case ends. Finishing is"
+          )}{" "}
           <strong className="font-medium text-gray-900">
             {t("case.finish.notReversible", "not reversible")}
           </strong>{" "}
@@ -565,7 +564,9 @@ const CloseDataReadonly = observer(
         }
       }
       return Object.entries(payload)
-        .filter(([k, v]) => !skip.has(k) && v !== undefined && v !== null && v !== "")
+        .filter(
+          ([k, v]) => !skip.has(k) && v !== undefined && v !== null && v !== ""
+        )
         .map(([k, v]) => ({
           label: labelByName[k] || k.replace(/_/g, " "),
           value: String(v),
@@ -573,9 +574,7 @@ const CloseDataReadonly = observer(
     }, [payload, viewModel.closeForm]);
 
     if (rows.length === 0) {
-      return (
-        <p className="px-[15px] py-3 text-sm text-gray-500">—</p>
-      );
+      return <p className="px-[15px] py-3 text-sm text-gray-500">—</p>;
     }
 
     return (
