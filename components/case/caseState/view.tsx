@@ -140,11 +140,34 @@ const PendingStep: FC<PendingStepProps> = ({
   stateStep,
   onTransitionSelect,
 }: PendingStepProps) => {
-  return !stateStep.isStopState ? (
-    <div
-      className={`grid grid-cols-${stateStep.toTransitions?.length || 0} gap-4`}
-    >
-      {stateStep.toTransitions?.map(
+  // WF1: hide transitions into stop steps — those used to soft-close the case.
+  // Case finish is only via Finish panel (CO2b). Stop steps = workflow finished.
+  const actionable =
+    stateStep.toTransitions?.filter(
+      t => t && t.toStep && !t.toStep.isStopState
+    ) || [];
+
+  if (stateStep.isStopState) {
+    return (
+      <div className="text-sm text-gray-600 p-2">
+        Workflow path finished. Use <strong>Finish case</strong> above to close
+        the case lifecycle (false positive or close case).
+      </div>
+    );
+  }
+
+  if (actionable.length === 0) {
+    return (
+      <div className="text-sm text-gray-600 p-2">
+        No further workflow steps. Use <strong>Finish case</strong> to close the
+        case.
+      </div>
+    );
+  }
+
+  return (
+    <div className={`grid grid-cols-${actionable.length} gap-4`}>
+      {actionable.map(
         transition =>
           transition && (
             <button
@@ -162,8 +185,6 @@ const PendingStep: FC<PendingStepProps> = ({
           )
       )}
     </div>
-  ) : (
-    <div></div>
   );
 };
 
