@@ -58,6 +58,7 @@ query GetCase($id: UUID!) {
     testResult
     stoppedAt
     closeSource
+    closeOutcome
     closePayload
     closedBy {
       id
@@ -248,8 +249,8 @@ mutation UpdateCaseTestResult($caseId: UUID!, $testResult: String!) {
   }
 }
 
-mutation CloseCase($caseId: UUID!, $payload: GenericScalar) {
-  adminCaseClose(caseId: $caseId, payload: $payload) {
+mutation CloseCase($caseId: UUID!, $payload: GenericScalar, $outcome: String) {
+  adminCaseClose(caseId: $caseId, payload: $payload, outcome: $outcome) {
     result {
       id
       isFinished
@@ -258,6 +259,7 @@ mutation CloseCase($caseId: UUID!, $payload: GenericScalar) {
       aiSuspected
       stoppedAt
       closeSource
+      closeOutcome
       closePayload
       closedBy {
         id

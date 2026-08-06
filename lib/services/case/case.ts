@@ -2,6 +2,7 @@ import { Image, RiskAssessment, UploadFile } from "lib/services/report/report";
 import { DeepStateDefinition } from "lib/services/stateDefinition/stateDefinition";
 import { DeepStateStep } from "lib/services/stateStep/stateStep";
 import { StateTransitionRef } from "lib/services/stateTransition/stateTransition";
+import type { FormType } from "lib/opsvForm/models/json";
 
 export type Case = {
   id: string;
@@ -36,23 +37,19 @@ export type CaseDetail = Case & {
   testResult?: string;
   stoppedAt?: string | null;
   closeSource?: string;
+  /** Officer finish outcome: close_case | false_positive | "" */
+  closeOutcome?: string;
   closePayload?: Record<string, any>;
-  /** ReportType.close_definition (Layer2 schema); null/empty = no required close fields */
-  closeDefinition?: CloseDefinition | null;
+  /**
+   * ReportType.close_definition — full opsv form JSON for "close case" outcome.
+   * Null/empty ⇒ no Layer2 fields required for that outcome.
+   */
+  closeDefinition?: FormType | null;
   closedByName?: string;
 };
 
-export type CloseDefinitionField = {
-  id: string;
-  type?: string;
-  label?: string;
-  requiredOn?: string[];
-};
-
-export type CloseDefinition = {
-  version?: number;
-  fields?: CloseDefinitionField[];
-};
+/** CO2b officer finish outcomes */
+export type CaseCloseOutcome = "close_case" | "false_positive";
 
 export type CaseState = {
   id: string;

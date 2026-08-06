@@ -10,9 +10,9 @@ import {
 } from "lib/generated/graphql";
 import {
   Case,
+  CaseCloseOutcome,
   CaseDetail,
   CaseState,
-  CloseDefinition,
 } from "lib/services/case/case";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
 import { Authority } from "../authority";
@@ -22,8 +22,9 @@ import {
   isRiskAssessment,
   mapRiskAssessment,
 } from "lib/services/report/reportService";
+import type { FormType } from "lib/opsvForm/models/json";
 
-function parseCloseDefinition(raw: unknown): CloseDefinition | null {
+function parseCloseDefinition(raw: unknown): FormType | null {
   if (raw == null || raw === "") {
     return null;
   }
@@ -38,7 +39,12 @@ function parseCloseDefinition(raw: unknown): CloseDefinition | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     return null;
   }
-  return value as CloseDefinition;
+  const obj = value as Record<string, unknown>;
+  // Full opsv form must have sections; ignore empty/malformed.
+  if (!Array.isArray(obj.sections)) {
+    return null;
+  }
+  return value as FormType;
 }
 
 export type CaseTestResultUpdate = {
@@ -87,7 +93,8 @@ export interface ICaseService extends IService {
 
   closeCase(
     caseId: string,
-    payload?: Record<string, any>
+    payload?: Record<string, any>,
+    outcome?: CaseCloseOutcome
   ): Promise<GetResult<CaseDetail>>;
 
   forwardState(
@@ -231,6 +238,7 @@ export class CaseService implements ICaseService {
         testResult: incidentCase.testResult || "",
         stoppedAt: incidentCase.stoppedAt,
         closeSource: incidentCase.closeSource || "",
+        closeOutcome: (incidentCase as any).closeOutcome || "",
         closePayload: (incidentCase.closePayload as Record<string, any>) || {},
         closeDefinition: parseCloseDefinition(
           incidentCase.report?.reportType?.closeDefinition
@@ -284,13 +292,15 @@ export class CaseService implements ICaseService {
 
   async closeCase(
     caseId: string,
-    payload?: Record<string, any>
+    payload?: Record<string, any>,
+    outcome: CaseCloseOutcome = "close_case"
   ): Promise<GetResult<CaseDetail>> {
     const result = await this.client.mutate({
       mutation: CloseCaseDocument,
       variables: {
         caseId,
         payload: payload ?? null,
+        outcome,
       },
     });
 
@@ -313,6 +323,7 @@ export class CaseService implements ICaseService {
         aiSuspected: closed.aiSuspected || "",
         stoppedAt: closed.stoppedAt,
         closeSource: closed.closeSource || "",
+        closeOutcome: (closed as any).closeOutcome || outcome || "",
         closePayload: (closed.closePayload as Record<string, any>) || {},
         closedByName: closed.closedBy
           ? [closed.closedBy.firstName, closed.closedBy.lastName]

@@ -29,7 +29,7 @@ import ReportLocationMapDialog from "components/case/reportMapDialog";
 import { toJS } from "mobx";
 import { useTranslation } from "react-i18next";
 import ReportRiskPanel from "components/report/riskPanel";
-import DiseaseResultPanel from "components/case/diseaseResultPanel";
+import AiSuspectedPanel from "components/case/aiSuspectedPanel";
 import CaseClosePanel from "components/case/caseClosePanel";
 
 const ReportMap = dynamic(() => import("./reportMap"), {
@@ -163,7 +163,7 @@ const Case = (props: { id: string }) => {
               <ReportRiskPanel viewModel={viewModel} />
               <Divide />
 
-              <DiseaseResultPanel viewModel={viewModel} />
+              <AiSuspectedPanel viewModel={viewModel} />
               <Divide />
 
               <CaseClosePanel viewModel={viewModel} />

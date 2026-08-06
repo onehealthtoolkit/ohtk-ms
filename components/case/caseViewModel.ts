@@ -18,6 +18,10 @@ import { IOutbreakService } from "lib/services/outbreak/outbreakService";
 import { OutbreakPlace } from "lib/services/outbreak/outbreak";
 import { IReportService } from "lib/services/report";
 import { RiskFilterLevel } from "lib/services/report/report";
+import Form from "lib/opsvForm/models/form";
+import { parseForm, FormType } from "lib/opsvForm/models/json";
+import { v4 as uuidv4 } from "uuid";
+import type { CaseCloseOutcome } from "lib/services/case/case";
 
 export type OutbreakZone = {
   color: string;
@@ -33,14 +37,12 @@ export class CaseViewModel extends BaseViewModel {
   reportMapViewModel?: ReportMapDialogViewModel = undefined;
   outbreakPlaces: OutbreakPlace[] = [];
   _riskSaving: boolean = false;
-  testResultDraft: string = "";
-  /**
-   * Layer2 stamp_out draft: animals terminated (integer).
-   * Empty string while typing; validated as >= 0 integer on close.
-   */
-  stampOutDraft: string = "";
-  _testResultSaving: boolean = false;
   _caseClosing: boolean = false;
+  /** opsv form built from ReportType.close_definition */
+  closeForm?: Form = undefined;
+  closeFormError: boolean = false;
+  /** raw JSON string kept for FormQuestion definition prop */
+  closeFormDefinitionJson: string = "{}";
 
   constructor(
     id: string,
@@ -65,25 +67,19 @@ export class CaseViewModel extends BaseViewModel {
       _riskSaving: observable,
       riskSaving: computed,
       setRiskLevel: action,
-      testResultDraft: observable,
-      stampOutDraft: observable,
-      _testResultSaving: observable,
-      testResultSaving: computed,
-      setTestResultDraft: action,
-      setStampOutDraft: action,
-      saveTestResult: action,
-      testResultDirty: computed,
+      closeForm: observable,
+      closeFormError: observable,
+      closeFormDefinitionJson: observable,
+      initCloseForm: action,
       closeCase: action,
+      validateCloseForm: action,
       _caseClosing: observable,
       caseClosing: computed,
       isCaseClosed: computed,
-      requiresStampOut: computed,
-      hasStampOutField: computed,
-      stampOutFieldLabel: computed,
+      hasCloseForm: computed,
       imageUrlMap: computed,
       fileUrlMap: computed,
     });
-    // ensure new observables
     this._caseClosing = false;
     this.id = id;
     this.stateViewViewModel = observable(
@@ -131,16 +127,62 @@ export class CaseViewModel extends BaseViewModel {
     return m;
   }
 
+  public get hasCloseForm(): boolean {
+    return !!(this.closeForm && this.closeForm.sections.length > 0);
+  }
+
+  initCloseForm(
+    definition: FormType | null | undefined,
+    payload?: Record<string, any>
+  ) {
+    this.closeForm = undefined;
+    this.closeFormError = false;
+    this.closeFormDefinitionJson = "{}";
+    if (!definition || !Array.isArray(definition.sections)) {
+      return;
+    }
+    try {
+      const json: FormType = {
+        ...definition,
+        id: definition.id || uuidv4(),
+        subforms: definition.subforms || [],
+        sections: definition.sections || [],
+      };
+      if (!json.sections) {
+        json.sections = [];
+      }
+      this.closeFormDefinitionJson = JSON.stringify(json);
+      this.closeForm = parseForm(json);
+      const values = payload && typeof payload === "object" ? payload : {};
+      this.closeForm.loadJsonValue(values);
+    } catch (e) {
+      console.log(e);
+      this.closeFormError = true;
+      this.closeForm = undefined;
+    }
+  }
+
+  validateCloseForm(): boolean {
+    if (!this.closeForm) {
+      return true;
+    }
+    return this.closeForm.sections.every(section => section.validate());
+  }
+
+  getClosePayload(): Record<string, any> {
+    if (!this.closeForm) {
+      return { ...(this.data.closePayload || {}) };
+    }
+    return this.closeForm.toJsonValue();
+  }
+
   async fetch(policy?: FetchPolicy) {
     this.isLoading = true;
     const data = (await this.caseService.getCase(this.id, policy)).data;
     if (data) {
       runInAction(() => {
         this.data = data;
-        this.testResultDraft = data.testResult || "";
-        this.stampOutDraft = this.formatStampOutDraft(
-          data.closePayload?.stamp_out
-        );
+        this.initCloseForm(data.closeDefinition, data.closePayload);
         if (data.stateDefinition && data.states) {
           this.stateViewViewModel?.init(
             data.id,
@@ -156,109 +198,6 @@ export class CaseViewModel extends BaseViewModel {
     this.isLoading = false;
   }
 
-  public get testResultSaving(): boolean {
-    return this._testResultSaving;
-  }
-
-  public set testResultSaving(value: boolean) {
-    this._testResultSaving = value;
-  }
-
-  public get testResultDirty(): boolean {
-    return (this.testResultDraft || "") !== (this.data.testResult || "");
-  }
-
-  setTestResultDraft(value: string) {
-    this.testResultDraft = value;
-  }
-
-  private getCloseField(fieldId: string) {
-    const fields = this.data.closeDefinition?.fields;
-    if (!Array.isArray(fields)) {
-      return undefined;
-    }
-    return fields.find(f => f && f.id === fieldId);
-  }
-
-  public get requiresStampOut(): boolean {
-    const field = this.getCloseField("stamp_out");
-    if (!field) {
-      return false;
-    }
-    const requiredOn = field.requiredOn || [];
-    return requiredOn.includes("officer");
-  }
-
-  public get stampOutFieldLabel(): string {
-    const field = this.getCloseField("stamp_out");
-    return field?.label || "Stamped out";
-  }
-
-  /** True when close_definition includes a stamp_out field (required or optional). */
-  public get hasStampOutField(): boolean {
-    return !!this.getCloseField("stamp_out");
-  }
-
-  private formatStampOutDraft(value: unknown): string {
-    if (value === null || value === undefined || value === "") {
-      return "";
-    }
-    if (typeof value === "number" && Number.isFinite(value)) {
-      return String(Math.trunc(value));
-    }
-    if (typeof value === "string" && value.trim() !== "") {
-      return value.trim();
-    }
-    return "";
-  }
-
-  setStampOutDraft(value: string) {
-    this.stampOutDraft = value;
-  }
-
-  /** Parse draft to non-negative integer, or null if empty/invalid. */
-  private parseStampOutDraft(): number | null {
-    const raw = (this.stampOutDraft || "").trim();
-    if (raw === "") {
-      return null;
-    }
-    if (!/^\d+$/.test(raw)) {
-      return null;
-    }
-    return parseInt(raw, 10);
-  }
-
-  public async saveTestResult(): Promise<boolean> {
-    this.testResultSaving = true;
-    this.setErrorMessage(undefined);
-    try {
-      const result = await this.caseService.updateCaseTestResult(
-        this.id,
-        this.testResultDraft
-      );
-      runInAction(() => {
-        if (result.data) {
-          this.data.testResult = result.data.testResult;
-          this.data.aiSuspected = result.data.aiSuspected;
-          this.testResultDraft = result.data.testResult || "";
-        }
-        if (result.error) {
-          this.setErrorMessage(result.error);
-        }
-        this.testResultSaving = false;
-      });
-      return !result.error && !!result.data;
-    } catch (error) {
-      runInAction(() => {
-        this.setErrorMessage(
-          error instanceof Error ? error.message : "Unable to save test result"
-        );
-        this.testResultSaving = false;
-      });
-      return false;
-    }
-  }
-
   public get caseClosing(): boolean {
     return this._caseClosing;
   }
@@ -271,40 +210,43 @@ export class CaseViewModel extends BaseViewModel {
     return !!(this.data.isFinished && this.data.stoppedAt);
   }
 
-  public async closeCase(): Promise<boolean> {
-    this.caseClosing = true;
+  /**
+   * Finish case (CO2b): outcome + optional form payload in one step.
+   */
+  public async closeCase(
+    outcome: CaseCloseOutcome = "close_case",
+    payloadOverride?: Record<string, any>
+  ): Promise<boolean> {
     this.setErrorMessage(undefined);
+    if (outcome === "close_case" && !this.validateCloseForm()) {
+      this.setErrorMessage("Please complete the close form before finishing");
+      return false;
+    }
+
+    this.caseClosing = true;
     try {
-      const payload: Record<string, any> = {
-        ...(this.data.closePayload || {}),
-        test_result: this.testResultDraft,
-      };
-      if (this.hasStampOutField) {
-        const raw = (this.stampOutDraft || "").trim();
-        if (raw !== "") {
-          const stampOut = this.parseStampOutDraft();
-          if (stampOut === null) {
-            this.setErrorMessage("Stamped out must be a whole number ≥ 0");
-            this.caseClosing = false;
-            return false;
-          }
-          payload.stamp_out = stampOut;
-        }
-        // empty + required: omit and let server validation reject
-      }
-      const result = await this.caseService.closeCase(this.id, payload);
+      const payload =
+        payloadOverride !== undefined
+          ? payloadOverride
+          : outcome === "close_case"
+            ? this.getClosePayload()
+            : {};
+      const result = await this.caseService.closeCase(
+        this.id,
+        payload,
+        outcome
+      );
       runInAction(() => {
         if (result.data) {
           this.data = {
             ...this.data,
             ...result.data,
-            // keep schema + files from prior full fetch
             closeDefinition: this.data.closeDefinition,
             files: this.data.files || [],
           };
-          this.testResultDraft = result.data.testResult || "";
-          this.stampOutDraft = this.formatStampOutDraft(
-            result.data.closePayload?.stamp_out
+          this.initCloseForm(
+            this.data.closeDefinition,
+            result.data.closePayload
           );
         }
         if (result.error) {
@@ -316,7 +258,7 @@ export class CaseViewModel extends BaseViewModel {
     } catch (error) {
       runInAction(() => {
         this.setErrorMessage(
-          error instanceof Error ? error.message : "Unable to close case"
+          error instanceof Error ? error.message : "Unable to finish case"
         );
         this.caseClosing = false;
       });

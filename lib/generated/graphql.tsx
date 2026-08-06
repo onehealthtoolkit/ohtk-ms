@@ -5143,6 +5143,7 @@ export type GetCaseQuery = {
     testResult: string;
     stoppedAt?: any | null;
     closeSource?: string | null;
+    closeOutcome?: string | null;
     closePayload: any;
     closedBy?: {
       __typename?: "UserType";
@@ -5405,6 +5406,7 @@ export type UpdateCaseTestResultMutation = {
 export type CloseCaseMutationVariables = Exact<{
   caseId: Scalars["UUID"]["input"];
   payload?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+  outcome?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type CloseCaseMutation = {
@@ -5420,6 +5422,7 @@ export type CloseCaseMutation = {
       aiSuspected: string;
       stoppedAt?: any | null;
       closeSource?: string | null;
+      closeOutcome?: string | null;
       closePayload: any;
       closedBy?: {
         __typename?: "UserType";
@@ -11826,6 +11829,10 @@ export const GetCaseDocument = {
                 { kind: "Field", name: { kind: "Name", value: "closeSource" } },
                 {
                   kind: "Field",
+                  name: { kind: "Name", value: "closeOutcome" },
+                },
+                {
+                  kind: "Field",
                   name: { kind: "Name", value: "closePayload" },
                 },
                 {
@@ -12811,6 +12818,17 @@ export const CloseCaseDocument = {
             name: { kind: "Name", value: "GenericScalar" },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "outcome" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "String" },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -12833,6 +12851,14 @@ export const CloseCaseDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "payload" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "outcome" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "outcome" },
                 },
               },
             ],
@@ -12869,6 +12895,10 @@ export const CloseCaseDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "closeSource" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closeOutcome" },
                       },
                       {
                         kind: "Field",
