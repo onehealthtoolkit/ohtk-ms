@@ -62,16 +62,16 @@ const CaseHeaderAside = ({ viewModel }: { viewModel: CaseViewModel }) => {
       bg: "#FFFBEB",
       border: "#FDE68A",
       titleColor: "#B45309",
-      title: t("case.finish.aside.system", "Closed by system"),
+      title: t("case.finish.aside.system", "Automatically closed"),
     },
   };
 
   const s = styles[variant];
-  const byName =
-    variant === "system" ? null : viewModel.data.closedByName?.trim() || null;
+  // System timeout may still have closedBy when an officer later saves close data (CO3b).
+  const byName = viewModel.data.closedByName?.trim() || null;
   const outcomeLine =
     variant === "system"
-      ? t("case.finish.systemTimeout", "System timeout")
+      ? t("case.finish.systemTimeout", "Automatic close")
       : variant === "false_positive"
         ? t("case.finish.falsePositive", "False positive")
         : t("case.finish.closeCase", "Close case");
@@ -95,7 +95,14 @@ const CaseHeaderAside = ({ viewModel }: { viewModel: CaseViewModel }) => {
       </div>
       <div className="mt-1.5 text-[12.5px] font-light text-gray-700">
         {variant === "system" ? (
-          outcomeLine
+          <>
+            {outcomeLine}
+            {byName
+              ? ` · ${t("case.finish.aside.dataBy", "data by {{name}}", {
+                  name: byName,
+                })}`
+              : null}
+          </>
         ) : (
           <>
             {byName

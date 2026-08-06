@@ -30,7 +30,7 @@ function finishTheme(
     return {
       accent: "#B45309",
       sectionBg: "#FFFDF7",
-      title: "Finished · System timeout",
+      title: "Finished · Automatic close",
     };
   }
   if (closeOutcome === "false_positive") {
@@ -77,6 +77,9 @@ const CaseClosePanel = ({ viewModel }: { viewModel: CaseViewModel }) => {
   // Design: no default outcome selected
   const [outcome, setOutcome] = useState<CaseCloseOutcome | null>(null);
   const [fpReason, setFpReason] = useState("");
+  const [editCloseOpen, setEditCloseOpen] = useState(false);
+  const [editFpReason, setEditFpReason] = useState("");
+  const [editError, setEditError] = useState<string | undefined>();
 
   const theme = finishTheme(
     viewModel.isCaseClosed,
@@ -151,7 +154,36 @@ const CaseClosePanel = ({ viewModel }: { viewModel: CaseViewModel }) => {
     setConfirmOpen(false);
   };
 
-  // —— Finished (read-only) ——
+  const saveSystemCloseData = async () => {
+    setError(undefined);
+    if (viewModel.closeFormError) {
+      setError(
+        t(
+          "case.close.formError",
+          "Error reading close form definition for this report type."
+        )
+      );
+      return;
+    }
+    if (viewModel.hasCloseForm && !viewModel.validateCloseForm()) {
+      setError(
+        t(
+          "case.finish.formIncomplete",
+          "Please complete the close form before saving."
+        )
+      );
+      return;
+    }
+    const ok = await viewModel.completeAfterAutoClose();
+    if (!ok) {
+      setError(
+        viewModel.errorMessage ||
+          t("case.finish.completeError", "Unable to save close data")
+      );
+    }
+  };
+
+  // —— Finished (read-only, except system auto-close may still accept Layer2) ——
   if (viewModel.isCaseClosed) {
     const source =
       viewModel.data.closeSource === "system"
@@ -159,7 +191,7 @@ const CaseClosePanel = ({ viewModel }: { viewModel: CaseViewModel }) => {
         : t("case.close.sourceOfficer", "Officer");
     const outcomeLabel =
       viewModel.data.closeSource === "system"
-        ? t("case.finish.systemTimeout", "System timeout")
+        ? t("case.finish.systemTimeout", "Automatic close")
         : viewModel.data.closeOutcome === "false_positive"
           ? t("case.finish.falsePositive", "False positive")
           : viewModel.data.closeOutcome === "close_case"
@@ -168,6 +200,10 @@ const CaseClosePanel = ({ viewModel }: { viewModel: CaseViewModel }) => {
     const isFp = viewModel.data.closeOutcome === "false_positive";
     const isSystem = viewModel.data.closeSource === "system";
     const isCloseCase = !isFp && !isSystem;
+    const systemHasData =
+      isSystem && viewModel.data.closeOutcome === "close_case";
+    const systemSaveEnabled =
+      !viewModel.caseClosing && !viewModel.closeFormError;
 
     return (
       <section
@@ -202,8 +238,12 @@ const CaseClosePanel = ({ viewModel }: { viewModel: CaseViewModel }) => {
               value={source}
             />
             <SummaryCell
-              label={t("case.close.closedBy", "Finished by")}
-              value={isSystem ? "—" : viewModel.data.closedByName || "—"}
+              label={
+                isSystem
+                  ? t("case.close.dataBy", "Close data by")
+                  : t("case.close.closedBy", "Finished by")
+              }
+              value={viewModel.data.closedByName || "—"}
             />
             <SummaryCell
               label={t("case.close.stoppedAt", "Finished at")}
@@ -217,8 +257,26 @@ const CaseClosePanel = ({ viewModel }: { viewModel: CaseViewModel }) => {
 
           {isCloseCase && (
             <div className="mt-4 max-w-[820px] overflow-hidden rounded-lg border border-gray-200 bg-white">
-              <div className="border-b border-gray-200 bg-gray-50 px-[15px] py-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-gray-500">
-                {t("case.close.dataReadonly", "Close data · read-only")}
+              <div className="flex items-center justify-between gap-3 border-b border-gray-200 bg-gray-50 px-[15px] py-2.5">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-gray-500">
+                  {t("case.close.dataReadonly", "Close data · read-only")}
+                </div>
+                {viewModel.isSuperUser && (
+                  <button
+                    type="button"
+                    className="text-[12px] font-medium text-blue-700 hover:text-blue-900"
+                    onClick={() => {
+                      setEditError(undefined);
+                      viewModel.initCloseForm(
+                        viewModel.data.closeDefinition,
+                        viewModel.data.closePayload
+                      );
+                      setEditCloseOpen(true);
+                    }}
+                  >
+                    {t("case.close.editData", "Edit close data")}
+                  </button>
+                )}
               </div>
               <CloseDataReadonly viewModel={viewModel} />
             </div>
@@ -226,11 +284,30 @@ const CaseClosePanel = ({ viewModel }: { viewModel: CaseViewModel }) => {
 
           {isFp && (
             <div className="mt-4 max-w-[820px] rounded-lg border border-dashed border-gray-200 bg-[#FAFAFA] px-[17px] py-[15px]">
-              <div className="text-[13px] font-normal text-gray-700">
-                {t("case.finish.reason", "Reason")}{" "}
-                <span className="font-light text-gray-400">
-                  ({t("form.label.optional", "optional")})
-                </span>
+              <div className="flex items-start justify-between gap-3">
+                <div className="text-[13px] font-normal text-gray-700">
+                  {t("case.finish.reason", "Reason")}{" "}
+                  <span className="font-light text-gray-400">
+                    ({t("form.label.optional", "optional")})
+                  </span>
+                </div>
+                {viewModel.isSuperUser && (
+                  <button
+                    type="button"
+                    className="shrink-0 text-[12px] font-medium text-blue-700 hover:text-blue-900"
+                    onClick={() => {
+                      setEditError(undefined);
+                      setEditFpReason(
+                        viewModel.data.closePayload?.reason
+                          ? String(viewModel.data.closePayload.reason)
+                          : ""
+                      );
+                      setEditCloseOpen(true);
+                    }}
+                  >
+                    {t("case.close.editReason", "Edit reason")}
+                  </button>
+                )}
               </div>
               <p className="mt-1 text-[13.5px] text-gray-800">
                 {viewModel.data.closePayload?.reason
@@ -247,29 +324,168 @@ const CaseClosePanel = ({ viewModel }: { viewModel: CaseViewModel }) => {
           )}
 
           {isSystem && (
-            <div className="mt-4 max-w-[820px] rounded-lg bg-gray-50 px-4 py-3 text-[13.5px] text-gray-700">
-              <p>
-                {t(
-                  "case.finish.systemBody",
-                  "Finished automatically after inactivity with no officer action."
+            <>
+              <div className="mt-4 max-w-[820px] rounded-lg bg-amber-50 px-4 py-3 text-[13.5px] text-amber-950">
+                <p>
+                  {t(
+                    "case.finish.systemBody",
+                    "This case was closed automatically after no activity."
+                  )}
+                </p>
+                <p className="mt-1 text-xs text-amber-900/80">
+                  {t(
+                    "case.finish.systemCanAddData",
+                    "You can still enter test result and stamp-out below. The case stays finished."
+                  )}
+                </p>
+              </div>
+
+              <div className="mt-4 max-w-[820px] animate-[fadein_0.15s_ease] rounded-lg border border-gray-200 bg-white px-[17px] py-4">
+                <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-gray-500">
+                  {systemHasData
+                    ? t(
+                        "case.close.dataUpdateTitle",
+                        "Close data · you can update"
+                      )
+                    : t("case.close.dataTitle", "Close data")}
+                  {reportTypeName ? ` · ${reportTypeName}` : ""}
+                </div>
+                {viewModel.closeFormError && (
+                  <p className="text-sm text-red-600" role="alert">
+                    {t(
+                      "case.close.formError",
+                      "Error reading close form definition for this report type."
+                    )}
+                  </p>
                 )}
-              </p>
-              <p className="mt-1 text-xs text-gray-500">
-                {t(
-                  "case.finish.systemNoData",
-                  "No officer outcome and no close data were recorded."
+                {!viewModel.closeFormError && viewModel.hasCloseForm && (
+                  <div className="-mx-1">
+                    <CloseFormFields viewModel={viewModel} />
+                  </div>
                 )}
-              </p>
-            </div>
+                {!viewModel.closeFormError && !viewModel.hasCloseForm && (
+                  <p className="text-sm font-light text-gray-500">
+                    {t(
+                      "case.close.noFields",
+                      "No close fields are required for this report type."
+                    )}
+                  </p>
+                )}
+                <div className="mt-4 flex flex-wrap items-center gap-4">
+                  <button
+                    type="button"
+                    className="inline-flex items-center rounded-[7px] px-[22px] py-3 text-sm font-medium text-white disabled:cursor-not-allowed"
+                    style={{
+                      background: systemSaveEnabled ? "#B45309" : "#FCD34D",
+                    }}
+                    disabled={!systemSaveEnabled}
+                    onClick={saveSystemCloseData}
+                  >
+                    {viewModel.caseClosing && (
+                      <span className="mr-2">
+                        <Spinner />
+                      </span>
+                    )}
+                    {systemHasData
+                      ? t("case.finish.updateCloseData", "Update close data")
+                      : t("case.finish.saveCloseData", "Save close data")}
+                  </button>
+                  {error && (
+                    <span className="text-sm text-red-600" role="alert">
+                      {error}
+                    </span>
+                  )}
+                </div>
+                <p className="mt-3 text-xs font-light text-gray-400">
+                  {t(
+                    "case.close.storedOnCase",
+                    "Close data is stored on the case. It does not change the original report in the Detail tab."
+                  )}
+                </p>
+              </div>
+            </>
           )}
 
-          <p className="mt-3.5 text-xs font-light text-gray-400">
-            {t(
-              "case.finish.cannotReopen",
-              "Finished cases cannot be reopened here. Contact an administrator if this was a mistake."
-            )}
-          </p>
+          {!isSystem && (
+            <p className="mt-3.5 text-xs font-light text-gray-400">
+              {t(
+                "case.finish.cannotReopen",
+                "Finished cases cannot be reopened here. Contact an administrator if this was a mistake."
+              )}
+            </p>
+          )}
+          {isSystem && (
+            <p className="mt-3.5 text-xs font-light text-gray-400">
+              {t(
+                "case.finish.systemNoReopen",
+                "The case stays finished (automatic close). Only close data can be added or updated here."
+              )}
+            </p>
+          )}
         </div>
+
+        {editCloseOpen && viewModel.isSuperUser && (
+          <EditCloseDataModal
+            viewModel={viewModel}
+            isFp={isFp}
+            fpReason={editFpReason}
+            onFpReasonChange={setEditFpReason}
+            error={editError}
+            busy={viewModel.caseClosing}
+            onCancel={() => {
+              setEditCloseOpen(false);
+              setEditError(undefined);
+              // Restore form values from saved payload
+              viewModel.initCloseForm(
+                viewModel.data.closeDefinition,
+                viewModel.data.closePayload
+              );
+            }}
+            onSave={async () => {
+              setEditError(undefined);
+              if (isFp) {
+                const ok = await viewModel.updateFinishedCloseData(
+                  editFpReason.trim() ? { reason: editFpReason.trim() } : {}
+                );
+                if (!ok) {
+                  setEditError(
+                    viewModel.errorMessage ||
+                      t("case.close.editError", "Unable to update close data")
+                  );
+                  return;
+                }
+              } else {
+                if (viewModel.closeFormError) {
+                  setEditError(
+                    t(
+                      "case.close.formError",
+                      "Error reading close form definition for this report type."
+                    )
+                  );
+                  return;
+                }
+                if (viewModel.hasCloseForm && !viewModel.validateCloseForm()) {
+                  setEditError(
+                    t(
+                      "case.finish.formIncomplete",
+                      "Please complete the close form before saving."
+                    )
+                  );
+                  return;
+                }
+                const ok = await viewModel.updateFinishedCloseData();
+                if (!ok) {
+                  setEditError(
+                    viewModel.errorMessage ||
+                      t("case.close.editError", "Unable to update close data")
+                  );
+                  return;
+                }
+              }
+              setEditCloseOpen(false);
+            }}
+          />
+        )}
       </section>
     );
   }
@@ -754,5 +970,149 @@ const FinishConfirmModal = ({
     </div>
   );
 };
+
+/** Superuser-only: edit finished close data without reopening the case. */
+const EditCloseDataModal = observer(
+  ({
+    viewModel,
+    isFp,
+    fpReason,
+    onFpReasonChange,
+    error,
+    busy,
+    onCancel,
+    onSave,
+  }: {
+    viewModel: CaseViewModel;
+    isFp: boolean;
+    fpReason: string;
+    onFpReasonChange: (v: string) => void;
+    error?: string;
+    busy: boolean;
+    onCancel: () => void;
+    onSave: () => void;
+  }) => {
+    const { t } = useTranslation();
+
+    useEffect(() => {
+      const onKey = (e: KeyboardEvent) => {
+        if (e.key === "Escape" && !busy) onCancel();
+      };
+      document.addEventListener("keydown", onKey);
+      return () => document.removeEventListener("keydown", onKey);
+    }, [onCancel, busy]);
+
+    return (
+      <div className="fixed inset-0 z-[80] flex items-center justify-center p-4">
+        <div
+          className="absolute inset-0 bg-slate-900/55 animate-[fadein_0.12s_ease]"
+          onClick={() => !busy && onCancel()}
+          aria-hidden
+        />
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="edit-close-data-title"
+          className="relative z-[81] flex max-h-[90vh] w-full max-w-[560px] flex-col overflow-hidden rounded-[10px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.3)] animate-[fadein_0.15s_ease]"
+        >
+          <div className="shrink-0 px-6 pt-6 pb-3">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-blue-700">
+              {t("case.close.editEyebrow", "Superuser · edit close data")}
+            </div>
+            <h3
+              id="edit-close-data-title"
+              className="mt-2 text-xl font-medium text-gray-900"
+            >
+              {isFp
+                ? t("case.close.editTitleFp", "Edit false positive reason")
+                : t("case.close.editTitle", "Edit close data")}
+            </h3>
+            <p className="mt-2 text-[13.5px] font-light leading-relaxed text-gray-600">
+              {t(
+                "case.close.editBody",
+                "The case stays finished. Only close form data is updated. Original finish time and source are kept."
+              )}
+            </p>
+          </div>
+
+          <div className="min-h-0 flex-1 overflow-y-auto px-6 pb-2">
+            {isFp ? (
+              <div>
+                <label
+                  className="text-[13px] font-normal text-gray-700"
+                  htmlFor="edit-fp-reason"
+                >
+                  {t("case.finish.reason", "Reason")}
+                  <span className="font-light text-gray-400">
+                    {" "}
+                    · {t("form.label.optional", "optional")}
+                  </span>
+                </label>
+                <textarea
+                  id="edit-fp-reason"
+                  className="mt-2 min-h-[90px] w-full resize-y rounded-md border border-gray-300 bg-white px-3 py-2.5 text-[13px] font-light text-gray-800 placeholder:text-gray-400"
+                  value={fpReason}
+                  onChange={e => onFpReasonChange(e.target.value)}
+                  disabled={busy}
+                />
+              </div>
+            ) : (
+              <div className="rounded-lg border border-gray-200 bg-white px-3 py-3">
+                {viewModel.closeFormError && (
+                  <p className="text-sm text-red-600" role="alert">
+                    {t(
+                      "case.close.formError",
+                      "Error reading close form definition for this report type."
+                    )}
+                  </p>
+                )}
+                {!viewModel.closeFormError && viewModel.hasCloseForm && (
+                  <CloseFormFields viewModel={viewModel} />
+                )}
+                {!viewModel.closeFormError && !viewModel.hasCloseForm && (
+                  <p className="text-sm font-light text-gray-500">
+                    {t(
+                      "case.close.noFields",
+                      "No close fields are required for this report type. You can still save an empty update."
+                    )}
+                  </p>
+                )}
+              </div>
+            )}
+            {error && (
+              <p className="mt-3 text-sm text-red-600" role="alert">
+                {error}
+              </p>
+            )}
+          </div>
+
+          <div className="flex shrink-0 justify-end gap-3 border-t border-gray-100 bg-gray-50 px-6 py-4">
+            <button
+              type="button"
+              className="rounded-[7px] border border-gray-300 bg-white px-[18px] py-3 text-[13.5px] font-normal text-gray-700 hover:bg-gray-50 disabled:opacity-60"
+              onClick={onCancel}
+              disabled={busy}
+            >
+              {t("form.button.cancel", "Cancel")}
+            </button>
+            <button
+              type="button"
+              className="inline-flex items-center rounded-[7px] bg-blue-700 px-[22px] py-3 text-[13.5px] font-medium text-white hover:bg-blue-800 disabled:opacity-60"
+              onClick={onSave}
+              disabled={busy}
+            >
+              {busy && (
+                <span className="mr-2">
+                  <Spinner />
+                </span>
+              )}
+              {t("case.close.saveEdit", "Save changes")}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+);
 
 export default observer(CaseClosePanel);

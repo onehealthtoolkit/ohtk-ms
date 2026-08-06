@@ -33,7 +33,7 @@ const CaseStatus: React.FC<CaseStatusProps> = ({
   if (closeSource === "system") {
     return (
       <div className="inline-flex items-center rounded border border-amber-200 bg-amber-50 px-2 py-0.5 text-center text-sm font-medium text-amber-800">
-        {t("case.finish.systemTimeout", "System timeout")}
+        {t("case.finish.systemTimeout", "Automatic close")}
       </div>
     );
   }

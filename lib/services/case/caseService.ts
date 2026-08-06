@@ -7,6 +7,8 @@ import {
   StateForwardDocument,
   UpdateCaseTestResultDocument,
   CloseCaseDocument,
+  CompleteAfterAutoCloseDocument,
+  UpdateFinishedCloseDataDocument,
 } from "lib/generated/graphql";
 import {
   Case,
@@ -95,6 +97,16 @@ export interface ICaseService extends IService {
     caseId: string,
     payload?: Record<string, any>,
     outcome?: CaseCloseOutcome
+  ): Promise<GetResult<CaseDetail>>;
+
+  completeAfterAutoClose(
+    caseId: string,
+    payload?: Record<string, any>
+  ): Promise<GetResult<CaseDetail>>;
+
+  updateFinishedCloseData(
+    caseId: string,
+    payload?: Record<string, any>
   ): Promise<GetResult<CaseDetail>>;
 
   forwardState(
@@ -339,6 +351,100 @@ export class CaseService implements ICaseService {
               .join(" ")
               .trim() ||
             closed.closedBy.username ||
+            ""
+          : "",
+        files: [],
+      },
+      error: result.errors?.map(e => e.message).join(", "),
+    };
+  }
+
+  async completeAfterAutoClose(
+    caseId: string,
+    payload?: Record<string, any>
+  ): Promise<GetResult<CaseDetail>> {
+    const result = await this.client.mutate({
+      mutation: CompleteAfterAutoCloseDocument,
+      variables: {
+        caseId,
+        payload: payload ?? null,
+      },
+    });
+
+    const completed = result.data?.adminCaseCompleteAfterAutoClose?.result;
+    if (!completed) {
+      return {
+        data: undefined,
+        error:
+          result.errors?.map(e => e.message).join(", ") ||
+          "Unable to save close data",
+      };
+    }
+
+    return {
+      data: {
+        id: completed.id,
+        isFinished: completed.isFinished,
+        statusLabel: completed.statusLabel || "",
+        testResult: completed.testResult || "",
+        aiSuspected: completed.aiSuspected || "",
+        stoppedAt: completed.stoppedAt,
+        closeSource: completed.closeSource || "",
+        closeOutcome: completed.closeOutcome || "",
+        closePayload: (completed.closePayload as Record<string, any>) || {},
+        closedByName: completed.closedBy
+          ? [completed.closedBy.firstName, completed.closedBy.lastName]
+              .filter(Boolean)
+              .join(" ")
+              .trim() ||
+            completed.closedBy.username ||
+            ""
+          : "",
+        files: [],
+      },
+      error: result.errors?.map(e => e.message).join(", "),
+    };
+  }
+
+  async updateFinishedCloseData(
+    caseId: string,
+    payload?: Record<string, any>
+  ): Promise<GetResult<CaseDetail>> {
+    const result = await this.client.mutate({
+      mutation: UpdateFinishedCloseDataDocument,
+      variables: {
+        caseId,
+        payload: payload ?? null,
+      },
+    });
+
+    const updated = result.data?.adminCaseCloseDataUpdate?.result;
+    if (!updated) {
+      return {
+        data: undefined,
+        error:
+          result.errors?.map(e => e.message).join(", ") ||
+          "Unable to update close data",
+      };
+    }
+
+    return {
+      data: {
+        id: updated.id,
+        isFinished: updated.isFinished,
+        statusLabel: updated.statusLabel || "",
+        testResult: updated.testResult || "",
+        aiSuspected: updated.aiSuspected || "",
+        stoppedAt: updated.stoppedAt,
+        closeSource: updated.closeSource || "",
+        closeOutcome: updated.closeOutcome || "",
+        closePayload: (updated.closePayload as Record<string, any>) || {},
+        closedByName: updated.closedBy
+          ? [updated.closedBy.firstName, updated.closedBy.lastName]
+              .filter(Boolean)
+              .join(" ")
+              .trim() ||
+            updated.closedBy.username ||
             ""
           : "",
         files: [],
