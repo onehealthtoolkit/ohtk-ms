@@ -147,15 +147,18 @@ const ExcelFilter: React.FC<ExcelFilterProp> = ({ action, reportType }) => {
                   ))}
                 </Select>
               </Field>
-              <Field $size="half">
-                <Checkbox
-                  id="columnSplit"
-                  name="columnSplit"
-                  value="True"
-                  label={t("form.label.columnSplit", "column split")}
-                  disabled={false}
-                />
-              </Field>
+              {/* columnSplit only applies to generic incident_report dump */}
+              {action === "incident_report" && (
+                <Field $size="half">
+                  <Checkbox
+                    id="columnSplit"
+                    name="columnSplit"
+                    value="True"
+                    label={t("form.label.columnSplit", "column split")}
+                    disabled={false}
+                  />
+                </Field>
+              )}
             </>
           )}
         </>

@@ -206,6 +206,17 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     display={store.isRoleOfficer || store.isRoleAdmin}
                     icon={<DocumentIcon className={iconClassName} />}
                   />
+                  <Menu
+                    href="/excels/lahis_summarized_table"
+                    pathname={pathname}
+                    label={t(
+                      "breadcrumb.lahisSummarizedTable",
+                      "Summarized table"
+                    )}
+                    collapsed={store.menu.collapsed}
+                    display={store.isRoleOfficer || store.isRoleAdmin}
+                    icon={<DocumentIcon className={iconClassName} />}
+                  />
                   {store.isFeatureEnable("animal_census") && (
                     <Menu
                       href="/excels/census_round"
