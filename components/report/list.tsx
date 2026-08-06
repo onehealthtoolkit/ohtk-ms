@@ -145,6 +145,14 @@ const ReportList = () => {
               />
             </div>
 
+            <button
+              type="button"
+              className="mr-2 px-4 py-2 rounded bg-blue-600 text-white text-sm hover:bg-blue-700"
+              onClick={() => router.push("/reports/create")}
+            >
+              {t("report.create.title", "New report")}
+            </button>
+
             <ViewSwitch
               isCalendarView={viewModel.isCalendarView}
               onSwitchView={isCalendarView => {

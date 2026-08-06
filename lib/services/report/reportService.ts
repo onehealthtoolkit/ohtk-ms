@@ -6,6 +6,7 @@ import {
   ReportsDocument,
   RiskAssessmentFieldsFragment,
   SetReportRiskValueDocument,
+  SubmitIncidentReportDocument,
 } from "lib/generated/graphql";
 import {
   Image,
@@ -42,6 +43,21 @@ export type ReportFilter = {
   currentRiskLevels?: string;
 };
 
+export type SubmitIncidentReportInput = {
+  data: Record<string, unknown>;
+  reportTypeId: string;
+  incidentDate: string; // YYYY-MM-DD
+  gpsLocation?: string | null; // "longitude,latitude"
+  incidentInAuthority?: boolean;
+  testFlag?: boolean;
+  villageId?: number | null;
+};
+
+export type SubmitIncidentReportResult = {
+  id: string;
+  caseId?: string | null;
+};
+
 export interface IReportService extends IService {
   fetchReports(
     limit: number,
@@ -65,6 +81,10 @@ export interface IReportService extends IService {
     reportId: string,
     level: RiskFilterLevel | null
   ): Promise<GetResult<ReportRiskState>>;
+
+  submitIncidentReport(
+    input: SubmitIncidentReportInput
+  ): Promise<GetResult<SubmitIncidentReportResult>>;
 }
 
 export class ReportService implements IReportService {
@@ -235,6 +255,49 @@ export class ReportService implements IReportService {
     }
     return {
       data,
+    };
+  }
+
+  async submitIncidentReport(
+    input: SubmitIncidentReportInput
+  ): Promise<GetResult<SubmitIncidentReportResult>> {
+    const result = await this.client.mutate({
+      mutation: SubmitIncidentReportDocument,
+      variables: {
+        data: input.data,
+        reportTypeId: input.reportTypeId,
+        incidentDate: input.incidentDate,
+        gpsLocation: input.gpsLocation ?? null,
+        incidentInAuthority: input.incidentInAuthority ?? false,
+        testFlag: input.testFlag ?? false,
+        villageId: input.villageId ?? null,
+      },
+      refetchQueries: [
+        {
+          query: ReportsDocument,
+          variables: this.fetchReportsQuery,
+          fetchPolicy: "network-only",
+        },
+      ],
+      awaitRefetchQueries: true,
+    });
+
+    if (result.errors?.length) {
+      return {
+        data: undefined,
+        error: result.errors.map(e => e.message).join(", "),
+      };
+    }
+
+    const created = result.data?.submitIncidentReport?.result;
+    if (!created?.id) {
+      return { data: undefined, error: "Submit failed" };
+    }
+    return {
+      data: {
+        id: created.id,
+        caseId: created.caseId,
+      },
     };
   }
 

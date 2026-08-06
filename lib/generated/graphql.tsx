@@ -311,7 +311,10 @@ export type AdminAuthorityUserUpdateSuccess = {
   authorityUser?: Maybe<AuthorityUserType>;
 };
 
-/** Officer close: Layer1 completion + Layer2 payload (validated). */
+/**
+ * Officer Finish: Layer1 completion + outcome-scoped Layer2 payload.
+ * outcome: close_case (default) | false_positive
+ */
 export type AdminCaseCloseMutation = {
   __typename?: "AdminCaseCloseMutation";
   result?: Maybe<CaseType>;
@@ -1943,6 +1946,7 @@ export type CaseType = {
   __typename?: "CaseType";
   aiSuspected: Scalars["String"]["output"];
   authorities?: Maybe<Array<Maybe<AuthorityType>>>;
+  closeOutcome?: Maybe<Scalars["String"]["output"]>;
   closePayload: Scalars["GenericScalar"]["output"];
   closeSource?: Maybe<Scalars["String"]["output"]>;
   closedBy?: Maybe<UserType>;
@@ -2568,7 +2572,10 @@ export type Mutation = {
   adminAuthorityUserDelete?: Maybe<AdminAuthorityUserDeleteMutation>;
   adminAuthorityUserUpdate?: Maybe<AdminAuthorityUserUpdateMutation>;
   adminAuthorityUserUpdatePassword?: Maybe<AdminAuthorityUserUpdatePasswordMutation>;
-  /** Officer close: Layer1 completion + Layer2 payload (validated). */
+  /**
+   * Officer Finish: Layer1 completion + outcome-scoped Layer2 payload.
+   * outcome: close_case (default) | false_positive
+   */
   adminCaseClose?: Maybe<AdminCaseCloseMutation>;
   adminCaseDefinitionCreate?: Maybe<AdminCaseDefinitionCreateMutation>;
   adminCaseDefinitionDelete?: Maybe<AdminCaseDefinitionDeleteMutation>;
@@ -2755,6 +2762,7 @@ export type MutationAdminAuthorityUserUpdatePasswordArgs = {
 
 export type MutationAdminCaseCloseArgs = {
   caseId: Scalars["UUID"]["input"];
+  outcome?: InputMaybe<Scalars["String"]["input"]>;
   payload?: InputMaybe<Scalars["GenericScalar"]["input"]>;
 };
 
@@ -3324,6 +3332,7 @@ export type MutationSubmitIncidentReportArgs = {
   reportId?: InputMaybe<Scalars["UUID"]["input"]>;
   reportTypeId: Scalars["UUID"]["input"];
   testFlag?: InputMaybe<Scalars["Boolean"]["input"]>;
+  villageId?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type MutationSubmitObservationSubjectArgs = {
@@ -5080,6 +5089,8 @@ export type CasesQuery = {
       id: any;
       isFinished: boolean;
       statusLabel?: string | null;
+      closeOutcome?: string | null;
+      closeSource?: string | null;
       report?: {
         __typename?: "IncidentReportType";
         createdAt: any;
@@ -8403,6 +8414,7 @@ export type GetReportQuery = {
     accumulatedMetrics?: any | null;
     platform?: string | null;
     testFlag: boolean;
+    aiSuspected: string;
     definition?: any | null;
     reportType?: {
       __typename?: "ReportTypeType";
@@ -8576,6 +8588,28 @@ export type SetReportRiskValueMutation = {
         firstName: string;
         lastName: string;
       } | null;
+    } | null;
+  } | null;
+};
+
+export type SubmitIncidentReportMutationVariables = Exact<{
+  data: Scalars["GenericScalar"]["input"];
+  reportTypeId: Scalars["UUID"]["input"];
+  incidentDate: Scalars["Date"]["input"];
+  gpsLocation?: InputMaybe<Scalars["String"]["input"]>;
+  incidentInAuthority?: InputMaybe<Scalars["Boolean"]["input"]>;
+  testFlag?: InputMaybe<Scalars["Boolean"]["input"]>;
+  villageId?: InputMaybe<Scalars["Int"]["input"]>;
+}>;
+
+export type SubmitIncidentReportMutation = {
+  __typename?: "Mutation";
+  submitIncidentReport?: {
+    __typename?: "SubmitIncidentReport";
+    result?: {
+      __typename?: "IncidentReportType";
+      id: any;
+      caseId?: any | null;
     } | null;
   } | null;
 };
@@ -12832,10 +12866,7 @@ export const CloseCaseDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "outcome" },
           },
-          type: {
-            kind: "NamedType",
-            name: { kind: "Name", value: "String" },
-          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
       ],
       selectionSet: {
@@ -26394,6 +26425,172 @@ export const SetReportRiskValueDocument = {
 } as unknown as DocumentNode<
   SetReportRiskValueMutation,
   SetReportRiskValueMutationVariables
+>;
+export const SubmitIncidentReportDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "SubmitIncidentReport" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "data" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "GenericScalar" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportTypeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "incidentDate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Date" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "gpsLocation" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "incidentInAuthority" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "testFlag" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "villageId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "submitIncidentReport" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "data" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "data" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportTypeId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportTypeId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "incidentDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "incidentDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gpsLocation" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "gpsLocation" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "incidentInAuthority" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "incidentInAuthority" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "testFlag" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "testFlag" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "villageId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "villageId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "caseId" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SubmitIncidentReportMutation,
+  SubmitIncidentReportMutationVariables
 >;
 export const ReportCategoriesDocument = {
   kind: "Document",
