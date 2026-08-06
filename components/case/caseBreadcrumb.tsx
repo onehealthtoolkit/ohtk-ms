@@ -72,13 +72,13 @@ const CaseBreadcrumb = ({
             </a>
           </Link>
         </li>
-        <li
-          className="select-none text-base text-[#5F7FAE]"
-          aria-hidden="true"
-        >
+        <li className="select-none text-base text-[#5F7FAE]" aria-hidden="true">
           /
         </li>
-        <li className="inline-flex min-w-0 items-center gap-3" aria-current="page">
+        <li
+          className="inline-flex min-w-0 items-center gap-3"
+          aria-current="page"
+        >
           <span className="text-base font-semibold text-white">#{short}</span>
           {contextLabel ? (
             <>
