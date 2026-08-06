@@ -44,6 +44,8 @@ export type Report = {
   authorityName?: string;
   testFlag: boolean;
   currentRiskAssessment?: RiskAssessment | null;
+  /** AI narrative on IncidentReport.ai_suspected (read-only in UI) */
+  aiSuspected?: string;
 };
 
 export type Image = {

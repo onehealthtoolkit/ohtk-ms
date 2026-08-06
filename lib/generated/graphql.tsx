@@ -26018,6 +26018,7 @@ export const GetReportDocument = {
                   },
                 },
                 { kind: "Field", name: { kind: "Name", value: "testFlag" } },
+                { kind: "Field", name: { kind: "Name", value: "aiSuspected" } },
                 { kind: "Field", name: { kind: "Name", value: "definition" } },
                 {
                   kind: "Field",

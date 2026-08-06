@@ -1,21 +1,21 @@
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CaseViewModel } from "./caseViewModel";
 
 type AiSuspectedPanelProps = {
-  viewModel: CaseViewModel;
-  /** case = assessment card (handoff); stack = legacy full-width block */
+  /** Report.ai_suspected text */
+  aiSuspected?: string | null;
+  /** card = assessment grid (handoff); stack = legacy full-width block */
   variant?: "case" | "stack";
 };
 
-/** Read-only AI assessment — not part of close_definition / close_payload. */
+/** Read-only AI assessment from IncidentReport.ai_suspected. */
 const AiSuspectedPanel = ({
-  viewModel,
+  aiSuspected: aiSuspectedProp,
   variant = "stack",
 }: AiSuspectedPanelProps) => {
   const { t } = useTranslation();
-  const aiSuspected = (viewModel.data.aiSuspected || "").trim();
+  const aiSuspected = (aiSuspectedProp || "").trim();
   const hasNote = aiSuspected.length > 0;
   const [expanded, setExpanded] = useState(false);
 
@@ -64,7 +64,6 @@ const AiSuspectedPanel = ({
     );
   }
 
-  // Legacy stack layout (if reused elsewhere)
   return (
     <section className="relative my-4 bg-white px-4 py-3 md:px-8">
       <div className="text-xs font-bold uppercase tracking-wider text-gray-500">

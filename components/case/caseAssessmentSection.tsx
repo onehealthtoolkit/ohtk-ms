@@ -8,7 +8,11 @@ import { CaseViewModel } from "./caseViewModel";
  * Design handoff §2 Assessment: Risk + AI side by side.
  * Empty AI stays compact so it does not consume a full row alone.
  */
-const CaseAssessmentSection = ({ viewModel }: { viewModel: CaseViewModel }) => {
+const CaseAssessmentSection = ({
+  viewModel,
+}: {
+  viewModel: CaseViewModel;
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -18,7 +22,10 @@ const CaseAssessmentSection = ({ viewModel }: { viewModel: CaseViewModel }) => {
       </div>
       <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-[1.15fr_1fr]">
         <ReportRiskPanel viewModel={viewModel} variant="case" />
-        <AiSuspectedPanel viewModel={viewModel} variant="case" />
+        <AiSuspectedPanel
+          aiSuspected={viewModel.data.aiSuspected}
+          variant="case"
+        />
       </div>
     </section>
   );
