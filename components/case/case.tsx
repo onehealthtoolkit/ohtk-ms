@@ -41,6 +41,8 @@ const ReportMap = dynamic(() => import("./reportMap"), {
 const ReportInformation = observer(
   ({ viewModel }: { viewModel: CaseViewModel }) => {
     const { t } = useTranslation();
+    const store = useStore();
+    const showVillage = store.isFeatureEnable("village");
 
     return (
       <div className="relative overflow-x-auto md:w-1/2 w-full">
@@ -65,6 +67,14 @@ const ReportInformation = observer(
               label={t("form.label.authorityName", "Authority Name")}
               value={viewModel.data?.authorityName || ""}
             />
+
+            {showVillage ? (
+              <TR
+                label={t("form.label.village", "Village")}
+                value={viewModel.data?.villageName || ""}
+              />
+            ) : null}
+
             <TR
               label={t("form.label.phoneNumber", "Phone number")}
               value={viewModel.data?.reportByTelephone || ""}

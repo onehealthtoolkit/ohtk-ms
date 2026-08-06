@@ -320,6 +320,23 @@ export type AdminCaseCloseMutation = {
   result?: Maybe<CaseType>;
 };
 
+/**
+ * CO3b: fill Layer2 close data on a system-timeout-finished case.
+ * Does not reopen; keeps close_source=system and stopped_at.
+ */
+export type AdminCaseCompleteAfterAutoCloseMutation = {
+  __typename?: "AdminCaseCompleteAfterAutoCloseMutation";
+  result?: Maybe<CaseType>;
+};
+
+/**
+ * Superuser-only: edit Layer2 close data on a finished case (no reopen).
+ */
+export type AdminCaseCloseDataUpdateMutation = {
+  __typename?: "AdminCaseCloseDataUpdateMutation";
+  result?: Maybe<CaseType>;
+};
+
 export type AdminCaseDefinitionCreateMutation = {
   __typename?: "AdminCaseDefinitionCreateMutation";
   result?: Maybe<AdminCaseDefinitionCreateResult>;
@@ -2588,6 +2605,15 @@ export type Mutation = {
    * outcome: close_case (default) | false_positive
    */
   adminCaseClose?: Maybe<AdminCaseCloseMutation>;
+  /**
+   * CO3b: fill Layer2 close data on a system-timeout-finished case.
+   * Does not reopen; keeps close_source=system and stopped_at.
+   */
+  adminCaseCompleteAfterAutoClose?: Maybe<AdminCaseCompleteAfterAutoCloseMutation>;
+  /**
+   * Superuser-only: edit Layer2 close data on a finished case (no reopen).
+   */
+  adminCaseCloseDataUpdate?: Maybe<AdminCaseCloseDataUpdateMutation>;
   adminCaseDefinitionCreate?: Maybe<AdminCaseDefinitionCreateMutation>;
   adminCaseDefinitionDelete?: Maybe<AdminCaseDefinitionDeleteMutation>;
   adminCaseDefinitionUpdate?: Maybe<AdminCaseDefinitionUpdateMutation>;
@@ -5441,6 +5467,68 @@ export type CloseCaseMutation = {
   __typename?: "Mutation";
   adminCaseClose?: {
     __typename?: "AdminCaseCloseMutation";
+    result?: {
+      __typename?: "CaseType";
+      id: any;
+      isFinished: boolean;
+      statusLabel?: string | null;
+      testResult: string;
+      aiSuspected: string;
+      stoppedAt?: any | null;
+      closeSource?: string | null;
+      closeOutcome?: string | null;
+      closePayload: any;
+      closedBy?: {
+        __typename?: "UserType";
+        id: string;
+        firstName: string;
+        lastName: string;
+        username: string;
+      } | null;
+    } | null;
+  } | null;
+};
+
+export type CompleteAfterAutoCloseMutationVariables = Exact<{
+  caseId: Scalars["UUID"]["input"];
+  payload?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+}>;
+
+export type CompleteAfterAutoCloseMutation = {
+  __typename?: "Mutation";
+  adminCaseCompleteAfterAutoClose?: {
+    __typename?: "AdminCaseCompleteAfterAutoCloseMutation";
+    result?: {
+      __typename?: "CaseType";
+      id: any;
+      isFinished: boolean;
+      statusLabel?: string | null;
+      testResult: string;
+      aiSuspected: string;
+      stoppedAt?: any | null;
+      closeSource?: string | null;
+      closeOutcome?: string | null;
+      closePayload: any;
+      closedBy?: {
+        __typename?: "UserType";
+        id: string;
+        firstName: string;
+        lastName: string;
+        username: string;
+      } | null;
+    } | null;
+  } | null;
+};
+
+export type UpdateFinishedCloseDataMutationVariables = Exact<{
+  caseId: Scalars["UUID"]["input"];
+  payload?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+}>;
+
+export type UpdateFinishedCloseDataMutation = {
+  __typename?: "Mutation";
+  adminCaseCloseDataUpdate?: {
+    __typename?: "AdminCaseCloseDataUpdateMutation";
     result?: {
       __typename?: "CaseType";
       id: any;
@@ -13023,6 +13111,278 @@ export const CloseCaseDocument = {
     },
   ],
 } as unknown as DocumentNode<CloseCaseMutation, CloseCaseMutationVariables>;
+export const CompleteAfterAutoCloseDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CompleteAfterAutoClose" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "caseId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "payload" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "GenericScalar" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminCaseCompleteAfterAutoClose" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "caseId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "caseId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "payload" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "payload" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isFinished" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "statusLabel" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "testResult" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "aiSuspected" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "stoppedAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closeSource" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closeOutcome" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closePayload" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closedBy" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "firstName" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "lastName" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "username" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CompleteAfterAutoCloseMutation,
+  CompleteAfterAutoCloseMutationVariables
+>;
+export const UpdateFinishedCloseDataDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateFinishedCloseData" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "caseId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "payload" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "GenericScalar" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminCaseCloseDataUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "caseId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "caseId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "payload" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "payload" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isFinished" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "statusLabel" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "testResult" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "aiSuspected" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "stoppedAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closeSource" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closeOutcome" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closePayload" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closedBy" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "firstName" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "lastName" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "username" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateFinishedCloseDataMutation,
+  UpdateFinishedCloseDataMutationVariables
+>;
 export const CaseDefinitionsDocument = {
   kind: "Document",
   definitions: [

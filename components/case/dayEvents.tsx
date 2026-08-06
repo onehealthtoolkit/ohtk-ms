@@ -26,7 +26,7 @@ function finishedBadgeLabel(
   closeSource?: string
 ): string {
   if (closeSource === "system") {
-    return t("case.finish.systemTimeout", "System timeout");
+    return t("case.finish.systemTimeout", "Automatic close");
   }
   if (closeOutcome === "false_positive") {
     return t("case.finish.falsePositive", "False positive");

@@ -72,10 +72,14 @@ export class CaseViewModel extends BaseViewModel {
       closeFormDefinitionJson: observable,
       initCloseForm: action,
       closeCase: action,
+      completeAfterAutoClose: action,
+      updateFinishedCloseData: action,
       validateCloseForm: action,
       _caseClosing: observable,
       caseClosing: computed,
       isCaseClosed: computed,
+      isSystemAutoClosed: computed,
+      isSuperUser: computed,
       hasCloseForm: computed,
       imageUrlMap: computed,
       fileUrlMap: computed,
@@ -210,6 +214,11 @@ export class CaseViewModel extends BaseViewModel {
     return !!(this.data.isFinished && this.data.stoppedAt);
   }
 
+  /** CO3: finished by system timeout (may still accept late close data). */
+  public get isSystemAutoClosed(): boolean {
+    return this.isCaseClosed && this.data.closeSource === "system";
+  }
+
   /**
    * Finish case (CO2b): outcome + optional form payload in one step.
    */
@@ -259,6 +268,132 @@ export class CaseViewModel extends BaseViewModel {
       runInAction(() => {
         this.setErrorMessage(
           error instanceof Error ? error.message : "Unable to finish case"
+        );
+        this.caseClosing = false;
+      });
+      return false;
+    }
+  }
+
+  public get isSuperUser(): boolean {
+    return !!this.me?.isSuperUser;
+  }
+
+  /**
+   * CO3b: save Layer2 close data on an automatically closed case (no reopen).
+   */
+  public async completeAfterAutoClose(
+    payloadOverride?: Record<string, any>
+  ): Promise<boolean> {
+    this.setErrorMessage(undefined);
+    if (!this.isSystemAutoClosed) {
+      this.setErrorMessage(
+        "Only automatically closed cases can receive late close data"
+      );
+      return false;
+    }
+    if (!this.validateCloseForm()) {
+      this.setErrorMessage("Please complete the close form before saving");
+      return false;
+    }
+
+    this.caseClosing = true;
+    try {
+      const payload =
+        payloadOverride !== undefined
+          ? payloadOverride
+          : this.getClosePayload();
+      const result = await this.caseService.completeAfterAutoClose(
+        this.id,
+        payload
+      );
+      runInAction(() => {
+        if (result.data) {
+          this.data = {
+            ...this.data,
+            ...result.data,
+            closeDefinition: this.data.closeDefinition,
+            files: this.data.files || [],
+          };
+          this.initCloseForm(
+            this.data.closeDefinition,
+            result.data.closePayload
+          );
+        }
+        if (result.error) {
+          this.setErrorMessage(result.error);
+        }
+        this.caseClosing = false;
+      });
+      return !result.error && !!result.data;
+    } catch (error) {
+      runInAction(() => {
+        this.setErrorMessage(
+          error instanceof Error ? error.message : "Unable to save close data"
+        );
+        this.caseClosing = false;
+      });
+      return false;
+    }
+  }
+
+  /**
+   * Superuser-only: edit Layer2 close data on any finished case (no reopen).
+   */
+  public async updateFinishedCloseData(
+    payloadOverride?: Record<string, any>
+  ): Promise<boolean> {
+    this.setErrorMessage(undefined);
+    if (!this.isSuperUser) {
+      this.setErrorMessage("Only superuser can edit finished close data");
+      return false;
+    }
+    if (!this.isCaseClosed) {
+      this.setErrorMessage("Case is not closed");
+      return false;
+    }
+
+    const isFp = this.data.closeOutcome === "false_positive";
+    if (!isFp && !this.validateCloseForm()) {
+      this.setErrorMessage("Please complete the close form before saving");
+      return false;
+    }
+
+    this.caseClosing = true;
+    try {
+      const payload =
+        payloadOverride !== undefined
+          ? payloadOverride
+          : isFp
+            ? this.data.closePayload || {}
+            : this.getClosePayload();
+      const result = await this.caseService.updateFinishedCloseData(
+        this.id,
+        payload
+      );
+      runInAction(() => {
+        if (result.data) {
+          this.data = {
+            ...this.data,
+            ...result.data,
+            closeDefinition: this.data.closeDefinition,
+            files: this.data.files || [],
+          };
+          this.initCloseForm(
+            this.data.closeDefinition,
+            result.data.closePayload
+          );
+        }
+        if (result.error) {
+          this.setErrorMessage(result.error);
+        }
+        this.caseClosing = false;
+      });
+      return !result.error && !!result.data;
+    } catch (error) {
+      runInAction(() => {
+        this.setErrorMessage(
+          error instanceof Error ? error.message : "Unable to update close data"
         );
         this.caseClosing = false;
       });

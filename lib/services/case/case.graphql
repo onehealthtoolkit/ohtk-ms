@@ -277,3 +277,47 @@ mutation CloseCase($caseId: UUID!, $payload: GenericScalar, $outcome: String) {
     }
   }
 }
+
+mutation CompleteAfterAutoClose($caseId: UUID!, $payload: GenericScalar) {
+  adminCaseCompleteAfterAutoClose(caseId: $caseId, payload: $payload) {
+    result {
+      id
+      isFinished
+      statusLabel
+      testResult
+      aiSuspected
+      stoppedAt
+      closeSource
+      closeOutcome
+      closePayload
+      closedBy {
+        id
+        firstName
+        lastName
+        username
+      }
+    }
+  }
+}
+
+mutation UpdateFinishedCloseData($caseId: UUID!, $payload: GenericScalar) {
+  adminCaseCloseDataUpdate(caseId: $caseId, payload: $payload) {
+    result {
+      id
+      isFinished
+      statusLabel
+      testResult
+      aiSuspected
+      stoppedAt
+      closeSource
+      closeOutcome
+      closePayload
+      closedBy {
+        id
+        firstName
+        lastName
+        username
+      }
+    }
+  }
+}
