@@ -4,12 +4,8 @@ import Layout from "components/layout";
 import Protect from "components/auth/protect";
 import { useRouter } from "next/router";
 import Spinner from "components/widgets/spinner";
-import Breadcrumb from "components/layout/breadcrumb";
-import { useTranslation } from "react-i18next";
 
 const ReportPage: NextPage = () => {
-  const { t } = useTranslation();
-
   const router = useRouter();
   const { id } = router.query;
   if (!id) {
@@ -18,12 +14,7 @@ const ReportPage: NextPage = () => {
   return (
     <Protect>
       <Layout>
-        <Breadcrumb
-          crumbs={[
-            { text: t("breadcrumb.reports", "Reports"), href: "/reports" },
-            { text: id as string },
-          ]}
-        />
+        {/* Report breadcrumb is rendered inside Report (case-style chrome). */}
         <Report id={id as string} />
       </Layout>
     </Protect>

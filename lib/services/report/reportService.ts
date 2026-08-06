@@ -222,6 +222,7 @@ export class ReportService implements IReportService {
           ?.map(item => item?.name)
           .join(", "),
         testFlag: incidentReport.testFlag,
+        aiSuspected: (incidentReport as any).aiSuspected || "",
         currentRiskAssessment: mapRiskAssessment(
           incidentReport.currentRiskAssessment
         ),

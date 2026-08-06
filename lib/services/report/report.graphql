@@ -171,6 +171,7 @@ query GetReport($id: ID!) {
       telephone
     }
     testFlag
+    aiSuspected
     definition
     authorities {
       name
