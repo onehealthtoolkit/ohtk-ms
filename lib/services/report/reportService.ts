@@ -241,9 +241,7 @@ export class ReportService implements IReportService {
         authorityName: incidentReport.authorities
           ?.map(item => item?.name)
           .join(", "),
-        villageName:
-          (incidentReport as { village?: { name?: string | null } | null })
-            .village?.name || undefined,
+        villageName: formatVillageName(incidentReport.village),
         testFlag: incidentReport.testFlag,
         aiSuspected: (incidentReport as any).aiSuspected || "",
         currentRiskAssessment: mapRiskAssessment(
@@ -369,6 +367,14 @@ export class ReportService implements IReportService {
       },
     };
   }
+}
+
+function formatVillageName(
+  village?: { code?: string | null; name?: string | null } | null
+): string | undefined {
+  if (!village) return undefined;
+
+  return [village.code, village.name].filter(Boolean).join(" - ") || undefined;
 }
 
 export const mapRiskAssessment = (
