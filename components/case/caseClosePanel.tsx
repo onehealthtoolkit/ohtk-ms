@@ -886,7 +886,7 @@ const FinishConfirmModal = ({
   }, [isFp, fpReason, viewModel, t]);
 
   return (
-    <div className="fixed inset-0 z-[80] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[1001] flex items-center justify-center p-4">
       <div
         className="absolute inset-0 bg-slate-900/55 animate-[fadein_0.12s_ease]"
         onClick={onCancel}
@@ -895,7 +895,7 @@ const FinishConfirmModal = ({
       <div
         role="dialog"
         aria-modal="true"
-        className="relative z-[81] w-full max-w-[520px] overflow-hidden rounded-[10px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.3)] animate-[fadein_0.15s_ease]"
+        className="relative z-[1002] w-full max-w-[520px] overflow-hidden rounded-[10px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.3)] animate-[fadein_0.15s_ease]"
       >
         <div className="px-6 pt-6 pb-4">
           <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-700">
