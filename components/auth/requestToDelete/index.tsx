@@ -4,6 +4,7 @@ import { FormAction, SaveButton } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import useServices from "lib/services/provider";
 import useStore from "lib/store";
+import { getSupportEmail } from "lib/supportEmail";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -40,7 +41,7 @@ const RequestToDeleteMyAccount = () => {
 
   const content = t("message.requestToDelete", {
     user: store.me?.username,
-    supportEmail: "support@onehealth.com",
+    supportEmail: getSupportEmail(),
     returnObjects: true,
   });
 

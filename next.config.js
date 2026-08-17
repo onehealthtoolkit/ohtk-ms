@@ -12,6 +12,7 @@ const nextConfig = {
     serverDomain: process.env.serverDomain || "opensur.test",
     tenantsApiEndpoint:
       process.env.tenantsApiEndpoint || "https://opensur.test/api/servers/",
+    supportEmail: process.env.supportEmail || "support@onehealth.com",
   },
   images: {
     loader: "akamai",
