@@ -103,6 +103,10 @@ export class ReportCreateViewModel {
     );
     runInAction(() => {
       this.reportTypes = types.items || [];
+      const first = this.reportTypes[0];
+      if (first) {
+        this.selectReportType(first.id);
+      }
     });
 
     if (this.villageRequired && this.options.authorityId) {
