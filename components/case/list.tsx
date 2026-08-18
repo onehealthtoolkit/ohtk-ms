@@ -14,6 +14,7 @@ import useUrlParams from "lib/hooks/urlParams/useUrlParams";
 import { ParsedUrlQuery } from "querystring";
 import { isoStringToDate } from "lib/utils";
 import Filter from "components/widgets/filter";
+import { CaseStatusFilterValue } from "lib/services/case/caseService";
 import CaseStatus from "./caseStatus";
 import { CalendarIcon, TableCellsIcon } from "@heroicons/react/24/solid";
 import { CaseDayEvents } from "components/case/dayEvents";
@@ -45,6 +46,18 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
     includeChildAuthorities: query.includeChildAuthorities
       ? query.includeChildAuthorities === "true"
       : undefined,
+    incidentFromDate: query.incidentFrom
+      ? isoStringToDate(query.incidentFrom as string)
+      : undefined,
+    incidentThroughDate: query.incidentTo
+      ? isoStringToDate(query.incidentTo as string)
+      : undefined,
+    q: typeof query.q === "string" ? query.q : "",
+    caseStatuses: query.statuses
+      ? (String(query.statuses)
+          .split(",")
+          .filter(Boolean) as CaseStatusFilterValue[])
+      : [],
   };
 };
 
@@ -114,6 +127,14 @@ const CaseList = () => {
       calendarMonth: viewModel.calendarViewModel.month,
       calendarYear: viewModel.calendarViewModel.year,
       includeChildAuthorities: viewModel.filter.includeChildAuthorities,
+      incidentFrom: viewModel.incidentFromDate?.toISOString(),
+      incidentTo: viewModel.incidentThroughDate?.toISOString(),
+      q: viewModel.filter.q || undefined,
+      statuses:
+        viewModel.filter.caseStatuses &&
+        viewModel.filter.caseStatuses.length > 0
+          ? viewModel.filter.caseStatuses.join(",")
+          : undefined,
     });
   };
 
