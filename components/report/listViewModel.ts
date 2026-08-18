@@ -25,6 +25,7 @@ const initialFilter: ReportFilterData = {
   riskLevels: undefined,
   q: "",
   onlyCase: false,
+  villages: undefined,
 };
 
 type SearchParams = {
@@ -40,6 +41,7 @@ type SearchParams = {
   riskLevels?: ReportFilterData["riskLevels"];
   q?: string;
   onlyCase?: boolean;
+  villages?: ReportFilterData["villages"];
 } & ReportCalendarParams;
 
 export class ReportListViewModel extends BaseViewModel {
@@ -122,6 +124,7 @@ export class ReportListViewModel extends BaseViewModel {
     this.filter.riskLevels = params.riskLevels;
     this.filter.q = params.q || "";
     this.filter.onlyCase = params.onlyCase || false;
+    this.filter.villages = params.villages;
 
     this.offset = params.offset || 0;
 
