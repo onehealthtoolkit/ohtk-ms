@@ -48,6 +48,14 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
       ? query.includeChildAuthorities === "true"
       : undefined,
     riskLevels: query.riskLevels ? JSURL.parse(query.riskLevels) : [],
+    incidentFromDate: query.incidentFrom
+      ? isoStringToDate(query.incidentFrom as string)
+      : undefined,
+    incidentThroughDate: query.incidentTo
+      ? isoStringToDate(query.incidentTo as string)
+      : undefined,
+    q: typeof query.q === "string" ? query.q : "",
+    onlyCase: query.onlyCase === "true",
   };
 };
 
@@ -118,6 +126,10 @@ const ReportList = () => {
       includeChildAuthorities: viewModel.filter.includeChildAuthorities,
       includeTest: viewModel.filter.includeTest,
       riskLevels: JSURL.stringify(viewModel.filter.riskLevels),
+      incidentFrom: viewModel.incidentFromDate?.toISOString(),
+      incidentTo: viewModel.incidentThroughDate?.toISOString(),
+      q: viewModel.filter.q || undefined,
+      onlyCase: viewModel.filter.onlyCase ? "true" : undefined,
     });
   };
 

@@ -21,20 +21,28 @@ query Reports(
   $offset: Int!
   $fromDate: DateTime
   $throughDate: DateTime
+  $incidentFromDate: Date
+  $incidentThroughDate: Date
   $authorities: [ID]
   $reportTypes: [UUID]
   $testFlag: Boolean
   $includeChildAuthorities: Boolean
   $currentRiskLevels: String
+  $q: String
+  $onlyCase: Boolean
 ) {
   incidentReports(
     createdAt_Gte: $fromDate
     createdAt_Lte: $throughDate
+    incidentDate_Gte: $incidentFromDate
+    incidentDate_Lte: $incidentThroughDate
     relevantAuthorities_Id_In: $authorities
     reportType_Id_In: $reportTypes
     testFlag: $testFlag
     includeChildAuthorities: $includeChildAuthorities
     currentRiskLevels: $currentRiskLevels
+    q: $q
+    onlyCase: $onlyCase
     limit: $limit
     offset: $offset
   ) {

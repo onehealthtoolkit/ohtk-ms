@@ -1,3 +1,4 @@
+import { gql } from "@apollo/client";
 import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   BoundaryConnectedReportsDocument,
@@ -8,6 +9,7 @@ import {
   SetReportRiskValueDocument,
   SubmitIncidentReportDocument,
 } from "lib/generated/graphql";
+import { toLocalIsoDate } from "lib/utils";
 import {
   Image,
   Report,
@@ -24,16 +26,22 @@ import { ReportType } from "../reportType";
 export type ReportFilterData = {
   fromDate?: Date;
   throughDate?: Date;
+  incidentFromDate?: Date;
+  incidentThroughDate?: Date;
   authorities?: Pick<Authority, "id" | "code" | "name">[];
   reportTypes?: Pick<ReportType, "id" | "name">[];
   includeChildAuthorities?: boolean;
   includeTest?: boolean;
   riskLevels?: RiskFilterLevel[];
+  q?: string;
+  onlyCase?: boolean;
 };
 
 export type ReportFilter = {
   fromDate?: Date;
   throughDate?: Date;
+  incidentFromDate?: string;
+  incidentThroughDate?: string;
   authorities?: string[];
   reportTypes?: string[];
   limit: number;
@@ -41,7 +49,95 @@ export type ReportFilter = {
   testFlag?: boolean;
   includeChildAuthorities?: boolean;
   currentRiskLevels?: string;
+  q?: string;
+  onlyCase?: boolean;
 };
+
+const ReportsListDocument = gql`
+  fragment ReportListRiskAssessmentFields on RiskAssessmentProjectionType {
+    id
+    level
+    source
+    score
+    factors
+    evaluatorVersion
+    externalAssessmentId
+    isCurrent
+    createdAt
+    createdBy {
+      id
+      username
+      firstName
+      lastName
+    }
+  }
+  query ReportsList(
+    $limit: Int!
+    $offset: Int!
+    $fromDate: DateTime
+    $throughDate: DateTime
+    $incidentFromDate: Date
+    $incidentThroughDate: Date
+    $authorities: [ID]
+    $reportTypes: [UUID]
+    $testFlag: Boolean
+    $includeChildAuthorities: Boolean
+    $currentRiskLevels: String
+    $q: String
+    $onlyCase: Boolean
+  ) {
+    incidentReports(
+      createdAt_Gte: $fromDate
+      createdAt_Lte: $throughDate
+      incidentDate_Gte: $incidentFromDate
+      incidentDate_Lte: $incidentThroughDate
+      relevantAuthorities_Id_In: $authorities
+      reportType_Id_In: $reportTypes
+      testFlag: $testFlag
+      includeChildAuthorities: $includeChildAuthorities
+      currentRiskLevels: $currentRiskLevels
+      q: $q
+      onlyCase: $onlyCase
+      limit: $limit
+      offset: $offset
+    ) {
+      totalCount
+      results {
+        id
+        createdAt
+        incidentDate
+        rendererData
+        caseId
+        gpsLocation
+        reportType {
+          id
+          name
+          category {
+            id
+            name
+            icon
+          }
+        }
+        reportedBy {
+          username
+          firstName
+          lastName
+          telephone
+        }
+        images {
+          thumbnail
+        }
+        authorities {
+          name
+        }
+        currentRiskAssessment {
+          ...ReportListRiskAssessmentFields
+        }
+        testFlag
+      }
+    }
+  }
+`;
 
 export type SubmitIncidentReportInput = {
   data: Record<string, unknown>;
@@ -99,6 +195,10 @@ export class ReportService implements IReportService {
     testFlag: undefined,
     includeChildAuthorities: undefined,
     currentRiskLevels: undefined,
+    q: undefined,
+    onlyCase: undefined,
+    incidentFromDate: undefined,
+    incidentThroughDate: undefined,
   };
 
   constructor(client: LegacyApolloClient) {
@@ -119,15 +219,19 @@ export class ReportService implements IReportService {
       offset: offset,
       fromDate: filter.fromDate,
       throughDate: filter.throughDate,
+      incidentFromDate: toLocalIsoDate(filter.incidentFromDate),
+      incidentThroughDate: toLocalIsoDate(filter.incidentThroughDate),
       testFlag: filter.includeTest ? undefined : false,
       includeChildAuthorities: filter.includeChildAuthorities,
       currentRiskLevels:
         filter.riskLevels && filter.riskLevels.length > 0
           ? filter.riskLevels.join(",")
           : undefined,
+      q: filter.q?.trim() || undefined,
+      onlyCase: filter.onlyCase || undefined,
     };
     const fetchResult = await this.client.query({
-      query: ReportsDocument,
+      query: ReportsListDocument,
       variables: this.fetchReportsQuery,
       fetchPolicy: force ? "network-only" : "cache-first",
     });
