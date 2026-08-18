@@ -1,6 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import { useRouter } from "next/router";
-import React, { FC, useCallback, useMemo, useRef, useState } from "react";
+import React, {
+  FC,
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   DocumentTextIcon,
   CubeIcon,
@@ -30,6 +37,37 @@ import { useTranslation } from "react-i18next";
 import ObservationMenu from "./observationMenu";
 
 const iconClassName = "h-5 w-5 text-gray-300";
+const NAV_SCROLL_KEY = "sidebar-nav-scroll-top";
+
+function readNavScroll(): number | null {
+  try {
+    const saved = sessionStorage.getItem(NAV_SCROLL_KEY);
+    if (saved == null) return null;
+    const top = Number(saved);
+    return Number.isNaN(top) ? null : top;
+  } catch {
+    return null;
+  }
+}
+
+function writeNavScroll(top: number) {
+  try {
+    sessionStorage.setItem(NAV_SCROLL_KEY, String(top));
+  } catch {
+    // Ignore private-mode / disabled storage.
+  }
+}
+
+function scrollItemIntoContainer(container: HTMLElement, item: HTMLElement) {
+  const margin = 12;
+  const navRect = container.getBoundingClientRect();
+  const itemRect = item.getBoundingClientRect();
+  if (itemRect.top < navRect.top + margin) {
+    container.scrollTop -= navRect.top + margin - itemRect.top;
+  } else if (itemRect.bottom > navRect.bottom - margin) {
+    container.scrollTop += itemRect.bottom - (navRect.bottom - margin);
+  }
+}
 
 const style: Record<string, string | Record<string, string>> = {
   mobilePosition: {
@@ -37,18 +75,43 @@ const style: Record<string, string | Record<string, string>> = {
     right: "right-0 md:left-0",
   },
   close: `duration-700 ease-out hidden transition-all`,
-  default: `flex flex-col absolute z-40 top-0 md:static md:flex md:left-auto md:top-auto h-screen  shrink-0 bg-slate-800 p-4`,
+  // overflow-hidden on shell; the nav region scrolls so long menus are not
+  // flex-squished into the viewport (collapsed rail with many admin items).
+  default: `flex flex-col absolute z-40 top-0 md:static md:flex md:left-auto md:top-auto h-screen shrink-0 bg-slate-800 overflow-hidden`,
   open: `duration-200 ease-in transition-all`,
   collapsed: `md:w-16 w-16 p-2`,
-  expanded: `md:w-[250px] w-64 overflow-y-scroll md:overflow-y-auto no-scrollbar md:translate-x-0 transform transition-all duration-200 ease-in-out translate-x-0`,
+  expanded: `md:w-[250px] w-64 p-4 md:translate-x-0 transform transition-all duration-200 ease-in-out translate-x-0`,
 };
 const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
   const { t } = useTranslation();
   const sidebar = useRef(null);
+  const navRef = useRef<HTMLElement>(null);
   const router = useRouter();
   const pathname = router.asPath;
   const store = useStore();
   const [isCollapsible, setIsCollapsible] = useState(false);
+
+  const persistNavScroll = useCallback(() => {
+    if (navRef.current) {
+      writeNavScroll(navRef.current.scrollTop);
+    }
+  }, []);
+
+  // Layout remounts on each page, so restore the nav offset and keep the
+  // active item in view before paint.
+  useLayoutEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const saved = readNavScroll();
+    if (saved != null) {
+      nav.scrollTop = saved;
+    }
+    const active = nav.querySelector<HTMLElement>("[data-sidebar-active]");
+    if (active) {
+      scrollItemIntoContainer(nav, active);
+    }
+    writeNavScroll(nav.scrollTop);
+  }, [pathname, store.me]);
 
   const toggleCollapse = useCallback(() => {
     store.toggleCollapseMenu();
@@ -67,8 +130,8 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
       <Observer>
         {() => (
           <>
-            {/* Links */}
-            <div className="space-y-8">
+            {/* Links — natural icon size; parent nav scrolls when needed */}
+            <div className={store.menu.collapsed ? "space-y-2" : "space-y-8"}>
               <div>
                 <h3
                   className={`text-xs uppercase text-slate-500 font-semibold pl-3 ${
@@ -79,7 +142,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     {t("breadcrumb.pagesCategory", "Pages")}
                   </span>
                 </h3>
-                <ul className="mt-3">
+                <ul className={store.menu.collapsed ? "mt-1" : "mt-3"}>
                   <Menu
                     href="/"
                     pathname={pathname}
@@ -165,7 +228,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     {t("breadcrumb.reportsCategory", "Reports")}
                   </span>
                 </h3>
-                <ul className="mt-3">
+                <ul className={store.menu.collapsed ? "mt-1" : "mt-3"}>
                   <Menu
                     href="/excels/inactive_reporter"
                     pathname={pathname}
@@ -235,7 +298,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     {t("breadcrumb.settingsCategory", "Settings")}
                   </span>
                 </h3>
-                <ul className="mt-3">
+                <ul className={store.menu.collapsed ? "mt-1" : "mt-3"}>
                   <Menu
                     href="/admin/authorities/"
                     pathname={pathname}
@@ -439,7 +502,7 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                     {t("breadcrumb.integrationCategory", "Integration")}
                   </span>
                 </h3>
-                <ul className="mt-3">
+                <ul className={store.menu.collapsed ? "mt-1" : "mt-3"}>
                   <Menu
                     href="/admin/integrations/clients/"
                     pathname={pathname}
@@ -476,16 +539,28 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
                 </ul>
               </div>
             </div>
-            <div className="flex-grow"></div>
-            <div className="divide-y-2 divide-gray-600 mb-16">
-              <div></div>
-              <UserMenu className="ml-2 text-white text-left" />
-            </div>
           </>
         )}
       </Observer>
     ),
     [store, pathname, t]
+  );
+
+  const userMenu = useMemo(
+    () => (
+      <Observer>
+        {() => (
+          <div
+            className={`shrink-0 border-t border-slate-700 ${
+              store.menu.collapsed ? "pt-2 mt-1" : "pt-3 mt-2 mb-2"
+            }`}
+          >
+            <UserMenu className="ml-2 text-white text-left" />
+          </div>
+        )}
+      </Observer>
+    ),
+    [store]
   );
   return (
     <div>
@@ -502,8 +577,12 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseOver}
       >
-        {/* Sidebar header */}
-        <div className="flex justify-between mb-10 pr-3 sm:px-2 relative">
+        {/* Sidebar header — never flex-shrink with the menu list */}
+        <div
+          className={`shrink-0 relative ${
+            store.menu.collapsed ? "mb-3 px-0 pt-2" : "mb-10 pr-3 sm:px-2"
+          }`}
+        >
           {isCollapsible && (
             <button
               className={`p-2 rounded bg-light-lighter absolute -right-2 top-4" ${
@@ -528,7 +607,16 @@ const Sidebar: FC<{ mobilePosition: string }> = ({ mobilePosition }) => {
           </div>
         </div>
 
-        {menuList}
+        {/* Scrollable nav: keeps icons; does not compress into h-screen */}
+        <nav
+          ref={navRef}
+          className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden no-scrollbar"
+          onScroll={persistNavScroll}
+        >
+          {menuList}
+        </nav>
+
+        {userMenu}
       </div>
     </div>
   );

@@ -24,12 +24,14 @@ const MenuCollapsed: React.FC<MenuProps> = ({
         className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
           pathname === href && "bg-black"
         }`}
+        {...(pathname === href ? { "data-sidebar-active": "" } : {})}
       >
         <Link href={href} passHref legacyBehavior>
           <a
             className={`block text-slate-500 hover:text-black truncate transition duration-150 ${
               pathname === href && "hover:text-slate-200"
             }`}
+            title={label}
             onClick={e => {
               if (onClick) {
                 e.preventDefault();
@@ -65,6 +67,7 @@ const MenuExpaned: React.FC<MenuProps> = ({
       className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
         pathname === href && "bg-black"
       }`}
+      {...(pathname === href ? { "data-sidebar-active": "" } : {})}
     >
       <Link href={href} passHref legacyBehavior>
         <a

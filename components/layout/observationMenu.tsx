@@ -1,7 +1,6 @@
 import { Observer } from "mobx-react";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useStore from "lib/store";
-import { Transition } from "@headlessui/react";
 import { Menu } from "@headlessui/react";
 import { ChevronDownIcon, EyeIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
@@ -60,59 +59,52 @@ const ObservationMenu: React.FC<ObservationMenuProps> = ({ icon, label }) => {
               />
             </Menu.Button>
           </div>
-          <Transition
-            as={Fragment}
-            enter="transition ease-out duration-100"
-            enterFrom="transform opacity-0 scale-95"
-            enterTo="transform opacity-100 scale-100"
-            leave="transition ease-in duration-75"
-            leaveFrom="transform opacity-100 scale-100"
-            leaveTo="transform opacity-0 scale-95"
+          <Menu.Items
+            transition
+            portal
+            anchor={{
+              to: store.menu.collapsed ? "right start" : "bottom start",
+              gap: 8,
+              padding: 8,
+            }}
+            className="z-[60] w-56 max-h-[min(24rem,calc(100vh-16px))] overflow-y-auto divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition duration-100 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
           >
-            <Menu.Items
-              className={`${
-                store.menu.collapsed ? "left-14 -mt-[48px]" : "right-0"
-              } absolute z-10  -mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
-            >
-              <div className="px-1 py-1 ">
-                {observationDefinitions?.map(item => (
-                  <Menu.Item key={item.id}>
-                    {({ active }) => (
-                      <button
-                        className={`group flex w-full items-center rounded-md  text-sm`}
+            <div className="px-1 py-1 ">
+              {observationDefinitions?.map(item => (
+                <Menu.Item key={item.id}>
+                  {({ active }) => (
+                    <button
+                      className={`group flex w-full items-center rounded-md  text-sm`}
+                    >
+                      <Link
+                        href={{
+                          pathname: `/observations/`,
+                          query: {
+                            definitionId: item.id,
+                            definitionName: item.name,
+                          },
+                        }}
+                        passHref
+                        legacyBehavior
                       >
-                        <Link
-                          href={{
-                            pathname: `/observations/`,
-                            query: {
-                              definitionId: item.id,
-                              definitionName: item.name,
-                            },
-                          }}
-                          passHref
-                          legacyBehavior
+                        <a
+                          className={`${
+                            active ? "bg-gray-500 text-white" : "text-gray-900"
+                          } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                          href="#"
                         >
-                          <a
-                            className={`${
-                              active
-                                ? "bg-gray-500 text-white"
-                                : "text-gray-900"
-                            } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                            href="#"
-                          >
-                            {<EyeIcon className={iconClassName} />}
-                            <span className="text-sm font-medium ml-3 duration-200">
-                              {item.name}
-                            </span>
-                          </a>
-                        </Link>
-                      </button>
-                    )}
-                  </Menu.Item>
-                ))}
-              </div>
-            </Menu.Items>
-          </Transition>
+                          {<EyeIcon className={iconClassName} />}
+                          <span className="text-sm font-medium ml-3 duration-200">
+                            {item.name}
+                          </span>
+                        </a>
+                      </Link>
+                    </button>
+                  )}
+                </Menu.Item>
+              ))}
+            </div>
+          </Menu.Items>
         </Menu>
       )}
     </Observer>
