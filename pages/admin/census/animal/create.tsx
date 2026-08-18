@@ -4,11 +4,12 @@ import Breadcrumb from "components/layout/breadcrumb";
 import Layout from "components/layout";
 import { Store } from "lib/store";
 import useStore from "lib/store";
+import { observer } from "mobx-react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
-const AdminAnimalCensusCreatePage: NextPage = () => {
+const AdminAnimalCensusCreatePage: NextPage = observer(() => {
   const { t } = useTranslation();
   const router = useRouter();
   const store = useStore();
@@ -35,6 +36,6 @@ const AdminAnimalCensusCreatePage: NextPage = () => {
       </Layout>
     </Protect>
   );
-};
+});
 
 export default AdminAnimalCensusCreatePage;
