@@ -18,6 +18,12 @@ fragment CensusDefinitionVersionFields on CensusDefinitionVersionType {
   publishedAt
 }
 
+query ActiveCensusDefinitionVersion($kind: String!) {
+  activeCensusDefinitionVersion(kind: $kind) {
+    ...CensusDefinitionVersionFields
+  }
+}
+
 query CensusDefinitionAdminState {
   censusDefinitions {
     ...CensusDefinitionFields

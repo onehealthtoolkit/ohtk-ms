@@ -28,6 +28,7 @@ export type CensusSchema = {
   }>;
   rows?: CensusSchemaRow[];
   measures?: CensusSchemaMeasure[];
+  summary_fields?: CensusSchemaMeasure[];
   row_source?: "ACTIVE_ANIMAL_SPECIES" | string;
   extra_dimensions?: unknown[];
   [key: string]: unknown;

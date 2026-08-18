@@ -11,6 +11,9 @@ import {
 } from "./definition";
 
 export interface ICensusDefinitionService extends IService {
+  getActiveVersion(
+    kind: CensusKind
+  ): Promise<GetResult<CensusDefinitionVersion>>;
   fetchAdminState(
     force?: boolean
   ): Promise<GetResult<CensusDefinitionAdminState>>;
@@ -55,6 +58,15 @@ const CensusDefinitionVersionFields = gql`
     publishedAt
   }
   ${CensusDefinitionFields}
+`;
+
+const ActiveCensusDefinitionVersionDocument = gql`
+  query ActiveCensusDefinitionVersion($kind: String!) {
+    activeCensusDefinitionVersion(kind: $kind) {
+      ...CensusDefinitionVersionFields
+    }
+  }
+  ${CensusDefinitionVersionFields}
 `;
 
 const CensusDefinitionAdminStateDocument = gql`
@@ -172,6 +184,25 @@ const CensusDefinitionSetEnabledDocument = gql`
 
 export class CensusDefinitionService implements ICensusDefinitionService {
   constructor(readonly client: LegacyApolloClient) {}
+
+  async getActiveVersion(
+    kind: CensusKind
+  ): Promise<GetResult<CensusDefinitionVersion>> {
+    try {
+      const result = await this.client.query({
+        query: ActiveCensusDefinitionVersionDocument,
+        variables: { kind },
+        fetchPolicy: "network-only",
+      });
+      const version = result.data?.activeCensusDefinitionVersion;
+      if (!version) {
+        return { data: undefined, error: "No published census definition." };
+      }
+      return { data: this.toVersion(version) };
+    } catch (error) {
+      return { data: undefined, error: this.toErrorMessage(error) };
+    }
+  }
 
   async fetchAdminState(
     force?: boolean
