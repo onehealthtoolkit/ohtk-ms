@@ -1,4 +1,4 @@
-import { FetchPolicy } from "@apollo/client";
+import { FetchPolicy, gql } from "@apollo/client";
 import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
   GetCaseDocument,
@@ -25,6 +25,94 @@ import {
   mapRiskAssessment,
 } from "lib/services/report/reportService";
 import type { FormType } from "lib/opsvForm/models/json";
+import { toLocalIsoDate } from "lib/utils";
+
+export const CASE_STATUS_FILTERS = [
+  { value: "OPEN", label: "Open" },
+  { value: "CLOSE_CASE", label: "Close case" },
+  { value: "FALSE_POSITIVE", label: "False positive" },
+  { value: "AUTOMATIC_CLOSE", label: "Automatic close" },
+] as const;
+
+export type CaseStatusFilterValue =
+  (typeof CASE_STATUS_FILTERS)[number]["value"];
+
+const CasesListDocument = gql`
+  fragment CaseListRiskAssessmentFields on RiskAssessmentProjectionType {
+    id
+    level
+    source
+    score
+    factors
+    evaluatorVersion
+    externalAssessmentId
+    isCurrent
+    createdAt
+    createdBy {
+      id
+      username
+      firstName
+      lastName
+    }
+  }
+  query CasesList(
+    $limit: Int!
+    $offset: Int!
+    $fromDate: DateTime
+    $throughDate: DateTime
+    $incidentFromDate: Date
+    $incidentThroughDate: Date
+    $authorities: [ID]
+    $reportTypes: [UUID]
+    $includeChildAuthorities: Boolean
+    $q: String
+    $caseStatuses: String
+  ) {
+    casesQuery(
+      report_CreatedAt_Gte: $fromDate
+      report_CreatedAt_Lte: $throughDate
+      report_IncidentDate_Gte: $incidentFromDate
+      report_IncidentDate_Lte: $incidentThroughDate
+      report_RelevantAuthorities_Id_In: $authorities
+      report_ReportType_Id_In: $reportTypes
+      includeChildAuthorities: $includeChildAuthorities
+      q: $q
+      caseStatuses: $caseStatuses
+      limit: $limit
+      offset: $offset
+    ) {
+      totalCount
+      results {
+        id
+        isFinished
+        statusLabel
+        closeOutcome
+        closeSource
+        report {
+          createdAt
+          incidentDate
+          rendererData
+          reportType {
+            id
+            name
+          }
+          reportedBy {
+            username
+            firstName
+            lastName
+            telephone
+          }
+          authorities {
+            name
+          }
+          currentRiskAssessment {
+            ...CaseListRiskAssessmentFields
+          }
+        }
+      }
+    }
+  }
+`;
 
 function parseCloseDefinition(raw: unknown): FormType | null {
   if (raw == null || raw === "") {
@@ -58,17 +146,25 @@ export type CaseTestResultUpdate = {
 export type CaseFilterData = {
   fromDate?: Date;
   throughDate?: Date;
+  incidentFromDate?: Date;
+  incidentThroughDate?: Date;
   authorities?: Pick<Authority, "id" | "code" | "name">[];
   reportTypes?: Pick<ReportType, "id" | "name">[];
   includeChildAuthorities?: boolean;
+  q?: string;
+  caseStatuses?: CaseStatusFilterValue[];
 };
 
 export type CaseFilter = {
   fromDate?: Date;
   throughDate?: Date;
+  incidentFromDate?: string;
+  incidentThroughDate?: string;
   authorities?: string[];
   reportTypes?: string[];
   includeChildAuthorities?: boolean;
+  q?: string;
+  caseStatuses?: string;
   limit: number;
   offset: number;
 };
@@ -126,6 +222,10 @@ export class CaseService implements ICaseService {
     authorities: undefined,
     reportTypes: undefined,
     includeChildAuthorities: undefined,
+    q: undefined,
+    caseStatuses: undefined,
+    incidentFromDate: undefined,
+    incidentThroughDate: undefined,
   };
 
   constructor(client: LegacyApolloClient) {
@@ -144,12 +244,19 @@ export class CaseService implements ICaseService {
       reportTypes: filter.reportTypes?.map(a => a.id),
       fromDate: filter.fromDate,
       throughDate: filter.throughDate,
+      incidentFromDate: toLocalIsoDate(filter.incidentFromDate),
+      incidentThroughDate: toLocalIsoDate(filter.incidentThroughDate),
       includeChildAuthorities: filter.includeChildAuthorities,
+      q: filter.q?.trim() || undefined,
+      caseStatuses:
+        filter.caseStatuses && filter.caseStatuses.length > 0
+          ? filter.caseStatuses.join(",")
+          : undefined,
       limit,
       offset,
     };
     const fetchResult = await this.client.query({
-      query: CasesDocument,
+      query: CasesListDocument,
       variables: this.fetchCasesQuery,
       fetchPolicy: force ? "network-only" : "cache-first",
     });

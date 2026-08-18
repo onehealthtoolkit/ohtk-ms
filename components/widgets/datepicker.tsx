@@ -8,6 +8,7 @@ const datePicker = ({
   selected,
   dateFormat,
   showMonthYearPicker,
+  placeholderText,
   onChange,
 }: {
   id: string;
@@ -15,6 +16,7 @@ const datePicker = ({
   locale?: string;
   dateFormat?: string;
   showMonthYearPicker?: boolean;
+  placeholderText?: string;
   onChange: (date: Date | null) => void;
 }) => {
   return (
@@ -22,10 +24,12 @@ const datePicker = ({
       id={id}
       locale={locale}
       className={dateClass}
+      wrapperClassName="w-full"
       selected={selected}
       onChange={onChange}
       dateFormat={dateFormat}
       showMonthYearPicker={showMonthYearPicker}
+      placeholderText={placeholderText}
     />
   );
 };

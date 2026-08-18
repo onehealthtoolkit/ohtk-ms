@@ -3,16 +3,24 @@ query Cases(
   $offset: Int!
   $fromDate: DateTime
   $throughDate: DateTime
+  $incidentFromDate: Date
+  $incidentThroughDate: Date
   $authorities: [ID]
   $reportTypes: [UUID]
   $includeChildAuthorities: Boolean
+  $q: String
+  $caseStatuses: String
 ) {
   casesQuery(
     report_CreatedAt_Gte: $fromDate
     report_CreatedAt_Lte: $throughDate
+    report_IncidentDate_Gte: $incidentFromDate
+    report_IncidentDate_Lte: $incidentThroughDate
     report_RelevantAuthorities_Id_In: $authorities
     report_ReportType_Id_In: $reportTypes
     includeChildAuthorities: $includeChildAuthorities
+    q: $q
+    caseStatuses: $caseStatuses
     limit: $limit
     offset: $offset
   ) {

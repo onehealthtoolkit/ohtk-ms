@@ -105,9 +105,16 @@ const Filter: React.FC<FilterProps> = ({
             leaveTo="opacity-0 translate-y-1"
           >
             <Popover.Panel
-              className={`${popPositionClass} absolute top-full  z-[60000] mt-2 px-4 sm:px-0 min-w-[400px]`}
+              className={`${popPositionClass} absolute top-full  z-[60000] mt-2 px-4 sm:px-0 min-w-[420px]`}
             >
-              <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white">
+              <form
+                className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white"
+                onSubmit={evt => {
+                  evt.preventDefault();
+                  onSearch();
+                  close();
+                }}
+              >
                 <div className="px-6 py-4 flex items-center justify-between border-b-2 border-gray-300">
                   <div className="text-2xl font-display font-semibold">
                     {t("form.button.filter", "Filter")}
@@ -121,13 +128,7 @@ const Filter: React.FC<FilterProps> = ({
                   <div className="flex w-full items-center justify-between">
                     <div></div>
                     <div className="flex flex-row">
-                      <SearchButton
-                        className="mr-2"
-                        onClick={() => {
-                          onSearch();
-                          close();
-                        }}
-                      >
+                      <SearchButton type="submit" className="mr-2">
                         {t("form.button.apply", "Apply")}
                       </SearchButton>
                       <button
@@ -143,7 +144,7 @@ const Filter: React.FC<FilterProps> = ({
                     </div>
                   </div>
                 </div>
-              </div>
+              </form>
             </Popover.Panel>
           </Transition>
         </>

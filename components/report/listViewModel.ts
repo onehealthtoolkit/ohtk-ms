@@ -16,22 +16,30 @@ import {
 const initialFilter: ReportFilterData = {
   fromDate: undefined,
   throughDate: undefined,
+  incidentFromDate: undefined,
+  incidentThroughDate: undefined,
   authorities: undefined,
   reportTypes: undefined,
   includeChildAuthorities: undefined,
   includeTest: undefined,
   riskLevels: undefined,
+  q: "",
+  onlyCase: false,
 };
 
 type SearchParams = {
   fromDate?: Date;
   throughDate?: Date;
+  incidentFromDate?: Date;
+  incidentThroughDate?: Date;
   offset?: number;
   authorities?: ReportFilterData["authorities"];
   reportTypes?: ReportFilterData["reportTypes"];
   includeTest?: boolean;
   includeChildAuthorities?: boolean;
   riskLevels?: ReportFilterData["riskLevels"];
+  q?: string;
+  onlyCase?: boolean;
 } & ReportCalendarParams;
 
 export class ReportListViewModel extends BaseViewModel {
@@ -41,14 +49,20 @@ export class ReportListViewModel extends BaseViewModel {
   isCalendarView = false;
   _fromDate?: Date = undefined;
   _throughDate?: Date = undefined;
+  _incidentFromDate?: Date = undefined;
+  _incidentThroughDate?: Date = undefined;
 
   constructor(readonly reportService: IReportService) {
     super();
     makeObservable(this, {
       _fromDate: observable,
       _throughDate: observable,
+      _incidentFromDate: observable,
+      _incidentThroughDate: observable,
       fromDate: computed,
       throughDate: computed,
+      incidentFromDate: computed,
+      incidentThroughDate: computed,
       data: observable,
       filter: observable,
       setSearchValue: action,
@@ -76,14 +90,38 @@ export class ReportListViewModel extends BaseViewModel {
     this._throughDate = value;
   }
 
+  public get incidentFromDate() {
+    return this._incidentFromDate;
+  }
+
+  public set incidentFromDate(value: Date | undefined) {
+    this._incidentFromDate = value;
+  }
+
+  public get incidentThroughDate() {
+    return this._incidentThroughDate;
+  }
+
+  public set incidentThroughDate(value: Date | undefined) {
+    this._incidentThroughDate = value;
+  }
+
   setSearchValue(params: SearchParams) {
+    this.fromDate = params.fromDate;
+    this.throughDate = params.throughDate;
+    this.incidentFromDate = params.incidentFromDate;
+    this.incidentThroughDate = params.incidentThroughDate;
     this.filter.fromDate = params.fromDate;
     this.filter.throughDate = params.throughDate;
+    this.filter.incidentFromDate = params.incidentFromDate;
+    this.filter.incidentThroughDate = params.incidentThroughDate;
     this.filter.authorities = params.authorities;
     this.filter.reportTypes = params.reportTypes;
     this.filter.includeTest = params.includeTest;
     this.filter.includeChildAuthorities = params.includeChildAuthorities;
     this.filter.riskLevels = params.riskLevels;
+    this.filter.q = params.q || "";
+    this.filter.onlyCase = params.onlyCase || false;
 
     this.offset = params.offset || 0;
 
@@ -134,9 +172,11 @@ export class ReportListViewModel extends BaseViewModel {
   }
 
   filterReset() {
-    this.filter = initialFilter;
+    this.filter = { ...initialFilter };
     this.fromDate = undefined;
     this.throughDate = undefined;
+    this.incidentFromDate = undefined;
+    this.incidentThroughDate = undefined;
     this.calendarViewModel.today();
   }
 
