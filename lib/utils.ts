@@ -2,6 +2,16 @@
 // "2019-01-17T17:00:00.000-07:00", or "2019-01-18T07:00:00.000+07:00",
 // which are the same time) and return a JavaScript Date object with the
 // value represented by the string.
+export function toLocalIsoDate(date?: Date | null): string | undefined {
+  if (!date) {
+    return undefined;
+  }
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 export function isoStringToDate(
   isoString: string | undefined | null
 ): Date | undefined {

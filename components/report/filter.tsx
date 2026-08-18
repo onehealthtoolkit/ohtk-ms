@@ -1,9 +1,9 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { Checkbox, Field, Label } from "components/widgets/forms";
+import { Checkbox, Field, Label, TextInput } from "components/widgets/forms";
 import useServices from "lib/services/provider";
 import AsyncSelect from "react-select/async";
-import DatePicker from "components/widgets/datepicker";
+import DateRangeField from "components/widgets/dateRangeField";
 import "react-datepicker/dist/react-datepicker.css";
 import { ReportListViewModel } from "./listViewModel";
 import { Authority } from "lib/services/authority";
@@ -38,32 +38,49 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
     <div className="w-full">
       {!viewModel.isCalendarView && (
         <>
-          <Field $size="full">
-            <Label htmlFor="fromDate">
-              {t("form.label.fromDate", "Form Date")}
-            </Label>
-            <DatePicker
-              id="fromDate"
-              selected={viewModel.fromDate}
-              onChange={(date: Date | null) => {
-                if (date) viewModel.fromDate = date;
-              }}
-            />
-          </Field>
-          <Field $size="full">
-            <Label htmlFor="throughDate">
-              {t("form.label.throughDate", "Through Date")}
-            </Label>
-            <DatePicker
-              id="throughDate"
-              selected={viewModel.throughDate}
-              onChange={(date: Date | null) => {
-                if (date) viewModel.throughDate = date;
-              }}
-            />
-          </Field>
+          <DateRangeField
+            idPrefix="reported"
+            label={t("form.label.reportedDate", "Reported date")}
+            from={viewModel.fromDate}
+            to={viewModel.throughDate}
+            onFrom={date => {
+              if (date) viewModel.fromDate = date;
+            }}
+            onTo={date => {
+              if (date) viewModel.throughDate = date;
+            }}
+          />
+          <DateRangeField
+            idPrefix="incident"
+            label={t("form.label.incidentDate", "Incident date")}
+            from={viewModel.incidentFromDate}
+            to={viewModel.incidentThroughDate}
+            onFrom={date => {
+              if (date) viewModel.incidentFromDate = date;
+            }}
+            onTo={date => {
+              if (date) viewModel.incidentThroughDate = date;
+            }}
+          />
         </>
       )}
+      <Field $size="full">
+        <Label htmlFor="reportSearch">{t("form.label.search", "Search")}</Label>
+        <TextInput
+          id="reportSearch"
+          type="text"
+          value={viewModel.filter.q || ""}
+          onChange={evt =>
+            runInAction(() => {
+              viewModel.filter.q = evt.target.value;
+            })
+          }
+          placeholder={t(
+            "form.placeholder.reportSearch",
+            "Species, disease, AI text"
+          )}
+        />
+      </Field>
       <Field $size="full">
         <Label htmlFor="authority">
           {t("form.label.authority", "Authority")}
@@ -139,7 +156,19 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
           ))}
         </div>
       </Field>
-      <Field $size="half">
+      <div className="grid grid-cols-2 gap-3">
+        <Checkbox
+          id="onlyCase"
+          value="True"
+          checked={viewModel.filter.onlyCase || false}
+          onChange={evt =>
+            runInAction(
+              () => (viewModel.filter.onlyCase = evt.target.checked || false)
+            )
+          }
+          label={t("form.label.onlyCase", "Only case")}
+          disabled={false}
+        />
         <Checkbox
           id="testing"
           value="True"
@@ -152,7 +181,7 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
           label={t("form.label.showTestReport", "Show test report")}
           disabled={false}
         />
-      </Field>
+      </div>
     </div>
   );
 };
