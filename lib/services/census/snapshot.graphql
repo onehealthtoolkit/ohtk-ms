@@ -5,6 +5,11 @@ query LatestAnimalVillageCensus($villageId: Int!) {
     submittedAt
     villageHouseholdQuantity
     animalHouseholdQuantity
+    formData
+    definitionVersion {
+      id
+      version
+    }
     reporter {
       username
     }
@@ -13,6 +18,49 @@ query LatestAnimalVillageCensus($villageId: Int!) {
       rowLabel
       animalQuantity
       householdQuantity
+    }
+  }
+}
+
+mutation SubmitVillageCensusSnapshotV2(
+  $villageId: Int!
+  $definitionVersionId: Int!
+  $occurrenceId: Int
+  $censusDate: Date!
+  $formData: GenericScalar!
+) {
+  submitVillageCensusSnapshotV2(
+    villageId: $villageId
+    definitionVersionId: $definitionVersionId
+    occurrenceId: $occurrenceId
+    censusDate: $censusDate
+    formData: $formData
+  ) {
+    result {
+      __typename
+      ... on VillageCensusSnapshotType {
+        id
+        censusDate
+        submittedAt
+        villageHouseholdQuantity
+        animalHouseholdQuantity
+        reporter {
+          username
+        }
+        facts {
+          rowKey
+          rowLabel
+          animalQuantity
+          householdQuantity
+        }
+      }
+      ... on VillageCensusSnapshotProblem {
+        fields {
+          name
+          message
+        }
+        message
+      }
     }
   }
 }
