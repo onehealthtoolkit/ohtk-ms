@@ -22,6 +22,9 @@ import {
 import { GetResult, IService, QueryResult } from "lib/services/interface";
 import { Authority } from "lib/services/authority";
 import { ReportType } from "../reportType";
+import { Village } from "lib/services/village";
+
+export type ReportFilterVillage = Pick<Village, "id" | "code" | "name">;
 
 export type ReportFilterData = {
   fromDate?: Date;
@@ -35,6 +38,7 @@ export type ReportFilterData = {
   riskLevels?: RiskFilterLevel[];
   q?: string;
   onlyCase?: boolean;
+  villages?: ReportFilterVillage[];
 };
 
 export type ReportFilter = {
@@ -51,6 +55,7 @@ export type ReportFilter = {
   currentRiskLevels?: string;
   q?: string;
   onlyCase?: boolean;
+  villageIds?: string[];
 };
 
 const ReportsListDocument = gql`
@@ -85,6 +90,7 @@ const ReportsListDocument = gql`
     $currentRiskLevels: String
     $q: String
     $onlyCase: Boolean
+    $villageIds: [ID]
   ) {
     incidentReports(
       createdAt_Gte: $fromDate
@@ -98,6 +104,7 @@ const ReportsListDocument = gql`
       currentRiskLevels: $currentRiskLevels
       q: $q
       onlyCase: $onlyCase
+      village_Id_In: $villageIds
       limit: $limit
       offset: $offset
     ) {
@@ -199,6 +206,7 @@ export class ReportService implements IReportService {
     onlyCase: undefined,
     incidentFromDate: undefined,
     incidentThroughDate: undefined,
+    villageIds: undefined,
   };
 
   constructor(client: LegacyApolloClient) {
@@ -229,6 +237,10 @@ export class ReportService implements IReportService {
           : undefined,
       q: filter.q?.trim() || undefined,
       onlyCase: filter.onlyCase || undefined,
+      villageIds:
+        filter.villages && filter.villages.length > 0
+          ? filter.villages.map(village => village.id)
+          : undefined,
     };
     const fetchResult = await this.client.query({
       query: ReportsListDocument,

@@ -22,10 +22,11 @@ import { useTranslation } from "react-i18next";
 import TotalItem from "components/widgets/table/totalItem";
 import TestLabel from "./testLabel";
 import RiskBadge, { getRiskRowStyle } from "components/risk/RiskBadge";
+import useStore from "lib/store";
 
 const JSURL = require("jsurl");
 
-const parseUrlParams = (query: ParsedUrlQuery) => {
+const parseUrlParams = (query: ParsedUrlQuery, villageEnabled: boolean) => {
   return {
     fromDate: query.fromDate
       ? isoStringToDate(query.fromDate as string)
@@ -56,6 +57,8 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
       : undefined,
     q: typeof query.q === "string" ? query.q : "",
     onlyCase: query.onlyCase === "true",
+    villages:
+      villageEnabled && query.villages ? JSURL.parse(query.villages) : [],
   };
 };
 
@@ -100,8 +103,10 @@ const ViewSwitch = ({
 const ReportList = () => {
   const router = useRouter();
   const { reportService } = useServices();
+  const store = useStore();
   const { setUrl, query, resetUrl } = useUrlParams();
   const { t } = useTranslation();
+  const villageEnabled = store.isFeatureEnable("village");
 
   const [viewModel] = useState<ReportListViewModel>(
     new ReportListViewModel(reportService)
@@ -109,9 +114,9 @@ const ReportList = () => {
 
   useEffect(() => {
     if (router.isReady) {
-      viewModel.setSearchValue(parseUrlParams(query));
+      viewModel.setSearchValue(parseUrlParams(query, villageEnabled));
     }
-  }, [viewModel, router.isReady, query]);
+  }, [viewModel, router.isReady, query, villageEnabled]);
 
   const applySearch = () => {
     setUrl({
@@ -130,6 +135,9 @@ const ReportList = () => {
       incidentTo: viewModel.incidentThroughDate?.toISOString(),
       q: viewModel.filter.q || undefined,
       onlyCase: viewModel.filter.onlyCase ? "true" : undefined,
+      villages: villageEnabled
+        ? JSURL.stringify(viewModel.filter.villages)
+        : undefined,
     });
   };
 
