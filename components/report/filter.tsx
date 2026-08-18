@@ -13,17 +13,34 @@ import { styledReactSelect } from "components/widgets/styledReactSelect";
 import { useTranslation } from "react-i18next";
 import RiskBadge, { RISK_LEVEL_OPTIONS } from "components/risk/RiskBadge";
 import { RiskFilterLevel } from "lib/services/report/report";
+import { ReportFilterVillage } from "lib/services/report/reportService";
+import useStore from "lib/store";
 
 export const defaultOptions: Authority[] = [];
 
+const villageLabel = (village: ReportFilterVillage) =>
+  [village.code, village.name].filter(Boolean).join(" - ") || village.id;
+
 const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
-  const { authorityService } = useServices();
+  const { authorityService, villageService } = useServices();
+  const store = useStore();
   const { t } = useTranslation();
+  const villageEnabled = store.isFeatureEnable("village");
 
   const loadAuthorityOptions = (inputValue: string) =>
     authorityService
       .lookupAuthorities(100, 0, inputValue)
       .then(result => (result.items ? result.items : []));
+
+  const selectedAuthorityId =
+    viewModel.filter.authorities && viewModel.filter.authorities.length === 1
+      ? parseInt(viewModel.filter.authorities[0].id, 10)
+      : undefined;
+
+  const loadVillageOptions = (inputValue: string) =>
+    villageService
+      .fetchVillages(100, 0, inputValue, true, selectedAuthorityId)
+      .then(result => result.items || []);
 
   const toggleRiskLevel = (level: RiskFilterLevel, checked: boolean) => {
     runInAction(() => {
@@ -124,6 +141,32 @@ const ReportFilter = ({ viewModel }: { viewModel: ReportListViewModel }) => {
             />
           </Field>
         )}
+      {villageEnabled && (
+        <Field $size="full">
+          <Label htmlFor="village">{t("form.label.village", "Village")}</Label>
+          <AsyncSelect<ReportFilterVillage, true>
+            key={selectedAuthorityId || "all-villages"}
+            cacheOptions
+            value={viewModel.filter.villages || []}
+            defaultOptions
+            loadOptions={loadVillageOptions}
+            placeholder={t("form.placeholder.typeToSelect", "Type to select")}
+            isMulti={true}
+            getOptionValue={(item: ReportFilterVillage) => item.id}
+            getOptionLabel={(item: ReportFilterVillage) => villageLabel(item)}
+            styles={styledReactSelect}
+            onChange={(values: readonly ReportFilterVillage[]) => {
+              runInAction(() => {
+                viewModel.filter.villages = values.map(item => ({
+                  id: item.id,
+                  code: item.code,
+                  name: item.name,
+                }));
+              });
+            }}
+          />
+        </Field>
+      )}
       <Field $size="full">
         <Label htmlFor="throughDate">
           {t("form.label.reportType", "Report Type")}
