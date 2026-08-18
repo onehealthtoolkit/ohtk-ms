@@ -30,6 +30,7 @@ query Reports(
   $currentRiskLevels: String
   $q: String
   $onlyCase: Boolean
+  $villageIds: [ID]
 ) {
   incidentReports(
     createdAt_Gte: $fromDate
@@ -43,6 +44,7 @@ query Reports(
     currentRiskLevels: $currentRiskLevels
     q: $q
     onlyCase: $onlyCase
+    village_Id_In: $villageIds
     limit: $limit
     offset: $offset
   ) {
