@@ -1,10 +1,10 @@
-import { Observer } from "mobx-react";
-import { useEffect, useState } from "react";
+import { Observer, observer } from "mobx-react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import useServices from "lib/services/provider";
 import useStore from "lib/store";
-import { CensusRoundMode } from "lib/services/census";
+import { CensusRoundMode, CensusSchemaMeasure } from "lib/services/census";
 import {
   DownloadButton,
   Field,
@@ -18,6 +18,8 @@ import ErrorDisplay from "components/widgets/errorDisplay";
 import tw from "tailwind-styled-components";
 import { AnimalCensusCreateViewModel } from "./createViewModel";
 import {
+  ANIMAL_HOUSEHOLD_KEY,
+  VILLAGE_HOUSEHOLD_KEY,
   censusLocalizedText,
   censusRowKey,
   censusRowLabel,
@@ -28,8 +30,14 @@ import {
 
 const Card = tw.div`bg-white shadow rounded-md p-6 max-w-5xl`;
 
-const AnimalCensusCreate = () => {
-  const { t } = useTranslation();
+type AnimalCensusCreateProps = {
+  viewModel?: AnimalCensusCreateViewModel;
+};
+
+const AnimalCensusCreate = ({
+  viewModel: injectedViewModel,
+}: AnimalCensusCreateProps) => {
+  const { t, i18n } = useTranslation();
   const router = useRouter();
   const store = useStore();
   const {
@@ -39,7 +47,10 @@ const AnimalCensusCreate = () => {
     censusSnapshotService,
   } = useServices();
 
-  const [viewModel] = useState(() => {
+  const [localViewModel] = useState(() => {
+    if (injectedViewModel) {
+      return injectedViewModel;
+    }
     const queryMode =
       router.query.mode === "TRAINING" ? "TRAINING" : "PRODUCTION";
     return new AnimalCensusCreateViewModel(
@@ -57,10 +68,14 @@ const AnimalCensusCreate = () => {
       }
     );
   });
+  const viewModel = injectedViewModel ?? localViewModel;
 
   useEffect(() => {
+    if (injectedViewModel) {
+      return;
+    }
     viewModel.init();
-  }, [viewModel]);
+  }, [injectedViewModel, viewModel]);
 
   const returnHref = `/admin/census/animal/?mode=${viewModel.mode}${
     viewModel.selectedOccurrenceId
@@ -122,6 +137,16 @@ const AnimalCensusCreate = () => {
                       </option>
                     ))}
                   </Select>
+                  <FieldError
+                    message={
+                      viewModel.fieldErrors.occurrence
+                        ? t(
+                            "census.create.roundRequired",
+                            "Select a census round"
+                          )
+                        : undefined
+                    }
+                  />
                 </Field>
                 <Field $size="half">
                   <Label htmlFor="village">
@@ -135,6 +160,7 @@ const AnimalCensusCreate = () => {
                       value={viewModel.selectedVillageId}
                       onChange={e => viewModel.selectVillage(e.target.value)}
                       required
+                      aria-invalid={Boolean(viewModel.fieldErrors.village)}
                     >
                       <option value="">
                         {t("form.label.selectItem", "Select item ...")}
@@ -151,6 +177,16 @@ const AnimalCensusCreate = () => {
                       ))}
                     </Select>
                   )}
+                  <FieldError
+                    message={
+                      viewModel.fieldErrors.village
+                        ? t(
+                            "census.create.villageRequired",
+                            "Select a village to continue"
+                          )
+                        : undefined
+                    }
+                  />
                 </Field>
                 <Field $size="half">
                   <Label htmlFor="censusDate">
@@ -162,6 +198,16 @@ const AnimalCensusCreate = () => {
                     value={viewModel.censusDate}
                     onChange={e => viewModel.setCensusDate(e.target.value)}
                     required
+                  />
+                  <FieldError
+                    message={
+                      viewModel.fieldErrors.censusDate
+                        ? t(
+                            "census.create.censusDateRequired",
+                            "Select a census date"
+                          )
+                        : undefined
+                    }
                   />
                 </Field>
               </FieldGroup>
@@ -179,10 +225,13 @@ const AnimalCensusCreate = () => {
               <div className="mt-6 flex gap-3">
                 <DownloadButton
                   type="button"
-                  disabled={
-                    !viewModel.canContinueToForm || viewModel.loadingDefinition
-                  }
-                  onClick={() => viewModel.continueToForm()}
+                  disabled={viewModel.loadingDefinition}
+                  onClick={() => {
+                    viewModel.continueToForm();
+                    if (viewModel.fieldErrors.village) {
+                      document.getElementById("village")?.focus();
+                    }
+                  }}
                 >
                   {viewModel.loadingDefinition ? (
                     <Spinner />
@@ -244,34 +293,42 @@ const AnimalCensusCreate = () => {
                 </p>
               )}
 
-              <div className="mb-6 grid gap-3 md:grid-cols-2">
-                {viewModel.summaryFields.map(field => (
-                  <label key={field.key} className="text-sm">
-                    <span className="mb-1 block font-medium text-gray-700">
-                      {censusLocalizedText(field.label, field.key)}
-                    </span>
-                    <TextInput
-                      type="number"
-                      min={0}
-                      step={1}
-                      value={viewModel.values.summary[field.key] ?? ""}
-                      onChange={e =>
-                        viewModel.setSummaryValue(field.key, e.target.value)
-                      }
-                    />
-                    <FieldError
-                      message={
-                        viewModel.fieldErrors[fieldKeyForSummary(field.key)]
-                      }
-                    />
-                  </label>
-                ))}
-              </div>
+              <div className="flex flex-col gap-6">
+                {viewModel.summaryFields.length > 0 && (
+                  <section className="overflow-hidden rounded-md border border-gray-200">
+                    <header className="border-b border-gray-200 bg-slate-50 px-4 py-3">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        {t("census.create.villageLevel", "Village")}
+                      </p>
+                      <h3 className="text-base font-semibold text-gray-900">
+                        {t(
+                          "census.create.householdSummary",
+                          "Village household summary"
+                        )}
+                      </h3>
+                    </header>
+                    <DefinitionMeasureCard nested>
+                      {viewModel.summaryFields.map(field => (
+                        <DefinitionMeasureInput
+                          key={field.key}
+                          id={`census-summary-${field.key}`}
+                          label={summaryFieldLabel(field, t, i18n.language)}
+                          value={viewModel.values.summary[field.key] ?? ""}
+                          error={
+                            viewModel.fieldErrors[fieldKeyForSummary(field.key)]
+                          }
+                          onChange={value =>
+                            viewModel.setSummaryValue(field.key, value)
+                          }
+                        />
+                      ))}
+                    </DefinitionMeasureCard>
+                  </section>
+                )}
 
-              {viewModel.isGrouped &&
-              (viewModel.runtimeSchema.groups ?? []).length > 0 ? (
-                <div className="flex flex-col gap-6">
-                  {(viewModel.runtimeSchema.groups ?? []).map(group => {
+                {viewModel.isGrouped &&
+                (viewModel.runtimeSchema.groups ?? []).length > 0 ? (
+                  (viewModel.runtimeSchema.groups ?? []).map(group => {
                     const householdRow = (
                       viewModel.runtimeSchema.rows ?? []
                     ).find(
@@ -284,175 +341,114 @@ const AnimalCensusCreate = () => {
                     ).filter(row =>
                       (group.species_row_keys ?? []).includes(censusRowKey(row))
                     );
+                    const householdMeasures = householdRow
+                      ? measuresForRow(
+                          householdRow,
+                          viewModel.runtimeSchema.measures ?? []
+                        )
+                      : [];
                     return (
                       <section
                         key={group.key || group.household_row_key}
-                        className="rounded border border-gray-200"
+                        className="overflow-hidden rounded-md border border-gray-200"
                       >
-                        <div className="border-b border-gray-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-gray-800">
-                          {censusLocalizedText(
-                            group.label,
-                            String(group.key || "")
-                          )}
-                        </div>
-                        <div className="p-4">
+                        <header className="border-b border-gray-200 bg-slate-50 px-4 py-3">
+                          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                            {t("census.create.animalGroup", "Animal group")}
+                          </p>
+                          <h3 className="text-base font-semibold text-gray-900">
+                            {censusLocalizedText(
+                              group.label,
+                              String(group.key || ""),
+                              i18n.language
+                            )}
+                          </h3>
+                        </header>
+                        <div className="flex flex-col gap-4 p-4">
                           {householdRow && (
-                            <MeasureInputs
-                              rowKey={censusRowKey(householdRow)}
-                              label={censusRowLabel(householdRow)}
-                              measures={measuresForRow(
-                                householdRow,
-                                viewModel.runtimeSchema.measures ?? []
-                              )}
-                              viewModel={viewModel}
-                            />
+                            <div>
+                              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                                {t(
+                                  "census.create.groupHouseholds",
+                                  "Households in this group"
+                                )}
+                              </p>
+                              <DefinitionRowFields
+                                rowKey={censusRowKey(householdRow)}
+                                measures={householdMeasures}
+                                viewModel={viewModel}
+                                locale={i18n.language}
+                              />
+                            </div>
                           )}
-                          <div className="mt-4 overflow-x-auto">
-                            <table className="min-w-full text-sm">
-                              <thead>
-                                <tr className="text-left text-xs uppercase text-gray-500">
-                                  <th className="pb-2 pr-4">
-                                    {t("form.label.species", "Species (heads)")}
-                                  </th>
-                                  {speciesRows[0] &&
-                                    measuresForRow(
-                                      speciesRows[0],
-                                      viewModel.runtimeSchema.measures ?? []
-                                    ).map(measure => (
-                                      <th
-                                        key={measure.key}
-                                        className="pb-2 pr-4"
-                                      >
-                                        {censusLocalizedText(
-                                          measure.label,
-                                          measure.key
-                                        )}
-                                      </th>
-                                    ))}
-                                </tr>
-                              </thead>
-                              <tbody>
+                          {speciesRows.length > 0 && (
+                            <div>
+                              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                                {t("form.label.species", "Species (heads)")}
+                              </p>
+                              <DefinitionMeasureCard>
                                 {speciesRows.map(row => {
                                   const rowKey = censusRowKey(row);
-                                  return (
-                                    <tr key={rowKey}>
-                                      <td className="py-2 pr-4 align-top">
-                                        {censusRowLabel(row)}
-                                      </td>
-                                      {measuresForRow(
-                                        row,
-                                        viewModel.runtimeSchema.measures ?? []
-                                      ).map(measure => (
-                                        <td
-                                          key={measure.key}
-                                          className="py-2 pr-4 align-top"
-                                        >
-                                          <TextInput
-                                            type="number"
-                                            min={0}
-                                            step={1}
-                                            value={
-                                              viewModel.values.rows[rowKey]?.[
-                                                measure.key
-                                              ] ?? ""
-                                            }
-                                            onChange={e =>
-                                              viewModel.setRowValue(
-                                                rowKey,
-                                                measure.key,
-                                                e.target.value
-                                              )
-                                            }
-                                          />
-                                          <FieldError
-                                            message={
-                                              viewModel.fieldErrors[
-                                                fieldKeyForRow(
-                                                  rowKey,
-                                                  measure.key
-                                                )
-                                              ]
-                                            }
-                                          />
-                                        </td>
-                                      ))}
-                                    </tr>
-                                  );
+                                  return measuresForRow(
+                                    row,
+                                    viewModel.runtimeSchema.measures ?? []
+                                  ).map(measure => (
+                                    <DefinitionMeasureInput
+                                      key={`${rowKey}:${measure.key}`}
+                                      id={`census-${rowKey}-${measure.key}`}
+                                      label={censusRowLabel(row, i18n.language)}
+                                      value={
+                                        viewModel.values.rows[rowKey]?.[
+                                          measure.key
+                                        ] ?? ""
+                                      }
+                                      error={
+                                        viewModel.fieldErrors[
+                                          fieldKeyForRow(rowKey, measure.key)
+                                        ]
+                                      }
+                                      onChange={value =>
+                                        viewModel.setRowValue(
+                                          rowKey,
+                                          measure.key,
+                                          value
+                                        )
+                                      }
+                                    />
+                                  ));
                                 })}
-                              </tbody>
-                            </table>
-                          </div>
+                              </DefinitionMeasureCard>
+                            </div>
+                          )}
                         </div>
                       </section>
                     );
-                  })}
-                </div>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="min-w-full text-sm">
-                    <thead>
-                      <tr className="text-left text-xs uppercase text-gray-500">
-                        <th className="pb-2 pr-4">
-                          {t("form.label.row", "Row")}
-                        </th>
-                        {(viewModel.runtimeSchema.measures ?? []).map(
-                          measure => (
-                            <th key={measure.key} className="pb-2 pr-4">
-                              {censusLocalizedText(measure.label, measure.key)}
-                            </th>
-                          )
-                        )}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {(viewModel.runtimeSchema.rows ?? []).map(row => {
-                        const rowKey = censusRowKey(row);
-                        return (
-                          <tr key={rowKey}>
-                            <td className="py-2 pr-4 align-top">
-                              {censusRowLabel(row)}
-                            </td>
-                            {measuresForRow(
-                              row,
-                              viewModel.runtimeSchema.measures ?? []
-                            ).map(measure => (
-                              <td
-                                key={measure.key}
-                                className="py-2 pr-4 align-top"
-                              >
-                                <TextInput
-                                  type="number"
-                                  min={0}
-                                  step={1}
-                                  value={
-                                    viewModel.values.rows[rowKey]?.[
-                                      measure.key
-                                    ] ?? ""
-                                  }
-                                  onChange={e =>
-                                    viewModel.setRowValue(
-                                      rowKey,
-                                      measure.key,
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                                <FieldError
-                                  message={
-                                    viewModel.fieldErrors[
-                                      fieldKeyForRow(rowKey, measure.key)
-                                    ]
-                                  }
-                                />
-                              </td>
-                            ))}
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+                  })
+                ) : (
+                  <section className="overflow-hidden rounded-md border border-gray-200">
+                    <header className="border-b border-gray-200 bg-slate-50 px-4 py-3">
+                      <h3 className="text-base font-semibold text-gray-900">
+                        {t("census.create.formTitle", "Animal census")}
+                      </h3>
+                    </header>
+                    <div className="flex flex-col gap-4 p-4">
+                      {(viewModel.runtimeSchema.rows ?? []).map(row => (
+                        <DefinitionRowFields
+                          key={censusRowKey(row)}
+                          title={censusRowLabel(row, i18n.language)}
+                          rowKey={censusRowKey(row)}
+                          measures={measuresForRow(
+                            row,
+                            viewModel.runtimeSchema.measures ?? []
+                          )}
+                          viewModel={viewModel}
+                          locale={i18n.language}
+                        />
+                      ))}
+                    </div>
+                  </section>
+                )}
+              </div>
 
               <ErrorDisplay message={viewModel.submitError} />
 
@@ -489,47 +485,116 @@ const AnimalCensusCreate = () => {
   );
 };
 
-const MeasureInputs = ({
-  rowKey,
-  label,
-  measures,
-  viewModel,
+const DefinitionRowFields = observer(
+  ({
+    title,
+    rowKey,
+    measures,
+    viewModel,
+    locale,
+  }: {
+    title?: string;
+    rowKey: string;
+    measures: CensusSchemaMeasure[];
+    viewModel: AnimalCensusCreateViewModel;
+    locale: string;
+  }) => {
+    return (
+      <div>
+        {title ? (
+          <h4 className="mb-1.5 text-sm font-semibold text-gray-900">
+            {title}
+          </h4>
+        ) : null}
+        <DefinitionMeasureCard>
+          {measures.map(measure => (
+            <DefinitionMeasureInput
+              key={measure.key}
+              id={`census-${rowKey}-${measure.key}`}
+              label={censusLocalizedText(measure.label, measure.key, locale)}
+              value={viewModel.values.rows[rowKey]?.[measure.key] ?? ""}
+              error={viewModel.fieldErrors[fieldKeyForRow(rowKey, measure.key)]}
+              onChange={value =>
+                viewModel.setRowValue(rowKey, measure.key, value)
+              }
+            />
+          ))}
+        </DefinitionMeasureCard>
+      </div>
+    );
+  }
+);
+
+const DefinitionMeasureCard = ({
+  children,
+  nested = false,
 }: {
-  rowKey: string;
-  label: string;
-  measures: Array<{ key: string; label?: unknown }>;
-  viewModel: AnimalCensusCreateViewModel;
-}) => {
-  return (
-    <div className="grid gap-3 md:grid-cols-2">
-      {measures.map(measure => (
-        <label key={measure.key} className="text-sm">
-          <span className="mb-1 block font-medium text-gray-700">
-            {label}
-            {measures.length > 1
-              ? ` — ${censusLocalizedText(
-                  measure.label as string,
-                  measure.key
-                )}`
-              : ""}
-          </span>
-          <TextInput
-            type="number"
-            min={0}
-            step={1}
-            value={viewModel.values.rows[rowKey]?.[measure.key] ?? ""}
-            onChange={e =>
-              viewModel.setRowValue(rowKey, measure.key, e.target.value)
-            }
-          />
-          <FieldError
-            message={viewModel.fieldErrors[fieldKeyForRow(rowKey, measure.key)]}
-          />
-        </label>
-      ))}
-    </div>
-  );
-};
+  children: ReactNode;
+  nested?: boolean;
+}) => (
+  <div
+    className={
+      nested
+        ? "divide-y divide-gray-200 bg-white"
+        : "divide-y divide-gray-200 overflow-hidden rounded-md border border-gray-200 bg-white"
+    }
+  >
+    {children}
+  </div>
+);
+
+const DefinitionMeasureInput = observer(
+  ({
+    id,
+    label,
+    value,
+    error,
+    onChange,
+  }: {
+    id: string;
+    label: string;
+    value: string;
+    error?: string;
+    onChange: (value: string) => void;
+  }) => (
+    <label
+      htmlFor={id}
+      className="flex items-start justify-between gap-3 px-4 py-3"
+    >
+      <span className="pt-2 text-sm font-medium text-gray-700">{label}</span>
+      <div className="w-28 shrink-0">
+        <TextInput
+          id={id}
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          autoComplete="off"
+          value={value}
+          onChange={e => onChange(digitsOnly(e.target.value))}
+        />
+        <FieldError message={error} />
+      </div>
+    </label>
+  )
+);
+
+function digitsOnly(value: string): string {
+  return value.replace(/[^\d]/g, "");
+}
+
+function summaryFieldLabel(
+  field: CensusSchemaMeasure,
+  t: (key: string, fallback: string) => string,
+  locale: string
+): string {
+  if (field.key === VILLAGE_HOUSEHOLD_KEY) {
+    return t("form.label.villageHouseholdQuantity", "Village households");
+  }
+  if (field.key === ANIMAL_HOUSEHOLD_KEY) {
+    return t("form.label.animalHouseholdQuantity", "Households with animals");
+  }
+  return censusLocalizedText(field.label, field.key, locale);
+}
 
 const FieldError = ({ message }: { message?: string }) =>
   message ? <p className="mt-1 text-xs text-red-600">{message}</p> : null;

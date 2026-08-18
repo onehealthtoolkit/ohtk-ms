@@ -1,6 +1,8 @@
 import {
   animalSummaryFields,
   buildAnimalFormData,
+  censusLocalizedText,
+  censusRowLabel,
   emptyFormValues,
   parseQuantity,
   prefillFormValues,
@@ -141,5 +143,46 @@ describe("animal census form data", () => {
     expect(values.summary.village_household_quantity).toBe("20");
     expect(values.rows["group:PIG"].household_quantity).toBe("3");
     expect(values.rows["species:PIG"].animal_quantity).toBe("10");
+  });
+
+  it("prefers the active locale for definition labels", () => {
+    expect(
+      censusLocalizedText(
+        { default: "HH No.", la: "ຈຳນວນຄົວເຮືອນ", en: "Village households" },
+        "fallback",
+        "lo-LA"
+      )
+    ).toBe("ຈຳນວນຄົວເຮືອນ");
+    expect(
+      censusLocalizedText(
+        {
+          default: "HH No.",
+          en: "Village households",
+          th: "จำนวนครัวเรือนในหมู่บ้าน",
+        },
+        "fallback",
+        "th"
+      )
+    ).toBe("จำนวนครัวเรือนในหมู่บ้าน");
+    expect(
+      censusLocalizedText(
+        { default: "HH No.", en: "Village households" },
+        "fallback",
+        "th"
+      )
+    ).toBe("HH No.");
+  });
+
+  it("uses the row label_i18n map when present", () => {
+    expect(
+      censusRowLabel(
+        {
+          row_key: "species:CATTLE",
+          label: "Cattle",
+          label_i18n: { default: "Cattle", la: "ງົວ" },
+        },
+        "la"
+      )
+    ).toBe("ງົວ");
   });
 });

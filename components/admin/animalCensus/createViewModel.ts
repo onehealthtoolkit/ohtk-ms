@@ -100,6 +100,7 @@ export class AnimalCensusCreateViewModel {
       selectVillage: action,
       selectOccurrence: action,
       setCensusDate: action,
+      clearFieldError: action,
       setSummaryValue: action,
       setRowValue: action,
       continueToForm: action,
@@ -218,35 +219,72 @@ export class AnimalCensusCreateViewModel {
 
   selectVillage(id: string) {
     this.selectedVillageId = id;
+    this.clearFieldError("village");
   }
 
   selectOccurrence(id: string) {
     this.selectedOccurrenceId = id;
+    this.clearFieldError("occurrence");
   }
 
   setCensusDate(value: string) {
     this.censusDate = value;
+    this.clearFieldError("censusDate");
+  }
+
+  clearFieldError(key: string) {
+    if (!this.fieldErrors[key]) {
+      return;
+    }
+    const next = { ...this.fieldErrors };
+    delete next[key];
+    this.fieldErrors = next;
   }
 
   setSummaryValue(key: string, value: string) {
-    this.values.summary[key] = value;
-    delete this.fieldErrors[fieldKeyForSummary(key)];
+    this.values = {
+      ...this.values,
+      summary: {
+        ...this.values.summary,
+        [key]: value,
+      },
+    };
+    this.clearFieldError(fieldKeyForSummary(key));
     this.submitError = undefined;
   }
 
   setRowValue(rowKey: string, measureKey: string, value: string) {
-    if (!this.values.rows[rowKey]) {
-      this.values.rows[rowKey] = {};
-    }
-    this.values.rows[rowKey][measureKey] = value;
-    delete this.fieldErrors[fieldKeyForRow(rowKey, measureKey)];
+    this.values = {
+      ...this.values,
+      rows: {
+        ...this.values.rows,
+        [rowKey]: {
+          ...(this.values.rows[rowKey] ?? {}),
+          [measureKey]: value,
+        },
+      },
+    };
+    this.clearFieldError(fieldKeyForRow(rowKey, measureKey));
     this.submitError = undefined;
   }
 
   async continueToForm() {
-    if (!this.canContinueToForm) {
+    const setupErrors: Record<string, string> = {};
+    if (!this.selectedVillageId) {
+      setupErrors.village = "Select a village";
+    }
+    if (!this.selectedOccurrenceId) {
+      setupErrors.occurrence = "Select a census round";
+    }
+    if (!this.censusDate) {
+      setupErrors.censusDate = "Select a census date";
+    }
+    this.fieldErrors = setupErrors;
+    if (Object.keys(setupErrors).length) {
+      this.loadError = undefined;
       return;
     }
+
     this.loadingDefinition = true;
     this.loadError = undefined;
     this.submitError = undefined;

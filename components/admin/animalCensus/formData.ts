@@ -31,15 +31,30 @@ export type CensusFormBuildResult =
   | CensusFormBuildSuccess
   | CensusFormBuildFailure;
 
+export function censusLocaleCandidates(locale?: string): string[] {
+  const normalized = (locale || "").replace("_", "-").toLowerCase();
+  const language = normalized.split("-")[0];
+  const candidates = [
+    normalized,
+    language,
+    language === "lo" ? "la" : "",
+    language === "la" ? "lo" : "",
+    "default",
+    "en",
+  ];
+  return Array.from(new Set(candidates.filter(Boolean)));
+}
+
 export function censusLocalizedText(
   value: LocalizedLabel | string | undefined,
-  fallback = ""
+  fallback = "",
+  locale?: string
 ): string {
   if (typeof value === "string" && value.trim()) {
     return value;
   }
   if (value && typeof value === "object") {
-    for (const key of ["default", "en", "la"]) {
+    for (const key of censusLocaleCandidates(locale)) {
       const item = value[key];
       if (typeof item === "string" && item.trim()) {
         return item;
@@ -58,13 +73,14 @@ export function censusRowKey(row: CensusSchemaRow): string {
   return String(row.row_key || row.key || "");
 }
 
-export function censusRowLabel(row: CensusSchemaRow): string {
+export function censusRowLabel(row: CensusSchemaRow, locale?: string): string {
   const labeled = row as CensusSchemaRow & {
     label_i18n?: LocalizedLabel;
   };
   return censusLocalizedText(
     labeled.label_i18n || row.label,
-    censusRowKey(row)
+    censusRowKey(row),
+    locale
   );
 }
 
