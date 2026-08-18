@@ -13,7 +13,8 @@ import {
 import { currentExcelEndpoint } from "components/excel/filter";
 import { observer } from "mobx-react";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import i18n from "i18n";
 import {
@@ -48,13 +49,51 @@ const formatStatus = (status: CensusCoverageStatus) => {
   return "Missing";
 };
 
+const createCensusHref = (
+  mode: CensusRoundMode,
+  occurrenceId?: string,
+  villageId?: string
+) => {
+  const params = new URLSearchParams();
+  params.set("mode", mode);
+  if (occurrenceId) {
+    params.set("occurrenceId", occurrenceId);
+  }
+  if (villageId) {
+    params.set("villageId", villageId);
+  }
+  return `/admin/census/animal/create/?${params.toString()}`;
+};
+
 const AnimalCensusCoverageView = () => {
   const { t } = useTranslation();
+  const router = useRouter();
   const store = useStore();
   const services = useServices();
   const [viewModel] = useState(
-    () => new AnimalCensusCoverageViewModel(services.censusRoundService)
+    () =>
+      new AnimalCensusCoverageViewModel(services.censusRoundService, {
+        mode: router.query.mode === "TRAINING" ? "TRAINING" : "PRODUCTION",
+        occurrenceId:
+          typeof router.query.occurrenceId === "string"
+            ? router.query.occurrenceId
+            : undefined,
+      })
   );
+
+  useEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
+    viewModel.applyQuery({
+      mode:
+        typeof router.query.mode === "string" ? router.query.mode : undefined,
+      occurrenceId:
+        typeof router.query.occurrenceId === "string"
+          ? router.query.occurrenceId
+          : undefined,
+    });
+  }, [router.isReady, router.query.mode, router.query.occurrenceId, viewModel]);
 
   const exportUrl = (() => {
     let base = `${currentExcelEndpoint()}/excels/census_round`;
@@ -205,6 +244,15 @@ const AnimalCensusCoverageView = () => {
           {t("form.button.refresh", "Refresh")}
         </button>
         <a
+          href={createCensusHref(
+            viewModel.mode,
+            viewModel.selectedOccurrenceId
+          )}
+          className="inline-flex h-10 items-center rounded border border-blue-300 bg-[#4C81F1] px-4 text-sm text-white hover:border-blue-500"
+        >
+          {t("census.create.title", "Enter census")}
+        </a>
+        <a
           href={viewModel.selectedOccurrenceId ? exportUrl : undefined}
           className={`inline-flex h-10 items-center rounded border border-blue-300 bg-[#4C81F1] px-4 text-sm text-white hover:border-blue-500 ${
             !viewModel.selectedOccurrenceId
@@ -271,6 +319,18 @@ const AnimalCensusCoverageView = () => {
         onLoading={viewModel.isLoading}
         onView={row => viewModel.selectRow(row)}
         viewOnRowClick={false}
+        actions={row => (
+          <a
+            href={createCensusHref(
+              viewModel.mode,
+              row.occurrence.id,
+              row.villageId
+            )}
+            className="text-sm text-blue-600 underline"
+          >
+            {t("census.create.enter", "Enter census")}
+          </a>
+        )}
       />
       <Paginate
         limit={viewModel.limit}
@@ -307,13 +367,25 @@ const CoverageDetailDrawer = ({
             </div>
             <div className="text-sm text-gray-500">{row.villageCode}</div>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded border border-gray-300 px-3 py-1 text-sm"
-          >
-            {t("form.button.close", "Close")}
-          </button>
+          <div className="flex items-center gap-2">
+            <a
+              href={createCensusHref(
+                row.occurrence.mode,
+                row.occurrence.id,
+                row.villageId
+              )}
+              className="rounded border border-blue-300 bg-[#4C81F1] px-3 py-1 text-sm text-white"
+            >
+              {t("census.create.enter", "Enter census")}
+            </a>
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded border border-gray-300 px-3 py-1 text-sm"
+            >
+              {t("form.button.close", "Close")}
+            </button>
+          </div>
         </div>
 
         <div className="mb-4 grid grid-cols-2 gap-3 text-sm">

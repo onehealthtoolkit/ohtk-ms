@@ -18,7 +18,12 @@ export type {
 
 export { CensusSnapshotService } from "./snapshotService";
 export type { ICensusSnapshotService } from "./snapshotService";
-export type { AnimalCensusFact, VillageCensusSnapshot } from "./census";
+export type {
+  AnimalCensusFact,
+  SubmitVillageCensusInput,
+  VillageCensusFormData,
+  VillageCensusSnapshot,
+} from "./census";
 
 export { CensusRoundService } from "./round";
 export type {
