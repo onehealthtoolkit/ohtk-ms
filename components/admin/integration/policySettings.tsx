@@ -78,7 +78,10 @@ const IntegrationPolicySettings = () => {
                 <Checkbox
                   id="clusterDetectorEnabled"
                   data-testid="integration-policy-cluster-detector-enabled"
-                  label="Enable cluster detector"
+                  label={t(
+                    "integration.policy.clusterDetectorEnabled",
+                    "Enable cluster detector"
+                  )}
                   value="true"
                   checked={viewModel.clusterDetectorEnabled}
                   disabled={viewModel.isSubmitting}
