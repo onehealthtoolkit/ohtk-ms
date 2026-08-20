@@ -7,6 +7,9 @@ query QueryComments($threadId: ID!) {
       id
       file
       thumbnail
+      filename
+      contentType
+      kind
       createdAt
     }
     createdAt
@@ -36,6 +39,9 @@ mutation MutationCommentCreate(
           id
           file
           thumbnail
+          filename
+          contentType
+          kind
           createdAt
         }
         createdAt

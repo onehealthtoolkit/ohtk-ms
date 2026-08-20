@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { CameraIcon } from "@heroicons/react/24/solid";
+import { PaperClipIcon } from "@heroicons/react/24/solid";
 import { ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
 import {
   CommentsViewModel,
@@ -8,6 +8,7 @@ import {
 import { TextArea, UserAvatar } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
 import type { Attachment, Comment } from "lib/services/comment/comment";
+import { isImageAttachment, isImageFile } from "lib/services/comment/comment";
 import useServices from "lib/services/provider";
 import { observer, Observer } from "mobx-react";
 import { memo, useEffect, useState } from "react";
@@ -107,12 +108,12 @@ const CommentForm = observer(
                       hover:border-gray-400 rounded shadow cursor-pointer 
                     "
             >
-              <CameraIcon className="w-5 h-5 fill-black" />
+              <PaperClipIcon className="w-5 h-5 fill-black" />
             </label>
             <input
               id="attachment"
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp,application/pdf,.pdf"
               placeholder="attachment"
               multiple
               onChange={evt => {
@@ -126,6 +127,9 @@ const CommentForm = observer(
           </div>
           <p className="text-red-700 text-xs italic">
             {viewModel.fieldErrors.body}
+          </p>
+          <p className="text-red-700 text-xs italic">
+            {viewModel.fieldErrors.files}
           </p>
           <div className="flex flex-row flex-wrap gap-2 py-2 items-start">
             {viewModel.attachments.map(attachment => (
@@ -208,13 +212,23 @@ const Comment = ({
   );
 };
 const TempAttachment = ({ file }: { file: LocalFile }) => {
+  if (isImageFile(file.file)) {
+    return (
+      <div className="border border-gray-300 p-1 h-24 w-24 flex flex-row justify-center items-center">
+        <img
+          src={file.url}
+          className="w-full h-full object-cover"
+          alt={file.file.name}
+        />
+      </div>
+    );
+  }
   return (
-    <div className="border border-gray-300 p-1 h-24 w-24 flex flex-row justify-center items-center">
-      <img
-        src={file.url}
-        className="w-full h-full object-cover"
-        alt="file.url"
-      />
+    <div className="border border-gray-300 p-1 h-24 w-24 flex flex-col justify-center items-center gap-1 px-1">
+      <PaperClipIcon className="w-6 h-6 fill-black" />
+      <span className="text-[0.65rem] text-gray-700 text-center break-all line-clamp-3">
+        {file.file.name}
+      </span>
     </div>
   );
 };
@@ -226,6 +240,25 @@ const Attachment = ({
   file: Attachment;
   onViewImage: (id: string) => void;
 }) => {
+  const label = attachment.filename || "file";
+  if (!isImageAttachment(attachment)) {
+    return (
+      <a
+        href={attachment.file}
+        download={label}
+        target="_blank"
+        rel="noreferrer"
+        className="border border-gray-300 p-1 h-24 w-24 flex flex-col 
+          justify-center items-center gap-1 px-1 text-gray-800
+        "
+      >
+        <PaperClipIcon className="w-6 h-6 fill-black" />
+        <span className="text-[0.65rem] text-center break-all line-clamp-3">
+          {label}
+        </span>
+      </a>
+    );
+  }
   return (
     <div
       className="border border-gray-300 p-1 h-24 w-24 flex flex-row 
@@ -234,9 +267,9 @@ const Attachment = ({
       onClick={() => onViewImage(attachment.id)}
     >
       <img
-        src={attachment.thumbnail}
+        src={attachment.thumbnail || attachment.file}
         className="w-full h-full object-cover"
-        alt={attachment.file}
+        alt={label}
       />
     </div>
   );

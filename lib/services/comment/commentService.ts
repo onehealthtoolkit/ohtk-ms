@@ -1,10 +1,103 @@
+import { gql } from "@apollo/client";
 import type { LegacyApolloClient } from "lib/services/apolloClient";
 import {
-  MutationCommentCreateDocument,
-  QueryCommentsDocument,
-} from "lib/generated/graphql";
-import { Attachment, Comment } from "lib/services/comment/comment";
+  Attachment,
+  Comment,
+  CommentAttachmentKind,
+} from "lib/services/comment/comment";
 import { IService, QueryResult, SaveResult } from "lib/services/interface";
+
+const QueryCommentsDocument = gql`
+  query QueryComments($threadId: ID!) {
+    comments(threadId: $threadId) {
+      id
+      body
+      threadId
+      attachments {
+        id
+        file
+        thumbnail
+        filename
+        contentType
+        kind
+        createdAt
+      }
+      createdAt
+      createdBy {
+        id
+        username
+        firstName
+        lastName
+        avatarUrl
+      }
+    }
+  }
+`;
+
+const MutationCommentCreateDocument = gql`
+  mutation MutationCommentCreate(
+    $body: String!
+    $threadId: Int!
+    $files: [Upload]
+  ) {
+    commentCreate(body: $body, threadId: $threadId, files: $files) {
+      result {
+        __typename
+        ... on CommentCreateSuccess {
+          id
+          body
+          threadId
+          attachments {
+            id
+            file
+            thumbnail
+            filename
+            contentType
+            kind
+            createdAt
+          }
+          createdAt
+          createdBy {
+            id
+            username
+            firstName
+            lastName
+            avatarUrl
+          }
+        }
+        ... on CommentCreateProblem {
+          message
+          fields {
+            name
+            message
+          }
+        }
+      }
+    }
+  }
+`;
+
+type AttachmentPayload = {
+  id: string;
+  file?: string | null;
+  thumbnail?: string | null;
+  filename?: string | null;
+  contentType?: string | null;
+  kind?: CommentAttachmentKind | null;
+  createdAt?: string | null;
+};
+
+function mapAttachment(item: AttachmentPayload): Attachment {
+  return {
+    id: item.id,
+    file: item.file || "",
+    thumbnail: item.thumbnail,
+    filename: item.filename,
+    contentType: item.contentType,
+    kind: item.kind,
+    createdAt: item.createdAt || "",
+  };
+}
 
 export interface ICommentService extends IService {
   fetchComments(
@@ -55,9 +148,9 @@ export class CommentService implements ICommentService {
           },
           createdAt: item.createdAt,
           threadId: item.threadId,
-          attachments: item.attachments?.filter(
-            it => it !== null
-          ) as Attachment[],
+          attachments: (item.attachments || [])
+            .filter((it): it is AttachmentPayload => Boolean(it))
+            .map(mapAttachment),
         });
       }
     });
@@ -114,7 +207,12 @@ export class CommentService implements ICommentService {
       success: true,
       data: {
         id: result?.id,
-        attachments: result?.attachments as Attachment[],
+        attachments: (
+          (result as { attachments?: AttachmentPayload[] | null })
+            ?.attachments || []
+        )
+          .filter((it): it is AttachmentPayload => Boolean(it))
+          .map(mapAttachment),
       },
     };
   }

@@ -1,6 +1,6 @@
 import { GalleryDialogViewModel } from "components/widgets/dialogs/galleryDialogViewModel";
 import { BaseFormViewModel } from "lib/baseFormViewModel";
-import { Comment } from "lib/services/comment/comment";
+import { Comment, isImageAttachment } from "lib/services/comment/comment";
 import { ICommentService } from "lib/services/comment/commentService";
 import {
   action,
@@ -114,13 +114,14 @@ export class CommentsViewModel extends BaseFormViewModel {
     if (!comment) {
       return;
     }
-    const images =
-      comment.attachments?.map(image => ({
-        imageUrl: image.file,
-        thumbnailUrl: image.thumbnail,
-      })) || [];
-
-    const selectedIdx = comment.attachments?.findIndex(it => it.id === imageId);
+    const imageAttachments = (comment.attachments || []).filter(
+      isImageAttachment
+    );
+    const images = imageAttachments.map(image => ({
+      imageUrl: image.file,
+      thumbnailUrl: image.thumbnail || image.file,
+    }));
+    const selectedIdx = imageAttachments.findIndex(it => it.id === imageId);
 
     this.galleryViewModel = new GalleryDialogViewModel(images, selectedIdx);
     this.galleryViewModel.open(null);

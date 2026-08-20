@@ -169,7 +169,7 @@ export class FormTransitionViewModel extends ModalDialogViewModel {
 
       if (result.success) {
         result.data?.attachments?.forEach(attachment =>
-          urls.push(attachment.thumbnail)
+          urls.push(attachment.thumbnail || attachment.file)
         );
       } else {
         throw new Error("Failed to upload images");
