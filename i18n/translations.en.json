@@ -3,6 +3,7 @@
     "dashboard": "Dashboard",
     "reports": "Reports",
     "cases": "Cases",
+    "clusters": "Hotspots",
     "map": "Map",
     "authorities": "Authorities",
     "users": "Users",
@@ -244,7 +245,8 @@
       "sortOrder": "Sort Order",
       "notificationTo": "email:john@gmail.com, user:pphetra",
       "registerFormDefinition": "RegisterForm Definition",
-      "identityTemplate": "Identity Template"
+      "identityTemplate": "Identity Template",
+      "searchCluster": "Hotspot id or explanation"
     },
     "button": {
       "signin": "Sign In",
@@ -559,6 +561,16 @@
       "errorDefinition": "Error reading form definition!",
       "blank": "Blank Form",
       "noQuestions": "No questions"
+    }
+  },
+  "cluster": {
+    "label": {
+      "cluster": "Hotspot"
+    }
+  },
+  "integration": {
+    "policy": {
+      "clusterDetectorEnabled": "Enable hotspot detector"
     }
   },
   "risk": {

@@ -3,6 +3,7 @@
     "dashboard": "ແຜງໜ້າປັດ",
     "reports": "ລາຍງານ",
     "cases": "ກໍລະນີ",
+    "clusters": "Hotspots",
     "map": "ແຜນທີ່",
     "authorities": "ອົງການ",
     "users": "ຜູ້ໃຊ້",
@@ -220,7 +221,8 @@
       "notificationTo": "email:john@gmail.com, user:pphetra",
       "registerFormDefinition": "ແບບ​ຟອມ​ລົງ​ທະ​ບຽນ",
       "identityTemplate": "ແມ່ແບບຕົວຕົນ",
-      "enterCommentHere": "ໃສ່ຄຳເຫັນທີ່ນີ້…"
+      "enterCommentHere": "ໃສ່ຄຳເຫັນທີ່ນີ້…",
+      "searchCluster": "ລະຫັດ Hotspot ຫຼື ຄຳອະທິບາຍ"
     },
     "button": {
       "signin": "ເຂົ້າ​ສູ່​ລະ​ບົບ",
@@ -551,6 +553,16 @@
       "errorDefinition": "ອ່ານແບບຟອມບໍ່ສຳເລັດ!",
       "blank": "ແບບຟອມວ່າງ",
       "noQuestions": "ບໍ່ມີຄຳຖາມ"
+    }
+  },
+  "cluster": {
+    "label": {
+      "cluster": "Hotspot"
+    }
+  },
+  "integration": {
+    "policy": {
+      "clusterDetectorEnabled": "ເປີດໃຊ້ຕົວກວດຈັບ Hotspot"
     }
   },
   "risk": {
