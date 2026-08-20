@@ -1,7 +1,4 @@
-import {
-  isImageAttachment,
-  isImageFile,
-} from "lib/services/comment/comment";
+import { isImageAttachment, isImageFile } from "lib/services/comment/comment";
 
 describe("comment attachment kind", () => {
   it("treats IMAGE kind as an image", () => {
@@ -39,9 +36,9 @@ describe("comment attachment kind", () => {
   });
 
   it("classifies local files by type or pdf name", () => {
-    expect(
-      isImageFile(new File(["x"], "pic.png", { type: "image/png" }))
-    ).toBe(true);
+    expect(isImageFile(new File(["x"], "pic.png", { type: "image/png" }))).toBe(
+      true
+    );
     expect(
       isImageFile(new File(["x"], "lab.pdf", { type: "application/pdf" }))
     ).toBe(false);

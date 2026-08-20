@@ -207,8 +207,10 @@ export class CommentService implements ICommentService {
       success: true,
       data: {
         id: result?.id,
-        attachments: ((result as { attachments?: AttachmentPayload[] | null })
-          ?.attachments || [])
+        attachments: (
+          (result as { attachments?: AttachmentPayload[] | null })
+            ?.attachments || []
+        )
           .filter((it): it is AttachmentPayload => Boolean(it))
           .map(mapAttachment),
       },
