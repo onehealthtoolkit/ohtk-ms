@@ -3,6 +3,7 @@
     "dashboard": "Dashboard",
     "reports": "Reports",
     "cases": "Cases",
+    "clusters": "Clusters",
     "map": "Map",
     "authorities": "Authorities",
     "users": "Users",
@@ -244,7 +245,8 @@
       "sortOrder": "Sort Order",
       "notificationTo": "email:john@gmail.com, user:pphetra",
       "registerFormDefinition": "RegisterForm Definition",
-      "identityTemplate": "Identity Template"
+      "identityTemplate": "Identity Template",
+      "searchCluster": "Cluster id or explanation"
     },
     "button": {
       "signin": "Sign In",
@@ -559,6 +561,16 @@
       "errorDefinition": "Error reading form definition!",
       "blank": "Blank Form",
       "noQuestions": "No questions"
+    }
+  },
+  "cluster": {
+    "label": {
+      "cluster": "Cluster"
+    }
+  },
+  "integration": {
+    "policy": {
+      "clusterDetectorEnabled": "Enable cluster detector"
     }
   },
   "risk": {
