@@ -89,6 +89,12 @@ export type AdminUserOption = {
   label: string;
 };
 
+export type AiSummaryRequest = {
+  eventId: string;
+  reportId: string;
+  status: string;
+};
+
 export type IntegrationOptions = {
   scopes: IntegrationOption[];
   statuses: IntegrationOption[];

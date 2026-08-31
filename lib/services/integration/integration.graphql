@@ -355,6 +355,27 @@ query IntegrationPolicyAdminUsers($limit: Int!, $offset: Int!, $q: String) {
   }
 }
 
+mutation OfficerAiSummaryRequestOp($reportId: UUID!, $userPrompt: String) {
+  officerAiSummaryRequest(reportId: $reportId, userPrompt: $userPrompt) {
+    result {
+      __typename
+      ... on OfficerAiSummaryRequestSuccess {
+        eventId
+        reportId
+        status
+      }
+      ... on OfficerAiSummaryRequestProblem {
+        code
+        message
+        fields {
+          name
+          message
+        }
+      }
+    }
+  }
+}
+
 mutation AdminIntegrationPolicyUpdateOp($input: AdminIntegrationPolicyInput!) {
   adminIntegrationPolicyUpdate(input: $input) {
     result {
