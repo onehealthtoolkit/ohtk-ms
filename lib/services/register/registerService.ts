@@ -101,6 +101,7 @@ export class RegisterService implements IRegisterService {
         telephone: me.telephone || "",
         address: me.address || "",
         features: me.features as Array<string>,
+        aiSummaryEnabled: false,
       },
       tokenAuth: {
         token: result?.token!,

@@ -15,6 +15,7 @@ import {
   AdminWebhookEndpointUpdateOpDocument,
   IntegrationPolicyAdminUsersDocument,
   IntegrationPolicyGetDocument,
+  OfficerAiSummaryRequestOpDocument,
 } from "lib/generated/graphql";
 import {
   GetResult,
@@ -28,6 +29,7 @@ import {
   IntegrationClientInput,
   IntegrationOption,
   IntegrationOptions,
+  AiSummaryRequest,
   IntegrationPolicy,
   IntegrationPolicyInput,
   WebhookEndpoint,
@@ -140,6 +142,11 @@ export interface IIntegrationService extends IService {
   getOptions(force?: boolean): Promise<GetResult<IntegrationOptions>>;
 
   fetchAdminUserOptions(searchText?: string): Promise<AdminUserOption[]>;
+
+  requestAiSummary(
+    reportId: string,
+    userPrompt?: string
+  ): Promise<SaveResult<AiSummaryRequest>>;
 }
 
 export class IntegrationService implements IIntegrationService {
@@ -439,6 +446,38 @@ export class IntegrationService implements IIntegrationService {
       success: false,
       fields: fieldErrors(payload?.fields) as any,
       message: payload?.message,
+    };
+  }
+
+  async requestAiSummary(
+    reportId: string,
+    userPrompt?: string
+  ): Promise<SaveResult<AiSummaryRequest>> {
+    const trimmed = (userPrompt || "").trim();
+    const result = await this.client.mutate({
+      mutation: OfficerAiSummaryRequestOpDocument,
+      variables: {
+        reportId,
+        userPrompt: trimmed ? trimmed : undefined,
+      },
+    });
+    const error = graphQlErrorMessage(result);
+    if (error) return { success: false, message: error };
+    const payload = result.data?.officerAiSummaryRequest?.result;
+    if (payload?.__typename === "OfficerAiSummaryRequestSuccess") {
+      return {
+        success: true,
+        data: {
+          eventId: payload.eventId,
+          reportId: payload.reportId,
+          status: payload.status,
+        },
+      };
+    }
+    return {
+      success: false,
+      fields: fieldErrors(payload?.fields) as any,
+      message: payload?.message || payload?.code,
     };
   }
 

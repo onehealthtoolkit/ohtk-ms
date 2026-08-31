@@ -17,6 +17,7 @@ import { RenderData, TR } from "components/widgets/renderData";
 import ConfirmDialog from "components/widgets/dialogs/confirmDialog";
 import dynamic from "next/dynamic";
 import Comments from "components/widgets/comments";
+import AskAiSummary from "components/case/askAiSummary";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 import ViewActionButtons from "components/widgets/viewActionButtons";
 import FollowupList from "./followup/list";
@@ -395,6 +396,8 @@ const Report = (props: { id: string }) => {
                 </div>
 
                 <Divide />
+
+                <AskAiSummary reportId={viewModel.id} />
 
                 {viewModel.data.threadId && (
                   <Comments threadId={viewModel.data.threadId} />

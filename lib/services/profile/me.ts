@@ -14,6 +14,7 @@ export type Me = {
   telephone: string;
   address: string;
   features: Array<string>;
+  aiSummaryEnabled: boolean;
 };
 
 export type ProfileUpdate = {

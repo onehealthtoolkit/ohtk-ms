@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -26,13 +27,43 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
+  /**
+   * The `Date` scalar type represents a Date
+   * value as specified by
+   * [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+   */
   Date: { input: any; output: any };
+  /**
+   * The `DateTime` scalar type represents a DateTime
+   * value as specified by
+   * [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+   */
   DateTime: { input: any; output: any };
+  /** The `Decimal` scalar type represents a python Decimal. */
   Decimal: { input: any; output: any };
+  /**
+   * The `GenericScalar` scalar type represents a generic
+   * GraphQL scalar value that could be:
+   * String, Boolean, Int, Float, List or Object.
+   */
   GenericScalar: { input: any; output: any };
   GeoJSON: { input: any; output: any };
+  /**
+   * Allows use of a JSON String for input / output from the GraphQL schema.
+   *
+   * Use of this type is *not recommended* as you lose the benefits of having a defined, static
+   * schema (one of the key benefits of GraphQL).
+   */
   JSONString: { input: any; output: any };
+  /**
+   * Leverages the internal Python implementation of UUID (uuid.UUID) to provide native UUID objects
+   * in fields, resolvers and input.
+   */
   UUID: { input: any; output: any };
+  /**
+   * Create scalar that ignores normal serialization/deserialization, since
+   * that will be handled by the multipart request spec
+   */
   Upload: { input: any; output: any };
 };
 
@@ -311,6 +342,12 @@ export type AdminAuthorityUserUpdateSuccess = {
   authorityUser?: Maybe<AuthorityUserType>;
 };
 
+/** Superuser-only: edit Layer2 close data on a finished case (no reopen). */
+export type AdminCaseCloseDataUpdateMutation = {
+  __typename?: "AdminCaseCloseDataUpdateMutation";
+  result?: Maybe<CaseType>;
+};
+
 /**
  * Officer Finish: Layer1 completion + outcome-scoped Layer2 payload.
  * outcome: close_case (default) | false_positive
@@ -326,14 +363,6 @@ export type AdminCaseCloseMutation = {
  */
 export type AdminCaseCompleteAfterAutoCloseMutation = {
   __typename?: "AdminCaseCompleteAfterAutoCloseMutation";
-  result?: Maybe<CaseType>;
-};
-
-/**
- * Superuser-only: edit Layer2 close data on a finished case (no reopen).
- */
-export type AdminCaseCloseDataUpdateMutation = {
-  __typename?: "AdminCaseCloseDataUpdateMutation";
   result?: Maybe<CaseType>;
 };
 
@@ -1315,6 +1344,11 @@ export type AdminPlaceUpdateSuccess = {
   updatedAt: Scalars["DateTime"]["output"];
 };
 
+export type AdminReportRestrictToAssignedScopeUpdateMutation = {
+  __typename?: "AdminReportRestrictToAssignedScopeUpdateMutation";
+  enabled: Scalars["Boolean"]["output"];
+};
+
 export type AdminReportTypeCreateMutation = {
   __typename?: "AdminReportTypeCreateMutation";
   result?: Maybe<AdminReportTypeCreateResult>;
@@ -2182,13 +2216,21 @@ export type ClientType = {
   schemaName: Scalars["String"]["output"];
 };
 
+export enum CommentAttachmentKind {
+  Document = "DOCUMENT",
+  Image = "IMAGE",
+}
+
 export type CommentAttachmentType = {
   __typename?: "CommentAttachmentType";
   comment: CommentUpdateSuccess;
+  contentType?: Maybe<Scalars["String"]["output"]>;
   createdAt: Scalars["DateTime"]["output"];
   deletedAt?: Maybe<Scalars["DateTime"]["output"]>;
   file?: Maybe<Scalars["String"]["output"]>;
+  filename?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["ID"]["output"];
+  kind?: Maybe<CommentAttachmentKind>;
   thumbnail?: Maybe<Scalars["String"]["output"]>;
   updatedAt: Scalars["DateTime"]["output"];
 };
@@ -2605,15 +2647,13 @@ export type Mutation = {
    * outcome: close_case (default) | false_positive
    */
   adminCaseClose?: Maybe<AdminCaseCloseMutation>;
+  /** Superuser-only: edit Layer2 close data on a finished case (no reopen). */
+  adminCaseCloseDataUpdate?: Maybe<AdminCaseCloseDataUpdateMutation>;
   /**
    * CO3b: fill Layer2 close data on a system-timeout-finished case.
    * Does not reopen; keeps close_source=system and stopped_at.
    */
   adminCaseCompleteAfterAutoClose?: Maybe<AdminCaseCompleteAfterAutoCloseMutation>;
-  /**
-   * Superuser-only: edit Layer2 close data on a finished case (no reopen).
-   */
-  adminCaseCloseDataUpdate?: Maybe<AdminCaseCloseDataUpdateMutation>;
   adminCaseDefinitionCreate?: Maybe<AdminCaseDefinitionCreateMutation>;
   adminCaseDefinitionDelete?: Maybe<AdminCaseDefinitionDeleteMutation>;
   adminCaseDefinitionUpdate?: Maybe<AdminCaseDefinitionUpdateMutation>;
@@ -2662,6 +2702,7 @@ export type Mutation = {
   adminPlaceCreate?: Maybe<AdminPlaceCreateMutation>;
   adminPlaceDelete?: Maybe<AdminPlaceDeleteMutation>;
   adminPlaceUpdate?: Maybe<AdminPlaceUpdateMutation>;
+  adminReportRestrictToAssignedScopeUpdate?: Maybe<AdminReportRestrictToAssignedScopeUpdateMutation>;
   adminReportTypeCreate?: Maybe<AdminReportTypeCreateMutation>;
   adminReportTypeDelete?: Maybe<AdminReportTypeDeleteMutation>;
   adminReportTypeUpdate?: Maybe<AdminReportTypeUpdateMutation>;
@@ -2697,6 +2738,7 @@ export type Mutation = {
   deleteTokenCookie?: Maybe<DeleteJsonWebTokenCookie>;
   evaluateReportSimulation?: Maybe<EvaluateReportSimulation>;
   forwardState?: Maybe<ForwardStateMutation>;
+  officerAiSummaryRequest?: Maybe<OfficerAiSummaryRequestMutation>;
   promoteToCase?: Maybe<PromoteToCaseMutation>;
   publishReportType?: Maybe<PublishReportTypeMutation>;
   refreshToken?: Maybe<Refresh>;
@@ -2800,6 +2842,16 @@ export type MutationAdminAuthorityUserUpdatePasswordArgs = {
 export type MutationAdminCaseCloseArgs = {
   caseId: Scalars["UUID"]["input"];
   outcome?: InputMaybe<Scalars["String"]["input"]>;
+  payload?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+};
+
+export type MutationAdminCaseCloseDataUpdateArgs = {
+  caseId: Scalars["UUID"]["input"];
+  payload?: InputMaybe<Scalars["GenericScalar"]["input"]>;
+};
+
+export type MutationAdminCaseCompleteAfterAutoCloseArgs = {
+  caseId: Scalars["UUID"]["input"];
   payload?: InputMaybe<Scalars["GenericScalar"]["input"]>;
 };
 
@@ -3105,6 +3157,10 @@ export type MutationAdminPlaceUpdateArgs = {
   notificationTo?: InputMaybe<Scalars["String"]["input"]>;
 };
 
+export type MutationAdminReportRestrictToAssignedScopeUpdateArgs = {
+  enabled: Scalars["Boolean"]["input"];
+};
+
 export type MutationAdminReportTypeCreateArgs = {
   categoryId: Scalars["Int"]["input"];
   definition: Scalars["String"]["input"];
@@ -3271,7 +3327,7 @@ export type MutationAuthorityUserRegisterArgs = {
   address?: InputMaybe<Scalars["String"]["input"]>;
   age?: InputMaybe<Scalars["Int"]["input"]>;
   consent?: InputMaybe<Scalars["Boolean"]["input"]>;
-  email: Scalars["String"]["input"];
+  email?: InputMaybe<Scalars["String"]["input"]>;
   firstName: Scalars["String"]["input"];
   gender?: InputMaybe<Scalars["String"]["input"]>;
   invitationCode: Scalars["String"]["input"];
@@ -3311,6 +3367,11 @@ export type MutationForwardStateArgs = {
   caseId: Scalars["ID"]["input"];
   formData?: InputMaybe<Scalars["GenericScalar"]["input"]>;
   transitionId: Scalars["ID"]["input"];
+};
+
+export type MutationOfficerAiSummaryRequestArgs = {
+  reportId: Scalars["UUID"]["input"];
+  userPrompt?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type MutationPromoteToCaseArgs = {
@@ -3590,6 +3651,29 @@ export type ObtainJsonWebToken = {
   token: Scalars["String"]["output"];
 };
 
+export type OfficerAiSummaryRequestMutation = {
+  __typename?: "OfficerAiSummaryRequestMutation";
+  result?: Maybe<OfficerAiSummaryRequestResult>;
+};
+
+export type OfficerAiSummaryRequestProblem = {
+  __typename?: "OfficerAiSummaryRequestProblem";
+  code: Scalars["String"]["output"];
+  fields?: Maybe<Array<AdminFieldValidationProblem>>;
+  message?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type OfficerAiSummaryRequestResult =
+  | OfficerAiSummaryRequestProblem
+  | OfficerAiSummaryRequestSuccess;
+
+export type OfficerAiSummaryRequestSuccess = {
+  __typename?: "OfficerAiSummaryRequestSuccess";
+  eventId: Scalars["UUID"]["output"];
+  reportId: Scalars["UUID"]["output"];
+  status: Scalars["String"]["output"];
+};
+
 export type OutbreakPlaceType = {
   __typename?: "OutbreakPlaceType";
   case: CaseType;
@@ -3754,6 +3838,7 @@ export type Query = {
   outbreakPlanGet?: Maybe<OutbreakPlanType>;
   placeGet?: Maybe<PlaceType>;
   reportDataSummary?: Maybe<ReportDataSummaryType>;
+  reportRestrictToAssignedScopeEnabled: Scalars["Boolean"]["output"];
   reportType?: Maybe<ReportTypeType>;
   reportTypeByName?: Maybe<ReportTypeType>;
   reportUseVillageLocationFallbackEnabled: Scalars["Boolean"]["output"];
@@ -4079,7 +4164,9 @@ export type QueryBoundaryConnectedIncidentReportsArgs = {
   last?: InputMaybe<Scalars["Int"]["input"]>;
   limit?: InputMaybe<Scalars["Int"]["input"]>;
   offset?: InputMaybe<Scalars["Int"]["input"]>;
+  onlyCase?: InputMaybe<Scalars["Boolean"]["input"]>;
   ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
   relevantAuthorities_Id_In?: InputMaybe<
     Array<InputMaybe<Scalars["ID"]["input"]>>
   >;
@@ -4087,6 +4174,7 @@ export type QueryBoundaryConnectedIncidentReportsArgs = {
   relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]["input"]>;
   reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]["input"]>>>;
   testFlag?: InputMaybe<Scalars["Boolean"]["input"]>;
+  village_Id_In?: InputMaybe<Array<InputMaybe<Scalars["ID"]["input"]>>>;
 };
 
 export type QueryCaseDefinitionGetArgs = {
@@ -4100,14 +4188,18 @@ export type QueryCaseGetArgs = {
 export type QueryCasesQueryArgs = {
   after?: InputMaybe<Scalars["String"]["input"]>;
   before?: InputMaybe<Scalars["String"]["input"]>;
+  caseStatuses?: InputMaybe<Scalars["String"]["input"]>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
   includeChildAuthorities?: InputMaybe<Scalars["Boolean"]["input"]>;
   last?: InputMaybe<Scalars["Int"]["input"]>;
   limit?: InputMaybe<Scalars["Int"]["input"]>;
   offset?: InputMaybe<Scalars["Int"]["input"]>;
   ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
   report_CreatedAt_Gte?: InputMaybe<Scalars["DateTime"]["input"]>;
   report_CreatedAt_Lte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  report_IncidentDate_Gte?: InputMaybe<Scalars["Date"]["input"]>;
+  report_IncidentDate_Lte?: InputMaybe<Scalars["Date"]["input"]>;
   report_RelevantAuthorities_Id_In?: InputMaybe<
     Array<InputMaybe<Scalars["ID"]["input"]>>
   >;
@@ -4225,7 +4317,9 @@ export type QueryIncidentReportsArgs = {
   last?: InputMaybe<Scalars["Int"]["input"]>;
   limit?: InputMaybe<Scalars["Int"]["input"]>;
   offset?: InputMaybe<Scalars["Int"]["input"]>;
+  onlyCase?: InputMaybe<Scalars["Boolean"]["input"]>;
   ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
   relevantAuthorities_Id_In?: InputMaybe<
     Array<InputMaybe<Scalars["ID"]["input"]>>
   >;
@@ -4233,6 +4327,7 @@ export type QueryIncidentReportsArgs = {
   relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]["input"]>;
   reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]["input"]>>>;
   testFlag?: InputMaybe<Scalars["Boolean"]["input"]>;
+  village_Id_In?: InputMaybe<Array<InputMaybe<Scalars["ID"]["input"]>>>;
 };
 
 export type QueryInvitationCodeArgs = {
@@ -4257,7 +4352,9 @@ export type QueryMyIncidentReportsArgs = {
   last?: InputMaybe<Scalars["Int"]["input"]>;
   limit?: InputMaybe<Scalars["Int"]["input"]>;
   offset?: InputMaybe<Scalars["Int"]["input"]>;
+  onlyCase?: InputMaybe<Scalars["Boolean"]["input"]>;
   ordering?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
   relevantAuthorities_Id_In?: InputMaybe<
     Array<InputMaybe<Scalars["ID"]["input"]>>
   >;
@@ -4265,6 +4362,7 @@ export type QueryMyIncidentReportsArgs = {
   relevantAuthorities_Name_Istartswith?: InputMaybe<Scalars["String"]["input"]>;
   reportType_Id_In?: InputMaybe<Array<InputMaybe<Scalars["UUID"]["input"]>>>;
   testFlag?: InputMaybe<Scalars["Boolean"]["input"]>;
+  village_Id_In?: InputMaybe<Array<InputMaybe<Scalars["ID"]["input"]>>>;
 };
 
 export type QueryMyMessageArgs = {
@@ -4750,6 +4848,7 @@ export type UserProfileType = {
   __typename?: "UserProfileType";
   address?: Maybe<Scalars["String"]["output"]>;
   age?: Maybe<Scalars["Int"]["output"]>;
+  aiSummaryEnabled: Scalars["Boolean"]["output"];
   assignedVillages?: Maybe<Array<Maybe<VillageType>>>;
   authorityId?: Maybe<Scalars["Int"]["output"]>;
   authorityName?: Maybe<Scalars["String"]["output"]>;
@@ -5105,6 +5204,8 @@ export type CasesQueryVariables = Exact<{
   offset: Scalars["Int"]["input"];
   fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  incidentFromDate?: InputMaybe<Scalars["Date"]["input"]>;
+  incidentThroughDate?: InputMaybe<Scalars["Date"]["input"]>;
   authorities?: InputMaybe<
     | Array<InputMaybe<Scalars["ID"]["input"]>>
     | InputMaybe<Scalars["ID"]["input"]>
@@ -5114,6 +5215,8 @@ export type CasesQueryVariables = Exact<{
     | InputMaybe<Scalars["UUID"]["input"]>
   >;
   includeChildAuthorities?: InputMaybe<Scalars["Boolean"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  caseStatuses?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type CasesQuery = {
@@ -5727,6 +5830,31 @@ export type CensusDefinitionVersionFieldsFragment = {
   };
 };
 
+export type ActiveCensusDefinitionVersionQueryVariables = Exact<{
+  kind: Scalars["String"]["input"];
+}>;
+
+export type ActiveCensusDefinitionVersionQuery = {
+  __typename?: "Query";
+  activeCensusDefinitionVersion?: {
+    __typename?: "CensusDefinitionVersionType";
+    id: string;
+    version: number;
+    status: CensusCensusDefinitionVersionStatusChoices;
+    schema?: any | null;
+    definitionSchema?: any | null;
+    runtimeSchema?: any | null;
+    publishedAt?: any | null;
+    definition: {
+      __typename?: "CensusDefinitionType";
+      id: string;
+      kind: CensusCensusDefinitionKindChoices;
+      enabled: boolean;
+      sortOrder: number;
+    };
+  } | null;
+};
+
 export type CensusDefinitionAdminStateQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -5988,6 +6116,12 @@ export type LatestAnimalVillageCensusQuery = {
     submittedAt: any;
     villageHouseholdQuantity?: number | null;
     animalHouseholdQuantity?: number | null;
+    formData?: any | null;
+    definitionVersion?: {
+      __typename?: "CensusDefinitionVersionType";
+      id: string;
+      version: number;
+    } | null;
     reporter: {
       __typename?: "AdminAuthorityUserCreateSuccess";
       username: string;
@@ -5999,6 +6133,51 @@ export type LatestAnimalVillageCensusQuery = {
       animalQuantity?: number | null;
       householdQuantity?: number | null;
     }>;
+  } | null;
+};
+
+export type SubmitVillageCensusSnapshotV2MutationVariables = Exact<{
+  villageId: Scalars["Int"]["input"];
+  definitionVersionId: Scalars["Int"]["input"];
+  occurrenceId?: InputMaybe<Scalars["Int"]["input"]>;
+  censusDate: Scalars["Date"]["input"];
+  formData: Scalars["GenericScalar"]["input"];
+}>;
+
+export type SubmitVillageCensusSnapshotV2Mutation = {
+  __typename?: "Mutation";
+  submitVillageCensusSnapshotV2?: {
+    __typename?: "SubmitVillageCensusSnapshotV2Mutation";
+    result?:
+      | {
+          __typename: "VillageCensusSnapshotProblem";
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "VillageCensusSnapshotType";
+          id: string;
+          censusDate: any;
+          submittedAt: any;
+          villageHouseholdQuantity?: number | null;
+          animalHouseholdQuantity?: number | null;
+          reporter: {
+            __typename?: "AdminAuthorityUserCreateSuccess";
+            username: string;
+          };
+          facts: Array<{
+            __typename?: "AnimalCensusFactType";
+            rowKey: string;
+            rowLabel: string;
+            animalQuantity?: number | null;
+            householdQuantity?: number | null;
+          }>;
+        }
+      | null;
   } | null;
 };
 
@@ -6289,6 +6468,9 @@ export type QueryCommentsQuery = {
       id: string;
       file?: string | null;
       thumbnail?: string | null;
+      filename?: string | null;
+      contentType?: string | null;
+      kind?: CommentAttachmentKind | null;
       createdAt: any;
     } | null> | null;
     createdBy: {
@@ -6336,6 +6518,9 @@ export type MutationCommentCreateMutation = {
             id: string;
             file?: string | null;
             thumbnail?: string | null;
+            filename?: string | null;
+            contentType?: string | null;
+            kind?: CommentAttachmentKind | null;
             createdAt: any;
           } | null> | null;
           createdBy: {
@@ -7087,6 +7272,36 @@ export type IntegrationPolicyAdminUsersQuery = {
       firstName: string;
       lastName: string;
     } | null>;
+  } | null;
+};
+
+export type OfficerAiSummaryRequestOpMutationVariables = Exact<{
+  reportId: Scalars["UUID"]["input"];
+  userPrompt?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type OfficerAiSummaryRequestOpMutation = {
+  __typename?: "Mutation";
+  officerAiSummaryRequest?: {
+    __typename?: "OfficerAiSummaryRequestMutation";
+    result?:
+      | {
+          __typename: "OfficerAiSummaryRequestProblem";
+          code: string;
+          message?: string | null;
+          fields?: Array<{
+            __typename?: "AdminFieldValidationProblem";
+            name: string;
+            message: string;
+          }> | null;
+        }
+      | {
+          __typename: "OfficerAiSummaryRequestSuccess";
+          eventId: any;
+          reportId: any;
+          status: string;
+        }
+      | null;
   } | null;
 };
 
@@ -8214,6 +8429,7 @@ export type MeQuery = {
     telephone?: string | null;
     address?: string | null;
     features?: Array<string | null> | null;
+    aiSummaryEnabled: boolean;
   } | null;
 };
 
@@ -8348,6 +8564,8 @@ export type ReportsQueryVariables = Exact<{
   offset: Scalars["Int"]["input"];
   fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
+  incidentFromDate?: InputMaybe<Scalars["Date"]["input"]>;
+  incidentThroughDate?: InputMaybe<Scalars["Date"]["input"]>;
   authorities?: InputMaybe<
     | Array<InputMaybe<Scalars["ID"]["input"]>>
     | InputMaybe<Scalars["ID"]["input"]>
@@ -8359,6 +8577,12 @@ export type ReportsQueryVariables = Exact<{
   testFlag?: InputMaybe<Scalars["Boolean"]["input"]>;
   includeChildAuthorities?: InputMaybe<Scalars["Boolean"]["input"]>;
   currentRiskLevels?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
+  onlyCase?: InputMaybe<Scalars["Boolean"]["input"]>;
+  villageIds?: InputMaybe<
+    | Array<InputMaybe<Scalars["ID"]["input"]>>
+    | InputMaybe<Scalars["ID"]["input"]>
+  >;
 }>;
 
 export type ReportsQuery = {
@@ -11666,6 +11890,22 @@ export const CasesDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
+            name: { kind: "Name", value: "incidentFromDate" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Date" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "incidentThroughDate" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Date" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
             name: { kind: "Name", value: "authorities" },
           },
           type: {
@@ -11691,6 +11931,19 @@ export const CasesDocument = {
             name: { kind: "Name", value: "includeChildAuthorities" },
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "caseStatuses" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
       ],
       selectionSet: {
@@ -11718,6 +11971,22 @@ export const CasesDocument = {
               },
               {
                 kind: "Argument",
+                name: { kind: "Name", value: "report_IncidentDate_Gte" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "incidentFromDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "report_IncidentDate_Lte" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "incidentThroughDate" },
+                },
+              },
+              {
+                kind: "Argument",
                 name: {
                   kind: "Name",
                   value: "report_RelevantAuthorities_Id_In",
@@ -11741,6 +12010,19 @@ export const CasesDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "includeChildAuthorities" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "caseStatuses" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "caseStatuses" },
                 },
               },
               {
@@ -14104,6 +14386,113 @@ export const AnimalCensusCapabilityUpdateDocument = {
   AnimalCensusCapabilityUpdateMutation,
   AnimalCensusCapabilityUpdateMutationVariables
 >;
+export const ActiveCensusDefinitionVersionDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ActiveCensusDefinitionVersion" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "kind" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "activeCensusDefinitionVersion" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "kind" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "kind" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "CensusDefinitionVersionFields",
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "kind" } },
+          { kind: "Field", name: { kind: "Name", value: "enabled" } },
+          { kind: "Field", name: { kind: "Name", value: "sortOrder" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CensusDefinitionVersionFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "CensusDefinitionVersionType" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "definition" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CensusDefinitionFields" },
+                },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "version" } },
+          { kind: "Field", name: { kind: "Name", value: "status" } },
+          { kind: "Field", name: { kind: "Name", value: "schema" } },
+          { kind: "Field", name: { kind: "Name", value: "definitionSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "runtimeSchema" } },
+          { kind: "Field", name: { kind: "Name", value: "publishedAt" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ActiveCensusDefinitionVersionQuery,
+  ActiveCensusDefinitionVersionQueryVariables
+>;
 export const CensusDefinitionAdminStateDocument = {
   kind: "Document",
   definitions: [
@@ -15012,6 +15401,21 @@ export const LatestAnimalVillageCensusDocument = {
                   kind: "Field",
                   name: { kind: "Name", value: "animalHouseholdQuantity" },
                 },
+                { kind: "Field", name: { kind: "Name", value: "formData" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "definitionVersion" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "version" },
+                      },
+                    ],
+                  },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "reporter" },
@@ -15060,6 +15464,266 @@ export const LatestAnimalVillageCensusDocument = {
 } as unknown as DocumentNode<
   LatestAnimalVillageCensusQuery,
   LatestAnimalVillageCensusQueryVariables
+>;
+export const SubmitVillageCensusSnapshotV2Document = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "SubmitVillageCensusSnapshotV2" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "villageId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "definitionVersionId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "occurrenceId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "censusDate" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Date" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "formData" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "GenericScalar" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "submitVillageCensusSnapshotV2" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "villageId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "villageId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "definitionVersionId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "definitionVersionId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "occurrenceId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "occurrenceId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "censusDate" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "censusDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "formData" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "formData" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "VillageCensusSnapshotType",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "censusDate" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "submittedAt" },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "villageHouseholdQuantity",
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "animalHouseholdQuantity",
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "reporter" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "username" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "facts" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "rowKey" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "rowLabel" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "animalQuantity",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "householdQuantity",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "VillageCensusSnapshotProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SubmitVillageCensusSnapshotV2Mutation,
+  SubmitVillageCensusSnapshotV2MutationVariables
 >;
 export const ClusterResultsDocument = {
   kind: "Document",
@@ -15618,6 +16282,15 @@ export const QueryCommentsDocument = {
                       },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "filename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "contentType" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "kind" } },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "createdAt" },
                       },
                     ],
@@ -15786,6 +16459,21 @@ export const MutationCommentCreateDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "thumbnail" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "filename" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "contentType",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "kind" },
                                   },
                                   {
                                     kind: "Field",
@@ -19141,6 +19829,152 @@ export const IntegrationPolicyAdminUsersDocument = {
 } as unknown as DocumentNode<
   IntegrationPolicyAdminUsersQuery,
   IntegrationPolicyAdminUsersQueryVariables
+>;
+export const OfficerAiSummaryRequestOpDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "OfficerAiSummaryRequestOp" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "reportId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "userPrompt" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "officerAiSummaryRequest" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "reportId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "reportId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "userPrompt" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "userPrompt" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "result" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "OfficerAiSummaryRequestSuccess",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "eventId" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "reportId" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "status" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "InlineFragment",
+                        typeCondition: {
+                          kind: "NamedType",
+                          name: {
+                            kind: "Name",
+                            value: "OfficerAiSummaryRequestProblem",
+                          },
+                        },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "code" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "fields" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "message" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  OfficerAiSummaryRequestOpMutation,
+  OfficerAiSummaryRequestOpMutationVariables
 >;
 export const AdminIntegrationPolicyUpdateOpDocument = {
   kind: "Document",
@@ -25058,6 +25892,10 @@ export const MeDocument = {
                 { kind: "Field", name: { kind: "Name", value: "telephone" } },
                 { kind: "Field", name: { kind: "Name", value: "address" } },
                 { kind: "Field", name: { kind: "Name", value: "features" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aiSummaryEnabled" },
+                },
               ],
             },
           },
@@ -25663,6 +26501,22 @@ export const ReportsDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
+            name: { kind: "Name", value: "incidentFromDate" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Date" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "incidentThroughDate" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Date" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
             name: { kind: "Name", value: "authorities" },
           },
           type: {
@@ -25705,6 +26559,30 @@ export const ReportsDocument = {
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "q" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "onlyCase" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "villageIds" },
+          },
+          type: {
+            kind: "ListType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -25727,6 +26605,22 @@ export const ReportsDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "throughDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "incidentDate_Gte" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "incidentFromDate" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "incidentDate_Lte" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "incidentThroughDate" },
                 },
               },
               {
@@ -25767,6 +26661,27 @@ export const ReportsDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "currentRiskLevels" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "q" },
+                value: { kind: "Variable", name: { kind: "Name", value: "q" } },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "onlyCase" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "onlyCase" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "village_Id_In" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "villageIds" },
                 },
               },
               {

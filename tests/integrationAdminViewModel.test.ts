@@ -72,6 +72,7 @@ const makeService = (overrides: Partial<IIntegrationService> = {}) =>
     fetchAdminUserOptions: jest
       .fn()
       .mockResolvedValue([{ id: "10", label: "Tenant Admin" }]),
+    requestAiSummary: jest.fn(),
     ...overrides,
   }) as IIntegrationService;
 

@@ -20,6 +20,7 @@ import CaseStatus from "./caseStatus";
 import CaseBreadcrumb from "./caseBreadcrumb";
 import { RenderData, TR } from "components/widgets/renderData";
 import Comments from "components/widgets/comments";
+import AskAiSummary from "components/case/askAiSummary";
 import dynamic from "next/dynamic";
 import GalleryDialog from "components/widgets/dialogs/galleryDialog";
 import ViewActionButtons from "components/widgets/viewActionButtons";
@@ -299,6 +300,8 @@ const Case = (props: { id: string }) => {
                 </div>
 
                 <Divide />
+
+                <AskAiSummary reportId={viewModel.reportId} />
 
                 <Comments threadId={viewModel.data.threadId} />
 

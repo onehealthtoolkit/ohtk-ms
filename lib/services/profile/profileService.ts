@@ -64,6 +64,7 @@ export class ProfileService implements IProfileService {
       telephone: me.telephone || "",
       address: me.address || "",
       features: me.features as Array<string>,
+      aiSummaryEnabled: Boolean(me.aiSummaryEnabled),
     };
   }
 
