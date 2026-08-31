@@ -127,6 +127,7 @@ const PlaceCreate = () => {
             {t("form.label.authority", "Authority")}
           </Label>
           <AuthroitySelect
+            value={viewModel.authorityId}
             roleRequired={true}
             onChange={value => (viewModel.authorityId = parseInt(value.id))}
           />

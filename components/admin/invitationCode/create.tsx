@@ -51,6 +51,7 @@ const InvitationCodeCreate = () => {
                 {t("form.label.authority", "Authority")}
               </Label>
               <AuthroitySelect
+                value={viewModel.authorityId}
                 onChange={value => (viewModel.authorityId = parseInt(value.id))}
               />
             </Field>
