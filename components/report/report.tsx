@@ -28,6 +28,7 @@ import { ArrowsPointingOutIcon } from "@heroicons/react/24/solid";
 import ReportLocationMapDialog from "components/case/reportMapDialog";
 import ReportBreadcrumb from "./reportBreadcrumb";
 import ReportAssessmentSection from "./reportAssessmentSection";
+import ErrorDisplay from "components/widgets/errorDisplay";
 import useStore from "lib/store";
 
 export const PromoteToCaseButton = tw.button`
@@ -184,6 +185,7 @@ const Report = (props: { id: string }) => {
             />
             <MaskingLoader loading={viewModel.isLoading}>
               <>
+                <ErrorDisplay message={viewModel.errorMessage} />
                 {viewModel.shouldDisplayActions && (
                   <div className="flex items-center flex-wrap gap-1 px-[26px] pt-4">
                     <div className="flex-grow"></div>

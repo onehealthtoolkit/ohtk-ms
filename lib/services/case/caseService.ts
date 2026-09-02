@@ -17,6 +17,7 @@ import {
   CaseState,
 } from "lib/services/case/case";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
+import { graphqlErrorMessage } from "lib/graphqlError";
 import { Authority } from "../authority";
 import { ReportType } from "../reportType";
 import { Image, UploadFile } from "lib/services/report/report";
@@ -177,7 +178,7 @@ export interface ICaseService extends IService {
     force?: boolean
   ): Promise<QueryResult<Case[]>>;
 
-  promoteToCase(reportId: string): Promise<String>;
+  promoteToCase(reportId: string): Promise<GetResult<{ id: string }>>;
 
   getCase(
     id: string,
@@ -289,23 +290,41 @@ export class CaseService implements ICaseService {
     };
   }
 
-  async promoteToCase(reportId: string): Promise<String> {
-    const promoteToCaseResult = await this.client.mutate({
-      mutation: PromoteReportToCaseDocument,
-      variables: {
-        reportId,
-      },
-      refetchQueries: [
-        {
-          query: CasesDocument,
-          variables: this.fetchCasesQuery,
-          fetchPolicy: "network-only",
+  async promoteToCase(reportId: string): Promise<GetResult<{ id: string }>> {
+    try {
+      const promoteToCaseResult = await this.client.mutate({
+        mutation: PromoteReportToCaseDocument,
+        variables: {
+          reportId,
         },
-      ],
-      awaitRefetchQueries: true,
-    });
-
-    return promoteToCaseResult.data?.promoteToCase?.case?.id;
+        refetchQueries: [
+          {
+            query: CasesDocument,
+            variables: this.fetchCasesQuery,
+            fetchPolicy: "network-only",
+          },
+        ],
+        awaitRefetchQueries: true,
+      });
+      const error = graphqlErrorMessage(promoteToCaseResult);
+      const id = promoteToCaseResult.data?.promoteToCase?.case?.id;
+      if (!id) {
+        return {
+          data: undefined,
+          error: error || "Unable to promote report to case",
+        };
+      }
+      return { data: { id }, error };
+    } catch (thrown) {
+      return {
+        data: undefined,
+        error: graphqlErrorMessage(
+          undefined,
+          thrown,
+          "Unable to promote report to case"
+        ),
+      };
+    }
   }
 
   async getCase(
