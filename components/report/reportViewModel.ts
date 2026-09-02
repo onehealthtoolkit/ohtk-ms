@@ -129,19 +129,64 @@ export class ReportViewModel extends BaseViewModel {
     this.isLoading = false;
   }
 
-  public async promoteToCase(): Promise<String> {
+  public async promoteToCase(): Promise<string | undefined> {
     this.isLoading = true;
-    const result = await this.caseService.promoteToCase(this.id);
-    this.isLoading = false;
-    return result;
+    this.setErrorMessage(undefined);
+    try {
+      const result = await this.caseService.promoteToCase(this.id);
+      runInAction(() => {
+        if (result.error) {
+          this.setErrorMessage(result.error);
+        }
+        if (result.data?.id) {
+          this.data.caseId = result.data.id;
+        }
+      });
+      return result.data?.id;
+    } catch (error) {
+      runInAction(() => {
+        this.setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "Unable to promote report to case"
+        );
+      });
+      return undefined;
+    } finally {
+      runInAction(() => {
+        this.isLoading = false;
+      });
+    }
   }
 
-  public async convertToTestReport(): Promise<String> {
+  public async convertToTestReport(): Promise<string | undefined> {
     this.converting = true;
-    const result = await this.reportService.convertToTestReport(this.id);
-    if (result) this.data.testFlag = true;
-    this.converting = false;
-    return result;
+    this.setErrorMessage(undefined);
+    try {
+      const result = await this.reportService.convertToTestReport(this.id);
+      runInAction(() => {
+        if (result.error) {
+          this.setErrorMessage(result.error);
+        }
+        if (result.data?.id) {
+          this.data.testFlag = true;
+        }
+      });
+      return result.data?.id;
+    } catch (error) {
+      runInAction(() => {
+        this.setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "Unable to convert report to test report"
+        );
+      });
+      return undefined;
+    } finally {
+      runInAction(() => {
+        this.converting = false;
+      });
+    }
   }
 
   public async setRiskLevel(level: RiskFilterLevel): Promise<boolean> {

@@ -20,6 +20,7 @@ import {
   UploadFile,
 } from "lib/services/report/report";
 import { GetResult, IService, QueryResult } from "lib/services/interface";
+import { graphqlErrorMessage } from "lib/graphqlError";
 import { Authority } from "lib/services/authority";
 import { ReportType } from "../reportType";
 import { Village } from "lib/services/village";
@@ -178,7 +179,7 @@ export interface IReportService extends IService {
 
   getReport(id: string): Promise<GetResult<ReportDetail>>;
 
-  convertToTestReport(reportId: string): Promise<String>;
+  convertToTestReport(reportId: string): Promise<GetResult<{ id: string }>>;
 
   setReportRisk(
     reportId: string,
@@ -375,28 +376,49 @@ export class ReportService implements IReportService {
     };
   }
 
-  async convertToTestReport(reportId: string): Promise<String> {
-    const result = await this.client.mutate({
-      mutation: ConvertReportToTestReportDocument,
-      variables: {
-        reportId,
-      },
-      refetchQueries: [
-        {
-          query: ReportsDocument,
-          variables: this.fetchReportsQuery,
-          fetchPolicy: "network-only",
+  async convertToTestReport(
+    reportId: string
+  ): Promise<GetResult<{ id: string }>> {
+    try {
+      const result = await this.client.mutate({
+        mutation: ConvertReportToTestReportDocument,
+        variables: {
+          reportId,
         },
-        {
-          query: GetReportDocument,
-          variables: {
-            id: reportId,
+        refetchQueries: [
+          {
+            query: ReportsDocument,
+            variables: this.fetchReportsQuery,
+            fetchPolicy: "network-only",
           },
-        },
-      ],
-      awaitRefetchQueries: true,
-    });
-    return result.data?.convertToTestReport?.report?.id;
+          {
+            query: GetReportDocument,
+            variables: {
+              id: reportId,
+            },
+          },
+        ],
+        awaitRefetchQueries: true,
+      });
+      const error = graphqlErrorMessage(result);
+      const id = result.data?.convertToTestReport?.report?.id;
+      if (!id) {
+        return {
+          data: undefined,
+          error: error || "Unable to convert report to test report",
+        };
+      }
+      return { data: { id }, error };
+    } catch (thrown) {
+      return {
+        data: undefined,
+        error: graphqlErrorMessage(
+          undefined,
+          thrown,
+          "Unable to convert report to test report"
+        ),
+      };
+    }
   }
 
   async submitIncidentReport(
