@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import Select from "react-select";
+import { useCallback, useEffect, useRef, useState } from "react";
+import AsyncSelect from "react-select/async";
 import useServices from "lib/services/provider";
 import { styledReactSelect } from "./styledReactSelect";
 import useStore from "lib/store";
@@ -19,6 +19,23 @@ type AuthorityOption = {
   name: string;
 };
 
+const toOption = (item: Authority): AuthorityOption => ({
+  id: item.id,
+  name: item.name,
+});
+
+const filterAuthorities = (items: Authority[], q: string) => {
+  const term = q.trim().toLowerCase();
+  if (!term) {
+    return items;
+  }
+  return items.filter(
+    item =>
+      item.name.toLowerCase().includes(term) ||
+      item.code.toLowerCase().includes(term)
+  );
+};
+
 const AuthroitySelect: React.FC<AuthorityFilterProps> = ({
   value,
   onChange,
@@ -28,54 +45,103 @@ const AuthroitySelect: React.FC<AuthorityFilterProps> = ({
 }) => {
   const store = useStore();
   const { authorityService } = useServices();
-  const [authorities, setAuthorities] = useState<AuthorityOption[]>();
+  const [selected, setSelected] = useState<AuthorityOption | null>(null);
+  const inheritTreeRef = useRef<Authority[] | null>(null);
+
+  const useInheritTree =
+    Boolean(roleRequired) &&
+    !store.isSuperUser &&
+    (store.isRoleAdmin || store.isRoleOfficer) &&
+    Boolean(store.authorityId);
+
+  const loadInheritTree = useCallback(async () => {
+    if (!store.authorityId) {
+      return [];
+    }
+    if (inheritTreeRef.current) {
+      return inheritTreeRef.current;
+    }
+    const tree = await authorityService.lookupAuthorityInheritsDown(
+      store.authorityId.toString()
+    );
+    inheritTreeRef.current = tree;
+    return tree;
+  }, [authorityService, store.authorityId]);
 
   useEffect(() => {
-    async function loadOptions() {
+    inheritTreeRef.current = null;
+  }, [store.authorityId, roleRequired]);
+
+  const loadOptions = useCallback(
+    async (inputValue: string) => {
       let authorities: Authority[] = [];
-      if (roleRequired) {
-        if (store.isSuperUser)
-          authorities = await (
-            await authorityService.lookupAuthorities(100, 0, "")
-          ).items!;
-        else if (
-          (store.isRoleAdmin || store.isRoleOfficer) &&
-          store.authorityId
-        )
-          // Staff may only pick authorities inside their inherits-down tree.
-          authorities =
-            await await authorityService.lookupAuthorityInheritsDown(
-              store.authorityId.toString()
-            );
-      } else {
-        authorities = await (
-          await authorityService.lookupAuthorities(100, 0, "")
-        ).items!;
+      if (useInheritTree) {
+        authorities = filterAuthorities(await loadInheritTree(), inputValue);
+      } else if (!roleRequired || store.isSuperUser) {
+        authorities =
+          (await authorityService.lookupAuthorities(100, 0, inputValue))
+            .items || [];
       }
-      setAuthorities(
-        authorities?.map(item => {
-          return {
-            id: item.id,
-            name: item.name,
-          };
-        })
-      );
+      return authorities.map(toOption);
+    },
+    [
+      authorityService,
+      loadInheritTree,
+      roleRequired,
+      store.isSuperUser,
+      useInheritTree,
+    ]
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadSelected() {
+      if (value == null || Number.isNaN(value)) {
+        if (!cancelled) {
+          setSelected(null);
+        }
+        return;
+      }
+      const id = String(value);
+      if (selected?.id === id) {
+        return;
+      }
+      let match: Authority | undefined;
+      if (useInheritTree) {
+        match = (await loadInheritTree()).find(item => item.id === id);
+      } else {
+        const result = await authorityService.getAuthority(id);
+        match = result.data;
+      }
+      if (!cancelled && match) {
+        setSelected(toOption(match));
+      }
     }
-    loadOptions();
-  }, [authorityService, roleRequired, store]);
+
+    loadSelected();
+    return () => {
+      cancelled = true;
+    };
+    // selected is read to skip a redundant fetch; omit it so value changes retrigger.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authorityService, loadInheritTree, useInheritTree, value]);
 
   return (
-    <Select<AuthorityOption>
-      value={authorities?.find(item => item.id == String(value)) || null}
+    <AsyncSelect<AuthorityOption>
+      cacheOptions
+      defaultOptions
+      value={selected}
       isMulti={false}
       isClearable={Boolean(isClearable)}
-      options={authorities}
+      loadOptions={loadOptions}
       getOptionValue={(item: AuthorityOption) => item.id}
       getOptionLabel={(item: AuthorityOption) => item.name}
       styles={styledReactSelect}
-      onChange={(selected: AuthorityOption | null) => {
-        if (selected) {
-          onChange(selected);
+      onChange={(next: AuthorityOption | null) => {
+        setSelected(next);
+        if (next) {
+          onChange(next);
         } else if (onClear) {
           onClear();
         }
