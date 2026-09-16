@@ -22,13 +22,9 @@ const VillageSelect = ({
         active = false;
       };
     }
-    villageService.fetchVillages(200, 0, "", true).then(result => {
+    villageService.fetchVillages(200, 0, "", true, authorityId).then(result => {
       if (active) {
-        setVillages(
-          (result.items || []).filter(
-            village => village.authorityId === authorityId
-          )
-        );
+        setVillages(result.items || []);
       }
     });
     return () => {

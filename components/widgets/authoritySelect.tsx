@@ -19,6 +19,8 @@ type AuthorityOption = {
   name: string;
 };
 
+const AUTHORITY_SEARCH_DELAY_MS = 300;
+
 const toOption = (item: Authority): AuthorityOption => ({
   id: item.id,
   name: item.name,
@@ -47,6 +49,9 @@ const AuthroitySelect: React.FC<AuthorityFilterProps> = ({
   const { authorityService } = useServices();
   const [selected, setSelected] = useState<AuthorityOption | null>(null);
   const inheritTreeRef = useRef<Authority[] | null>(null);
+  const authorityLookupTimer = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
 
   const useInheritTree =
     Boolean(roleRequired) &&
@@ -72,7 +77,7 @@ const AuthroitySelect: React.FC<AuthorityFilterProps> = ({
     inheritTreeRef.current = null;
   }, [store.authorityId, roleRequired]);
 
-  const loadOptions = useCallback(
+  const loadAuthorityOptions = useCallback(
     async (inputValue: string) => {
       let authorities: Authority[] = [];
       if (useInheritTree) {
@@ -91,6 +96,29 @@ const AuthroitySelect: React.FC<AuthorityFilterProps> = ({
       store.isSuperUser,
       useInheritTree,
     ]
+  );
+
+  const loadOptions = useCallback(
+    (inputValue: string, callback: (options: AuthorityOption[]) => void) => {
+      if (authorityLookupTimer.current) {
+        clearTimeout(authorityLookupTimer.current);
+      }
+      authorityLookupTimer.current = setTimeout(() => {
+        void loadAuthorityOptions(inputValue)
+          .then(callback)
+          .catch(() => callback([]));
+      }, AUTHORITY_SEARCH_DELAY_MS);
+    },
+    [loadAuthorityOptions]
+  );
+
+  useEffect(
+    () => () => {
+      if (authorityLookupTimer.current) {
+        clearTimeout(authorityLookupTimer.current);
+      }
+    },
+    []
   );
 
   useEffect(() => {
