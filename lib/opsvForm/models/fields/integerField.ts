@@ -42,11 +42,11 @@ export default class IntegerField extends PrimitiveField<number> {
   };
 
   _validateMin = () => {
-    if (!this.min) {
+    if (this.min == undefined) {
       return true;
     }
 
-    const valid = this.value ? this.value >= this.min : true;
+    const valid = this.value == undefined || this.value >= this.min;
     if (!valid) {
       this.markError(
         this.minMessage ||
@@ -57,11 +57,11 @@ export default class IntegerField extends PrimitiveField<number> {
   };
 
   _validateMax = () => {
-    if (!this.max) {
+    if (this.max == undefined) {
       return true;
     }
 
-    const valid = this.value ? this.value <= this.max : true;
+    const valid = this.value == undefined || this.value <= this.max;
     if (!valid) {
       this.markError(
         this.maxMessage || `This value must be equal or lesser than ${this.max}`

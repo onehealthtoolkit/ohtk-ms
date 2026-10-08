@@ -29,6 +29,29 @@ describe("Integer field", () => {
     });
   });
 
+  describe("zero bounds", () => {
+    it.each<[{ min?: number; max?: number }, number, boolean]>([
+      [{ min: 0 }, -1, false],
+      [{ min: 0 }, 0, true],
+      [{ max: 0 }, 1, false],
+      [{ max: 0 }, 0, true],
+      [{ min: 1 }, 0, false],
+      [{ max: -1 }, 0, false],
+    ])("validates %o with value %s", (bounds, value, valid) => {
+      const field = new IntegerField("count", "count", bounds);
+      field.value = value;
+      expect(field.validate()).toBe(valid);
+    });
+
+    it.each([{ min: 0 }, { max: 0 }, { min: 0, max: 0 }])(
+      "still permits an empty optional field with %o",
+      bounds => {
+        const field = new IntegerField("count", "count", bounds);
+        expect(field.validate()).toBe(true);
+      }
+    );
+  });
+
   describe("validation", () => {
     let field: IntegerField;
     let requiredField: IntegerField;
