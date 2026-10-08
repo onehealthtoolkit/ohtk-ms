@@ -36,9 +36,16 @@ const FormLocationField = dynamic(
 export type FormQuestionProps = {
   question: Question;
   definition: string;
+  labelOverride?: string;
+  descriptionOverride?: string;
 };
 
-const Component: FC<FormQuestionProps> = ({ question, definition }) => {
+const Component: FC<FormQuestionProps> = ({
+  question,
+  definition,
+  labelOverride,
+  descriptionOverride,
+}) => {
   const renderField = (field: Field) => {
     if (field instanceof TextField) {
       return <FormTextField field={field} />;
@@ -71,9 +78,13 @@ const Component: FC<FormQuestionProps> = ({ question, definition }) => {
   }
   return (
     <div className="p-4 border-b border-gray-200 last:border-0">
-      <h4 className="font-medium text-gray-800">{question.label}</h4>
-      {question.description && (
-        <h5 className="text-sm">{question.description}</h5>
+      <h4 className="font-medium text-gray-800">
+        {labelOverride ?? question.label}
+      </h4>
+      {(descriptionOverride ?? question.description) && (
+        <h5 className="text-sm">
+          {descriptionOverride ?? question.description}
+        </h5>
       )}
       <div className="flex-col flex gap-4 my-4">
         {question.fields.map(

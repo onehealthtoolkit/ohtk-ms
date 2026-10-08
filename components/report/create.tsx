@@ -14,6 +14,7 @@ import {
   Select,
 } from "components/widgets/forms";
 import Spinner from "components/widgets/spinner";
+import { animalReportNameKey } from "lib/i18n/animalReport";
 import tw from "tailwind-styled-components";
 
 const Card = tw.div`bg-white shadow rounded-md p-6 max-w-3xl`;
@@ -71,11 +72,14 @@ const ReportCreate = () => {
                     <option value="">
                       {t("form.label.selectItem", "Select item ...")}
                     </option>
-                    {viewModel.reportTypes.map(rt => (
-                      <option key={rt.id} value={rt.id}>
-                        {rt.name}
-                      </option>
-                    ))}
+                    {viewModel.reportTypes.map(rt => {
+                      const nameKey = animalReportNameKey(rt.name);
+                      return (
+                        <option key={rt.id} value={rt.id}>
+                          {nameKey ? t(nameKey, rt.name) : rt.name}
+                        </option>
+                      );
+                    })}
                   </Select>
                 </Field>
 

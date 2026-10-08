@@ -286,7 +286,11 @@ const AnimalCensusCoverageView = () => {
           },
           {
             label: t("form.label.status", "Status"),
-            get: record => formatStatus(record.status),
+            get: record =>
+              t(
+                `censusCoverage.status.${record.status}`,
+                formatStatus(record.status)
+              ),
           },
           {
             label: t("form.label.censusDate", "Census date"),
@@ -390,7 +394,7 @@ const CoverageDetailDrawer = ({
 
         <div className="mb-4 grid grid-cols-2 gap-3 text-sm">
           <DetailValue label={t("form.label.status", "Status")}>
-            {formatStatus(row.status)}
+            {t(`censusCoverage.status.${row.status}`, formatStatus(row.status))}
           </DetailValue>
           <DetailValue label={t("censusCoverage.occurrence", "Round")}>
             {row.occurrence.occurrenceKey}
