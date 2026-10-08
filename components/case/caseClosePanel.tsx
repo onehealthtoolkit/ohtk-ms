@@ -6,7 +6,6 @@ import { CaseViewModel } from "./caseViewModel";
 import { formatDateTime } from "lib/datetime";
 import { useRouter } from "next/router";
 import { FormQuestion } from "components/formRenderer/question";
-import { animalCloseFieldKeys } from "lib/i18n/animalReport";
 import type { CaseCloseOutcome } from "lib/services/case/case";
 
 type FinishTheme = {
@@ -731,7 +730,6 @@ const OutcomeCard = ({
 /** Dynamic opsv close form — same as before, wrapped for design card. */
 const CloseFormFields = observer(
   ({ viewModel }: { viewModel: CaseViewModel }) => {
-    const { t } = useTranslation();
     const form = viewModel.closeForm;
     if (!form) {
       return null;
@@ -750,23 +748,13 @@ const CloseFormFields = observer(
                 {section.description}
               </p>
             )}
-            {section.questions.map((question, qIdx) => {
-              const keys = animalCloseFieldKeys(
-                viewModel.data.reportTypeName,
-                question.fields[0]?.id
-              );
-              return (
-                <FormQuestion
-                  key={qIdx + question.label}
-                  question={question}
-                  definition={viewModel.closeFormDefinitionJson}
-                  labelOverride={keys && t(keys.label, question.label)}
-                  descriptionOverride={
-                    keys && t(keys.description, question.description || "")
-                  }
-                />
-              );
-            })}
+            {section.questions.map((question, qIdx) => (
+              <FormQuestion
+                key={qIdx + question.label}
+                question={question}
+                definition={viewModel.closeFormDefinitionJson}
+              />
+            ))}
           </div>
         ))}
       </>
@@ -777,9 +765,8 @@ const CloseFormFields = observer(
 /** Finished close data as key/value — not disabled inputs (design). */
 const CloseDataReadonly = observer(
   ({ viewModel }: { viewModel: CaseViewModel }) => {
-    const { t } = useTranslation();
+    const payload = viewModel.data.closePayload || {};
     const rows = useMemo(() => {
-      const payload = viewModel.data.closePayload || {};
       const skip = new Set(["close_outcome"]);
       const form = viewModel.closeForm;
       const labelByName: Record<string, string> = {};
@@ -787,15 +774,7 @@ const CloseDataReadonly = observer(
         for (const section of form.sections) {
           for (const q of section.questions) {
             for (const f of q.fields || []) {
-              if (f.name) {
-                const keys = animalCloseFieldKeys(
-                  viewModel.data.reportTypeName,
-                  f.id
-                );
-                labelByName[f.name] = keys
-                  ? t(keys.label, q.label || f.name)
-                  : q.label || f.name;
-              }
+              if (f.name) labelByName[f.name] = q.label || f.name;
             }
           }
         }
@@ -808,12 +787,7 @@ const CloseDataReadonly = observer(
           label: labelByName[k] || k.replace(/_/g, " "),
           value: String(v),
         }));
-    }, [
-      viewModel.data.closePayload,
-      viewModel.closeForm,
-      viewModel.data.reportTypeName,
-      t,
-    ]);
+    }, [payload, viewModel.closeForm]);
 
     if (rows.length === 0) {
       return <p className="px-[15px] py-3 text-sm text-gray-500">—</p>;
