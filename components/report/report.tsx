@@ -24,7 +24,6 @@ import FollowupList from "./followup/list";
 import { formatYmdt } from "lib/datetime";
 import TestLabel from "./testLabel";
 import { useTranslation } from "react-i18next";
-import { animalMetricKey } from "lib/i18n/animalReport";
 import { ArrowsPointingOutIcon } from "@heroicons/react/24/solid";
 import ReportLocationMapDialog from "components/case/reportMapDialog";
 import ReportBreadcrumb from "./reportBreadcrumb";
@@ -269,26 +268,19 @@ const Report = (props: { id: string }) => {
                       </div>
                       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px bg-slate-100 dark:bg-slate-800">
                         {viewModel.data.accumulatedMetrics.metrics.map(
-                          metric => {
-                            const label = metric.label || metric.id;
-                            const labelKey = animalMetricKey(
-                              viewModel.data.reportTypeName,
-                              metric.id
-                            );
-                            return (
-                              <div
-                                key={metric.id}
-                                className="bg-white dark:bg-slate-900 px-4 py-3.5 flex flex-col gap-1 min-h-[4.5rem] justify-center"
-                              >
-                                <span className="text-[11px] font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400 leading-snug">
-                                  {labelKey ? t(labelKey, label) : label}
-                                </span>
-                                <span className="text-2xl font-bold tabular-nums tracking-tight text-slate-900 dark:text-white">
-                                  {metric.value}
-                                </span>
-                              </div>
-                            );
-                          }
+                          metric => (
+                            <div
+                              key={metric.id}
+                              className="bg-white dark:bg-slate-900 px-4 py-3.5 flex flex-col gap-1 min-h-[4.5rem] justify-center"
+                            >
+                              <span className="text-[11px] font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400 leading-snug">
+                                {metric.label || metric.id}
+                              </span>
+                              <span className="text-2xl font-bold tabular-nums tracking-tight text-slate-900 dark:text-white">
+                                {metric.value}
+                              </span>
+                            </div>
+                          )
                         )}
                       </div>
                     </div>

@@ -576,35 +576,18 @@
       "clusterDetectorEnabled": "Enable cluster detector"
     }
   },
-  "animalReport": {
-    "name": "Animal Sick/Death",
-    "metric": {
-      "num_household": "Number of affected households",
-      "num_total_animal": "Total animals",
-      "num_sick": "Sick",
-      "num_dead": "Dead",
-      "num_recover": "Recovered"
-    },
-    "close": {
-      "test_result": {
-        "label": "Test result",
-        "description": "Include lab notes or reference IDs if needed. Attach lab files via Comments."
-      },
-      "stamp_out": {
-        "label": "Stamped out",
-        "description": "Number of animals terminated for this report species (integer ≥ 0)."
-      }
-    }
-  },
   "censusCoverage": {
     "submitted": "Submitted",
     "missing": "Missing",
+    "late": "Late",
     "MISSING": "Missing villages",
     "SUBMITTED_ON_TIME": "Submitted villages",
+    "SUBMITTED_LATE": "Late submissions",
     "ALL": "All target villages",
     "status": {
       "MISSING": "Missing",
-      "SUBMITTED_ON_TIME": "Submitted"
+      "SUBMITTED_ON_TIME": "Submitted",
+      "SUBMITTED_LATE": "Late"
     }
   },
   "census": {
