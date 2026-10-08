@@ -22,7 +22,7 @@ query LatestAnimalVillageCensus($villageId: Int!) {
   }
 }
 
-mutation SubmitVillageCensusSnapshotV2(
+mutation SubmitVillageCensusSnapshotV2Operation(
   $villageId: Int!
   $definitionVersionId: Int!
   $occurrenceId: Int
