@@ -154,7 +154,7 @@ export default class MapViewViewModel {
             imageUrl: it.imageUrl,
             createdAt: it.createdAt,
           });
-        } catch (e) {
+        } catch {
           console.log("Cannot parse (lat,lng) location: " + it.gpsLocation);
         }
       }
@@ -193,7 +193,7 @@ export default class MapViewViewModel {
               createdAt: it.createdAt,
               boundaryConnect: true,
             });
-          } catch (e) {
+          } catch {
             console.log("Cannot parse (lat,lng) location: " + it.gpsLocation);
           }
         }

@@ -3,8 +3,7 @@ export type EventData = {
   cases: Array<EventItem>;
 };
 
-const eventType = ["report", "case"] as const;
-export type EventItemType = (typeof eventType)[number];
+export type EventItemType = "report" | "case";
 
 export type EventItem = {
   id: string;

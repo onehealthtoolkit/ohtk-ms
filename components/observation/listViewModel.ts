@@ -123,7 +123,7 @@ export class ObservationListViewModel extends BaseViewModel {
                 imageUrl: it.imageUrl,
                 createdAt: it.createdAt,
               });
-            } catch (e) {
+            } catch {
               console.log("Cannot parse (lat,lng) location: " + it.gpsLocation);
             }
           }

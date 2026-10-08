@@ -39,7 +39,7 @@ export class StateTransitionViewViewModel extends BaseViewModel {
       try {
         const json = JSON.parse(data.formDefinition);
         this.data.formDefinition = JSON.stringify(json, null, 2);
-      } catch (e) {
+      } catch {
         this.data.formDefinition = "Error! Bad definition format";
       }
     }

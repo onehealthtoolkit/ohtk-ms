@@ -50,7 +50,7 @@ export abstract class CaseDefinitionViewModel extends BaseFormViewModel {
           const formBuilder = new FormViewModel();
           formBuilder.parse(JSON.parse(result.data.definition));
           this.conditionVariables = formBuilder.conditionVariableList;
-        } catch (e) {
+        } catch {
           console.log("Error! Bad definition format");
         }
       }

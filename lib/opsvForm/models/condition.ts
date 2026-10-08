@@ -65,7 +65,7 @@ export default class SimpleCondition implements Condition {
         this.operator
       ) as ConditionOperator;
       return field.evaluate(operator, this.value);
-    } catch (e) {
+    } catch {
       return true;
     }
   }
