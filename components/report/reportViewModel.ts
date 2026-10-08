@@ -258,7 +258,7 @@ export class ReportViewModel extends BaseViewModel {
     if (this.caseData.outbreakInfo) {
       try {
         zones = JSON.parse(this.caseData.outbreakInfo).zones;
-      } catch (_) {
+      } catch {
         console.log("Error parsing outbreak plan info");
       }
     }

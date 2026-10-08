@@ -32,7 +32,7 @@ export default class DecimalField extends PrimitiveField<Decimal> {
   loadJsonValue(json: Record<string, any>) {
     try {
       this.value = new Decimal(json[this.name]);
-    } catch (e) {
+    } catch {
       // new Decimal with null value
     }
   }

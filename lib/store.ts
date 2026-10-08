@@ -60,7 +60,7 @@ export class Store {
           this.isLogin = false;
         });
       }
-    } catch (e) {
+    } catch {
       runInAction(() => {
         this.initTokenPending = false;
         this.isLogin = false;

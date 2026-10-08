@@ -129,7 +129,7 @@ export class ReportCreateViewModel {
         this.villages = (result.items || []).filter(v => v.active !== false);
         this.villagesLoading = false;
       });
-    } catch (e) {
+    } catch {
       runInAction(() => {
         this.villagesLoading = false;
         this.loadError = "Failed to load villages";
@@ -169,7 +169,7 @@ export class ReportCreateViewModel {
         this.step = "form";
         this.loadingDefinition = false;
       });
-    } catch (e) {
+    } catch {
       runInAction(() => {
         this.loadError = "Failed to load form definition";
         this.loadingDefinition = false;

@@ -145,7 +145,7 @@ export class OperatorViewModel extends AbstractDefinitionViewModel {
             definition.operator
         );
       }
-    } catch (e) {
+    } catch {
       throw new ParseError("Error while building condition definition");
     }
   }

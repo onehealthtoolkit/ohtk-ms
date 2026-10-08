@@ -19,7 +19,7 @@ export const parseJsonObject = (field: string, value: string) => {
       return { error: `${field} must be a JSON object` };
     }
     return { value: parsed };
-  } catch (_) {
+  } catch {
     return { error: `${field} must be valid JSON` };
   }
 };

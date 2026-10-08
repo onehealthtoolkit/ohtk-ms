@@ -21,7 +21,7 @@ export function getRefreshExpiresIn(): number {
   if (value) {
     try {
       return parseInt(value);
-    } catch (_) {
+    } catch {
       localStorage.removeItem(REFRESH_EXPIRES_IN);
       return 0;
     }

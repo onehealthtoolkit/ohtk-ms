@@ -43,7 +43,7 @@ export default function Map({
       latitude = parseFloat(location[1]);
       longitude = parseFloat(location[0]);
       isValidLocation = true;
-    } catch (e) {
+    } catch {
       console.log("invalid location", lnglat);
     }
   }
