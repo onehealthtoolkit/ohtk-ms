@@ -189,7 +189,10 @@
       "village": "Village",
       "risk": "Risk",
       "testReport": "Test report",
-      "optional": "optional"
+      "optional": "optional",
+      "accumulatedTotals": "Totals (report + follow-ups)",
+      "accumulatedTotalsHint": "Combined metrics from the original report and all follow ups",
+      "submittedAt": "Submitted at"
     },
     "help": {
       "monthDayRule": "Annual month-day rule (MM-DD). Leap day 02-29 is not allowed.",
@@ -573,7 +576,50 @@
       "clusterDetectorEnabled": "Enable cluster detector"
     }
   },
+  "animalReport": {
+    "name": "Animal Sick/Death",
+    "metric": {
+      "num_household": "Number of affected households",
+      "num_total_animal": "Total animals",
+      "num_sick": "Sick",
+      "num_dead": "Dead",
+      "num_recover": "Recovered"
+    },
+    "close": {
+      "test_result": {
+        "label": "Test result",
+        "description": "Include lab notes or reference IDs if needed. Attach lab files via Comments."
+      },
+      "stamp_out": {
+        "label": "Stamped out",
+        "description": "Number of animals terminated for this report species (integer ≥ 0)."
+      }
+    }
+  },
+  "censusCoverage": {
+    "submitted": "Submitted",
+    "missing": "Missing",
+    "MISSING": "Missing villages",
+    "SUBMITTED_ON_TIME": "Submitted villages",
+    "ALL": "All target villages",
+    "status": {
+      "MISSING": "Missing",
+      "SUBMITTED_ON_TIME": "Submitted"
+    }
+  },
+  "census": {
+    "create": {
+      "title": "Enter census",
+      "enter": "Enter census"
+    }
+  },
   "risk": {
+    "level": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical"
+    },
     "title": "Risk",
     "levelLabel": "Risk level",
     "edit": "Edit risk",
