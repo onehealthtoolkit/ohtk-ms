@@ -51,7 +51,7 @@ const parseUrlParams = (query: ParsedUrlQuery) => {
   return {
     q: query.q as string,
     authorities: query.authorities ? JSURL.parse(query.authorities) : [],
-    role: query.role as string,
+    role: (query.role as string) || "",
     fromDate: query.fromDate
       ? isoStringToDate(query.fromDate as string)
       : undefined,
@@ -108,7 +108,6 @@ const UserFilter = ({ viewModel }: { viewModel: AdminUserListViewModel }) => {
               }}
               disabled={viewModel.isSubmitting}
               value={viewModel.roleSearch}
-              required
             >
               <option value="">All</option>
               <option value={AccountsAuthorityUserRoleChoices.Rep}>
@@ -133,7 +132,7 @@ const UserFilter = ({ viewModel }: { viewModel: AdminUserListViewModel }) => {
               id="fromDate"
               selected={viewModel.fromDate}
               onChange={(date: Date | null) => {
-                if (date) viewModel.fromDate = date;
+                viewModel.fromDate = date ?? undefined;
               }}
             />
           </Field>
@@ -145,7 +144,7 @@ const UserFilter = ({ viewModel }: { viewModel: AdminUserListViewModel }) => {
               id="throughDate"
               selected={viewModel.throughDate}
               onChange={(date: Date | null) => {
-                if (date) viewModel.throughDate = date;
+                viewModel.throughDate = date ?? undefined;
               }}
             />
           </Field>
@@ -183,7 +182,7 @@ const UserList = () => {
 
   const applySearch = ({ q, offset }: { q?: string; offset?: number }) => {
     setUrl({
-      q: q,
+      q: q ?? viewModel.nameSearch,
       offset: offset,
       authorities: JSURL.stringify(viewModel.authoritiesSearch),
       role: viewModel.roleSearch,

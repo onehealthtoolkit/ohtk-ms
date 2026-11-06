@@ -107,17 +107,20 @@ export class UserService implements IUserService {
     throughDate?: Date,
     force?: boolean
   ) {
-    if (throughDate) throughDate.setHours(23, 59, 59, 999);
+    const throughEndOfDay = throughDate ? new Date(throughDate) : undefined;
+    throughEndOfDay?.setHours(23, 59, 59, 999);
 
     this.fetchUsersQuery = {
       ...this.fetchUsersQuery,
       limit,
       offset,
       q: searchText,
-      authorities: authorities?.map(authority => authority.id),
+      authorities: authorities?.length
+        ? authorities.map(authority => authority.id)
+        : undefined,
       role: role,
       fromDate: fromDate,
-      throughDate: throughDate,
+      throughDate: throughEndOfDay,
     };
 
     const fetchResult = await this.client.query({
