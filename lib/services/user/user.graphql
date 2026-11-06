@@ -2,7 +2,7 @@ query Users(
   $limit: Int!
   $offset: Int!
   $q: String
-  $authorities: Decimal
+  $authorities: [ID]
   $role: String
   $fromDate: DateTime
   $throughDate: DateTime
@@ -12,7 +12,7 @@ query Users(
     limit: $limit
     offset: $offset
     q: $q
-    authorities: $authorities
+    authorityIds: $authorities
     role: $role
     dateJoinedGte: $fromDate
     dateJoinedLte: $throughDate

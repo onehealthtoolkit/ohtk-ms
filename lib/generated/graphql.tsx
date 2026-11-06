@@ -2419,6 +2419,7 @@ export type IncidentReportType = {
   aiSuspected: Scalars["String"]["output"];
   authorities?: Maybe<Array<Maybe<AuthorityType>>>;
   caseId?: Maybe<Scalars["UUID"]["output"]>;
+  caseStatus?: Maybe<ReportCaseStatus>;
   coverImage?: Maybe<ImageType>;
   createdAt: Scalars["DateTime"]["output"];
   currentRiskAssessment?: Maybe<RiskAssessmentProjectionType>;
@@ -3866,6 +3867,7 @@ export type QueryAdminAuthorityQueryArgs = {
 export type QueryAdminAuthorityUserQueryArgs = {
   after?: InputMaybe<Scalars["String"]["input"]>;
   authorities?: InputMaybe<Scalars["Decimal"]["input"]>;
+  authorityIds?: InputMaybe<Array<InputMaybe<Scalars["ID"]["input"]>>>;
   before?: InputMaybe<Scalars["String"]["input"]>;
   dateJoinedGte?: InputMaybe<Scalars["DateTime"]["input"]>;
   dateJoinedLte?: InputMaybe<Scalars["DateTime"]["input"]>;
@@ -4519,6 +4521,13 @@ export type Refresh = {
 export type RegisterFcmTokenMutation = {
   __typename?: "RegisterFcmTokenMutation";
   success?: Maybe<Scalars["Boolean"]["output"]>;
+};
+
+export type ReportCaseStatus = {
+  __typename?: "ReportCaseStatus";
+  closeOutcome: Scalars["String"]["output"];
+  closeSource: Scalars["String"]["output"];
+  isFinished: Scalars["Boolean"]["output"];
 };
 
 export type ReportDataSummaryType = {
@@ -9891,7 +9900,10 @@ export type UsersQueryVariables = Exact<{
   limit: Scalars["Int"]["input"];
   offset: Scalars["Int"]["input"];
   q?: InputMaybe<Scalars["String"]["input"]>;
-  authorities?: InputMaybe<Scalars["Decimal"]["input"]>;
+  authorities?: InputMaybe<
+    | Array<InputMaybe<Scalars["ID"]["input"]>>
+    | InputMaybe<Scalars["ID"]["input"]>
+  >;
   role?: InputMaybe<Scalars["String"]["input"]>;
   fromDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   throughDate?: InputMaybe<Scalars["DateTime"]["input"]>;
@@ -32819,7 +32831,10 @@ export const UsersDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "authorities" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "Decimal" } },
+          type: {
+            kind: "ListType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
         },
         {
           kind: "VariableDefinition",
@@ -32887,7 +32902,7 @@ export const UsersDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "authorities" },
+                name: { kind: "Name", value: "authorityIds" },
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "authorities" },
