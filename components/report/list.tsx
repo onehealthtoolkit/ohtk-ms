@@ -7,6 +7,7 @@ import tw from "tailwind-styled-components";
 import { ReportListViewModel } from "./listViewModel";
 import ErrorDisplay from "components/widgets/errorDisplay";
 import useServices from "lib/services/provider";
+import type { Report } from "lib/services/report";
 import Paginate from "components/widgets/table/paginate";
 import { formatDate, formatDateTime } from "lib/datetime";
 import ReportFilter from "./filter";
@@ -215,6 +216,18 @@ const ReportList = () => {
                       label: t("form.label.authorityName", "Authority Name"),
                       get: record => record.authorityName,
                     },
+                    ...(villageEnabled
+                      ? [
+                          {
+                            label: t("form.label.village", "Village"),
+                            get: (record: Report) => record.villageName,
+                          },
+                        ]
+                      : []),
+                    {
+                      label: t("form.label.data", "Data"),
+                      get: record => record.rendererData,
+                    },
                     {
                       label: t("form.label.risk", "Risk"),
                       get: record => (
@@ -222,10 +235,6 @@ const ReportList = () => {
                           level={record.currentRiskAssessment?.level}
                         />
                       ),
-                    },
-                    {
-                      label: t("form.label.data", "Data"),
-                      get: record => record.rendererData,
                     },
                     {
                       label: "",
