@@ -154,6 +154,12 @@ export class CommentService implements ICommentService {
         });
       }
     });
+    // Keep Dashboard newest first without changing the API order used by Mobile.
+    items.sort(
+      (left, right) =>
+        Date.parse(right.createdAt) - Date.parse(left.createdAt) ||
+        Number(right.id) - Number(left.id)
+    );
     return {
       items,
     };
