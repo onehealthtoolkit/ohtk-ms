@@ -69,8 +69,8 @@ const CaseFilter = ({ viewModel }: { viewModel: CaseListViewModel }) => {
             })
           }
           placeholder={t(
-            "form.placeholder.reportSearch",
-            "Species, disease, AI text"
+            "form.placeholder.caseSearch",
+            "Case ID, species, disease, AI text"
           )}
         />
       </Field>

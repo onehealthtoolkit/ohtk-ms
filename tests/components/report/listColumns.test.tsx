@@ -90,6 +90,7 @@ test("shows the report's village after Authority and Risk after Data, including 
   expect(
     screen.getAllByRole("columnheader").map(cell => cell.textContent)
   ).toEqual([
+    "Case ID",
     "Created At",
     "Incident Date",
     "Report Type",
@@ -101,14 +102,14 @@ test("shows the report's village after Authority and Risk after Data, including 
   ]);
   const rows = screen.getAllByRole("row").slice(1);
   const firstCells = within(rows[0]).getAllByRole("cell");
-  expect(firstCells[3]).toHaveTextContent("District office");
-  expect(firstCells[4]).toHaveTextContent(/^ບ້ານທົດສອບ$/);
-  expect(firstCells[5]).toHaveTextContent("Sick cattle");
-  expect(firstCells[6]).toHaveTextContent("High");
+  expect(firstCells[4]).toHaveTextContent("District office");
+  expect(firstCells[5]).toHaveTextContent(/^ບ້ານທົດສອບ$/);
+  expect(firstCells[6]).toHaveTextContent("Sick cattle");
+  expect(firstCells[7]).toHaveTextContent("High");
   expect(rows[0]).toHaveStyle({ boxShadow: "inset 4px 0 0 #ea580c" });
   const legacyCells = within(rows[1]).getAllByRole("cell");
-  expect(legacyCells[4]).toBeEmptyDOMElement();
-  expect(legacyCells[6]).toHaveTextContent("No assessment");
+  expect(legacyCells[5]).toBeEmptyDOMElement();
+  expect(legacyCells[7]).toHaveTextContent("No assessment");
 
   const query = mockApiQuery.mock.calls[0][0].query;
   expect(print(query)).toMatch(/village\s*\{\s*name\s*\}/);
@@ -126,6 +127,7 @@ test("keeps Risk after Data when the village feature is disabled", async () => {
   expect(
     screen.getAllByRole("columnheader").map(cell => cell.textContent)
   ).toEqual([
+    "Case ID",
     "Created At",
     "Incident Date",
     "Report Type",

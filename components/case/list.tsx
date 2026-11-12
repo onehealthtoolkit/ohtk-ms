@@ -1,4 +1,5 @@
 import Spinner from "components/widgets/spinner";
+import CaseNumberLink from "components/case/caseNumberLink";
 import Table from "components/widgets/table";
 import { Observer } from "mobx-react";
 import { useRouter } from "next/router";
@@ -184,6 +185,15 @@ const CaseList = () => {
               <>
                 <Table
                   columns={[
+                    {
+                      label: t("form.label.caseNumber", "Case ID"),
+                      get: record => (
+                        <CaseNumberLink
+                          caseId={record.id}
+                          caseNumber={record.caseNumber}
+                        />
+                      ),
+                    },
                     {
                       label: t("form.label.createdAt", "Created At"),
                       get: record =>

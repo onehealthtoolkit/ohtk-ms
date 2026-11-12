@@ -116,6 +116,7 @@ const ReportsListDocument = gql`
         incidentDate
         rendererData
         caseId
+        caseNumber
         gpsLocation
         reportType {
           id
@@ -262,6 +263,7 @@ export class ReportService implements IReportService {
           rendererData: item.rendererData,
           reportTypeName: item.reportType?.name || "",
           caseId: item.caseId,
+          caseNumber: item.caseNumber,
           gpsLocation: item.gpsLocation,
           categoryName: item.reportType?.category?.name,
           categoryIcon: item.reportType?.category?.icon,

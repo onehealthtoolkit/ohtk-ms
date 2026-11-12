@@ -139,7 +139,8 @@
       "columnSplit": "column split",
       "showTestReport": "Show test report",
       "includesBoundaryConnects": "Includes boundary connects",
-      "includeChildAuthority": "Include child authority"
+      "includeChildAuthority": "Include child authority",
+      "caseNumber": "รหัสเคส"
     },
     "placeholder": {
       "code": "รหัส",
@@ -190,7 +191,8 @@
       "longitude": "ลองจิจูด",
       "notificationTo": "email:john@gmail.com, user:pphetra",
       "registerFormDefinition": "ฟอร์มการลงทะเบียน",
-      "identityTemplate": "แม่แบบเอกลักษณ์"
+      "identityTemplate": "แม่แบบเอกลักษณ์",
+      "caseSearch": "รหัสเคส ชนิดสัตว์ โรค ข้อความ AI"
     },
     "button": {
       "signin": "เข้าสู่ระบบ",
