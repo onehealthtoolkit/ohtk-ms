@@ -26,43 +26,13 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
-  /**
-   * The `Date` scalar type represents a Date
-   * value as specified by
-   * [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
-   */
   Date: { input: any; output: any };
-  /**
-   * The `DateTime` scalar type represents a DateTime
-   * value as specified by
-   * [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
-   */
   DateTime: { input: any; output: any };
-  /** The `Decimal` scalar type represents a python Decimal. */
   Decimal: { input: any; output: any };
-  /**
-   * The `GenericScalar` scalar type represents a generic
-   * GraphQL scalar value that could be:
-   * String, Boolean, Int, Float, List or Object.
-   */
   GenericScalar: { input: any; output: any };
   GeoJSON: { input: any; output: any };
-  /**
-   * Allows use of a JSON String for input / output from the GraphQL schema.
-   *
-   * Use of this type is *not recommended* as you lose the benefits of having a defined, static
-   * schema (one of the key benefits of GraphQL).
-   */
   JSONString: { input: any; output: any };
-  /**
-   * Leverages the internal Python implementation of UUID (uuid.UUID) to provide native UUID objects
-   * in fields, resolvers and input.
-   */
   UUID: { input: any; output: any };
-  /**
-   * Create scalar that ignores normal serialization/deserialization, since
-   * that will be handled by the multipart request spec
-   */
   Upload: { input: any; output: any };
 };
 
