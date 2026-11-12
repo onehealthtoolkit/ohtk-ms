@@ -15,7 +15,7 @@ import Filter from "components/widgets/filter";
 import { isoStringToDate } from "lib/utils";
 import { ParsedUrlQuery } from "querystring";
 import useUrlParams from "lib/hooks/urlParams/useUrlParams";
-import CaseNumberLink from "components/case/caseNumberLink";
+import CaseLink from "components/case/caseLink";
 import { CalendarIcon, TableCellsIcon } from "@heroicons/react/24/solid";
 import Calendar from "components/widgets/calendar";
 import { ReportDayEvents } from "components/report/dayEvents";
@@ -199,15 +199,6 @@ const ReportList = () => {
                 <Table
                   columns={[
                     {
-                      label: t("form.label.caseNumber", "Case ID"),
-                      get: record => (
-                        <CaseNumberLink
-                          caseId={record.caseId}
-                          caseNumber={record.caseNumber}
-                        />
-                      ),
-                    },
-                    {
                       label: t("form.label.createdAt", "Created At"),
                       get: record =>
                         formatDateTime(record.createdAt, router.locale),
@@ -249,6 +240,7 @@ const ReportList = () => {
                       label: "",
                       get: record => (
                         <div className="flex flex-row gap-1">
+                          <CaseLink caseId={record.caseId} />
                           <TestLabel isTest={record.testFlag || false} />
                         </div>
                       ),
