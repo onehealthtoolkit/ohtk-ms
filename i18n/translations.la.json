@@ -171,7 +171,8 @@
       "optional": "ທາງເລືອກ",
       "accumulatedTotals": "ຍອດລວມ (ບົດລາຍງານ ແລະ ການຕິດຕາມຜົນ)",
       "accumulatedTotalsHint": "ຕາຕະລາງລວມຂໍ້ມູນຈາກບົດລາຍງານສະບັບຕົ້ນ ແລະ ການຕິດຕາມທັງໝົດ",
-      "submittedAt": "ສົ່ງຂໍ້ມູນຄັ້ງສຸດທ້າຍ"
+      "submittedAt": "ສົ່ງຂໍ້ມູນຄັ້ງສຸດທ້າຍ",
+      "caseNumber": "ລະຫັດກໍລະນີ"
     },
     "placeholder": {
       "code": "ລະຫັດ",
@@ -223,7 +224,8 @@
       "notificationTo": "email:john@gmail.com, user:pphetra",
       "registerFormDefinition": "ແບບ​ຟອມ​ລົງ​ທະ​ບຽນ",
       "identityTemplate": "ແມ່ແບບຕົວຕົນ",
-      "enterCommentHere": "ໃສ່ຄຳເຫັນທີ່ນີ້…"
+      "enterCommentHere": "ໃສ່ຄຳເຫັນທີ່ນີ້…",
+      "caseSearch": "ລະຫັດກໍລະນີ, ຊະນິດສັດ, ພະຍາດ, ຂໍ້ຄວາມ AI"
     },
     "button": {
       "signin": "ເຂົ້າ​ສູ່​ລະ​ບົບ",

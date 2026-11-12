@@ -6,6 +6,7 @@ import type { FormType } from "lib/opsvForm/models/json";
 
 export type Case = {
   id: string;
+  caseNumber?: string | null;
   description?: string;
   createdAt?: string;
   incidentDate?: string;

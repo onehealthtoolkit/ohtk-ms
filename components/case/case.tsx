@@ -169,6 +169,10 @@ const Case = (props: { id: string }) => {
               <>
                 <div className="flex flex-col gap-7 px-[26px] py-6 md:flex-row md:items-start md:justify-between">
                   <div className="min-w-0 flex-1">
+                    <h1 className="mb-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                      {t("form.label.caseNumber", "Case ID")}:{" "}
+                      {viewModel.data.caseNumber || "—"}
+                    </h1>
                     <div className="mb-2.5 flex flex-wrap items-center gap-2.5">
                       <p className="text-md dark:text-gray-400 ">
                         {t("form.label.reportType", "Report Type")}:{" "}

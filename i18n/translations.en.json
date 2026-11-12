@@ -192,7 +192,8 @@
       "optional": "optional",
       "accumulatedTotals": "Totals (report + follow-ups)",
       "accumulatedTotalsHint": "Combined metrics from the original report and all follow ups",
-      "submittedAt": "Submitted at"
+      "submittedAt": "Submitted at",
+      "caseNumber": "Case ID"
     },
     "help": {
       "monthDayRule": "Annual month-day rule (MM-DD). Leap day 02-29 is not allowed.",
@@ -249,7 +250,8 @@
       "notificationTo": "email:john@gmail.com, user:pphetra",
       "registerFormDefinition": "RegisterForm Definition",
       "identityTemplate": "Identity Template",
-      "searchCluster": "Cluster id or explanation"
+      "searchCluster": "Cluster id or explanation",
+      "caseSearch": "Case ID, species, disease, AI text"
     },
     "button": {
       "signin": "Sign In",

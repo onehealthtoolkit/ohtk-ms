@@ -27,6 +27,7 @@ query Cases(
     totalCount
     results {
       id
+      caseNumber
       isFinished
       statusLabel
       closeOutcome
@@ -59,6 +60,7 @@ query Cases(
 query GetCase($id: UUID!) {
   caseGet(id: $id) {
     id
+    caseNumber
     description
     isFinished
     statusLabel

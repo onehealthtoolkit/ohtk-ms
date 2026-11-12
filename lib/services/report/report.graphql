@@ -55,6 +55,7 @@ query Reports(
       incidentDate
       rendererData
       caseId
+      caseNumber
       gpsLocation
       reportType {
         id

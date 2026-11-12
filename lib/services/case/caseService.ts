@@ -85,6 +85,7 @@ const CasesListDocument = gql`
       totalCount
       results {
         id
+        caseNumber
         isFinished
         statusLabel
         closeOutcome
@@ -267,6 +268,7 @@ export class CaseService implements ICaseService {
       if (item) {
         items.push({
           id: item.id,
+          caseNumber: item.caseNumber,
           createdAt: item.report?.createdAt,
           incidentDate: item.report?.incidentDate,
           rendererData: item.report?.rendererData as string,
@@ -344,6 +346,7 @@ export class CaseService implements ICaseService {
     if (incidentCase) {
       data = {
         id: incidentCase.id,
+        caseNumber: incidentCase.caseNumber,
         description: incidentCase.description,
         isFinished: incidentCase.isFinished,
         threadId: incidentCase.threadId,

@@ -1968,6 +1968,7 @@ export type CaseType = {
   __typename?: "CaseType";
   aiSuspected: Scalars["String"]["output"];
   authorities?: Maybe<Array<Maybe<AuthorityType>>>;
+  caseNumber?: Maybe<Scalars["String"]["output"]>;
   closeOutcome?: Maybe<Scalars["String"]["output"]>;
   closePayload: Scalars["GenericScalar"]["output"];
   closeSource?: Maybe<Scalars["String"]["output"]>;
@@ -2419,6 +2420,8 @@ export type IncidentReportType = {
   aiSuspected: Scalars["String"]["output"];
   authorities?: Maybe<Array<Maybe<AuthorityType>>>;
   caseId?: Maybe<Scalars["UUID"]["output"]>;
+  caseNumber?: Maybe<Scalars["String"]["output"]>;
+  caseStatus?: Maybe<ReportCaseStatus>;
   coverImage?: Maybe<ImageType>;
   createdAt: Scalars["DateTime"]["output"];
   currentRiskAssessment?: Maybe<RiskAssessmentProjectionType>;
@@ -4521,6 +4524,13 @@ export type RegisterFcmTokenMutation = {
   success?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
+export type ReportCaseStatus = {
+  __typename?: "ReportCaseStatus";
+  closeOutcome: Scalars["String"]["output"];
+  closeSource: Scalars["String"]["output"];
+  isFinished: Scalars["Boolean"]["output"];
+};
+
 export type ReportDataSummaryType = {
   __typename?: "ReportDataSummaryType";
   result?: Maybe<Scalars["String"]["output"]>;
@@ -5196,6 +5206,7 @@ export type CasesQuery = {
     results: Array<{
       __typename?: "CaseType";
       id: any;
+      caseNumber?: string | null;
       isFinished: boolean;
       statusLabel?: string | null;
       closeOutcome?: string | null;
@@ -5254,6 +5265,7 @@ export type GetCaseQuery = {
   caseGet?: {
     __typename?: "CaseType";
     id: any;
+    caseNumber?: string | null;
     description: string;
     isFinished: boolean;
     statusLabel?: string | null;
@@ -8566,6 +8578,7 @@ export type ReportsQuery = {
       incidentDate: any;
       rendererData: string;
       caseId?: any | null;
+      caseNumber?: string | null;
       gpsLocation?: string | null;
       testFlag: boolean;
       reportType?: {
@@ -12024,6 +12037,10 @@ export const CasesDocument = {
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "caseNumber" },
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "isFinished" },
                       },
                       {
@@ -12219,6 +12236,7 @@ export const GetCaseDocument = {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "caseNumber" } },
                 { kind: "Field", name: { kind: "Name", value: "description" } },
                 { kind: "Field", name: { kind: "Name", value: "isFinished" } },
                 { kind: "Field", name: { kind: "Name", value: "statusLabel" } },
@@ -26696,6 +26714,10 @@ export const ReportsDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "caseId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "caseNumber" },
                       },
                       {
                         kind: "Field",

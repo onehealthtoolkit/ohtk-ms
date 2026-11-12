@@ -36,6 +36,8 @@ export type Report = {
   reportByName?: string;
   reportByTelephone?: string;
   caseId?: string;
+  /** Readable reference of the linked Case; Report identity remains id. */
+  caseNumber?: string | null;
   gpsLocation?: string | null;
   threadId?: number | null;
   categoryName?: string | null;
