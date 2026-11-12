@@ -138,6 +138,9 @@ const ReportsListDocument = gql`
         authorities {
           name
         }
+        village {
+          name
+        }
         currentRiskAssessment {
           ...ReportListRiskAssessmentFields
         }
@@ -267,6 +270,7 @@ export class ReportService implements IReportService {
               ? item.images[0]?.thumbnail
               : null,
           authorityName: item.authorities?.map(item => item?.name).join(", "),
+          villageName: item.village?.name || undefined,
           testFlag: item.testFlag,
           currentRiskAssessment: mapRiskAssessment(item.currentRiskAssessment),
         });
