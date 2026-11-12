@@ -199,7 +199,7 @@ test("Cases list maps readable IDs, links by UUID and retains Risk styling", asy
   expect(mockPush).toHaveBeenCalledWith(`/cases/${caseUuid}`);
 });
 
-test("Reports list uses the linked Case number and Case UUID, with unlinked/null fallbacks", async () => {
+test("Reports omits the Case ID column and retains Case links only for linked reports", async () => {
   mockApiQuery.mockResolvedValue({
     data: {
       incidentReports: {
@@ -218,14 +218,21 @@ test("Reports list uses the linked Case number and Case UUID, with unlinked/null
     },
   });
   render(<ReportList />);
-  const link = await screen.findByRole("link", { name: caseNumber });
+  const links = await screen.findAllByRole("link", { name: "Case" });
+  expect(links).toHaveLength(2);
+  expect(screen.queryByRole("columnheader", { name: "Case ID" })).toBeNull();
+  expect(screen.queryByText(caseNumber)).toBeNull();
+  const rows = screen.getAllByRole("row").slice(1);
+  const link = within(rows[0]).getByRole("link", { name: "Case" });
   expect(link).toHaveAttribute("href", `/cases/${caseUuid}`);
   expect(link).not.toHaveAttribute("href", `/cases/${reportUuid}`);
-  const rows = screen.getAllByRole("row").slice(1);
-  for (const row of rows.slice(1)) {
-    expect(within(row).getAllByRole("cell")[0]).toHaveTextContent(/^—$/);
-    expect(within(row).queryByRole("link")).toBeNull();
-  }
+  expect(within(rows[1]).queryByRole("link")).toBeNull();
+  expect(within(rows[2]).getByRole("link", { name: "Case" })).toHaveAttribute(
+    "href",
+    "/cases/legacy-case"
+  );
+  fireEvent.click(link);
+  expect(mockPush).not.toHaveBeenCalled();
   fireEvent.click(within(rows[0]).getByText("Sick cattle"));
   expect(mockPush).toHaveBeenCalledWith(`/reports/${reportUuid}`);
   const query = mockApiQuery.mock.calls[0][0].query;
